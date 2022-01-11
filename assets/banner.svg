@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2102px" height="512px" viewBox="0 0 2102 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>banner</title>
+    <defs>
+        <path d="M240.5,251 C280.540644,251 313,218.540644 313,178.5 C313,138.459356 280.540644,106 240.5,106 C200.459356,106 168,138.459356 168,178.5 C168,218.540644 200.459356,251 240.5,251 Z M179,312 L179,436 L105,436 L105,43 L240,43 C314.052758,43.2708341 374,103.384703 374,177.5 C374,251.782299 313.782299,312 239.5,312 L241,311.987 L241,312 L179,312 Z" id="path-1"></path>
+        <filter x="-9.3%" y="-10.2%" width="137.2%" height="122.9%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="30" dy="5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="10" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.253425045 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="banner" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <text id="Preview.js" font-family="Rubik-Light, Rubik" font-size="330" font-weight="300" fill="#2A65AD">
+            <tspan x="569" y="410">Preview.js</tspan>
+        </text>
+        <g id="Group" transform="translate(17.000000, 15.000000)">
+            <rect id="Rectangle" fill="#61A6FA" x="4" y="4" width="470" height="470" rx="69"></rect>
+            <g id="Oval">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

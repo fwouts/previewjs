@@ -1,0 +1,39 @@
+{
+  "name": "@previewjs/plugin-vue3",
+  "version": "1.0.2",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue3 --no-deps --include-dependencies",
+    "build": "rimraf dist && tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^2.0.1",
+    "@vitejs/plugin-vue-jsx": "^1.2.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "acorn": "^8.7.0",
+    "vite": "^2.7.9",
+    "vue": "^3"
+  },
+  "devDependencies": {
+    "@previewjs/config": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.4"
+  },
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    },
+    "./setup": {
+      "module": "./setup.esm.js",
+      "default": "./setup.js"
+    }
+  }
+}

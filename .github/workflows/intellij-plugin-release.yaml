@@ -1,0 +1,61 @@
+name: IntelliJ plugin Release
+
+on:
+  release:
+    types:
+      - created
+
+defaults:
+  run:
+    working-directory: integrations/intellij
+
+jobs:
+  build:
+    if: startsWith(github.ref, 'refs/tags/integrations/intellij/v')
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.24.4
+          run_install: true
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - name: Get the version
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/integrations\/intellij\/v/}" >> $GITHUB_ENV
+      - name: Update the version
+        run: sed -i 's/0.9.9-dev/${{ env.VERSION }}/g' gradle.properties
+      - name: Build controller
+        run: pnpm turbo run build --scope=@previewjs/intellij-controller --include-dependencies
+      - name: Publish
+        run: ./gradlew publishPlugin
+        env:
+          JETBRAINS_CERTIFICATE_CHAIN: ${{ secrets.JETBRAINS_CERTIFICATE_CHAIN }}
+          JETBRAINS_PRIVATE_KEY: ${{ secrets.JETBRAINS_PRIVATE_KEY }}
+          JETBRAINS_PRIVATE_KEY_PASSWORD: ${{ secrets.JETBRAINS_PRIVATE_KEY_PASSWORD }}
+          JETBRAINS_PUBLISH_TOKEN: ${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
+      - name: Archive build
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: |
+            integrations/intellij/build/distributions

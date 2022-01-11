@@ -1,0 +1,90 @@
+{
+  "name": "@previewjs/app",
+  "version": "1.0.0",
+  "license": "AGPL-3.0",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "main": "./dist/src",
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
+    "build": "rimraf dist && pnpm tsc && vite build client",
+    "client:dev": "vite client",
+    "test": "ts-node run-test-suite.ts",
+    "test:watch": "ts-node-dev --ignore-watch tmp --respawn run-test-suite.ts",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "browser": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "react/prop-types": "off"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+  },
+  "dependencies": {
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.16",
+    "@monaco-editor/react": "^4.3.1",
+    "@previewjs/config": "^1.0.0",
+    "@previewjs/core": "^1.0.0",
+    "@previewjs/plugin-react": "^1.0.0",
+    "@previewjs/plugin-vue2": "^1.0.0",
+    "@previewjs/plugin-vue3": "^1.0.0",
+    "@react-hook/window-size": "^3.0.7",
+    "assert-never": "^1.2.1",
+    "axios": "^0.24.0",
+    "express": "^4.17.2",
+    "framer-motion": "^5.5.6",
+    "mobx": "^6.3.12",
+    "mobx-react-lite": "^3.2.3",
+    "monaco-editor": "^0.31.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@previewjs/loader": "workspace:*",
+    "@types/express": "^4.17.13",
+    "@types/fs-extra": "^9.0.13",
+    "@types/lodash": "^4.14.176",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/rimraf": "^3.0.2",
+    "@typescript-eslint/parser": "^5.9.0",
+    "@vitejs/plugin-react": "^1.1.4",
+    "caller-callsite": "^4",
+    "chalk": "^4",
+    "eslint": "^7",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "fs-extra": "^10.0.0",
+    "lodash": "^4.17.21",
+    "playwright": "^1.17.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.4",
+    "vite": "^2.7.9",
+    "vite-plugin-svgr": "^0.6.0"
+  }
+}

@@ -1,0 +1,15 @@
+packages:
+  - "api"
+  - "app"
+  - "cli"
+  - "config"
+  - "core"
+  - "frameworks/*"
+  - "frameworks/*/preview"
+  - "integrations/intellij/controller"
+  # Note: integrations/vscode uses Yarn because of https://github.com/microsoft/vscode-vsce/issues/421.
+  - "loader"
+  - "test-apps/*"
+  - "!test-apps/tmp"
+  - "smoke-test-apps/*"
+  - "!smoke-test-apps/tmp"

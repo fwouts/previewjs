@@ -1,0 +1,99 @@
+{
+  "name": "previewjs",
+  "license": "AGPL-3.0",
+  "displayName": "Preview.js",
+  "icon": "logo.png",
+  "description": "Get instant previews of your UI components, directly in your IDE",
+  "keywords": [
+    "react",
+    "vue",
+    "design",
+    "preview",
+    "components",
+    "typescript"
+  ],
+  "categories": [
+    "Visualization"
+  ],
+  "version": "0.9.9-dev",
+  "preview": true,
+  "publisher": "zenclabs",
+  "repository": "https://github.com/zenclabs/previewjs",
+  "bugs": "https://github.com/zenclabs/previewjs/issues",
+  "homepage": "https://previewjs.com",
+  "private": true,
+  "engines": {
+    "vscode": "^1.43.0"
+  },
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:jsx",
+    "onLanguage:typescriptreact",
+    "onLanguage:vue",
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "Preview.js",
+      "properties": {
+        "previewjs.livePreview": {
+          "title": "Live Preview",
+          "type": "boolean",
+          "default": true,
+          "description": "Update previews instantly, without waiting for saving. Reload required."
+        },
+        "previewjs.codelens": {
+          "title": "CodeLens",
+          "type": "boolean",
+          "default": true,
+          "description": "Show a link to open Preview.js above each detected component. Reload required."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "previewjs.open",
+        "title": "Open Preview.js",
+        "category": "Preview.js",
+        "icon": "./logo.png"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "previewjs.open",
+        "key": "ctrl+k v",
+        "mac": "cmd+k v",
+        "when": "editorLangId == javascript || editorLangId == javascriptreact || editorLangId == jsx || editorLangId == typescriptreact || editorLangId == vue"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "editorLangId == javascript || editorLangId == javascriptreact || editorLangId == jsx || editorLangId == typescriptreact || editorLangId == vue",
+          "command": "previewjs.open",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "vscode:prepublish": "yarn build",
+    "build": "rimraf dist && webpack",
+    "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install",
+    "dev:install": "code --install-extension previewjs-0.9.9-dev.vsix --force"
+  },
+  "devDependencies": {
+    "@types/vscode": "1.43.0",
+    "@types/webpack-env": "^1.16.3",
+    "cross-env": "^7.0.3",
+    "rimraf": "^3.0.2",
+    "ts-loader": "^9.2.6",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.4",
+    "vsce": "^2.6.3",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
+}

@@ -1,0 +1,29 @@
+<idea-plugin require-restart="true">
+    <id>com.previewjs.intellij.plugin</id>
+    <name>Preview.js</name>
+    <version>0.9.9-dev</version>
+    <vendor url="https://previewjs.com">Zenc Labs</vendor>
+    <description><![CDATA[
+        <p>Preview.js lets you preview Vue and React components instantly in your IDE.</p>
+        <p><img src="https://s3.previewjs.com/previewjs-overview.gif" width="350" /></p>
+        <p><a href="https://previewjs.com/docs">Visit the online docs</a> to find out exactly how to configure Preview.js for your project.</p>
+    ]]></description>
+    <change-notes>
+        See https://github.com/zenclabs/previewjs/releases for the up-to-date changelog.
+    </change-notes>
+
+    <!-- Product and plugin compatibility requirements -->
+    <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Preview.js" anchor="right" icon="/logo-16.png" factoryClass="com.zenclabs.previewjs.intellij.plugin.services.WindowFactory"/>
+        <projectService serviceImplementation="com.zenclabs.previewjs.intellij.plugin.services.ProjectService"/>
+        <notificationGroup id="Preview.js" displayType="BALLOON" />
+    </extensions>
+
+    <applicationListeners>
+        <listener class="com.zenclabs.previewjs.intellij.plugin.listeners.ProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+</idea-plugin>

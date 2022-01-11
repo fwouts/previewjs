@@ -1,0 +1,73 @@
+name: "\U0001F41E Bug report (Visual Studio Code)"
+description: Report an issue with Preview.js for Visual Studio Code
+labels: [pending triage, vscode]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Bug description
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction
+      description: Steps to reproduce the behavior. Bonus points if you can point to a repository that exhibits the issue!
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: previewjs-version
+    attributes:
+      label: Preview.js version
+      description: Version number of Preview.js (shown in top-right corner)
+      placeholder: v0.4.0
+    validations:
+      required: true
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Output of `npx envinfo --system --binaries --ides --browsers`
+      render: shell
+      placeholder: System, Binaries, IDEs, Browsers
+    validations:
+      required: true
+  - type: dropdown
+    id: package-manager
+    attributes:
+      label: Used Package Manager
+      description: Select the package manager you use in your project
+      options:
+        - npm
+        - yarn
+        - pnpm
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Extension logs (useful for crashes)
+      description: |
+        Run `ctrl/cmd-shift-p`, Search `Show Logs` and choose `Extension Host`. Scroll up in the logs and see if you see any error related to Preview.js, then copy-paste them here.
+      render: shell
+  - type: textarea
+    attributes:
+      label: Preview logs (useful for rendering errors)
+      description: |
+        Click "Open in browser" and open the console logs in your web browser. Copy-paste any errors you may see here (you can ignore `Error: Could not find source file: 'inmemory://model/1'.`).
+      render: shell
+  - type: textarea
+    attributes:
+      label: Anything else?
+      description: |
+        Links? Screenshots? Anything that will give us more context about the issue you are encountering!
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.

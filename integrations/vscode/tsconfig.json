@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": false,
+    "baseUrl": ".",
+    "paths": {
+      "@previewjs/core": ["../../core"],
+      "@previewjs/loader": ["../../loader"]
+    }
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@previewjs/workspace",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "license": "AGPL-3.0",
+  "private": true,
+  "devDependencies": {
+    "@previewjs/app": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/loader": "workspace:*",
+    "prettier": "^2.5.1",
+    "turbo": "^1.0.24"
+  },
+  "turbo": {
+    "baseBranch": "origin/main",
+    "pipeline": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": []
+      },
+      "dev": {
+        "cache": false
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2019", "DOM"],
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "outDir": "dist",
+    "declaration": true
+  },
+  "include": ["api", "src"],
+  "exclude": ["node_modules"]
+}

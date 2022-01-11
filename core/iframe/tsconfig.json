@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "lib": ["DOM"],
+    "jsx": "react-jsx",
+    "rootDir": ".",
+    "outDir": "../dist/controller"
+  },
+  "include": ["index.ts"]
+}

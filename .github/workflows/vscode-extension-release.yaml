@@ -1,0 +1,46 @@
+name: VS Code Extension Release
+
+on:
+  release:
+    types:
+      - created
+
+defaults:
+  run:
+    working-directory: integrations/vscode
+
+jobs:
+  build:
+    if: startsWith(github.ref, 'refs/tags/integrations/vscode/v')
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.24.4
+          run_install: true
+      - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies
+      - run: yarn --frozen-lockfile
+      - name: Get the version
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/integrations\/vscode\/v/}" >> $GITHUB_ENV
+      - name: Update the version
+        run: sed -i 's/0.9.9-dev/${{ env.VERSION }}/g' package.json
+      - name: Publish
+        run: yarn vsce publish
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
