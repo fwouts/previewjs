@@ -8,13 +8,13 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - "integrations/vscode/**"
+    paths:
+      - "integrations/vscode/**"
   pull_request:
     branches:
       - "*"
-    # paths:
-    #   - "integrations/vscode/**"
+    paths:
+      - "integrations/vscode/**"
 
 jobs:
   tests:
