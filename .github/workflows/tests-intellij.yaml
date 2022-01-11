@@ -10,11 +10,13 @@ on:
       - main
     paths:
       - "integrations/intellij/**"
+      - ".github/workflows/test-intellij.yaml"
   pull_request:
     branches:
       - "*"
     paths:
       - "integrations/intellij/**"
+      - ".github/workflows/test-intellij.yaml"
 
 jobs:
   tests:
