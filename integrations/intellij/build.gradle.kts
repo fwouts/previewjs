@@ -32,7 +32,7 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")  // 1.4.3
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")  // 1.4.3
 }
 
 // Configure gradle-intellij-plugin plugin.
