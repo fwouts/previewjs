@@ -1438,7 +1438,6 @@ packages:
       '@babel/helper-split-export-declaration': 7.16.7
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@babel/helper-create-regexp-features-plugin/7.16.0_@babel+core@7.16.5:
     resolution: {integrity: sha512-3DyG0zAFAZKcOp7aVr33ddwkxJ0Z0Jr5V99y3I690eYLpukJsJvAbzTy1ewoCqsML8SbIrjH14Jc/nSQ4TvNPA==}
@@ -2458,14 +2457,6 @@ packages:
       '@babel/helper-plugin-utils': 7.16.7
     dev: false
 
-  /@babel/plugin-syntax-import-meta/7.10.4_@babel+core@7.16.5:
-    resolution: {integrity: sha512-Yqfm+XDx0+Prh3VSeEQCPU81yC+JWZ2pDPFSS4ZdpfZhp4MkFMaDC1UqseovEKwSUpnIL7+vK+Clp7bfh0iD7g==}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.16.5
-      '@babel/helper-plugin-utils': 7.16.7
-
   /@babel/plugin-syntax-import-meta/7.10.4_@babel+core@7.16.7:
     resolution: {integrity: sha512-Yqfm+XDx0+Prh3VSeEQCPU81yC+JWZ2pDPFSS4ZdpfZhp4MkFMaDC1UqseovEKwSUpnIL7+vK+Clp7bfh0iD7g==}
     peerDependencies:
@@ -2756,6 +2747,7 @@ packages:
     dependencies:
       '@babel/core': 7.16.5
       '@babel/helper-plugin-utils': 7.16.5
+    dev: true
 
   /@babel/plugin-syntax-typescript/7.16.7_@babel+core@7.16.7:
     resolution: {integrity: sha512-YhUIJHHGkqPgEcMYkPCKTyGUdoGKWtopIycQyjJH8OjvRgOYsXsaKehLVPScKJWAULPxMa4N1vCe6szREFlZ7A==}
@@ -3659,6 +3651,7 @@ packages:
       '@babel/plugin-syntax-typescript': 7.16.5_@babel+core@7.16.5
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@babel/plugin-transform-typescript/7.16.7_@babel+core@7.16.7:
     resolution: {integrity: sha512-Hzx1lvBtOCWuCEwMmYOfpQpO7joFeXLgoPuzZZBtTxXqSqUGUubvFGZv2ygo1tB5Bp9q6PXV3H0E/kf7KM0RLA==}
@@ -3672,7 +3665,6 @@ packages:
       '@babel/plugin-syntax-typescript': 7.16.7_@babel+core@7.16.7
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@babel/plugin-transform-unicode-escapes/7.16.5_@babel+core@7.16.5:
     resolution: {integrity: sha512-shiCBHTIIChGLdyojsKQjoAyB8MBwat25lKM7MJjbe1hE0bgIppD+LX9afr41lLHOhqceqeWl4FkLp+Bgn9o1Q==}
@@ -9609,11 +9601,11 @@ packages:
     resolution: {integrity: sha512-VSBXVqMcxbgX85rgJC1eMWuZ9hzOJhWPvGYlKxyymPokE/i3Gykh5ljkCoNdxnKgIyFqv4WutYoYY93fgjbTxA==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@babel/core': 7.16.5
-      '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.16.5
-      '@babel/plugin-transform-typescript': 7.16.1_@babel+core@7.16.5
+      '@babel/core': 7.16.7
+      '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.16.7
+      '@babel/plugin-transform-typescript': 7.16.7_@babel+core@7.16.7
       '@rollup/pluginutils': 4.1.2
-      '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.16.5
+      '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.16.7
       hash-sum: 2.0.0
     transitivePeerDependencies:
       - supports-color
@@ -9696,8 +9688,25 @@ packages:
     dependencies:
       '@babel/helper-module-imports': 7.16.7
       '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.16.5
-      '@babel/template': 7.16.0
-      '@babel/traverse': 7.16.5
+      '@babel/template': 7.16.7
+      '@babel/traverse': 7.16.7
+      '@babel/types': 7.16.7
+      '@vue/babel-helper-vue-transform-on': 1.0.2
+      camelcase: 6.3.0
+      html-tags: 3.1.0
+      svg-tags: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
+    dev: true
+
+  /@vue/babel-plugin-jsx/1.1.1_@babel+core@7.16.7:
+    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
+    dependencies:
+      '@babel/helper-module-imports': 7.16.7
+      '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.16.7
+      '@babel/template': 7.16.7
+      '@babel/traverse': 7.16.7
       '@babel/types': 7.16.7
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
@@ -21807,7 +21816,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0
+      ts-pnp: 1.2.0_typescript@4.5.4
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -24596,7 +24605,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0
+      ts-pnp: 1.2.0_typescript@4.5.4
       url-loader: 4.1.1_file-loader@6.1.1+webpack@4.44.2
       webpack: 4.44.2
       webpack-dev-server: 3.11.1_webpack@4.44.2
@@ -28724,7 +28733,7 @@ packages:
       he: 1.2.0
       lodash.template: 4.5.0
       lodash.uniq: 4.5.0
-      resolve: 1.20.0
+      resolve: 1.21.0
       serialize-javascript: 3.1.0
       source-map: 0.5.6
 
