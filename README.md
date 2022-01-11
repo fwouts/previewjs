@@ -1,5 +1,7 @@
 <div align="center">
-  <img src="assets/banner.svg" alt="Preview.js" />
+  <a href="https://previewjs.com" target="_blank">
+    <img src="assets/banner.svg" alt="Preview.js" />
+  </a>
 </div>
 
 Preview.js is an extension for Visual Studio Code and IntelliJ/WebStorm.
