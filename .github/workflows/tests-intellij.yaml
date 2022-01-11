@@ -1,4 +1,4 @@
-name: Build tests
+name: IntelliJ tests
 
 concurrency:
   group: tests-${{ github.ref }}
@@ -8,18 +8,23 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "integrations/intellij/**"
+      - ".github/workflows/test-intellij.yaml"
   pull_request:
     branches:
       - "*"
+    paths:
+      - "integrations/intellij/**"
+      - ".github/workflows/test-intellij.yaml"
 
 jobs:
   tests:
-    timeout-minutes: 45
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node-version: [14.x]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -37,14 +42,5 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 6.24.4
-          run_install: true
-      # - run: yarn licenses-check
-      - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
-      - run: cd core && pnpm test
-      - run: cd frameworks/react && pnpm test
-      - run: cd app && pnpm lint && pnpm test
-      - run: cd integrations/vscode && yarn --frozen-lockfile && yarn build
+      - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
       - run: cd integrations/intellij && cd controller && pnpm build && cd .. && ./gradlew buildPlugin
