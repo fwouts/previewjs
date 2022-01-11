@@ -101,7 +101,7 @@ ${e.stackTraceToString()}""",
         builder.environment()["PORT"] = "$PORT"
         builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.getVersion()
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = "@previewjs/app"
-        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = "1.0.0"
+        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = "1.0.1"
         println("Preview.js control plane errors will be logged to $errorLogFilePath")
         val process = builder.start()
         controlPlaneProcess = process
