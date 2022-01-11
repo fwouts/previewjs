@@ -8,13 +8,13 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "integrations/intellij/**"
+    # paths:
+    #   - "integrations/intellij/**"
   pull_request:
     branches:
       - "*"
-    paths:
-      - "integrations/intellij/**"
+    # paths:
+    #   - "integrations/intellij/**"
 
 jobs:
   tests:
