@@ -10,13 +10,13 @@ on:
       - main
     paths:
       - "integrations/vscode/**"
-      - ".github/workflows/test-vscode.yaml"
+      - ".github/workflows/tests-vscode.yaml"
   pull_request:
     branches:
       - "*"
     paths:
       - "integrations/vscode/**"
-      - ".github/workflows/test-vscode.yaml"
+      - ".github/workflows/tests-vscode.yaml"
 
 jobs:
   tests:
