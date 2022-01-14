@@ -47,6 +47,6 @@ jobs:
           version: 6.24.4
           run_install: true
       - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
-      - run: cd integrations/intellij && cd controller && pnpm build
-      - run: ./gradlew runPluginVerifier
-      - run: ./gradlew buildPlugin
+      - run: cd integrations/intellij/controller && pnpm build
+      - run: cd integrations/intellij && ./gradlew runPluginVerifier
+      - run: cd integrations/intellij && ./gradlew buildPlugin
