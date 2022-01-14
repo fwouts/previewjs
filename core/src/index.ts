@@ -141,9 +141,9 @@ export async function createWorkspace({
               componentName: c.name,
               exported: c.exported,
               offset: start,
-              componentId: `${path.relative(rootDirPath, c.filePath)}:${
-                c.name
-              }`,
+              componentId: `${path
+                .relative(rootDirPath, c.filePath)
+                .replace(/\\/g, "/")}:${c.name}`,
             }));
         })
         .flat();
