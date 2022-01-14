@@ -39,10 +39,6 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "17"
-      - name: Get the version
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\/integrations\/intellij\/v/}" >> $GITHUB_ENV
-      - name: Update the version
-        run: sed -i 's/0.9.9-dev/${{ env.VERSION }}/g' gradle.properties
       - name: Build controller
         run: pnpm turbo run build --scope=@previewjs/intellij-controller --include-dependencies
       - name: Publish

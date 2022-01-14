@@ -36,10 +36,15 @@ jobs:
           run_install: true
       - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies
       - run: yarn --frozen-lockfile
-      - name: Get the version
+      - name: Extract version from package.json
+        uses: sergeysova/jq-action@v2.1.0
+        id: version
+        with:
+          cmd: "jq .version integrations/vscode/package.json -r"
+      - name: Extract version from release name
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/integrations\/vscode\/v/}" >> $GITHUB_ENV
-      - name: Update the version
-        run: sed -i 's/0.9.9-dev/${{ env.VERSION }}/g' package.json
+      - name: Check that versions match
+        run: '[[ "${{ steps.version.outputs.value }}" == "$VERSION" ]] && echo "Versions match"'
       - name: Publish
         run: yarn vsce publish
         env:
