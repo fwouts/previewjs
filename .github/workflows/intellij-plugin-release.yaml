@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: "temurin"
-          java-version: "17"
+          java-version: "11"
       - name: Build controller
         run: pnpm turbo run build --scope=@previewjs/intellij-controller --include-dependencies
       - name: Publish
