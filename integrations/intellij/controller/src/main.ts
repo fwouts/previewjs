@@ -61,6 +61,8 @@ async function main() {
         if (e instanceof NotFoundError) {
           res.status(404).end();
         } else {
+          console.error(`Error in endpoint ${path}:`);
+          console.error(e);
           res.status(500).end(e.message || "Internal Error");
           throw e;
         }
