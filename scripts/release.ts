@@ -15,19 +15,21 @@ async function main() {
     "status",
     "--porcelain",
   ]);
-  // if (gitPorcelain) {
-  //   throw new Error(`Git status is not clean:\n${gitPorcelain}`);
-  // }
+  if (gitPorcelain) {
+    throw new Error(`Git status is not clean:\n${gitPorcelain}`);
+  }
   const packageName = process.argv[2];
   if (!packageName) {
     throw new Error(`Please specify a package to release`);
   }
   let tagName: string;
+  let dirPath: string;
   let version: string;
   switch (packageName) {
     case "@previewjs/app": {
       tagName = "app";
-      version = await updatePackage(packageName, "app");
+      dirPath = "app";
+      version = await updateNodePackage(packageName, dirPath);
       await replaceInFile(
         "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
         /\["PREVIEWJS_PACKAGE_VERSION"\] = "\d+\.\d+\.\d+"/,
@@ -42,7 +44,8 @@ async function main() {
     }
     case "@previewjs/config": {
       tagName = "config";
-      version = await updatePackage(packageName, "config");
+      dirPath = "config";
+      version = await updateNodePackage(packageName, dirPath);
       await packageJson("app/package.json").updateDependency(
         packageName,
         version
@@ -55,7 +58,8 @@ async function main() {
     }
     case "@previewjs/core": {
       tagName = "core";
-      version = await updatePackage(packageName, "core");
+      dirPath = "core";
+      version = await updateNodePackage(packageName, dirPath);
       await packageJson("app/package.json").updateDependency(
         packageName,
         version
@@ -67,7 +71,8 @@ async function main() {
     case "@previewjs/plugin-vue3": {
       const frameworkName = packageName.substring("@previewjs/plugin-".length);
       tagName = `plugins/${frameworkName}`;
-      version = await updatePackage(packageName, `frameworks/${frameworkName}`);
+      dirPath = `frameworks/${frameworkName}`;
+      version = await updateNodePackage(packageName, dirPath);
       await packageJson("app/package.json").updateDependency(
         packageName,
         version
@@ -76,53 +81,32 @@ async function main() {
     }
     case "@previewjs/integration-intellij": {
       tagName = "integrations/intellij";
-      // Note: this isn't actually a Node package.
-      const gradlePropertiesPath = "integrations/intellij/gradle.properties";
-      const gradlePropertiesContent = await fs.promises.readFile(
-        gradlePropertiesPath,
-        "utf8"
-      );
-      const oldVersion = gradlePropertiesContent
-        .split("\n")
-        .find((line) => line.startsWith("pluginVersion = "))
-        ?.split(" = ")[1];
-      if (!oldVersion) {
-        throw new Error(`Unable to find version in ${gradlePropertiesPath}`);
-      }
-      version = await incrementVersion(oldVersion);
-      await fs.promises.writeFile(
-        gradlePropertiesPath,
-        gradlePropertiesContent
-          .split("\n")
-          .map((line) =>
-            line.startsWith("pluginVersion = ")
-              ? `pluginVersion = ${version}`
-              : line
-          )
-          .join("\n"),
-        "utf8"
-      );
+      dirPath = "integrations/intellij";
+      version = await updateIntellijVersion(packageName, dirPath);
       break;
     }
     case "@previewjs/integration-vscode": {
       tagName = "integrations/vscode";
+      dirPath = "integrations/vscode";
       // Note: the VS Code extension has the special package name "previewjs".
-      version = await updatePackage("previewjs", "integrations/vscode");
+      version = await updateNodePackage("previewjs", "integrations/vscode");
       break;
     }
     default:
       throw new Error(`Unknown package name: ${packageName}`);
   }
   const tag = `${tagName}/v${version}`;
+  const changelog = await gitChangelog(packageName, dirPath);
+  await execa("pnpm", ["install"]);
   await execa("git", ["add", "."]);
   await execa("git", ["commit", "-m", `release: ${packageName}@${version}`]);
-  await execa("git", ["tag", "-a", tag]);
-  await execa("git", ["push"]);
+  await execa("git", ["tag", "-a", tag, "-m", ""]);
+  await execa("git", ["push", "origin", "main"]);
   await execa("git", ["push", "origin", tag]);
-  await execa("gh", ["release", "create", tag, "-t", tag]);
+  await execa("gh", ["release", "create", tag, "-t", tag, "-n", changelog]);
 }
 
-async function updatePackage(packageName: string, dirPath: string) {
+async function gitChangelog(packageName: string, dirPath: string) {
   const { stdout } = await execa("git", ["log", "--oneline", "--", dirPath]);
   let commitMessages = stdout.split("\n");
   const lastReleaseIndex = commitMessages.findIndex((message) =>
@@ -131,15 +115,56 @@ async function updatePackage(packageName: string, dirPath: string) {
   if (lastReleaseIndex !== -1) {
     commitMessages = commitMessages.slice(0, lastReleaseIndex);
   }
+  return `${commitMessages.map((message) => `- ${message}`).join("\n")}`;
+}
+
+async function updateNodePackage(packageName: string, dirPath: string) {
   console.log(
-    `You are about to release the following:\n${commitMessages
-      .map((message) => `- ${message}`)
-      .join("\n")}`
+    `You are about to release the following:\n${await gitChangelog(
+      packageName,
+      dirPath
+    )}`
   );
   const packageModifier = packageJson(`${dirPath}/package.json`);
   const { version: oldVersion } = await packageModifier.read();
   const version = await incrementVersion(oldVersion);
   await packageModifier.updateVersion(version);
+  return version;
+}
+
+async function updateIntellijVersion(packageName: string, dirPath: string) {
+  console.log(
+    `You are about to release the following:\n${await gitChangelog(
+      packageName,
+      dirPath
+    )}`
+  );
+  // Note: this isn't actually a Node package.
+  const gradlePropertiesPath = "integrations/intellij/gradle.properties";
+  const gradlePropertiesContent = await fs.promises.readFile(
+    gradlePropertiesPath,
+    "utf8"
+  );
+  const oldVersion = gradlePropertiesContent
+    .split("\n")
+    .find((line) => line.startsWith("pluginVersion = "))
+    ?.split(" = ")[1];
+  if (!oldVersion) {
+    throw new Error(`Unable to find version in ${gradlePropertiesPath}`);
+  }
+  const version = await incrementVersion(oldVersion);
+  await fs.promises.writeFile(
+    gradlePropertiesPath,
+    gradlePropertiesContent
+      .split("\n")
+      .map((line) =>
+        line.startsWith("pluginVersion = ")
+          ? `pluginVersion = ${version}`
+          : line
+      )
+      .join("\n"),
+    "utf8"
+  );
   return version;
 }
 
