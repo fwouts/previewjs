@@ -37,12 +37,12 @@ importers:
       '@fortawesome/free-solid-svg-icons': 5.15.4
       '@fortawesome/react-fontawesome': 0.1.16
       '@monaco-editor/react': 4.3.1
-      '@previewjs/config': 1.0.0
-      '@previewjs/core': 1.0.0
+      '@previewjs/config': 1.0.1
+      '@previewjs/core': 1.0.1
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': 1.0.2
-      '@previewjs/plugin-vue2': 1.0.0
-      '@previewjs/plugin-vue3': 1.0.2
+      '@previewjs/plugin-vue2': 1.0.1
+      '@previewjs/plugin-vue3': 1.0.3
       '@react-hook/window-size': 3.0.7
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -85,7 +85,7 @@ importers:
       '@monaco-editor/react': 4.3.1_60c53b327c300eabacb72e8cc15737d8
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
-      '@previewjs/plugin-react': link:../frameworks/react
+      '@previewjs/plugin-react': 1.0.2
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@react-hook/window-size': 3.0.7_react@17.0.2
@@ -154,7 +154,7 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/config': 1.0.0
+      '@previewjs/config': 1.0.1
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
@@ -6484,6 +6484,19 @@ packages:
 
   /@popperjs/core/2.11.2:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
+    dev: false
+
+  /@previewjs/plugin-react/1.0.2:
+    resolution: {integrity: sha512-cxmn7IqFYNVVKa9YpzO23ErtOJz5U7cd+NqrNWmNmwD2UHDOEiIoUzO6AkcCWS22P/SL/ZHqbY2HKxiL8a9Hgg==}
+    dependencies:
+      '@svgr/core': 5.5.0
+      fs-extra: 10.0.0
+      vite: 2.7.12
+    transitivePeerDependencies:
+      - less
+      - sass
+      - stylus
+      - supports-color
     dev: false
 
   /@react-hook/debounce/3.0.0_react@17.0.2:
