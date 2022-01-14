@@ -42,5 +42,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.24.4
+          run_install: true
       - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
       - run: cd integrations/intellij && cd controller && pnpm build && cd .. && ./gradlew buildPlugin
