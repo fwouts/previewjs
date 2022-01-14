@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           distribution: "temurin"
-          java-version: "17"
+          java-version: "11"
       - name: Cache pnpm modules
         uses: actions/cache@v2
         with:
@@ -47,4 +47,6 @@ jobs:
           version: 6.24.4
           run_install: true
       - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
-      - run: cd integrations/intellij && cd controller && pnpm build && cd .. && ./gradlew buildPlugin
+      - run: cd integrations/intellij/controller && pnpm build
+      - run: cd integrations/intellij && ./gradlew runPluginVerifier
+      - run: cd integrations/intellij && ./gradlew buildPlugin
