@@ -45,7 +45,7 @@ module.exports = {
             ),
           }
         : {
-            "process.env.PREVIEWJS_PACKAGE_VERSION": JSON.stringify("1.0.1"),
+            "process.env.PREVIEWJS_PACKAGE_VERSION": JSON.stringify("1.0.2"),
           }),
     }),
   ],
