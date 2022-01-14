@@ -10,7 +10,9 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
-import com.previewjs.intellij.plugin.api.*
+import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
+import com.previewjs.intellij.plugin.api.PreviewJsApi
+import com.previewjs.intellij.plugin.api.api
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import java.net.ConnectException
@@ -26,6 +28,7 @@ class PreviewJsSharedService : Disposable {
         const val SHOWED_WELCOME_SCREEN_KEY = "com.previewjs.showed-welcome-screen"
     }
 
+    @OptIn(ObsoleteCoroutinesApi::class)
     private val coroutineContext = SupervisorJob() + Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext)
 

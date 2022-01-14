@@ -17,13 +17,13 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Preview.js" anchor="right" icon="/logo-16.png" factoryClass="com.zenclabs.previewjs.intellij.plugin.services.WindowFactory"/>
-        <projectService serviceImplementation="com.zenclabs.previewjs.intellij.plugin.services.ProjectService"/>
+        <toolWindow id="Preview.js" anchor="right" icon="/logo-16.png" factoryClass="com.previewjs.intellij.plugin.services.WindowFactory"/>
+        <projectService serviceImplementation="com.previewjs.intellij.plugin.services.ProjectService"/>
         <notificationGroup id="Preview.js" displayType="BALLOON" />
     </extensions>
 
     <applicationListeners>
-        <listener class="com.zenclabs.previewjs.intellij.plugin.listeners.ProjectManagerListener"
+        <listener class="com.previewjs.intellij.plugin.listeners.ProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>
