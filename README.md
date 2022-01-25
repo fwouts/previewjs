@@ -14,7 +14,7 @@ It lets you preview Vue and React components instantly.
 
 Preview.js is available for:
 
-- [Visual Studio Code](https://plugins.jetbrains.com/plugin/18384-preview-js)
+- [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs)
 - [IntelliJ / WebStorm](https://plugins.jetbrains.com/plugin/18384-preview-js)
 
 [Read the docs to learn more](https://previewjs.com)
