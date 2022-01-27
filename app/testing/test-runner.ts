@@ -2,8 +2,7 @@ import * as core from "@previewjs/core";
 import { init, SetupPreviewEnvironment } from "@previewjs/loader";
 import assertNever from "assert-never";
 import chalk from "chalk";
-import fsExtra from "fs-extra";
-import fs, { readFile } from "fs/promises";
+import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
 import rimraf from "rimraf";
@@ -192,7 +191,7 @@ class TestRunner {
           let text: string;
           switch (content.kind) {
             case "edit": {
-              const existing = await readFile(filePath, "utf8");
+              const existing = await fs.readFile(filePath, "utf8");
               text = existing.replace(content.search, content.replace);
               break;
             }
@@ -206,7 +205,7 @@ class TestRunner {
             await api.updateFileInMemory(filePath, text);
           } else {
             const dirPath = path.dirname(filePath);
-            await fsExtra.mkdirp(dirPath);
+            await fs.mkdirp(dirPath);
             await fs.writeFile(filePath, text, "utf8");
           }
         },
@@ -222,8 +221,8 @@ class TestRunner {
         "node_modules",
         ".previewjs"
       );
-      if (await fsExtra.pathExists(cacheDirPath)) {
-        await fsExtra.remove(cacheDirPath);
+      if (await fs.pathExists(cacheDirPath)) {
+        await fs.remove(cacheDirPath);
       }
       const rootDirPath = path.join(testCase.testDir, "..", "tmp");
       rimraf.sync(rootDirPath);

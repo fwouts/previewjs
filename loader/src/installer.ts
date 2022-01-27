@@ -1,7 +1,6 @@
 import { exec } from "child_process";
 import { unlinkSync } from "fs";
-import { pathExists } from "fs-extra";
-import { mkdir, readFile, rm, writeFile } from "fs/promises";
+import { mkdir, pathExists, readFile, rm, writeFile } from "fs-extra";
 import path from "path";
 
 export interface InstallOptions {
