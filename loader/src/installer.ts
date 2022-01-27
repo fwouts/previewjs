@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import execa from "execa";
 import { unlinkSync } from "fs";
 import { mkdir, pathExists, readFile, rm, writeFile } from "fs-extra";
 import path from "path";
@@ -70,35 +70,23 @@ async function installRequiredPackages(options: InstallOptions) {
       },
     })
   );
-  return new Promise<void>((resolve, reject) => {
-    exec(
-      `npm install`,
-      {
-        cwd: options.installDir,
-      },
-      async (error, stdout, stderr) => {
-        try {
-          console.log(stdout);
-          console.error(stderr);
-          if (error) {
-            options.status.error(
-              `Preview.js could not install dependencies:\n${error}`
-            );
-            return reject(error);
-          }
-          await writeFile(
-            installedVersionInfoPath(options),
-            versionId(options),
-            "utf8"
-          );
-          options.status.info("Preview.js is ready!");
-          return resolve();
-        } catch (e) {
-          reject(e);
-        }
-      }
-    );
+  const { stdout, stderr, failed } = await execa("npm", ["install"], {
+    cwd: options.installDir,
   });
+  console.log(stdout);
+  console.error(stderr);
+  if (failed) {
+    options.status.error(
+      `Preview.js could not install dependencies:\n${stderr}`
+    );
+    throw new Error(stderr);
+  }
+  await writeFile(
+    installedVersionInfoPath(options),
+    versionId(options),
+    "utf8"
+  );
+  options.status.info("Preview.js is ready!");
 }
 
 function installedVersionInfoPath(options: InstallOptions) {
