@@ -30,8 +30,8 @@ importers:
 
   app:
     specifiers:
-      '@emotion/react': 11.5.0
-      '@emotion/styled': 11.3.0
+      '@emotion/react': 11.7.1
+      '@emotion/styled': 11.6.0
       '@fortawesome/fontawesome-svg-core': 1.2.36
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
@@ -76,8 +76,8 @@ importers:
       vite: 2.7.12
       vite-plugin-svgr: 0.6.0
     dependencies:
-      '@emotion/react': 11.5.0_b08e3c15324cbe90a6ff8fcd416c932c
-      '@emotion/styled': 11.3.0_ef145f01428ac656e8f0b4e3beba7df1
+      '@emotion/react': 11.7.1_b08e3c15324cbe90a6ff8fcd416c932c
+      '@emotion/styled': 11.6.0_0044a6ec6dcf5de7705bffaaff7afd26
       '@fortawesome/fontawesome-svg-core': 1.2.36
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
@@ -4433,29 +4433,6 @@ packages:
     resolution: {integrity: sha512-igX9a37DR2ZPGYtV6suZ6whr8pTFtyHL3K/oLUotxpSVO2ASaprmAe2Dkq7tBo7CRY7MMDrAa9nuQP9/YG8FxQ==}
     dev: false
 
-  /@emotion/react/11.5.0_b08e3c15324cbe90a6ff8fcd416c932c:
-    resolution: {integrity: sha512-MYq/bzp3rYbee4EMBORCn4duPQfgpiEB5XzrZEBnUZAL80Qdfr7CEv/T80jwaTl/dnZmt9SnTa8NkTrwFNpLlw==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.7
-      '@emotion/cache': 11.7.1
-      '@emotion/serialize': 1.0.2
-      '@emotion/sheet': 1.1.0
-      '@emotion/utils': 1.0.0
-      '@emotion/weak-memoize': 0.2.5
-      '@types/react': 17.0.38
-      hoist-non-react-statics: 3.3.2
-      react: 17.0.2
-    dev: false
-
   /@emotion/react/11.7.1_7a8194b619a761f1c09fb1c24e09b022:
     resolution: {integrity: sha512-DV2Xe3yhkF1yT4uAUoJcYL1AmrnO5SVsdfvu+fBuS7IbByDeTVx9+wFmvx9Idzv7/78+9Mgx2Hcmr7Fex3tIyw==}
     peerDependencies:
@@ -4468,7 +4445,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.16.5
+      '@babel/runtime': 7.16.7
       '@emotion/cache': 11.7.1
       '@emotion/serialize': 1.0.2
       '@emotion/sheet': 1.1.0
@@ -4491,7 +4468,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.16.5
+      '@babel/runtime': 7.16.7
       '@emotion/cache': 11.7.1
       '@emotion/serialize': 1.0.2
       '@emotion/sheet': 1.1.0
@@ -4556,29 +4533,6 @@ packages:
       react: 17.0.2
     dev: true
 
-  /@emotion/styled/11.3.0_ef145f01428ac656e8f0b4e3beba7df1:
-    resolution: {integrity: sha512-fUoLcN3BfMiLlRhJ8CuPUMEyKkLEoM+n+UyAbnqGEsCd5IzKQ7VQFLtzpJOaCD2/VR2+1hXQTnSZXVJeiTNltA==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@emotion/react': ^11.0.0-rc.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.7
-      '@emotion/babel-plugin': 11.7.2
-      '@emotion/is-prop-valid': 1.1.1
-      '@emotion/react': 11.5.0_b08e3c15324cbe90a6ff8fcd416c932c
-      '@emotion/serialize': 1.0.2
-      '@emotion/utils': 1.0.0
-      '@types/react': 17.0.38
-      react: 17.0.2
-    dev: false
-
   /@emotion/styled/11.6.0_0044a6ec6dcf5de7705bffaaff7afd26:
     resolution: {integrity: sha512-mxVtVyIOTmCAkFbwIp+nCjTXJNgcz4VWkOYQro87jE2QBTydnkiYusMrRGFtzuruiGK4dDaNORk4gH049iiQuw==}
     peerDependencies:
@@ -4592,7 +4546,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.16.5
+      '@babel/runtime': 7.16.7
       '@emotion/babel-plugin': 11.7.2
       '@emotion/is-prop-valid': 1.1.1
       '@emotion/react': 11.7.1_b08e3c15324cbe90a6ff8fcd416c932c
@@ -4615,7 +4569,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.16.5
+      '@babel/runtime': 7.16.7
       '@emotion/babel-plugin': 11.7.2
       '@emotion/is-prop-valid': 1.1.1
       '@emotion/react': 11.7.1_7a8194b619a761f1c09fb1c24e09b022
