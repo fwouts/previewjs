@@ -44,7 +44,7 @@ specifiers:
   ts-node: 10.4.0
   ts-node-dev: 1.1.8
   typescript: 4.5.4
-  vite: 2.7.12
+  vite: 2.7.13
   vite-plugin-svgr: 0.6.0
 
 dependencies:
@@ -93,8 +93,8 @@ devDependencies:
   ts-node: 10.4.0_typescript@4.5.4
   ts-node-dev: 1.1.8_typescript@4.5.4
   typescript: 4.5.4
-  vite: 2.7.12
-  vite-plugin-svgr: 0.6.0_vite@2.7.12
+  vite: 2.7.13
+  vite-plugin-svgr: 0.6.0_vite@2.7.13
 
 packages:
 
@@ -3483,19 +3483,19 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /vite-plugin-svgr/0.6.0_vite@2.7.12:
+  /vite-plugin-svgr/0.6.0_vite@2.7.13:
     resolution: {integrity: sha512-+9eiWLzdlLK3ktnO7gzazMmR/KJyXTy7z6GeRbhv5HKEOFjLdNk3eB0qJaSpzJC3dr2pKWml0jAmxH7O6CcQtg==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.2.0
-      vite: 2.7.12
+      vite: 2.7.13
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite/2.7.12:
-    resolution: {integrity: sha512-KvPYToRQWhRfBeVkyhkZ5hASuHQkqZUUdUcE3xyYtq5oYEPIJ0h9LWiWTO6v990glmSac2cEPeYeXzpX5Z6qKQ==}
+  /vite/2.7.13:
+    resolution: {integrity: sha512-Mq8et7f3aK0SgSxjDNfOAimZGW9XryfHRa/uV0jseQSilg+KhYDSoNb9h1rknOy6SuMkvNDLKCYAYYUMCE+IgQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
