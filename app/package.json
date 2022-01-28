@@ -8,7 +8,7 @@
   },
   "main": "./dist/src",
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
+    "prepublishOnly": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "rimraf dist && pnpm tsc && vite build client",
     "client:dev": "vite client",
     "test": "ts-node run-test-suite.ts",

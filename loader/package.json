@@ -10,7 +10,7 @@
   "homepage": "https://previewjs.com",
   "main": "./dist",
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies",
+    "prepublishOnly": "cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies",
     "build": "rimraf dist && tsc"
   },
   "devDependencies": {

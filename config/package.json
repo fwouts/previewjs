@@ -6,7 +6,7 @@
   "license": "AGPL-3.0",
   "sideEffects": false,
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
+    "prepublishOnly": "cd .. && pnpm turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
     "build": "rimraf dist && tsc"
   },
   "devDependencies": {

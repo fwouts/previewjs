@@ -79,7 +79,7 @@
   },
   "main": "./dist/index.js",
   "scripts": {
-    "vscode:prepublish": "yarn build",
+    "vscode:prepare": "yarn build",
     "build": "rimraf dist && webpack",
     "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install",
     "dev:install": "code --install-extension previewjs-0.9.9-dev.vsix --force"

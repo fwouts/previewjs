@@ -9,7 +9,7 @@
   "sideEffects": false,
   "main": "./dist",
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
+    "prepublishOnly": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
     "test": "jest"
   },

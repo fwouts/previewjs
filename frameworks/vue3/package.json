@@ -8,7 +8,7 @@
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue3 --no-deps --include-dependencies",
+    "prepublishOnly": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue3 --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
     "test": "jest"
   },
