@@ -8,17 +8,19 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "assets/**"
-      - "cli/**"
-      - "integrations/**"
+    paths:
+      - "**"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
   pull_request:
     branches:
       - "*"
-    paths-ignore:
-      - "assets/**"
-      - "cli/**"
-      - "integrations/**"
+    paths:
+      - "**"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
 
 jobs:
   tests:
