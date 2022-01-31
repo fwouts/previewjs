@@ -28,9 +28,9 @@ async function main() {
   switch (packageName) {
     case "@previewjs/app": {
       tagName = "app";
-      dirPaths = ["app", "loader"];
+      dirPaths = ["app"];
       runUpdate = async () => {
-        const version = updateNodePackage("app");
+        const version = await updateNodePackage("app");
         await replaceInFile(
           "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
           /\["PREVIEWJS_PACKAGE_VERSION"\] = "\d+\.\d+\.\d+"/,
