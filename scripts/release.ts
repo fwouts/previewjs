@@ -110,7 +110,9 @@ async function gitChangelog(packageName: string, dirPath: string) {
   const { stdout } = await execa("git", ["log", "--oneline", "--", dirPath]);
   let commitMessages = stdout.split("\n");
   const lastReleaseIndex = commitMessages.findIndex((message) =>
-    message.match(`^release: ${packageName}@\d+\.\d+\.\d+$`)
+    message.match(
+      `^\\w+ release: ${packageName.replace(/\//g, "\\/")}@\\d+\\.\\d+\\.\\d+$`
+    )
   );
   if (lastReleaseIndex !== -1) {
     commitMessages = commitMessages.slice(0, lastReleaseIndex);
