@@ -117,6 +117,9 @@ async function gitChangelog(packageName: string, dirPath: string) {
   if (lastReleaseIndex !== -1) {
     commitMessages = commitMessages.slice(0, lastReleaseIndex);
   }
+  if (commitMessages.length === 0) {
+    throw new Error(`There is nothing to release.`);
+  }
   return `${commitMessages.map((message) => `- ${message}`).join("\n")}`;
 }
 
