@@ -23,47 +23,56 @@ async function main() {
     throw new Error(`Please specify a package to release`);
   }
   let tagName: string;
-  let dirPath: string;
-  let version: string;
+  let dirPaths: string[];
+  let runUpdate: () => Promise<string>;
   switch (packageName) {
     case "@previewjs/app": {
       tagName = "app";
-      dirPath = "app";
-      version = await updateNodePackage(packageName, dirPath);
-      await replaceInFile(
-        "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
-        /\["PREVIEWJS_PACKAGE_VERSION"\] = "\d+\.\d+\.\d+"/,
-        `["PREVIEWJS_PACKAGE_VERSION"] = "${version}"`
-      );
-      await replaceInFile(
-        "integrations/vscode/webpack.config.js",
-        /PREVIEWJS_PACKAGE_VERSION": JSON.stringify\("\d+\.\d+\.\d+"\)/,
-        `PREVIEWJS_PACKAGE_VERSION": JSON.stringify("${version}")`
-      );
+      dirPaths = ["app", "loader"];
+      runUpdate = async () => {
+        const version = updateNodePackage("app");
+        await replaceInFile(
+          "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
+          /\["PREVIEWJS_PACKAGE_VERSION"\] = "\d+\.\d+\.\d+"/,
+          `["PREVIEWJS_PACKAGE_VERSION"] = "${version}"`
+        );
+        await replaceInFile(
+          "integrations/vscode/webpack.config.js",
+          /PREVIEWJS_PACKAGE_VERSION": JSON.stringify\("\d+\.\d+\.\d+"\)/,
+          `PREVIEWJS_PACKAGE_VERSION": JSON.stringify("${version}")`
+        );
+        return version;
+      };
       break;
     }
     case "@previewjs/config": {
       tagName = "config";
-      dirPath = "config";
-      version = await updateNodePackage(packageName, dirPath);
-      await packageJson("app/package.json").updateDependency(
-        packageName,
-        version
-      );
-      await packageJson("core/package.json").updateDependency(
-        packageName,
-        version
-      );
+      dirPaths = ["config"];
+      runUpdate = async () => {
+        const version = await updateNodePackage("config");
+        await packageJson("app/package.json").updateDependency(
+          packageName,
+          version
+        );
+        await packageJson("core/package.json").updateDependency(
+          packageName,
+          version
+        );
+        return version;
+      };
       break;
     }
     case "@previewjs/core": {
       tagName = "core";
-      dirPath = "core";
-      version = await updateNodePackage(packageName, dirPath);
-      await packageJson("app/package.json").updateDependency(
-        packageName,
-        version
-      );
+      dirPaths = ["core", "loader"];
+      runUpdate = async () => {
+        const version = await updateNodePackage("core");
+        await packageJson("app/package.json").updateDependency(
+          packageName,
+          version
+        );
+        return version;
+      };
       break;
     }
     case "@previewjs/plugin-react":
@@ -71,32 +80,40 @@ async function main() {
     case "@previewjs/plugin-vue3": {
       const frameworkName = packageName.substring("@previewjs/plugin-".length);
       tagName = `plugins/${frameworkName}`;
-      dirPath = `frameworks/${frameworkName}`;
-      version = await updateNodePackage(packageName, dirPath);
-      await packageJson("app/package.json").updateDependency(
-        packageName,
-        version
-      );
+      dirPaths = [`frameworks/${frameworkName}`];
+      runUpdate = async () => {
+        const version = await updateNodePackage(`frameworks/${frameworkName}`);
+        await packageJson("app/package.json").updateDependency(
+          packageName,
+          version
+        );
+        return version;
+      };
       break;
     }
     case "@previewjs/integration-intellij": {
       tagName = "integrations/intellij";
-      dirPath = "integrations/intellij";
-      version = await updateIntellijVersion(packageName, dirPath);
+      dirPaths = ["integrations/intellij", "loader"];
+      runUpdate = () => updateIntellijVersion();
       break;
     }
     case "@previewjs/integration-vscode": {
       tagName = "integrations/vscode";
-      dirPath = "integrations/vscode";
-      // Note: the VS Code extension has the special package name "previewjs".
-      version = await updateNodePackage("previewjs", "integrations/vscode");
+      dirPaths = ["integrations/vscode", "loader"];
+      runUpdate = () => updateNodePackage("integrations/vscode");
       break;
     }
     default:
       throw new Error(`Unknown package name: ${packageName}`);
   }
+  const changelog = await gitChangelog(packageName, dirPaths);
+  if (!changelog) {
+    console.error(`There is nothing to release.`);
+    return;
+  }
+  console.log(`You are about to release the following:\n${changelog}`);
+  const version = await runUpdate();
   const tag = `${tagName}/v${version}`;
-  const changelog = await gitChangelog(packageName, dirPath);
   await execa("pnpm", ["install"]);
   await execa("git", ["add", "."]);
   await execa("git", ["commit", "-m", `release: ${packageName}@${version}`]);
@@ -106,8 +123,13 @@ async function main() {
   await execa("gh", ["release", "create", tag, "-t", tag, "-n", changelog]);
 }
 
-async function gitChangelog(packageName: string, dirPath: string) {
-  const { stdout } = await execa("git", ["log", "--oneline", "--", dirPath]);
+async function gitChangelog(packageName: string, dirPaths: string[]) {
+  const { stdout } = await execa("git", [
+    "log",
+    "--oneline",
+    "--",
+    ...dirPaths,
+  ]);
   let commitMessages = stdout.split("\n");
   const lastReleaseIndex = commitMessages.findIndex((message) =>
     message.match(
@@ -117,19 +139,10 @@ async function gitChangelog(packageName: string, dirPath: string) {
   if (lastReleaseIndex !== -1) {
     commitMessages = commitMessages.slice(0, lastReleaseIndex);
   }
-  if (commitMessages.length === 0) {
-    throw new Error(`There is nothing to release.`);
-  }
   return `${commitMessages.map((message) => `- ${message}`).join("\n")}`;
 }
 
-async function updateNodePackage(packageName: string, dirPath: string) {
-  console.log(
-    `You are about to release the following:\n${await gitChangelog(
-      packageName,
-      dirPath
-    )}`
-  );
+async function updateNodePackage(dirPath: string) {
   const packageModifier = packageJson(`${dirPath}/package.json`);
   const { version: oldVersion } = await packageModifier.read();
   const version = await incrementVersion(oldVersion);
@@ -137,13 +150,7 @@ async function updateNodePackage(packageName: string, dirPath: string) {
   return version;
 }
 
-async function updateIntellijVersion(packageName: string, dirPath: string) {
-  console.log(
-    `You are about to release the following:\n${await gitChangelog(
-      packageName,
-      dirPath
-    )}`
-  );
+async function updateIntellijVersion() {
   // Note: this isn't actually a Node package.
   const gradlePropertiesPath = "integrations/intellij/gradle.properties";
   const gradlePropertiesContent = await fs.promises.readFile(
