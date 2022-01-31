@@ -335,7 +335,7 @@ importers:
       typescript: 4.5.4
       uuid: 8.3.2
       webpack: 5.66.0
-      webpack-cli: 4.9.1
+      webpack-cli: 4.9.2
     devDependencies:
       '@previewjs/core': link:../../../core
       '@previewjs/loader': link:../../../loader
@@ -349,8 +349,8 @@ importers:
       ts-node-dev: 1.1.8_typescript@4.5.4
       typescript: 4.5.4
       uuid: 8.3.2
-      webpack: 5.66.0_webpack-cli@4.9.1
-      webpack-cli: 4.9.1_webpack@5.66.0
+      webpack: 5.66.0_webpack-cli@4.9.2
+      webpack-cli: 4.9.2_webpack@5.66.0
 
   loader:
     specifiers:
@@ -891,7 +891,7 @@ importers:
     dependencies:
       vue: 3.2.26
     devDependencies:
-      nuxt3: 3.0.0-27388331.8ea6b65
+      nuxt3: 3.0.0-27389502.88da719
 
   smoke-test-apps/storybook-js:
     specifiers:
@@ -5989,11 +5989,11 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/kit-edge/3.0.0-27388331.8ea6b65:
-    resolution: {integrity: sha512-79iUy9uGbp4R9GBfpV4pq20VeLzsBT1f0f0C666NeKyarYe6Oal/twoqSmC3gdPSg1RcaVPGHMmagNdH/xs2Tg==}
+  /@nuxt/kit-edge/3.0.0-27389502.88da719:
+    resolution: {integrity: sha512-hFH02gShVMwhG7I1sD+MXxYg/O3XoXMG+H7iElwt5ZdbeNJws28cr7FImaqqcHHEq0PedjVJ5O5fmyI6GaI2hQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27388331.8ea6b65
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27389502.88da719
       consola: 2.15.3
       defu: 5.0.1
       dotenv: 14.3.2
@@ -6021,15 +6021,15 @@ packages:
       serve-static: 1.14.2
     dev: false
 
-  /@nuxt/nitro-edge/3.0.0-27388331.8ea6b65:
-    resolution: {integrity: sha512-qO96H/x1mfPKuc0P2AfMipttLaXqzwAurkTZ3gE8SPFaf5J8AQ3pAc5qHvmj/RhfdgZswK2t3ai6M1huGyBQ2g==}
+  /@nuxt/nitro-edge/3.0.0-27389502.88da719:
+    resolution: {integrity: sha512-l4m3uIgt2Ev3IH9h4oTT1MFrpTZzKRjAgrIst8NU0fZkqxFO3F92EEaqCw4htD96fIZkK/RfQbP97NGZBJ67Rw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       '@cloudflare/kv-asset-handler': 0.2.0
       '@netlify/functions': 0.11.0
       '@nuxt/design': 0.1.5
       '@nuxt/devalue': 2.0.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27388331.8ea6b65
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27389502.88da719
       '@rollup/plugin-alias': 3.1.9_rollup@2.66.1
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.1
       '@rollup/plugin-inject': 4.0.4_rollup@2.66.1
@@ -6115,8 +6115,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27388331.8ea6b65:
-    resolution: {integrity: sha512-Og84m6vJM0Nos73Xvj4dxZUnTw+a17HI9QDuvwBEg2FwjJ43SXg3CxWwyT589uATrrBwiMVF+jyfxdOnUJAh5g==}
+  /@nuxt/schema-edge/3.0.0-27389502.88da719:
+    resolution: {integrity: sha512-hqxjcmuEuyG5tzNLtXTiP2R2xhENDjOgAmX4RHGeWEzVLVy8XXzQybFmxNzgfpEKkkdNmAtLZZ7Qk6Jd8J+dFQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       create-require: 1.1.1
@@ -6236,13 +6236,13 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/vite-builder-edge/3.0.0-27388331.8ea6b65_vue@3.2.29:
-    resolution: {integrity: sha512-r2gkis8xKUovGGLn4nMCfcgU0wtQnel1ZSPGf2JvDvvMCYwpUYElT3WW0XciPudu9xwGQamXUeqakmi82IHYjQ==}
+  /@nuxt/vite-builder-edge/3.0.0-27389502.88da719_vue@3.2.29:
+    resolution: {integrity: sha512-LIgCyJjYJ3Gt3Ueu3axfWwlxv1cAB1xRqYaLbfA/kgu6tKF6nGA53qcBxASeRdn7/5gjtz8MFjtQllVdmPTDtA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     peerDependencies:
       vue: 3.2.29
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27388331.8ea6b65
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27389502.88da719
       '@vitejs/plugin-vue': 2.1.0_vite@2.7.13+vue@3.2.29
       '@vitejs/plugin-vue-jsx': 1.3.3
       autoprefixer: 10.4.2
@@ -6306,15 +6306,15 @@ packages:
       vue-server-renderer: 2.6.14
     dev: false
 
-  /@nuxt/webpack-builder-edge/3.0.0-27388331.8ea6b65_vue@3.2.29:
-    resolution: {integrity: sha512-+4l1C0H/ookicZiYvEiIJE3p0FfqtFTcLokXOmXKtqMlZqXfAxztXC3vCn65U5qnl9PGy3HXttJjvyvRUd6xuQ==}
+  /@nuxt/webpack-builder-edge/3.0.0-27389502.88da719_vue@3.2.29:
+    resolution: {integrity: sha512-lTHpFmg4S9Ml/J4jq8rFwN6N+HiZjSMaCxv+2pWxhGwVyjo90mHroh80wA0GXp/JpwsO+nfNXYQ8Gx9WlQ42fA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     peerDependencies:
       vue: 3.2.29
     dependencies:
       '@babel/core': 7.16.12
       '@nuxt/friendly-errors-webpack-plugin': 2.5.2_webpack@5.67.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27388331.8ea6b65
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27389502.88da719
       '@vue/babel-preset-jsx': 1.2.4_@babel+core@7.16.12
       autoprefixer: 10.4.2_postcss@8.4.5
       babel-loader: 8.2.3_e748cba1f5e972defd8ae51292b4033f
@@ -10756,27 +10756,27 @@ packages:
       '@webassemblyjs/wast-parser': 1.9.0
       '@xtuc/long': 4.2.2
 
-  /@webpack-cli/configtest/1.1.0_webpack-cli@4.9.1+webpack@5.66.0:
-    resolution: {integrity: sha512-ttOkEkoalEHa7RaFYpM0ErK1xc4twg3Am9hfHhL7MVqlHebnkYd2wuI/ZqTDj0cVzZho6PdinY0phFZV3O0Mzg==}
+  /@webpack-cli/configtest/1.1.1_webpack-cli@4.9.2+webpack@5.66.0:
+    resolution: {integrity: sha512-1FBc1f9G4P/AxMqIgfZgeOTuRnwZMten8E7zap5zgpPInnCrP8D4Q81+4CWIch8i/Nf7nXjP0v6CjjbHOrXhKg==}
     peerDependencies:
       webpack: 4.x.x || 5.x.x
       webpack-cli: 4.x.x
     dependencies:
-      webpack: 5.66.0_webpack-cli@4.9.1
-      webpack-cli: 4.9.1_webpack@5.66.0
+      webpack: 5.66.0_webpack-cli@4.9.2
+      webpack-cli: 4.9.2_webpack@5.66.0
     dev: true
 
-  /@webpack-cli/info/1.4.0_webpack-cli@4.9.1:
-    resolution: {integrity: sha512-F6b+Man0rwE4n0409FyAJHStYA5OIZERxmnUfLVwv0mc0V1wLad3V7jqRlMkgKBeAq07jUvglacNaa6g9lOpuw==}
+  /@webpack-cli/info/1.4.1_webpack-cli@4.9.2:
+    resolution: {integrity: sha512-PKVGmazEq3oAo46Q63tpMr4HipI3OPfP7LiNOEJg963RMgT0rqheag28NCML0o3GIzA3DmxP1ZIAv9oTX1CUIA==}
     peerDependencies:
       webpack-cli: 4.x.x
     dependencies:
       envinfo: 7.8.1
-      webpack-cli: 4.9.1_webpack@5.66.0
+      webpack-cli: 4.9.2_webpack@5.66.0
     dev: true
 
-  /@webpack-cli/serve/1.6.0_webpack-cli@4.9.1:
-    resolution: {integrity: sha512-ZkVeqEmRpBV2GHvjjUZqEai2PpUbuq8Bqd//vEYsp63J8WyexI8ppCqVS3Zs0QADf6aWuPdU+0XsPI647PVlQA==}
+  /@webpack-cli/serve/1.6.1_webpack-cli@4.9.2:
+    resolution: {integrity: sha512-gNGTiTrjEVQ0OcVnzsRSqTxaBSr+dmTfm+qJsCDluky8uhdLWep7Gcr62QsAKHTMxjCS/8nEITsmFAhfIx+QSw==}
     peerDependencies:
       webpack-cli: 4.x.x
       webpack-dev-server: '*'
@@ -10784,7 +10784,7 @@ packages:
       webpack-dev-server:
         optional: true
     dependencies:
-      webpack-cli: 4.9.1_webpack@5.66.0
+      webpack-cli: 4.9.2_webpack@5.66.0
     dev: true
 
   /@xtuc/ieee754/1.2.0:
@@ -21235,8 +21235,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /nuxi-edge/3.0.0-27388331.8ea6b65:
-    resolution: {integrity: sha512-PHS6n6gGkxy+wCFP8jfYk85E1Uz4/ivICu/oUnStWJ94tf2o6vcRWaF5yVSQvcLLTqXxuqkPMIa5otkPF2GH/A==}
+  /nuxi-edge/3.0.0-27389502.88da719:
+    resolution: {integrity: sha512-pbHy96KN8Y2FupU19upnTVIEP3C9b67Ax/rBVVNyO/OktGQshRHA5fRXyU7R7OhbRJx7ITZIEBWmhnrVnuC3kw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     optionalDependencies:
@@ -21274,17 +21274,17 @@ packages:
       - webpack-command
     dev: false
 
-  /nuxt3/3.0.0-27388331.8ea6b65:
-    resolution: {integrity: sha512-f89LLoPG/171T5BqcjKJfNgbv6aouc2LweL1MP9MzGcpkjzo9cL+WFSvvgjZfin/vZiSFIjQOc4jPISJ5AF0RQ==}
+  /nuxt3/3.0.0-27389502.88da719:
+    resolution: {integrity: sha512-3ir1ZCr2YcABfb+9c0y/edxt0HKxmL7YvEuX8lB5qPVizmgIi1RAXWkMHg9/gynyJHZbKaZOtgdaPuE/VWzWFg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     dependencies:
       '@nuxt/design': 0.1.5
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27388331.8ea6b65
-      '@nuxt/nitro': /@nuxt/nitro-edge/3.0.0-27388331.8ea6b65
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27388331.8ea6b65
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27388331.8ea6b65_vue@3.2.29
-      '@nuxt/webpack-builder': /@nuxt/webpack-builder-edge/3.0.0-27388331.8ea6b65_vue@3.2.29
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27389502.88da719
+      '@nuxt/nitro': /@nuxt/nitro-edge/3.0.0-27389502.88da719
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27389502.88da719
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27389502.88da719_vue@3.2.29
+      '@nuxt/webpack-builder': /@nuxt/webpack-builder-edge/3.0.0-27389502.88da719_vue@3.2.29
       '@vue/reactivity': 3.2.29
       '@vue/shared': 3.2.29
       '@vueuse/head': 0.7.5_vue@3.2.29
@@ -21301,7 +21301,7 @@ packages:
       ignore: 5.2.0
       mlly: 0.4.1
       murmurhash-es: 0.1.1
-      nuxi: /nuxi-edge/3.0.0-27388331.8ea6b65
+      nuxi: /nuxi-edge/3.0.0-27389502.88da719
       ohmyfetch: 0.4.15
       pathe: 0.2.0
       scule: 0.2.1
@@ -27289,7 +27289,7 @@ packages:
       serialize-javascript: 6.0.0
       source-map: 0.6.1
       terser: 5.10.0_acorn@8.7.0
-      webpack: 5.66.0_webpack-cli@4.9.1
+      webpack: 5.66.0_webpack-cli@4.9.2
     transitivePeerDependencies:
       - acorn
     dev: true
@@ -27677,7 +27677,7 @@ packages:
       micromatch: 4.0.4
       semver: 7.3.5
       typescript: 4.5.4
-      webpack: 5.66.0_webpack-cli@4.9.1
+      webpack: 5.66.0_webpack-cli@4.9.2
     dev: true
 
   /ts-node-dev/1.1.8_typescript@4.5.4:
@@ -29269,8 +29269,8 @@ packages:
       javascript-stringify: 2.1.0
     dev: true
 
-  /webpack-cli/4.9.1_webpack@5.66.0:
-    resolution: {integrity: sha512-JYRFVuyFpzDxMDB+v/nanUdQYcZtqFPGzmlW4s+UkPMFhSpfRNmf1z4AwYcHJVdvEFAM7FFCQdNTpsBYhDLusQ==}
+  /webpack-cli/4.9.2_webpack@5.66.0:
+    resolution: {integrity: sha512-m3/AACnBBzK/kMTcxWHcZFPrw/eQuY4Df1TxvIWfWM2x7mRqBQCqKEd96oCUa9jkapLBaFfRce33eGDb4Pr7YQ==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -29290,9 +29290,9 @@ packages:
         optional: true
     dependencies:
       '@discoveryjs/json-ext': 0.5.6
-      '@webpack-cli/configtest': 1.1.0_webpack-cli@4.9.1+webpack@5.66.0
-      '@webpack-cli/info': 1.4.0_webpack-cli@4.9.1
-      '@webpack-cli/serve': 1.6.0_webpack-cli@4.9.1
+      '@webpack-cli/configtest': 1.1.1_webpack-cli@4.9.2+webpack@5.66.0
+      '@webpack-cli/info': 1.4.1_webpack-cli@4.9.2
+      '@webpack-cli/serve': 1.6.1_webpack-cli@4.9.2
       colorette: 2.0.16
       commander: 7.2.0
       execa: 5.1.1
@@ -29300,7 +29300,7 @@ packages:
       import-local: 3.1.0
       interpret: 2.2.0
       rechoir: 0.7.1
-      webpack: 5.66.0_webpack-cli@4.9.1
+      webpack: 5.66.0_webpack-cli@4.9.2
       webpack-merge: 5.8.0
     dev: true
 
@@ -29620,7 +29620,7 @@ packages:
       watchpack: 1.7.5
       webpack-sources: 1.4.3
 
-  /webpack/5.66.0_webpack-cli@4.9.1:
+  /webpack/5.66.0_webpack-cli@4.9.2:
     resolution: {integrity: sha512-NJNtGT7IKpGzdW7Iwpn/09OXz9inIkeIQ/ibY6B+MdV1x6+uReqz/5z1L89ezWnpPDWpXF0TY5PCYKQdWVn8Vg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -29653,7 +29653,7 @@ packages:
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.0_acorn@8.7.0+webpack@5.66.0
       watchpack: 2.3.1
-      webpack-cli: 4.9.1_webpack@5.66.0
+      webpack-cli: 4.9.2_webpack@5.66.0
       webpack-sources: 3.2.2
     transitivePeerDependencies:
       - '@swc/core'
