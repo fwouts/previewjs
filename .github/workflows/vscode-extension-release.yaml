@@ -45,7 +45,11 @@ jobs:
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/integrations\/vscode\/v/}" >> $GITHUB_ENV
       - name: Check that versions match
         run: '[[ "${{ steps.version.outputs.value }}" == "$VERSION" ]] && echo "Versions match"'
-      - name: Publish
+      - name: Publish to Visual Studio Code Marketplace
         run: yarn vsce publish
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      - name: Publish to Open VSX Registry
+        run: yarn ovsx publish -p $OVSX_TOKEN
+        env:
+          OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
