@@ -31,12 +31,13 @@ main().catch((e) => {
 });
 
 async function main() {
+  const packageName = process.env["PREVIEWJS_PACKAGE_NAME"];
+  if (!packageName) {
+    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
+  }
   const previewjs = await load({
     installDir: path.join(__dirname, "installed"),
-    status: {
-      info: console.log,
-      error: console.error,
-    },
+    packageName,
   });
 
   const workspaces: Record<string, Workspace> = {};
@@ -163,7 +164,17 @@ async function main() {
     }
   );
 
-  app.listen(port, () => {
-    console.log(`Listening on http://localhost:${port}`);
+  await new Promise<void>((resolve, reject) => {
+    app
+      .listen(port, () => {
+        resolve();
+      })
+      .on("error", (e) => {
+        reject(e);
+      });
   });
+
+  console.log(
+    `Preview.js controller API is running on http://localhost:${port}`
+  );
 }

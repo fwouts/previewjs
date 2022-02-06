@@ -1,7 +1,11 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/main.ts",
+  entry: {
+    "is-installed": "./src/is-installed.ts",
+    install: "./src/install.ts",
+    "run-server": "./src/run-server.ts",
+  },
   mode: process.env["NODE_ENV"] || "production",
   target: "node",
   module: {
@@ -19,11 +23,14 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   output: {
-    filename: "index.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
     libraryTarget: "commonjs2",
   },
   optimization: {
     minimize: false,
+    splitChunks: {
+      chunks: "all",
+    },
   },
 };

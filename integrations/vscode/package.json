@@ -81,8 +81,10 @@
   "scripts": {
     "vscode:prepublish": "yarn build",
     "build": "rimraf dist && webpack",
-    "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install && rimraf previewjs-*.vsix",
-    "dev:install": "code --install-extension previewjs-*.vsix --force"
+    "prod": "cross-env PREVIEWJS_DEV=0 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
+    "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
+    "dev:install": "code --install-extension previewjs-*.vsix --force",
+    "dev:cleanup": "rimraf previewjs-*.vsix"
   },
   "devDependencies": {
     "@types/vscode": "1.43.0",
