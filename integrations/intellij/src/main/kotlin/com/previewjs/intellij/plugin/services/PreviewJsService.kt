@@ -70,7 +70,7 @@ class PreviewJsSharedService : Disposable {
                 NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
                         .createNotification(
                                 "Preview.js crashed",
-                                """Please report this issue at https://github.com/zenclabs/previewjs/issues
+                                """Please report this issue at https://github.com/fwouts/previewjs/issues
 
 See detailed logs in $errorLogFilePath
 

@@ -65,7 +65,7 @@ export const BottomPanel = ({
           />
         </OpenBrowser>
         <OpenBrowser
-          href="https://github.com/zenclabs/previewjs"
+          href="https://github.com/fwouts/previewjs"
           target="_blank"
           title="GitHub"
         >

@@ -8,7 +8,7 @@ const importRegexp =
 /**
  * Allows imports of CSS modules without a .module.css suffix.
  *
- * See https://github.com/zenclabs/previewjs/discussions/39
+ * See https://github.com/fwouts/previewjs/discussions/39
  */
 export function cssModulesWithoutSuffixPlugin(): vite.Plugin {
   return {

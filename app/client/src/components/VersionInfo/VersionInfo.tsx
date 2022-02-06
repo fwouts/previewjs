@@ -10,7 +10,7 @@ export const VersionInfo = observer(({ state }: { state: PreviewState }) => {
   return (
     <VersionInfoLink
       target="_blank"
-      href="https://github.com/zenclabs/previewjs/releases"
+      href="https://github.com/fwouts/previewjs/releases"
     >
       <Logo />
       {state.appInfo ? (

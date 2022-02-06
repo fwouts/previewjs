@@ -10,7 +10,7 @@ Preview.js lets you preview Vue and React components instantly in your IDE.
 
 ## Troubleshooting
 
-If you run into issues, don't hesitate to [file a bug](https://github.com/zenclabs/previewjs/issues) or [ask for help](https://github.com/zenclabs/previewjs/discussions). Preview.js is still young and needs your help to improve.
+If you run into issues, don't hesitate to [file a bug](https://github.com/fwouts/previewjs/issues) or [ask for help](https://github.com/fwouts/previewjs/discussions). Preview.js is still young and needs your help to improve.
 
 ## Feedback
 
