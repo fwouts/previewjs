@@ -126,9 +126,15 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "previewjs.open",
       async (document?: vscode.TextDocument, componentId?: string) => {
+        if (typeof componentId !== "string") {
+          // If invoked from clicking the button, the value may be { groupId: 0 }.
+          componentId = undefined;
+        }
         const editor = vscode.window.activeTextEditor;
-        document ||= vscode.window.activeTextEditor?.document;
-        if (!document || !document.fileName) {
+        if (!document?.fileName) {
+          document = editor?.document;
+        }
+        if (!document?.fileName) {
           return;
         }
         const workspace = await getWorkspace(document.fileName);
