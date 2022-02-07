@@ -37,16 +37,16 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env": JSON.stringify({
-        PREVIEWJS_PACKAGE_NAME: "@previewjs/app",
-        ...(process.env["PREVIEWJS_DEV"] === "1"
-          ? {
-              PREVIEWJS_MODULES_DIR: path.join(__dirname, "../.."),
-            }
-          : {
-              PREVIEWJS_PACKAGE_VERSION: "1.0.3",
-            }),
-      }),
+      "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify("@previewjs/app"),
+      ...(process.env["PREVIEWJS_DEV"] === "1"
+        ? {
+            "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
+              path.join(__dirname, "../..")
+            ),
+          }
+        : {
+            "process.env.PREVIEWJS_PACKAGE_VERSION": JSON.stringify("1.0.3"),
+          }),
     }),
   ],
   output: {
