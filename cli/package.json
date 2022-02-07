@@ -7,8 +7,6 @@
   },
   "license": "AGPL-3.0",
   "scripts": {
-    "dev:community": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app PREVIEWJS_MODULES_DIR=.. pnpm dev",
-    "dev:pro": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app-pro PREVIEWJS_MODULES_DIR=../../previewjs-pro/core/dist pnpm dev",
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "dependencies": {

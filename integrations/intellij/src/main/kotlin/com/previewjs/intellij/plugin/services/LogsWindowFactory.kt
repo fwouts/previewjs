@@ -7,10 +7,10 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
 
 
-class WindowFactory : ToolWindowFactory {
+class LogsWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val contentFactory = ContentFactory.SERVICE.getInstance()
-        val content = contentFactory.createContent(project.service<ProjectService>().browserComponent, "", false)
+        val content = contentFactory.createContent(project.service<ProjectService>().consoleView.component, "", false)
         toolWindow.contentManager.addContent(content)
     }
 }

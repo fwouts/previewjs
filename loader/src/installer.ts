@@ -1,67 +1,30 @@
 import execa from "execa";
-import { unlinkSync } from "fs";
-import { mkdir, pathExists, readFile, rm, writeFile } from "fs-extra";
+import { mkdir, pathExists, readFile, writeFile } from "fs-extra";
 import path from "path";
 
-export interface InstallOptions {
+export async function isInstalled(options: {
   packageName: string;
   packageVersion: string;
   installDir: string;
-  status: {
-    info(message: string): void;
-    error(message: string): void;
-  };
-}
-
-export async function ensureInstalled(options: InstallOptions) {
-  if (!(await isInstallRequired(options))) {
-    return;
-  }
-  await installRequiredPackages(options);
-}
-
-async function isInstallRequired(options: InstallOptions) {
+}) {
   const versionCachePath = installedVersionInfoPath(options);
   return (
-    !(await pathExists(versionCachePath)) ||
-    (await readFile(versionCachePath, "utf8")) !== versionId(options)
+    (await pathExists(versionCachePath)) &&
+    (await readFile(versionCachePath, "utf8")) === versionId(options)
   );
 }
 
-const MAX_WAIT_SECONDS = 60;
-
-async function installRequiredPackages(options: InstallOptions) {
-  options.status.info("Please wait while Preview.js installs dependencies…");
-  const singleInstallLockPack = path.join(
-    options.installDir,
-    "__install_lock__"
+export async function install(options: {
+  packageName: string;
+  packageVersion: string;
+  installDir: string;
+  onOutput: (chunk: string) => void;
+}) {
+  options.onOutput(
+    "Please wait while Preview.js installs dependencies. This could take a minute.\n\n"
   );
   const packageJsonPath = path.join(options.installDir, "package.json");
-  const expectedPackageLockPath = path.join(
-    options.installDir,
-    "package-lock.json"
-  );
-  if (await pathExists(singleInstallLockPack)) {
-    // Wait until installation is successful in another process.
-    const waitingSince = Date.now();
-    while (!(await pathExists(expectedPackageLockPath))) {
-      if (Date.now() - waitingSince > MAX_WAIT_SECONDS * 1000) {
-        await rm(singleInstallLockPack);
-        options.status.error(
-          `Uh-oh. Unable to install Preview.js dependencies.`
-        );
-        throw new Error("Waiting too long for packages to be installed.");
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-    options.status.info("Preview.js is ready.");
-    return;
-  }
   await mkdir(options.installDir, { recursive: true });
-  await writeFile(singleInstallLockPack, Date.now().toString(), "utf8");
-  process.on("exit", () => {
-    unlinkSync(singleInstallLockPack);
-  });
   await writeFile(
     packageJsonPath,
     JSON.stringify({
@@ -70,29 +33,48 @@ async function installRequiredPackages(options: InstallOptions) {
       },
     })
   );
-  const { stdout, stderr, failed } = await execa("npm", ["install"], {
-    cwd: options.installDir,
-  });
-  console.log(stdout);
-  console.error(stderr);
-  if (failed) {
-    options.status.error(
-      `Preview.js could not install dependencies:\n${stderr}`
-    );
-    throw new Error(stderr);
-  }
-  await writeFile(
-    installedVersionInfoPath(options),
-    versionId(options),
-    "utf8"
+  options.onOutput(
+    `Dependencies will be installed in: ${options.installDir}\n\n`
   );
-  options.status.info("Preview.js is ready!");
+  options.onOutput(`$ npm install\n\n`);
+  try {
+    const installProcess = execa("npm", ["install"], {
+      cwd: options.installDir,
+      all: true,
+    });
+    installProcess.all?.on("data", (chunk) => {
+      options.onOutput(
+        typeof chunk === "string" ? chunk : chunk.toString("utf8")
+      );
+    });
+    const { failed } = await installProcess;
+    if (failed) {
+      throw new Error(`Preview.js could not install dependencies`);
+    }
+    options.onOutput(
+      "\nPreview.js dependencies were installed successfully.\n\n"
+    );
+    await writeFile(
+      installedVersionInfoPath(options),
+      versionId(options),
+      "utf8"
+    );
+  } catch (e) {
+    options.onOutput(`\nOh no, it looks like installation failed!\n\n${e}`);
+    throw e;
+  }
 }
 
-function installedVersionInfoPath(options: InstallOptions) {
-  return path.join(options.installDir, ".install.info");
+function installedVersionInfoPath({ installDir }: { installDir: string }) {
+  return path.join(installDir, ".install.info");
 }
 
-function versionId(options: InstallOptions) {
-  return `${options.packageName}-${options.packageVersion}`;
+function versionId({
+  packageName,
+  packageVersion,
+}: {
+  packageName: string;
+  packageVersion: string;
+}) {
+  return `${packageName}-${packageVersion}`;
 }

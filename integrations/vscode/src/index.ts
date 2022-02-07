@@ -1,4 +1,4 @@
-import { load } from "@previewjs/loader";
+import { install, isInstalled, load } from "@previewjs/loader";
 import { readFileSync } from "fs";
 import path from "path";
 import vscode from "vscode";
@@ -28,12 +28,40 @@ let dispose = async () => {
 export async function activate(context: vscode.ExtensionContext) {
   const config = vscode.workspace.getConfiguration();
 
+  const packageName = process.env["PREVIEWJS_PACKAGE_NAME"];
+  if (!packageName) {
+    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
+  }
+
+  let requirePath = process.env["PREVIEWJS_MODULES_DIR"];
+  if (!requirePath) {
+    requirePath = path.join(__dirname, "installed");
+    const packageVersion = process.env["PREVIEWJS_PACKAGE_VERSION"];
+    if (!packageVersion) {
+      throw new Error(
+        `Missing environment variable: PREVIEWJS_PACKAGE_VERSION`
+      );
+    }
+    const installOptions = {
+      installDir: requirePath,
+      packageName,
+      packageVersion,
+    };
+    if (!(await isInstalled(installOptions))) {
+      const outputChannel = vscode.window.createOutputChannel("Preview.js");
+      outputChannel.show();
+      await install({
+        ...installOptions,
+        onOutput: (chunk) => {
+          outputChannel.append(chunk);
+        },
+      });
+    }
+  }
+
   const previewjs = await load({
-    installDir: path.join(__dirname, "installed"),
-    status: {
-      info: (message) => vscode.window.showInformationMessage(message),
-      error: (message) => vscode.window.showErrorMessage(message),
-    },
+    installDir: requirePath,
+    packageName,
   });
 
   function getWorkspace(filePath: string) {

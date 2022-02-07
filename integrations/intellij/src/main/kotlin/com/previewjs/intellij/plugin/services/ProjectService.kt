@@ -3,6 +3,7 @@ package com.previewjs.intellij.plugin.services
 import com.intellij.codeInsight.hints.*
 import com.intellij.codeInsight.hints.presentation.PresentationFactory
 import com.intellij.codeInsight.hints.presentation.RecursivelyUpdatingRootPresentation
+import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
@@ -43,6 +44,7 @@ class ProjectService(private val project: Project) : Disposable {
     private val browser = JBCefBrowser()
     val browserComponent: JComponent
         get() = browser.component
+    val consoleView = TextConsoleBuilderFactory.getInstance().createBuilder(project).console
 
     init {
         Disposer.register(this, browser)
@@ -72,7 +74,7 @@ class ProjectService(private val project: Project) : Disposable {
             override fun documentChanged(event: DocumentEvent) {
                 val file = FileDocumentManager.getInstance().getFile(event.document)
                 if (file != null && file.isInLocalFileSystem && file.isWritable) {
-                    service.launch(project) { workspace ->
+                    service.enqueueAction(project) { workspace ->
                         workspace.update(file.path, event.document.text)
                     }
                     refreshTimerTask?.cancel()
@@ -100,7 +102,7 @@ class ProjectService(private val project: Project) : Disposable {
 
     private fun updateComponents(file: VirtualFile, content: String? = null) {
         val fileEditors = editorManager.getEditors(file)
-        service.launch(project) { workspace ->
+        service.enqueueAction(project) { workspace ->
             content?.let { content ->
                 workspace.update(file.path, content)
             }
@@ -147,7 +149,7 @@ class ProjectService(private val project: Project) : Disposable {
                                             RecursivelyUpdatingRootPresentation(
                                                 presentationFactory.referenceOnHover(
                                                     presentationFactory.text("Open ${component.componentName} in Preview.js")
-                                                ) { _, _ -> openPreview(file, component.componentId) }
+                                                ) { _, _ -> openPreview(component.componentId) }
                                             ),
                                             HorizontalConstraints(INLAY_PRIORITY, false)
                                         )
@@ -161,9 +163,9 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    private fun openPreview(file: VirtualFile, componentId: String) {
+    private fun openPreview(componentId: String) {
         val app = ApplicationManager.getApplication()
-        service.launch(project) { workspace ->
+        service.enqueueAction(project) { workspace ->
             val previewBaseUrl = workspace.startPreviewServer().url
             val previewUrl = "$previewBaseUrl?p=$componentId"
             app.invokeLater(Runnable {
@@ -180,7 +182,7 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     override fun dispose() {
-        service.launch(project) { workspace ->
+        service.enqueueAction(project) { workspace ->
             Disposer.dispose(workspace)
         }
     }

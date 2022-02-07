@@ -1,5 +1,6 @@
 package com.previewjs.intellij.plugin.services
 
+import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.ide.util.PropertiesComponent
@@ -7,17 +8,23 @@ import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
+import com.intellij.openapi.wm.ToolWindowManager
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
 import com.previewjs.intellij.plugin.api.api
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.util.*
+
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
 
@@ -34,11 +41,10 @@ class PreviewJsSharedService : Disposable {
 
     private val plugin = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))!!
     private val nodeDirPath = plugin.pluginPath.resolve("controller")
-    private val infoLogFilePath = nodeDirPath.resolve("controller-info.log")
-    private val errorLogFilePath = nodeDirPath.resolve("controller-error.log")
     private val properties = PropertiesComponent.getInstance()
-    private var npmInstallProcess: Process? = null
-    private var controlPlaneProcess: Process? = null
+    private var serverProcess: Process? = null
+    private var serverOutputReader: BufferedReader? = null
+    private var projects = Collections.synchronizedMap(WeakHashMap<Project, Boolean>())
     private var workspaces = WeakHashMap<Project, PreviewJsWorkspace>()
     private lateinit var api: PreviewJsApi
 
@@ -49,19 +55,23 @@ class PreviewJsSharedService : Disposable {
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
+        var installChecked = false
         for (msg in channel) {
             val projectDirPath = msg.project.basePath ?: continue
             try {
-                if (controlPlaneProcess == null) {
-                    api = start()
-                } else if (controlPlaneProcess?.isAlive == false) {
-                    // It crashed, restart it.
-                    for (workspace in workspaces.values) {
-                        Disposer.dispose(workspace)
+                if (!installChecked) {
+                    val toolWindowManager = ToolWindowManager.getInstance(msg.project)
+                    if (!isInstalled()) {
+                        toolWindowManager.invokeLater {
+                            toolWindowManager.getToolWindow("Preview.js logs")!!.show()
+                        }
+                        install(msg.project)
                     }
-                    workspaces.clear()
-                    controlPlaneProcess = null
-                    api = start()
+                    installChecked = true
+                }
+                projects[msg.project] = true
+                if (serverProcess == null) {
+                    api = runServer()
                 }
                 val workspace = ensureWorkspaceReady(msg.project, projectDirPath) ?: continue
                 openDocsForFirstUsage()
@@ -72,18 +82,26 @@ class PreviewJsSharedService : Disposable {
                                 "Preview.js crashed",
                                 """Please report this issue at https://github.com/fwouts/previewjs/issues
 
-See detailed logs in $errorLogFilePath
-
 ${e.stackTraceToString()}""",
                                 NotificationType.ERROR
                         )
                         .notify(msg.project)
                 return@actor
+            } finally {
+                serverOutputReader?.let {
+                    while (it.ready()) {
+                        val line = it.readLine()
+                        for (project in projects.keys) {
+                            val consoleView = project.service<ProjectService>().consoleView
+                            consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
+                        }
+                    }
+                }
             }
         }
     }
 
-    fun launch(project: Project, fn: suspend CoroutineScope.(workspace: PreviewJsWorkspace) -> Unit) {
+    fun enqueueAction(project: Project, fn: suspend CoroutineScope.(workspace: PreviewJsWorkspace) -> Unit) {
         coroutineScope.launch {
             actor.send(Message(project, fn))
         }
@@ -96,18 +114,70 @@ ${e.stackTraceToString()}""",
         }
     }
 
-    private suspend fun start(): PreviewJsApi {
-        val builder = processBuilder("node dist/index.js")
-                .redirectOutput(infoLogFilePath.toFile())
-                .redirectError(errorLogFilePath.toFile())
+    private fun isInstalled(): Boolean {
+        val builder = processBuilder("node dist/is-installed.js")
+            .directory(nodeDirPath.toFile())
+        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = "@previewjs/app"
+        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = "1.0.3"
+        val process = builder.start()
+        if (process.waitFor() != 0) {
+            throw Error(readInputStream(process.errorStream))
+        }
+        val output = readInputStream(process.inputStream)
+        return when (val result = output.split("\n").last { x -> x.isNotEmpty() }.split(" ").last()) {
+            "installed" -> true
+            "missing" -> false
+            else -> throw Error("Unexpected output: $result")
+        }
+    }
+
+    private fun readInputStream(inputStream: InputStream): String {
+        val reader = BufferedReader(InputStreamReader(inputStream))
+        val builder = StringBuilder()
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            builder.append(line + "\n")
+        }
+        val output = builder.toString()
+        return ignoreBellPrefix(output)
+    }
+
+    private fun ignoreBellPrefix(str: String): String {
+        // Important: because we use an interactive login shell, the stream may contain some other logging caused by
+        // sourcing scripts. For example:
+        // ]697;DoneSourcing]697;DoneSourcingmissing
+        // We ignore anything before the last BEL character (07).
+        return str.split("\u0007").last()
+    }
+
+    private fun install(project: Project) {
+        val builder = processBuilder("node dist/install.js")
+            .directory(nodeDirPath.toFile())
+        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = "@previewjs/app"
+        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = "1.0.3"
+        val process = builder.start()
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        val consoleView = project.service<ProjectService>().consoleView
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
+        }
+        if (process.waitFor() != 0) {
+            throw Error(readInputStream(process.errorStream))
+        }
+    }
+
+    private suspend fun runServer(): PreviewJsApi {
+        val builder = processBuilder( "node dist/run-server.js")
+                .redirectErrorStream(true)
                 .directory(nodeDirPath.toFile())
         builder.environment()["PORT"] = "$PORT"
         builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.getVersion()
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = "@previewjs/app"
         builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = "1.0.3"
-        println("Preview.js control plane errors will be logged to $errorLogFilePath")
         val process = builder.start()
-        controlPlaneProcess = process
+        serverProcess = process
+        serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
         val api = api("http://localhost:$PORT")
         var attempts = 0
         while (true) {
@@ -121,10 +191,10 @@ ${e.stackTraceToString()}""",
                 // Wait.
             }
             attempts += 1
-            // 60 seconds wait in total (600 * 100).
+            // 10 seconds wait in total (100 * 100ms).
             delay(100)
-            if (attempts > 600) {
-                throw Error("Preview.js control plane failed to start.")
+            if (attempts > 100) {
+                throw Error("Preview.js controller failed to start.")
             }
         }
         return api
@@ -161,7 +231,6 @@ ${e.stackTraceToString()}""",
     }
 
     override fun dispose() {
-        npmInstallProcess?.destroy()
-        controlPlaneProcess?.destroy()
+        serverProcess?.destroy()
     }
 }

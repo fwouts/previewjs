@@ -3,7 +3,6 @@
 import { load } from "@previewjs/loader";
 import { program } from "commander";
 import { readFileSync } from "fs";
-import path from "path";
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -32,11 +31,8 @@ program
   .option(...VERBOSE_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
     const previewjs = await load({
-      installDir: path.join(__dirname, "installed"),
-      status: {
-        info: console.log,
-        error: console.error,
-      },
+      installDir: process.env["PREVIEWJS_MODULES_DIR"] || "..",
+      packageName: process.env["PREVIEWJS_PACKAGE_NAME"] || "@previewjs/app",
     });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
@@ -48,7 +44,6 @@ program
     }
     const port = parseInt(options.port);
     await workspace.preview.start(async () => port);
-    console.log(`Ready at http://localhost:${port}`);
   });
 
 program.parseAsync(process.argv).catch((e) => {
