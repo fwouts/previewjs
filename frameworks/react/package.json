@@ -9,6 +9,7 @@
   "sideEffects": false,
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
+    "prepare": "rimraf preview/types && shx mkdir -p preview/types/react && shx cp -r preview/node_modules/@types/react/* preview/types/react/",
     "build": "rimraf dist && tsc",
     "test": "jest"
   },
@@ -27,6 +28,7 @@
     "jest": "27.4.7",
     "next": "12.0.8",
     "rimraf": "3.0.2",
+    "shx": "0.3.4",
     "ts-jest": "27.1.2",
     "typescript": "4.5.4"
   },

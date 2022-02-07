@@ -35,7 +35,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       tsCompilerOptions: {
-        typeRoots: [path.join(previewDirPath, "node_modules", "@types")],
+        typeRoots: [path.join(previewDirPath, "types")],
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
       },
