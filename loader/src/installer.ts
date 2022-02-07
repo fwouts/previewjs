@@ -37,27 +37,32 @@ export async function install(options: {
     `Dependencies will be installed in: ${options.installDir}\n\n`
   );
   options.onOutput(`$ npm install\n\n`);
-  const installProcess = execa("npm", ["install"], {
-    cwd: options.installDir,
-    all: true,
-  });
-  installProcess.all?.on("data", (chunk) => {
+  try {
+    const installProcess = execa("npm", ["install"], {
+      cwd: options.installDir,
+      all: true,
+    });
+    installProcess.all?.on("data", (chunk) => {
+      options.onOutput(
+        typeof chunk === "string" ? chunk : chunk.toString("utf8")
+      );
+    });
+    const { failed } = await installProcess;
+    if (failed) {
+      throw new Error(`Preview.js could not install dependencies`);
+    }
     options.onOutput(
-      typeof chunk === "string" ? chunk : chunk.toString("utf8")
+      "\nPreview.js dependencies were installed successfully.\n\n"
     );
-  });
-  const { failed } = await installProcess;
-  if (failed) {
-    throw new Error(`Preview.js could not install dependencies`);
+    await writeFile(
+      installedVersionInfoPath(options),
+      versionId(options),
+      "utf8"
+    );
+  } catch (e) {
+    options.onOutput(`\nOh no, it looks like installation failed!\n\n${e}`);
+    throw e;
   }
-  options.onOutput(
-    "\nPreview.js dependencies were installed successfully.\n\n"
-  );
-  await writeFile(
-    installedVersionInfoPath(options),
-    versionId(options),
-    "utf8"
-  );
 }
 
 function installedVersionInfoPath({ installDir }: { installDir: string }) {
