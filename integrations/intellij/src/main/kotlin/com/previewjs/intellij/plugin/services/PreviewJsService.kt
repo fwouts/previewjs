@@ -118,7 +118,7 @@ ${e.stackTraceToString()}""",
         val builder = processBuilder("node dist/is-installed.js")
             .directory(nodeDirPath.toFile())
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = "@previewjs/app"
-        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = "1.0.3"
+        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = "1.0.4"
         val process = builder.start()
         if (process.waitFor() != 0) {
             throw Error(readInputStream(process.errorStream))
