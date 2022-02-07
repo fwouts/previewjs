@@ -1,4 +1,4 @@
-import { install } from "@previewjs/loader";
+import { install, requireEnvVar } from "@previewjs/loader";
 import path from "path";
 
 main().catch((e) => {
@@ -7,19 +7,10 @@ main().catch((e) => {
 });
 
 async function main() {
-  const packageName = process.env["PREVIEWJS_PACKAGE_NAME"];
-  if (!packageName) {
-    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
-  }
-  const packageVersion = process.env["PREVIEWJS_PACKAGE_VERSION"];
-  if (!packageVersion) {
-    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_VERSION`);
-  }
-
   await install({
     installDir: path.join(__dirname, "installed"),
-    packageName,
-    packageVersion,
+    packageName: requireEnvVar("PREVIEWJS_PACKAGE_NAME"),
+    packageVersion: requireEnvVar("PREVIEWJS_PACKAGE_VERSION"),
     onOutput: (chunk) => process.stdout.write(chunk),
   });
 }
