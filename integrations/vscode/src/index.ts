@@ -56,14 +56,6 @@ export async function activate(context: vscode.ExtensionContext) {
           outputChannel.append(chunk);
         },
       });
-      const autocloseDelaySeconds = 10;
-      outputChannel.appendLine(
-        `Ready to roll!\n\nThis panel will close automatically in ${autocloseDelaySeconds} seconds.`
-      );
-      setTimeout(() => {
-        outputChannel.hide();
-        outputChannel.dispose();
-      }, autocloseDelaySeconds * 1000);
     }
   }
 
