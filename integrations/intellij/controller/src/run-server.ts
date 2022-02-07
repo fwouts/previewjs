@@ -1,5 +1,5 @@
 import type { Preview, Workspace } from "@previewjs/core";
-import { load, requireEnvVar } from "@previewjs/loader";
+import { load } from "@previewjs/loader";
 import express from "express";
 import path from "path";
 import * as uuid from "uuid";
@@ -19,7 +19,11 @@ import {
 } from "./api";
 
 const port = parseInt(process.env["PORT"] || "9100");
-const version = requireEnvVar("PREVIEWJS_INTELLIJ_VERSION");
+const version = process.env["PREVIEWJS_INTELLIJ_VERSION"];
+
+if (!version) {
+  throw new Error(`IntelliJ version was not set`);
+}
 
 main().catch((e) => {
   console.error(e);
@@ -27,9 +31,13 @@ main().catch((e) => {
 });
 
 async function main() {
+  const packageName = process.env["PREVIEWJS_PACKAGE_NAME"];
+  if (!packageName) {
+    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
+  }
   const previewjs = await load({
     installDir: path.join(__dirname, "installed"),
-    packageName: requireEnvVar("PREVIEWJS_PACKAGE_NAME"),
+    packageName,
   });
 
   const workspaces: Record<string, Workspace> = {};
