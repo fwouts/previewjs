@@ -63,7 +63,7 @@ importers:
       framer-motion: 5.6.0
       fs-extra: 10.0.0
       lodash: 4.17.21
-      mobx: 6.3.12
+      mobx: 6.3.13
       mobx-react-lite: 3.2.3
       monaco-editor: 0.31.1
       playwright: 1.17.2
@@ -93,8 +93,8 @@ importers:
       axios: 0.25.0
       express: 4.17.2
       framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
-      mobx: 6.3.12
-      mobx-react-lite: 3.2.3_669b1e42b258bd2cd4755e495b844de0
+      mobx: 6.3.13
+      mobx-react-lite: 3.2.3_96b0034b8b6bfac1b4cc60715db17f02
       monaco-editor: 0.31.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -169,7 +169,7 @@ importers:
       get-port: '5'
       http-terminator: 3.0.4
       jest: 27.4.7
-      mobx: 6.3.12
+      mobx: 6.3.13
       monaco-editor: 0.31.1
       recrawl: 2.2.1
       rimraf: 3.0.2
@@ -193,7 +193,7 @@ importers:
       fs-extra: 10.0.0
       get-port: 5.1.1
       http-terminator: 3.0.4
-      mobx: 6.3.12
+      mobx: 6.3.13
       monaco-editor: 0.31.1
       recrawl: 2.2.1
       rollup-plugin-friendly-type-imports: 1.0.1
@@ -20922,7 +20922,7 @@ packages:
     resolution: {integrity: sha512-MMJfTYwiasPah+Tx1s948OWd/+dnSxMpwPDgIt4uhnsGRuKgWG6RxUA1SzQI7Tvv0WCcpdast7htAuLU6J7YcA==}
     dev: true
 
-  /mobx-react-lite/3.2.3_669b1e42b258bd2cd4755e495b844de0:
+  /mobx-react-lite/3.2.3_96b0034b8b6bfac1b4cc60715db17f02:
     resolution: {integrity: sha512-7exWp1FV0M9dP08H9PIeHlJqDw4IdkQVRMfLYaZFMmlbzSS6ZU6p/kx392KN+rVf81hH3IQYewvRGQ70oiwmbw==}
     peerDependencies:
       mobx: ^6.1.0
@@ -20935,13 +20935,13 @@ packages:
       react-native:
         optional: true
     dependencies:
-      mobx: 6.3.12
+      mobx: 6.3.13
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /mobx/6.3.12:
-    resolution: {integrity: sha512-5Hx2IjhBtySVQlSFe+sHczKgOQ+cCyi8hN2wEvWzpJEEMRflQoDzDwJJ+m7SBWBQhfrWMWb1RGZNk4X1XtxJkQ==}
+  /mobx/6.3.13:
+    resolution: {integrity: sha512-zDDKDhYUk9QCHQUdLG+wb4Jv/nXutSLt/P8kkwHyjdbrJO4OZS6QTEsrOnrKM39puqXSrJZHdB6+yRys2NBFFA==}
     dev: false
 
   /modern-normalize/1.1.0:
