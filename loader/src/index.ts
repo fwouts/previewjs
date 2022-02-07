@@ -29,6 +29,5 @@ export type PreviewEnvironment = {
   onFileChanged?(filePath: string): Promise<void>;
 };
 
-export { requireEnvVar } from "./env";
 export { install, isInstalled } from "./installer";
 export { init, load } from "./runner";
