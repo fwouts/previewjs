@@ -60,9 +60,11 @@ async function main() {
         res.json(await f(req.body));
       } catch (e: any) {
         if (e instanceof NotFoundError) {
-          res.status(404).end();
+          console.error(`404 in endpoint ${path}:`);
+          console.error(e);
+          res.status(404).end(e.message || "Not Found");
         } else {
-          console.error(`Error in endpoint ${path}:`);
+          console.error(`500 in endpoint ${path}:`);
           console.error(e);
           res.status(500).end(e.message || "Internal Error");
           throw e;
