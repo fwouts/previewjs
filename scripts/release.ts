@@ -100,7 +100,21 @@ async function main() {
     case "@previewjs/integration-vscode": {
       tagName = "integrations/vscode";
       dirPaths = ["integrations/vscode", "loader"];
-      runUpdate = () => updateNodePackage("integrations/vscode");
+      runUpdate = async () => {
+        const version = await updateNodePackage("integrations/vscode");
+        const packageJsonPath = "integrations/vscode/package.json";
+        await fs.promises.writeFile(
+          packageJsonPath,
+          (
+            await fs.promises.readFile(packageJsonPath, "utf8")
+          ).replace(
+            /previewjs-\d+\.\d+\.\d+\.vsix/g,
+            `previewjs-${version}.vsix`
+          ),
+          "utf8"
+        );
+        return version;
+      };
       break;
     }
     default:
