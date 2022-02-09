@@ -186,7 +186,7 @@ export class PreviewState {
     this.pingInterval = setInterval(() => {
       this.ping().catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
-    document.addEventListener("namedown", this.namedownListener);
+    document.addEventListener("keydown", this.keydownListener);
     const { appInfo } = await this.localApi.request(GetInfoEndpoint, void 0);
     runInAction(() => {
       this.appInfo = appInfo;
@@ -219,7 +219,7 @@ export class PreviewState {
     this.controller.stop();
     window.removeEventListener("message", this.messageListener);
     window.removeEventListener("popstate", this.popStateListener);
-    document.removeEventListener("namedown", this.namedownListener);
+    document.removeEventListener("keydown", this.keydownListener);
   }
 
   private messageListener = (event: MessageEvent) => {
@@ -233,7 +233,7 @@ export class PreviewState {
     this.onUrlChanged();
   };
 
-  private namedownListener = (e: KeyboardEvent) => {
+  private keydownListener = (e: KeyboardEvent) => {
     if (!navigator.userAgent.includes(" Code/")) {
       // This is only needed to fix copy-paste in VS Code.
       return;
@@ -242,7 +242,7 @@ export class PreviewState {
     if (!hasMeta) {
       return;
     }
-    switch (e.name.toLowerCase()) {
+    switch (e.key.toLowerCase()) {
       case "c":
         document.execCommand("copy");
         e.preventDefault();
