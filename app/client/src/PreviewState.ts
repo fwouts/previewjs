@@ -17,6 +17,10 @@ import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
+import {
+  componentNameFromComponentId,
+  filePathFromComponentId,
+} from "./component-id";
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsoleLogsState } from "./components/ConsoleLogs";
 import { ErrorState } from "./components/Error";
@@ -315,16 +319,8 @@ export class PreviewState {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
-    const colonPosition = componentId.lastIndexOf(":");
-    let relativeFilePath: string | null;
-    let nameFromPath: string | null;
-    if (colonPosition === -1) {
-      relativeFilePath = componentId || null;
-      nameFromPath = null;
-    } else {
-      relativeFilePath = componentId.slice(0, colonPosition);
-      nameFromPath = componentId.slice(colonPosition + 1);
-    }
+    const relativeFilePath = filePathFromComponentId(componentId);
+    const nameFromPath = componentNameFromComponentId(componentId);
     if (this.options.onFileChanged) {
       await this.options.onFileChanged(relativeFilePath);
     }

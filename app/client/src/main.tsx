@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import ReactDOM from "react-dom";
+import { filePathFromComponentId } from "./component-id";
 import {
   Preview,
   PreviewState,
@@ -21,7 +22,11 @@ const App = observer(() => (
       <>
         <SelectedFile
           key="file"
-          filePath={state.component?.details?.relativeFilePath || ""}
+          filePath={
+            state.component?.componentId
+              ? filePathFromComponentId(state.component.componentId)
+              : ""
+          }
         />
         <VersionInfo key="info" state={state} />
       </>,
