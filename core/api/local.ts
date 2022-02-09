@@ -19,3 +19,17 @@ export const UpdateStateEndpoint = declareEndpoint<
   Partial<PersistedState>,
   PersistedState
 >("update-state");
+
+export const ComputePropsEndpoint = declareEndpoint<
+  {
+    relativeFilePath: string;
+    componentName: string;
+  },
+  PreviewSources | null
+>("compute-props");
+
+export interface PreviewSources {
+  typeDeclarationsSource: string;
+  defaultPropsSource: string;
+  defaultInvocationSource: string;
+}

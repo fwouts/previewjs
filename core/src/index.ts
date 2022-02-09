@@ -1,13 +1,16 @@
+import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import * as vite from "vite";
 import {
+  ComputePropsEndpoint,
   GetInfoEndpoint,
   GetStateEndpoint,
   UpdateStateEndpoint,
 } from "../api/local";
+import { computeProps } from "./compute-props";
 import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
@@ -18,6 +21,7 @@ export { PersistedStateManager } from "./persisted-state";
 export { extractPackageDependencies } from "./plugins/dependencies";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
+  AnalyzedComponent,
   ComponentDetector,
   DetectedComponent,
   FrameworkPlugin,
@@ -34,7 +38,6 @@ export async function createWorkspace({
   logLevel,
   middlewares,
   onReady,
-  onFileChanged,
   persistedStateManager = new PersistedStateManager(),
 }: {
   versionCode: string;
@@ -48,7 +51,6 @@ export async function createWorkspace({
     router: ApiRouter;
     typescriptAnalyzer: TypescriptAnalyzer;
   }): Promise<void>;
-  onFileChanged?(filePath: string): void;
 }): Promise<Workspace | null> {
   let cacheDirPath: string;
   try {
@@ -67,11 +69,22 @@ export async function createWorkspace({
   } catch (e) {
     throw new Error(`Unable to detect @previewjs/core version.`);
   }
+  if (frameworkPlugin.transformReader) {
+    reader = frameworkPlugin.transformReader(reader);
+  }
   const typescriptAnalyzer = createTypescriptAnalyzer({
     reader,
     rootDirPath,
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
+  const collected: CollectedTypes = {};
+  const componentAnalyzer = frameworkPlugin.componentAnalyzer
+    ? frameworkPlugin.componentAnalyzer({
+        typescriptAnalyzer,
+        getTypeAnalyzer: (program, specialTypes) =>
+          createTypeAnalyzer(rootDirPath, program, collected, specialTypes),
+      })
+    : null;
   const router = new ApiRouter();
   router.onRequest(GetInfoEndpoint, async () => {
     const separatorPosition = versionCode.indexOf("-");
@@ -90,6 +103,20 @@ export async function createWorkspace({
   router.onRequest(GetStateEndpoint, () => persistedStateManager.get());
   router.onRequest(UpdateStateEndpoint, (stateUpdate) =>
     persistedStateManager.update(stateUpdate)
+  );
+  router.onRequest(
+    ComputePropsEndpoint,
+    async ({ relativeFilePath, componentName }) => {
+      if (!componentAnalyzer) {
+        return null;
+      }
+      return computeProps({
+        componentAnalyzer,
+        rootDirPath,
+        relativeFilePath,
+        componentName,
+      });
+    }
   );
   const previewer = new Previewer({
     reader,
@@ -115,7 +142,14 @@ export async function createWorkspace({
       },
       ...middlewares,
     ],
-    onFileChanged,
+    onFileChanged: async (filePath) => {
+      const relativeFilePath = path.relative(rootDirPath, filePath);
+      for (const name of Object.keys(collected)) {
+        if (name.startsWith(`${relativeFilePath}:`)) {
+          delete collected[name];
+        }
+      }
+    },
   });
   const workspace: Workspace = {
     rootDirPath: () => rootDirPath,
