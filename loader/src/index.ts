@@ -26,7 +26,6 @@ export type PreviewEnvironment = {
     router: ApiRouter;
     typescriptAnalyzer: TypescriptAnalyzer;
   }): Promise<void>;
-  onFileChanged?(filePath: string): Promise<void>;
 };
 
 export { install, isInstalled } from "./installer";

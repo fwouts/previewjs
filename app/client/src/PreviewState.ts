@@ -1,4 +1,5 @@
 import {
+  ComputePropsEndpoint,
   GetInfoEndpoint,
   GetStateEndpoint,
   UpdateStateEndpoint,
@@ -121,16 +122,6 @@ export class PreviewState {
   constructor(
     private readonly options: {
       onFileChanged?: (relativeFilePath: string | null) => Promise<void>;
-      getComponentDetails?: (options: {
-        relativeFilePath: string;
-        name: string;
-      }) => Promise<{
-        relativeFilePath: string;
-        componentName: string;
-        defaultProps: string;
-        invocation: string;
-        typeDeclarations: string;
-      } | null>;
     } = {}
   ) {
     this.localApi = new LocalApi("/api/");
@@ -345,23 +336,23 @@ export class PreviewState {
           details: null,
         };
       });
-      const loadedDetails = await (this.options.getComponentDetails
-        ? this.options.getComponentDetails({
-            relativeFilePath,
-            name,
-          })
-        : null);
-      const details = loadedDetails || {
+      const sources = await this.localApi.request(ComputePropsEndpoint, {
         relativeFilePath,
         componentName: name,
-        defaultProps: "{}",
-        invocation: `properties = {
-  // foo: "bar"
-}`,
-        typeDeclarations: `declare let properties: any;`,
+      });
+      const details = {
+        relativeFilePath,
+        componentName: name,
+        defaultProps: sources?.defaultPropsSource || "{}",
+        invocation:
+          this.cachedInvocations[componentId] ||
+          sources?.defaultInvocationSource ||
+          `properties = {
+            // foo: "bar"
+            }`,
+        typeDeclarations:
+          sources?.typeDeclarationsSource || `declare let properties: any;`,
       };
-      details.invocation =
-        this.cachedInvocations[componentId] || details.invocation;
       runInAction(() => {
         this.component = {
           componentId,
