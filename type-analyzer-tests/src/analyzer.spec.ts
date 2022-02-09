@@ -9,20 +9,18 @@ import {
   Reader,
   Writer,
 } from "@previewjs/core/vfs";
-import path from "path";
-import ts from "typescript";
-import { NODE_TYPE } from ".";
-import { createTypeAnalyzer } from "./analyzer";
 import {
   ANY_TYPE,
   arrayType,
   BOOLEAN_TYPE,
+  createTypeAnalyzer,
   enumType,
   functionType,
   intersectionType,
   literalType,
   mapType,
   namedType,
+  NODE_TYPE,
   NULL_TYPE,
   NUMBER_TYPE,
   objectType,
@@ -35,7 +33,9 @@ import {
   unionType,
   UNKNOWN_TYPE,
   VOID_TYPE,
-} from "./definitions";
+} from "@previewjs/type-analyzer";
+import path from "path";
+import ts from "typescript";
 
 describe("TypeAnalyzer", () => {
   let memoryReader: Reader & Writer;

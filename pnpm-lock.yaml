@@ -1167,24 +1167,34 @@ importers:
 
   type-analyzer:
     specifiers:
-      '@types/jest': 27.4.0
       '@types/lodash': 4.14.178
       assert-never: 1.2.1
-      jest: 27.4.7
       lodash: 4.17.21
       rimraf: 3.0.2
-      ts-jest: 27.1.3
       typescript: 4.5.4
     dependencies:
       '@types/lodash': 4.14.178
       assert-never: 1.2.1
       typescript: 4.5.4
     devDependencies:
-      '@types/jest': 27.4.0
-      jest: 27.4.7_ts-node@10.4.0
       lodash: 4.17.21
       rimraf: 3.0.2
+
+  type-analyzer-tests:
+    specifiers:
+      '@previewjs/core': workspace:*
+      '@previewjs/type-analyzer': workspace:*
+      '@types/jest': 27.4.0
+      jest: 27.4.7
+      ts-jest: 27.1.3
+      typescript: 4.5.4
+    devDependencies:
+      '@previewjs/core': link:../core
+      '@previewjs/type-analyzer': link:../type-analyzer
+      '@types/jest': 27.4.0
+      jest: 27.4.7_ts-node@10.4.0
       ts-jest: 27.1.3_9364f2ad0b7b67f00a4d081c662c6871
+      typescript: 4.5.4
 
 packages:
 
@@ -16836,17 +16846,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.14.7_debug@4.3.3:
-    resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18017,7 +18016,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.7_debug@4.3.3
+      follow-redirects: 1.14.7
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug

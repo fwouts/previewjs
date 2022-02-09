@@ -1,0 +1,19 @@
+{
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": "https://github.com/fwouts/previewjs",
+  "homepage": "https://previewjs.com",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@previewjs/core": "workspace:*",
+    "@previewjs/type-analyzer": "workspace:*",
+    "@types/jest": "27.4.0",
+    "jest": "27.4.7",
+    "ts-jest": "27.1.3",
+    "typescript": "4.5.4"
+  }
+}
