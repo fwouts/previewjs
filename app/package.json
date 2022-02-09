@@ -9,7 +9,7 @@
   "main": "./dist/src",
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
-    "build": "rimraf dist && pnpm tsc && vite build client",
+    "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client",
     "test": "ts-node run-test-suite.ts",
     "test:watch": "ts-node-dev --ignore-watch tmp --respawn run-test-suite.ts",
