@@ -1,0 +1,49 @@
+name: Release @previewjs/type-analyzer
+
+on:
+  release:
+    types:
+      - created
+
+defaults:
+  run:
+    working-directory: type-analyzer
+
+jobs:
+  build:
+    if: startsWith(github.ref, 'refs/tags/type-analyzer/v')
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          node-version: ${{ matrix.node-version }}
+      - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.24.4
+          run_install: true
+      - name: Extract version from package.json
+        uses: sergeysova/jq-action@v2.1.0
+        id: version
+        with:
+          cmd: "jq .version type-analyzer/package.json -r"
+      - name: Extract version from release name
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/type-analyzer\/v/}" >> $GITHUB_ENV
+      - name: Check that versions match
+        run: '[[ "${{ steps.version.outputs.value }}" == "$VERSION" ]] && echo "Versions match"'
+      - name: Publish
+        run: pnpm publish --no-git-checks --access public

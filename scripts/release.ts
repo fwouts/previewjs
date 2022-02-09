@@ -117,6 +117,31 @@ async function main() {
       };
       break;
     }
+    case "@previewjs/type-analyzer": {
+      tagName = "type-analyzer";
+      dirPaths = ["type-analyzer"];
+      runUpdate = async () => {
+        const version = await updateNodePackage("type-analyzer");
+        await packageJson("core/package.json").updateDependency(
+          packageName,
+          version
+        );
+        await packageJson("frameworks/react/package.json").updateDependency(
+          packageName,
+          version
+        );
+        await packageJson("frameworks/vue2/package.json").updateDependency(
+          packageName,
+          version
+        );
+        await packageJson("frameworks/vue3/package.json").updateDependency(
+          packageName,
+          version
+        );
+        return version;
+      };
+      break;
+    }
     default:
       throw new Error(`Unknown package name: ${packageName}`);
   }
