@@ -11,15 +11,11 @@
   "main": "./dist",
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/type-analyzer --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
-    "test": "jest"
+    "build": "rimraf dist && tsc"
   },
   "devDependencies": {
-    "@types/jest": "27.4.0",
-    "jest": "27.4.7",
     "lodash": "4.17.21",
-    "rimraf": "3.0.2",
-    "ts-jest": "27.1.3"
+    "rimraf": "3.0.2"
   },
   "dependencies": {
     "@types/lodash": "4.14.178",
