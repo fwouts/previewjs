@@ -1,0 +1,29 @@
+{
+  "name": "@previewjs/type-analyzer",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": "https://github.com/fwouts/previewjs",
+  "homepage": "https://previewjs.com",
+  "main": "./dist",
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/type-analyzer --no-deps --include-dependencies",
+    "build": "rimraf dist && tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "27.4.0",
+    "jest": "27.4.7",
+    "lodash": "4.17.21",
+    "rimraf": "3.0.2",
+    "ts-jest": "27.1.2"
+  },
+  "dependencies": {
+    "@types/lodash": "4.14.178",
+    "assert-never": "1.2.1",
+    "typescript": "4.5.4"
+  }
+}
