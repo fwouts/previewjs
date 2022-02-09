@@ -48,7 +48,8 @@ jobs:
           run_install: true
       # - run: yarn licenses-check
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
-      - run: cd type-analyzer && pnpm test
+      - run: cd type-analyzer && pnpm build
+      - run: cd type-analyzer-tests && pnpm test
       - run: cd core && pnpm test
       - run: cd frameworks/react && pnpm test
       - run: cd app && pnpm lint && pnpm test
