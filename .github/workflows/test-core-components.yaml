@@ -7,7 +7,7 @@ concurrency:
 on:
   push:
     branches:
-      - main
+      - "*"
     paths:
       - "**"
       - "!assets/**"
@@ -42,7 +42,7 @@ jobs:
       # - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
       # - run: pnpm turbo run test
       - run: touch app/tests/__screenshots__/test
-      - name: Update screenshots on PR branches
+      - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes detected."
