@@ -66,7 +66,7 @@ importers:
       mobx: 6.3.13
       mobx-react-lite: 3.2.3
       monaco-editor: 0.31.1
-      playwright: 1.17.2
+      playwright: 1.18.1
       react: 17.0.2
       react-dom: 17.0.2
       rimraf: 3.0.2
@@ -115,7 +115,7 @@ importers:
       eslint-plugin-react-hooks: 4.3.0_eslint@7.32.0
       fs-extra: 10.0.0
       lodash: 4.17.21
-      playwright: 1.17.2
+      playwright: 1.18.1
       rimraf: 3.0.2
       ts-node: 10.4.0_367793418afa917fddeb69e0b1aa8aae
       ts-node-dev: 1.1.8_typescript@4.5.5
@@ -22131,8 +22131,8 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core/1.17.2:
-    resolution: {integrity: sha512-TCYIt2UNHvqGxvD79bBjBv9osDLAH1gn7AZD5kRpMNQJG6BAmJt8B4Ek8fzdKmCQOnHf9ASJmcYRszoIZxcdVA==}
+  /playwright-core/1.18.1:
+    resolution: {integrity: sha512-NALGl8R1GHzGLlhUApmpmfh6M1rrrPcDTygWvhTbprxwGB9qd/j9DRwyn4HTQcUB6o0/VOpo46fH9ez3+D/Rog==}
     engines: {node: '>=12'}
     hasBin: true
     dependencies:
@@ -22158,13 +22158,13 @@ packages:
       - utf-8-validate
     dev: true
 
-  /playwright/1.17.2:
-    resolution: {integrity: sha512-u1HZmVoeLCLptNcpuOyp5KfBzsdsLxE9CReK82i/p8j5i7EPqtY3fX77SMHqDGeO7tLBSYk2a6eFDVlQfSSANg==}
+  /playwright/1.18.1:
+    resolution: {integrity: sha512-8EaX9EtbtAoMq5tnzIsoA3b/V86V/6Mq2skuOU4qEw+5OVxs1lwesDwmjy/RVU1Qfx5UuwSQzhp45wyH22oa+A==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.17.2
+      playwright-core: 1.18.1
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -23637,7 +23637,7 @@ packages:
   /proper-lockfile/4.1.2:
     resolution: {integrity: sha512-TjNPblN4BwAWMXU8s9AEz4JmQxnD1NNL7bNOY/AKUzyamc379FWASUhc/K1pL2noVb+XmZKLL68cjzLsiOAMaA==}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
       retry: 0.12.0
       signal-exit: 3.0.6
 
