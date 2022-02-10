@@ -13,14 +13,6 @@ on:
       - "!assets/**"
       - "!cli/**"
       - "!integrations/**"
-  pull_request:
-    branches:
-      - "*"
-    paths:
-      - "**"
-      - "!assets/**"
-      - "!cli/**"
-      - "!integrations/**"
 
 jobs:
   tests:
@@ -57,13 +49,14 @@ jobs:
           else
             git add app/tests/__screenshots__
             git stash
-            git checkout ${{ github.head_ref }}
+            git config --global user.name 'CI bot'
+            git config --global user.email 'fwouts@users.noreply.github.com'
             git pull
             git stash pop
             git commit -am "bot: update screenshots"
             git push
           fi
-        if: github.event_name == 'pull_request'
+        if: ${{ github.ref != 'refs/heads/main' }}
         shell: bash
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
