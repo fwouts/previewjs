@@ -225,6 +225,7 @@ importers:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
+      '@previewjs/type-analyzer': 1.0.0
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.0
@@ -239,6 +240,7 @@ importers:
       typescript: 4.5.5
       vite: 2.8.0
     dependencies:
+      '@previewjs/type-analyzer': link:../../type-analyzer
       '@svgr/core': 5.5.0
       fs-extra: 10.0.0
     devDependencies:

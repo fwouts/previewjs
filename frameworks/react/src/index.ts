@@ -4,10 +4,14 @@ import type {
 } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
+import { analyzeReactComponent } from "./analyze-component";
+import { detectArgs } from "./args";
 import { reactComponentLoaderPlugin } from "./component-loader-plugin";
 import { extractReactComponents, ReactComponent } from "./extract-component";
 import { optimizeReactDepsPlugin } from "./optimize-deps-plugin";
+import { detectPropTypes } from "./prop-types";
 import { reactImportsPlugin } from "./react-imports-plugin";
+import { REACT_SPECIAL_TYPES } from "./special-types";
 import { svgrPlugin } from "./svgr-plugin";
 export type { ReactComponent } from "./extract-component";
 
@@ -39,6 +43,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
       },
+      transformReader: (reader) => reader,
       componentDetector: (program, filePaths) => {
         const components: ReactComponent[] = [];
         for (const filePath of filePaths) {
@@ -46,6 +51,33 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
         }
         return components;
       },
+      componentAnalyzer:
+        ({ typescriptAnalyzer, getTypeAnalyzer }) =>
+        (filePath, componentName) => {
+          const program = typescriptAnalyzer.analyze([filePath]);
+          const typeResolver = getTypeAnalyzer(program, REACT_SPECIAL_TYPES);
+          const component = extractReactComponents(program, filePath).find(
+            (c) => c.name === componentName
+          );
+          if (!component) {
+            throw new Error(
+              `Component ${componentName} was not found in ${filePath}`
+            );
+          }
+          const sourceFile = program.getSourceFile(filePath);
+          let args: ts.Expression | null = null;
+          let propTypes: ts.Expression | null = null;
+          if (sourceFile) {
+            args = detectArgs(sourceFile, component.name);
+            propTypes = detectPropTypes(sourceFile, component.name);
+          }
+          return analyzeReactComponent(
+            typeResolver,
+            component,
+            args,
+            propTypes
+          );
+        },
       viteConfig: (config) => {
         return {
           plugins: [
