@@ -21,7 +21,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       );
       await controller.errors.title.click();
       expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:24:15: ERROR: Expected ">" but found "<"`
+        `src${path.sep}App.tsx:24:15: error: Expected ">" but found "<"`
       );
       // The component should still be shown.
       await previewIframe.waitForSelector(".App-logo");
@@ -52,7 +52,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       );
       await controller.errors.title.click();
       expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:24:15: ERROR: Expected ">" but found "<"`
+        `src${path.sep}App.tsx:24:15: error: Expected ">" but found "<"`
       );
       // The component should still be shown.
       await previewIframe.waitForSelector(".App-logo");
@@ -133,7 +133,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       );
       await controller.errors.title.click();
       expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:2:32: ERROR: Unexpected "/"`
+        `src${path.sep}App.tsx:2:32: error: Unexpected "/"`
       );
       await appDir.update(
         "src/App.tsx",
@@ -180,7 +180,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       );
       await controller.errors.title.click();
       expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`
+        `src${path.sep}App.tsx:4:10: error: Expected ">" but found "<"`
       );
       await appDir.update(
         "src/App.tsx",
