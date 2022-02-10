@@ -60,7 +60,7 @@ jobs:
           git stash pop
           git commit -am "bot: update screenshots"
           git push
-        if: ${{ steps.changes.outputs.changed == 1 && github.event.issue.pull_request }}
+        if: steps.changes.outputs.changed == 1 && ${{ github.event.issue.pull_request }}
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
-        if: ${{ steps.changes.outputs.changed == 1 && github.ref == 'refs/heads/main' }}
+        if: steps.changes.outputs.changed == 1 && ${{ github.ref == 'refs/heads/main' }}
