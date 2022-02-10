@@ -61,7 +61,7 @@ jobs:
             git commit -am "bot: update screenshots" && \
             git push
           )
-        if: ${{ github.event.issue.pull_request }}
+        if: github.event_name == 'pull_request'
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
         if: ${{ github.ref == 'refs/heads/main' }}
