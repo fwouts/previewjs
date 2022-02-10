@@ -1,4 +1,4 @@
-name: Preview.js core tests
+name: Test VS Code extension
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -9,26 +9,22 @@ on:
     branches:
       - main
     paths:
-      - "**"
-      - "!assets/**"
-      - "!cli/**"
-      - "!integrations/**"
+      - "integrations/vscode/**"
+      - ".github/workflows/tests-vscode.yaml"
   pull_request:
     branches:
       - "*"
     paths:
-      - "**"
-      - "!assets/**"
-      - "!cli/**"
-      - "!integrations/**"
+      - "integrations/vscode/**"
+      - ".github/workflows/tests-vscode.yaml"
 
 jobs:
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [12.x]
-        os: [ubuntu-latest, windows-latest]
+        node-version: [14.x]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -46,10 +42,14 @@ jobs:
         with:
           version: 6.24.4
           run_install: true
-      # - run: yarn licenses-check
-      - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
-      - run: cd type-analyzer && pnpm build
-      - run: cd type-analyzer-tests && pnpm test
-      - run: cd core && pnpm test
-      - run: cd frameworks/react && pnpm test
-      - run: cd app && pnpm lint && pnpm test
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
+      - run: cd integrations/vscode && yarn --frozen-lockfile && yarn build

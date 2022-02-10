@@ -1,4 +1,4 @@
-name: IntelliJ tests
+name: Test Preview.js core components
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -9,14 +9,18 @@ on:
     branches:
       - main
     paths:
-      - "integrations/intellij/**"
-      - ".github/workflows/tests-intellij.yaml"
+      - "**"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
   pull_request:
     branches:
       - "*"
     paths:
-      - "integrations/intellij/**"
-      - ".github/workflows/tests-intellij.yaml"
+      - "**"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
 
 jobs:
   tests:
@@ -24,17 +28,13 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/setup-java@v2
-        with:
-          distribution: "temurin"
-          java-version: "11"
       - name: Cache pnpm modules
         uses: actions/cache@v2
         with:
@@ -46,7 +46,10 @@ jobs:
         with:
           version: 6.24.4
           run_install: true
-      - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
-      - run: cd integrations/intellij/controller && pnpm build
-      - run: cd integrations/intellij && ./gradlew runPluginVerifier
-      - run: cd integrations/intellij && ./gradlew buildPlugin
+      # - run: yarn licenses-check
+      - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
+      - run: cd type-analyzer && pnpm build
+      - run: cd type-analyzer-tests && pnpm test
+      - run: cd core && pnpm test
+      - run: cd frameworks/react && pnpm test
+      - run: cd app && pnpm lint && pnpm test
