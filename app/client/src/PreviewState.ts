@@ -348,8 +348,8 @@ export class PreviewState {
           this.cachedInvocations[componentId] ||
           sources?.defaultInvocationSource ||
           `properties = {
-            // foo: "bar"
-            }`,
+  // foo: "bar"
+}`,
         typeDeclarations:
           sources?.typeDeclarationsSource || `declare let properties: any;`,
       };
