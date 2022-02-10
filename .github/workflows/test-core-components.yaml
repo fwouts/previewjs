@@ -59,6 +59,7 @@ jobs:
             git stash
             git config --global user.name 'CI bot'
             git config --global user.email 'fwouts@users.noreply.github.com'
+            git fetch
             git checkout ${{ github.head_ref }}
             git pull
             git stash pop
