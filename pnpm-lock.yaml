@@ -277,13 +277,13 @@ importers:
       typescript: 4.5.5
       vite: 2.7.13
       vite-plugin-vue2: ^1.9.3
-      vue: ^2.6.14
+      vue: ^3.0.0
       vue-template-compiler: ^2.6.14
     dependencies:
       '@nuxt/config': 2.15.8
       fs-extra: 10.0.0
       vite-plugin-vue2: 1.9.3_e3c37c0cfaae1b9f72ab6085139b0afb
-      vue: 2.6.14
+      vue: 3.2.30
       vue-template-compiler: 2.6.14
     devDependencies:
       '@previewjs/config': link:../../config
@@ -295,9 +295,9 @@ importers:
 
   frameworks/vue2/preview:
     specifiers:
-      vue: 2.6.14
+      vue: 3.2.30
     dependencies:
-      vue: 2.6.14
+      vue: 3.2.30
 
   frameworks/vue3:
     specifiers:
