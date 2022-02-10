@@ -7,6 +7,14 @@ concurrency:
 on:
   push:
     branches:
+      - main
+    paths:
+      - "**"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
+  pull_request:
+    branches:
       - "*"
     paths:
       - "**"
@@ -50,10 +58,12 @@ jobs:
             git stash
             git config --global user.name 'CI bot'
             git config --global user.email 'fwouts@users.noreply.github.com'
+            git fetch
+            git checkout ${{ github.head_ref }}
             git pull
             git stash pop
             git commit -am "bot: update screenshots"
-            git push
+            git push origin ${{ github.head_ref }}
           fi
         if: ${{ github.ref != 'refs/heads/main' }}
         shell: bash
