@@ -3993,19 +3993,6 @@ packages:
       - supports-color
     dev: false
 
-  /@babel/plugin-transform-typescript/7.16.7_@babel+core@7.17.2:
-    resolution: {integrity: sha512-Hzx1lvBtOCWuCEwMmYOfpQpO7joFeXLgoPuzZZBtTxXqSqUGUubvFGZv2ygo1tB5Bp9q6PXV3H0E/kf7KM0RLA==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.17.2
-      '@babel/helper-create-class-features-plugin': 7.16.7_@babel+core@7.17.2
-      '@babel/helper-plugin-utils': 7.16.7
-      '@babel/plugin-syntax-typescript': 7.16.7_@babel+core@7.17.2
-    transitivePeerDependencies:
-      - supports-color
-
   /@babel/plugin-transform-typescript/7.16.8_@babel+core@7.17.2:
     resolution: {integrity: sha512-bHdQ9k7YpBDO2d0NVfkj51DpQcvwIzIusJ7mEUaMlbZq3Kt/U47j24inXZHQ5MDiYpCs+oZiwnXyKedE8+q7AQ==}
     engines: {node: '>=6.9.0'}
@@ -4018,7 +4005,6 @@ packages:
       '@babel/plugin-syntax-typescript': 7.16.7_@babel+core@7.17.2
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@babel/plugin-transform-unicode-escapes/7.16.5_@babel+core@7.16.5:
     resolution: {integrity: sha512-shiCBHTIIChGLdyojsKQjoAyB8MBwat25lKM7MJjbe1hE0bgIppD+LX9afr41lLHOhqceqeWl4FkLp+Bgn9o1Q==}
@@ -10061,7 +10047,7 @@ packages:
     dependencies:
       '@babel/core': 7.17.2
       '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.17.2
-      '@babel/plugin-transform-typescript': 7.16.7_@babel+core@7.17.2
+      '@babel/plugin-transform-typescript': 7.16.8_@babel+core@7.17.2
       '@rollup/pluginutils': 4.1.2
       '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.17.2
       hash-sum: 2.0.0
@@ -22262,7 +22248,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.5.4
+      ts-pnp: 1.2.0_typescript@4.5.5
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -25185,7 +25171,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.5.4
+      ts-pnp: 1.2.0_typescript@4.5.5
       typescript: 4.5.5
       url-loader: 4.1.1_file-loader@6.1.1+webpack@4.44.2
       webpack: 4.44.2
