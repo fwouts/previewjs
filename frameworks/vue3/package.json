@@ -9,8 +9,7 @@
   "sideEffects": false,
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue3 --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
-    "test": "jest"
+    "build": "rimraf dist && tsc"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^2.0.1",

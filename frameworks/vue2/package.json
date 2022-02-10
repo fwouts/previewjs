@@ -10,8 +10,7 @@
   "main": "./dist",
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
-    "test": "jest"
+    "build": "rimraf dist && tsc"
   },
   "dependencies": {
     "@nuxt/config": "^2.15.8",
