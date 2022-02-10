@@ -52,16 +52,19 @@ jobs:
       - run: touch app/tests/__screenshots__/test
       - name: Update screenshots on PR branches
         run: |
-          git diff --exit-code || (
-            git add app/tests/__screenshots__ && \
-            git stash && \
-            git checkout ${GITHUB_REF##*/} && \
-            git pull && \
-            git stash pop && \
-            git commit -am "bot: update screenshots" && \
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes detected."
+          else
+            git add app/tests/__screenshots__
+            git stash
+            git checkout ${GITHUB_REF##*/}
+            git pull
+            git stash pop
+            git commit -am "bot: update screenshots"
             git push
-          )
+          fi
         if: github.event_name == 'pull_request'
+        shell: bash
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
         if: ${{ github.ref == 'refs/heads/main' }}
