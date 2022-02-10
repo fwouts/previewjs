@@ -181,6 +181,7 @@ class TestRunner {
       await page.close();
       await context.close();
       await controller.stop();
+      await workspace.dispose();
     }
 
     function prepareAppDir(): AppDir {
