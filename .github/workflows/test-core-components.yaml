@@ -7,14 +7,6 @@ concurrency:
 on:
   push:
     branches:
-      - main
-    paths:
-      - "**"
-      - "!assets/**"
-      - "!cli/**"
-      - "!integrations/**"
-  pull_request:
-    branches:
       - "*"
     paths:
       - "**"
@@ -49,3 +41,22 @@ jobs:
       # - run: yarn licenses-check
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
       - run: pnpm turbo run test
+      - name: Update screenshots on non-main branches
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes detected."
+          else
+            git add app/tests/__screenshots__
+            git stash
+            git config --global user.name 'CI bot'
+            git config --global user.email 'fwouts@users.noreply.github.com'
+            git pull
+            git stash pop
+            git commit -am "bot: update screenshots"
+            git push
+          fi
+        if: ${{ github.ref != 'refs/heads/main' }}
+        shell: bash
+      - name: Fail if screenshots have changed on main branch
+        run: git diff --exit-code
+        if: ${{ github.ref == 'refs/heads/main' }}
