@@ -1,12 +1,12 @@
 import { PreviewConfig } from "@previewjs/config";
 import { URLSearchParams } from "url";
-import * as vite from "vite";
+import type { Plugin } from "vite";
 
 const COMPONENT_LOADER_MODULE = "/@component-loader.jsx";
 
 export function vueComponentLoaderPlugin(options: {
   config: PreviewConfig;
-}): vite.Plugin {
+}): Plugin {
   return {
     name: "previewjs:component-loader",
     resolveId: async function (id) {
