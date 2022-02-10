@@ -57,7 +57,7 @@ jobs:
           else
             git add app/tests/__screenshots__
             git stash
-            git checkout ${GITHUB_REF##*/}
+            git checkout ${{ github.head_ref }}
             git pull
             git stash pop
             git commit -am "bot: update screenshots"
