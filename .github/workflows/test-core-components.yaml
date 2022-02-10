@@ -47,8 +47,9 @@ jobs:
           version: 6.24.4
           run_install: true
       # - run: yarn licenses-check
-      - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
-      - run: pnpm turbo run test
+      # - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
+      # - run: pnpm turbo run test
+      - run: touch app/tests/__screenshots__/test
       - id: changes
         uses: UnicornGlobal/has-changes-action@v1.0.11
       - name: Update screenshots on PR branches
