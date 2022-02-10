@@ -59,7 +59,8 @@ jobs:
             git stash
             git config --global user.name 'CI bot'
             git config --global user.email 'fwouts@users.noreply.github.com'
-            git pull origin ${{ github.head_ref }}
+            git checkout ${{ github.head_ref }}
+            git pull
             git stash pop
             git commit -am "bot: update screenshots"
             git push origin ${{ github.head_ref }}
