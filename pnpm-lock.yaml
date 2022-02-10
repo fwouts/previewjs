@@ -32,10 +32,10 @@ importers:
     specifiers:
       '@emotion/react': 11.7.1
       '@emotion/styled': 11.6.0
-      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/fontawesome-svg-core': 1.3.0
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.16
+      '@fortawesome/react-fontawesome': 0.1.17
       '@monaco-editor/react': 4.3.1
       '@previewjs/config': 1.0.1
       '@previewjs/core': 1.0.3
@@ -78,10 +78,10 @@ importers:
     dependencies:
       '@emotion/react': 11.7.1_a0c521d4794c7ad97f5f4c1c4a7d5818
       '@emotion/styled': 11.6.0_6051c8b70bfa52211d6f419a3c4413f0
-      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/fontawesome-svg-core': 1.3.0
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
-      '@fortawesome/react-fontawesome': 0.1.16_f515edce028694561ceb456e3dba224c
+      '@fortawesome/react-fontawesome': 0.1.17_4bd8f766d7cd56ce339ee1b51a510026
       '@monaco-editor/react': 4.3.1_60c53b327c300eabacb72e8cc15737d8
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
@@ -3993,19 +3993,6 @@ packages:
       - supports-color
     dev: false
 
-  /@babel/plugin-transform-typescript/7.16.7_@babel+core@7.17.2:
-    resolution: {integrity: sha512-Hzx1lvBtOCWuCEwMmYOfpQpO7joFeXLgoPuzZZBtTxXqSqUGUubvFGZv2ygo1tB5Bp9q6PXV3H0E/kf7KM0RLA==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.17.2
-      '@babel/helper-create-class-features-plugin': 7.16.7_@babel+core@7.17.2
-      '@babel/helper-plugin-utils': 7.16.7
-      '@babel/plugin-syntax-typescript': 7.16.7_@babel+core@7.17.2
-    transitivePeerDependencies:
-      - supports-color
-
   /@babel/plugin-transform-typescript/7.16.8_@babel+core@7.17.2:
     resolution: {integrity: sha512-bHdQ9k7YpBDO2d0NVfkj51DpQcvwIzIusJ7mEUaMlbZq3Kt/U47j24inXZHQ5MDiYpCs+oZiwnXyKedE8+q7AQ==}
     engines: {node: '>=6.9.0'}
@@ -4018,7 +4005,6 @@ packages:
       '@babel/plugin-syntax-typescript': 7.16.7_@babel+core@7.17.2
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@babel/plugin-transform-unicode-escapes/7.16.5_@babel+core@7.16.5:
     resolution: {integrity: sha512-shiCBHTIIChGLdyojsKQjoAyB8MBwat25lKM7MJjbe1hE0bgIppD+LX9afr41lLHOhqceqeWl4FkLp+Bgn9o1Q==}
@@ -4924,12 +4910,18 @@ packages:
     requiresBuild: true
     dev: false
 
-  /@fortawesome/fontawesome-svg-core/1.2.36:
-    resolution: {integrity: sha512-YUcsLQKYb6DmaJjIHdDWpBIGCcyE/W+p/LMGvjQem55Mm2XWVAP5kWTMKWLv9lwpCVjpLxPyOMOyUocP1GxrtA==}
+  /@fortawesome/fontawesome-common-types/0.3.0:
+    resolution: {integrity: sha512-CA3MAZBTxVsF6SkfkHXDerkhcQs0QPofy43eFdbWJJkZiq3SfiaH1msOkac59rQaqto5EqWnASboY1dBuKen5w==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dev: false
+
+  /@fortawesome/fontawesome-svg-core/1.3.0:
+    resolution: {integrity: sha512-UIL6crBWhjTNQcONt96ExjUnKt1D68foe3xjEensLDclqQ6YagwCRYVQdrp/hW0ALRp/5Fv/VKw+MqTUWYYvPg==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      '@fortawesome/fontawesome-common-types': 0.2.36
+      '@fortawesome/fontawesome-common-types': 0.3.0
     dev: false
 
   /@fortawesome/free-brands-svg-icons/5.15.4:
@@ -4948,13 +4940,13 @@ packages:
       '@fortawesome/fontawesome-common-types': 0.2.36
     dev: false
 
-  /@fortawesome/react-fontawesome/0.1.16_f515edce028694561ceb456e3dba224c:
-    resolution: {integrity: sha512-aLmzDwC9rEOAJv2UJdMns89VZR5Ry4IHu5dQQh24Z/lWKEm44lfQr1UNalZlkUaQN8d155tNh+CS7ntntj1VMA==}
+  /@fortawesome/react-fontawesome/0.1.17_4bd8f766d7cd56ce339ee1b51a510026:
+    resolution: {integrity: sha512-dX43Z5IvMaW7fwzU8farosYjKNGfRb2HB/DgjVBHeJZ/NSnuuaujPPx0YOdcAq+n3mqn70tyCde2HM1mqbhiuw==}
     peerDependencies:
       '@fortawesome/fontawesome-svg-core': ~1 || >=1.3.0-beta1
       react: '>=16.x'
     dependencies:
-      '@fortawesome/fontawesome-svg-core': 1.2.36
+      '@fortawesome/fontawesome-svg-core': 1.3.0
       prop-types: 15.8.1
       react: 17.0.2
     dev: false
@@ -10061,7 +10053,7 @@ packages:
     dependencies:
       '@babel/core': 7.17.2
       '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.17.2
-      '@babel/plugin-transform-typescript': 7.16.7_@babel+core@7.17.2
+      '@babel/plugin-transform-typescript': 7.16.8_@babel+core@7.17.2
       '@rollup/pluginutils': 4.1.2
       '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.17.2
       hash-sum: 2.0.0
