@@ -49,3 +49,17 @@ jobs:
       # - run: yarn licenses-check
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
       - run: pnpm turbo run test
+      - id: changes
+        uses: UnicornGlobal/has-changes-action@v1.0.11
+      - name: Update screenshots
+        run: |
+          git add app/tests/__screenshots__
+          git stash
+          git pull
+          git stash pop
+          git commit -am "bot: update screenshots"
+          git push
+        if: steps.changes.outputs.changed == 1 && github.ref != 'refs/heads/main'
+      - name: Fail if screenshots have changed
+        run: git diff --exit-code
+        if: steps.changes.outputs.changed == 1 && github.ref == 'refs/heads/main'
