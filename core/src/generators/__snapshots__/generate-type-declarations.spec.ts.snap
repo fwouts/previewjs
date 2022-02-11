@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`generateTypeDeclarations all types 1`] = `
+exports[`generateTypeDeclarations > all types 1`] = `
 "declare let properties: { children?: any } & Foo;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -46,7 +46,7 @@ type Bar = {
             }"
 `;
 
-exports[`generateTypeDeclarations duplicate types in different files 1`] = `
+exports[`generateTypeDeclarations > duplicate types in different files 1`] = `
 "declare let properties: { children?: any } & Foo;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -74,7 +74,7 @@ type Foo_3 = {
             }"
 `;
 
-exports[`generateTypeDeclarations generic types 1`] = `
+exports[`generateTypeDeclarations > generic types 1`] = `
 "declare let properties: { children?: any } & A;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -101,7 +101,7 @@ type C<T,S = T,> = {
             }"
 `;
 
-exports[`generateTypeDeclarations optional props in object type 1`] = `
+exports[`generateTypeDeclarations > optional props in object type 1`] = `
 "declare let properties: { children?: any } & MyComponentProps;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -126,7 +126,7 @@ type MyComponentProps = {
             };"
 `;
 
-exports[`generateTypeDeclarations recursive function type 1`] = `
+exports[`generateTypeDeclarations > recursive function type 1`] = `
 "declare let properties: { children?: any } & MyComponentProps;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -148,7 +148,7 @@ type MyComponentProps = {
 type Fn = (...params: any[]) => (Fn | undefined)"
 `;
 
-exports[`generateTypeDeclarations recursive named type 1`] = `
+exports[`generateTypeDeclarations > recursive named type 1`] = `
 "declare let properties: { children?: any } & Foo;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -168,7 +168,7 @@ type Foo = {
             }"
 `;
 
-exports[`generateTypeDeclarations simple props with named type 1`] = `
+exports[`generateTypeDeclarations > simple props with named type 1`] = `
 "declare let properties: { children?: any } & MyComponentProps;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -188,7 +188,7 @@ type MyComponentProps = {
             }"
 `;
 
-exports[`generateTypeDeclarations simple props with named type 2`] = `
+exports[`generateTypeDeclarations > simple props with named type 2`] = `
 "declare let properties: { children?: any } & Foo;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {
@@ -208,7 +208,7 @@ type Foo = {
             }"
 `;
 
-exports[`generateTypeDeclarations simple props with object type 1`] = `
+exports[`generateTypeDeclarations > simple props with object type 1`] = `
 "declare let properties: { children?: any } & MyComponentProps;
 
 type __previewjs_Optionalize<T, K extends keyof T> = {

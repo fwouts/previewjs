@@ -10,6 +10,7 @@ import {
   Writer,
 } from "@previewjs/core/vfs";
 import path from "path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { reactFrameworkPlugin } from ".";
 import { extractReactComponents } from "./extract-component";
 

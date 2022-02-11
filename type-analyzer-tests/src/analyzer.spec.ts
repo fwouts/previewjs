@@ -36,6 +36,7 @@ import {
 } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
 describe("TypeAnalyzer", () => {
   let memoryReader: Reader & Writer;

@@ -26,6 +26,7 @@ import {
   unionType,
 } from "@previewjs/type-analyzer";
 import path from "path";
+import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { ReactComponent, reactFrameworkPlugin } from ".";
 import { analyzeReactComponent } from "./analyze-component";
 import { detectArgs } from "./args";
