@@ -25,4 +25,4 @@ Preview.js is divided into multiple packages, each licensed under either AGPL-3.
 
 Please refer to LICENSE under each directory to find out which license applies.
 
-Copyright (c) 2022 Francois Wouts
+Copyright (c) 2022 Zenc Labs Pty Ltd
