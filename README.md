@@ -21,4 +21,8 @@ Preview.js is available for:
 
 ## License
 
-Preview.js is open-source under the GNU Affero General Public License Version 3 (AGPLv3) or any later version.
+Preview.js is divided into multiple packages, each licensed under either AGPL-3.0 or MIT.
+
+Please refer to LICENSE under each directory to find out which license applies.
+
+Copyright (c) 2022 Francois Wouts
