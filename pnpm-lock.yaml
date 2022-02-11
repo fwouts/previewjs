@@ -41,7 +41,7 @@ importers:
       '@previewjs/core': 1.1.0
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': 1.1.0
-      '@previewjs/plugin-vue2': 1.0.1
+      '@previewjs/plugin-vue2': 1.0.2
       '@previewjs/plugin-vue3': 1.0.3
       '@react-hook/window-size': 3.0.7
       '@types/express': 4.17.13
@@ -16533,6 +16533,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.14.7_debug@4.3.3:
+    resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
+
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -17705,7 +17716,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.7
+      follow-redirects: 1.14.7_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
