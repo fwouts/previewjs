@@ -153,13 +153,18 @@ async function main() {
   console.log(`You are about to release the following:\n${changelog}`);
   const version = await runUpdate();
   const tag = `${tagName}/v${version}`;
+  console.log(`The following tag will be created: ${tag}\n`);
+  console.log(`Running pnpm install...`);
   await execa("pnpm", ["install"]);
   await execa("git", ["add", "."]);
   await execa("git", ["commit", "-m", `release: ${packageName}@${version}`]);
   await execa("git", ["tag", "-a", tag, "-m", ""]);
+  console.log(`Pushing commit...`);
   await execa("git", ["push", "origin", "main"]);
   await execa("git", ["push", "origin", tag]);
+  console.log(`Creating release...`);
   await execa("gh", ["release", "create", tag, "-t", tag, "-n", changelog]);
+  console.log(`Done!`);
 }
 
 async function gitChangelog(packageName: string, dirPaths: string[]) {
