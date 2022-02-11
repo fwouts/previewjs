@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "main": "./dist",
   "types": "./dist/index.d.ts",
-  "license": "AGPL-3.0",
+  "license": "MIT",
   "sideEffects": false,
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
