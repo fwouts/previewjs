@@ -73,7 +73,7 @@ importers:
       ts-node: 10.5.0
       ts-node-dev: 1.1.8
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
       vite-plugin-svgr: 0.6.0
     dependencies:
       '@emotion/react': 11.7.1_a0c521d4794c7ad97f5f4c1c4a7d5818
@@ -120,8 +120,8 @@ importers:
       ts-node: 10.5.0_367793418afa917fddeb69e0b1aa8aae
       ts-node-dev: 1.1.8_typescript@4.5.5
       typescript: 4.5.5
-      vite: 2.7.13
-      vite-plugin-svgr: 0.6.0_vite@2.7.13
+      vite: 2.8.1
+      vite-plugin-svgr: 0.6.0_vite@2.8.1
 
   cli:
     specifiers:
@@ -145,12 +145,12 @@ importers:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
     devDependencies:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
 
   core:
     specifiers:
@@ -184,7 +184,7 @@ importers:
       tsconfig-paths: 3.12.0
       typescript: 4.5.5
       uuid: 8.3.2
-      vite: 2.7.13
+      vite: 2.8.1
       vite-tsconfig-paths: 3.3.17
     dependencies:
       '@previewjs/config': link:../config
@@ -206,8 +206,8 @@ importers:
       strip-ansi: 6.0.1
       tsconfig-paths: 3.12.0
       uuid: 8.3.2
-      vite: 2.7.13_sass@1.49.7
-      vite-tsconfig-paths: 3.3.17_vite@2.7.13
+      vite: 2.8.1_sass@1.49.7
+      vite-tsconfig-paths: 3.3.17_vite@2.8.1
     devDependencies:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -238,7 +238,7 @@ importers:
       shx: 0.3.4
       ts-jest: 27.1.3
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@svgr/core': 5.5.0
@@ -256,7 +256,7 @@ importers:
       shx: 0.3.4
       ts-jest: 27.1.3_1e2406a8ca2ae3dc934d01f9ee2aebbb
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
 
   frameworks/react/preview:
     specifiers:
@@ -275,14 +275,14 @@ importers:
       fs-extra: ^10.0.0
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
       vite-plugin-vue2: ^1.9.3
       vue: ^2.6.14
       vue-template-compiler: ^2.6.14
     dependencies:
       '@nuxt/config': 2.15.8
       fs-extra: 10.0.0
-      vite-plugin-vue2: 1.9.3_e3c37c0cfaae1b9f72ab6085139b0afb
+      vite-plugin-vue2: 1.9.3_4963ddf36b776ba22e85f55e37054e5b
       vue: 2.6.14
       vue-template-compiler: 2.6.14
     devDependencies:
@@ -291,7 +291,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
 
   frameworks/vue2/preview:
     specifiers:
@@ -309,10 +309,10 @@ importers:
       acorn: ^8.7.0
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
       vue: ^3
     dependencies:
-      '@vitejs/plugin-vue': 2.0.1_vite@2.7.13+vue@3.2.26
+      '@vitejs/plugin-vue': 2.0.1_vite@2.8.1+vue@3.2.26
       '@vitejs/plugin-vue-jsx': 1.3.3
       '@vue/compiler-sfc': 3.2.26
       acorn: 8.7.0
@@ -322,7 +322,7 @@ importers:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.7.13
+      vite: 2.8.1
 
   frameworks/vue3/preview:
     specifiers:
@@ -901,7 +901,7 @@ importers:
     dependencies:
       vue: 3.2.26
     devDependencies:
-      nuxt3: 3.0.0-27409509.e727bb4
+      nuxt3: 3.0.0-27409701.61188e1
 
   smoke-test-apps/storybook-js:
     specifiers:
@@ -6282,11 +6282,11 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/kit-edge/3.0.0-27409509.e727bb4:
-    resolution: {integrity: sha512-8l8EoAFAu0iIhFR6FnyNUtnRZ5x4aq4V5MbVY8TMlnCrr8r5Bc/nd+gCGc3BsBGEOG7aBkVi7uPe+Jw5xOcTZA==}
+  /@nuxt/kit-edge/3.0.0-27409701.61188e1:
+    resolution: {integrity: sha512-/oE7FnH0EoY5exzLTss8eILnTOMYJwu+xpGp5nl/w4111cX+ed+KFM82mqIJlQEwKELEL6qmjJY47IaC1C3CXA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27409509.e727bb4
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27409701.61188e1
       c12: 0.1.3
       consola: 2.15.3
       defu: 5.0.1
@@ -6295,7 +6295,7 @@ packages:
       jiti: 1.12.15
       knitwork: 0.1.0
       lodash.template: 4.5.0
-      mlly: 0.4.2
+      mlly: 0.4.3
       pathe: 0.2.0
       pkg-types: 0.3.2
       scule: 0.2.1
@@ -6314,15 +6314,15 @@ packages:
       serve-static: 1.14.2
     dev: false
 
-  /@nuxt/nitro-edge/3.0.0-27409509.e727bb4:
-    resolution: {integrity: sha512-HzUx2OgFttKEj3EQoD+1rEUH4cHzVYYxPCZNdgqQe5QR7My2ptFJFWlCy4Nl8H1hXZCx4ihq4/YqUjKIfqVJNg==}
+  /@nuxt/nitro-edge/3.0.0-27409701.61188e1:
+    resolution: {integrity: sha512-xht4ShOo3a5wTGfgfcoqhcaM0kbDtnacET+tSRcjGskKanhh5n3nM/AD13ruejHgDZCcJdYpXXMyhcQhTEm9mw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       '@cloudflare/kv-asset-handler': 0.2.0
       '@netlify/functions': 0.11.0
       '@nuxt/design': 0.1.5
       '@nuxt/devalue': 2.0.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409509.e727bb4
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409701.61188e1
       '@rollup/plugin-alias': 3.1.9_rollup@2.67.2
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.2
       '@rollup/plugin-inject': 4.0.4_rollup@2.67.2
@@ -6356,7 +6356,7 @@ packages:
       knitwork: 0.1.0
       listhen: 0.2.6
       mime: 3.0.0
-      mlly: 0.4.2
+      mlly: 0.4.3
       node-fetch: 3.2.0
       ohmyfetch: 0.4.15
       ora: 6.0.1
@@ -6409,8 +6409,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27409509.e727bb4:
-    resolution: {integrity: sha512-94olo/+ey9k4oOcoMigsaN3Cr2tbQbgUCc3L0bN8/2ecnv0t9uFJkHQOzTY61R64CrQiJdhrgeSOOEhEyj807Q==}
+  /@nuxt/schema-edge/3.0.0-27409701.61188e1:
+    resolution: {integrity: sha512-FnAaE7vwuOAOw+gLBSfPVKIcd5W+5y2MlmuTXfdFN/eD4vE2+k1cKTacAf9IEwoO3BFm0+Wi4S6O6+54JphrkQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       c12: 0.1.3
@@ -6531,14 +6531,14 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/vite-builder-edge/3.0.0-27409509.e727bb4_vue@3.2.30:
-    resolution: {integrity: sha512-uGM+5yblV5w8eck+F2IhoLJhfNHpRbS5zvMM8J7PGyS2uy5C2CwIwkyJUy4xQOBnIF/mWlLHX/vPDnG8y8iQBA==}
+  /@nuxt/vite-builder-edge/3.0.0-27409701.61188e1_vue@3.2.30:
+    resolution: {integrity: sha512-++HQvqLVFB4JweR0WfyHMbFbxt7+wKBKMhUK/4VUaGq2kt3XNb/n1cG37Cqu6Z1Y+resiDD58Ip0vVUrmxSF2A==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     peerDependencies:
       vue: 3.2.30
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409509.e727bb4
-      '@vitejs/plugin-vue': 2.2.0_vite@2.8.0+vue@3.2.30
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409701.61188e1
+      '@vitejs/plugin-vue': 2.2.0_vite@2.8.1+vue@3.2.30
       '@vitejs/plugin-vue-jsx': 1.3.4
       autoprefixer: 10.4.2
       chokidar: 3.5.3
@@ -6551,7 +6551,7 @@ packages:
       get-port-please: 2.3.0
       knitwork: 0.1.0
       magic-string: 0.25.7
-      mlly: 0.4.2
+      mlly: 0.4.3
       p-debounce: 4.0.0
       pathe: 0.2.0
       postcss-import: 14.0.2
@@ -6559,8 +6559,8 @@ packages:
       postcss-url: 10.1.3
       rollup-plugin-visualizer: 5.5.4
       ufo: 0.7.9
-      unplugin: 0.3.2_esbuild@0.14.21+vite@2.8.0
-      vite: 2.8.0
+      unplugin: 0.3.2_esbuild@0.14.21+vite@2.8.1
+      vite: 2.8.1
       vue: 3.2.30
     transitivePeerDependencies:
       - less
@@ -6603,15 +6603,15 @@ packages:
       vue-server-renderer: 2.6.14
     dev: false
 
-  /@nuxt/webpack-builder-edge/3.0.0-27409509.e727bb4_vue@3.2.30:
-    resolution: {integrity: sha512-zmwRhGJ7IWq1JPhTW93EiQPYH0mjmBzR5TK+B8M9UBvAP2nEX6FVfDEo+RTDO+hO0eNdkl6HtDx3OXZX1zbXOg==}
+  /@nuxt/webpack-builder-edge/3.0.0-27409701.61188e1_vue@3.2.30:
+    resolution: {integrity: sha512-/Tprb1fWs+gIpLw7eIpXIn6cDInyiPL8ZLTl0Sgn3yX/FbVxRaYmRucUsqQZbif1Bfwy2Uw4dBzaH2/u+2sb4w==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     peerDependencies:
       vue: 3.2.30
     dependencies:
       '@babel/core': 7.17.2
       '@nuxt/friendly-errors-webpack-plugin': 2.5.2_webpack@5.68.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409509.e727bb4
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409701.61188e1
       '@vue/babel-preset-jsx': 1.2.4_@babel+core@7.17.2
       autoprefixer: 10.4.2_postcss@8.4.6
       babel-loader: 8.2.3_900eac683bef8a6b239b47efcf24e8a9
@@ -6628,7 +6628,7 @@ packages:
       lodash-es: 4.17.21
       memfs: 3.4.1
       mini-css-extract-plugin: 2.5.3_webpack@5.68.0
-      mlly: 0.4.2
+      mlly: 0.4.3
       pathe: 0.2.0
       pify: 5.0.0
       postcss: 8.4.6
@@ -10079,25 +10079,25 @@ packages:
       vite: 2.7.10
     dev: true
 
-  /@vitejs/plugin-vue/2.0.1_vite@2.7.13+vue@3.2.26:
+  /@vitejs/plugin-vue/2.0.1_vite@2.8.1+vue@3.2.26:
     resolution: {integrity: sha512-wtdMnGVvys9K8tg+DxowU1ytTrdVveXr3LzdhaKakysgGXyrsfaeds2cDywtvujEASjWOwWL/OgWM+qoeM8Plg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
       vue: ^3.2.25
     dependencies:
-      vite: 2.7.13
+      vite: 2.8.1
       vue: 3.2.26
     dev: false
 
-  /@vitejs/plugin-vue/2.2.0_vite@2.8.0+vue@3.2.30:
+  /@vitejs/plugin-vue/2.2.0_vite@2.8.1+vue@3.2.30:
     resolution: {integrity: sha512-wXigM1EwN2G7rZcwG6kLk9ivvIMhx2363tCEvMBiXcTu5nePM/12hUPVzPb83Uugt6U+zom1gTpJopi/Ow/jwg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
       vue: ^3.2.25
     dependencies:
-      vite: 2.8.0
+      vite: 2.8.1
       vue: 3.2.30
     dev: true
 
@@ -12682,7 +12682,7 @@ packages:
       dotenv: 14.3.2
       gittar: 0.1.1
       jiti: 1.12.15
-      mlly: 0.4.2
+      mlly: 0.4.3
       pathe: 0.2.0
       rc9: 1.2.0
     dev: true
@@ -15020,6 +15020,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-android-arm64/0.14.21:
@@ -15028,7 +15029,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-64/0.13.15:
@@ -15036,6 +15036,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-darwin-64/0.14.21:
@@ -15044,7 +15045,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.13.15:
@@ -15052,6 +15052,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.14.21:
@@ -15060,7 +15061,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.13.15:
@@ -15068,6 +15068,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.14.21:
@@ -15076,7 +15077,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.13.15:
@@ -15084,6 +15084,7 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.14.21:
@@ -15092,7 +15093,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-32/0.13.15:
@@ -15100,6 +15100,7 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-32/0.14.21:
@@ -15108,7 +15109,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-64/0.13.15:
@@ -15116,6 +15116,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-64/0.14.21:
@@ -15124,7 +15125,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm/0.13.15:
@@ -15132,6 +15132,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-arm/0.14.21:
@@ -15140,7 +15141,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.13.15:
@@ -15148,6 +15148,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.14.21:
@@ -15156,7 +15157,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.13.15:
@@ -15164,6 +15164,7 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.14.21:
@@ -15172,7 +15173,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.13.15:
@@ -15180,6 +15180,7 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.14.21:
@@ -15188,7 +15189,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-riscv64/0.14.21:
@@ -15197,7 +15197,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-s390x/0.14.21:
@@ -15206,7 +15205,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-loader/2.18.0_webpack@5.68.0:
@@ -15228,6 +15226,7 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-netbsd-64/0.14.21:
@@ -15236,7 +15235,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.13.15:
@@ -15244,6 +15242,7 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.14.21:
@@ -15252,7 +15251,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-sunos-64/0.13.15:
@@ -15260,6 +15258,7 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-sunos-64/0.14.21:
@@ -15268,7 +15267,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-32/0.13.15:
@@ -15276,6 +15274,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-32/0.14.21:
@@ -15284,7 +15283,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-64/0.13.15:
@@ -15292,6 +15290,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-64/0.14.21:
@@ -15300,7 +15299,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.13.15:
@@ -15308,6 +15306,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.14.21:
@@ -15316,7 +15315,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild/0.11.23:
@@ -15347,6 +15345,7 @@ packages:
       esbuild-windows-32: 0.13.15
       esbuild-windows-64: 0.13.15
       esbuild-windows-arm64: 0.13.15
+    dev: true
 
   /esbuild/0.14.21:
     resolution: {integrity: sha512-7WEoNMBJdLN993dr9h0CpFHPRc3yFZD+EAVY9lg6syJJ12gc5fHq8d75QRExuhnMkT2DaRiIKFThRvDWP+fO+A==}
@@ -15373,7 +15372,6 @@ packages:
       esbuild-windows-32: 0.14.21
       esbuild-windows-64: 0.14.21
       esbuild-windows-arm64: 0.14.21
-    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -20756,8 +20754,8 @@ packages:
     resolution: {integrity: sha512-zMq5n3cOf4fOzA4WoeulxagbAgMChdev3MgP6K51k7M0u2whTXxupfIY4VVzws4vxkiWhwH1rVQcsw7zDGfRhA==}
     dev: true
 
-  /mlly/0.4.2:
-    resolution: {integrity: sha512-mjEgqNOHkDqzx+hIroJ7W8N9WzF+uRd9G/EIBdD8HdNx4sysQHZP1EUO/es5K9mZiutWZz34JG1MUsEbzmJ3kg==}
+  /mlly/0.4.3:
+    resolution: {integrity: sha512-xezyv7hnfFPuiDS3AiJuWs0OxlvooS++3L2lURvmh/1n7UG4O2Ehz9UkwWgg3wyLEPKGVfJLlr2DjjTCl9UJTg==}
     dev: true
 
   /mobx-react-lite/3.2.3_96b0034b8b6bfac1b4cc60715db17f02:
@@ -21052,8 +21050,8 @@ packages:
   /nice-try/1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
 
-  /nitropack-edge/0.0.0-27409588.24fb151:
-    resolution: {integrity: sha512-CMQl3YKstrYe9flRZ/c0f43F0gkbvWBVAiSJQaMoFJYdJcx9NSKCnD6nZFKUoUgHgLAY0iuWOYR8aaSsgK0euA==}
+  /nitropack-edge/0.0.0-27409638.e9a44f5:
+    resolution: {integrity: sha512-ybZvflpk2Xqb3GihmxIkgk9wV13GP+QeizU2uIHyWj9ZVbzkB0f1C8r8z/EwVcgtuVYWE+3K87EciemnnQLsPA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     dependencies:
@@ -21093,9 +21091,10 @@ packages:
       jiti: 1.12.15
       listhen: 0.2.6
       mime: 3.0.0
-      mlly: 0.4.2
+      mlly: 0.4.3
       mri: 1.2.0
       node-fetch: 3.2.0
+      object-hash: 2.2.0
       ohmyfetch: 0.4.15
       ora: 6.0.1
       p-debounce: 4.0.0
@@ -21413,8 +21412,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /nuxi-edge/3.0.0-27409509.e727bb4:
-    resolution: {integrity: sha512-YzbDuoNnDhAWgY2i3DYAEMePhWuEZZJLPo+/DTpoPlUSckCsVLhxyjZmVOF0tfUrs8fVd+hR3jQjbpANzdnoxw==}
+  /nuxi-edge/3.0.0-27409701.61188e1:
+    resolution: {integrity: sha512-JEm5jO0fokdjSuDU/Ygdiq3kpCZ1dSmfetPQJ/3zLH0WnOXzPYk/bMaX1FGgRMTBn/8gx+ECo34HPLfkNE6ofg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     optionalDependencies:
@@ -21452,17 +21451,17 @@ packages:
       - webpack-command
     dev: false
 
-  /nuxt3/3.0.0-27409509.e727bb4:
-    resolution: {integrity: sha512-Y2cIb+LY+xS4wK1AZJrlpD9N6HHgZsNSgFQQ78OnP8xqzzK0rO55/kNGKmQpmr03rksi8iRNwHPZGco+Wj+QRA==}
+  /nuxt3/3.0.0-27409701.61188e1:
+    resolution: {integrity: sha512-bjLkwXukvDtOn0LrDT5ZFnOL0Gx33j4gshynafWasxeB5AJsgGPbfoqYw6A8G6XIX5FyY9QF9ihnG4NL7UEXQg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     dependencies:
       '@nuxt/design': 0.1.5
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409509.e727bb4
-      '@nuxt/nitro': /@nuxt/nitro-edge/3.0.0-27409509.e727bb4
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27409509.e727bb4
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27409509.e727bb4_vue@3.2.30
-      '@nuxt/webpack-builder': /@nuxt/webpack-builder-edge/3.0.0-27409509.e727bb4_vue@3.2.30
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27409701.61188e1
+      '@nuxt/nitro': /@nuxt/nitro-edge/3.0.0-27409701.61188e1
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27409701.61188e1
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27409701.61188e1_vue@3.2.30
+      '@nuxt/webpack-builder': /@nuxt/webpack-builder-edge/3.0.0-27409701.61188e1_vue@3.2.30
       '@vue/reactivity': 3.2.30
       '@vue/shared': 3.2.30
       '@vueuse/head': 0.7.5_vue@3.2.30
@@ -21472,16 +21471,17 @@ packages:
       defu: 5.0.1
       destr: 1.1.0
       escape-string-regexp: 5.0.0
+      fs-extra: 10.0.0
       globby: 13.1.1
       h3: 0.3.9
       hash-sum: 2.0.0
       hookable: 5.1.1
       ignore: 5.2.0
       knitwork: 0.1.0
-      mlly: 0.4.2
+      mlly: 0.4.3
       murmurhash-es: 0.1.1
-      nitropack: /nitropack-edge/0.0.0-27409588.24fb151
-      nuxi: /nuxi-edge/3.0.0-27409509.e727bb4
+      nitropack: /nitropack-edge/0.0.0-27409638.e9a44f5
+      nuxi: /nuxi-edge/3.0.0-27409701.61188e1
       ohmyfetch: 0.4.15
       pathe: 0.2.0
       scule: 0.2.1
@@ -26000,6 +26000,7 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
+    dev: false
 
   /rollup/2.67.2:
     resolution: {integrity: sha512-hoEiBWwZtf1QdK3jZIq59L0FJj4Fiv4RplCO4pvCRC86qsoFurWB4hKQIjoRf3WvJmk5UZ9b0y5ton+62fC7Tw==}
@@ -26007,7 +26008,6 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /rsvp/4.8.5:
     resolution: {integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==}
@@ -28625,7 +28625,7 @@ packages:
       webpack-virtual-modules: 0.4.3
     dev: true
 
-  /unplugin/0.3.2_esbuild@0.14.21+vite@2.8.0:
+  /unplugin/0.3.2_esbuild@0.14.21+vite@2.8.1:
     resolution: {integrity: sha512-5d0DMYNKZU+S9eZUiBfw6Co32eRg8myUgBPoWSqG/wDFCUE/WznfSsJnZWi1P9l69x4uLJqt2qVq1xW/AsXFrw==}
     peerDependencies:
       esbuild: '>=0.13'
@@ -28643,7 +28643,7 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.14.21
-      vite: 2.8.0
+      vite: 2.8.1
       webpack-virtual-modules: 0.4.3
     dev: true
 
@@ -28989,18 +28989,18 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/0.6.0_vite@2.7.13:
+  /vite-plugin-svgr/0.6.0_vite@2.8.1:
     resolution: {integrity: sha512-+9eiWLzdlLK3ktnO7gzazMmR/KJyXTy7z6GeRbhv5HKEOFjLdNk3eB0qJaSpzJC3dr2pKWml0jAmxH7O6CcQtg==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.1.2
-      vite: 2.7.13
+      vite: 2.8.1
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-vue2/1.9.3_e3c37c0cfaae1b9f72ab6085139b0afb:
+  /vite-plugin-vue2/1.9.3_4963ddf36b776ba22e85f55e37054e5b:
     resolution: {integrity: sha512-0KhHSEeht0VHJtt4Z2cJ9bWBq4dP3HoXpapqAHV+f+cUa6KywYdOd+z6sSGLpuGjN8F9YinrFIo8dfVmMOpc8Q==}
     peerDependencies:
       vite: ^2.0.0-beta.23
@@ -29025,14 +29025,14 @@ packages:
       rollup: 2.67.1
       slash: 3.0.0
       source-map: 0.7.3
-      vite: 2.7.13
+      vite: 2.8.1
       vue-template-compiler: 2.6.14
       vue-template-es2015-compiler: 1.9.1
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /vite-tsconfig-paths/3.3.17_vite@2.7.13:
+  /vite-tsconfig-paths/3.3.17_vite@2.8.1:
     resolution: {integrity: sha512-wx+rfC53moVLxMBj2EApJZgY6HtvWUFVZ4dBxNGYBxSSqU6UaHdKlcOxrfGDxyTGtYEr9beWCryHn18C4EtZkg==}
     peerDependencies:
       vite: '>2.0.0-0'
@@ -29041,7 +29041,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.1
       tsconfig-paths: 3.12.0
-      vite: 2.7.13_sass@1.49.7
+      vite: 2.8.1_sass@1.49.7
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -29070,57 +29070,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite/2.7.13:
-    resolution: {integrity: sha512-Mq8et7f3aK0SgSxjDNfOAimZGW9XryfHRa/uV0jseQSilg+KhYDSoNb9h1rknOy6SuMkvNDLKCYAYYUMCE+IgQ==}
-    engines: {node: '>=12.2.0'}
-    hasBin: true
-    peerDependencies:
-      less: '*'
-      sass: '*'
-      stylus: '*'
-    peerDependenciesMeta:
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-    dependencies:
-      esbuild: 0.13.15
-      postcss: 8.4.6
-      resolve: 1.22.0
-      rollup: 2.67.1
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
-  /vite/2.7.13_sass@1.49.7:
-    resolution: {integrity: sha512-Mq8et7f3aK0SgSxjDNfOAimZGW9XryfHRa/uV0jseQSilg+KhYDSoNb9h1rknOy6SuMkvNDLKCYAYYUMCE+IgQ==}
-    engines: {node: '>=12.2.0'}
-    hasBin: true
-    peerDependencies:
-      less: '*'
-      sass: '*'
-      stylus: '*'
-    peerDependenciesMeta:
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-    dependencies:
-      esbuild: 0.13.15
-      postcss: 8.4.6
-      resolve: 1.22.0
-      rollup: 2.67.1
-      sass: 1.49.7
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: false
-
-  /vite/2.8.0:
-    resolution: {integrity: sha512-ed5rjyeysttuPJX/aKSA0gTB/8ZKLM5xF6FtEuKy1B9DiQbDNFMVMQxnb9JesgBPUMMIJxC8w5KZ/KNWLKFXoA==}
+  /vite/2.8.1:
+    resolution: {integrity: sha512-Typ8qjUnW0p53gBsJpisrKcZlEbUPZATja9BG6Z09QZjg9YrnEn/htkr/VH4WhnH7eNUQeSD+wKI1lHzQRWskw==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -29142,6 +29093,31 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /vite/2.8.1_sass@1.49.7:
+    resolution: {integrity: sha512-Typ8qjUnW0p53gBsJpisrKcZlEbUPZATja9BG6Z09QZjg9YrnEn/htkr/VH4WhnH7eNUQeSD+wKI1lHzQRWskw==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.14.21
+      postcss: 8.4.6
+      resolve: 1.22.0
+      rollup: 2.67.2
+      sass: 1.49.7
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /vm-browserify/1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
