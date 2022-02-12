@@ -65,7 +65,7 @@ importers:
       lodash: 4.17.21
       mobx: 6.3.13
       mobx-react-lite: 3.2.3
-      monaco-editor: 0.31.1
+      monaco-editor: 0.32.1
       playwright: 1.19.0
       react: 17.0.2
       react-dom: 17.0.2
@@ -82,7 +82,7 @@ importers:
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
       '@fortawesome/react-fontawesome': 0.1.16_f515edce028694561ceb456e3dba224c
-      '@monaco-editor/react': 4.3.1_60c53b327c300eabacb72e8cc15737d8
+      '@monaco-editor/react': 4.3.1_e62f1489d5efe674a41c3f8d6971effe
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
       '@previewjs/plugin-react': link:../frameworks/react
@@ -95,7 +95,7 @@ importers:
       framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
       mobx: 6.3.13
       mobx-react-lite: 3.2.3_96b0034b8b6bfac1b4cc60715db17f02
-      monaco-editor: 0.31.1
+      monaco-editor: 0.32.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
@@ -172,7 +172,7 @@ importers:
       http-terminator: 3.0.4
       jest: 27.5.1
       mobx: 6.3.13
-      monaco-editor: 0.31.1
+      monaco-editor: 0.32.1
       prettier: 2.5.1
       recrawl: 2.2.1
       rimraf: 3.0.2
@@ -198,7 +198,7 @@ importers:
       get-port: 5.1.1
       http-terminator: 3.0.4
       mobx: 6.3.13
-      monaco-editor: 0.31.1
+      monaco-editor: 0.32.1
       prettier: 2.5.1
       recrawl: 2.2.1
       rollup-plugin-friendly-type-imports: 1.0.2
@@ -5665,24 +5665,24 @@ packages:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
     dev: true
 
-  /@monaco-editor/loader/1.2.0_monaco-editor@0.31.1:
+  /@monaco-editor/loader/1.2.0_monaco-editor@0.32.1:
     resolution: {integrity: sha512-cJVCG/T/KxXgzYnjKqyAgsKDbH9mGLjcXxN6AmwumBwa2rVFkwvGcUj1RJtD0ko4XqLqJxwqsN/Z/KURB5f1OQ==}
     peerDependencies:
       monaco-editor: '>= 0.21.0 < 1'
     dependencies:
-      monaco-editor: 0.31.1
+      monaco-editor: 0.32.1
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react/4.3.1_60c53b327c300eabacb72e8cc15737d8:
+  /@monaco-editor/react/4.3.1_e62f1489d5efe674a41c3f8d6971effe:
     resolution: {integrity: sha512-f+0BK1PP/W5I50hHHmwf11+Ea92E5H1VZXs+wvKplWUWOfyMa1VVwqkJrXjRvbcqHL+XdIGYWhWNdi4McEvnZg==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0
       react-dom: ^16.8.0 || ^17.0.0
     dependencies:
-      '@monaco-editor/loader': 1.2.0_monaco-editor@0.31.1
-      monaco-editor: 0.31.1
+      '@monaco-editor/loader': 1.2.0_monaco-editor@0.32.1
+      monaco-editor: 0.32.1
       prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -20791,8 +20791,8 @@ packages:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
     dev: false
 
-  /monaco-editor/0.31.1:
-    resolution: {integrity: sha512-FYPwxGZAeP6mRRyrr5XTGHD9gRXVjy7GUzF4IPChnyt3fS5WrNxIkS8DNujWf6EQy0Zlzpxw8oTVE+mWI2/D1Q==}
+  /monaco-editor/0.32.1:
+    resolution: {integrity: sha512-LUt2wsUvQmEi2tfTOK+tjAPvt7eQ+K5C4rZPr6SeuyzjAuAHrIvlUloTcOiGjZW3fn3a/jFQCONrEJbNOaCqbA==}
     dev: false
 
   /move-concurrently/1.0.1:
@@ -28692,7 +28692,7 @@ packages:
       mri: 1.2.0
       ohmyfetch: 0.4.15
       ufo: 0.7.9
-      ws: 8.4.0
+      ws: 8.4.2
     transitivePeerDependencies:
       - bufferutil
       - supports-color
