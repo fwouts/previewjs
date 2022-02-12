@@ -63,7 +63,8 @@ jobs:
             git pull
             git stash pop
             git commit --allow-empty -am "bot: update screenshots"
-            if [ ! -z "$(git push origin ${{ github.head_ref }})" ]; then
+            if ! git push origin ${{ github.head_ref }}; then
+              # Try again as it may be a race condition.
               git pull --rebase
               git push origin ${{ github.head_ref }}
             fi
