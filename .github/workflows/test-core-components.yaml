@@ -62,8 +62,12 @@ jobs:
             git checkout ${{ github.head_ref }}
             git pull
             git stash pop
-            git commit -am "bot: update screenshots"
-            git push origin ${{ github.head_ref }}
+            git commit --allow-empty -am "bot: update screenshots"
+            if ! git push origin ${{ github.head_ref }}; then
+              # Try again as it may be a race condition.
+              git pull --rebase
+              git push origin ${{ github.head_ref }}
+            fi
           fi
         if: ${{ github.ref != 'refs/heads/main' }}
         shell: bash
