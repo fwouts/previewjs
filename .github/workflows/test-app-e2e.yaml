@@ -31,11 +31,26 @@ jobs:
       matrix:
         node-version: [16]
         os: [ubuntu-latest, macos-latest, windows-latest]
+        group: [0, 1, 2]
         include:
           - node-version: 12
             os: ubuntu-latest
+            group: 0
+          - node-version: 12
+            os: ubuntu-latest
+            group: 1
+          - node-version: 12
+            os: ubuntu-latest
+            group: 2
           - node-version: 14
             os: ubuntu-latest
+            group: 0
+          - node-version: 14
+            os: ubuntu-latest
+            group: 1
+          - node-version: 14
+            os: ubuntu-latest
+            group: 2
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -53,7 +68,10 @@ jobs:
         with:
           version: 6.24.4
           run_install: true
-      - run: pnpm turbo run e2e-test --scope="@previewjs/app" --include-dependencies
+      - run: pnpm turbo run e2e-test:group --scope="@previewjs/app" --include-dependencies
+        env:
+          GROUP_INDEX: ${{ matrix.group }}
+          GROUP_COUNT: 3
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
