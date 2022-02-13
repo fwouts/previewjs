@@ -10,8 +10,8 @@ packages:
   # Note: integrations/vscode uses Yarn because of https://github.com/microsoft/vscode-vsce/issues/421.
   - "loader"
   - "test-apps/*"
-  - "!test-apps/tmp*"
+  - "!test-apps/_tmp_*"
   - "smoke-test-apps/*"
-  - "!smoke-test-apps/tmp*"
+  - "!smoke-test-apps/_tmp_*"
   - "type-analyzer"
   - "type-analyzer-tests"
