@@ -2,11 +2,9 @@ import * as core from "@previewjs/core";
 import { init, SetupPreviewEnvironment } from "@previewjs/loader";
 import assertNever from "assert-never";
 import chalk from "chalk";
-import crypto from "crypto";
 import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
-import rimraf from "rimraf";
 import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
 import { TestCase, TestSuite } from "./test-case";
@@ -91,7 +89,7 @@ class TestRunner {
     const failedTestCases: string[] = [];
     for (const testCase of testSuite.testCases) {
       count += 1;
-      const success = await this.runTestCase(testSuite, testCase, this.port);
+      const success = await this.runTestCase(testCase, this.port);
       if (!success) {
         failedTestCases.push(testCase.description);
       }
@@ -103,11 +101,10 @@ class TestRunner {
   }
 
   private async runTestCase(
-    testSuite: TestSuite,
     testCase: TestCase,
     port: number
   ): Promise<boolean> {
-    const rootDirPath = await prepareTestDir(testSuite);
+    const rootDirPath = await prepareTestDir();
     const appDir = await prepareAppDir();
     const api = await init(core, this.setupEnvironment);
     const workspace = await api.getWorkspace({
@@ -163,6 +160,7 @@ class TestRunner {
       await context.close();
       await controller.stop();
       await workspace.dispose();
+      await fs.rm(rootDirPath, { recursive: true });
     }
 
     function prepareAppDir(): AppDir {
@@ -196,7 +194,7 @@ class TestRunner {
       return appDir;
     }
 
-    async function prepareTestDir(testSuite: TestSuite) {
+    async function prepareTestDir() {
       // Ensure we don't have a cache directory.
       const cacheDirPath = path.join(
         testCase.testDir,
@@ -206,34 +204,15 @@ class TestRunner {
       if (await fs.pathExists(cacheDirPath)) {
         await fs.remove(cacheDirPath);
       }
-      const rootDirPath = path.join(
-        testCase.testDir,
-        "..",
-        `tmp-${hash(testCase.testDir + " - " + testSuite.filePath)}`
+      const rootDirPath = await fs.mkdtemp(
+        path.join(testCase.testDir, "..", "tmp")
       );
-      await new Promise<void>((resolve, reject) =>
-        rimraf(rootDirPath, (error) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
-          }
-        })
-      );
+      await fs.mkdirp(rootDirPath);
       await sync(testCase.testDir, rootDirPath);
       return rootDirPath;
     }
   }
 }
-
-function hash(data: string) {
-  return crypto
-    .createHash("sha256")
-    .update(data, "binary")
-    .digest("hex")
-    .substring(0, 10);
-}
-
 export interface AppDir {
   rootPath: string;
   update(
