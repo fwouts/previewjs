@@ -2,6 +2,10 @@ import type {
   DetectedComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
+import {
+  createFileSystemReader,
+  createStackedReader,
+} from "@previewjs/core/vfs";
 import path from "path";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
@@ -39,11 +43,19 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       tsCompilerOptions: {
-        typeRoots: [path.join(previewDirPath, "types")],
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
       },
-      transformReader: (reader) => reader,
+      transformReader: (reader, rootDirPath) =>
+        createStackedReader([
+          reader,
+          createFileSystemReader({
+            mapping: {
+              from: path.join(previewDirPath, "types"),
+              to: path.join(rootDirPath, "node_modules", "@types"),
+            },
+          }),
+        ]),
       componentDetector: (program, filePaths) => {
         const components: ReactComponent[] = [];
         for (const filePath of filePaths) {
