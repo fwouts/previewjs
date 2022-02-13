@@ -48,6 +48,6 @@ jobs:
         with:
           version: 6.24.4
           run_install: true
-      # - run: yarn licenses-check
+      - run: pnpm check-licenses
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
       - run: pnpm turbo run test
