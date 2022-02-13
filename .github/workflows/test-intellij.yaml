@@ -19,7 +19,7 @@ on:
       - ".github/workflows/tests-intellij.yaml"
 
 jobs:
-  tests:
+  intellij-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

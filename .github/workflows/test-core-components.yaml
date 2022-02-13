@@ -25,7 +25,7 @@ on:
       - "!integrations/**"
 
 jobs:
-  tests:
+  core-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
