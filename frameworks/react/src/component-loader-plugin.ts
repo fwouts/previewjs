@@ -92,10 +92,6 @@ export async function update() {
       decorators: [],
     };
   });
-  const Decorated = decorators.reduce(
-    (component, decorator) => () => decorator(component),
-    Component
-  );
   const variants = (Component.__previewjs_variants || []).map(
     (variant) => {
       return {
@@ -118,7 +114,10 @@ export async function update() {
       variants,
       Component: (props) => {
         return <Wrapper>
-          <Decorated {...Component.args} {...props} />
+          {decorators.reduce(
+            (component, decorator) => () => decorator(component),
+            () => <Component {...Component.args} {...props} />
+          )()}
         </Wrapper>
       },
     },
