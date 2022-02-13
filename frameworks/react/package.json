@@ -9,7 +9,7 @@
   "sideEffects": false,
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
-    "prepare": "rimraf preview/types && shx mkdir -p preview/types/react && shx cp -r preview/node_modules/@types/react/* preview/types/react/",
+    "prepare": "rimraf preview/types && shx mkdir -p preview/types/react && shx cp -r preview/node_modules/@types/react/* preview/types/react/ && shx mkdir -p preview/types/prop-types && shx cp -r preview/node_modules/@types/prop-types/* preview/types/prop-types/",
     "build": "rimraf dist && tsc",
     "test": "jest"
   },

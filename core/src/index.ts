@@ -70,7 +70,7 @@ export async function createWorkspace({
     throw new Error(`Unable to detect @previewjs/core version.`);
   }
   if (frameworkPlugin.transformReader) {
-    reader = frameworkPlugin.transformReader(reader);
+    reader = frameworkPlugin.transformReader(reader, rootDirPath);
   }
   const typescriptAnalyzer = createTypescriptAnalyzer({
     reader,
