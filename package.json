@@ -6,6 +6,7 @@
   },
   "private": true,
   "scripts": {
+    "check-licenses": "ts-node scripts/check-licenses.ts",
     "release": "ts-node scripts/release.ts"
   },
   "devDependencies": {
@@ -13,9 +14,11 @@
     "@previewjs/core": "workspace:*",
     "@previewjs/loader": "workspace:*",
     "@types/inquirer": "8.2.0",
+    "@types/license-checker": "^25.0.3",
     "@types/node": "17.0.8",
     "execa": "5.1.1",
     "inquirer": "8.2.0",
+    "license-checker": "^25.0.1",
     "prettier": "2.5.1",
     "ts-node": "10.5.0",
     "turbo": "1.1.2",
