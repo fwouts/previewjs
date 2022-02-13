@@ -82,8 +82,8 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       );
       await sleep(2);
       await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
+      expect(await controller.errors.title.text()).toContain(
+        `Failed to resolve import "./missing.svg"`
       );
       expect(await controller.errors.suggestionLink.text()).toEqual(
         " Show me how to configure aliases"
@@ -337,8 +337,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       ).toContain(`  ╷
 4 │   text-align: center;
   │                     ^
-  ╵
-  src/App.scss 4:21  root stylesheet`);
+  ╵`);
       await appDir.update("src/App.scss", {
         kind: "edit",
         search: " BROKEN",
