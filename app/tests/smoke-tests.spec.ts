@@ -18,6 +18,7 @@ export const smokeTests = fs
           appName,
           `../smoke-test-apps/${appName}`,
           async ({ outputDirPath, appDir, controller }) => {
+            let time = Date.now();
             const candidates = [
               "src/App.tsx:App",
               "src/App.jsx:App",
@@ -43,16 +44,30 @@ export const smokeTests = fs
             if (!filePath || !componentName) {
               throw new Error(`Unable to find an entry point for ${appName}`);
             }
+            console.log(
+              `smoke-test find component: ${(Date.now() - time) / 1000}`
+            );
+            time = Date.now();
             await controller.show(
               `${path
                 .relative(appDir.rootPath, filePath)
                 .replace(/\\/g, "/")}:${componentName}`
             );
+            console.log(`smoke-test show: ${(Date.now() - time) / 1000}`);
+            time = Date.now();
             const iframe = await controller.previewIframe();
             await iframe.waitForSelector("#ready");
+            console.log(
+              `smoke-test wait #ready: ${(Date.now() - time) / 1000}`
+            );
+            time = Date.now();
             if (await controller.props.editor.visible()) {
               await controller.props.editor.isReady();
             }
+            console.log(
+              `smoke-test wait editor: ${(Date.now() - time) / 1000}`
+            );
+            time = Date.now();
             await controller.takeScreenshot(
               "#ready",
               path.join(
@@ -62,6 +77,7 @@ export const smokeTests = fs
                 `${appName}.png`
               )
             );
+            console.log(`smoke-test screenshot: ${(Date.now() - time) / 1000}`);
           }
         );
       },

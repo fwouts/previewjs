@@ -104,6 +104,7 @@ class TestRunner {
     testCase: TestCase,
     port: number
   ): Promise<boolean> {
+    let time = Date.now();
     const rootDirPath = await prepareTestDir();
     const appDir = await prepareAppDir();
     const api = await init(core, this.setupEnvironment);
@@ -112,9 +113,11 @@ class TestRunner {
       filePath: rootDirPath,
       logLevel: "warn",
     });
+    console.log(`runTestCase prepare: ${(Date.now() - time) / 1000}`);
     if (!workspace) {
       throw new Error(`Unable to create workspace: ${rootDirPath}`);
     }
+    time = Date.now();
     const context = await this.browser.newContext();
     const page = await context.newPage();
     if (process.env["DEBUG"] == "1") {
@@ -126,8 +129,11 @@ class TestRunner {
       page.on("pageerror", ({ message }) => console.log(message));
     }
     await page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT_MILLIS);
+    console.log(`runTestCase page open: ${(Date.now() - time) / 1000}`);
+    time = Date.now();
     const controller = new AppController(page, workspace, port);
     await controller.start();
+    console.log(`runTestCase controller start: ${(Date.now() - time) / 1000}`);
     try {
       console.log(chalk.gray(`▶️  ${testCase.description}`));
       const testCasePromise = testCase.run({
@@ -201,6 +207,7 @@ class TestRunner {
     }
 
     async function prepareTestDir() {
+      const time = Date.now();
       // Ensure we don't have a cache directory.
       const cacheDirPath = path.join(
         testCase.testDir,
@@ -217,6 +224,7 @@ class TestRunner {
       );
       await fs.mkdirp(rootDirPath);
       await sync(testCase.testDir, rootDirPath);
+      console.log(`prepare test dir: ${(Date.now() - time) / 1000}`);
       return rootDirPath;
     }
   }
