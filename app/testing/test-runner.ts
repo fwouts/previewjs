@@ -2,6 +2,7 @@ import * as core from "@previewjs/core";
 import { init, SetupPreviewEnvironment } from "@previewjs/loader";
 import assertNever from "assert-never";
 import chalk from "chalk";
+import crypto from "crypto";
 import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
@@ -14,17 +15,20 @@ const DEFAULT_PAGE_TIMEOUT_MILLIS = 60 * 1000;
 const TEST_CASE_TIMEOUT_MILLIS = 120 * 1000;
 
 export async function runTests({
+  browser,
   setupEnvironment,
   testSuites,
-  processArgs,
+  filters,
   outputDirPath,
+  port,
 }: {
+  browser: playwright.Browser;
   setupEnvironment: SetupPreviewEnvironment;
-  testSuites: Array<Promise<TestSuite>>;
-  processArgs: string[];
+  testSuites: TestSuite[];
+  filters: string[];
   outputDirPath: string;
-}): Promise<void> {
-  const filters = processArgs.slice(2);
+  port: number;
+}) {
   const matchesAtLeastOneFilter = (
     testSuiteDescription: string,
     testCaseDescription: string
@@ -44,76 +48,50 @@ export async function runTests({
     }
     return false;
   };
-  const testRunner = new TestRunner(setupEnvironment, outputDirPath);
-  await testRunner.start();
-  let testSuitesCount = 0;
+  const testRunner = new TestRunner(
+    browser,
+    setupEnvironment,
+    outputDirPath,
+    port
+  );
   let testCasesCount = 0;
-  let failedTestSuites = 0;
-  let totalDurationMillis = 0;
   const failedTests: string[] = [];
-  for (const testSuite of await Promise.all(testSuites)) {
+  for (const testSuite of await testSuites) {
     testSuite.testCases = testSuite.testCases.filter((testCase) =>
       matchesAtLeastOneFilter(testSuite.description, testCase.description)
     );
     if (testSuite.testCases.length === 0) {
       continue;
     }
-    testSuitesCount += 1;
-    const { count, failedTestCases, durationMillis } =
-      await testRunner.runTestSuite(testSuite);
-    totalDurationMillis += durationMillis;
+    const { count, failedTestCases } = await testRunner.runTestSuite(testSuite);
     testCasesCount += count;
     if (failedTestCases.length > 0) {
-      failedTestSuites += 1;
       failedTests.push(
         ...failedTestCases.map((name) => `${testSuite.description} - ${name}`)
       );
     }
   }
-  await testRunner.stop();
-  console.log(
-    `Test summary:\n${testSuitesCount} test suites run, ${failedTestSuites} failed.\n${testCasesCount} test cases run, ${
-      failedTests.length
-    } failed.\nTotal time: ${totalDurationMillis / 1000}s.`
-  );
-  if (failedTests.length > 0) {
-    console.error(`The following tests failed:`);
-    for (const name of failedTests) {
-      console.error(`• ${name}`);
-    }
-    process.exit(1);
-  }
-  process.exit(0);
+  return {
+    testCasesCount,
+    failedTests,
+  };
 }
 
 class TestRunner {
-  private browser!: playwright.Browser;
-
   constructor(
+    private readonly browser: playwright.Browser,
     private readonly setupEnvironment: SetupPreviewEnvironment,
-    private readonly outputDirPath: string
+    private readonly outputDirPath: string,
+    private readonly port: number
   ) {}
-
-  async start() {
-    const headless = process.env["HEADLESS"] !== "0";
-    this.browser = await playwright.chromium.launch({
-      headless,
-      devtools: !headless,
-    });
-  }
-
-  async stop() {
-    await this.browser.close();
-  }
 
   async runTestSuite(testSuite: TestSuite) {
     console.log(chalk.magenta(`📚 Test suite: ${testSuite.description}`));
     let count = 0;
-    const startTimestamp = Date.now();
     const failedTestCases: string[] = [];
     for (const testCase of testSuite.testCases) {
       count += 1;
-      const success = await this.runTestCase(testCase);
+      const success = await this.runTestCase(testSuite, testCase, this.port);
       if (!success) {
         failedTestCases.push(testCase.description);
       }
@@ -121,12 +99,15 @@ class TestRunner {
     return {
       count,
       failedTestCases,
-      durationMillis: Date.now() - startTimestamp,
     };
   }
 
-  private async runTestCase(testCase: TestCase): Promise<boolean> {
-    const rootDirPath = await prepareTestDir();
+  private async runTestCase(
+    testSuite: TestSuite,
+    testCase: TestCase,
+    port: number
+  ): Promise<boolean> {
+    const rootDirPath = await prepareTestDir(testSuite);
     const appDir = await prepareAppDir();
     const api = await init(core, this.setupEnvironment);
     const workspace = await api.getWorkspace({
@@ -148,7 +129,7 @@ class TestRunner {
       page.on("pageerror", ({ message }) => console.log(message));
     }
     await page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT_MILLIS);
-    const controller = new AppController(page, workspace);
+    const controller = new AppController(page, workspace, port);
     await controller.start();
     try {
       console.log(chalk.gray(`▶️  ${testCase.description}`));
@@ -215,7 +196,7 @@ class TestRunner {
       return appDir;
     }
 
-    async function prepareTestDir() {
+    async function prepareTestDir(testSuite: TestSuite) {
       // Ensure we don't have a cache directory.
       const cacheDirPath = path.join(
         testCase.testDir,
@@ -225,12 +206,32 @@ class TestRunner {
       if (await fs.pathExists(cacheDirPath)) {
         await fs.remove(cacheDirPath);
       }
-      const rootDirPath = path.join(testCase.testDir, "..", "tmp");
-      rimraf.sync(rootDirPath);
+      const rootDirPath = path.join(
+        testCase.testDir,
+        "..",
+        `tmp-${hash(testCase.testDir + " - " + testSuite.filePath)}`
+      );
+      await new Promise<void>((resolve, reject) =>
+        rimraf(rootDirPath, (error) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        })
+      );
       await sync(testCase.testDir, rootDirPath);
       return rootDirPath;
     }
   }
+}
+
+function hash(data: string) {
+  return crypto
+    .createHash("sha256")
+    .update(data, "binary")
+    .digest("hex")
+    .substring(0, 10);
 }
 
 export interface AppDir {

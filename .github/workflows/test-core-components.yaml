@@ -10,6 +10,7 @@ on:
       - main
     paths:
       - "**"
+      - ".github/workflows/test-core-components.yaml"
       - "!assets/**"
       - "!cli/**"
       - "!integrations/**"
@@ -18,6 +19,7 @@ on:
       - "*"
     paths:
       - "**"
+      - ".github/workflows/test-core-components.yaml"
       - "!assets/**"
       - "!cli/**"
       - "!integrations/**"
@@ -49,6 +51,8 @@ jobs:
       # - run: yarn licenses-check
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
       - run: pnpm turbo run test
+        env:
+          GROUP_COUNT: 3
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
