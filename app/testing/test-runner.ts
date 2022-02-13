@@ -5,7 +5,6 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
-import rimraf from "rimraf";
 import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
 import { TestCase, TestSuite } from "./test-case";
@@ -161,9 +160,13 @@ class TestRunner {
       await context.close();
       await controller.stop();
       await workspace.dispose();
-      await new Promise<void>((resolve, reject) =>
-        rimraf(rootDirPath, (error) => (error ? reject(error) : resolve()))
-      );
+      // Note: there seems to be a race condition where esbuild is spawned after
+      // the directory has been deleted, resulting in a crash.
+      // For now, we don't delete temporary directories.
+      //
+      // await new Promise<void>((resolve, reject) =>
+      //   rimraf(rootDirPath, (error) => (error ? reject(error) : resolve()))
+      // );
     }
 
     function prepareAppDir(): AppDir {
@@ -207,8 +210,10 @@ class TestRunner {
       if (await fs.pathExists(cacheDirPath)) {
         await fs.remove(cacheDirPath);
       }
+      const tempParentDirPath = path.join(testCase.testDir, "..", "_tmp_");
+      await fs.mkdirp(tempParentDirPath);
       const rootDirPath = await fs.mkdtemp(
-        path.join(testCase.testDir, "..", "tmp")
+        path.join(tempParentDirPath, "app-")
       );
       await fs.mkdirp(rootDirPath);
       await sync(testCase.testDir, rootDirPath);
