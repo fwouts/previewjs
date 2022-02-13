@@ -29,9 +29,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        group: [0, 1, 2, 3]
         node-version: [16]
         os: [ubuntu-latest, macos-latest, windows-latest]
+        group: [0, 1, 2, 3]
         include:
           - node-version: 12
             os: ubuntu-latest
