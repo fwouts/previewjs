@@ -50,11 +50,9 @@ jobs:
           run_install: true
       # - run: yarn licenses-check
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
-      - name: Get number of CPU cores
-        uses: SimenB/github-actions-cpu-cores@v1
       - run: pnpm turbo run test
         env:
-          GROUP_COUNT: ${{ steps.cpu-cores.outputs.count }}
+          GROUP_COUNT: 2
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
