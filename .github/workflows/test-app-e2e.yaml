@@ -90,7 +90,7 @@ jobs:
             git fetch
             git checkout ${{ github.head_ref }}
             git pull
-            git stash pop
+            git stash pop || echo "Conflict on git stash pop. Perhaps another Node version tried to update the same screenshot?"
             git commit --allow-empty -am "bot: update screenshots"
             if ! git push origin ${{ github.head_ref }}; then
               # Try again as it may be a race condition.
