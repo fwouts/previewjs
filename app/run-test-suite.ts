@@ -6,7 +6,7 @@ import testSuitesPromises from "./tests";
 
 async function main() {
   const headless = process.env["HEADLESS"] !== "0";
-  const groupCount = parseInt(process.env["GROUP_COUNT"] || "8");
+  const groupCount = parseInt(process.env["GROUP_COUNT"] || "10");
   const browser = await playwright.chromium.launch({
     headless,
     devtools: !headless,
