@@ -35,8 +35,28 @@ jobs:
         include:
           - node-version: 12
             os: ubuntu-latest
+            group: 0
+          - node-version: 12
+            os: ubuntu-latest
+            group: 1
+          - node-version: 12
+            os: ubuntu-latest
+            group: 2
+          - node-version: 12
+            os: ubuntu-latest
+            group: 3
           - node-version: 14
             os: ubuntu-latest
+            group: 0
+          - node-version: 14
+            os: ubuntu-latest
+            group: 1
+          - node-version: 14
+            os: ubuntu-latest
+            group: 2
+          - node-version: 14
+            os: ubuntu-latest
+            group: 3
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
