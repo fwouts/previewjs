@@ -1,14 +1,13 @@
+import PropTypes from "prop-types";
 import React from "react";
-import { Page } from "./Page";
 
-const Template = (args) => (
-  <div id="ready">
-    <Page {...args} />
-  </div>
-);
+const Template = (args) => <div id="ready">story: {args.text}</div>;
+Template.propTypes = {
+  text: PropTypes.string.isRequired,
+};
 
 export const App = Template.bind({});
-App.propTypes = Page.propTypes;
+App.propTypes = Template.propTypes;
 
 App.decorators = [
   (Story) => (
@@ -28,7 +27,7 @@ export default {
   component: App,
   decorators: [
     (Story) => (
-      <div style={{ padding: "3em" }}>
+      <div style={{ padding: "8px" }}>
         <Story />
       </div>
     ),
