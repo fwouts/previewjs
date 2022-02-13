@@ -21,9 +21,12 @@ export interface TestCase {
 
 export async function testSuite(
   description: string,
-  testFactory: (test: TestCreator) => void | Promise<void>
+  testFactory: (test: TestCreator) => void | Promise<void>,
+  filePath?: string | null
 ): Promise<TestSuite> {
-  const filePath = callerCallsite()?.getFileName();
+  if (!filePath) {
+    filePath = callerCallsite()?.getFileName();
+  }
   if (!filePath) {
     throw new Error(`Unable to detect caller file path`);
   }

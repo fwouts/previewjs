@@ -11,11 +11,12 @@ export class AppController {
 
   constructor(
     private readonly page: playwright.Page,
-    private readonly workspace: Workspace
+    private readonly workspace: Workspace,
+    readonly port: number
   ) {}
 
   async start() {
-    this.preview = await this.workspace.preview.start(async () => 8950);
+    this.preview = await this.workspace.preview.start(async () => this.port);
   }
 
   async stop() {
