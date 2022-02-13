@@ -19,7 +19,7 @@ on:
       - ".github/workflows/tests-vscode.yaml"
 
 jobs:
-  tests:
+  vscode-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

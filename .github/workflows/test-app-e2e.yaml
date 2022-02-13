@@ -1,0 +1,105 @@
+name: Test Preview.js app end-to-end
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**"
+      - ".github/workflows/test-core-components.yaml"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - "**"
+      - ".github/workflows/test-core-components.yaml"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
+
+jobs:
+  e2e-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        group: [0, 1, 2, 3]
+        node-version: [16]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - node-version: 12
+            os: ubuntu-latest
+            group: 0
+          - node-version: 12
+            os: ubuntu-latest
+            group: 1
+          - node-version: 12
+            os: ubuntu-latest
+            group: 2
+          - node-version: 12
+            os: ubuntu-latest
+            group: 3
+          - node-version: 14
+            os: ubuntu-latest
+            group: 0
+          - node-version: 14
+            os: ubuntu-latest
+            group: 1
+          - node-version: 14
+            os: ubuntu-latest
+            group: 2
+          - node-version: 14
+            os: ubuntu-latest
+            group: 3
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.24.4
+          run_install: true
+      - run: pnpm turbo run e2e-test:group --scope="@previewjs/app" --include-dependencies
+        env:
+          GROUP_INDEX: ${{ matrix.group }}
+          GROUP_COUNT: 4
+      - name: Update screenshots on non-main branches
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes detected."
+          else
+            git add app/tests/__screenshots__
+            git stash
+            git config --global user.name 'CI bot'
+            git config --global user.email 'fwouts@users.noreply.github.com'
+            git fetch
+            git checkout ${{ github.head_ref }}
+            git pull
+            git stash pop
+            git commit --allow-empty -am "bot: update screenshots"
+            if ! git push origin ${{ github.head_ref }}; then
+              # Try again as it may be a race condition.
+              git pull --rebase
+              git push origin ${{ github.head_ref }}
+            fi
+          fi
+        if: ${{ github.ref != 'refs/heads/main' }}
+        shell: bash
+      - name: Fail if screenshots have changed on main branch
+        run: git diff --exit-code
+        if: ${{ github.ref == 'refs/heads/main' }}
