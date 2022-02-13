@@ -5,6 +5,7 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
+import rimraf from "rimraf";
 import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
 import { TestCase, TestSuite } from "./test-case";
@@ -160,7 +161,9 @@ class TestRunner {
       await context.close();
       await controller.stop();
       await workspace.dispose();
-      await fs.rm(rootDirPath, { recursive: true });
+      await new Promise<void>((resolve, reject) =>
+        rimraf(rootDirPath, (error) => (error ? reject(error) : resolve()))
+      );
     }
 
     function prepareAppDir(): AppDir {
