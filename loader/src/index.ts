@@ -1,6 +1,6 @@
-import type * as core from "@previewjs/core";
-import { ApiRouter } from "@previewjs/core/router";
-import { TypescriptAnalyzer } from "@previewjs/core/ts-helpers";
+import type { FrameworkPluginFactory } from "@previewjs/core";
+import type { ApiRouter } from "@previewjs/core/router";
+import type { TypescriptAnalyzer } from "@previewjs/core/ts-helpers";
 import type { RequestHandler } from "express";
 
 // Initialise __non_webpack_require__ for non-webpack environments.
@@ -10,18 +10,13 @@ if (!global.__non_webpack_require__) {
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;
-  versionCode: string;
-  logLevel: LogLevel;
-  reader: core.vfs.Reader;
-  persistedStateManager?: core.PersistedStateManager;
 }) => Promise<PreviewEnvironment | null>;
 
 export type LogLevel = "silent" | "error" | "warn" | "info";
 
 export type PreviewEnvironment = {
-  frameworkPlugin: core.FrameworkPlugin;
+  frameworkPluginFactories?: FrameworkPluginFactory[];
   middlewares?: RequestHandler[];
-  reader?: core.vfs.Reader;
   onReady?(options: {
     router: ApiRouter;
     typescriptAnalyzer: TypescriptAnalyzer;

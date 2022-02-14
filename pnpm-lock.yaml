@@ -378,6 +378,7 @@ importers:
 
   loader:
     specifiers:
+      '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -390,6 +391,7 @@ importers:
       execa: 5.1.1
       fs-extra: 10.0.0
     devDependencies:
+      '@previewjs/config': link:../config
       '@previewjs/core': link:../core
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -25327,6 +25329,7 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
+    dev: false
 
   /rollup/2.67.2:
     resolution: {integrity: sha512-hoEiBWwZtf1QdK3jZIq59L0FJj4Fiv4RplCO4pvCRC86qsoFurWB4hKQIjoRf3WvJmk5UZ9b0y5ton+62fC7Tw==}
@@ -25334,7 +25337,6 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /rsvp/4.8.5:
     resolution: {integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==}
@@ -28439,7 +28441,7 @@ packages:
       esbuild: 0.13.15
       postcss: 8.4.6
       resolve: 1.22.0
-      rollup: 2.67.1
+      rollup: 2.67.2
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -28463,7 +28465,7 @@ packages:
       esbuild: 0.13.15
       postcss: 8.4.6
       resolve: 1.22.0
-      rollup: 2.67.1
+      rollup: 2.67.2
       sass: 1.49.7
     optionalDependencies:
       fsevents: 2.3.2
