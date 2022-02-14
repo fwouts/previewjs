@@ -18,7 +18,6 @@ import { ApiRouter } from "./router";
 import { createTypescriptAnalyzer, TypescriptAnalyzer } from "./ts-helpers";
 import { Reader } from "./vfs";
 export { PersistedStateManager } from "./persisted-state";
-export { extractPackageDependencies } from "./plugins/dependencies";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   AnalyzedComponent,
