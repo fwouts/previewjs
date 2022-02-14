@@ -2,6 +2,9 @@
   "extends": [
     "config:base"
   ],
+  "ignoreDeps": [
+    "font awesome"
+  ],
   "ignorePaths": [
     "smoke-test-apps/**",
     "test-apps/**"
