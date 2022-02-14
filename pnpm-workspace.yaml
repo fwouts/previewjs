@@ -9,6 +9,8 @@ packages:
   - "integrations/intellij/controller"
   # Note: integrations/vscode uses Yarn because of https://github.com/microsoft/vscode-vsce/issues/421.
   - "loader"
+  - "pro"
+  - "pro/client"
   - "test-apps/*"
   - "!test-apps/_tmp_*"
   - "smoke-test-apps/*"

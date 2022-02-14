@@ -24,6 +24,7 @@ export type PreviewEnvironment = {
   reader?: core.vfs.Reader;
   onReady?(options: {
     router: ApiRouter;
+    componentAnalyzer: core.ComponentAnalyzer;
     typescriptAnalyzer: TypescriptAnalyzer;
   }): Promise<void>;
 };
