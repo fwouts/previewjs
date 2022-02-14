@@ -67,9 +67,8 @@ export async function init(
           if (!previewEnv) {
             return null;
           }
-          let frameworkPlugin: core.FrameworkPlugin = await readConfig(
-            rootDirPath
-          ).frameworkPlugin;
+          let frameworkPlugin: core.FrameworkPlugin | undefined =
+            await readConfig(rootDirPath).frameworkPlugin;
           fallbackToDefault: if (!frameworkPlugin) {
             const dependencies = await extractPackageDependencies(rootDirPath);
             for (const candidate of previewEnv.frameworkPluginFactories || []) {
