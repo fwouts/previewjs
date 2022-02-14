@@ -2,10 +2,14 @@ import checker from "license-checker";
 import path from "path";
 import { inspect } from "util";
 
-const start = path.join(__dirname, "..");
+const starts = [
+  path.join(__dirname, "..", "app"),
+  path.join(__dirname, "..", "integrations", "intellij", "controller"),
+  path.join(__dirname, "..", "integrations", "vscode"),
+];
 
 async function main() {
-  const allPackages = await extractPackages(start, []);
+  const allPackages = await extractPackagesFromDirectories(starts, []);
   // Check that we don't get false negatives by missing packages.
   for (const packageName of [
     "@previewjs/app",
@@ -17,17 +21,23 @@ async function main() {
       throw new Error(`Expected to find package: ${packageName}`);
     }
   }
-  const incompatibleLicensePackages = await extractPackages(start, [
-    "Apache-2.0",
-    "BSD-2-Clause",
-    "BSD-3-Clause",
-    "CC-BY-4.0",
-    "ISC",
-    "MIT",
-    "MPL-2.0",
-  ]);
+  const incompatibleLicensePackages = await extractPackagesFromDirectories(
+    starts,
+    [
+      "0BSD",
+      "Apache-2.0",
+      "BSD-2-Clause",
+      "BSD-3-Clause",
+      "CC-BY-4.0",
+      "EPL-2.0",
+      "ISC",
+      "MIT",
+      "MPL-2.0",
+      "Python-2.0",
+    ]
+  );
   const nonPreviewJsPackages = incompatibleLicensePackages.filter(
-    ({ name }) => !name.startsWith("@previewjs/")
+    ({ name }) => name !== "previewjs" && !name.startsWith("@previewjs/")
   );
   if (nonPreviewJsPackages.length > 0) {
     throw new Error(
@@ -50,7 +60,17 @@ type PackageInfo = {
   licenses?: string | string[];
 };
 
-async function extractPackages(
+async function extractPackagesFromDirectories(
+  starts: string[],
+  excludeLicenses: string[]
+): Promise<PackageInfo[]> {
+  const packages = await Promise.all(
+    starts.map((start) => extractPackagesFromDirectory(start, excludeLicenses))
+  );
+  return packages.flat();
+}
+
+async function extractPackagesFromDirectory(
   start: string,
   excludeLicenses: string[]
 ): Promise<PackageInfo[]> {

@@ -10,6 +10,8 @@
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "dependencies": {
+    "@previewjs/app": "workspace:*",
+    "@previewjs/core": "workspace:*",
     "@previewjs/loader": "workspace:*",
     "commander": "8.3.0"
   },
