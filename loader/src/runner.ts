@@ -1,5 +1,7 @@
+import { readConfig } from "@previewjs/config";
 import type * as core from "@previewjs/core";
 import { LogLevel, SetupPreviewEnvironment } from ".";
+import { extractPackageDependencies } from "./dependencies";
 import { locking } from "./locking";
 
 export async function load({
@@ -61,19 +63,28 @@ export async function init(
         workspace = workspaces[rootDirPath] = await locking(async () => {
           const previewEnv = await setupEnvironment({
             rootDirPath,
-            versionCode,
-            logLevel,
-            reader,
           });
           if (!previewEnv) {
+            return null;
+          }
+          let frameworkPlugin: core.FrameworkPlugin | undefined =
+            await readConfig(rootDirPath).frameworkPlugin;
+          fallbackToDefault: if (!frameworkPlugin) {
+            const dependencies = await extractPackageDependencies(rootDirPath);
+            for (const candidate of previewEnv.frameworkPluginFactories || []) {
+              if (await candidate.isCompatible(dependencies)) {
+                frameworkPlugin = await candidate.create();
+                break fallbackToDefault;
+              }
+            }
             return null;
           }
           return await coreModule.createWorkspace({
             versionCode,
             logLevel,
             rootDirPath,
-            reader: previewEnv.reader || reader,
-            frameworkPlugin: previewEnv.frameworkPlugin,
+            reader,
+            frameworkPlugin,
             middlewares: previewEnv.middlewares || [],
             onReady: previewEnv.onReady?.bind(previewEnv),
           });
