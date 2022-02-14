@@ -67,7 +67,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
         ({ typescriptAnalyzer, getTypeAnalyzer }) =>
         (filePath, componentName) => {
           const program = typescriptAnalyzer.analyze([filePath]);
-          const typeResolver = getTypeAnalyzer(program, REACT_SPECIAL_TYPES);
+          const typeAnalyzer = getTypeAnalyzer(program, REACT_SPECIAL_TYPES);
           const component = extractReactComponents(program, filePath).find(
             (c) => c.name === componentName
           );
@@ -84,7 +84,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
             propTypes = detectPropTypes(sourceFile, component.name);
           }
           return analyzeReactComponent(
-            typeResolver,
+            typeAnalyzer,
             component,
             args,
             propTypes

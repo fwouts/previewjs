@@ -13,15 +13,15 @@ import ts from "typescript";
 import { ReactComponent } from ".";
 
 export function analyzeReactComponent(
-  typeResolver: TypeAnalyzer,
+  typeAnalyzer: TypeAnalyzer,
   component: ReactComponent,
   args: ts.Expression | null,
   propTypes: ts.Expression | null
 ): AnalyzedComponent {
-  let resolved = computePropsType(typeResolver, component.signature, propTypes);
+  let resolved = computePropsType(typeAnalyzer, component.signature, propTypes);
   let providedArgs = new Set<string>();
   if (args) {
-    const argsType = typeResolver.checker.getTypeAtLocation(args);
+    const argsType = typeAnalyzer.checker.getTypeAtLocation(args);
     providedArgs = new Set(argsType.getProperties().map((prop) => prop.name));
   }
   return {
@@ -33,7 +33,7 @@ export function analyzeReactComponent(
 }
 
 function computePropsType(
-  typeResolver: TypeAnalyzer,
+  typeAnalyzer: TypeAnalyzer,
   signature: ts.Signature,
   propTypes: ts.Expression | null
 ): {
@@ -41,13 +41,13 @@ function computePropsType(
   collected: CollectedTypes;
 } {
   if (propTypes) {
-    return computePropsTypeFromPropTypes(typeResolver, propTypes);
+    return computePropsTypeFromPropTypes(typeAnalyzer, propTypes);
   }
-  return computePropsTypeFromSignature(typeResolver, signature);
+  return computePropsTypeFromSignature(typeAnalyzer, signature);
 }
 
 function computePropsTypeFromSignature(
-  typeResolver: TypeAnalyzer,
+  typeAnalyzer: TypeAnalyzer,
   signature: ts.Signature
 ): {
   type: ValueType;
@@ -66,12 +66,12 @@ function computePropsTypeFromSignature(
       collected: {},
     };
   }
-  const type = typeResolver.checker.getTypeOfSymbolAtLocation(
+  const type = typeAnalyzer.checker.getTypeOfSymbolAtLocation(
     firstParam,
     firstParam.valueDeclaration
   );
   try {
-    let { type: propsType, collected } = typeResolver.resolveType(type);
+    let { type: propsType, collected } = typeAnalyzer.resolveType(type);
     [propsType] = resolveType(propsType, collected, []);
     stripUnusedProps: if (
       propsType.kind === "object" &&
@@ -102,7 +102,7 @@ function computePropsTypeFromSignature(
     return { type: propsType, collected };
   } catch (e) {
     console.warn(
-      `Unable to resolve props type for ${typeResolver.checker.typeToString(
+      `Unable to resolve props type for ${typeAnalyzer.checker.typeToString(
         type
       )}`,
       e
@@ -115,13 +115,13 @@ function computePropsTypeFromSignature(
 }
 
 function computePropsTypeFromPropTypes(
-  typeResolver: TypeAnalyzer,
+  typeAnalyzer: TypeAnalyzer,
   propTypes: ts.Expression
 ): {
   type: ValueType;
   collected: CollectedTypes;
 } {
-  const type = typeResolver.checker.getTypeAtLocation(propTypes);
+  const type = typeAnalyzer.checker.getTypeAtLocation(propTypes);
   const fields: Record<string, ValueType> = {};
   let collected: CollectedTypes = {};
   for (const property of type.getProperties()) {
@@ -129,10 +129,10 @@ function computePropsTypeFromPropTypes(
       if (!property.valueDeclaration) {
         return UNKNOWN_TYPE;
       }
-      const propertyType = typeResolver.checker.getTypeAtLocation(
+      const propertyType = typeAnalyzer.checker.getTypeAtLocation(
         property.valueDeclaration
       );
-      const typeArguments = typeResolver.resolveTypeArguments(propertyType);
+      const typeArguments = typeAnalyzer.resolveTypeArguments(propertyType);
       const fieldType = typeArguments.types[0];
       if (fieldType) {
         collected = {

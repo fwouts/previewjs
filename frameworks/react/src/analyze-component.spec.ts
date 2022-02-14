@@ -546,14 +546,14 @@ A.propTypes = {
       throw new Error(`Component ${componentName} not found`);
     }
     const sourceFile = program.getSourceFile(MAIN_FILE)!;
-    const typeResolver = createTypeAnalyzer(
+    const typeAnalyzer = createTypeAnalyzer(
       ROOT_DIR_PATH,
       program,
       {},
       REACT_SPECIAL_TYPES
     );
     return analyzeReactComponent(
-      typeResolver,
+      typeAnalyzer,
       component,
       detectArgs(sourceFile, component.name),
       detectPropTypes(sourceFile, component.name)

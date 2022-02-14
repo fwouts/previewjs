@@ -1727,7 +1727,7 @@ declare module "my-module" {
         content
       );
     }
-    const typeResolver = createTypeAnalyzer(
+    const typeAnalyzer = createTypeAnalyzer(
       rootDirPath,
       typescriptAnalyzer.analyze([mainSourceFilePath]),
       {},
@@ -1736,13 +1736,13 @@ declare module "my-module" {
         ComponentType: functionType(NODE_TYPE),
       }
     );
-    const sourceFile = typeResolver.sourceFile(mainSourceFilePath);
+    const sourceFile = typeAnalyzer.sourceFile(mainSourceFilePath);
     if (!sourceFile) {
       throw new Error(`No source file found`);
     }
     const typeNode = getTypeNodeByName(sourceFile, name);
-    const type = typeResolver.checker.getTypeAtLocation(typeNode);
-    const resolved = typeResolver.resolveType(type);
+    const type = typeAnalyzer.checker.getTypeAtLocation(typeNode);
+    const resolved = typeAnalyzer.resolveType(type);
     return [resolved.type, resolved.collected];
   }
 });
