@@ -1,39 +1,22 @@
-import { ComponentDetector } from "@previewjs/core";
-import { createFileSystemReader } from "@previewjs/core/vfs";
 import { PreviewEnvironment, SetupPreviewEnvironment } from "@previewjs/loader";
-import { ReactComponent } from "@previewjs/plugin-react";
+import { reactFrameworkPlugin } from "@previewjs/plugin-react";
+import { vue2FrameworkPlugin } from "@previewjs/plugin-vue2";
+import { vue3FrameworkPlugin } from "@previewjs/plugin-vue3";
 import express from "express";
 import path from "path";
 import { analyzeFile } from "./actions/analyze-file";
 import { analyzeProject } from "./actions/analyze-project";
-import { AnalyzerPlugin } from "./analysis/analyzer-plugin";
-import { reactAnalyzerPlugin } from "./analysis/react";
-import { vue3AnalyzerPlugin } from "./analysis/vue3";
 import { AnalyzeFileEndpoint, AnalyzeProjectEndpoint } from "./api/endpoints";
-import { loadFrameworkPlugin } from "./load-plugin";
-import { CollectedTypes } from "./types/analysis/definitions";
 
 const setup: SetupPreviewEnvironment = async ({
   rootDirPath,
-  reader,
 }): Promise<PreviewEnvironment | null> => {
-  reader ||= createFileSystemReader();
-  const collected: CollectedTypes = {};
-  const frameworkPlugin = await loadFrameworkPlugin(rootDirPath);
-  if (!frameworkPlugin) {
-    return null;
-  }
-  let analyzerPlugin: AnalyzerPlugin | null = null;
-  if (frameworkPlugin.name === "@previewjs/plugin-react") {
-    analyzerPlugin = reactAnalyzerPlugin(
-      frameworkPlugin.componentDetector as ComponentDetector<ReactComponent>
-    );
-  } else if (frameworkPlugin.name === "@previewjs/plugin-vue3") {
-    analyzerPlugin = vue3AnalyzerPlugin(frameworkPlugin.componentDetector);
-  }
   return {
-    frameworkPlugin,
-    reader: analyzerPlugin?.provideReader(reader) || reader,
+    frameworkPluginFactories: [
+      reactFrameworkPlugin,
+      vue2FrameworkPlugin,
+      vue3FrameworkPlugin,
+    ],
     middlewares: [
       express.static(
         path.join(

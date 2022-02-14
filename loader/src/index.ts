@@ -1,4 +1,7 @@
-import type { FrameworkPluginFactory } from "@previewjs/core";
+import type {
+  ComponentAnalyzer,
+  FrameworkPluginFactory,
+} from "@previewjs/core";
 import type { ApiRouter } from "@previewjs/core/router";
 import type { TypescriptAnalyzer } from "@previewjs/core/ts-helpers";
 import type { RequestHandler } from "express";
@@ -19,7 +22,7 @@ export type PreviewEnvironment = {
   middlewares?: RequestHandler[];
   onReady?(options: {
     router: ApiRouter;
-    componentAnalyzer: core.ComponentAnalyzer;
+    componentAnalyzer: ComponentAnalyzer;
     typescriptAnalyzer: TypescriptAnalyzer;
   }): Promise<void>;
 };
