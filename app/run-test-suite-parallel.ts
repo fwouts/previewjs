@@ -11,7 +11,7 @@ async function main() {
   const processes: execa.ExecaChildProcess[] = [];
   for (let i = 0; i < groupCount; i++) {
     processes.push(
-      execa.command("pnpm e2e-test:group", {
+      execa("pnpm", ["e2e-test:group", ...process.argv.slice(2)], {
         env: {
           ...process.env,
           CHROMIUM_WS_ENDPOINT: browser.wsEndpoint(),
