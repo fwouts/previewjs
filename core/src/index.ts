@@ -48,9 +48,11 @@ export async function createWorkspace({
   reader: Reader;
   persistedStateManager?: PersistedStateManager;
   onReady?(options: {
+    reader: Reader;
     router: ApiRouter;
     componentAnalyzer: ComponentAnalyzer | null;
     typescriptAnalyzer: TypescriptAnalyzer;
+    workspace: Workspace;
   }): Promise<void>;
 }): Promise<Workspace | null> {
   let cacheDirPath: string;
@@ -208,9 +210,11 @@ export async function createWorkspace({
   };
   if (onReady) {
     await onReady({
+      reader,
       router,
       componentAnalyzer,
       typescriptAnalyzer,
+      workspace,
     });
   }
   return workspace;

@@ -29,7 +29,6 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "rimraf ../core/client && vite build",
     "serve": "vite preview",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src/"
   },

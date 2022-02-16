@@ -1,4 +1,4 @@
-import { DetectedComponent } from "@previewjs/core";
+import { Workspace } from "@previewjs/core";
 import { Reader } from "@previewjs/core/vfs";
 import path from "path";
 
@@ -7,20 +7,20 @@ const JS_EXTENSIONS = new Set([".js", ".jsx", ".ts", ".tsx"]);
 export async function analyzeFile(options: {
   rootDirPath: string;
   relativeFilePath: string;
-  detectComponents: (filePath: string) => DetectedComponent[];
+  workspace: Workspace;
   reader: Reader;
 }) {
   {
     const filePath = path.join(options.rootDirPath, options.relativeFilePath);
-    const components = options
-      .detectComponents(filePath)
-      .map(({ name, exported }) => ({
+    const components = (await options.workspace.detectComponents(filePath)).map(
+      ({ componentName, exported }) => ({
         relativeFilePath: options.relativeFilePath.replace(/\\/g, "/"),
-        key: name,
-        label: name,
-        componentName: name,
+        key: componentName,
+        label: componentName,
+        componentName,
         exported,
-      }));
+      })
+    );
     const fileName = path.basename(filePath);
     const fileNameBase = fileName.substr(
       0,
@@ -50,14 +50,13 @@ export async function analyzeFile(options: {
             entry.name.length - ext.length
           );
           components.push(
-            ...options
-              .detectComponents(siblingFilePath)
+            ...(await options.workspace.detectComponents(siblingFilePath))
               .filter((c) => c.exported)
               .map((c) => ({
                 relativeFilePath: relativeSiblingFilePath.replace(/\\/g, "/"),
-                key: `${suffix}/${c.name}`,
-                label: `${suffix}:${c.name}`,
-                componentName: c.name,
+                key: `${suffix}/${c.componentName}`,
+                label: `${suffix}:${c.componentName}`,
+                componentName: c.componentName,
                 exported: true,
               }))
           );

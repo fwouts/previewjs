@@ -1,9 +1,11 @@
 import type {
   ComponentAnalyzer,
   FrameworkPluginFactory,
+  Workspace,
 } from "@previewjs/core";
 import type { ApiRouter } from "@previewjs/core/router";
 import type { TypescriptAnalyzer } from "@previewjs/core/ts-helpers";
+import type { Reader } from "@previewjs/core/vfs";
 import type { RequestHandler } from "express";
 
 // Initialise __non_webpack_require__ for non-webpack environments.
@@ -21,9 +23,11 @@ export type PreviewEnvironment = {
   frameworkPluginFactories?: FrameworkPluginFactory[];
   middlewares?: RequestHandler[];
   onReady?(options: {
+    reader: Reader;
     router: ApiRouter;
     componentAnalyzer: ComponentAnalyzer;
     typescriptAnalyzer: TypescriptAnalyzer;
+    workspace: Workspace;
   }): Promise<void>;
 };
 

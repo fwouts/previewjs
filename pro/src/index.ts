@@ -25,19 +25,19 @@ const setup: SetupPreviewEnvironment = async ({
         )
       ),
     ],
-    onReady: async ({ router, componentAnalyzer, typescriptAnalyzer }) => {
+    onReady: async ({
+      reader,
+      router,
+      componentAnalyzer,
+      typescriptAnalyzer,
+      workspace,
+    }) => {
       router.onRequest(AnalyzeFileEndpoint, async ({ relativeFilePath }) => ({
         components: await analyzeFile({
           reader,
           rootDirPath,
           relativeFilePath,
-          detectComponents: (filePath) => {
-            const program = typescriptAnalyzer?.analyze([filePath]);
-            if (!program) {
-              return [];
-            }
-            return frameworkPlugin.componentDetector(program, [filePath]);
-          },
+          workspace,
         }),
       }));
       router.onRequest(AnalyzeProjectEndpoint, async ({ forceRefresh }) =>
