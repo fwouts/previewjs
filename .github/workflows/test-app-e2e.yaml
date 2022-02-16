@@ -72,6 +72,13 @@ jobs:
         env:
           GROUP_INDEX: ${{ matrix.group }}
           GROUP_COUNT: 3
+      - name: Archive failure screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: failure-screenshots
+          path: |
+            app/__failures__
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
