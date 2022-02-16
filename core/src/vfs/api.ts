@@ -2,6 +2,7 @@ export interface Reader {
   listeners: {
     add(listener: ReaderListener): void;
     remove(listener: ReaderListener): void;
+    onChange(): Promise<void>;
   };
   read(filePath: string): Promise<Entry | null>;
   readSync(filePath: string): EntrySync | null;

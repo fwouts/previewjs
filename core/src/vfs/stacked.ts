@@ -3,7 +3,11 @@ import { Directory, DirectorySync, Entry, EntrySync, Reader } from "./api";
 import { ReaderListeners } from "./listeners";
 
 export class StackedReader implements Reader {
-  readonly listeners = new ReaderListeners();
+  readonly listeners = new ReaderListeners(async () => {
+    for (const reader of this.readers) {
+      await reader.listeners.onChange();
+    }
+  });
 
   private readonly asReaderListener: ReaderListener;
 

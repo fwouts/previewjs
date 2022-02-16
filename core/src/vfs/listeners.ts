@@ -1,24 +1,18 @@
-import { action, computed, makeObservable, observable } from "mobx";
 import { ReaderListener, ReaderListenerInfo } from "./api";
 
 export class ReaderListeners {
   readonly listeners = new Set<ReaderListener>();
 
-  constructor() {
-    makeObservable(this, {
-      listeners: observable.shallow,
-      observedFilePaths: computed,
-      add: action,
-      remove: action,
-    });
-  }
+  constructor(readonly onChange: () => Promise<void>) {}
 
   add(listener: ReaderListener) {
     this.listeners.add(listener);
+    this.onChange();
   }
 
   remove(listener: ReaderListener) {
     this.listeners.delete(listener);
+    this.onChange();
   }
 
   get observedFilePaths(): Set<string> {

@@ -14,7 +14,7 @@ import { ReaderListeners } from "./listeners";
 
 const utf8Encoder = new TextEncoder();
 export class MemoryReader implements Reader, Writer {
-  readonly listeners = new ReaderListeners();
+  readonly listeners = new ReaderListeners(async () => {});
 
   private files: { [filePath: string]: MemoryFile } = {};
 

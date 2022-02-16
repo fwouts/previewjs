@@ -26,7 +26,9 @@ describe("extractReactComponents", () => {
       rootDirPath: path.join(__dirname, "virtual"),
       reader: createStackedReader([
         memoryReader,
-        createFileSystemReader(), // required for TypeScript libs, e.g. Promise
+        createFileSystemReader({
+          watch: false,
+        }), // required for TypeScript libs, e.g. Promise
       ]),
       tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
     });

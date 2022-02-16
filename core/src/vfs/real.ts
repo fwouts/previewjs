@@ -1,6 +1,5 @@
 import chokidar from "chokidar";
 import fs from "fs-extra";
-import { autorun } from "mobx";
 import path from "path";
 import {
   Directory,
@@ -16,15 +15,13 @@ import { ReaderListeners } from "./listeners";
 export class FsReader implements Reader {
   private watcher: chokidar.FSWatcher | null = null;
   private watchedPaths = new Set<string>();
+  private locked: Promise<void> | null = null;
 
-  readonly listeners = new ReaderListeners();
-
-  constructor(
-    private readonly options: {
-      mapping: { from: string; to: string };
+  readonly listeners = new ReaderListeners(async () => {
+    if (!this.options.watch) {
+      return;
     }
-  ) {
-    autorun(() => {
+    await this.locking(async () => {
       const observedPaths = this.listeners.observedFilePaths;
       // Ideally we should apply the reverse mapping
       // (observing "from" path when a listener asks to
@@ -32,7 +29,7 @@ export class FsReader implements Reader {
       // in practice.
       if (observedPaths.size === 0) {
         if (this.watcher) {
-          this.watcher.close().catch(console.error);
+          await this.watcher.close();
           this.watcher = null;
         }
       } else if (this.watcher) {
@@ -57,7 +54,27 @@ export class FsReader implements Reader {
       }
       this.watchedPaths = observedPaths;
     });
+  });
+
+  private async locking<T>(f: () => Promise<T>): Promise<T> {
+    while (this.locked) {
+      await this.locked;
+    }
+    const promise = f();
+    this.locked = promise
+      .catch(() => null)
+      .then(() => {
+        this.locked = null;
+      });
+    return promise;
   }
+
+  constructor(
+    private readonly options: {
+      mapping: { from: string; to: string };
+      watch: boolean;
+    }
+  ) {}
 
   async read(filePath: string): Promise<Entry | null> {
     const realPath = this.realPath(filePath);

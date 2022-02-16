@@ -60,12 +60,14 @@ export class Previewer {
             "renderer"
           ),
         },
+        watch: false,
       }),
       createFileSystemReader({
         mapping: {
           from: options.previewDirPath,
           to: options.rootDirPath,
         },
+        watch: false,
       }),
     ]);
   }
