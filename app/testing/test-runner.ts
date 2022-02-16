@@ -37,7 +37,7 @@ export async function runTests({
     for (const filter of filters) {
       const [filterTestSuite, filterTestCase] = filter.split(":");
       if (
-        filterTestSuite &&
+        filterTestSuite !== undefined &&
         testSuiteDescription.includes(filterTestSuite) &&
         (!filterTestCase || testCaseDescription.includes(filterTestCase))
       ) {
