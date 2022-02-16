@@ -5,6 +5,7 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
+import { inspect } from "util";
 import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
 import { TestCase, TestSuite } from "./test-case";
@@ -89,7 +90,7 @@ class TestRunner {
     const failedTestCases: string[] = [];
     for (const testCase of testSuite.testCases) {
       count += 1;
-      const success = await this.runTestCase(testCase, this.port);
+      const success = await this.runTestCase(testSuite, testCase, this.port);
       if (!success) {
         failedTestCases.push(testCase.description);
       }
@@ -101,6 +102,7 @@ class TestRunner {
   }
 
   private async runTestCase(
+    testSuite: TestSuite,
     testCase: TestCase,
     port: number
   ): Promise<boolean> {
@@ -117,14 +119,13 @@ class TestRunner {
     }
     const context = await this.browser.newContext();
     const page = await context.newPage();
-    if (process.env["DEBUG"] == "1") {
-      page.on("console", (message) =>
-        console.log(
-          `${message.type().substr(0, 3).toUpperCase()} ${message.text()}`
-        )
-      );
-      page.on("pageerror", ({ message }) => console.log(message));
-    }
+    let browserLogs: string[] = [];
+    page.on("console", (message) =>
+      browserLogs.push(
+        `${message.type().substr(0, 3).toUpperCase()} ${message.text()}`
+      )
+    );
+    page.on("pageerror", (exception) => browserLogs.push(inspect(exception)));
     await page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT_MILLIS);
     const controller = new AppController(page, workspace, port);
     await controller.start();
@@ -154,6 +155,15 @@ class TestRunner {
     } catch (e) {
       console.log(chalk.red(`❌ ${testCase.description}`));
       console.error(e);
+      console.error(`Browser logs:\n${browserLogs.join("\n")}`);
+      await page.screenshot({
+        path: path.join(
+          __dirname,
+          "..",
+          "__failures__",
+          `${testSuite.description} - ${testCase.description}.png`
+        ),
+      });
       return false;
     } finally {
       await page.close();
