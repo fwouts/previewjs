@@ -42,6 +42,7 @@ async function load({
     );
     await updateComponent(update);
   } catch (error: any) {
+    console.error(error);
     sendMessageFromPreview({
       kind: "rendering-error",
       message: error.stack || error.message,
@@ -62,7 +63,7 @@ window.addEventListener(
         </div>`;
         break;
       case "render":
-        load(data);
+        load(data).catch(console.error);
         break;
     }
   }
