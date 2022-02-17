@@ -180,9 +180,22 @@ class TestRunner {
     }
 
     function prepareAppDir(): AppDir {
+      let lastDiskWriteMillis = 0;
       const appDir: AppDir = {
         rootPath: rootDirPath,
         update: async (f, content, { inMemoryOnly } = {}) => {
+          if (!inMemoryOnly) {
+            // In order to make sure that chokidar doesn't
+            // mistakenly merge events, resulting in flaky tests
+            // when they run very fast, force some time to elapse.
+            const now = Date.now();
+            if (lastDiskWriteMillis > now - 500) {
+              await new Promise((resolve) =>
+                setTimeout(resolve, lastDiskWriteMillis + 500 - now)
+              );
+            }
+            lastDiskWriteMillis = Date.now();
+          }
           const filePath = path.join(rootDirPath, f);
           let text: string;
           switch (content.kind) {
