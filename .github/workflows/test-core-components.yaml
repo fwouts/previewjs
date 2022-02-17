@@ -1,0 +1,53 @@
+name: Test Preview.js core components
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**"
+      - ".github/workflows/test-core-components.yaml"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - "**"
+      - ".github/workflows/test-core-components.yaml"
+      - "!assets/**"
+      - "!cli/**"
+      - "!integrations/**"
+
+jobs:
+  core-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [16]
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.24.4
+          run_install: true
+      - run: pnpm check-licenses
+      - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
+      - run: pnpm turbo run test
