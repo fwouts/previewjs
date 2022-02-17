@@ -141,7 +141,7 @@ export async function createWorkspace({
       },
       ...middlewares,
     ],
-    onFileChanged: async (filePath) => {
+    onFileChanged: (filePath) => {
       const relativeFilePath = path.relative(rootDirPath, filePath);
       for (const name of Object.keys(collected)) {
         if (name.startsWith(`${relativeFilePath}:`)) {
