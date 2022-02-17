@@ -5,7 +5,7 @@ async function main() {
   const headless = process.env["HEADLESS"] !== "0";
   const browser = await playwright.chromium.launchServer({
     headless,
-    devtools: !headless,
+    devtools: true,
   });
   const groupCount = parseInt(process.env["GROUP_COUNT"] || "1");
   const processes: execa.ExecaChildProcess[] = [];
