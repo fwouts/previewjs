@@ -35,6 +35,7 @@ export class FsReader implements Reader {
             virtual: false,
           });
         });
+        console.error("watcher", watcher.options);
         return async () => {
           await watcher.close();
         };
