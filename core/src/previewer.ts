@@ -249,9 +249,12 @@ export class Previewer {
   private readonly onFileChangeListener = {
     onChange: (filePath: string, info: ReaderListenerInfo) => {
       filePath = path.resolve(filePath);
+      const wrapperPath = this.viteManager?.getConfig().wrapper?.path;
       if (
         !info.virtual &&
-        FILES_REQUIRING_RESTART.has(path.basename(filePath))
+        (FILES_REQUIRING_RESTART.has(path.basename(filePath)) ||
+          (wrapperPath &&
+            filePath === path.resolve(this.options.rootDirPath, wrapperPath)))
       ) {
         if (this.status.kind === "starting" || this.status.kind === "started") {
           const port = this.status.port;
