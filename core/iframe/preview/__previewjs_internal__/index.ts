@@ -58,7 +58,7 @@ window.addEventListener(
         </div>`;
         break;
       case "render":
-        load(data);
+        load(data).catch(console.error);
         break;
     }
   }

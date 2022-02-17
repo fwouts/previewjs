@@ -1,7 +1,11 @@
-import { PREVIEW_CONFIG_NAME, readConfig } from "@previewjs/config";
+import {
+  PreviewConfig,
+  PREVIEW_CONFIG_NAME,
+  readConfig,
+} from "@previewjs/config";
 import assertNever from "assert-never";
 import express from "express";
-import { pathExists } from "fs-extra";
+import { pathExistsSync } from "fs-extra";
 import path from "path";
 import * as vite from "vite";
 import { FrameworkPlugin } from "./plugins/framework";
@@ -36,6 +40,8 @@ export class Previewer {
   private viteManager: ViteManager | null = null;
   private status: PreviewerStatus = { kind: "stopped" };
   private shutdownCheckInterval: NodeJS.Timeout | null = null;
+  private disposeObserver: (() => Promise<void>) | null = null;
+  private config: PreviewConfig | null = null;
 
   constructor(
     private readonly options: {
@@ -60,12 +66,14 @@ export class Previewer {
             "renderer"
           ),
         },
+        watch: false,
       }),
       createFileSystemReader({
         mapping: {
           from: options.previewDirPath,
           to: options.rootDirPath,
         },
+        watch: false,
       }),
     ]);
   }
@@ -123,7 +131,7 @@ export class Previewer {
         // PostCSS requires the current directory to change because it relies
         // on the `import-cwd` package to resolve plugins.
         process.chdir(this.options.rootDirPath);
-        const config = await this.refreshConfig();
+        this.config = await readConfig(this.options.rootDirPath);
         this.appServer = new Server({
           middlewares: [
             ...(this.options.middlewares || []),
@@ -132,6 +140,11 @@ export class Previewer {
             },
           ],
         });
+        if (this.transformingReader.observe) {
+          this.disposeObserver = await this.transformingReader.observe(
+            this.options.rootDirPath
+          );
+        }
         this.transformingReader.listeners.add(this.onFileChangeListener);
         this.viteManager = new ViteManager({
           rootDirPath: this.options.rootDirPath,
@@ -141,7 +154,7 @@ export class Previewer {
           ),
           reader: this.transformingReader,
           cacheDir: path.join(this.options.cacheDirPath, "vite"),
-          config,
+          config: this.configWithWrapper(this.config),
           logLevel: this.options.logLevel,
           frameworkPlugin: this.options.frameworkPlugin,
         });
@@ -175,15 +188,12 @@ export class Previewer {
     }
   }
 
-  private async refreshConfig() {
-    const config = await readConfig(this.options.rootDirPath);
+  private configWithWrapper(config: PreviewConfig): PreviewConfig {
     if (!config.wrapper) {
       const defaultWrapperPath =
         this.options.frameworkPlugin.defaultWrapperPath;
       if (
-        await pathExists(
-          path.join(this.options.rootDirPath, defaultWrapperPath)
-        )
+        pathExistsSync(path.join(this.options.rootDirPath, defaultWrapperPath))
       ) {
         config.wrapper = {
           path: defaultWrapperPath,
@@ -218,6 +228,10 @@ export class Previewer {
       kind: "stopping",
       port: this.status.port,
       promise: (async () => {
+        if (this.disposeObserver) {
+          await this.disposeObserver();
+          this.disposeObserver = null;
+        }
         if (this.viteManager) {
           await this.viteManager.stop();
           this.viteManager = null;
@@ -235,20 +249,16 @@ export class Previewer {
   }
 
   private readonly onFileChangeListener = {
-    observedPaths: new Set([this.options.rootDirPath]),
-    onChange: async (filePath: string, info: ReaderListenerInfo) => {
+    onChange: (filePath: string, info: ReaderListenerInfo) => {
       filePath = path.resolve(filePath);
-      const config = this.viteManager?.getConfig();
-      let wrapperAddedOrRemoved = false;
+      const wrapperPath = this.config
+        ? this.configWithWrapper(this.config).wrapper?.path
+        : null;
       if (
-        config &&
-        config.wrapper?.path !== (await this.refreshConfig()).wrapper?.path
-      ) {
-        wrapperAddedOrRemoved = true;
-      }
-      if (
-        wrapperAddedOrRemoved ||
-        (!info.virtual && FILES_REQUIRING_RESTART.has(path.basename(filePath)))
+        !info.virtual &&
+        (FILES_REQUIRING_RESTART.has(path.basename(filePath)) ||
+          (wrapperPath &&
+            filePath === path.resolve(this.options.rootDirPath, wrapperPath)))
       ) {
         if (this.status.kind === "starting" || this.status.kind === "started") {
           const port = this.status.port;

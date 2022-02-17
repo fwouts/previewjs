@@ -3,6 +3,7 @@ export interface Reader {
     add(listener: ReaderListener): void;
     remove(listener: ReaderListener): void;
   };
+  observe?(path: string): Promise<() => Promise<void>>;
   read(filePath: string): Promise<Entry | null>;
   readSync(filePath: string): EntrySync | null;
 }
@@ -49,7 +50,6 @@ export interface DirectorySync {
 }
 
 export interface ReaderListener {
-  observedPaths: Set<string>;
   onChange: (filePath: string, info: ReaderListenerInfo) => void;
 }
 

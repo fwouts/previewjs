@@ -54,6 +54,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
               from: path.join(previewDirPath, "types"),
               to: path.join(rootDirPath, "node_modules", "@types"),
             },
+            watch: false,
           }),
         ]),
       componentDetector: (program, filePaths) => {

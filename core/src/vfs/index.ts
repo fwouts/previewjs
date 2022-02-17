@@ -11,6 +11,13 @@ export function createMemoryReader(): Reader & Writer {
 export function createFileSystemReader(
   options: {
     mapping?: { from: string; to: string };
+
+    /**
+     * Whether to watch directories that listeners observe.
+     *
+     * Defaults to true.
+     */
+    watch?: boolean;
   } = {}
 ): Reader {
   return new FsReader({
@@ -18,6 +25,7 @@ export function createFileSystemReader(
       from: "/",
       to: "/",
     },
+    watch: options.watch ?? true,
   });
 }
 

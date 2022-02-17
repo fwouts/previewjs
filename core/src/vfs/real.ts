@@ -1,6 +1,5 @@
 import chokidar from "chokidar";
 import fs from "fs-extra";
-import { autorun } from "mobx";
 import path from "path";
 import {
   Directory,
@@ -14,36 +13,18 @@ import {
 import { ReaderListeners } from "./listeners";
 
 export class FsReader implements Reader {
-  private watcher: chokidar.FSWatcher | null = null;
-  private watchedPaths = new Set<string>();
-
   readonly listeners = new ReaderListeners();
 
   constructor(
     private readonly options: {
       mapping: { from: string; to: string };
+      watch: boolean;
     }
-  ) {
-    autorun(() => {
-      const observedPaths = this.listeners.observedFilePaths;
-      // Ideally we should apply the reverse mapping
-      // (observing "from" path when a listener asks to
-      // observe "to" path). However this isn't used
-      // in practice.
-      if (observedPaths.size === 0) {
-        if (this.watcher) {
-          this.watcher.close().catch(console.error);
-          this.watcher = null;
-        }
-      } else if (this.watcher) {
-        this.watcher.unwatch(
-          [...this.watchedPaths].filter((p) => !observedPaths.has(p))
-        );
-        this.watcher.add(
-          [...observedPaths].filter((p) => this.watchedPaths.has(p))
-        );
-      } else {
-        const watcher = chokidar.watch([...observedPaths], {
+  ) {}
+
+  observe = this.options.watch
+    ? async (path: string): Promise<() => Promise<void>> => {
+        const watcher = chokidar.watch([path], {
           ignored: ["**/node_modules/**", "**/.git/**"],
           ignoreInitial: true,
           ignorePermissionErrors: true,
@@ -53,11 +34,11 @@ export class FsReader implements Reader {
             virtual: false,
           });
         });
-        this.watcher = watcher;
+        return async () => {
+          await watcher.close();
+        };
       }
-      this.watchedPaths = observedPaths;
-    });
-  }
+    : undefined;
 
   async read(filePath: string): Promise<Entry | null> {
     const realPath = this.realPath(filePath);

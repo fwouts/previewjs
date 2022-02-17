@@ -10,9 +10,6 @@ export class StackedReader implements Reader {
   constructor(private readonly readers: Reader[]) {
     const self = this;
     this.asReaderListener = {
-      get observedPaths() {
-        return self.listeners.observedFilePaths;
-      },
       onChange(filePath, info) {
         self.listeners.notify(filePath, info);
       },
@@ -20,6 +17,18 @@ export class StackedReader implements Reader {
     for (const reader of this.readers) {
       reader.listeners.add(this.asReaderListener);
     }
+  }
+
+  async observe(path: string) {
+    const disposeFns: Array<() => Promise<void>> = [];
+    for (const reader of this.readers) {
+      if (reader.observe) {
+        disposeFns.push(await reader.observe(path));
+      }
+    }
+    return async () => {
+      await Promise.all(disposeFns.map((disposeFn) => disposeFn()));
+    };
   }
 
   async read(filePath: string): Promise<Entry | null> {
