@@ -1,7 +1,11 @@
-import { PREVIEW_CONFIG_NAME, readConfig } from "@previewjs/config";
+import {
+  PreviewConfig,
+  PREVIEW_CONFIG_NAME,
+  readConfig,
+} from "@previewjs/config";
 import assertNever from "assert-never";
 import express from "express";
-import { pathExists } from "fs-extra";
+import { pathExistsSync } from "fs-extra";
 import path from "path";
 import * as vite from "vite";
 import { FrameworkPlugin } from "./plugins/framework";
@@ -37,6 +41,7 @@ export class Previewer {
   private status: PreviewerStatus = { kind: "stopped" };
   private shutdownCheckInterval: NodeJS.Timeout | null = null;
   private disposeObserver: (() => Promise<void>) | null = null;
+  private config: PreviewConfig | null = null;
 
   constructor(
     private readonly options: {
@@ -126,7 +131,7 @@ export class Previewer {
         // PostCSS requires the current directory to change because it relies
         // on the `import-cwd` package to resolve plugins.
         process.chdir(this.options.rootDirPath);
-        const config = await this.refreshConfig();
+        this.config = await readConfig(this.options.rootDirPath);
         this.appServer = new Server({
           middlewares: [
             ...(this.options.middlewares || []),
@@ -149,7 +154,7 @@ export class Previewer {
           ),
           reader: this.transformingReader,
           cacheDir: path.join(this.options.cacheDirPath, "vite"),
-          config,
+          config: this.configWithWrapper(this.config),
           logLevel: this.options.logLevel,
           frameworkPlugin: this.options.frameworkPlugin,
         });
@@ -183,15 +188,12 @@ export class Previewer {
     }
   }
 
-  private async refreshConfig() {
-    const config = await readConfig(this.options.rootDirPath);
+  private configWithWrapper(config: PreviewConfig): PreviewConfig {
     if (!config.wrapper) {
       const defaultWrapperPath =
         this.options.frameworkPlugin.defaultWrapperPath;
       if (
-        await pathExists(
-          path.join(this.options.rootDirPath, defaultWrapperPath)
-        )
+        pathExistsSync(path.join(this.options.rootDirPath, defaultWrapperPath))
       ) {
         config.wrapper = {
           path: defaultWrapperPath,
@@ -249,7 +251,9 @@ export class Previewer {
   private readonly onFileChangeListener = {
     onChange: (filePath: string, info: ReaderListenerInfo) => {
       filePath = path.resolve(filePath);
-      const wrapperPath = this.viteManager?.getConfig().wrapper?.path;
+      const wrapperPath = this.config
+        ? this.configWithWrapper(this.config).wrapper?.path
+        : null;
       if (
         !info.virtual &&
         (FILES_REQUIRING_RESTART.has(path.basename(filePath)) ||
