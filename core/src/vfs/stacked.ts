@@ -3,20 +3,13 @@ import { Directory, DirectorySync, Entry, EntrySync, Reader } from "./api";
 import { ReaderListeners } from "./listeners";
 
 export class StackedReader implements Reader {
-  readonly listeners = new ReaderListeners(async () => {
-    for (const reader of this.readers) {
-      await reader.listeners.onChange();
-    }
-  });
+  readonly listeners = new ReaderListeners();
 
   private readonly asReaderListener: ReaderListener;
 
   constructor(private readonly readers: Reader[]) {
     const self = this;
     this.asReaderListener = {
-      get observedPaths() {
-        return self.listeners.observedFilePaths;
-      },
       onChange(filePath, info) {
         self.listeners.notify(filePath, info);
       },
@@ -24,6 +17,18 @@ export class StackedReader implements Reader {
     for (const reader of this.readers) {
       reader.listeners.add(this.asReaderListener);
     }
+  }
+
+  async observe(path: string) {
+    const disposeFns: Array<() => Promise<void>> = [];
+    for (const reader of this.readers) {
+      if (reader.observe) {
+        disposeFns.push(await reader.observe(path));
+      }
+    }
+    return async () => {
+      await Promise.all(disposeFns.map((disposeFn) => disposeFn()));
+    };
   }
 
   async read(filePath: string): Promise<Entry | null> {
