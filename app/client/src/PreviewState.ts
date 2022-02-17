@@ -172,12 +172,12 @@ export class PreviewState {
         "",
         `/?p=${componentId}${variantKey ? `&v=${variantKey}` : ""}`
       );
-      this.onUrlChanged();
+      this.onUrlChanged().catch(console.error);
     };
     window.addEventListener("message", this.messageListener);
     window.addEventListener("popstate", this.popStateListener);
     this.controller.start();
-    this.onUrlChanged();
+    await this.onUrlChanged();
     this.pingInterval = setInterval(() => {
       this.ping().catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
@@ -225,7 +225,7 @@ export class PreviewState {
   };
 
   private popStateListener = () => {
-    this.onUrlChanged();
+    this.onUrlChanged().catch(console.error);
   };
 
   private keydownListener = (e: KeyboardEvent) => {
