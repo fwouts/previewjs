@@ -15,9 +15,6 @@ import "./index.css";
 window.addEventListener("error", (event) => {
   console.error(event);
 });
-window.addEventListener("unhandledrejection", function (promiseRejectionEvent) {
-  console.error(promiseRejectionEvent);
-});
 
 const state = new PreviewState();
 state.start().catch(console.error);
