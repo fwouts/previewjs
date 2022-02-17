@@ -51,6 +51,7 @@ setupPreviews(Button, {
       });
       await controller.show("src/Button.tsx:Button");
       const previewIframe = await controller.previewIframe();
+      await controller.props.editor.isReady();
       await previewIframe.waitForSelector("#button");
 
       await appDir.update("src/Button.tsx", {
