@@ -12,10 +12,6 @@ import {
 } from "./components";
 import "./index.css";
 
-window.addEventListener("error", (event) => {
-  console.error(event);
-});
-
 const state = new PreviewState();
 state.start().catch(console.error);
 
