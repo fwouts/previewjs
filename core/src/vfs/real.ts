@@ -29,7 +29,8 @@ export class FsReader implements Reader {
           ignoreInitial: true,
           ignorePermissionErrors: true,
         });
-        watcher.on("all", (_event, filePath) => {
+        watcher.on("all", (event, filePath) => {
+          console.debug(event, filePath);
           this.listeners.notify(this.mappedPath(filePath), {
             virtual: false,
           });
