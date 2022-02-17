@@ -5,6 +5,7 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
+import { inspect } from "util";
 import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
 import { TestCase, TestSuite } from "./test-case";
@@ -127,9 +128,7 @@ class TestRunner {
         `${message.type().substr(0, 3).toUpperCase()} ${message.text()}`
       )
     );
-    page.on("pageerror", (exception) =>
-      console.log(`Uncaught exception: ${exception}`)
-    );
+    page.on("pageerror", (exception) => console.log(inspect(exception)));
     await page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT_MILLIS);
     const controller = new AppController(page, workspace, port);
     await controller.start();
