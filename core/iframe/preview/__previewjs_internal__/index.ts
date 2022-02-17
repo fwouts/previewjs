@@ -10,10 +10,6 @@ import { render } from "./renderer/index";
 import { setState } from "./state";
 import { updateComponent } from "./update-component";
 
-window.addEventListener("error", (event) => {
-  console.error(event);
-});
-
 setUpLogInterception();
 setUpLinkInterception();
 overrideCopyCutPaste();
