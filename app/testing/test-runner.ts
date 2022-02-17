@@ -88,11 +88,13 @@ class TestRunner {
     console.log(chalk.magenta(`📚 Test suite: ${testSuite.description}`));
     let count = 0;
     const failedTestCases: string[] = [];
-    for (const testCase of testSuite.testCases) {
-      count += 1;
-      const success = await this.runTestCase(testSuite, testCase, this.port);
-      if (!success) {
-        failedTestCases.push(testCase.description);
+    for (let i = 0; i < 10; i++) {
+      for (const testCase of testSuite.testCases) {
+        count += 1;
+        const success = await this.runTestCase(testSuite, testCase, this.port);
+        if (!success) {
+          failedTestCases.push(testCase.description);
+        }
       }
     }
     return {
