@@ -14,7 +14,7 @@ window.addEventListener("error", (event) => {
   console.error(event);
 });
 window.addEventListener("unhandledrejection", function (promiseRejectionEvent) {
-  console.error(promiseRejectionEvent);
+  console.error("Unhandled promise rejection:", promiseRejectionEvent.reason);
 });
 
 setUpLogInterception();
