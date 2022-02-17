@@ -38,7 +38,6 @@ async function load({
     );
     await updateComponent(update);
   } catch (error: any) {
-    console.error(error);
     sendMessageFromPreview({
       kind: "rendering-error",
       message: error.stack || error.message,

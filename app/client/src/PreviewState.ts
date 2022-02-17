@@ -373,9 +373,7 @@ export class PreviewState {
   }
 
   private renderComponent() {
-    console.debug("renderComponent");
     if (!this.component?.details) {
-      console.debug("renderComponent: aborted because no details");
       return;
     }
     this.consoleLogs.onClear();

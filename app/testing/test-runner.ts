@@ -10,7 +10,7 @@ import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
 import { TestCase, TestSuite } from "./test-case";
 
-const DEFAULT_PAGE_TIMEOUT_MILLIS = 15 * 1000;
+const DEFAULT_PAGE_TIMEOUT_MILLIS = 60 * 1000;
 const TEST_CASE_TIMEOUT_MILLIS = 120 * 1000;
 
 export async function runTests({
@@ -62,16 +62,12 @@ export async function runTests({
     if (testSuite.testCases.length === 0) {
       continue;
     }
-    for (let i = 0; i < 200; i++) {
-      const { count, failedTestCases } = await testRunner.runTestSuite(
-        testSuite
+    const { count, failedTestCases } = await testRunner.runTestSuite(testSuite);
+    testCasesCount += count;
+    if (failedTestCases.length > 0) {
+      failedTests.push(
+        ...failedTestCases.map((name) => `${testSuite.description} - ${name}`)
       );
-      testCasesCount += count;
-      if (failedTestCases.length > 0) {
-        failedTests.push(
-          ...failedTestCases.map((name) => `${testSuite.description} - ${name}`)
-        );
-      }
     }
   }
   return {
@@ -123,12 +119,13 @@ class TestRunner {
     }
     const context = await this.browser.newContext();
     const page = await context.newPage();
+    let browserLogs: string[] = [];
     page.on("console", (message) =>
-      console.log(
+      browserLogs.push(
         `${message.type().substr(0, 3).toUpperCase()} ${message.text()}`
       )
     );
-    page.on("pageerror", (exception) => console.log(inspect(exception)));
+    page.on("pageerror", (exception) => browserLogs.push(inspect(exception)));
     await page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT_MILLIS);
     const controller = new AppController(page, workspace, port);
     await controller.start();
@@ -158,6 +155,7 @@ class TestRunner {
     } catch (e) {
       console.log(chalk.red(`❌ ${testCase.description}`));
       console.error(e);
+      console.error(`Browser logs:\n${browserLogs.join("\n")}`);
       await page.screenshot({
         path: path.join(
           __dirname,

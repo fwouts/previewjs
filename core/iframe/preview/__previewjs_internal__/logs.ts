@@ -11,14 +11,14 @@ export function setUpLogInterception() {
       defaultFn(...args);
       try {
         const firstArg = args[0];
-        // if (
-        //   typeof firstArg === "string" &&
-        //   (firstArg.toLowerCase().includes("[hmr]") ||
-        //     firstArg.toLowerCase().startsWith("[vite]"))
-        // ) {
-        //   // Silence.
-        //   return;
-        // }
+        if (
+          typeof firstArg === "string" &&
+          (firstArg.toLowerCase().includes("[hmr]") ||
+            firstArg.toLowerCase().startsWith("[vite]"))
+        ) {
+          // Silence.
+          return;
+        }
         if (
           level === "error" &&
           args.length === 1 &&

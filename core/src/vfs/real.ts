@@ -30,7 +30,6 @@ export class FsReader implements Reader {
           ignorePermissionErrors: true,
         });
         watcher.on("all", (event, filePath) => {
-          console.debug(event, filePath);
           this.listeners.notify(this.mappedPath(filePath), {
             virtual: false,
           });
