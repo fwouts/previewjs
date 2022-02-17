@@ -9,7 +9,7 @@ import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
 import { TestCase, TestSuite } from "./test-case";
 
-const DEFAULT_PAGE_TIMEOUT_MILLIS = 60 * 1000;
+const DEFAULT_PAGE_TIMEOUT_MILLIS = 15 * 1000;
 const TEST_CASE_TIMEOUT_MILLIS = 120 * 1000;
 
 export async function runTests({
