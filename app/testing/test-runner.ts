@@ -61,7 +61,7 @@ export async function runTests({
     if (testSuite.testCases.length === 0) {
       continue;
     }
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 50; i++) {
       const { count, failedTestCases } = await testRunner.runTestSuite(
         testSuite
       );
