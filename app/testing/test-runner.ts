@@ -62,12 +62,16 @@ export async function runTests({
     if (testSuite.testCases.length === 0) {
       continue;
     }
-    const { count, failedTestCases } = await testRunner.runTestSuite(testSuite);
-    testCasesCount += count;
-    if (failedTestCases.length > 0) {
-      failedTests.push(
-        ...failedTestCases.map((name) => `${testSuite.description} - ${name}`)
+    for (let i = 0; i < 100; i++) {
+      const { count, failedTestCases } = await testRunner.runTestSuite(
+        testSuite
       );
+      testCasesCount += count;
+      if (failedTestCases.length > 0) {
+        failedTests.push(
+          ...failedTestCases.map((name) => `${testSuite.description} - ${name}`)
+        );
+      }
     }
   }
   return {
