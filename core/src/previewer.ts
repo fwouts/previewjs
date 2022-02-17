@@ -135,7 +135,7 @@ export class Previewer {
           ],
         });
         if (this.transformingReader.observe) {
-          this.transformingReader.observe(this.options.rootDirPath);
+          await this.transformingReader.observe(this.options.rootDirPath);
         }
         this.transformingReader.listeners.add(this.onFileChangeListener);
         this.viteManager = new ViteManager({
