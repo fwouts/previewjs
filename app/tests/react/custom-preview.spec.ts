@@ -156,11 +156,9 @@ setupPreviews(Button, {
       );
       console.log("7");
 
-      await appDir.update(
-        "src/Button.tsx",
-        {
-          kind: "replace",
-          text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
+      await appDir.update("src/Button.tsx", {
+        kind: "replace",
+        text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
 ${originalSource}
 
 setupPreviews(Button, {
@@ -173,11 +171,7 @@ setupPreviews(Button, {
   },
 });
 `,
-        },
-        {
-          inMemoryOnly: true,
-        }
-      );
+      });
       console.log("8");
       await previewIframe.waitForSelector(
         "xpath=//button[contains(., 'foo label')]"
