@@ -121,18 +121,13 @@ setupPreviews(Button, () => ({
     "updates when preview is updated",
     "react",
     async ({ appDir, controller }) => {
-      console.log("1");
       await appDir.update("src/Button.tsx", {
         kind: "replace",
         text: originalSource,
       });
-      console.log("2");
       await controller.show("src/Button.tsx:Button");
-      console.log("3");
       const previewIframe = await controller.previewIframe();
-      console.log("4");
       await previewIframe.waitForSelector("#button");
-      console.log("5");
       await appDir.update("src/Button.tsx", {
         kind: "replace",
         text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
@@ -149,12 +144,10 @@ setupPreviews(Button, {
 });
 `,
       });
-      console.log("6");
 
       await previewIframe.waitForSelector(
         "xpath=//button[contains(., 'default')]"
       );
-      console.log("7");
 
       await appDir.update("src/Button.tsx", {
         kind: "replace",
@@ -172,11 +165,9 @@ setupPreviews(Button, {
 });
 `,
       });
-      console.log("8");
       await previewIframe.waitForSelector(
         "xpath=//button[contains(., 'foo label')]"
       );
-      console.log("9");
     }
   );
 
