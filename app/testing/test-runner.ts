@@ -119,13 +119,12 @@ class TestRunner {
     }
     const context = await this.browser.newContext();
     const page = await context.newPage();
-    let browserLogs: string[] = [];
     page.on("console", (message) =>
-      browserLogs.push(
+      console.log(
         `${message.type().substr(0, 3).toUpperCase()} ${message.text()}`
       )
     );
-    page.on("pageerror", (exception) => browserLogs.push(inspect(exception)));
+    page.on("pageerror", (exception) => console.log(inspect(exception)));
     await page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT_MILLIS);
     const controller = new AppController(page, workspace, port);
     await controller.start();
@@ -155,7 +154,6 @@ class TestRunner {
     } catch (e) {
       console.log(chalk.red(`❌ ${testCase.description}`));
       console.error(e);
-      console.error(`Browser logs:\n${browserLogs.join("\n")}`);
       await page.screenshot({
         path: path.join(
           __dirname,
