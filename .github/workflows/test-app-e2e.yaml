@@ -54,7 +54,7 @@ jobs:
           version: 6.24.4
           run_install: true
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
-      - run: cd app && pnpm e2e-test ":updates when preview is updated"
+      - run: cd app && pnpm e2e-test "react:updates when preview is updated"
       - name: Archive failure screenshots
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
