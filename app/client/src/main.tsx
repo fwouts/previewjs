@@ -16,7 +16,7 @@ window.addEventListener("error", (event) => {
   console.error(event);
 });
 window.addEventListener("unhandledrejection", function (promiseRejectionEvent) {
-  console.error("Unhandled promise rejection:", promiseRejectionEvent.reason);
+  console.error(promiseRejectionEvent);
 });
 
 const state = new PreviewState();
