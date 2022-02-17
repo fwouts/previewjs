@@ -8,7 +8,6 @@ import { BottomPanel } from "../BottomPanel";
 import { ConsoleLogs } from "../ConsoleLogs";
 import { Error } from "../Error";
 import { Header } from "../Header";
-import { PropsEditor } from "../PropsEditor";
 
 export const Preview = observer(
   ({
@@ -59,22 +58,6 @@ export const Preview = observer(
         <Error state={state.error} />
         <BottomPanel
           tabs={[
-            ...(state.component?.variantKey === "custom"
-              ? [
-                  {
-                    label: "Properties",
-                    key: "props",
-                    notificationCount: 0,
-                    panel: (
-                      <PropsEditor
-                        state={state}
-                        height={panelHeight}
-                        width={width}
-                      />
-                    ),
-                  },
-                ]
-              : []),
             {
               label: "Console",
               key: "console",
