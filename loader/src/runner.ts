@@ -38,7 +38,9 @@ export async function init(
   const memoryReader = coreModule.vfs.createMemoryReader();
   const reader = coreModule.vfs.createStackedReader([
     memoryReader,
-    coreModule.vfs.createFileSystemReader(),
+    coreModule.vfs.createFileSystemReader({
+      watch: true,
+    }),
   ]);
   const workspaces: {
     [rootDirPath: string]: core.Workspace | null;

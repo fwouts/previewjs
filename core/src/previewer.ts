@@ -60,12 +60,14 @@ export class Previewer {
             "renderer"
           ),
         },
+        watch: false,
       }),
       createFileSystemReader({
         mapping: {
           from: options.previewDirPath,
           to: options.rootDirPath,
         },
+        watch: false,
       }),
     ]);
   }
@@ -132,6 +134,9 @@ export class Previewer {
             },
           ],
         });
+        if (this.transformingReader.observe) {
+          await this.transformingReader.observe(this.options.rootDirPath);
+        }
         this.transformingReader.listeners.add(this.onFileChangeListener);
         this.viteManager = new ViteManager({
           rootDirPath: this.options.rootDirPath,
@@ -235,7 +240,6 @@ export class Previewer {
   }
 
   private readonly onFileChangeListener = {
-    observedPaths: new Set([this.options.rootDirPath]),
     onChange: async (filePath: string, info: ReaderListenerInfo) => {
       filePath = path.resolve(filePath);
       const config = this.viteManager?.getConfig();

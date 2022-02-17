@@ -48,7 +48,9 @@ describe("analyzeReactComponent", () => {
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,
-        createFileSystemReader(), // required for TypeScript libs, e.g. Promise
+        createFileSystemReader({
+          watch: false,
+        }), // required for TypeScript libs, e.g. Promise
       ]),
       tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
     });
