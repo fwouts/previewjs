@@ -36,6 +36,7 @@ export class Previewer {
   private viteManager: ViteManager | null = null;
   private status: PreviewerStatus = { kind: "stopped" };
   private shutdownCheckInterval: NodeJS.Timeout | null = null;
+  private disposeObserver: (() => Promise<void>) | null = null;
 
   constructor(
     private readonly options: {
@@ -135,7 +136,9 @@ export class Previewer {
           ],
         });
         if (this.transformingReader.observe) {
-          await this.transformingReader.observe(this.options.rootDirPath);
+          this.disposeObserver = await this.transformingReader.observe(
+            this.options.rootDirPath
+          );
         }
         this.transformingReader.listeners.add(this.onFileChangeListener);
         this.viteManager = new ViteManager({
@@ -223,6 +226,10 @@ export class Previewer {
       kind: "stopping",
       port: this.status.port,
       promise: (async () => {
+        if (this.disposeObserver) {
+          await this.disposeObserver();
+          this.disposeObserver = null;
+        }
         if (this.viteManager) {
           await this.viteManager.stop();
           this.viteManager = null;
