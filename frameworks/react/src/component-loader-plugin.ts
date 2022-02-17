@@ -70,7 +70,6 @@ export async function update() {
   } else {
     componentModulePromise = import("${componentModuleId}");
   }
-  console.log("updating component: ${componentModuleId}")
   const { Component, decorators } = await componentModulePromise.then((module) => {
     const Component = module["${
       componentName === "default" ? "default" : `__previewjs__${componentName}`
