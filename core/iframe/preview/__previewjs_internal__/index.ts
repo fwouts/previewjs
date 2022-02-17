@@ -13,6 +13,9 @@ import { updateComponent } from "./update-component";
 window.addEventListener("error", (event) => {
   console.error(event);
 });
+window.addEventListener("unhandledrejection", function (promiseRejectionEvent) {
+  console.error(promiseRejectionEvent);
+});
 
 setUpLogInterception();
 setUpLinkInterception();
