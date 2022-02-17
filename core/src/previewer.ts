@@ -247,19 +247,11 @@ export class Previewer {
   }
 
   private readonly onFileChangeListener = {
-    onChange: async (filePath: string, info: ReaderListenerInfo) => {
+    onChange: (filePath: string, info: ReaderListenerInfo) => {
       filePath = path.resolve(filePath);
-      const config = this.viteManager?.getConfig();
-      let wrapperAddedOrRemoved = false;
       if (
-        config &&
-        config.wrapper?.path !== (await this.refreshConfig()).wrapper?.path
-      ) {
-        wrapperAddedOrRemoved = true;
-      }
-      if (
-        wrapperAddedOrRemoved ||
-        (!info.virtual && FILES_REQUIRING_RESTART.has(path.basename(filePath)))
+        !info.virtual &&
+        FILES_REQUIRING_RESTART.has(path.basename(filePath))
       ) {
         if (this.status.kind === "starting" || this.status.kind === "started") {
           const port = this.status.port;
