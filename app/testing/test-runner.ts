@@ -1,5 +1,5 @@
 import * as core from "@previewjs/core";
-import { init, SetupPreviewEnvironment } from "@previewjs/loader";
+import { init } from "@previewjs/loader";
 import assertNever from "assert-never";
 import chalk from "chalk";
 import fs from "fs-extra";
@@ -22,7 +22,7 @@ export async function runTests({
   port,
 }: {
   browser: playwright.Browser;
-  setupEnvironment: SetupPreviewEnvironment;
+  setupEnvironment: core.SetupPreviewEnvironment;
   testSuites: TestSuite[];
   filters: string[];
   outputDirPath: string;
@@ -79,7 +79,7 @@ export async function runTests({
 class TestRunner {
   constructor(
     private readonly browser: playwright.Browser,
-    private readonly setupEnvironment: SetupPreviewEnvironment,
+    private readonly setupEnvironment: core.SetupPreviewEnvironment,
     private readonly outputDirPath: string,
     private readonly port: number
   ) {}

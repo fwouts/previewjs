@@ -1,22 +1,29 @@
 // This is meant to be invoked via fork() to analyze a project in a subprocess
 // in order to prevent the parent process from freezing.
 
-// TODO: Centralise importing of framework plugins so they're always
-// consistent between analyze-project and main.
-import { createWorkspace } from "@previewjs/core";
+import { createWorkspace, loadPreviewEnv } from "@previewjs/core";
 import { createFileSystemReader } from "@previewjs/core/vfs";
 import path from "path";
-import { loadFrameworkPlugin } from "../../load-plugin";
+import setupEnvironment from "../..";
 import { ProjectComponents } from "../analyze-project";
 import { findFiles } from "./find-files";
+
+// Initialise __non_webpack_require__ for non-webpack environments.
+if (!global.__non_webpack_require__) {
+  global.__non_webpack_require__ = require;
+}
 
 export async function analyzeProjectCore(
   rootDirPath: string
 ): Promise<ProjectComponents> {
-  const frameworkPlugin = await loadFrameworkPlugin(rootDirPath);
-  if (!frameworkPlugin) {
+  const loaded = await loadPreviewEnv({
+    rootDirPath,
+    setupEnvironment,
+  });
+  if (!loaded) {
     return {};
   }
+  const { frameworkPlugin } = loaded;
   const workspace = await createWorkspace({
     versionCode: "",
     rootDirPath,

@@ -1,10 +1,6 @@
 import { LocalApi } from "@previewjs/app/client/src/api/local";
 import { PreviewIframeController } from "@previewjs/core/controller";
-import {
-  AnalyzeFileEndpoint,
-  Component,
-  ComputePropsEndpoint,
-} from "@previewjs/pro-api/endpoints";
+import { AnalyzeFileEndpoint, Component } from "@previewjs/pro-api/endpoints";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 
 const REFRESH_PERIOD_MILLIS = 5000;
@@ -68,43 +64,6 @@ export class ProState {
       this.controller.showLoading();
       await this.refreshFile(relativeFilePath);
     }
-  }
-
-  async getComponentDetails({
-    relativeFilePath,
-    key,
-  }: {
-    relativeFilePath: string;
-    key: string;
-  }) {
-    if (
-      !this.currentFile ||
-      this.currentFile.relativeFilePath !== relativeFilePath
-    ) {
-      throw new Error(
-        `Unable to get component sources before file is analyzed.`
-      );
-    }
-    const component = this.currentFile.components.find((c) => c.key === key);
-    if (!component) {
-      throw new Error(`No component found with key: ${key}`);
-    }
-    const sources = await this.localApi.request(ComputePropsEndpoint, {
-      relativeFilePath: component.relativeFilePath,
-      componentName: component.componentName,
-    });
-    return {
-      relativeFilePath: component.relativeFilePath,
-      componentName: component.componentName,
-      defaultProps: sources?.defaultPropsSource || "{}",
-      invocation:
-        sources?.defaultInvocationSource ||
-        `properties = {
-        // foo: "bar"
-        }`,
-      typeDeclarations:
-        sources?.typeDeclarationsSource || `declare let properties: any;`,
-    };
   }
 
   private async refreshFile(newRelativeFilePath?: string) {

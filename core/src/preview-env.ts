@@ -1,0 +1,89 @@
+import { readConfig } from "@previewjs/config";
+import { RequestHandler } from "express";
+import fs from "fs-extra";
+import path from "path";
+import {
+  ComponentAnalyzer,
+  FrameworkPlugin,
+  FrameworkPluginFactory,
+  Workspace,
+} from ".";
+import { PackageDependencies } from "./plugins/dependencies";
+import { ApiRouter } from "./router";
+import { TypescriptAnalyzer } from "./ts-helpers";
+import { Reader } from "./vfs";
+
+export type SetupPreviewEnvironment = (options: {
+  rootDirPath: string;
+}) => Promise<PreviewEnvironment | null>;
+
+export type PreviewEnvironment = {
+  frameworkPluginFactories?: FrameworkPluginFactory[];
+  middlewares?: RequestHandler[];
+  onReady?(options: {
+    reader: Reader;
+    router: ApiRouter;
+    componentAnalyzer: ComponentAnalyzer;
+    typescriptAnalyzer: TypescriptAnalyzer;
+    workspace: Workspace;
+  }): Promise<void>;
+};
+
+export async function loadPreviewEnv({
+  rootDirPath,
+  setupEnvironment,
+}: {
+  rootDirPath: string;
+  setupEnvironment: SetupPreviewEnvironment;
+}) {
+  const previewEnv = await setupEnvironment({ rootDirPath });
+  if (!previewEnv) {
+    return null;
+  }
+  let frameworkPlugin: FrameworkPlugin | undefined = await readConfig(
+    rootDirPath
+  ).frameworkPlugin;
+  fallbackToDefault: if (!frameworkPlugin) {
+    const dependencies = await extractPackageDependencies(rootDirPath);
+    for (const candidate of previewEnv.frameworkPluginFactories || []) {
+      if (await candidate.isCompatible(dependencies)) {
+        frameworkPlugin = await candidate.create();
+        break fallbackToDefault;
+      }
+    }
+    return null;
+  }
+  return {
+    previewEnv,
+    frameworkPlugin,
+  };
+}
+
+async function extractPackageDependencies(
+  rootDirPath: string
+): Promise<PackageDependencies> {
+  const packageJsonPath = path.join(rootDirPath, "package.json");
+  if (!(await fs.pathExists(packageJsonPath))) {
+    return {};
+  }
+  let { dependencies, devDependencies } = JSON.parse(
+    await fs.readFile(packageJsonPath, "utf8")
+  );
+  const allDependencies = {
+    ...dependencies,
+    ...devDependencies,
+  };
+  return Object.fromEntries<{ majorVersion: number }>(
+    Object.entries(allDependencies).map(([name, version]) => {
+      let majorVersion: number;
+      if (typeof version !== "string") {
+        majorVersion = 0;
+      } else if (version.startsWith("^") || version.startsWith("~")) {
+        majorVersion = parseInt(version.slice(1));
+      } else {
+        majorVersion = parseInt(version);
+      }
+      return [name, { majorVersion }];
+    })
+  );
+}

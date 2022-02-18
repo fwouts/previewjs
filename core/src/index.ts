@@ -18,7 +18,6 @@ import { ApiRouter } from "./router";
 import { createTypescriptAnalyzer, TypescriptAnalyzer } from "./ts-helpers";
 import { Reader } from "./vfs";
 export { PersistedStateManager } from "./persisted-state";
-export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   AnalyzedComponent,
   ComponentAnalyzer,
@@ -27,8 +26,14 @@ export type {
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
+export { loadPreviewEnv } from "./preview-env";
+export type {
+  PreviewEnvironment,
+  SetupPreviewEnvironment,
+} from "./preview-env";
 export { extractArgs } from "./storybook/args";
 export * as vfs from "./vfs";
+export type LogLevel = "silent" | "error" | "warn" | "info";
 
 export async function createWorkspace({
   versionCode,

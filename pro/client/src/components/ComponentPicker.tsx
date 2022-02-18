@@ -27,11 +27,12 @@ export const ComponentPicker = observer(
         inline: "start",
         behavior: "smooth",
       });
-    }, [preview.component?.componentPath, loading]);
+    }, [preview.component?.componentId, loading]);
     return (
       <ComponentList id="component-list">
         {components.map((component) => {
-          const selected = component.key === preview.component?.key || false;
+          // TODO: Change this, should be checking against key which includes relative file path.
+          const selected = component.key === preview.component?.name || false;
           let label = component.label;
           let icon: React.ReactElement | null = null;
           if (label.startsWith("stories:")) {

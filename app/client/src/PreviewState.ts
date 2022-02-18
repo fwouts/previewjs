@@ -16,6 +16,7 @@ import {
 } from "@previewjs/core/controller";
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
+import "../../window";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
 import {
@@ -311,6 +312,7 @@ export class PreviewState {
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
     const relativeFilePath = filePathFromComponentId(componentId);
+    // TODO: Change this?
     const nameFromPath = componentNameFromComponentId(componentId);
     if (this.options.onFileChanged) {
       await this.options.onFileChanged(relativeFilePath);
