@@ -28,8 +28,8 @@ importers:
 
   app:
     specifiers:
-      '@emotion/react': 11.7.1
-      '@emotion/styled': 11.6.0
+      '@emotion/react': 11.8.0
+      '@emotion/styled': 11.8.0
       '@fortawesome/fontawesome-svg-core': 1.2.36
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
@@ -75,8 +75,8 @@ importers:
       vite: 2.7.13
       vite-plugin-svgr: 0.6.0
     dependencies:
-      '@emotion/react': 11.7.1_a0c521d4794c7ad97f5f4c1c4a7d5818
-      '@emotion/styled': 11.6.0_6051c8b70bfa52211d6f419a3c4413f0
+      '@emotion/react': 11.8.0_a0c521d4794c7ad97f5f4c1c4a7d5818
+      '@emotion/styled': 11.8.0_c6c03fa26ad271c5ee3a3054e3bacb8b
       '@fortawesome/fontawesome-svg-core': 1.2.36
       '@fortawesome/free-brands-svg-icons': 5.15.4
       '@fortawesome/free-solid-svg-icons': 5.15.4
@@ -4610,6 +4610,12 @@ packages:
       '@emotion/memoize': 0.7.5
     dev: false
 
+  /@emotion/is-prop-valid/1.1.2:
+    resolution: {integrity: sha512-3QnhqeL+WW88YjYbQL5gUIkthuMw7a0NGbZ7wfFVk2kg/CK5w8w5FFa0RzWjyY1+sujN0NWbtSHH6OJmWHtJpQ==}
+    dependencies:
+      '@emotion/memoize': 0.7.5
+    dev: false
+
   /@emotion/memoize/0.7.4:
     resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
 
@@ -4640,29 +4646,6 @@ packages:
       react: 16.10.0
     dev: false
 
-  /@emotion/react/11.7.1_a0c521d4794c7ad97f5f4c1c4a7d5818:
-    resolution: {integrity: sha512-DV2Xe3yhkF1yT4uAUoJcYL1AmrnO5SVsdfvu+fBuS7IbByDeTVx9+wFmvx9Idzv7/78+9Mgx2Hcmr7Fex3tIyw==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.7
-      '@emotion/cache': 11.7.1
-      '@emotion/serialize': 1.0.2
-      '@emotion/sheet': 1.1.0
-      '@emotion/utils': 1.0.0
-      '@emotion/weak-memoize': 0.2.5
-      '@types/react': 17.0.39
-      hoist-non-react-statics: 3.3.2
-      react: 17.0.2
-    dev: false
-
   /@emotion/react/11.7.1_b08e3c15324cbe90a6ff8fcd416c932c:
     resolution: {integrity: sha512-DV2Xe3yhkF1yT4uAUoJcYL1AmrnO5SVsdfvu+fBuS7IbByDeTVx9+wFmvx9Idzv7/78+9Mgx2Hcmr7Fex3tIyw==}
     peerDependencies:
@@ -4682,6 +4665,30 @@ packages:
       '@emotion/utils': 1.0.0
       '@emotion/weak-memoize': 0.2.5
       '@types/react': 17.0.38
+      hoist-non-react-statics: 3.3.2
+      react: 17.0.2
+    dev: false
+
+  /@emotion/react/11.8.0_a0c521d4794c7ad97f5f4c1c4a7d5818:
+    resolution: {integrity: sha512-q3Cz0LyO/GGhtXW/dvrf+vFA3o6OlyNttQqgI1mNvtQ5zzJ9Bb1aWQqm1uXOHXpNYvyMaQZWC7eI1cemaSyVRw==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.16.7
+      '@emotion/babel-plugin': 11.7.2
+      '@emotion/cache': 11.7.1
+      '@emotion/serialize': 1.0.2
+      '@emotion/sheet': 1.1.0
+      '@emotion/utils': 1.1.0
+      '@emotion/weak-memoize': 0.2.5
+      '@types/react': 17.0.39
       hoist-non-react-statics: 3.3.2
       react: 17.0.2
     dev: false
@@ -4763,29 +4770,6 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@emotion/styled/11.6.0_6051c8b70bfa52211d6f419a3c4413f0:
-    resolution: {integrity: sha512-mxVtVyIOTmCAkFbwIp+nCjTXJNgcz4VWkOYQro87jE2QBTydnkiYusMrRGFtzuruiGK4dDaNORk4gH049iiQuw==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@emotion/react': ^11.0.0-rc.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.16.7
-      '@emotion/babel-plugin': 11.7.2
-      '@emotion/is-prop-valid': 1.1.1
-      '@emotion/react': 11.7.1_a0c521d4794c7ad97f5f4c1c4a7d5818
-      '@emotion/serialize': 1.0.2
-      '@emotion/utils': 1.0.0
-      '@types/react': 17.0.39
-      react: 17.0.2
-    dev: false
-
   /@emotion/styled/11.6.0_71c7191482e9836e2f37d4f3403ff1cf:
     resolution: {integrity: sha512-mxVtVyIOTmCAkFbwIp+nCjTXJNgcz4VWkOYQro87jE2QBTydnkiYusMrRGFtzuruiGK4dDaNORk4gH049iiQuw==}
     peerDependencies:
@@ -4809,6 +4793,29 @@ packages:
       react: 16.10.0
     dev: false
 
+  /@emotion/styled/11.8.0_c6c03fa26ad271c5ee3a3054e3bacb8b:
+    resolution: {integrity: sha512-MqHX7qqJesa9X36u3bBvzaK0HmnyclFewSK4uhHl+8s9TFpRMqpakbeHeSGqWCl7QkMhqvPA7oJijZYRsF7nUA==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@emotion/react': ^11.0.0-rc.0
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.16.7
+      '@emotion/babel-plugin': 11.7.2
+      '@emotion/is-prop-valid': 1.1.2
+      '@emotion/react': 11.8.0_a0c521d4794c7ad97f5f4c1c4a7d5818
+      '@emotion/serialize': 1.0.2
+      '@emotion/utils': 1.1.0
+      '@types/react': 17.0.39
+      react: 17.0.2
+    dev: false
+
   /@emotion/stylis/0.8.5:
     resolution: {integrity: sha512-h6KtPihKFn3T9fuIrwvXXUOwlx3rfUvfZIcP5a6rh8Y7zjE3O06hT5Ss4S/YI1AYhuZ1kjaE/5EaOOI2NqSylQ==}
 
@@ -4821,6 +4828,10 @@ packages:
 
   /@emotion/utils/1.0.0:
     resolution: {integrity: sha512-mQC2b3XLDs6QCW+pDQDiyO/EdGZYOygE8s5N5rrzjSI4M3IejPE/JPndCBwRT9z982aqQNi6beWs1UeayrQxxA==}
+    dev: false
+
+  /@emotion/utils/1.1.0:
+    resolution: {integrity: sha512-iRLa/Y4Rs5H/f2nimczYmS5kFJEbpiVvgN3XVfZ022IYhuNA1IRSHEizcof88LtCTXtl9S2Cxt32KgaXEu72JQ==}
     dev: false
 
   /@emotion/weak-memoize/0.2.5:
