@@ -181,7 +181,7 @@ importers:
       recrawl: 2.2.1
       rimraf: 3.0.2
       rollup-plugin-friendly-type-imports: 1.0.2
-      sass: 1.49.7
+      sass: 1.49.8
       shx: 0.3.4
       strip-ansi: '6'
       ts-jest: 27.1.3
@@ -205,11 +205,11 @@ importers:
       prettier: 2.5.1
       recrawl: 2.2.1
       rollup-plugin-friendly-type-imports: 1.0.2
-      sass: 1.49.7
+      sass: 1.49.8
       strip-ansi: 6.0.1
       tsconfig-paths: 3.12.0
       uuid: 8.3.2
-      vite: 2.7.13_sass@1.49.7
+      vite: 2.7.13_sass@1.49.8
       vite-tsconfig-paths: 3.4.0_vite@2.7.13
     devDependencies:
       '@types/express': 4.17.13
@@ -25859,8 +25859,8 @@ packages:
       source-map-js: 1.0.1
     dev: false
 
-  /sass/1.49.7:
-    resolution: {integrity: sha512-13dml55EMIR2rS4d/RDHHP0sXMY3+30e1TKsyXaSz3iLWVoDWEoboY8WzJd5JMnxrRHffKO3wq2mpJ0jxRJiEQ==}
+  /sass/1.49.8:
+    resolution: {integrity: sha512-NoGOjvDDOU9og9oAxhRnap71QaTjjlzrvLnKecUJ3GxhaQBrV6e7gPuSPF28u1OcVAArVojPAe4ZhOXwwC4tGw==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
@@ -28763,7 +28763,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.1
       tsconfig-paths: 3.12.0
-      vite: 2.7.13_sass@1.49.7
+      vite: 2.7.13_sass@1.49.8
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -28816,7 +28816,7 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite/2.7.13_sass@1.49.7:
+  /vite/2.7.13_sass@1.49.8:
     resolution: {integrity: sha512-Mq8et7f3aK0SgSxjDNfOAimZGW9XryfHRa/uV0jseQSilg+KhYDSoNb9h1rknOy6SuMkvNDLKCYAYYUMCE+IgQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
@@ -28836,7 +28836,7 @@ packages:
       postcss: 8.4.6
       resolve: 1.22.0
       rollup: 2.67.2
-      sass: 1.49.7
+      sass: 1.49.8
     optionalDependencies:
       fsevents: 2.3.2
     dev: false
