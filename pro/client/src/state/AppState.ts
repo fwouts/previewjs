@@ -45,6 +45,7 @@ export class AppState {
     if (!document.location.search) {
       this.sidePanel.toggle();
     }
+    await this.preview.start();
     if (
       this.decodedLicense &&
       (!this.decodedLicense.checked.valid ||
@@ -53,8 +54,7 @@ export class AppState {
     ) {
       await this.checkProLicense();
     }
-    this.preview.start();
-    this.pro.start();
+    await this.pro.start();
   }
 
   async checkProLicense(): Promise<boolean> {

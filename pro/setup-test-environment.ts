@@ -1,16 +1,17 @@
 import { SetupPreviewEnvironment } from "@previewjs/core";
 import { PersistedState } from "@previewjs/core/api/persisted-state";
+import { encodeLicense } from "./client/src/state/license-encoding";
 import setupEnvironment from "./src";
 
 const TEST_STATE: PersistedState = {
-  license: {
+  license: encodeLicense({
     checked: {
       timestamp: Date.now(),
       valid: true,
     },
     maskedKey: "TEST",
     token: "test",
-  },
+  }),
 };
 
 const setupTestEnvironment: SetupPreviewEnvironment = async (options) => ({
