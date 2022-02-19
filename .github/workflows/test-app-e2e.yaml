@@ -84,6 +84,8 @@ jobs:
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes detected."
           else
+            export SCREENSHOTS_CHANGED=1
+            echo "::set-env name=SCREENSHOTS_CHANGED::$SCREENSHOTS_CHANGED"
             git add app/tests/__screenshots__
             git stash
             git config --global user.name 'CI bot'
@@ -101,6 +103,23 @@ jobs:
           fi
         if: ${{ github.ref != 'refs/heads/main' }}
         shell: bash
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+      - uses: actions/github-script@v5
+        if: ${{ env.SCREENSHOTS_CHANGED == '1' }}
+        env:
+          MATRIX_NODE_VERSION: ${{ matrix.node-version }}
+          MATRIX_OS: ${{ matrix.os }}
+          MATRIX_GROUP: ${{ matrix.group }}
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `⚠️ Screenshots have changed: group ${process.env["MATRIX_GROUP"]}, ${process.env["MATRIX_OS"]} (Node ${process.env["MATRIX_NODE_VERSION"]})`
+            })
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
         if: ${{ github.ref == 'refs/heads/main' }}
