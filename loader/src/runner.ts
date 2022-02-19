@@ -76,6 +76,7 @@ export async function init(
             reader,
             frameworkPlugin,
             middlewares: previewEnv.middlewares || [],
+            persistedStateManager: previewEnv.persistedStateManager,
             onReady: previewEnv.onReady?.bind(previewEnv),
           });
         });

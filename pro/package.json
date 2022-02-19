@@ -10,8 +10,8 @@
   "scripts": {
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "unit-test": "jest",
-    "e2e-test": "ts-node run-test-suite.ts",
-    "e2e-test:watch": "ts-node-dev --respawn run-test-suite.ts"
+    "e2e-test": "cd ../app && cross-env SETUP_ENVIRONMENT_MODULE=../pro/setup-test-environment.ts TESTS_MODULE=../pro/test-suites.ts pnpm e2e-test",
+    "e2e-test:group": "cd ../app && cross-env SETUP_ENVIRONMENT_MODULE=../pro/setup-test-environment.ts TESTS_MODULE=../pro/test-suites.ts pnpm e2e-test:group"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",

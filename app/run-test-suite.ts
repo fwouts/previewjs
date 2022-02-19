@@ -1,19 +1,22 @@
 import path from "path";
 import playwright from "playwright";
-import setupEnvironment from "./src";
 import { runTests } from "./testing";
-import testSuitesPromises from "./tests";
 
 async function main() {
   let failed = false;
   const chromiumWsEndpoint = process.env["CHROMIUM_WS_ENDPOINT"];
   const groupCount = parseInt(process.env["GROUP_COUNT"] || "1");
   const groupIndex = parseInt(process.env["GROUP_INDEX"] || "0");
+  const setupEnvironmentPath =
+    process.env["SETUP_ENVIRONMENT_MODULE"] || "./src";
+  const testsPath = process.env["TESTS_MODULE"] || "./tests";
   const browser = await (chromiumWsEndpoint
     ? playwright.chromium.connect(chromiumWsEndpoint)
     : playwright.chromium.launch());
   try {
     const startTimeMillis = Date.now();
+    const setupEnvironment = (await import(setupEnvironmentPath)).default;
+    const testSuitesPromises = (await import(testsPath)).default;
     const testSuites = await Promise.all(testSuitesPromises);
     const { testCasesCount, failedTests } = await runTests({
       browser,

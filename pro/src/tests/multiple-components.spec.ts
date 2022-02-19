@@ -22,7 +22,7 @@ export const multipleComponentsTests = testSuite(
   (test) => {
     test(
       "shows multiple components",
-      "samples/default",
+      "react",
       async ({ appDir, controller }) => {
         const { component } = elements(controller);
         await appDir.update("src/Components.tsx", {

@@ -4,5 +4,5 @@ export interface PersistedState {
   updateDismissed?: {
     timestamp: number;
   };
-  license?: string | null;
+  license?: unknown | null;
 }

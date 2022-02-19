@@ -6,6 +6,7 @@ import {
   ComponentAnalyzer,
   FrameworkPlugin,
   FrameworkPluginFactory,
+  PersistedStateManager,
   Workspace,
 } from ".";
 import { PackageDependencies } from "./plugins/dependencies";
@@ -20,6 +21,7 @@ export type SetupPreviewEnvironment = (options: {
 export type PreviewEnvironment = {
   frameworkPluginFactories?: FrameworkPluginFactory[];
   middlewares?: RequestHandler[];
+  persistedStateManager?: PersistedStateManager;
   onReady?(options: {
     reader: Reader;
     router: ApiRouter;
