@@ -44,7 +44,11 @@ async function main() {
   const previews: Record<string, Preview> = {};
 
   const app = express();
-  app.use(express.json());
+  app.use(
+    express.json({
+      limit: "2mb",
+    })
+  );
   app.get("/health", (_req, res) => {
     res.json({
       ready: true,
