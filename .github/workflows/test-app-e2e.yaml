@@ -105,7 +105,7 @@ jobs:
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
-      - uses: actions/github-script@v5
+      - uses: actions/github-script@v6
         if: ${{ env.SCREENSHOTS_CHANGED == '1' }}
         env:
           MATRIX_NODE_VERSION: ${{ matrix.node-version }}
