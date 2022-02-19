@@ -16,7 +16,6 @@ import {
 } from "@previewjs/core/controller";
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
-import "../../window";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
 import {
