@@ -6,7 +6,7 @@
     "email": "f@zenc.io"
   },
   "license": "https://github.com/fwouts/previewjs/blob/main/pro/LICENSE",
-  "main": "./dist/src",
+  "main": "./dist",
   "scripts": {
     "build": "rimraf dist tsconfig.tsbuildinfo && tsc && tsc -p client/tsconfig.json && vite build client",
     "unit-test": "jest",
