@@ -6,12 +6,13 @@ import testSuitesPromises from "./tests";
 
 async function main() {
   let failed = false;
-  const chromiumWsEndpoint = process.env["CHROMIUM_WS_ENDPOINT"];
   const groupCount = parseInt(process.env["GROUP_COUNT"] || "1");
   const groupIndex = parseInt(process.env["GROUP_INDEX"] || "0");
-  const browser = await (chromiumWsEndpoint
-    ? playwright.chromium.connect(chromiumWsEndpoint)
-    : playwright.chromium.launch());
+  const headless = process.env["HEADLESS"] !== "0";
+  const browser = await playwright.chromium.launch({
+    headless,
+    devtools: !headless,
+  });
   try {
     const startTimeMillis = Date.now();
     const testSuites = await Promise.all(testSuitesPromises);
