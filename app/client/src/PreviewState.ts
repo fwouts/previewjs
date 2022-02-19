@@ -1,19 +1,19 @@
 import {
-  ComputePropsEndpoint,
-  GetInfoEndpoint,
-  GetStateEndpoint,
-  UpdateStateEndpoint,
-} from "@previewjs/core/api/local";
-import { PersistedState } from "@previewjs/core/api/persisted-state";
-import {
-  CheckVersionEndpoint,
-  CheckVersionResponse,
-} from "@previewjs/core/api/web";
-import {
   createController,
   PreviewIframeController,
   Variant,
 } from "@previewjs/core/controller";
+import {
+  ComputePropsEndpoint,
+  GetInfoEndpoint,
+  GetStateEndpoint,
+  UpdateStateEndpoint,
+} from "@previewjs/core/dist/api/local";
+import { PersistedState } from "@previewjs/core/dist/api/persisted-state";
+import {
+  CheckVersionEndpoint,
+  CheckVersionResponse,
+} from "@previewjs/core/dist/api/web";
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import "../../window";
