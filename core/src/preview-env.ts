@@ -3,7 +3,6 @@ import { RequestHandler } from "express";
 import fs from "fs-extra";
 import path from "path";
 import {
-  ComponentAnalyzer,
   FrameworkPlugin,
   FrameworkPluginFactory,
   PersistedStateManager,
@@ -11,8 +10,6 @@ import {
 } from ".";
 import { PackageDependencies } from "./plugins/dependencies";
 import { ApiRouter } from "./router";
-import { TypescriptAnalyzer } from "./ts-helpers";
-import { Reader } from "./vfs";
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;
@@ -22,13 +19,7 @@ export type PreviewEnvironment = {
   frameworkPluginFactories?: FrameworkPluginFactory[];
   middlewares?: RequestHandler[];
   persistedStateManager?: PersistedStateManager;
-  onReady?(options: {
-    reader: Reader;
-    router: ApiRouter;
-    componentAnalyzer: ComponentAnalyzer;
-    typescriptAnalyzer: TypescriptAnalyzer;
-    workspace: Workspace;
-  }): Promise<void>;
+  onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
 };
 
 export async function loadPreviewEnv({
