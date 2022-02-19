@@ -1,10 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../client/src/components/Preview/window.d.ts" />
-
 import type { Preview, Workspace } from "@previewjs/core";
 import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
+import "../../client/src/window";
 
 export class AppController {
   private preview: Preview | null = null;

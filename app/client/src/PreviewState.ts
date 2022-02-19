@@ -25,6 +25,7 @@ import {
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsoleLogsState } from "./components/ConsoleLogs";
 import { ErrorState } from "./components/Error";
+import "./window";
 
 const REFRESH_PERIOD_MILLIS = 5000;
 
