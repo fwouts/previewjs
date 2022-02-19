@@ -33,7 +33,6 @@ export type {
 } from "./preview-env";
 export { extractArgs } from "./storybook/args";
 export * as vfs from "./vfs";
-export type LogLevel = "silent" | "error" | "warn" | "info";
 
 export async function createWorkspace({
   versionCode,

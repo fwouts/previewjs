@@ -12,17 +12,3 @@ ReactDOM.render(
   document.getElementById("root")
 );
 state.start().catch(console.error);
-
-// TODO: This used to call overrideCopyCutPaste().
-
-// Monaco Editor raises this benign error. We should fix it at some point though!
-window.addEventListener("unhandledrejection", (promiseRejectionEvent) => {
-  if (
-    typeof promiseRejectionEvent.reason.message === "string" &&
-    promiseRejectionEvent.reason.message ===
-      `Could not find source file: 'inmemory://model/1'.`
-  ) {
-    promiseRejectionEvent.preventDefault();
-  }
-  return false;
-});
