@@ -6,7 +6,6 @@ const starts = [
   path.join(__dirname, "..", "app"),
   path.join(__dirname, "..", "integrations", "intellij", "controller"),
   path.join(__dirname, "..", "integrations", "vscode"),
-  path.join(__dirname, "..", "pro"),
 ];
 
 async function main() {
