@@ -1,4 +1,4 @@
-import { UpdateStateEndpoint } from "@previewjs/core/dist/api/local";
+import { UpdateStateEndpoint } from "@previewjs/core/api/local";
 import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import {

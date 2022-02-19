@@ -1,6 +1,6 @@
 import { PreviewState } from "@previewjs/app/client/src/PreviewState";
-import { UpdateStateEndpoint } from "@previewjs/core/dist/api/local";
-import { CheckVersionResponse } from "@previewjs/core/dist/api/web";
+import { UpdateStateEndpoint } from "@previewjs/core/api/local";
+import { CheckVersionResponse } from "@previewjs/core/api/web";
 import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ValidateLicenseTokenEndpoint } from "../networking/web-api";
