@@ -5,6 +5,5 @@
     "outDir": "dist",
     "composite": true
   },
-  "include": ["."],
-  "exclude": ["node_modules", "client", "dist"]
+  "include": ["client/src/window.ts", "src", "testing", "tests"]
 }

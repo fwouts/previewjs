@@ -1,18 +1,21 @@
 import path from "path";
 import playwright from "playwright";
-import { runTests } from "./testing";
+import { runTests } from ".";
 
 async function main() {
   let failed = false;
-  const chromiumWsEndpoint = process.env["CHROMIUM_WS_ENDPOINT"];
   const groupCount = parseInt(process.env["GROUP_COUNT"] || "1");
   const groupIndex = parseInt(process.env["GROUP_INDEX"] || "0");
   const setupEnvironmentPath =
-    process.env["SETUP_ENVIRONMENT_MODULE"] || "./src";
-  const testsPath = process.env["TESTS_MODULE"] || "./tests";
-  const browser = await (chromiumWsEndpoint
-    ? playwright.chromium.connect(chromiumWsEndpoint)
-    : playwright.chromium.launch());
+    process.env["SETUP_ENVIRONMENT_MODULE"] ||
+    path.resolve(__dirname, "../src");
+  const testsPath =
+    process.env["TESTS_MODULE"] || path.resolve(__dirname, "../tests");
+  const headless = process.env["HEADLESS"] !== "0";
+  const browser = await playwright.chromium.launch({
+    headless,
+    devtools: !headless,
+  });
   try {
     const startTimeMillis = Date.now();
     const setupEnvironment = (await import(setupEnvironmentPath)).default;
@@ -25,7 +28,7 @@ async function main() {
         (_, index) => index % groupCount === groupIndex
       ),
       filters: process.argv.slice(2),
-      outputDirPath: path.join(__dirname, "tests"),
+      outputDirPath: path.join(__dirname, "..", "tests"),
       port: 8100 + groupIndex,
     });
     const totalDurationMillis = Date.now() - startTimeMillis;
