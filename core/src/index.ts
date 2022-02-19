@@ -12,7 +12,7 @@ import {
 } from "../api/local";
 import { computeProps } from "./compute-props";
 import { PersistedStateManager } from "./persisted-state";
-import { ComponentAnalyzer, FrameworkPlugin } from "./plugins/framework";
+import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 import { createTypescriptAnalyzer, TypescriptAnalyzer } from "./ts-helpers";
@@ -55,8 +55,6 @@ export async function createWorkspace({
   onReady?(options: {
     reader: Reader;
     router: ApiRouter;
-    componentAnalyzer: ComponentAnalyzer | null;
-    typescriptAnalyzer: TypescriptAnalyzer;
     workspace: Workspace;
   }): Promise<void>;
 }): Promise<Workspace | null> {
@@ -217,8 +215,6 @@ export async function createWorkspace({
     await onReady({
       reader,
       router,
-      componentAnalyzer,
-      typescriptAnalyzer,
       workspace,
     });
   }
