@@ -23,9 +23,6 @@ export class AppState {
     makeAutoObservable(this);
     this.preview = new PreviewState({
       onFileChanged: async (relativeFilePath) => {
-        if (!this.proEnabled) {
-          return;
-        }
         await this.pro.onFileChanged(relativeFilePath);
       },
     });
