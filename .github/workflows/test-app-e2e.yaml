@@ -68,7 +68,7 @@ jobs:
         with:
           version: 6.24.4
           run_install: true
-      - run: pnpm turbo run e2e-test:group --scope="@previewjs/app" --include-dependencies
+      - run: pnpm turbo run e2e-test --scope="@previewjs/app" --include-dependencies
         env:
           GROUP_INDEX: ${{ matrix.group }}
           GROUP_COUNT: 3
