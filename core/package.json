@@ -6,7 +6,6 @@
     "email": "f@zenc.io"
   },
   "main": "./dist/src",
-  "types": "./src",
   "license": "AGPL-3.0",
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
