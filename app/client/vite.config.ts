@@ -16,9 +16,4 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    commonjsOptions: {
-      include: [/previewjs\/core\/dist\//, /node_modules/],
-    },
-  },
 });

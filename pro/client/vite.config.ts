@@ -9,9 +9,6 @@ export default defineConfig({
   build: {
     outDir: "build",
     chunkSizeWarningLimit: 10000,
-    commonjsOptions: {
-      include: [/previewjs\/core\/dist\//, /node_modules/],
-    },
   },
   server: {
     cors: {

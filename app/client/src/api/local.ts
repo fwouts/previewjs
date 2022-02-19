@@ -1,4 +1,4 @@
-import type {
+import {
   Endpoint,
   RequestOf,
   ResponseOf,
