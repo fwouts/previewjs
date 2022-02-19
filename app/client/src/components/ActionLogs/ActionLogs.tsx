@@ -21,7 +21,7 @@ const ActionLogsBox = styled.div`
   overflow: hidden;
   bottom: 0;
   right: 0;
-  z-index: 10;
+  z-index: 1000;
   overflow: hidden;
 `;
 
