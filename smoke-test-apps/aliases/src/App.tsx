@@ -13,9 +13,7 @@ function App(props: AppProps) {
       <header className="App-header">
         <Logo className="App-logo" />
         <img src={logoUrl} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        <p>This changed :)</p>
         <Button1 />
         <Button2 />
         <Button3 />
