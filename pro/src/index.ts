@@ -24,10 +24,8 @@ const setup: SetupPreviewEnvironment = async ({
     onReady: async ({ reader, router, workspace }) => {
       router.onRequest(AnalyzeFileEndpoint, async ({ relativeFilePath }) => ({
         components: await analyzeFile({
-          reader,
-          rootDirPath,
-          relativeFilePath,
           workspace,
+          relativeFilePath,
         }),
       }));
       router.onRequest(AnalyzeProjectEndpoint, async ({ forceRefresh }) =>

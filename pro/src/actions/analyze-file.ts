@@ -1,20 +1,20 @@
 import { Workspace } from "@previewjs/core";
-import { Reader } from "@previewjs/core/vfs";
 import path from "path";
 
 const JS_EXTENSIONS = new Set([".js", ".jsx", ".ts", ".tsx"]);
 
-export async function analyzeFile(options: {
-  rootDirPath: string;
-  relativeFilePath: string;
+export async function analyzeFile({
+  workspace,
+  relativeFilePath,
+}: {
   workspace: Workspace;
-  reader: Reader;
+  relativeFilePath: string;
 }) {
   {
-    const filePath = path.join(options.rootDirPath, options.relativeFilePath);
-    const components = (await options.workspace.detectComponents(filePath)).map(
+    const filePath = path.join(workspace.rootDirPath, relativeFilePath);
+    const components = (await workspace.detectComponents(filePath)).map(
       ({ componentName, exported }) => ({
-        relativeFilePath: options.relativeFilePath.replace(/\\/g, "/"),
+        relativeFilePath: relativeFilePath.replace(/\\/g, "/"),
         key: componentName,
         label: componentName,
         componentName,
@@ -27,7 +27,7 @@ export async function analyzeFile(options: {
       fileName.length - path.extname(fileName).length
     );
     const dirPath = path.dirname(filePath);
-    const dir = await options.reader.read(dirPath);
+    const dir = await workspace.reader.read(dirPath);
     if (dir?.kind === "directory") {
       for (const entry of await dir.entries()) {
         const ext = path.extname(entry.name);
@@ -42,7 +42,7 @@ export async function analyzeFile(options: {
         ) {
           const siblingFilePath = path.join(dirPath, entry.name);
           const relativeSiblingFilePath = path.relative(
-            options.rootDirPath,
+            workspace.rootDirPath,
             path.join(dirPath, entry.name)
           );
           const suffix = entry.name.substring(
@@ -50,7 +50,7 @@ export async function analyzeFile(options: {
             entry.name.length - ext.length
           );
           components.push(
-            ...(await options.workspace.detectComponents(siblingFilePath))
+            ...(await workspace.detectComponents(siblingFilePath))
               .filter((c) => c.exported)
               .map((c) => ({
                 relativeFilePath: relativeSiblingFilePath.replace(/\\/g, "/"),
