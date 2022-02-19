@@ -5,12 +5,5 @@
     "outDir": "dist",
     "composite": true
   },
-  "include": [
-    "client/src/window.ts",
-    "src",
-    "testing",
-    "tests",
-    "run-test-suite-parallel.ts",
-    "run-test-suite.ts"
-  ]
+  "include": ["client/src/window.ts", "src", "testing", "tests"]
 }

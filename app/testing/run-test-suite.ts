@@ -1,13 +1,16 @@
 import path from "path";
 import playwright from "playwright";
-import setupEnvironment from "./src";
-import { runTests } from "./testing";
-import testSuitesPromises from "./tests";
+import { runTests } from ".";
 
 async function main() {
   let failed = false;
   const groupCount = parseInt(process.env["GROUP_COUNT"] || "1");
   const groupIndex = parseInt(process.env["GROUP_INDEX"] || "0");
+  const setupEnvironmentPath =
+    process.env["SETUP_ENVIRONMENT_MODULE"] ||
+    path.resolve(__dirname, "../src");
+  const testsPath =
+    process.env["TESTS_MODULE"] || path.resolve(__dirname, "../tests");
   const headless = process.env["HEADLESS"] !== "0";
   const browser = await playwright.chromium.launch({
     headless,
@@ -15,6 +18,8 @@ async function main() {
   });
   try {
     const startTimeMillis = Date.now();
+    const setupEnvironment = (await import(setupEnvironmentPath)).default;
+    const testSuitesPromises = (await import(testsPath)).default;
     const testSuites = await Promise.all(testSuitesPromises);
     const { testCasesCount, failedTests } = await runTests({
       browser,
