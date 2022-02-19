@@ -52,11 +52,7 @@ export async function createWorkspace({
   logLevel: vite.LogLevel;
   reader: Reader;
   persistedStateManager?: PersistedStateManager;
-  onReady?(options: {
-    reader: Reader;
-    router: ApiRouter;
-    workspace: Workspace;
-  }): Promise<void>;
+  onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
 }): Promise<Workspace | null> {
   let cacheDirPath: string;
   try {
@@ -158,7 +154,8 @@ export async function createWorkspace({
     },
   });
   const workspace: Workspace = {
-    rootDirPath: () => rootDirPath,
+    rootDirPath,
+    reader,
     typescriptAnalyzer,
     detectComponents: async (
       filePath: string,
@@ -213,7 +210,6 @@ export async function createWorkspace({
   };
   if (onReady) {
     await onReady({
-      reader,
       router,
       workspace,
     });
@@ -238,7 +234,8 @@ export function findWorkspaceRoot(filePath: string): string {
 }
 
 export interface Workspace {
-  rootDirPath(): string;
+  rootDirPath: string;
+  reader: Reader;
   typescriptAnalyzer: TypescriptAnalyzer;
   detectComponents(
     filePath: string,
