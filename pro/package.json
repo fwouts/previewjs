@@ -1,6 +1,7 @@
 {
   "name": "@previewjs/pro",
   "version": "1.0.0",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "unit-test": "jest",

@@ -20,14 +20,7 @@ const setup: SetupPreviewEnvironment = async ({
       vue2FrameworkPlugin,
       vue3FrameworkPlugin,
     ],
-    middlewares: [
-      express.static(
-        path.join(
-          __dirname,
-          process.env["APP_DIR_PATH"] || "../../client/build"
-        )
-      ),
-    ],
+    middlewares: [express.static(path.join(__dirname, "../client/build"))],
     onReady: async ({
       reader,
       router,
