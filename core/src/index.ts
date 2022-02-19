@@ -18,14 +18,19 @@ import { ApiRouter } from "./router";
 import { createTypescriptAnalyzer, TypescriptAnalyzer } from "./ts-helpers";
 import { Reader } from "./vfs";
 export { PersistedStateManager } from "./persisted-state";
-export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   AnalyzedComponent,
+  ComponentAnalyzer,
   ComponentDetector,
   DetectedComponent,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
+export { loadPreviewEnv } from "./preview-env";
+export type {
+  PreviewEnvironment,
+  SetupPreviewEnvironment,
+} from "./preview-env";
 export { extractArgs } from "./storybook/args";
 export * as vfs from "./vfs";
 
@@ -46,10 +51,7 @@ export async function createWorkspace({
   logLevel: vite.LogLevel;
   reader: Reader;
   persistedStateManager?: PersistedStateManager;
-  onReady?(options: {
-    router: ApiRouter;
-    typescriptAnalyzer: TypescriptAnalyzer;
-  }): Promise<void>;
+  onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
 }): Promise<Workspace | null> {
   let cacheDirPath: string;
   try {
@@ -151,7 +153,8 @@ export async function createWorkspace({
     },
   });
   const workspace: Workspace = {
-    rootDirPath: () => rootDirPath,
+    rootDirPath,
+    reader,
     typescriptAnalyzer,
     detectComponents: async (
       filePath: string,
@@ -207,7 +210,7 @@ export async function createWorkspace({
   if (onReady) {
     await onReady({
       router,
-      typescriptAnalyzer,
+      workspace,
     });
   }
   return workspace;
@@ -230,7 +233,8 @@ export function findWorkspaceRoot(filePath: string): string {
 }
 
 export interface Workspace {
-  rootDirPath(): string;
+  rootDirPath: string;
+  reader: Reader;
   typescriptAnalyzer: TypescriptAnalyzer;
   detectComponents(
     filePath: string,

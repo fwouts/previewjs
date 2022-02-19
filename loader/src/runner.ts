@@ -1,7 +1,5 @@
-import { readConfig } from "@previewjs/config";
 import type * as core from "@previewjs/core";
-import { LogLevel, SetupPreviewEnvironment } from ".";
-import { extractPackageDependencies } from "./dependencies";
+import { LogLevel } from ".";
 import { locking } from "./locking";
 
 export async function load({
@@ -12,7 +10,7 @@ export async function load({
   packageName: string;
 }) {
   const core = requireModule("@previewjs/core");
-  const setupEnvironment: SetupPreviewEnvironment =
+  const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName).default;
 
   function requireModule(name: string) {
@@ -33,7 +31,7 @@ export async function load({
 
 export async function init(
   coreModule: typeof core,
-  setupEnvironment: SetupPreviewEnvironment
+  setupEnvironment: core.SetupPreviewEnvironment
 ) {
   const memoryReader = coreModule.vfs.createMemoryReader();
   const reader = coreModule.vfs.createStackedReader([
@@ -63,24 +61,14 @@ export async function init(
       let workspace = workspaces[rootDirPath];
       if (workspace === undefined) {
         workspace = workspaces[rootDirPath] = await locking(async () => {
-          const previewEnv = await setupEnvironment({
+          const loaded = await coreModule.loadPreviewEnv({
             rootDirPath,
+            setupEnvironment,
           });
-          if (!previewEnv) {
+          if (!loaded) {
             return null;
           }
-          let frameworkPlugin: core.FrameworkPlugin | undefined =
-            await readConfig(rootDirPath).frameworkPlugin;
-          fallbackToDefault: if (!frameworkPlugin) {
-            const dependencies = await extractPackageDependencies(rootDirPath);
-            for (const candidate of previewEnv.frameworkPluginFactories || []) {
-              if (await candidate.isCompatible(dependencies)) {
-                frameworkPlugin = await candidate.create();
-                break fallbackToDefault;
-              }
-            }
-            return null;
-          }
+          const { previewEnv, frameworkPlugin } = loaded;
           return await coreModule.createWorkspace({
             versionCode,
             logLevel,
@@ -88,6 +76,7 @@ export async function init(
             reader,
             frameworkPlugin,
             middlewares: previewEnv.middlewares || [],
+            persistedStateManager: previewEnv.persistedStateManager,
             onReady: previewEnv.onReady?.bind(previewEnv),
           });
         });

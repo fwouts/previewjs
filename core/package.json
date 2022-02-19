@@ -6,6 +6,7 @@
     "email": "f@zenc.io"
   },
   "main": "./dist/src",
+  "types": "./src",
   "license": "AGPL-3.0",
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
@@ -42,6 +43,7 @@
     "@types/jest": "27.4.0",
     "@types/prettier": "2.4.4",
     "@types/uuid": "8.3.4",
+    "@types/webpack-env": "1.16.3",
     "jest": "27.5.1",
     "rimraf": "3.0.2",
     "shx": "0.3.4",
