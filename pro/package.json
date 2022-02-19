@@ -5,7 +5,7 @@
     "name": "François Wouts",
     "email": "f@zenc.io"
   },
-  "license": "BUSL-1.1",
+  "license": "https://github.com/fwouts/previewjs/blob/main/pro/LICENSE",
   "main": "./dist/src",
   "scripts": {
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
