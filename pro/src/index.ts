@@ -21,13 +21,7 @@ const setup: SetupPreviewEnvironment = async ({
       vue3FrameworkPlugin,
     ],
     middlewares: [express.static(path.join(__dirname, "../client/build"))],
-    onReady: async ({
-      reader,
-      router,
-      componentAnalyzer,
-      typescriptAnalyzer,
-      workspace,
-    }) => {
+    onReady: async ({ reader, router, workspace }) => {
       router.onRequest(AnalyzeFileEndpoint, async ({ relativeFilePath }) => ({
         components: await analyzeFile({
           reader,
