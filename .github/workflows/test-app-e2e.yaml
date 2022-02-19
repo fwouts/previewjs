@@ -103,6 +103,8 @@ jobs:
           fi
         if: ${{ github.ref != 'refs/heads/main' }}
         shell: bash
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
       - uses: actions/github-script@v5
         if: ${{ env.SCREENSHOTS_CHANGED == '1' }}
         with:
