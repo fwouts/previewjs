@@ -28,8 +28,8 @@ body:
     id: previewjs-version
     attributes:
       label: Preview.js version
-      description: Version number of Preview.js (shown in top-right corner)
-      placeholder: v0.4.0
+      description: Version number of Preview.js (shown in top-right corner or plugin details)
+      placeholder: v1.0.0
     validations:
       required: true
   - type: textarea
@@ -54,11 +54,11 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: Preview.js control-plane.log (useful for crashes)
+      label: Preview.js logs (check bottom panel in IntelliJ)
       render: shell
   - type: textarea
     attributes:
-      label: Preview logs (useful for rendering errors)
+      label: Browser logs (useful for rendering errors)
       description: |
         Click "Open in browser" and open the console logs in your web browser. Copy-paste any errors you may see here.
       render: shell

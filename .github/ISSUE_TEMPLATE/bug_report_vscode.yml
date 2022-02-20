@@ -28,8 +28,8 @@ body:
     id: previewjs-version
     attributes:
       label: Preview.js version
-      description: Version number of Preview.js (shown in top-right corner)
-      placeholder: v0.4.0
+      description: Version number of Preview.js (shown in top-right corner or extension details)
+      placeholder: v1.0.0
     validations:
       required: true
   - type: textarea
@@ -62,7 +62,7 @@ body:
     attributes:
       label: Preview logs (useful for rendering errors)
       description: |
-        Click "Open in browser" and open the console logs in your web browser. Copy-paste any errors you may see here (you can ignore `Error: Could not find source file: 'inmemory://model/1'.`).
+        Click "Open in browser" and open the console logs in your web browser. Copy-paste any errors you may see here.
       render: shell
   - type: textarea
     attributes:
