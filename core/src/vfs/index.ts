@@ -1,4 +1,5 @@
 export * from "./api";
+export { ReaderListeners } from "./listeners";
 import { Reader, Writer } from "./api";
 import { MemoryReader } from "./memory";
 import { FsReader } from "./real";

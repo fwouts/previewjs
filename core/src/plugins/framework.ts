@@ -32,7 +32,7 @@ export interface FrameworkPlugin<
     typescriptAnalyzer: TypescriptAnalyzer;
     getTypeAnalyzer(
       program: ts.Program,
-      specialTypes: Record<string, ValueType>
+      specialTypes?: Record<string, ValueType>
     ): TypeAnalyzer;
   }) => ComponentAnalyzer;
 }
