@@ -343,12 +343,18 @@ importers:
 
   frameworks/vue3/preview:
     specifiers:
+      '@vue/reactivity': 3.2.31
       '@vue/runtime-core': 3.2.31
+      '@vue/runtime-dom': 3.2.31
+      '@vue/shared': 3.2.31
       rimraf: 3.0.2
       shx: 0.3.4
       vue: 3.2.31
     dependencies:
+      '@vue/reactivity': 3.2.31
       '@vue/runtime-core': 3.2.31
+      '@vue/runtime-dom': 3.2.31
+      '@vue/shared': 3.2.31
       vue: 3.2.31
     devDependencies:
       rimraf: 3.0.2
@@ -16822,6 +16828,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.14.8_debug@4.3.3:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
+
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18005,7 +18022,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug

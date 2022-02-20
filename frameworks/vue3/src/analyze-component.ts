@@ -35,8 +35,20 @@ export function analyzeVueComponentFromTemplate(
         types: definedProps.collected,
       };
     }
+    if (
+      ts.isTypeAliasDeclaration(statement) &&
+      statement.name.text === "PJS_Props"
+    ) {
+      const type = typeAnalyzer.checker.getTypeAtLocation(statement);
+      const defineComponentProps = typeAnalyzer.resolveType(type);
+      return {
+        name,
+        propsType: defineComponentProps.type,
+        providedArgs: new Set(),
+        types: defineComponentProps.collected,
+      };
+    }
   }
-  // TODO: Also handle defineComponent.
   return {
     name,
     propsType: UNKNOWN_TYPE,

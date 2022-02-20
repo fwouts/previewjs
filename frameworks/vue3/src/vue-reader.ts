@@ -38,12 +38,13 @@ class VueTypeScriptReader implements Reader {
       if (source?.kind !== "file") {
         return null;
       }
+      const name = path.basename(filePath);
       return {
         kind: "file",
-        name: path.basename(filePath),
+        name,
         realPath: async () => null,
         lastModifiedMillis: () => source.lastModifiedMillis(),
-        read: async () => convertToTypeScript(await source.read()),
+        read: async () => convertToTypeScript(await source.read(), name),
         size: () => source.size(),
       };
     }
@@ -58,12 +59,13 @@ class VueTypeScriptReader implements Reader {
       if (source?.kind !== "file") {
         return null;
       }
+      const name = path.basename(filePath);
       return {
         kind: "file",
-        name: path.basename(filePath),
+        name,
         realPath: () => null,
         lastModifiedMillis: () => source.lastModifiedMillis(),
-        read: () => convertToTypeScript(source.read()),
+        read: () => convertToTypeScript(source.read(), name),
         size: () => source.size(),
       };
     }
@@ -71,11 +73,25 @@ class VueTypeScriptReader implements Reader {
   }
 }
 
-function convertToTypeScript(vueTemplateSource: string) {
+function convertToTypeScript(vueTemplateSource: string, name: string) {
   const parsed = parse(vueTemplateSource);
   return parsed.descriptor.scriptSetup
     ? `import { defineProps } from '@vue/runtime-core';\n${parsed.descriptor.scriptSetup.content}`
     : parsed.descriptor.script
-    ? parsed.descriptor.script.content
+    ? `${parsed.descriptor.script.content.replace(
+        /export\s+default/,
+        "const pjs_component ="
+      )}
+
+import type { Component as PJS_Component } from "@vue/runtime-core";
+
+type PJS_ExtractProps<T> = T extends PJS_Component<infer S>
+  ? S extends { $props: unknown }
+    ? S["$props"]
+    : never
+  : never;
+
+type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
+`
     : "";
 }

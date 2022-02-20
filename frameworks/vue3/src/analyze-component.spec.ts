@@ -219,6 +219,36 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
     });
   });
 
+  test("export default defineComponent()", async () => {
+    expect(
+      await analyze(
+        `
+<template>
+  <div>{{ label }}</div>
+</template>
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  props: {
+    foo: String,
+    bar: { type: String, required: true },
+  },
+});
+</script>
+`
+      )
+    ).toMatchObject({
+      name: "App",
+      propsType: objectType({
+        foo: optionalType(STRING_TYPE),
+        bar: STRING_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
+
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     return analyzeVueComponentFromTemplate(

@@ -1,9 +1,12 @@
 {
   "scripts": {
-    "prepare": "rimraf modules && shx mkdir -p modules/@vue && shx cp -r node_modules/@vue/runtime-core modules/@vue/runtime-core"
+    "prepare": "rimraf modules && shx mkdir modules && shx cp -r node_modules/vue modules/vue && shx cp -r node_modules/@vue modules/@vue"
   },
   "dependencies": {
+    "@vue/shared": "3.2.31",
+    "@vue/reactivity": "3.2.31",
     "@vue/runtime-core": "3.2.31",
+    "@vue/runtime-dom": "3.2.31",
     "vue": "3.2.31"
   },
   "devDependencies": {
