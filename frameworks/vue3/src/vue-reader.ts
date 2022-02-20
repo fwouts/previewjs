@@ -28,6 +28,8 @@ class VueTypeScriptReader implements Reader {
     });
   }
 
+  observe = this.reader.observe?.bind(this.reader);
+
   async read(filePath: string): Promise<File | Directory | null> {
     if (filePath.endsWith(".vue.ts")) {
       const source = await this.reader.read(
