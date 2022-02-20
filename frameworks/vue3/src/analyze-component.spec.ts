@@ -13,6 +13,7 @@ import {
 import {
   createTypeAnalyzer,
   objectType,
+  optionalType,
   STRING_TYPE,
 } from "@previewjs/type-analyzer";
 import path from "path";
@@ -40,6 +41,13 @@ describe("analyzeReactComponent", () => {
           createFileSystemReader({
             watch: false,
           }), // required for TypeScript libs, e.g. Promise
+          createFileSystemReader({
+            mapping: {
+              from: path.join(__dirname, "..", "preview", "modules"),
+              to: path.join(ROOT_DIR_PATH, "node_modules"),
+            },
+            watch: false,
+          }),
         ])
       ),
       tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
@@ -50,12 +58,12 @@ describe("analyzeReactComponent", () => {
     typescriptAnalyzer.dispose();
   });
 
-  test("basic props", async () => {
+  test("defineProps<Props>()", async () => {
     expect(
       await analyze(
         `
 <script setup lang="ts">
-defineProps<{ msg: string }>();
+defineProps<{ foo: string }>();
 </script>
 
 <template>
@@ -68,7 +76,143 @@ defineProps<{ msg: string }>();
     ).toEqual({
       name: "App",
       propsType: objectType({
-        msg: STRING_TYPE,
+        foo: STRING_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
+
+  test("withDefaults(defineProps<Props>(), ...)", async () => {
+    expect(
+      await analyze(
+        `
+<script setup lang="ts">
+withDefaults(defineProps<{ foo: string, bar: string }>(), {
+  foo: "hello"
+});
+</script>
+
+<template>
+  <div>
+    Hello, World!
+  </div>
+</template>
+`
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        foo: optionalType(STRING_TYPE),
+        bar: STRING_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
+
+  test("const props = defineProps<Props>()", async () => {
+    expect(
+      await analyze(
+        `
+<script setup lang="ts">
+const props = defineProps<{ foo: string }>();
+</script>
+
+<template>
+  <div>
+    Hello, World!
+  </div>
+</template>
+`
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        foo: STRING_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
+
+  test("const props = withDefaults(defineProps<Props>(), ...)", async () => {
+    expect(
+      await analyze(
+        `
+<script setup lang="ts">
+const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
+  foo: "hello"
+});
+</script>
+
+<template>
+  <div>
+    Hello, World!
+  </div>
+</template>
+`
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        foo: optionalType(STRING_TYPE),
+        bar: STRING_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
+
+  test("props = defineProps<Props>()", async () => {
+    expect(
+      await analyze(
+        `
+<script setup lang="ts">
+let props;
+props = defineProps<{ foo: string }>();
+</script>
+
+<template>
+  <div>
+    Hello, World!
+  </div>
+</template>
+`
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        foo: STRING_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
+
+  test("props = withDefaults(defineProps<Props>(), ...)", async () => {
+    expect(
+      await analyze(
+        `
+<script setup lang="ts">
+let props;
+props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
+  foo: "hello"
+});
+</script>
+
+<template>
+  <div>
+    Hello, World!
+  </div>
+</template>
+`
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        foo: optionalType(STRING_TYPE),
+        bar: STRING_TYPE,
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -77,11 +221,10 @@ defineProps<{ msg: string }>();
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    const program = typescriptAnalyzer.analyze([MAIN_FILE + ".ts"]);
-    // for (const d of program.getSemanticDiagnostics()) {
-    //   console.error(d.messageText);
-    // }
-    const typeAnalyzer = createTypeAnalyzer(ROOT_DIR_PATH, program, {}, {});
-    return analyzeVueComponentFromTemplate(typeAnalyzer, MAIN_FILE + ".ts");
+    return analyzeVueComponentFromTemplate(
+      typescriptAnalyzer,
+      (program) => createTypeAnalyzer(ROOT_DIR_PATH, program, {}, {}),
+      MAIN_FILE
+    );
   }
 });

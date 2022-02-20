@@ -2,7 +2,10 @@ import type {
   DetectedComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
-import { createStackedReader } from "@previewjs/core/vfs";
+import {
+  createFileSystemReader,
+  createStackedReader,
+} from "@previewjs/core/vfs";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Node } from "acorn";
 import path from "path";
@@ -27,7 +30,16 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
       transformReader: (reader, rootDirPath) =>
-        createStackedReader([createVueTypeScriptReader(reader)]),
+        createStackedReader([
+          createVueTypeScriptReader(reader),
+          createFileSystemReader({
+            mapping: {
+              from: path.join(previewDirPath, "modules"),
+              to: path.join(rootDirPath, "node_modules"),
+            },
+            watch: false,
+          }),
+        ]),
       componentDetector: (program, filePaths) => {
         const components: DetectedComponent[] = [];
         for (const filePath of filePaths) {
@@ -49,11 +61,11 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         ({ typescriptAnalyzer, getTypeAnalyzer }) =>
         (filePath, componentName) => {
           if (filePath.endsWith(".vue")) {
-            // This virtual file exists thanks to transformReader().
-            const tsFilePath = `${filePath}.ts`;
-            const program = typescriptAnalyzer.analyze([tsFilePath]);
-            const typeAnalyzer = getTypeAnalyzer(program, {});
-            return analyzeVueComponentFromTemplate(typeAnalyzer, tsFilePath);
+            return analyzeVueComponentFromTemplate(
+              typescriptAnalyzer,
+              getTypeAnalyzer,
+              filePath
+            );
           } else {
             // TODO: Handle JSX and Storybook stories.
             return {
