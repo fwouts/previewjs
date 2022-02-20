@@ -34,7 +34,9 @@ const count = ref(0)
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(`
+    expect(await virtualFile.read())
+      .toEqual(`import { defineProps } from '@vue/runtime-core';
+
 import { ref } from 'vue';
 
 defineProps<{ msg: string }>()
