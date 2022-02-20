@@ -22,26 +22,21 @@ export function analyzeVueComponentFromTemplate(
   const program = typescriptAnalyzer.analyze([tsFilePath]);
   const typeAnalyzer = getTypeAnalyzer(program);
   const sourceFile = typeAnalyzer.sourceFile(tsFilePath);
-  // TODO: Also support defineProps() call wrapped in withDefaults().
-  // TODO: Also support props being assigned like props = defineProps().
   for (const statement of sourceFile.statements) {
-    if (ts.isExpressionStatement(statement)) {
-      // This may be a call to defineProps().
-      const definedProps = extractDefineProps(
-        typeAnalyzer,
-        statement.expression
-      );
-      if (definedProps) {
-        return {
-          name,
-          propsType: definedProps.type,
-          providedArgs: new Set(),
-          types: definedProps.collected,
-        };
-      }
-      // TODO: Also defineComponent.
+    const definedProps = extractDefinePropsFromStatement(
+      typeAnalyzer,
+      statement
+    );
+    if (definedProps) {
+      return {
+        name,
+        propsType: definedProps.type,
+        providedArgs: new Set(),
+        types: definedProps.collected,
+      };
     }
   }
+  // TODO: Also handle defineComponent.
   return {
     name,
     propsType: UNKNOWN_TYPE,
@@ -50,13 +45,51 @@ export function analyzeVueComponentFromTemplate(
   };
 }
 
-function extractDefineProps(
+function extractDefinePropsFromStatement(
+  typeAnalyzer: TypeAnalyzer,
+  statement: ts.Statement
+) {
+  if (ts.isExpressionStatement(statement)) {
+    // This may be a statement such as `defineProps()`.
+    const definedProps = extractDefinePropsFromExpression(
+      typeAnalyzer,
+      statement.expression
+    );
+    if (definedProps) {
+      return definedProps;
+    }
+  }
+  if (ts.isVariableStatement(statement)) {
+    for (const variableDeclaration of statement.declarationList.declarations) {
+      if (!variableDeclaration.initializer) {
+        continue;
+      }
+      const definedProps = extractDefinePropsFromExpression(
+        typeAnalyzer,
+        variableDeclaration.initializer
+      );
+      if (definedProps) {
+        return definedProps;
+      }
+    }
+  }
+  return null;
+}
+
+function extractDefinePropsFromExpression(
   typeAnalyzer: TypeAnalyzer,
   expression: ts.Expression
 ): {
   type: ValueType;
   collected: CollectedTypes;
 } | null {
+  if (
+    ts.isBinaryExpression(expression) &&
+    expression.operatorToken.kind === ts.SyntaxKind.EqualsToken
+  ) {
+    // This may be an assignment such as `props = defineProps()`.
+    return extractDefinePropsFromExpression(typeAnalyzer, expression.right);
+  }
   if (
     !ts.isCallExpression(expression) ||
     !ts.isIdentifier(expression.expression)
@@ -75,7 +108,10 @@ function extractDefineProps(
     if (!firstArgument || !secondArgument) {
       return null;
     }
-    const definePropsType = extractDefineProps(typeAnalyzer, firstArgument);
+    const definePropsType = extractDefinePropsFromExpression(
+      typeAnalyzer,
+      firstArgument
+    );
     if (!definePropsType) {
       return null;
     }
