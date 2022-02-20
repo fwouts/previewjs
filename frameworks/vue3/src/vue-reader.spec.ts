@@ -71,9 +71,20 @@ export default defineComponent({
     expect(await virtualFile.read()).toEqual(`
 import { defineComponent } from 'vue'
 
-export default defineComponent({
+const pjs_component = defineComponent({
   name: 'App'
 })
+
+
+import type { Component as PJS_Component } from "@vue/runtime-core";
+
+type PJS_ExtractProps<T> = T extends PJS_Component<infer S>
+  ? S extends { $props: unknown }
+    ? S["$props"]
+    : never
+  : never;
+
+type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
 `);
   });
 });
