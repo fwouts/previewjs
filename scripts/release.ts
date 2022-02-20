@@ -33,8 +33,8 @@ async function main() {
         const version = await updateNodePackage("app");
         await replaceInFile(
           "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
-          /\["PREVIEWJS_PACKAGE_VERSION"\] = "\d+\.\d+\.\d+"/,
-          `["PREVIEWJS_PACKAGE_VERSION"] = "${version}"`
+          /const val PACKAGE_VERSION = "\d+\.\d+\.\d+"/,
+          `const val PACKAGE_VERSION = "${version}"`
         );
         await replaceInFile(
           "integrations/vscode/webpack.config.js",
