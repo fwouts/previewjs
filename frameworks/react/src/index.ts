@@ -37,11 +37,10 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
     return react.majorVersion >= 16;
   },
   async create({ svgr } = {}) {
-    const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
-      previewDirPath,
+      previewDirPath: path.resolve(__dirname, "..", "preview"),
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
@@ -51,7 +50,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
           reader,
           createFileSystemReader({
             mapping: {
-              from: path.join(previewDirPath, "types"),
+              from: path.join(__dirname, "..", "types"),
               to: path.join(rootDirPath, "node_modules", "@types"),
             },
             watch: false,
