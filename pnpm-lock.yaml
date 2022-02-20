@@ -239,7 +239,6 @@ importers:
       jest: 27.5.1
       next: 12.1.0
       rimraf: 3.0.2
-      shx: 0.3.4
       ts-jest: 27.1.3
       typescript: 4.5.5
       vite: 2.7.13
@@ -257,7 +256,6 @@ importers:
       jest: 27.5.1_ts-node@10.5.0
       next: 12.1.0
       rimraf: 3.0.2
-      shx: 0.3.4
       ts-jest: 27.1.3_1e2406a8ca2ae3dc934d01f9ee2aebbb
       typescript: 4.5.5
       vite: 2.7.13
@@ -267,10 +265,15 @@ importers:
       '@types/prop-types': 15.7.4
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
+      rimraf: 3.0.2
+      shx: 0.3.4
     dependencies:
       '@types/prop-types': 15.7.4
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
+    devDependencies:
+      rimraf: 3.0.2
+      shx: 0.3.4
 
   frameworks/vue2:
     specifiers:
