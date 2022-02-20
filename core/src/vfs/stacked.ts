@@ -32,16 +32,24 @@ export class StackedReader implements Reader {
     const found = await Promise.all(
       this.readers.map((reader) => reader.read(filePath))
     );
-    return merge(found);
+    const list = found.filter(Boolean) as Entry[];
+    if (list.length === 0) {
+      return null;
+    }
+    return merge(list);
   }
 
   readSync(filePath: string): EntrySync | null {
     const found = this.readers.map((reader) => reader.readSync(filePath));
-    return mergeSync(found);
+    const list = found.filter(Boolean) as EntrySync[];
+    if (list.length === 0) {
+      return null;
+    }
+    return mergeSync(list);
   }
 }
 
-function merge(entries: Array<Entry | null>): Entry | null {
+function merge(entries: Array<Entry>): Entry {
   const mergedDirectories: Directory[] = [];
   for (const entry of entries) {
     if (!entry) {
@@ -55,31 +63,28 @@ function merge(entries: Array<Entry | null>): Entry | null {
   }
   const [first] = mergedDirectories;
   if (!first) {
-    return null;
+    throw new Error(`Encountered an empty list. This should never happen.`);
   }
   return {
     kind: "directory",
     name: first.name,
     entries: async () => {
-      const names = new Set<string>();
-      const uniques: Entry[] = [];
-      for (const directoryEntries of mergedDirectories.map((d) =>
-        d.entries()
+      const entries: Record<string, Entry[]> = {};
+      for (const directoryEntries of await Promise.all(
+        mergedDirectories.map((d) => d.entries())
       )) {
-        for (const entry of await directoryEntries) {
-          if (names.has(entry.name)) {
-            continue;
-          }
-          names.add(entry.name);
-          uniques.push(entry);
+        for (const entry of directoryEntries) {
+          const array = entries[entry.name] || [];
+          array.push(entry);
+          entries[entry.name] = array;
         }
       }
-      return uniques;
+      return Object.values(entries).map((entryList) => merge(entryList));
     },
   };
 }
 
-function mergeSync(entries: Array<EntrySync | null>): EntrySync | null {
+function mergeSync(entries: Array<EntrySync>): EntrySync {
   const mergedDirectories: DirectorySync[] = [];
   for (const entry of entries) {
     if (!entry) {
@@ -93,26 +98,23 @@ function mergeSync(entries: Array<EntrySync | null>): EntrySync | null {
   }
   const [first] = mergedDirectories;
   if (!first) {
-    return null;
+    throw new Error(`Encountered an empty list. This should never happen.`);
   }
   return {
     kind: "directory",
     name: first.name,
     entries: () => {
-      const names = new Set<string>();
-      const uniques: EntrySync[] = [];
+      const entries: Record<string, EntrySync[]> = {};
       for (const directoryEntries of mergedDirectories.map((d) =>
         d.entries()
       )) {
         for (const entry of directoryEntries) {
-          if (names.has(entry.name)) {
-            continue;
-          }
-          names.add(entry.name);
-          uniques.push(entry);
+          const array = entries[entry.name] || [];
+          array.push(entry);
+          entries[entry.name] = array;
         }
       }
-      return uniques;
+      return Object.values(entries).map((entryList) => mergeSync(entryList));
     },
   };
 }
