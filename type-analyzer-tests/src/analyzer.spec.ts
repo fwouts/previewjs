@@ -1715,6 +1715,31 @@ declare module "my-module" {
     ]);
   });
 
+  test("constructed types", async () => {
+    expect(
+      resolveType(
+        `
+type A = {
+  foo: B<typeof String>
+};
+type B<T> = T extends C<infer S> ? S : never;
+type C<T> = { (): T } | { new(...args: never[]): T & object } | { new(...args: string[]): Function }
+  `,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        ["main.ts:A"]: {
+          type: objectType({
+            foo: STRING_TYPE,
+          }),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
   function resolveType(
     source: string,
     name: string,
