@@ -280,17 +280,23 @@ importers:
       '@nuxt/config': ^2.15.8
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
+      '@previewjs/type-analyzer': 1.1.0
       '@types/fs-extra': 9.0.13
+      '@types/jest': 27.4.0
       fs-extra: ^10.0.0
+      jest: 27.5.1
       rimraf: 3.0.2
-      typescript: 4.5.5
+      ts-jest: 27.1.3
+      typescript: ^4.5.5
       vite: 2.7.13
       vite-plugin-vue2: ^1.9.3
       vue: ^2.6.14
       vue-template-compiler: ^2.6.14
     dependencies:
       '@nuxt/config': 2.15.8
+      '@previewjs/type-analyzer': link:../../type-analyzer
       fs-extra: 10.0.0
+      typescript: 4.5.5
       vite-plugin-vue2: 1.9.3_e3c37c0cfaae1b9f72ab6085139b0afb
       vue: 2.6.14
       vue-template-compiler: 2.6.14
@@ -298,15 +304,22 @@ importers:
       '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
+      '@types/jest': 27.4.0
+      jest: 27.5.1_ts-node@10.5.0
       rimraf: 3.0.2
-      typescript: 4.5.5
+      ts-jest: 27.1.3_1e2406a8ca2ae3dc934d01f9ee2aebbb
       vite: 2.7.13
 
   frameworks/vue2/preview:
     specifiers:
+      rimraf: 3.0.2
+      shx: 0.3.4
       vue: 2.6.14
     dependencies:
       vue: 2.6.14
+    devDependencies:
+      rimraf: 3.0.2
+      shx: 0.3.4
 
   frameworks/vue3:
     specifiers:
@@ -16828,17 +16841,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18022,7 +18024,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
