@@ -25,7 +25,7 @@ const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 const EMPTY_SET: ReadonlySet<string> = new Set();
 
-describe("analyzeReactComponent", () => {
+describe("analyze Vue 2 component", () => {
   let memoryReader: Reader & Writer;
   let typescriptAnalyzer: TypescriptAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -80,7 +80,7 @@ export default {
     });
   });
 
-  test.only("export default {} with object props", async () => {
+  test("export default {} with object props", async () => {
     expect(
       await analyze(
         `
@@ -93,6 +93,7 @@ export default {
   props: {
     foo: String,
     bar: { type: String, required: true },
+    baz: { type: String, required: false },
   }
 }
 </script>
@@ -103,6 +104,7 @@ export default {
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
+        baz: optionalType(STRING_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
