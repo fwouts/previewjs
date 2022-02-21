@@ -1754,10 +1754,9 @@ type C<T> = { (): T } | { new(...args: never[]): T & object } | { new(...args: s
         content
       );
     }
-    const program = typescriptAnalyzer.analyze([mainSourceFilePath]);
     const typeAnalyzer = createTypeAnalyzer(
       rootDirPath,
-      program,
+      typescriptAnalyzer.analyze([mainSourceFilePath]),
       {},
       {
         Component: NODE_TYPE,
