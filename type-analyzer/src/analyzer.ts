@@ -1,6 +1,5 @@
 import path from "path";
 import ts from "typescript";
-import {} from ".";
 import {
   ANY_TYPE,
   arrayType,
