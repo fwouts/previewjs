@@ -13,9 +13,6 @@ export function analyzeVueComponentFromTemplate(
   const tsFilePath = `${filePath}.ts`;
   const name = path.basename(filePath, path.extname(filePath));
   const program = typescriptAnalyzer.analyze([tsFilePath]);
-  console.error(
-    program.getSemanticDiagnostics().map((d) => [d.messageText, d.source])
-  );
   const typeAnalyzer = getTypeAnalyzer(program);
   const sourceFile = typeAnalyzer.sourceFile(tsFilePath);
   for (const statement of sourceFile.statements) {
