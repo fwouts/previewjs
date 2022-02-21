@@ -1,5 +1,6 @@
 import path from "path";
 import ts from "typescript";
+import {} from ".";
 import {
   ANY_TYPE,
   arrayType,
@@ -10,6 +11,7 @@ import {
   functionType,
   literalType,
   mapType,
+  maybeOptionalType,
   namedType,
   NEVER_TYPE,
   NULL_TYPE,
@@ -377,9 +379,15 @@ class TypeAnalyzerImpl implements TypeAnalyzer {
           // For now, we ignore property names such as "foo.bar".
           continue;
         }
-        fields[propertyName!] = this.resolveTypeInternal(
-          (this.checker as any).getTypeOfPropertyOfType(type, property.name),
-          genericTypeNames
+        const propertyTsType = (this.checker as any).getTypeOfPropertyOfType(
+          type,
+          property.name
+        );
+        fields[propertyName!] = maybeOptionalType(
+          propertyTsType
+            ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
+            : UNKNOWN_TYPE,
+          Boolean(property.flags & ts.SymbolFlags.Optional)
         );
       }
       return objectType(fields);
