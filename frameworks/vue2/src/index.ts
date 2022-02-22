@@ -2,8 +2,15 @@ import type {
   DetectedComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
+import {
+  createFileSystemReader,
+  createStackedReader,
+} from "@previewjs/core/vfs";
+import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import fs from "fs-extra";
 import path from "path";
+import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { createVueTypeScriptReader } from "./vue-reader";
 
 export const vue2FrameworkPlugin: FrameworkPluginFactory<{
   vueOptionsModule?: string;
@@ -21,10 +28,22 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
       "./component-loader-plugin"
     );
     const { extractVueComponents } = await import("./extract-component");
+    const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
-      previewDirPath: path.resolve(__dirname, "..", "preview"),
+      previewDirPath,
+      transformReader: (reader, rootDirPath) =>
+        createStackedReader([
+          createVueTypeScriptReader(reader),
+          createFileSystemReader({
+            mapping: {
+              from: path.join(previewDirPath, "modules"),
+              to: path.join(rootDirPath, "node_modules"),
+            },
+            watch: false,
+          }),
+        ]),
       componentDetector: (program, filePaths) => {
         const components: DetectedComponent[] = [];
         for (const filePath of filePaths) {
@@ -42,6 +61,25 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
         }
         return components;
       },
+      componentAnalyzer:
+        ({ typescriptAnalyzer, getTypeAnalyzer }) =>
+        (filePath, componentName) => {
+          if (filePath.endsWith(".vue")) {
+            return analyzeVueComponentFromTemplate(
+              typescriptAnalyzer,
+              getTypeAnalyzer,
+              filePath
+            );
+          } else {
+            // TODO: Handle JSX and Storybook stories.
+            return {
+              name: componentName,
+              propsType: UNKNOWN_TYPE,
+              providedArgs: new Set(),
+              types: {},
+            };
+          }
+        },
       viteConfig: (config) => {
         const OPTIONS_MODULE = "@previewjs/plugin-vue2/options";
         let rootDirPath: string;
