@@ -163,7 +163,7 @@ importers:
   core:
     specifiers:
       '@previewjs/config': 1.0.2
-      '@previewjs/type-analyzer': 1.1.0
+      '@previewjs/type-analyzer': 1.1.1
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
@@ -233,7 +233,7 @@ importers:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 1.1.0
+      '@previewjs/type-analyzer': 1.1.1
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.0
@@ -284,7 +284,7 @@ importers:
       '@nuxt/config': ^2.15.8
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 1.1.0
+      '@previewjs/type-analyzer': 1.1.1
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.0
       fs-extra: ^10.0.0
@@ -329,7 +329,7 @@ importers:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 1.1.0
+      '@previewjs/type-analyzer': 1.1.1
       '@types/jest': 27.4.0
       '@vitejs/plugin-vue': ^2.0.1
       '@vitejs/plugin-vue-jsx': ^1.2.0
@@ -16845,17 +16845,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18039,7 +18028,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
