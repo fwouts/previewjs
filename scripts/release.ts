@@ -116,7 +116,9 @@ async function main() {
         if (!scopedName) {
           throw new Error(`Expected a scoped package, found ${packageName}`);
         }
-        deps.add(scopedName);
+        if (!unpublishedPackageNames.has(scopedName)) {
+          deps.add(scopedName);
+        }
       }
       localDependencies[packageInfo.name] = deps;
     }
@@ -182,9 +184,6 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       throw assertNever(packageInfo.type);
   }
   for (const dependent of dependents) {
-    if (unpublishedPackageNames.has(dependent)) {
-      continue;
-    }
     const depPackageInfo = packages.find((p) => p.name === dependent);
     if (!depPackageInfo) {
       throw new Error(`Unable to find package info for: ${dependent}`);
