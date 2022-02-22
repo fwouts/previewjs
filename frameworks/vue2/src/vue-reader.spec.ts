@@ -40,7 +40,7 @@ const pjs_component = {
 } as const;
 
 
-import {PropType as PJS_PropType} from 'vue/types/options';
+import type {Prop as PJS_Prop} from 'vue/types/options';
 
 type PJS_TypeOrUnion<T> = PJS_Prop<T> | ReadonlyArray<PJS_Prop<T>>;
 type PJS_OptionalPropType<T> = PJS_TypeOrUnion<T> | {type: PJS_TypeOrUnion<T>; required?: false};
