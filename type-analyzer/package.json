@@ -13,13 +13,13 @@
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/type-analyzer --no-deps --include-dependencies",
     "build": "rimraf dist && tsc"
   },
+  "dependencies": {
+    "assert-never": "^1.2.1",
+    "typescript": "^4.5.5"
+  },
   "devDependencies": {
+    "@types/lodash": "4.14.178",
     "lodash": "4.17.21",
     "rimraf": "3.0.2"
-  },
-  "dependencies": {
-    "@types/lodash": "4.14.178",
-    "assert-never": "1.2.1",
-    "typescript": "4.5.5"
   }
 }
