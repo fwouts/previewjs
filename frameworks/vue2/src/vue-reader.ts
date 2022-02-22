@@ -111,6 +111,120 @@ function convertToTypeScript(vueTemplateSource: string, name: string) {
                 )
               );
             }
+            if (
+              ts.isClassDeclaration(node) &&
+              node.modifiers?.find(
+                (m) => m.kind === ts.SyntaxKind.ExportKeyword
+              ) &&
+              node.modifiers?.find(
+                (m) => m.kind === ts.SyntaxKind.DefaultKeyword
+              )
+            ) {
+              // When we encounter a class declaration that uses vue-property-decorator,
+              // we'll transform it into a pjs_component definition.
+              //
+              // For example:
+              //
+              // @Component
+              // export default class Button extends Vue {
+              //   @Prop({ type: String, default: 'default' }) readonly size!: ButtonSize;
+              // }
+              //
+              // will become:
+              //
+              // const pjs_component = {
+              //   props: {
+              //     size: {
+              //       default: "default",
+              //       type: (): Size => { return undefined as any; }
+              //     }
+              //   }
+              // } as const;
+              const extractedProps: ts.PropertyAssignment[] = [];
+              for (const member of node.members) {
+                if (ts.isPropertyDeclaration(member)) {
+                  const [decorator] = member.decorators || [];
+                  if (
+                    decorator &&
+                    ts.isCallExpression(decorator.expression) &&
+                    ts.isIdentifier(decorator.expression.expression) &&
+                    decorator.expression.expression.text === "Prop"
+                  ) {
+                    const [options] = decorator.expression.arguments;
+                    if (options && ts.isObjectLiteralExpression(options)) {
+                      if (member.type) {
+                        extractedProps.push(
+                          ts.factory.createPropertyAssignment(
+                            member.name,
+                            ts.factory.createObjectLiteralExpression([
+                              ...options.properties.filter(
+                                (p) =>
+                                  p.name &&
+                                  ts.isIdentifier(p.name) &&
+                                  p.name.text !== "type"
+                              ),
+                              ts.factory.createPropertyAssignment(
+                                "type",
+                                ts.factory.createArrowFunction(
+                                  [],
+                                  [],
+                                  [],
+                                  member.type,
+                                  undefined,
+                                  ts.factory.createBlock([
+                                    ts.factory.createReturnStatement(
+                                      ts.factory.createAsExpression(
+                                        ts.factory.createIdentifier(
+                                          "undefined"
+                                        ),
+                                        ts.factory.createKeywordTypeNode(
+                                          ts.SyntaxKind.AnyKeyword
+                                        )
+                                      )
+                                    ),
+                                  ])
+                                )
+                              ),
+                            ])
+                          )
+                        );
+                      } else {
+                        extractedProps.push(
+                          ts.factory.createPropertyAssignment(
+                            member.name,
+                            options
+                          )
+                        );
+                      }
+                    }
+                  }
+                }
+              }
+              return ts.factory.createVariableStatement(
+                [],
+                ts.factory.createVariableDeclarationList(
+                  [
+                    ts.factory.createVariableDeclaration(
+                      "pjs_component",
+                      undefined,
+                      undefined,
+                      ts.factory.createAsExpression(
+                        ts.factory.createObjectLiteralExpression([
+                          ts.factory.createPropertyAssignment(
+                            "props",
+                            ts.factory.createObjectLiteralExpression(
+                              extractedProps
+                            )
+                          ),
+                        ]),
+                        ts.factory.createTypeReferenceNode("const")
+                      )
+                    ),
+                  ],
+                  ts.NodeFlags.Const
+                )
+              );
+            }
             return node;
           },
           context

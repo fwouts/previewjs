@@ -12,6 +12,7 @@ import {
 } from "@previewjs/core/vfs";
 import {
   createTypeAnalyzer,
+  literalType,
   NUMBER_TYPE,
   objectType,
   optionalType,
@@ -147,6 +148,45 @@ export default {
         a: UNKNOWN_TYPE,
         b: UNKNOWN_TYPE,
         c: UNKNOWN_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
+
+  test("export default class with vue-property-decorator", async () => {
+    expect(
+      await analyze(
+        `
+<template>
+  <div :class="\`size-\${size}\`">{{ label }}</div>
+</template>
+<script>
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
+
+type Size = "default" | "small" | "big";
+
+@Component
+export default class App extends Vue {
+  @Prop({ type: String, required: true }) readonly label;
+  @Prop({ type: String, default: 'default' }) readonly size!: Size;
+}
+</script>
+`
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        label: STRING_TYPE,
+        size: optionalType(
+          unionType([
+            literalType("default"),
+            literalType("small"),
+            literalType("big"),
+          ])
+        ),
       }),
       providedArgs: EMPTY_SET,
       types: {},
