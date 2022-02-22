@@ -1,6 +1,79 @@
+import assertNever from "assert-never";
+import axios from "axios";
 import execa from "execa";
 import fs from "fs";
 import inquirer from "inquirer";
+import path from "path";
+
+type Package = {
+  name: string;
+  dirPath: string;
+  additionalDirPath?: string[];
+  tagName: string;
+  type: "npm" | "intellij" | "vscode";
+};
+
+const packages: Package[] = [
+  {
+    name: "app",
+    dirPath: "app",
+    tagName: "app",
+    type: "npm",
+  },
+  {
+    name: "core",
+    dirPath: "core",
+    additionalDirPath: ["loader"],
+    tagName: "core",
+    type: "npm",
+  },
+  {
+    name: "config",
+    dirPath: "config",
+    tagName: "config",
+    type: "npm",
+  },
+  {
+    name: "plugin-react",
+    dirPath: "frameworks/react",
+    tagName: "plugins/react",
+    type: "npm",
+  },
+  {
+    name: "plugin-vue2",
+    dirPath: "frameworks/vue2",
+    tagName: "plugins/vue2",
+    type: "npm",
+  },
+  {
+    name: "plugin-vue3",
+    dirPath: "frameworks/vue3",
+    tagName: "plugins/vue3",
+    type: "npm",
+  },
+  {
+    name: "type-analyzer",
+    dirPath: "type-analyzer",
+    tagName: "type-analyzer",
+    type: "npm",
+  },
+  {
+    name: "integration-intellij",
+    dirPath: "integrations/intellij",
+    additionalDirPath: ["loader"],
+    tagName: "integrations/intellij",
+    type: "intellij",
+  },
+  {
+    name: "integration-vscode",
+    dirPath: "integrations/vscode",
+    additionalDirPath: ["loader"],
+    tagName: "integrations/vscode",
+    type: "vscode",
+  },
+];
+
+const unpublishedPackageNames = new Set(["loader"]);
 
 async function main() {
   const { stdout: gitBranch } = await execa("git", [
@@ -18,141 +91,141 @@ async function main() {
   if (gitPorcelain) {
     throw new Error(`Git status is not clean:\n${gitPorcelain}`);
   }
-  const packageName = process.argv[2];
-  if (!packageName) {
-    throw new Error(`Please specify a package to release`);
-  }
-  let tagName: string;
-  let dirPaths: string[];
-  let runUpdate: () => Promise<string>;
-  switch (packageName) {
-    case "@previewjs/app": {
-      tagName = "app";
-      dirPaths = ["app"];
-      runUpdate = async () => {
-        const version = await updateNodePackage("app");
-        await replaceInFile(
-          "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
-          /const val PACKAGE_VERSION = "\d+\.\d+\.\d+"/,
-          `const val PACKAGE_VERSION = "${version}"`
-        );
-        await replaceInFile(
-          "integrations/vscode/webpack.config.js",
-          /PREVIEWJS_PACKAGE_VERSION": JSON.stringify\("\d+\.\d+\.\d+"\)/,
-          `PREVIEWJS_PACKAGE_VERSION": JSON.stringify("${version}")`
-        );
-        return version;
-      };
-      break;
-    }
-    case "@previewjs/config": {
-      tagName = "config";
-      dirPaths = ["config"];
-      runUpdate = async () => {
-        const version = await updateNodePackage("config");
-        await packageJson("app/package.json").updateDependency(
-          packageName,
-          version
-        );
-        await packageJson("core/package.json").updateDependency(
-          packageName,
-          version
-        );
-        return version;
-      };
-      break;
-    }
-    case "@previewjs/core": {
-      tagName = "core";
-      dirPaths = ["core", "loader"];
-      runUpdate = async () => {
-        const version = await updateNodePackage("core");
-        await packageJson("app/package.json").updateDependency(
-          packageName,
-          version
-        );
-        return version;
-      };
-      break;
-    }
-    case "@previewjs/plugin-react":
-    case "@previewjs/plugin-vue2":
-    case "@previewjs/plugin-vue3": {
-      const frameworkName = packageName.substring("@previewjs/plugin-".length);
-      tagName = `plugins/${frameworkName}`;
-      dirPaths = [`frameworks/${frameworkName}`];
-      runUpdate = async () => {
-        const version = await updateNodePackage(`frameworks/${frameworkName}`);
-        await packageJson("app/package.json").updateDependency(
-          packageName,
-          version
-        );
-        return version;
-      };
-      break;
-    }
-    case "@previewjs/integration-intellij": {
-      tagName = "integrations/intellij";
-      dirPaths = ["integrations/intellij", "loader"];
-      runUpdate = () => updateIntellijVersion();
-      break;
-    }
-    case "@previewjs/integration-vscode": {
-      tagName = "integrations/vscode";
-      dirPaths = ["integrations/vscode", "loader"];
-      runUpdate = async () => {
-        const version = await updateNodePackage("integrations/vscode");
-        const packageJsonPath = "integrations/vscode/package.json";
-        await fs.promises.writeFile(
-          packageJsonPath,
-          (
-            await fs.promises.readFile(packageJsonPath, "utf8")
-          ).replace(
-            /previewjs-\d+\.\d+\.\d+\.vsix/g,
-            `previewjs-${version}.vsix`
-          ),
+
+  const localDependencies: Record<string, Set<string>> = {
+    "integration-intellij": new Set(["app"]),
+    "integration-vscode": new Set(["app"]),
+  };
+  for (const packageInfo of packages) {
+    if (packageInfo.type === "npm") {
+      const deps = new Set<string>();
+      const packageJson = JSON.parse(
+        await fs.promises.readFile(
+          path.join(packageInfo.dirPath, "package.json"),
           "utf8"
-        );
-        return version;
-      };
-      break;
+        )
+      );
+      for (const packageName of Object.keys({
+        ...packageJson.dependencies,
+        ...packageJson.devDependencies,
+      })) {
+        const [org, scopedName] = packageName.split("/");
+        if (org !== "@previewjs") {
+          continue;
+        }
+        if (!scopedName) {
+          throw new Error(`Expected a scoped package, found ${packageName}`);
+        }
+        deps.add(scopedName);
+      }
+      localDependencies[packageInfo.name] = deps;
     }
-    case "@previewjs/type-analyzer": {
-      tagName = "type-analyzer";
-      dirPaths = ["type-analyzer"];
-      runUpdate = async () => {
-        const version = await updateNodePackage("type-analyzer");
-        await packageJson("core/package.json").updateDependency(
-          packageName,
-          version
-        );
-        await packageJson("frameworks/react/package.json").updateDependency(
-          packageName,
-          version
-        );
-        await packageJson("frameworks/vue2/package.json").updateDependency(
-          packageName,
-          version
-        );
-        await packageJson("frameworks/vue3/package.json").updateDependency(
-          packageName,
-          version
-        );
-        return version;
-      };
-      break;
-    }
-    default:
-      throw new Error(`Unknown package name: ${packageName}`);
   }
-  const changelog = await gitChangelog(packageName, dirPaths);
+
+  while (Object.entries(localDependencies).length > 0) {
+    const nextPackageWithoutDeps = Object.entries(localDependencies).find(
+      ([_, deps]) => deps.size === 0
+    );
+    if (!nextPackageWithoutDeps) {
+      throw new Error(
+        `Invalid state: no package left without updated dependencies.`
+      );
+    }
+    const scopedName = nextPackageWithoutDeps[0];
+    const packageInfo = packages.find((p) => p.name === scopedName);
+    if (!packageInfo) {
+      throw new Error(`Missing package info for name: ${scopedName}`);
+    }
+    const dependents = Object.entries(localDependencies)
+      .filter(([_, deps]) => deps.has(scopedName))
+      .map(([name]) => name);
+    await releasePackage(packageInfo, dependents);
+    for (const deps of Object.values(localDependencies)) {
+      deps.delete(scopedName);
+    }
+    delete localDependencies[scopedName];
+  }
+}
+
+async function releasePackage(packageInfo: Package, dependents: string[]) {
+  const packageName = `@previewjs/${packageInfo.name}`;
+  console.log(`About to release: ${packageName}`);
+  const changelog = await gitChangelog(packageName, [
+    packageInfo.dirPath,
+    ...(packageInfo.additionalDirPath || []),
+  ]);
   if (!changelog) {
-    console.error(`There is nothing to release.`);
+    console.log(`There is nothing to release.\n`);
     return;
   }
   console.log(`You are about to release the following:\n${changelog}`);
-  const version = await runUpdate();
-  const tag = `${tagName}/v${version}`;
+  let version: string;
+  switch (packageInfo.type) {
+    case "npm":
+      version = await updateNodePackage(packageInfo.dirPath);
+      break;
+    case "intellij":
+      version = await updateIntellijVersion(packageInfo.dirPath);
+      break;
+    case "vscode":
+      version = await updateNodePackage(packageInfo.dirPath);
+      const packageJsonPath = path.join(packageInfo.dirPath, "package.json");
+      await fs.promises.writeFile(
+        packageJsonPath,
+        (
+          await fs.promises.readFile(packageJsonPath, "utf8")
+        ).replace(/-\d+\.\d+\.\d+\.vsix/g, `-${version}.vsix`),
+        "utf8"
+      );
+      break;
+    default:
+      throw assertNever(packageInfo.type);
+  }
+  for (const dependent of dependents) {
+    if (unpublishedPackageNames.has(dependent)) {
+      continue;
+    }
+    const depPackageInfo = packages.find((p) => p.name === dependent);
+    if (!depPackageInfo) {
+      throw new Error(`Unable to find package info for: ${dependent}`);
+    }
+    switch (depPackageInfo.type) {
+      case "npm":
+        await packageJson(
+          `${depPackageInfo.dirPath}/package.json`
+        ).updateDependency(packageName, version);
+        break;
+      case "intellij":
+        if (packageName === "@previewjs/app") {
+          await replaceInFile(
+            "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
+            /const val PACKAGE_VERSION = "\d+\.\d+\.\d+"/,
+            `const val PACKAGE_VERSION = "${version}"`
+          );
+        } else {
+          throw new Error(
+            `Unexpected IntelliJ dependent for package: ${packageName}`
+          );
+        }
+        break;
+      case "vscode":
+        if (packageName === "@previewjs/app") {
+          await replaceInFile(
+            "integrations/vscode/webpack.config.js",
+            /PREVIEWJS_PACKAGE_VERSION": JSON.stringify\("\d+\.\d+\.\d+"\)/,
+            `PREVIEWJS_PACKAGE_VERSION": JSON.stringify("${version}")`
+          );
+        } else {
+          throw new Error(
+            `Unexpected VS Code dependent for package: ${packageName}`
+          );
+        }
+        break;
+      default:
+        throw assertNever(depPackageInfo.type);
+    }
+  }
+  const tag = `${packageInfo.tagName}/v${version}`;
   console.log(`The following tag will be created: ${tag}\n`);
   console.log(`Running pnpm install...`);
   await execa("pnpm", ["install"]);
@@ -165,6 +238,20 @@ async function main() {
   console.log(`Creating release...`);
   await execa("gh", ["release", "create", tag, "-t", tag, "-n", changelog]);
   console.log(`Done!`);
+
+  if (packageInfo.type === "npm") {
+    console.log("Waiting for NPM package to be published...");
+    while (true) {
+      try {
+        await axios.get(`https://registry.npmjs.org/${packageName}/${version}`);
+        console.log("Success!");
+      } catch (e) {
+        console.log("Waiting...");
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+      }
+    }
+  }
+  console.log("");
 }
 
 async function gitChangelog(packageName: string, dirPaths: string[]) {
@@ -194,9 +281,9 @@ async function updateNodePackage(dirPath: string) {
   return version;
 }
 
-async function updateIntellijVersion() {
+async function updateIntellijVersion(dirPath: string) {
   // Note: this isn't actually a Node package.
-  const gradlePropertiesPath = "integrations/intellij/gradle.properties";
+  const gradlePropertiesPath = `${dirPath}/gradle.properties`;
   const gradlePropertiesContent = await fs.promises.readFile(
     gradlePropertiesPath,
     "utf8"
