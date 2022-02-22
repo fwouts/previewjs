@@ -11,6 +11,7 @@ import {
   Writer,
 } from "@previewjs/core/vfs";
 import {
+  BOOLEAN_TYPE,
   createTypeAnalyzer,
   objectType,
   optionalType,
@@ -25,7 +26,7 @@ const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 const EMPTY_SET: ReadonlySet<string> = new Set();
 
-describe("analyzeReactComponent", () => {
+describe("analyze Vue 3 component", () => {
   let memoryReader: Reader & Writer;
   let typescriptAnalyzer: TypescriptAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -219,7 +220,7 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
     });
   });
 
-  test("export default defineComponent()", async () => {
+  test("export default defineComponent() simple case", async () => {
     expect(
       await analyze(
         `
@@ -238,14 +239,84 @@ export default defineComponent({
 </script>
 `
       )
-    ).toMatchObject({
+    ).toEqual({
       name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
       providedArgs: EMPTY_SET,
-      types: {},
+      types: expect.anything(),
+    });
+  });
+
+  test("export default defineComponent() complex case", async () => {
+    // Source: https://github.com/storybookjs/storybook/blob/4aa1f9944c9ede050c23afcc6861acf99cf5e841/examples/vue-3-cli/src/stories/Button.vue
+    expect(
+      await analyze(
+        `
+  <template>
+    <div>{{ label }}</div>
+  </template>
+
+  <script lang="typescript">
+  import { reactive, computed, defineComponent } from 'vue';
+
+  export default defineComponent({
+    name: 'App',
+
+    props: {
+      label: {
+        type: String,
+        required: true,
+      },
+      sublabel: {
+        type: String,
+        default: 'sublabel',
+      },
+      primary: {
+        type: Boolean,
+        default: false,
+      },
+      size: {
+        type: String,
+        validator: function (value) {
+          return ['small', 'medium', 'large'].indexOf(value) !== -1;
+        },
+      },
+      backgroundColor: {
+        type: String,
+      },
+    },
+
+    emits: ['click'],
+
+    setup(props, { emit }) {
+      props = reactive(props);
+      return {
+        style: computed(() => ({
+          backgroundColor: props.backgroundColor,
+        })),
+        onClick() {
+          emit('click');
+        }
+      }
+    },
+  });
+  </script>
+  `
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        label: STRING_TYPE,
+        sublabel: optionalType(STRING_TYPE),
+        primary: optionalType(BOOLEAN_TYPE),
+        size: optionalType(STRING_TYPE),
+        backgroundColor: optionalType(STRING_TYPE),
+      }),
+      providedArgs: EMPTY_SET,
+      types: expect.anything(),
     });
   });
 

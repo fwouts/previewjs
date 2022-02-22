@@ -69,21 +69,31 @@ export default defineComponent({
       throw new Error();
     }
     expect(await virtualFile.read()).toEqual(`
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
+const pjs_component = {
+    name: "App"
+} as const;
 
-const pjs_component = defineComponent({
-  name: 'App'
-})
 
+import type { PropType as PJS_PropType } from "@vue/runtime-core";
 
-import type { Component as PJS_Component } from "@vue/runtime-core";
-
-type PJS_ExtractProps<T> = T extends PJS_Component<infer S>
-  ? S extends { $props: unknown }
-    ? S["$props"]
-    : never
-  : never;
-
+type PJS_TypeOrUnion<T> = PJS_PropType<T> | ReadonlyArray<PJS_PropType<T>>;
+type PJS_OptionalPropType<T> = PJS_TypeOrUnion<T> | {type: PJS_TypeOrUnion<T>; required?: false};
+type PJS_RequiredPropType<T> = {type: PJS_TypeOrUnion<T>; required: true};
+type PJS_OptionalPropsKeys<T> = {
+  [K in keyof T]: T[K] extends PJS_OptionalPropType<any> ? K : never;
+}[keyof T];
+type PJS_RequiredPropsKeys<T> = {
+  [K in keyof T]: T[K] extends PJS_RequiredPropType<any> ? K : never;
+}[keyof T];
+type PJS_CombinedProps<T> = T extends readonly [...any] ? {
+  [K in T[number]]: unknown
+} : ({
+  [K in PJS_OptionalPropsKeys<T>]?: T[K] extends PJS_OptionalPropType<infer S> ? S : never;
+} & {
+  [K in PJS_RequiredPropsKeys<T>]: T[K] extends PJS_RequiredPropType<infer S> ? S : never;
+});
+type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props']> : {}
 type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
 `);
   });
