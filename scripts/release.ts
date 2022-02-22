@@ -245,6 +245,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       try {
         await axios.get(`https://registry.npmjs.org/${packageName}/${version}`);
         console.log("Success!");
+        break;
       } catch (e) {
         console.log("Waiting...");
         await new Promise((resolve) => setTimeout(resolve, 5000));
