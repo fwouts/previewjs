@@ -42,8 +42,9 @@ const pjs_component = {
 
 import {PropType as PJS_PropType} from 'vue/types/options';
 
-type PJS_OptionalPropType<T> = PJS_PropType<T> | {type: PJS_PropType<T>; required?: false};
-type PJS_RequiredPropType<T> = {type: PJS_PropType<T>; required: true};
+type PJS_TypeOrUnion<T> = PJS_Prop<T> | ReadonlyArray<PJS_Prop<T>>;
+type PJS_OptionalPropType<T> = PJS_TypeOrUnion<T> | {type: PJS_TypeOrUnion<T>; required?: false};
+type PJS_RequiredPropType<T> = {type: PJS_TypeOrUnion<T>; required: true};
 type PJS_OptionalPropsKeys<T> = {
   [K in keyof T]: T[K] extends PJS_OptionalPropType<any> ? K : never;
 }[keyof T];
