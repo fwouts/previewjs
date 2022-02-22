@@ -645,6 +645,82 @@ foo: string;
     ]);
   });
 
+  test("union with true and false", () => {
+    expect(
+      resolveType(
+        `
+type A = true | false;
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        "main.ts:A": {
+          type: BOOLEAN_TYPE,
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
+  test("union with true and false and boolean", () => {
+    expect(
+      resolveType(
+        `
+type A = true | false | boolean;
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        "main.ts:A": {
+          type: BOOLEAN_TYPE,
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
+  test("union with true and false and other literal", () => {
+    expect(
+      resolveType(
+        `
+type A = true | false | "test";
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        "main.ts:A": {
+          type: unionType([BOOLEAN_TYPE, literalType("test")]),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
+  test("union with true and false and other non-literal", () => {
+    expect(
+      resolveType(
+        `
+type A = true | false | string;
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        "main.ts:A": {
+          type: unionType([BOOLEAN_TYPE, STRING_TYPE]),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
   test("union with missing type", () => {
     expect(
       resolveType(
