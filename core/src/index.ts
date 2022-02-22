@@ -83,7 +83,12 @@ export async function createWorkspace({
     ? frameworkPlugin.componentAnalyzer({
         typescriptAnalyzer,
         getTypeAnalyzer: (program, specialTypes) =>
-          createTypeAnalyzer(rootDirPath, program, collected, specialTypes),
+          createTypeAnalyzer(
+            rootDirPath,
+            program,
+            collected,
+            specialTypes || {}
+          ),
       })
     : null;
   const router = new ApiRouter();

@@ -73,7 +73,7 @@ class ProjectService(private val project: Project) : Disposable {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(object : DocumentListener {
             override fun documentChanged(event: DocumentEvent) {
                 val file = FileDocumentManager.getInstance().getFile(event.document)
-                if (file != null && file.isInLocalFileSystem && file.isWritable) {
+                if (file != null && file.isInLocalFileSystem && file.isWritable && event.document.text.length <= 1_048_576) {
                     service.enqueueAction(project) { workspace ->
                         workspace.update(file.path, event.document.text)
                     }

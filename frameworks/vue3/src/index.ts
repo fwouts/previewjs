@@ -2,8 +2,15 @@ import type {
   DetectedComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
+import {
+  createFileSystemReader,
+  createStackedReader,
+} from "@previewjs/core/vfs";
+import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Node } from "acorn";
 import path from "path";
+import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { createVueTypeScriptReader } from "./vue-reader";
 
 export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -17,10 +24,22 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
     );
     const { extractVueComponents } = await import("./extract-component");
     const { Parser } = await import("acorn");
+    const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
-      previewDirPath: path.resolve(__dirname, "..", "preview"),
+      previewDirPath,
+      transformReader: (reader, rootDirPath) =>
+        createStackedReader([
+          createVueTypeScriptReader(reader),
+          createFileSystemReader({
+            mapping: {
+              from: path.join(previewDirPath, "modules"),
+              to: path.join(rootDirPath, "node_modules"),
+            },
+            watch: false,
+          }),
+        ]),
       componentDetector: (program, filePaths) => {
         const components: DetectedComponent[] = [];
         for (const filePath of filePaths) {
@@ -38,6 +57,25 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
+      componentAnalyzer:
+        ({ typescriptAnalyzer, getTypeAnalyzer }) =>
+        (filePath, componentName) => {
+          if (filePath.endsWith(".vue")) {
+            return analyzeVueComponentFromTemplate(
+              typescriptAnalyzer,
+              getTypeAnalyzer,
+              filePath
+            );
+          } else {
+            // TODO: Handle JSX and Storybook stories.
+            return {
+              name: componentName,
+              propsType: UNKNOWN_TYPE,
+              providedArgs: new Set(),
+              types: {},
+            };
+          }
+        },
       viteConfig: (config) => {
         return {
           plugins: [

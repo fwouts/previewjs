@@ -378,11 +378,16 @@ class TypeAnalyzerImpl implements TypeAnalyzer {
           // For now, we ignore property names such as "foo.bar".
           continue;
         }
-        const propertyType = maybeOptionalType(
-          this.extractPropertyType(property, genericTypeNames),
+        const propertyTsType = (this.checker as any).getTypeOfPropertyOfType(
+          type,
+          property.name
+        );
+        fields[propertyName!] = maybeOptionalType(
+          propertyTsType
+            ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
+            : UNKNOWN_TYPE,
           Boolean(property.flags & ts.SymbolFlags.Optional)
         );
-        fields[propertyName!] = propertyType;
       }
       return objectType(fields);
     }
@@ -392,33 +397,6 @@ class TypeAnalyzerImpl implements TypeAnalyzer {
       )}`
     );
     return UNKNOWN_TYPE;
-  }
-
-  private extractPropertyType(
-    property: ts.Symbol,
-    genericTypeNames: Set<string>
-  ): ValueType {
-    let propertyTsType: ts.Type;
-    if (property.valueDeclaration) {
-      propertyTsType = this.checker.getTypeOfSymbolAtLocation(
-        property,
-        property.valueDeclaration
-      );
-    } else if (property.declarations && property.declarations.length > 0) {
-      propertyTsType = this.checker.getTypeOfSymbolAtLocation(
-        property,
-        property.declarations[0]!
-      );
-    } else {
-      // This hack is required specifically for literal indexed types.
-      const resolvedType = (property as any).mappedType
-        ?.templateType as ts.Type;
-      if (!resolvedType) {
-        return UNKNOWN_TYPE;
-      }
-      propertyTsType = resolvedType;
-    }
-    return this.resolveTypeInternal(propertyTsType, genericTypeNames);
   }
 
   private extractFileNameFromSymbol(symbol: ts.Symbol, suffix = ""): string {

@@ -5,17 +5,14 @@ import { ReaderListeners } from "./listeners";
 export class StackedReader implements Reader {
   readonly listeners = new ReaderListeners();
 
-  private readonly asReaderListener: ReaderListener;
-
   constructor(private readonly readers: Reader[]) {
-    const self = this;
-    this.asReaderListener = {
-      onChange(filePath, info) {
-        self.listeners.notify(filePath, info);
+    const asReaderListener: ReaderListener = {
+      onChange: (filePath, info) => {
+        this.listeners.notify(filePath, info);
       },
     };
     for (const reader of this.readers) {
-      reader.listeners.add(this.asReaderListener);
+      reader.listeners.add(asReaderListener);
     }
   }
 

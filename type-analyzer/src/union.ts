@@ -1,4 +1,5 @@
 import isEqual from "lodash/isEqual";
+import { BOOLEAN_TYPE } from ".";
 import {
   functionType,
   maybeOptionalType,
@@ -33,6 +34,19 @@ function computeUnionWithoutVoid(types: ValueType[]): ValueType {
   }
   if (identical) {
     return evolvingType;
+  }
+  // Does it have both true and false? Then it's boolean.
+  const hasFalse = !!types.find(
+    (t) => t.kind === "literal" && t.value === false
+  );
+  const hasTrue = !!types.find((t) => t.kind === "literal" && t.value === true);
+  if (hasFalse && hasTrue) {
+    return computeUnionWithoutVoid([
+      BOOLEAN_TYPE,
+      ...types.filter(
+        (t) => t.kind !== "literal" || typeof t.value !== "boolean"
+      ),
+    ]);
   }
   const defaultUnion = unionType(types);
   switch (evolvingType.kind) {

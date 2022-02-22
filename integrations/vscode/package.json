@@ -1,6 +1,6 @@
 {
   "name": "previewjs",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "AGPL-3.0",
   "displayName": "Preview.js",
   "icon": "logo.png",
@@ -81,8 +81,8 @@
     "build": "rimraf dist && webpack",
     "prod": "cross-env PREVIEWJS_DEV=0 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
     "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
-    "dev:install": "code --install-extension previewjs-1.1.0.vsix --force",
-    "dev:cleanup": "rimraf previewjs-1.1.0.vsix"
+    "dev:install": "code --install-extension previewjs-1.2.0.vsix --force",
+    "dev:cleanup": "rimraf previewjs-1.2.0.vsix"
   },
   "devDependencies": {
     "@types/vscode": "1.43.0",
