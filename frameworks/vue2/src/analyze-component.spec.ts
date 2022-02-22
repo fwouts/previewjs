@@ -12,9 +12,12 @@ import {
 } from "@previewjs/core/vfs";
 import {
   createTypeAnalyzer,
+  NUMBER_TYPE,
   objectType,
   optionalType,
   STRING_TYPE,
+  unionType,
+  UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import path from "path";
 import { vue2FrameworkPlugin } from ".";
@@ -91,9 +94,15 @@ export default {
 export default {
   name: "App",
   props: {
-    foo: String,
-    bar: { type: String, required: true },
-    baz: { type: String, required: false },
+    a: String,
+    b: { type: String },
+    c: { type: String, default: "foo" },
+    d: { type: String, required: true },
+    e: { type: String, default: "foo", required: false },
+    f: [String, Number],
+    g: { type: [String, Number], default: "foo" },
+    h: { type: [String, Number], required: true },
+    i: { type: [String, Number], default: "foo", required: false },
   }
 }
 </script>
@@ -102,17 +111,47 @@ export default {
     ).toEqual({
       name: "App",
       propsType: objectType({
-        foo: optionalType(STRING_TYPE),
-        bar: STRING_TYPE,
-        baz: optionalType(STRING_TYPE),
+        a: optionalType(STRING_TYPE),
+        b: optionalType(STRING_TYPE),
+        c: optionalType(STRING_TYPE),
+        d: STRING_TYPE,
+        e: optionalType(STRING_TYPE),
+        f: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
+        g: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
+        h: unionType([STRING_TYPE, NUMBER_TYPE]),
+        i: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
       }),
       providedArgs: EMPTY_SET,
       types: {},
     });
   });
 
-  // TODO: array props
-  // TODO: union types
+  test("export default {} with array props", async () => {
+    expect(
+      await analyze(
+        `
+<template>
+  <div>{{ label }}</div>
+</template>
+<script>
+export default {
+  name: "App",
+  props: ["a", "b", "c"]
+}
+</script>
+`
+      )
+    ).toEqual({
+      name: "App",
+      propsType: objectType({
+        a: UNKNOWN_TYPE,
+        b: UNKNOWN_TYPE,
+        c: UNKNOWN_TYPE,
+      }),
+      providedArgs: EMPTY_SET,
+      types: {},
+    });
+  });
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);

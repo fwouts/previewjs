@@ -126,21 +126,24 @@ function convertToTypeScript(vueTemplateSource: string, name: string) {
   return `
 ${transformed}
 
-import type {PropType as PJS_PropType} from 'vue/types/options';
+import type {Prop as PJS_Prop} from 'vue/types/options';
 
-type PJS_OptionalPropType<T> = PJS_PropType<T> | {type: PJS_PropType<T>; required: false};
-type PJS_RequiredPropType<T> = {type: PJS_PropType<T>; required: true};
+type PJS_TypeOrUnion<T> = PJS_Prop<T> | ReadonlyArray<PJS_Prop<T>>;
+type PJS_OptionalPropType<T> = PJS_TypeOrUnion<T> | {type: PJS_TypeOrUnion<T>; required?: false};
+type PJS_RequiredPropType<T> = {type: PJS_TypeOrUnion<T>; required: true};
 type PJS_OptionalPropsKeys<T> = {
   [K in keyof T]: T[K] extends PJS_OptionalPropType<any> ? K : never;
 }[keyof T];
 type PJS_RequiredPropsKeys<T> = {
   [K in keyof T]: T[K] extends PJS_RequiredPropType<any> ? K : never;
 }[keyof T];
-type PJS_CombinedProps<T> = {
+type PJS_CombinedProps<T> = T extends readonly [...any] ? {
+  [K in T[number]]: unknown
+} : ({
   [K in PJS_OptionalPropsKeys<T>]?: T[K] extends PJS_OptionalPropType<infer S> ? S : never;
 } & {
   [K in PJS_RequiredPropsKeys<T>]: T[K] extends PJS_RequiredPropType<infer S> ? S : never;
-};
+});
 type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props']> : {}
 type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
 `;
