@@ -1,4 +1,4 @@
-import { Endpoint, RequestOf, ResponseOf } from "@previewjs/core/api/endpoint";
+import { Endpoint, RequestOf, ResponseOf } from "@previewjs/core/api";
 import axios from "axios";
 
 export class WebApi {

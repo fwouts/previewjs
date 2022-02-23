@@ -1,7 +1,7 @@
 import envPaths from "env-paths";
 import fs from "fs-extra";
 import path from "path";
-import { PersistedState } from "../api/persisted-state";
+import { PersistedState } from "../api";
 
 export class PersistedStateManager {
   constructor(
