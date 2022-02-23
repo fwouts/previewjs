@@ -1,13 +1,27 @@
 {
   "name": "@previewjs/plugin-vue2",
   "version": "1.1.0",
+  "license": "MIT",
   "author": {
     "name": "François Wouts",
     "email": "f@zenc.io"
   },
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "main": "./dist",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
@@ -27,7 +41,7 @@
     "@previewjs/core": "workspace:*",
     "@types/fs-extra": "9.0.13",
     "@types/jest": "27.4.0",
-    "jest": "27.5.1",
+    "jest": "28.0.0-alpha.4",
     "rimraf": "3.0.2",
     "ts-jest": "27.1.3",
     "vite": "2.7.13"

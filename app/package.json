@@ -6,7 +6,19 @@
     "name": "François Wouts",
     "email": "f@zenc.io"
   },
-  "main": "./dist/src",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "type": "commonjs",
+  "main": "./dist/src/index.js",
+  "exports": {
+    ".": "./dist/src/index.js"
+  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
@@ -78,7 +90,7 @@
     "eslint-plugin-react": "7.28.0",
     "eslint-plugin-react-hooks": "4.3.0",
     "execa": "5.1.1",
-    "fs-extra": "10.0.0",
+    "fs-extra": "10.0.1",
     "lodash": "4.17.21",
     "playwright": "1.19.1",
     "rimraf": "3.0.2",

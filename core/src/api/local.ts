@@ -1,7 +1,7 @@
 import { declareEndpoint } from "./endpoint";
 import { PersistedState } from "./persisted-state";
 
-export const GetInfoEndpoint = declareEndpoint<
+export const GetInfo = declareEndpoint<
   void,
   {
     appInfo: {
@@ -11,16 +11,14 @@ export const GetInfoEndpoint = declareEndpoint<
   }
 >("get-info");
 
-export const GetStateEndpoint = declareEndpoint<void, PersistedState>(
-  "get-state"
-);
+export const GetState = declareEndpoint<void, PersistedState>("get-state");
 
-export const UpdateStateEndpoint = declareEndpoint<
+export const UpdateState = declareEndpoint<
   Partial<PersistedState>,
   PersistedState
 >("update-state");
 
-export const ComputePropsEndpoint = declareEndpoint<
+export const ComputeProps = declareEndpoint<
   {
     relativeFilePath: string;
     componentName: string;

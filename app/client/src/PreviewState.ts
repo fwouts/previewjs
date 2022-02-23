@@ -1,19 +1,13 @@
 import {
+  localEndpoints,
+  PersistedState,
+  webEndpoints,
+} from "@previewjs/core/api";
+import {
   createController,
   PreviewIframeController,
   Variant,
 } from "@previewjs/core/controller";
-import {
-  ComputePropsEndpoint,
-  GetInfoEndpoint,
-  GetStateEndpoint,
-  UpdateStateEndpoint,
-} from "@previewjs/core/dist/api/local";
-import { PersistedState } from "@previewjs/core/dist/api/persisted-state";
-import {
-  CheckVersionEndpoint,
-  CheckVersionResponse,
-} from "@previewjs/core/dist/api/web";
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
@@ -111,7 +105,7 @@ export class PreviewState {
     } | null;
   } | null = null;
   appInfo: { platform: string; version: string } | null = null;
-  checkVersionResponse: CheckVersionResponse | null = null;
+  checkVersionResponse: webEndpoints.CheckVersionResponse | null = null;
   persistedState: PersistedState | null = null;
 
   private iframeRef: React.RefObject<HTMLIFrameElement | null> = {
@@ -183,17 +177,20 @@ export class PreviewState {
       this.ping().catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
     document.addEventListener("keydown", this.keydownListener);
-    const { appInfo } = await this.localApi.request(GetInfoEndpoint, void 0);
+    const { appInfo } = await this.localApi.request(
+      localEndpoints.GetInfo,
+      void 0
+    );
     runInAction(() => {
       this.appInfo = appInfo;
     });
-    const state = await this.localApi.request(GetStateEndpoint, void 0);
+    const state = await this.localApi.request(localEndpoints.GetState, void 0);
     runInAction(() => {
       this.persistedState = state;
     });
     try {
       const checkVersionResponse = await this.webApi.request(
-        CheckVersionEndpoint,
+        webEndpoints.CheckVersion,
         {
           appInfo,
         }
@@ -297,7 +294,7 @@ export class PreviewState {
   }
 
   async onUpdateDismissed() {
-    const state = await this.localApi.request(UpdateStateEndpoint, {
+    const state = await this.localApi.request(localEndpoints.UpdateState, {
       updateDismissed: {
         timestamp: Date.now(),
       },
@@ -312,7 +309,6 @@ export class PreviewState {
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
     const relativeFilePath = filePathFromComponentId(componentId);
-    // TODO: Change this?
     const nameFromPath = componentNameFromComponentId(componentId);
     if (this.options.onFileChanged) {
       await this.options.onFileChanged(relativeFilePath);
@@ -338,7 +334,7 @@ export class PreviewState {
           details: null,
         };
       });
-      const sources = await this.localApi.request(ComputePropsEndpoint, {
+      const sources = await this.localApi.request(localEndpoints.ComputeProps, {
         relativeFilePath,
         componentName: name,
       });
