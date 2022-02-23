@@ -5,6 +5,14 @@
     "email": "f@zenc.io"
   },
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
   "scripts": {
     "check-licenses": "ts-node scripts/check-licenses.ts",
     "release": "ts-node scripts/release.ts"

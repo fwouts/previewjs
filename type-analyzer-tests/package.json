@@ -3,8 +3,10 @@
     "name": "François Wouts",
     "email": "f@zenc.io"
   },
-  "repository": "https://github.com/fwouts/previewjs",
-  "homepage": "https://previewjs.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
   "scripts": {
     "test": "jest"
   },

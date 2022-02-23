@@ -1,12 +1,20 @@
 {
   "name": "@previewjs/core",
   "version": "1.2.0",
+  "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
     "email": "f@zenc.io"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
   "main": "./dist/src",
-  "license": "AGPL-3.0",
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && tsc -p iframe && shx cp -r node_modules/monaco-editor dist/monaco-editor",

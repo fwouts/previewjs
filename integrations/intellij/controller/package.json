@@ -5,6 +5,14 @@
     "name": "François Wouts",
     "email": "f@zenc.io"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
   "scripts": {
     "build": "rimraf dist && webpack",
     "dev": "ts-node-dev --respawn src/main.ts"

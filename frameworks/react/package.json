@@ -1,11 +1,19 @@
 {
   "name": "@previewjs/plugin-react",
   "version": "1.2.0",
+  "license": "MIT",
   "author": {
     "name": "François Wouts",
     "email": "f@zenc.io"
   },
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
   "sideEffects": false,
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
