@@ -1,7 +1,7 @@
 // This is meant to be invoked via fork() to analyze a project in a subprocess
 // in order to prevent the parent process from freezing.
 
-import { createWorkspace, loadPreviewEnv } from "@previewjs/core/src";
+import { createWorkspace, loadPreviewEnv } from "@previewjs/core";
 import { createFileSystemReader } from "@previewjs/core/vfs";
 import path from "path";
 import setupEnvironment from "../..";
