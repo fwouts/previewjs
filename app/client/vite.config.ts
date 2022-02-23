@@ -16,4 +16,9 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    commonjsOptions: {
+      include: [/core\/.*/, /node_modules/],
+    },
+  },
 });
