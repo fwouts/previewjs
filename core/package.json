@@ -14,7 +14,45 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "main": "./dist/src",
+  "type": "commonjs",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/src/index.js"
+    },
+    "./api": {
+      "default": "./dist/src/api/index.js"
+    },
+    "./controller": {
+      "import": "./dist/controller/index.js"
+    },
+    "./ts-helpers": {
+      "default": "./dist/src/ts-helpers/index.js"
+    },
+    "./vfs": {
+      "default": "./dist/src/vfs/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/src/index.d.ts"
+      ],
+      "api": [
+        "./dist/src/api/index.d.ts"
+      ],
+      "controller": [
+        "./dist/controller/index.d.ts"
+      ],
+      "ts-helpers": [
+        "./dist/src/ts-helpers/index.d.ts"
+      ],
+      "vfs": [
+        "./dist/src/vfs/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && tsc -p iframe && shx cp -r node_modules/monaco-editor dist/monaco-editor",
@@ -52,7 +90,7 @@
     "@types/prettier": "2.4.4",
     "@types/uuid": "8.3.4",
     "@types/webpack-env": "1.16.3",
-    "jest": "27.5.1",
+    "jest": "28.0.0-alpha.4",
     "rimraf": "3.0.2",
     "shx": "0.3.4",
     "ts-jest": "27.1.3"

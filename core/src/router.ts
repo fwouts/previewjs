@@ -1,4 +1,4 @@
-import { Endpoint, RequestOf, ResponseOf, WrappedResponse } from "../api";
+import { Endpoint, RequestOf, ResponseOf, WrappedResponse } from "./api";
 
 export class ApiRouter {
   private handlers = new Map<string, RequestHandler<any, any>>();
