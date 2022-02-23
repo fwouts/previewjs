@@ -15,11 +15,7 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
-    "test": "jest"
-  },
+  "type": "commonjs",
   "main": "./dist/index.js",
   "exports": {
     ".": {
@@ -29,6 +25,11 @@
       "module": "./setup.esm.js",
       "default": "./setup.js"
     }
+  },
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
+    "build": "rimraf dist && tsc",
+    "test": "jest"
   },
   "dependencies": {
     "@previewjs/type-analyzer": "1.1.1",
