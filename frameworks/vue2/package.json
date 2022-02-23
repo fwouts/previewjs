@@ -15,7 +15,13 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "main": "./dist",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
