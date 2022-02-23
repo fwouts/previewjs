@@ -64,7 +64,7 @@ importers:
       execa: 5.1.1
       express: 4.17.3
       framer-motion: 5.6.0
-      fs-extra: 10.0.0
+      fs-extra: 10.0.1
       lodash: 4.17.21
       mobx: 6.4.1
       mobx-react-lite: 3.3.0
@@ -117,7 +117,7 @@ importers:
       eslint-plugin-react: 7.28.0_eslint@7.32.0
       eslint-plugin-react-hooks: 4.3.0_eslint@7.32.0
       execa: 5.1.1
-      fs-extra: 10.0.0
+      fs-extra: 10.0.1
       lodash: 4.17.21
       playwright: 1.19.1
       rimraf: 3.0.2
@@ -176,7 +176,7 @@ importers:
       chokidar: 3.5.3
       env-paths: '2'
       express: 4.17.3
-      fs-extra: 10.0.0
+      fs-extra: 10.0.1
       get-port: '5'
       http-terminator: 3.0.4
       jest: 27.5.1
@@ -202,7 +202,7 @@ importers:
       chokidar: 3.5.3
       env-paths: 2.2.1
       express: 4.17.3
-      fs-extra: 10.0.0
+      fs-extra: 10.0.1
       get-port: 5.1.1
       http-terminator: 3.0.4
       monaco-editor: 0.32.1
@@ -17051,6 +17051,14 @@ packages:
 
   /fs-extra/10.0.0:
     resolution: {integrity: sha512-C5owb14u9eJwizKGdchcDUQeFtlSHHthBk8pbX9Vc1PFZrLombudjDnNns88aYslCyF6IY5SUw3Roz6xShcEIQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      graceful-fs: 4.2.9
+      jsonfile: 6.1.0
+      universalify: 2.0.0
+
+  /fs-extra/10.0.1:
+    resolution: {integrity: sha512-NbdoVMZso2Lsrn/QwLXOy6rm0ufY2zEOKCDzJR/0kBsb0E6qed0P3iYK+Ath3BfvXEeu4JhEtXLgILx5psUfag==}
     engines: {node: '>=12'}
     dependencies:
       graceful-fs: 4.2.9
