@@ -9,6 +9,9 @@ export default defineConfig({
   build: {
     outDir: "build",
     chunkSizeWarningLimit: 10000,
+    commonjsOptions: {
+      include: [/core\/.*/, /node_modules/],
+    },
   },
   server: {
     cors: {

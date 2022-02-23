@@ -16,9 +16,6 @@
   "homepage": "https://previewjs.com",
   "type": "commonjs",
   "main": "./dist/src/index.js",
-  "exports": {
-    ".": "./dist/src/index.js"
-  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
