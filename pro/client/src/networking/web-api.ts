@@ -1,4 +1,4 @@
-import { declareEndpoint } from "@previewjs/core/dist/api/endpoint";
+import { declareEndpoint } from "@previewjs/core/api";
 
 export const FetchUpgradeToProConfigEndpoint = declareEndpoint<
   {},

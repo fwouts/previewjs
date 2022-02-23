@@ -1,6 +1,5 @@
 import { PreviewState } from "@previewjs/app/client/src/PreviewState";
-import { UpdateStateEndpoint } from "@previewjs/core/dist/api/local";
-import { CheckVersionResponse } from "@previewjs/core/dist/api/web";
+import { localEndpoints } from "@previewjs/core/api";
 import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ValidateLicenseTokenEndpoint } from "../networking/web-api";
@@ -12,7 +11,6 @@ const REVALIDATE_LICENSE_TOKEN_AFTER_MILLIS = 60 * 60 * 1000;
 
 export class AppState {
   deviceName = "unknown device";
-  checkVersionResponse: CheckVersionResponse | null = null;
   proModalToggled = false;
 
   readonly preview: PreviewState;
@@ -70,9 +68,12 @@ export class AppState {
         timestamp: Date.now(),
         ...checkLicenseTokenResponse,
       };
-      const state = await this.preview.localApi.request(UpdateStateEndpoint, {
-        license: encodeLicense(license),
-      });
+      const state = await this.preview.localApi.request(
+        localEndpoints.UpdateState,
+        {
+          license: encodeLicense(license),
+        }
+      );
       runInAction(() => {
         this.preview.persistedState = state;
       });
@@ -101,17 +102,20 @@ export class AppState {
     maskedKey: string;
     token: string;
   }) {
-    const state = await this.preview.localApi.request(UpdateStateEndpoint, {
-      license: encodeLicense({
-        maskedKey,
-        token,
-        checked: {
-          // We assume it's a valid one.
-          timestamp: Date.now(),
-          valid: true,
-        },
-      }),
-    });
+    const state = await this.preview.localApi.request(
+      localEndpoints.UpdateState,
+      {
+        license: encodeLicense({
+          maskedKey,
+          token,
+          checked: {
+            // We assume it's a valid one.
+            timestamp: Date.now(),
+            valid: true,
+          },
+        }),
+      }
+    );
     runInAction(() => {
       this.preview.persistedState = state;
     });

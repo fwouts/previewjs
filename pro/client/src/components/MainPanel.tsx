@@ -81,7 +81,7 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
         subheader={
           state.preview.persistedState && (
             <UpdateBanner
-              update={state.checkVersionResponse?.update}
+              update={state.preview.checkVersionResponse?.update}
               dismissedAt={
                 state.preview.persistedState?.updateDismissed?.timestamp
               }

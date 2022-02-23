@@ -1,4 +1,4 @@
-import { UpdateStateEndpoint } from "@previewjs/core/dist/api/local";
+import { localEndpoints } from "@previewjs/core/api";
 import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import {
@@ -258,9 +258,12 @@ class LicenseStateScreen {
         kind: "license-token",
         licenseToken: this.licenseState.token,
       });
-      await this.parent.app.preview.localApi.request(UpdateStateEndpoint, {
-        license: null,
-      });
+      await this.parent.app.preview.localApi.request(
+        localEndpoints.UpdateState,
+        {
+          license: null,
+        }
+      );
       document.location.reload();
     } catch (e) {
       console.error(e);
