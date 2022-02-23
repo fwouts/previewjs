@@ -1,6 +1,6 @@
 import { declareEndpoint } from "./endpoint";
 
-export const CheckVersionEndpoint = declareEndpoint<
+export const CheckVersion = declareEndpoint<
   CheckVersionRequest,
   CheckVersionResponse
 >("versions/check");

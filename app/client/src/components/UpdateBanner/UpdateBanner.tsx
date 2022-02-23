@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { UpdateAvailability } from "@previewjs/core/api/web";
+import { webEndpoints } from "@previewjs/core/api";
 import React from "react";
 import { Link } from "..";
 
@@ -9,7 +9,7 @@ export const UpdateBanner = ({
   dismissedAt,
   onDismiss,
 }: {
-  update?: UpdateAvailability;
+  update?: webEndpoints.UpdateAvailability;
   dismissedAt?: number;
   onDismiss(): void;
 }) => {

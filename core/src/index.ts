@@ -4,12 +4,7 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import * as vite from "vite";
-import {
-  ComputePropsEndpoint,
-  GetInfoEndpoint,
-  GetStateEndpoint,
-  UpdateStateEndpoint,
-} from "../api/local";
+import { localEndpoints } from "../api";
 import { computeProps } from "./compute-props";
 import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
@@ -92,7 +87,7 @@ export async function createWorkspace({
       })
     : null;
   const router = new ApiRouter();
-  router.onRequest(GetInfoEndpoint, async () => {
+  router.onRequest(localEndpoints.GetInfo, async () => {
     const separatorPosition = versionCode.indexOf("-");
     if (separatorPosition === -1) {
       throw new Error(`Unsupported version code format: ${versionCode}`);
@@ -106,12 +101,12 @@ export async function createWorkspace({
       },
     };
   });
-  router.onRequest(GetStateEndpoint, () => persistedStateManager.get());
-  router.onRequest(UpdateStateEndpoint, (stateUpdate) =>
+  router.onRequest(localEndpoints.GetState, () => persistedStateManager.get());
+  router.onRequest(localEndpoints.UpdateState, (stateUpdate) =>
     persistedStateManager.update(stateUpdate)
   );
   router.onRequest(
-    ComputePropsEndpoint,
+    localEndpoints.ComputeProps,
     async ({ relativeFilePath, componentName }) => {
       if (!componentAnalyzer) {
         return null;
