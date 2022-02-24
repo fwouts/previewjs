@@ -27,7 +27,7 @@ import java.util.*
 
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
-const val PACKAGE_NAME = "@previewjs/pro"
+const val PACKAGE_NAME = "@previewjs/app"
 const val PACKAGE_VERSION = "1.2.0"
 
 @Service
