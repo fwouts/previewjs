@@ -10,7 +10,6 @@ build({
   minify: false,
   bundle: true,
   outdir: "./dist",
-  external: ["vscode"],
   platform: "node",
 }).catch((err) => {
   process.stderr.write(err.stderr);
