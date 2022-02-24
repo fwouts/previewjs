@@ -7,11 +7,11 @@ main().catch((e) => {
 });
 
 async function main() {
-  const packageName = process.env["PREVIEWJS_PACKAGE_NAME"];
+  const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
   if (!packageName) {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
   }
-  const packageVersion = process.env["PREVIEWJS_PACKAGE_VERSION"];
+  const packageVersion = process.env.PREVIEWJS_PACKAGE_VERSION;
   if (!packageVersion) {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_VERSION`);
   }

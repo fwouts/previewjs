@@ -210,8 +210,8 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       case "vscode":
         if (packageName === "@previewjs/app") {
           await replaceInFile(
-            "integrations/vscode/webpack.config.js",
-            /PREVIEWJS_PACKAGE_VERSION": JSON.stringify\("\d+\.\d+\.\d+"\)/,
+            "integrations/vscode/esbuild.js",
+            /PREVIEWJS_PACKAGE_VERSION": JSON\.stringify\("\d+\.\d+\.\d+"\)/,
             `PREVIEWJS_PACKAGE_VERSION": JSON.stringify("${version}")`
           );
         } else {

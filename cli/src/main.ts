@@ -31,8 +31,8 @@ program
   .option(...VERBOSE_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
     const previewjs = await load({
-      installDir: process.env["PREVIEWJS_MODULES_DIR"] || "..",
-      packageName: process.env["PREVIEWJS_PACKAGE_NAME"] || "@previewjs/app",
+      installDir: process.env.PREVIEWJS_MODULES_DIR || "..",
+      packageName: process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/app",
     });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,

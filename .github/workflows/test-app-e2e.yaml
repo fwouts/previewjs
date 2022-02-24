@@ -118,7 +118,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `⚠️ Screenshots have changed: group ${process.env["MATRIX_GROUP"]}, ${process.env["MATRIX_OS"]} (Node ${process.env["MATRIX_NODE_VERSION"]})`
+              body: `⚠️ Screenshots have changed: group ${process.env.MATRIX_GROUP}, ${process.env.MATRIX_OS} (Node ${process.env.MATRIX_NODE_VERSION})`
             })
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code

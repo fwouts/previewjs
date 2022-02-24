@@ -18,8 +18,8 @@ import {
   UpdatePendingFileResponse,
 } from "./api";
 
-const port = parseInt(process.env["PORT"] || "9100");
-const version = process.env["PREVIEWJS_INTELLIJ_VERSION"];
+const port = parseInt(process.env.PORT || "9100");
+const version = process.env.PREVIEWJS_INTELLIJ_VERSION;
 
 if (!version) {
   throw new Error(`IntelliJ version was not set`);
@@ -31,7 +31,7 @@ main().catch((e) => {
 });
 
 async function main() {
-  const packageName = process.env["PREVIEWJS_PACKAGE_NAME"];
+  const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
   if (!packageName) {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
   }
