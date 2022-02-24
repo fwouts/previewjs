@@ -14,7 +14,7 @@
   },
   "homepage": "https://previewjs.com",
   "scripts": {
-    "build": "rimraf dist && webpack",
+    "build": "rimraf dist && tsc && node esbuild.js",
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
@@ -22,15 +22,12 @@
     "@previewjs/loader": "workspace:*",
     "@types/express": "4.17.13",
     "@types/uuid": "8.3.4",
-    "@types/webpack-env": "1.16.3",
     "cross-env": "7.0.3",
+    "esbuild": "0.14.23",
     "express": "4.17.3",
     "rimraf": "3.0.2",
-    "ts-loader": "9.2.6",
     "ts-node-dev": "1.1.8",
     "typescript": "4.5.5",
-    "uuid": "8.3.2",
-    "webpack": "5.69.1",
-    "webpack-cli": "4.9.2"
+    "uuid": "8.3.2"
   }
 }
