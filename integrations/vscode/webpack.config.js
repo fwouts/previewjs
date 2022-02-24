@@ -1,6 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const webpack = require("webpack");
+import * as fs from "fs";
+import * as path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import webpack from "webpack";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const { version } = JSON.parse(
   fs.readFileSync(path.join(__dirname, "package.json"), "utf8")
@@ -10,7 +14,7 @@ if (!version) {
 }
 
 /** @type {import("webpack").Configuration} */
-module.exports = {
+export default {
   entry: "./src/index.ts",
   mode: process.env["NODE_ENV"] || "production",
   target: "node",
@@ -37,7 +41,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify("@previewjs/app"),
+      "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify("@previewjs/pro"),
       ...(process.env["PREVIEWJS_DEV"] === "1"
         ? {
             "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
@@ -52,7 +56,13 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),
-    libraryTarget: "commonjs2",
+    library: {
+      type: "module",
+    },
+    chunkFormat: "module",
+  },
+  experiments: {
+    outputModule: true,
   },
   optimization: {
     minimize: false,

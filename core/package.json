@@ -14,8 +14,9 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
     ".": {
@@ -25,7 +26,7 @@
       "default": "./dist/src/api/index.js"
     },
     "./controller": {
-      "import": "./dist/controller/index.js"
+      "default": "./dist/controller/index.js"
     },
     "./ts-helpers": {
       "default": "./dist/src/ts-helpers/index.js"

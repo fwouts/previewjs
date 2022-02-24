@@ -9,13 +9,15 @@ export async function load({
   installDir: string;
   packageName: string;
 }) {
-  const core = requireModule("@previewjs/core");
-  const setupEnvironment: core.SetupPreviewEnvironment =
-    requireModule(packageName).default;
+  const core = await requireModule("@previewjs/core");
+  const setupEnvironment: core.SetupPreviewEnvironment = (
+    await requireModule(packageName)
+  ).default;
 
-  function requireModule(name: string) {
+  async function requireModule(name: string) {
     try {
-      return __non_webpack_require__(
+      return import(
+        /* webpackIgnore: true */
         __non_webpack_require__.resolve(name, {
           paths: [installDir],
         })
