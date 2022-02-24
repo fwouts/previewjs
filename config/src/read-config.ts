@@ -10,13 +10,8 @@ export function readConfig(rootDirPath: string): PreviewConfig {
   const configFileExists = fs.existsSync(rpConfigPath);
   if (configFileExists) {
     // Delete any existing cache so we reload the config fresh.
-    // @ts-ignore
-    delete require.cache[
-      // @ts-ignore
-      require.resolve(rpConfigPath)
-    ];
-    // @ts-ignore
-    const required = require(/* webpackIgnore: true */ rpConfigPath);
+    delete require.cache[require.resolve(rpConfigPath)];
+    const required = require(rpConfigPath);
     config = required.module || required;
   }
   return {
