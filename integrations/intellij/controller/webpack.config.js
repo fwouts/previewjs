@@ -6,7 +6,7 @@ module.exports = {
     install: "./src/install.ts",
     "run-server": "./src/run-server.ts",
   },
-  mode: process.env["NODE_ENV"] || "production",
+  mode: process.env.NODE_ENV || "production",
   target: "node",
   module: {
     rules: [

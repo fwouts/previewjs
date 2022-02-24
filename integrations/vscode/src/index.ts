@@ -28,15 +28,15 @@ let dispose = async () => {
 export async function activate(context: vscode.ExtensionContext) {
   const config = vscode.workspace.getConfiguration();
 
-  const packageName = process.env["PREVIEWJS_PACKAGE_NAME"];
+  const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
   if (!packageName) {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
   }
 
-  let requirePath = process.env["PREVIEWJS_MODULES_DIR"];
+  let requirePath = process.env.PREVIEWJS_MODULES_DIR;
   if (!requirePath) {
     requirePath = path.join(__dirname, "installed");
-    const packageVersion = process.env["PREVIEWJS_PACKAGE_VERSION"];
+    const packageVersion = process.env.PREVIEWJS_PACKAGE_VERSION;
     if (!packageVersion) {
       throw new Error(
         `Missing environment variable: PREVIEWJS_PACKAGE_VERSION`
