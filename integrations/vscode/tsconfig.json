@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist",
-    "declaration": false,
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
       "@previewjs/core": ["../../core"],
