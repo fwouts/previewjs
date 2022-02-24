@@ -15,11 +15,9 @@ export async function load({
 
   function requireModule(name: string) {
     try {
-      return __non_webpack_require__(
-        __non_webpack_require__.resolve(name, {
-          paths: [installDir],
-        })
-      );
+      return require(require.resolve(name, {
+        paths: [installDir],
+      }));
     } catch (e) {
       console.error(`Unable to load ${name} from ${installDir}`);
       throw e;
