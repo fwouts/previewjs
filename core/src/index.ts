@@ -25,7 +25,6 @@ export type {
   PreviewEnvironment,
   SetupPreviewEnvironment,
 } from "./preview-env";
-// TODO: Move out as well.
 export { extractArgs } from "./storybook/args";
 
 export async function createWorkspace({
