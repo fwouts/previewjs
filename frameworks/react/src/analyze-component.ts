@@ -3,6 +3,7 @@ import {
   CollectedTypes,
   dereferenceType,
   EMPTY_OBJECT_TYPE,
+  helpers,
   maybeOptionalType,
   objectType,
   TypeResolver,
@@ -10,7 +11,6 @@ import {
   ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { detectArgs } from "./args";
 import { detectPropTypes } from "./prop-types";
 
 export function analyzeReactComponent(
@@ -23,7 +23,7 @@ export function analyzeReactComponent(
   let args: ts.Expression | null = null;
   let propTypes: ts.Expression | null = null;
   if (sourceFile) {
-    args = detectArgs(sourceFile, componentName);
+    args = helpers.extractArgs(sourceFile)[componentName] || null;
     propTypes = detectPropTypes(sourceFile, componentName);
   }
   let resolved = computePropsType(typeResolver, signature, propTypes);

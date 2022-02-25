@@ -1,5 +1,5 @@
 import { Component } from "@previewjs/core";
-import { detectExportedNames, TypeResolver } from "@previewjs/type-analyzer";
+import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
 
@@ -16,7 +16,7 @@ export function extractReactComponents(
       signature: ts.Signature;
     }
   > = [];
-  const nameToExportedName = detectExportedNames(sourceFile);
+  const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
