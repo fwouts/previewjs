@@ -37,7 +37,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             watch: false,
           }),
         ]),
-      componentDetector: (program, filePaths) => {
+      componentDetector: (resolver, filePaths) => {
         const components: DetectedComponent[] = [];
         for (const filePath of filePaths) {
           if (filePath.endsWith(".vue")) {
@@ -49,20 +49,16 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
               offsets: [[0, Infinity]],
             });
           } else {
-            components.push(...extractVueComponents(program, filePath));
+            components.push(...extractVueComponents(resolver, filePath));
           }
         }
         return components;
       },
       componentAnalyzer:
-        ({ typescriptAnalyzer, getTypeAnalyzer }) =>
+        ({ typeAnalyzer }) =>
         (filePath, componentName) => {
           if (filePath.endsWith(".vue")) {
-            return analyzeVueComponentFromTemplate(
-              typescriptAnalyzer,
-              getTypeAnalyzer,
-              filePath
-            );
+            return analyzeVueComponentFromTemplate(typeAnalyzer, filePath);
           } else {
             // TODO: Handle JSX and Storybook stories.
             return {

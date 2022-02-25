@@ -3,7 +3,6 @@ import {
   ANY_TYPE,
   arrayType,
   createTypeAnalyzer,
-  createTypescriptAnalyzer,
   EMPTY_OBJECT_TYPE,
   functionType,
   namedType,
@@ -13,7 +12,7 @@ import {
   objectType,
   optionalType,
   STRING_TYPE,
-  TypescriptAnalyzer,
+  TypeAnalyzer,
   unionType,
 } from "@previewjs/type-analyzer";
 import {
@@ -36,13 +35,13 @@ const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin<ReactComponent>;
 
   beforeAll(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await reactFrameworkPlugin.create();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,
@@ -51,11 +50,12 @@ describe("analyzeReactComponent", () => {
         }), // required for TypeScript libs, e.g. Promise
       ]),
       tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      specialTypes: REACT_SPECIAL_TYPES,
     });
   });
 
   afterAll(() => {
-    typescriptAnalyzer.dispose();
+    typeAnalyzer.dispose();
   });
 
   test("local component with named export", async () => {
@@ -538,22 +538,16 @@ A.propTypes = {
 
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    const program = typescriptAnalyzer.analyze([MAIN_FILE]);
+    const resolver = typeAnalyzer.analyze([MAIN_FILE]);
     const component = frameworkPlugin
-      .componentDetector(program, [MAIN_FILE])
+      .componentDetector(resolver, [MAIN_FILE])
       .find((c) => c.name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    const sourceFile = program.getSourceFile(MAIN_FILE)!;
-    const typeAnalyzer = createTypeAnalyzer(
-      ROOT_DIR_PATH,
-      program,
-      {},
-      REACT_SPECIAL_TYPES
-    );
+    const sourceFile = resolver.sourceFile(MAIN_FILE)!;
     return analyzeReactComponent(
-      typeAnalyzer,
+      resolver,
       component,
       detectArgs(sourceFile, component.name),
       detectPropTypes(sourceFile, component.name)

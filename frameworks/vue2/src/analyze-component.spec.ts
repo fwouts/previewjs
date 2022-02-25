@@ -1,13 +1,12 @@
 import { FrameworkPlugin } from "@previewjs/core";
 import {
   createTypeAnalyzer,
-  createTypescriptAnalyzer,
   literalType,
   NUMBER_TYPE,
   objectType,
   optionalType,
   STRING_TYPE,
-  TypescriptAnalyzer,
+  TypeAnalyzer,
   unionType,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
@@ -29,13 +28,13 @@ const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyze Vue 2 component", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeAll(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await vue2FrameworkPlugin.create();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
         createStackedReader([
@@ -57,7 +56,7 @@ describe("analyze Vue 2 component", () => {
   });
 
   afterAll(() => {
-    typescriptAnalyzer.dispose();
+    typeAnalyzer.dispose();
   });
 
   test("export default {} without props", async () => {
@@ -193,10 +192,6 @@ export default class App extends Vue {
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    return analyzeVueComponentFromTemplate(
-      typescriptAnalyzer,
-      (program) => createTypeAnalyzer(ROOT_DIR_PATH, program, {}, {}),
-      MAIN_FILE
-    );
+    return analyzeVueComponentFromTemplate(typeAnalyzer, MAIN_FILE);
   }
 });

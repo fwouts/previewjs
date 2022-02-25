@@ -2,7 +2,7 @@ import { PreviewConfig } from "@previewjs/config";
 import {
   CollectedTypes,
   TypeAnalyzer,
-  TypescriptAnalyzer,
+  TypeResolver,
   ValueType,
 } from "@previewjs/type-analyzer";
 import { Reader } from "@previewjs/vfs";
@@ -26,20 +26,17 @@ export interface FrameworkPlugin<
   readonly previewDirPath: string;
   readonly transformReader?: (reader: Reader, rootDirPath: string) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
+  readonly specialTypes?: Record<string, ValueType>;
   readonly viteConfig: (config: PreviewConfig) => vite.UserConfig;
   readonly componentDetector: ComponentDetector<Component>;
   readonly componentAnalyzer?: (options: {
-    typescriptAnalyzer: TypescriptAnalyzer;
-    getTypeAnalyzer(
-      program: ts.Program,
-      specialTypes?: Record<string, ValueType>
-    ): TypeAnalyzer;
+    typeAnalyzer: TypeAnalyzer;
   }) => ComponentAnalyzer;
 }
 
 export type ComponentDetector<
   Component extends DetectedComponent = DetectedComponent
-> = (program: ts.Program, filePaths: string[]) => Component[];
+> = (resolver: TypeResolver, filePaths: string[]) => Component[];
 
 export interface DetectedComponent {
   filePath: string;

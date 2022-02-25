@@ -2,11 +2,10 @@ import { FrameworkPlugin } from "@previewjs/core";
 import {
   BOOLEAN_TYPE,
   createTypeAnalyzer,
-  createTypescriptAnalyzer,
   objectType,
   optionalType,
   STRING_TYPE,
-  TypescriptAnalyzer,
+  TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
@@ -26,13 +25,13 @@ const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyze Vue 3 component", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeAll(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await vue3FrameworkPlugin.create();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
         createStackedReader([
@@ -54,7 +53,7 @@ describe("analyze Vue 3 component", () => {
   });
 
   afterAll(() => {
-    typescriptAnalyzer.dispose();
+    typeAnalyzer.dispose();
   });
 
   test("defineProps<Props>()", async () => {
@@ -320,10 +319,6 @@ export default defineComponent({
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    return analyzeVueComponentFromTemplate(
-      typescriptAnalyzer,
-      (program) => createTypeAnalyzer(ROOT_DIR_PATH, program, {}, {}),
-      MAIN_FILE
-    );
+    return analyzeVueComponentFromTemplate(typeAnalyzer, MAIN_FILE);
   }
 });

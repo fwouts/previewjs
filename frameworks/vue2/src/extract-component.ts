@@ -1,16 +1,15 @@
 import { DetectedComponent, extractArgs } from "@previewjs/core";
-import { detectExportedNames } from "@previewjs/type-analyzer";
+import { detectExportedNames, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function extractVueComponents(
-  program: ts.Program,
+  resolver: TypeResolver,
   filePath: string,
   options: {
     offset?: number;
   } = {}
 ): DetectedComponent[] {
-  const checker = program.getTypeChecker();
-  const sourceFile = program.getSourceFile(filePath);
+  const sourceFile = resolver.sourceFile(filePath);
   if (!sourceFile) {
     return [];
   }
@@ -38,7 +37,7 @@ export function extractVueComponents(
           continue;
         }
         const signature = extractVueComponent(
-          checker,
+          resolver.checker,
           declaration.initializer,
           !!args[name]
         );
@@ -57,7 +56,11 @@ export function extractVueComponents(
       if (!isValidVueComponentName(name)) {
         continue;
       }
-      const signature = extractVueComponent(checker, statement, !!args[name]);
+      const signature = extractVueComponent(
+        resolver.checker,
+        statement,
+        !!args[name]
+      );
       if (signature) {
         components.push({
           filePath,

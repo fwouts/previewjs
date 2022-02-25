@@ -1,5 +1,5 @@
 import { DetectedComponent } from "@previewjs/core";
-import { detectExportedNames } from "@previewjs/type-analyzer";
+import { detectExportedNames, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export interface ReactComponent extends DetectedComponent {
@@ -7,20 +7,22 @@ export interface ReactComponent extends DetectedComponent {
 }
 
 export function extractReactComponents(
-  program: ts.Program,
+  resolver: TypeResolver,
   filePath: string
 ): ReactComponent[] {
-  const sourceFile = program.getSourceFile(filePath);
+  const sourceFile = resolver.sourceFile(filePath);
   if (!sourceFile) {
     return [];
   }
-  const checker = program.getTypeChecker();
   let components: ReactComponent[] = [];
   const nameToExportedName = detectExportedNames(sourceFile);
 
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
-      const signature = extractReactComponent(checker, statement.expression);
+      const signature = extractReactComponent(
+        resolver.checker,
+        statement.expression
+      );
       if (signature) {
         components.push({
           filePath,
@@ -41,7 +43,7 @@ export function extractReactComponents(
           continue;
         }
         const signature = extractReactComponent(
-          checker,
+          resolver.checker,
           declaration.initializer
         );
         if (signature) {
@@ -65,7 +67,7 @@ export function extractReactComponents(
       const name = statement.name?.text;
       const exported = (name && !!nameToExportedName[name]) || isDefaultExport;
       if (isDefaultExport || (name && isValidReactComponentName(name))) {
-        const signature = extractReactComponent(checker, statement);
+        const signature = extractReactComponent(resolver.checker, statement);
         if (signature) {
           components.push({
             filePath,
@@ -82,7 +84,7 @@ export function extractReactComponents(
       if (!isValidReactComponentName(name)) {
         continue;
       }
-      const signature = extractReactComponent(checker, statement);
+      const signature = extractReactComponent(resolver.checker, statement);
       if (signature) {
         components.push({
           filePath,

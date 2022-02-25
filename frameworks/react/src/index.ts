@@ -39,6 +39,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
+      specialTypes: REACT_SPECIAL_TYPES,
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
@@ -62,11 +63,10 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
         return components;
       },
       componentAnalyzer:
-        ({ typescriptAnalyzer, getTypeAnalyzer }) =>
+        ({ typeAnalyzer }) =>
         (filePath, componentName) => {
-          const program = typescriptAnalyzer.analyze([filePath]);
-          const typeAnalyzer = getTypeAnalyzer(program, REACT_SPECIAL_TYPES);
-          const component = extractReactComponents(program, filePath).find(
+          const resolver = typeAnalyzer.analyze([filePath]);
+          const component = extractReactComponents(resolver, filePath).find(
             (c) => c.name === componentName
           );
           if (!component) {
@@ -74,19 +74,14 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<
               `Component ${componentName} was not found in ${filePath}`
             );
           }
-          const sourceFile = program.getSourceFile(filePath);
+          const sourceFile = resolver.sourceFile(filePath);
           let args: ts.Expression | null = null;
           let propTypes: ts.Expression | null = null;
           if (sourceFile) {
             args = detectArgs(sourceFile, component.name);
             propTypes = detectPropTypes(sourceFile, component.name);
           }
-          return analyzeReactComponent(
-            typeAnalyzer,
-            component,
-            args,
-            propTypes
-          );
+          return analyzeReactComponent(resolver, component, args, propTypes);
         },
       viteConfig: (config) => {
         return {

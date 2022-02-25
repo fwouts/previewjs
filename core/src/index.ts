@@ -1,9 +1,5 @@
-import {
-  CollectedTypes,
-  createTypeAnalyzer,
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/type-analyzer";
+import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
+import { TypeAnalyzer } from "@previewjs/type-analyzer/dist/analyzer";
 import { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
@@ -71,22 +67,17 @@ export async function createWorkspace({
   if (frameworkPlugin.transformReader) {
     reader = frameworkPlugin.transformReader(reader, rootDirPath);
   }
-  const typescriptAnalyzer = createTypescriptAnalyzer({
+  const collected: CollectedTypes = {};
+  const typeAnalyzer = createTypeAnalyzer({
     reader,
     rootDirPath,
+    collected,
+    specialTypes: frameworkPlugin.specialTypes,
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
-  const collected: CollectedTypes = {};
   const componentAnalyzer = frameworkPlugin.componentAnalyzer
     ? frameworkPlugin.componentAnalyzer({
-        typescriptAnalyzer,
-        getTypeAnalyzer: (program, specialTypes) =>
-          createTypeAnalyzer(
-            rootDirPath,
-            program,
-            collected,
-            specialTypes || {}
-          ),
+        typeAnalyzer,
       })
     : null;
   const router = new ApiRouter();
@@ -158,16 +149,16 @@ export async function createWorkspace({
   const workspace: Workspace = {
     rootDirPath,
     reader,
-    typescriptAnalyzer,
+    typeAnalyzer,
     detectComponents: async (
       filePath: string,
       options: {
         offset?: number;
       } = {}
     ) => {
-      const program = typescriptAnalyzer.analyze([filePath]);
+      const resolver = typeAnalyzer.analyze([filePath]);
       return frameworkPlugin
-        .componentDetector(program, [filePath])
+        .componentDetector(resolver, [filePath])
         .map((c) => {
           return c.offsets
             .filter(([start, end]) => {
@@ -207,7 +198,7 @@ export async function createWorkspace({
       },
     },
     dispose: async () => {
-      typescriptAnalyzer.dispose();
+      typeAnalyzer.dispose();
     },
   };
   if (onReady) {
@@ -238,7 +229,7 @@ export function findWorkspaceRoot(filePath: string): string {
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
-  typescriptAnalyzer: TypescriptAnalyzer;
+  typeAnalyzer: TypeAnalyzer;
   detectComponents(
     filePath: string,
     options?: {
