@@ -26,9 +26,6 @@
     },
     "./controller": {
       "import": "./dist/controller/index.js"
-    },
-    "./ts-helpers": {
-      "default": "./dist/src/ts-helpers/index.js"
     }
   },
   "typesVersions": {
@@ -41,9 +38,6 @@
       ],
       "controller": [
         "./dist/controller/index.d.ts"
-      ],
-      "ts-helpers": [
-        "./dist/src/ts-helpers/index.d.ts"
       ]
     }
   },

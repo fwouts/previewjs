@@ -1,12 +1,9 @@
 import { FrameworkPlugin } from "@previewjs/core";
 import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
-import {
   ANY_TYPE,
   arrayType,
   createTypeAnalyzer,
+  createTypescriptAnalyzer,
   EMPTY_OBJECT_TYPE,
   functionType,
   namedType,
@@ -16,6 +13,7 @@ import {
   objectType,
   optionalType,
   STRING_TYPE,
+  TypescriptAnalyzer,
   unionType,
 } from "@previewjs/type-analyzer";
 import {

@@ -1,6 +1,9 @@
 import { AnalyzedComponent } from "@previewjs/core";
-import { TypescriptAnalyzer } from "@previewjs/core/ts-helpers";
-import { TypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import {
+  TypeAnalyzer,
+  TypescriptAnalyzer,
+  UNKNOWN_TYPE,
+} from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
 

@@ -1,4 +1,9 @@
-import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
+import {
+  CollectedTypes,
+  createTypeAnalyzer,
+  createTypescriptAnalyzer,
+  TypescriptAnalyzer,
+} from "@previewjs/type-analyzer";
 import { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
@@ -11,7 +16,6 @@ import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
-import { createTypescriptAnalyzer, TypescriptAnalyzer } from "./ts-helpers";
 export { PersistedStateManager } from "./persisted-state";
 export type {
   AnalyzedComponent,

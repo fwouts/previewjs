@@ -1,5 +1,5 @@
 import { DetectedComponent } from "@previewjs/core";
-import { detectExportedNames } from "@previewjs/core/ts-helpers";
+import { detectExportedNames } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export interface ReactComponent extends DetectedComponent {

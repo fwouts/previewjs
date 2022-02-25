@@ -1,14 +1,12 @@
 import { FrameworkPlugin } from "@previewjs/core";
 import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
-import {
   BOOLEAN_TYPE,
   createTypeAnalyzer,
+  createTypescriptAnalyzer,
   objectType,
   optionalType,
   STRING_TYPE,
+  TypescriptAnalyzer,
 } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,

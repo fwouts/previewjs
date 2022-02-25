@@ -2,12 +2,12 @@ import { PreviewConfig } from "@previewjs/config";
 import {
   CollectedTypes,
   TypeAnalyzer,
+  TypescriptAnalyzer,
   ValueType,
 } from "@previewjs/type-analyzer";
 import { Reader } from "@previewjs/vfs";
 import ts from "typescript";
 import vite from "vite";
-import { TypescriptAnalyzer } from "../ts-helpers";
 import { PackageDependencies } from "./dependencies";
 
 export interface FrameworkPluginFactory<

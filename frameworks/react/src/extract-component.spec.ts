@@ -1,7 +1,7 @@
 import {
   createTypescriptAnalyzer,
   TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,

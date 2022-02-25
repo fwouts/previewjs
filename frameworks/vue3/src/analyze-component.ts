@@ -1,10 +1,10 @@
 import { AnalyzedComponent } from "@previewjs/core";
-import { TypescriptAnalyzer } from "@previewjs/core/ts-helpers";
 import {
   CollectedTypes,
   objectType,
   optionalType,
   TypeAnalyzer,
+  TypescriptAnalyzer,
   UNKNOWN_TYPE,
   ValueType,
 } from "@previewjs/type-analyzer";

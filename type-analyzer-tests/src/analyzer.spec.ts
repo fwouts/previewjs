@@ -1,12 +1,9 @@
 import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
-import {
   ANY_TYPE,
   arrayType,
   BOOLEAN_TYPE,
   createTypeAnalyzer,
+  createTypescriptAnalyzer,
   enumType,
   functionType,
   intersectionType,
@@ -23,6 +20,7 @@ import {
   setType,
   STRING_TYPE,
   tupleType,
+  TypescriptAnalyzer,
   unionType,
   UNKNOWN_TYPE,
   VOID_TYPE,
