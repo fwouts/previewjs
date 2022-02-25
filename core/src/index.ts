@@ -1,5 +1,8 @@
-import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
-import { TypeAnalyzer } from "@previewjs/type-analyzer/dist/analyzer";
+import {
+  CollectedTypes,
+  createTypeAnalyzer,
+  TypeAnalyzer,
+} from "@previewjs/type-analyzer";
 import { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
