@@ -1,9 +1,9 @@
+import { Reader } from "@previewjs/vfs";
 import { Node, Parser } from "acorn";
 import fs from "fs-extra";
 import path from "path";
 import * as vite from "vite";
 import { transformWithEsbuild } from "vite";
-import { Reader } from "../../vfs";
 
 const VIRTUAL_PREFIX = `/@previewjs-virtual:`;
 

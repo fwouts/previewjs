@@ -1,4 +1,5 @@
 import type * as core from "@previewjs/core";
+import type * as vfs from "@previewjs/vfs";
 import { LogLevel } from ".";
 import { locking } from "./locking";
 
@@ -10,6 +11,7 @@ export async function load({
   packageName: string;
 }) {
   const core = requireModule("@previewjs/core");
+  const vfs = requireModule("@previewjs/vfs");
   const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName).default;
 
@@ -24,17 +26,18 @@ export async function load({
     }
   }
 
-  return init(core, setupEnvironment);
+  return init(core, vfs, setupEnvironment);
 }
 
 export async function init(
   coreModule: typeof core,
+  vfsModule: typeof vfs,
   setupEnvironment: core.SetupPreviewEnvironment
 ) {
-  const memoryReader = coreModule.vfs.createMemoryReader();
-  const reader = coreModule.vfs.createStackedReader([
+  const memoryReader = vfsModule.createMemoryReader();
+  const reader = vfsModule.createStackedReader([
     memoryReader,
-    coreModule.vfs.createFileSystemReader({
+    vfsModule.createFileSystemReader({
       watch: true,
     }),
   ]);

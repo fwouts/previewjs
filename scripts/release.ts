@@ -58,6 +58,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "vfs",
+    dirPath: "vfs",
+    tagName: "vfs",
+    type: "npm",
+  },
+  {
     name: "integration-intellij",
     dirPath: "integrations/intellij",
     additionalDirPath: ["loader"],

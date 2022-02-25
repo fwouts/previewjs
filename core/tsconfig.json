@@ -7,6 +7,6 @@
     "outDir": "dist",
     "declaration": true
   },
-  "include": ["src"],
+  "include": ["src", "../type-analyzer/src/exported-names.ts"],
   "exclude": ["node_modules"]
 }

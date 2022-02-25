@@ -8,7 +8,7 @@ import {
   createStackedReader,
   Reader,
   Writer,
-} from "@previewjs/core/vfs";
+} from "@previewjs/vfs";
 import path from "path";
 import { reactFrameworkPlugin } from ".";
 import { extractReactComponents } from "./extract-component";

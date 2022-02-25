@@ -1,4 +1,4 @@
-import { createMemoryReader, Reader, Writer } from "@previewjs/core/vfs";
+import { createMemoryReader, Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { createVueTypeScriptReader } from "./vue-reader";
 

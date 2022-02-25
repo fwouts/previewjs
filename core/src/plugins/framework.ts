@@ -4,10 +4,10 @@ import {
   TypeAnalyzer,
   ValueType,
 } from "@previewjs/type-analyzer";
+import { Reader } from "@previewjs/vfs";
 import ts from "typescript";
 import vite from "vite";
 import { TypescriptAnalyzer } from "../ts-helpers";
-import { Reader } from "../vfs";
 import { PackageDependencies } from "./dependencies";
 
 export interface FrameworkPluginFactory<

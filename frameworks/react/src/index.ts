@@ -2,10 +2,7 @@ import type {
   DetectedComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
-import {
-  createFileSystemReader,
-  createStackedReader,
-} from "@previewjs/core/vfs";
+import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";

@@ -45,6 +45,7 @@ importers:
       '@previewjs/plugin-react': 1.2.0
       '@previewjs/plugin-vue2': 1.1.0
       '@previewjs/plugin-vue3': 1.1.0
+      '@previewjs/vfs': workspace:*
       '@react-hook/window-size': 3.0.7
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -103,6 +104,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
       '@previewjs/loader': link:../loader
+      '@previewjs/vfs': link:../vfs
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/lodash': 4.14.178
@@ -164,6 +166,7 @@ importers:
     specifiers:
       '@previewjs/config': 1.0.2
       '@previewjs/type-analyzer': 1.1.1
+      '@previewjs/vfs': 1.1.0
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
@@ -196,6 +199,7 @@ importers:
     dependencies:
       '@previewjs/config': link:../config
       '@previewjs/type-analyzer': link:../type-analyzer
+      '@previewjs/vfs': link:../vfs
       acorn: 8.7.0
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -232,6 +236,7 @@ importers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/type-analyzer': 1.1.1
+      '@previewjs/vfs': 1.1.0
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.0
@@ -246,6 +251,7 @@ importers:
       vite: 2.7.13
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
+      '@previewjs/vfs': link:../../vfs
       '@svgr/core': 5.5.0
       fs-extra: 10.0.0
       typescript: 4.5.5
@@ -283,6 +289,7 @@ importers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/type-analyzer': 1.1.1
+      '@previewjs/vfs': 1.1.0
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.0
       fs-extra: ^10.0.0
@@ -297,6 +304,7 @@ importers:
     dependencies:
       '@nuxt/config': 2.15.8
       '@previewjs/type-analyzer': link:../../type-analyzer
+      '@previewjs/vfs': link:../../vfs
       fs-extra: 10.0.0
       typescript: 4.5.5
       vite-plugin-vue2: 1.9.3_e3c37c0cfaae1b9f72ab6085139b0afb
@@ -328,6 +336,7 @@ importers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/type-analyzer': 1.1.1
+      '@previewjs/vfs': 1.1.0
       '@types/jest': 27.4.0
       '@vitejs/plugin-vue': ^2.0.1
       '@vitejs/plugin-vue-jsx': ^1.2.0
@@ -341,6 +350,7 @@ importers:
       vue: ^3
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
+      '@previewjs/vfs': link:../../vfs
       '@vitejs/plugin-vue': 2.0.1_vite@2.7.13+vue@3.2.26
       '@vitejs/plugin-vue-jsx': 1.3.3
       '@vue/compiler-sfc': 3.2.26
@@ -405,14 +415,17 @@ importers:
     specifiers:
       '@previewjs/app': workspace:*
       '@previewjs/core': workspace:*
+      '@previewjs/vfs': workspace:*
     dependencies:
       '@previewjs/app': link:../../../app
       '@previewjs/core': link:../../../core
+      '@previewjs/vfs': link:../../../vfs
 
   loader:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
+      '@previewjs/vfs': workspace:*
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       execa: ^5.1.1
@@ -425,6 +438,7 @@ importers:
     devDependencies:
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
+      '@previewjs/vfs': link:../vfs
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
@@ -952,7 +966,7 @@ importers:
     dependencies:
       vue: 3.2.26
     devDependencies:
-      nuxt3: 3.0.0-27424151.dbab979
+      nuxt3: 3.0.0-27428764.271289c
 
   smoke-test-apps/storybook-js:
     specifiers:
@@ -1226,12 +1240,14 @@ importers:
 
   type-analyzer:
     specifiers:
+      '@previewjs/vfs': 1.1.0
       '@types/lodash': 4.14.178
       assert-never: ^1.2.1
       lodash: 4.17.21
       rimraf: 3.0.2
       typescript: ^4.5.5
     dependencies:
+      '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
       typescript: 4.5.5
     devDependencies:
@@ -1243,6 +1259,7 @@ importers:
     specifiers:
       '@previewjs/core': workspace:*
       '@previewjs/type-analyzer': workspace:*
+      '@previewjs/vfs': workspace:*
       '@types/jest': 27.4.0
       jest: 28.0.0-alpha.4
       ts-jest: 27.1.3
@@ -1250,8 +1267,36 @@ importers:
     devDependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
+      '@previewjs/vfs': link:../vfs
       '@types/jest': 27.4.0
       jest: 28.0.0-alpha.4_e63aea8e3fc1db0f170a64393e94b2fd
+      ts-jest: 27.1.3_08fc17e85cb14ebfa01ffa5b06b0776c
+      typescript: 4.5.5
+
+  vfs:
+    specifiers:
+      '@types/fs-extra': 9.0.13
+      '@types/jest': 27.4.0
+      '@types/lodash': 4.14.178
+      assert-never: ^1.2.1
+      chokidar: 3.5.3
+      fs-extra: ^10.0.1
+      jest: 28.0.0-alpha.4
+      lodash: 4.17.21
+      rimraf: 3.0.2
+      ts-jest: 27.1.3
+      typescript: ^4.5.5
+    dependencies:
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      fs-extra: 10.0.1
+    devDependencies:
+      '@types/fs-extra': 9.0.13
+      '@types/jest': 27.4.0
+      '@types/lodash': 4.14.178
+      jest: 28.0.0-alpha.4_e63aea8e3fc1db0f170a64393e94b2fd
+      lodash: 4.17.21
+      rimraf: 3.0.2
       ts-jest: 27.1.3_08fc17e85cb14ebfa01ffa5b06b0776c
       typescript: 4.5.5
 
@@ -6461,11 +6506,11 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/kit-edge/3.0.0-27424151.dbab979:
-    resolution: {integrity: sha512-xAw7gQ7N6afxHeYXwqogjD3Xme0lP7HE2pORZ91R8v5xRMiiGIsvaXbjZ0u/CXga/kuA2Yn6Yn9kQsPcPAIDOA==}
+  /@nuxt/kit-edge/3.0.0-27428764.271289c:
+    resolution: {integrity: sha512-rJlIGyEvetTKShOnltRK03PoWnhQWvS2t59HDjuTTjZ2EqpUih7k1wa+rfa9Hg18l0pyBDyg14fn586w4RMT0A==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27424151.dbab979
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27428764.271289c
       c12: 0.1.3
       consola: 2.15.3
       defu: 5.0.1
@@ -6493,15 +6538,15 @@ packages:
       serve-static: 1.14.2
     dev: false
 
-  /@nuxt/nitro-edge/3.0.0-27424151.dbab979:
-    resolution: {integrity: sha512-lrJygvH3fWZamFzUM1g5eul2aol3riQEZDIumJm+4goSEV62JiN319n43IlsC6kB7oGat6u2bIEmcw62VHly5g==}
+  /@nuxt/nitro-edge/3.0.0-27428764.271289c:
+    resolution: {integrity: sha512-9mECk61Qoem2htnMMdwNeP41aQyd73V0ZSiGcIRRtUIQhyZEVzkLa8nZQ0Tn+TytUFIwic3PXhYC1Aic6Y0thQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       '@cloudflare/kv-asset-handler': 0.2.0
       '@netlify/functions': 1.0.0
       '@nuxt/design': 0.1.5
       '@nuxt/devalue': 2.0.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27424151.dbab979
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27428764.271289c
       '@rollup/plugin-alias': 3.1.9_rollup@2.67.3
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.67.3
       '@rollup/plugin-inject': 4.0.4_rollup@2.67.3
@@ -6588,8 +6633,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27424151.dbab979:
-    resolution: {integrity: sha512-XrS8fPE+5OH4om6zcfKnhhE0Jeu4D5ime36G4tclz1spddNg3j6PwLDsJ03bX4L0KOGk8i+kijsTDZD4Vk632g==}
+  /@nuxt/schema-edge/3.0.0-27428764.271289c:
+    resolution: {integrity: sha512-0M6j7SgqHi68hVR+QqETn6C0NIoZAbu4R4zw1njKcWkYq70xt+O14iD2d57qbg6NQquLrzLnAjsGXcJAHiUZeg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       c12: 0.1.3
@@ -6710,13 +6755,13 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/vite-builder-edge/3.0.0-27424151.dbab979_vue@3.2.31:
-    resolution: {integrity: sha512-79ETCahy1ni05lRreRFfDSSLqD6DJPTLJZjPHrvRoRZ85LKrpXtR3qHcT1AQjRu3rkPksG2sbb5aBEDhVwwGqw==}
+  /@nuxt/vite-builder-edge/3.0.0-27428764.271289c_vue@3.2.31:
+    resolution: {integrity: sha512-vGilaue4/wFXXF4SFoS98dbXhGTyA9cX4PGV1QVE8gDOPG/wZmXpQn7oD21x18J4jRUGhOcydiPxqufEGZlTfw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     peerDependencies:
       vue: 3.2.31
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27424151.dbab979
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27428764.271289c
       '@vitejs/plugin-vue': 2.2.2_vite@2.8.4+vue@3.2.31
       '@vitejs/plugin-vue-jsx': 1.3.7
       autoprefixer: 10.4.2
@@ -6781,15 +6826,15 @@ packages:
       vue-server-renderer: 2.6.14
     dev: false
 
-  /@nuxt/webpack-builder-edge/3.0.0-27424151.dbab979_vue@3.2.31:
-    resolution: {integrity: sha512-TNay+SaTggk3eitxIGAVoI0oV2acSTsTndiOhnlHXVYhDmHGGUGP48LXkHVkhHXm0NDVvhAl/+tysjF3xwUs0w==}
+  /@nuxt/webpack-builder-edge/3.0.0-27428764.271289c_vue@3.2.31:
+    resolution: {integrity: sha512-0IRCCu8Mm9GGqX59JwY8oe/bANqqdTfxO20EzG6p4lLYG5RDTnVkxLn9T4c1rPvLCxr5DxK2A969XGWc7C1b7w==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     peerDependencies:
       vue: 3.2.31
     dependencies:
       '@babel/core': 7.17.5
       '@nuxt/friendly-errors-webpack-plugin': 2.5.2_webpack@5.69.1
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27424151.dbab979
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27428764.271289c
       '@vue/babel-preset-jsx': 1.2.4_@babel+core@7.17.5
       autoprefixer: 10.4.2_postcss@8.4.6
       babel-loader: 8.2.3_9351ded4f79a023849d74b5df047d562
@@ -21697,8 +21742,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /nuxi-edge/3.0.0-27424151.dbab979:
-    resolution: {integrity: sha512-+8Ls0bmSnsZ7l1RWOJ9JvU3weS0Dj3WUeSWsrBQyt3JZeQBtgz2RVLuIOMCePE8kwSziB9czKDdQSRPBpp09Xw==}
+  /nuxi-edge/3.0.0-27428764.271289c:
+    resolution: {integrity: sha512-uxVKy1t1GOdNb6RyoM3Ey5U++7bQ6n9Jyx1ssxm/yFMtP27BszmJxfrijMkaZZ1W8GJKY4iqYbmMjiTpk61dMg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     optionalDependencies:
@@ -21736,17 +21781,17 @@ packages:
       - webpack-command
     dev: false
 
-  /nuxt3/3.0.0-27424151.dbab979:
-    resolution: {integrity: sha512-FTFcy09bPEVUpPE/RcvFkJMQBkKmuBjmSVnDUvX1DBeegvCrUhgw+ZbRwl2V1PVXj7E7o1r6agc+SJOWVFlBtw==}
+  /nuxt3/3.0.0-27428764.271289c:
+    resolution: {integrity: sha512-D7eI8CAUO+4XIwnBq94zexYYQKoaw5c0y/kP4Ng6O2PpGdAPlfB4YrENASSRt4Y/Qd5izbvrajPPB3qqkwK0tA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     dependencies:
       '@nuxt/design': 0.1.5
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27424151.dbab979
-      '@nuxt/nitro': /@nuxt/nitro-edge/3.0.0-27424151.dbab979
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27424151.dbab979
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27424151.dbab979_vue@3.2.31
-      '@nuxt/webpack-builder': /@nuxt/webpack-builder-edge/3.0.0-27424151.dbab979_vue@3.2.31
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27428764.271289c
+      '@nuxt/nitro': /@nuxt/nitro-edge/3.0.0-27428764.271289c
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27428764.271289c
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27428764.271289c_vue@3.2.31
+      '@nuxt/webpack-builder': /@nuxt/webpack-builder-edge/3.0.0-27428764.271289c_vue@3.2.31
       '@vue/reactivity': 3.2.31
       '@vue/shared': 3.2.31
       '@vueuse/head': 0.7.5_vue@3.2.31
@@ -21765,7 +21810,7 @@ packages:
       mlly: 0.4.3
       murmurhash-es: 0.1.1
       nitropack: /nitropack-edge/0.0.0-27409638.e9a44f5
-      nuxi: /nuxi-edge/3.0.0-27424151.dbab979
+      nuxi: /nuxi-edge/3.0.0-27428764.271289c
       ohmyfetch: 0.4.15
       pathe: 0.2.0
       scule: 0.2.1

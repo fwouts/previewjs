@@ -1,4 +1,5 @@
 import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
+import { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
@@ -11,7 +12,6 @@ import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 import { createTypescriptAnalyzer, TypescriptAnalyzer } from "./ts-helpers";
-import { Reader } from "./vfs";
 export { PersistedStateManager } from "./persisted-state";
 export type {
   AnalyzedComponent,
@@ -27,7 +27,6 @@ export type {
   SetupPreviewEnvironment,
 } from "./preview-env";
 export { extractArgs } from "./storybook/args";
-export * as vfs from "./vfs";
 
 export async function createWorkspace({
   versionCode,

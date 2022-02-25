@@ -5,7 +5,7 @@ import {
   FileSync,
   Reader,
   ReaderListeners,
-} from "@previewjs/core/vfs";
+} from "@previewjs/vfs";
 import { parse } from "@vue/compiler-sfc";
 import path from "path";
 import ts from "typescript";

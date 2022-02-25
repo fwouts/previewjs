@@ -4,13 +4,6 @@ import {
   TypescriptAnalyzer,
 } from "@previewjs/core/ts-helpers";
 import {
-  createFileSystemReader,
-  createMemoryReader,
-  createStackedReader,
-  Reader,
-  Writer,
-} from "@previewjs/core/vfs";
-import {
   createTypeAnalyzer,
   literalType,
   NUMBER_TYPE,
@@ -20,6 +13,13 @@ import {
   unionType,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
+import {
+  createFileSystemReader,
+  createMemoryReader,
+  createStackedReader,
+  Reader,
+  Writer,
+} from "@previewjs/vfs";
 import path from "path";
 import { vue2FrameworkPlugin } from ".";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
