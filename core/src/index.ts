@@ -12,7 +12,6 @@ import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
-export { extractArgs } from "@previewjs/type-analyzer/src/helpers/args";
 export { generateComponentId } from "./component-id";
 export { PersistedStateManager } from "./persisted-state";
 export type {
