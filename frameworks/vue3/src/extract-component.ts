@@ -1,4 +1,4 @@
-import { Component, ComponentAnalysis, extractArgs } from "@previewjs/core";
+import { Component, ComponentAnalysis } from "@previewjs/core";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -15,7 +15,7 @@ export function extractVueComponents(
   }
   let components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  const args = extractArgs(sourceFile);
+  const args = helpers.extractArgs(sourceFile);
   // TODO: Handle JSX and Storybook stories.
   const analysis: ComponentAnalysis = {
     propsType: UNKNOWN_TYPE,
