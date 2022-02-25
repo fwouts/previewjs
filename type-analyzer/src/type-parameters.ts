@@ -15,7 +15,7 @@ import {
 import { computeIntersection } from "./intersection";
 import { computeUnion } from "./union";
 
-export function resolveTypeArguments(
+export function evaluateType(
   type: ParameterizableType,
   typeArguments: ValueType[]
 ): ValueType {

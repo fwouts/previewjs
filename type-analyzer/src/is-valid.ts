@@ -1,5 +1,5 @@
 import { CollectedTypes, ValueType } from "./definitions";
-import { resolveTypeArguments } from "./type-parameters";
+import { evaluateType } from "./type-parameters";
 
 export function isValid(
   type: ValueType,
@@ -119,10 +119,6 @@ export function isValid(
         // For now, this is a sign of a type parameter. Just say yes.
         return true;
       }
-      return isValid(
-        resolveTypeArguments(resolvedType, type.args),
-        collected,
-        value
-      );
+      return isValid(evaluateType(resolvedType, type.args), collected, value);
   }
 }

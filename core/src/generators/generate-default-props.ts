@@ -1,6 +1,6 @@
 import {
   CollectedTypes,
-  resolveTypeArguments,
+  evaluateType,
   ValueType,
 } from "@previewjs/type-analyzer";
 import { generateValue } from "./generate-value";
@@ -56,7 +56,7 @@ export function generateDefaultProps(
     if (type.kind === "name") {
       const resolved = types[type.name];
       if (resolved) {
-        return resolveTypeArguments(resolved, []);
+        return evaluateType(resolved, []);
       }
     }
     return type;

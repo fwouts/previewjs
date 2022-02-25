@@ -1,10 +1,10 @@
 import { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
+  dereferenceType,
   EMPTY_OBJECT_TYPE,
   maybeOptionalType,
   objectType,
-  resolveType,
   TypeResolver,
   UNKNOWN_TYPE,
   ValueType,
@@ -79,7 +79,7 @@ function computePropsTypeFromSignature(
   );
   try {
     let { type: propsType, collected } = typeResolver.resolveType(type);
-    [propsType] = resolveType(propsType, collected, []);
+    [propsType] = dereferenceType(propsType, collected, []);
     stripUnusedProps: if (
       propsType.kind === "object" &&
       ts.isParameter(firstParam.valueDeclaration)
