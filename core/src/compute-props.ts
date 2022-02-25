@@ -1,25 +1,19 @@
-import path from "path";
 import { localEndpoints } from "./api";
 import { generateDefaultProps } from "./generators/generate-default-props";
 import { generateInvocation } from "./generators/generate-invocation";
 import { generateTypeDeclarations } from "./generators/generate-type-declarations";
-import { ComponentAnalyzer } from "./plugins/framework";
+import { Component } from "./plugins/framework";
 
 export async function computeProps({
   rootDirPath,
-  relativeFilePath,
-  componentName,
-  componentAnalyzer,
+  component,
 }: {
   rootDirPath: string;
-  relativeFilePath: string;
-  componentName: string;
-  componentAnalyzer: ComponentAnalyzer;
+  component: Component;
 }): Promise<localEndpoints.PreviewSources> {
-  let filePath = path.join(rootDirPath, relativeFilePath);
-  const result = componentAnalyzer(filePath, componentName);
+  const result = await component.analyze();
   const typeDeclarationsSource = generateTypeDeclarations(
-    componentName,
+    component.name,
     result.propsType,
     result.providedArgs,
     result.types

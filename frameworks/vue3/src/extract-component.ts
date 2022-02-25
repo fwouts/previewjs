@@ -1,5 +1,9 @@
-import { DetectedComponent, extractArgs } from "@previewjs/core";
-import { detectExportedNames, TypeResolver } from "@previewjs/type-analyzer";
+import { Component, ComponentAnalysis, extractArgs } from "@previewjs/core";
+import {
+  detectExportedNames,
+  TypeResolver,
+  UNKNOWN_TYPE,
+} from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function extractVueComponents(
@@ -8,14 +12,20 @@ export function extractVueComponents(
   options: {
     offset?: number;
   } = {}
-): DetectedComponent[] {
+): Component[] {
   const sourceFile = resolver.sourceFile(filePath);
   if (!sourceFile) {
     return [];
   }
-  let components: DetectedComponent[] = [];
+  let components: Component[] = [];
   const nameToExportedName = detectExportedNames(sourceFile);
   const args = extractArgs(sourceFile);
+  // TODO: Handle JSX and Storybook stories.
+  const analysis: ComponentAnalysis = {
+    propsType: UNKNOWN_TYPE,
+    providedArgs: new Set(),
+    types: {},
+  };
 
   for (const statement of sourceFile.statements) {
     if (options.offset !== undefined) {
@@ -47,6 +57,7 @@ export function extractVueComponents(
             name,
             exported: !!exportedName,
             offsets: [[statement.getFullStart(), statement.getEnd()]],
+            analyze: async () => analysis,
           });
         }
       }
@@ -67,6 +78,7 @@ export function extractVueComponents(
           name,
           exported: !!exportedName,
           offsets: [[statement.getFullStart(), statement.getEnd()]],
+          analyze: async () => analysis,
         });
       }
     }

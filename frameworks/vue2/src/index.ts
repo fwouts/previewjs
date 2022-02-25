@@ -1,8 +1,4 @@
-import type {
-  DetectedComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
-import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
@@ -41,8 +37,9 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
             watch: false,
           }),
         ]),
-      componentDetector: (resolver, filePaths) => {
-        const components: DetectedComponent[] = [];
+      detectComponents: async (typeAnalyzer, filePaths) => {
+        const resolver = typeAnalyzer.analyze(filePaths);
+        const components: Component[] = [];
         for (const filePath of filePaths) {
           if (filePath.endsWith(".vue")) {
             const name = path.basename(filePath, path.extname(filePath));
@@ -51,6 +48,8 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
               name,
               exported: true,
               offsets: [[0, Infinity]],
+              analyze: async () =>
+                analyzeVueComponentFromTemplate(typeAnalyzer, filePath),
             });
           } else {
             components.push(...extractVueComponents(resolver, filePath));
@@ -58,21 +57,6 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
         }
         return components;
       },
-      componentAnalyzer:
-        ({ typeAnalyzer }) =>
-        (filePath, componentName) => {
-          if (filePath.endsWith(".vue")) {
-            return analyzeVueComponentFromTemplate(typeAnalyzer, filePath);
-          } else {
-            // TODO: Handle JSX and Storybook stories.
-            return {
-              name: componentName,
-              propsType: UNKNOWN_TYPE,
-              providedArgs: new Set(),
-              types: {},
-            };
-          }
-        },
       viteConfig: (config) => {
         const OPTIONS_MODULE = "@previewjs/plugin-vue2/options";
         let rootDirPath: string;

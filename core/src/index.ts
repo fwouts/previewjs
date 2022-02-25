@@ -12,12 +12,11 @@ import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
+export { generateComponentId } from "./component-id";
 export { PersistedStateManager } from "./persisted-state";
 export type {
-  AnalyzedComponent,
-  ComponentAnalyzer,
-  ComponentDetector,
-  DetectedComponent,
+  Component,
+  ComponentAnalysis,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
@@ -26,6 +25,7 @@ export type {
   PreviewEnvironment,
   SetupPreviewEnvironment,
 } from "./preview-env";
+// TODO: Move out as well.
 export { extractArgs } from "./storybook/args";
 
 export async function createWorkspace({
@@ -75,11 +75,6 @@ export async function createWorkspace({
     specialTypes: frameworkPlugin.specialTypes,
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
-  const componentAnalyzer = frameworkPlugin.componentAnalyzer
-    ? frameworkPlugin.componentAnalyzer({
-        typeAnalyzer,
-      })
-    : null;
   const router = new ApiRouter();
   router.onRequest(localEndpoints.GetInfo, async () => {
     const separatorPosition = versionCode.indexOf("-");
@@ -102,14 +97,15 @@ export async function createWorkspace({
   router.onRequest(
     localEndpoints.ComputeProps,
     async ({ relativeFilePath, componentName }) => {
-      if (!componentAnalyzer) {
+      const component = (
+        await frameworkPlugin.detectComponents(typeAnalyzer, [relativeFilePath])
+      ).find((c) => c.name === componentName);
+      if (!component) {
         return null;
       }
       return computeProps({
-        componentAnalyzer,
         rootDirPath,
-        relativeFilePath,
-        componentName,
+        component,
       });
     }
   );
@@ -150,34 +146,7 @@ export async function createWorkspace({
     rootDirPath,
     reader,
     typeAnalyzer,
-    detectComponents: async (
-      filePath: string,
-      options: {
-        offset?: number;
-      } = {}
-    ) => {
-      const resolver = typeAnalyzer.analyze([filePath]);
-      return frameworkPlugin
-        .componentDetector(resolver, [filePath])
-        .map((c) => {
-          return c.offsets
-            .filter(([start, end]) => {
-              if (options?.offset === undefined) {
-                return true;
-              }
-              return options.offset >= start && options.offset <= end;
-            })
-            .map(([start]) => ({
-              componentName: c.name,
-              exported: c.exported,
-              offset: start,
-              componentId: `${path
-                .relative(rootDirPath, c.filePath)
-                .replace(/\\/g, "/")}:${c.name}`,
-            }));
-        })
-        .flat();
-    },
+    frameworkPlugin,
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -230,23 +199,11 @@ export interface Workspace {
   rootDirPath: string;
   reader: Reader;
   typeAnalyzer: TypeAnalyzer;
-  detectComponents(
-    filePath: string,
-    options?: {
-      offset?: number;
-    }
-  ): Promise<Component[]>;
+  frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
   dispose(): Promise<void>;
-}
-
-export interface Component {
-  componentName: string;
-  exported: boolean;
-  offset: number;
-  componentId: string;
 }
 
 export interface Preview {

@@ -1,4 +1,4 @@
-import { AnalyzedComponent } from "@previewjs/core";
+import { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
   EMPTY_OBJECT_TYPE,
@@ -10,22 +10,29 @@ import {
   ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { ReactComponent } from ".";
+import { detectArgs } from "./args";
+import { detectPropTypes } from "./prop-types";
 
 export function analyzeReactComponent(
   typeResolver: TypeResolver,
-  component: ReactComponent,
-  args: ts.Expression | null,
-  propTypes: ts.Expression | null
-): AnalyzedComponent {
-  let resolved = computePropsType(typeResolver, component.signature, propTypes);
+  filePath: string,
+  componentName: string,
+  signature: ts.Signature
+): ComponentAnalysis {
+  const sourceFile = typeResolver.sourceFile(filePath);
+  let args: ts.Expression | null = null;
+  let propTypes: ts.Expression | null = null;
+  if (sourceFile) {
+    args = detectArgs(sourceFile, componentName);
+    propTypes = detectPropTypes(sourceFile, componentName);
+  }
+  let resolved = computePropsType(typeResolver, signature, propTypes);
   let providedArgs = new Set<string>();
   if (args) {
     const argsType = typeResolver.checker.getTypeAtLocation(args);
     providedArgs = new Set(argsType.getProperties().map((prop) => prop.name));
   }
   return {
-    name: component.name,
     propsType: resolved.type,
     types: { ...resolved.collected },
     providedArgs,

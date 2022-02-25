@@ -74,7 +74,6 @@ export default {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({}),
       providedArgs: EMPTY_SET,
       types: {},
@@ -90,7 +89,7 @@ export default {
 </template>
 <script>
 export default {
-  name: "App",
+  
   props: {
     a: String,
     b: { type: String },
@@ -107,7 +106,6 @@ export default {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         a: optionalType(STRING_TYPE),
         b: optionalType(STRING_TYPE),
@@ -133,14 +131,13 @@ export default {
 </template>
 <script>
 export default {
-  name: "App",
+  
   props: ["a", "b", "c"]
 }
 </script>
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         a: UNKNOWN_TYPE,
         b: UNKNOWN_TYPE,
@@ -174,7 +171,6 @@ export default class App extends Vue {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         label: STRING_TYPE,
         size: optionalType(

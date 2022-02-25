@@ -1,20 +1,21 @@
-import { DetectedComponent } from "@previewjs/core";
+import { Component } from "@previewjs/core";
 import { detectExportedNames, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
-
-export interface ReactComponent extends DetectedComponent {
-  signature: ts.Signature;
-}
+import { analyzeReactComponent } from "./analyze-component";
 
 export function extractReactComponents(
   resolver: TypeResolver,
   filePath: string
-): ReactComponent[] {
+): Component[] {
   const sourceFile = resolver.sourceFile(filePath);
   if (!sourceFile) {
     return [];
   }
-  let components: ReactComponent[] = [];
+  let components: Array<
+    Omit<Component, "analyze"> & {
+      signature: ts.Signature;
+    }
+  > = [];
   const nameToExportedName = detectExportedNames(sourceFile);
 
   for (const statement of sourceFile.statements) {
@@ -97,7 +98,16 @@ export function extractReactComponents(
     }
   }
 
-  return components;
+  return components.map(({ signature, ...component }) => ({
+    ...component,
+    analyze: async () =>
+      analyzeReactComponent(
+        resolver,
+        component.filePath,
+        component.name,
+        signature
+      ),
+  }));
 }
 
 function extractReactComponent(

@@ -72,7 +72,6 @@ defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -99,7 +98,6 @@ withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -125,7 +123,6 @@ const props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -152,7 +149,6 @@ const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -179,7 +175,6 @@ props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -207,7 +202,6 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -237,7 +231,6 @@ export default defineComponent({
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -304,7 +297,6 @@ export default defineComponent({
   `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         label: STRING_TYPE,
         sublabel: optionalType(STRING_TYPE),

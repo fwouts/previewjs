@@ -46,6 +46,7 @@ export async function init(
   } = {};
 
   return {
+    core: coreModule,
     updateFileInMemory(filePath: string, text: string | null) {
       memoryReader.updateFile(filePath, text);
     },

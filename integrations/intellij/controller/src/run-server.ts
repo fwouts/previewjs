@@ -116,15 +116,33 @@ async function main() {
 
   endpoint<AnalyzeFileRequest, AnalyzeFileResponse>(
     "/analyze/file",
-    async (req) => {
-      const workspace = workspaces[req.workspaceId];
+    async ({ workspaceId, filePath, options }) => {
+      const workspace = workspaces[workspaceId];
       if (!workspace) {
         throw new NotFoundError();
       }
-      const components = await workspace.detectComponents(
-        req.filePath,
-        req.options
-      );
+      const components = (
+        await workspace.frameworkPlugin.detectComponents(
+          workspace.typeAnalyzer,
+          [filePath]
+        )
+      )
+        .map((c) => {
+          return c.offsets
+            .filter(([start, end]) => {
+              if (options?.offset === undefined) {
+                return true;
+              }
+              return options.offset >= start && options.offset <= end;
+            })
+            .map(([start]) => ({
+              componentName: c.name,
+              exported: c.exported,
+              offset: start,
+              componentId: previewjs.core.generateComponentId(workspace, c),
+            }));
+        })
+        .flat();
       return { components };
     }
   );
