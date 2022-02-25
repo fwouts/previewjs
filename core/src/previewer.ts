@@ -3,6 +3,12 @@ import {
   PREVIEW_CONFIG_NAME,
   readConfig,
 } from "@previewjs/config";
+import {
+  createFileSystemReader,
+  createStackedReader,
+  Reader,
+  ReaderListenerInfo,
+} from "@previewjs/vfs";
 import assertNever from "assert-never";
 import express from "express";
 import { pathExistsSync } from "fs-extra";
@@ -10,12 +16,6 @@ import path from "path";
 import * as vite from "vite";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
-import {
-  createFileSystemReader,
-  createStackedReader,
-  Reader,
-  ReaderListenerInfo,
-} from "./vfs";
 import { ViteManager } from "./vite/vite-manager";
 
 const POSTCSS_CONFIG_FILE = ["postcss.config.js", ".postcssrc.js"];

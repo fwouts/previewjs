@@ -1,4 +1,5 @@
 import { PreviewConfig } from "@previewjs/config";
+import { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
 import { Server } from "http";
@@ -10,7 +11,6 @@ import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { FrameworkPlugin } from "../plugins/framework";
-import { Reader } from "../vfs";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 

@@ -1,5 +1,6 @@
 import * as core from "@previewjs/core";
 import { init } from "@previewjs/loader";
+import * as vfs from "@previewjs/vfs";
 import assertNever from "assert-never";
 import chalk from "chalk";
 import fs from "fs-extra";
@@ -108,7 +109,7 @@ class TestRunner {
   ): Promise<boolean> {
     const rootDirPath = await prepareTestDir();
     const appDir = await prepareAppDir();
-    const api = await init(core, this.setupEnvironment);
+    const api = await init(core, vfs, this.setupEnvironment);
     const workspace = await api.getWorkspace({
       versionCode: "test-test",
       filePath: rootDirPath,

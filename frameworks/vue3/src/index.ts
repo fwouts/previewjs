@@ -2,11 +2,8 @@ import type {
   DetectedComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
-import {
-  createFileSystemReader,
-  createStackedReader,
-} from "@previewjs/core/vfs";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import type { Node } from "acorn";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";

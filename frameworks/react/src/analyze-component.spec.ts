@@ -4,13 +4,6 @@ import {
   TypescriptAnalyzer,
 } from "@previewjs/core/ts-helpers";
 import {
-  createFileSystemReader,
-  createMemoryReader,
-  createStackedReader,
-  Reader,
-  Writer,
-} from "@previewjs/core/vfs";
-import {
   ANY_TYPE,
   arrayType,
   createTypeAnalyzer,
@@ -25,6 +18,13 @@ import {
   STRING_TYPE,
   unionType,
 } from "@previewjs/type-analyzer";
+import {
+  createFileSystemReader,
+  createMemoryReader,
+  createStackedReader,
+  Reader,
+  Writer,
+} from "@previewjs/vfs";
 import path from "path";
 import { ReactComponent, reactFrameworkPlugin } from ".";
 import { analyzeReactComponent } from "./analyze-component";

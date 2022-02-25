@@ -4,19 +4,19 @@ import {
   TypescriptAnalyzer,
 } from "@previewjs/core/ts-helpers";
 import {
-  createFileSystemReader,
-  createMemoryReader,
-  createStackedReader,
-  Reader,
-  Writer,
-} from "@previewjs/core/vfs";
-import {
   BOOLEAN_TYPE,
   createTypeAnalyzer,
   objectType,
   optionalType,
   STRING_TYPE,
 } from "@previewjs/type-analyzer";
+import {
+  createFileSystemReader,
+  createMemoryReader,
+  createStackedReader,
+  Reader,
+  Writer,
+} from "@previewjs/vfs";
 import path from "path";
 import { vue3FrameworkPlugin } from ".";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";

@@ -3,13 +3,6 @@ import {
   TypescriptAnalyzer,
 } from "@previewjs/core/ts-helpers";
 import {
-  createFileSystemReader,
-  createMemoryReader,
-  createStackedReader,
-  Reader,
-  Writer,
-} from "@previewjs/core/vfs";
-import {
   ANY_TYPE,
   arrayType,
   BOOLEAN_TYPE,
@@ -34,6 +27,13 @@ import {
   UNKNOWN_TYPE,
   VOID_TYPE,
 } from "@previewjs/type-analyzer";
+import {
+  createFileSystemReader,
+  createMemoryReader,
+  createStackedReader,
+  Reader,
+  Writer,
+} from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 
