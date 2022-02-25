@@ -15,13 +15,11 @@ export interface FrameworkPluginFactory<Options = {}> {
 }
 
 export interface FrameworkPlugin {
-  readonly apiVersion?: number;
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;
   readonly transformReader?: (reader: Reader, rootDirPath: string) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
-  // TODO: Move to the typeAnalyzer call?
   readonly specialTypes?: Record<string, ValueType>;
   readonly viteConfig: (config: PreviewConfig) => vite.UserConfig;
   readonly detectComponents: (
