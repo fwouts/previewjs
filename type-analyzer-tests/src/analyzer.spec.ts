@@ -3,7 +3,6 @@ import {
   arrayType,
   BOOLEAN_TYPE,
   createTypeAnalyzer,
-  createTypescriptAnalyzer,
   enumType,
   functionType,
   intersectionType,
@@ -20,7 +19,7 @@ import {
   setType,
   STRING_TYPE,
   tupleType,
-  TypescriptAnalyzer,
+  TypeAnalyzer,
   unionType,
   UNKNOWN_TYPE,
   VOID_TYPE,
@@ -37,11 +36,11 @@ import ts from "typescript";
 
 describe("TypeAnalyzer", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
 
   beforeEach(() => {
     memoryReader = createMemoryReader();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: path.join(__dirname, "virtual"),
       reader: createStackedReader([
         memoryReader,
@@ -49,11 +48,15 @@ describe("TypeAnalyzer", () => {
           watch: false,
         }), // required for TypeScript libs, e.g. Promise
       ]),
+      specialTypes: {
+        Component: NODE_TYPE,
+        ComponentType: functionType(NODE_TYPE),
+      },
     });
   });
 
   afterEach(() => {
-    typescriptAnalyzer.dispose();
+    typeAnalyzer.dispose();
   });
 
   test("string", async () => {
@@ -1828,22 +1831,14 @@ type C<T> = { (): T } | { new(...args: never[]): T & object } | { new(...args: s
         content
       );
     }
-    const typeAnalyzer = createTypeAnalyzer(
-      rootDirPath,
-      typescriptAnalyzer.analyze([mainSourceFilePath]),
-      {},
-      {
-        Component: NODE_TYPE,
-        ComponentType: functionType(NODE_TYPE),
-      }
-    );
-    const sourceFile = typeAnalyzer.sourceFile(mainSourceFilePath);
+    const resolver = typeAnalyzer.analyze([mainSourceFilePath]);
+    const sourceFile = resolver.sourceFile(mainSourceFilePath);
     if (!sourceFile) {
       throw new Error(`No source file found`);
     }
     const typeNode = getTypeNodeByName(sourceFile, name);
-    const type = typeAnalyzer.checker.getTypeAtLocation(typeNode);
-    const resolved = typeAnalyzer.resolveType(type);
+    const type = resolver.checker.getTypeAtLocation(typeNode);
+    const resolved = resolver.resolveType(type);
     return [resolved.type, resolved.collected];
   }
 });
