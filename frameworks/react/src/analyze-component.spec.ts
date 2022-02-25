@@ -38,7 +38,7 @@ describe("analyzeReactComponent", () => {
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin<ReactComponent>;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await reactFrameworkPlugin.create();
     typeAnalyzer = createTypeAnalyzer({
@@ -54,7 +54,7 @@ describe("analyzeReactComponent", () => {
     });
   });
 
-  afterAll(() => {
+  afterEach(() => {
     typeAnalyzer.dispose();
   });
 

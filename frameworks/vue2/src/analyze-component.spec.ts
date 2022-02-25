@@ -31,7 +31,7 @@ describe("analyze Vue 2 component", () => {
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await vue2FrameworkPlugin.create();
     typeAnalyzer = createTypeAnalyzer({
@@ -55,7 +55,7 @@ describe("analyze Vue 2 component", () => {
     });
   });
 
-  afterAll(() => {
+  afterEach(() => {
     typeAnalyzer.dispose();
   });
 
