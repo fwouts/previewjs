@@ -64,11 +64,11 @@ export async function activate(context: vscode.ExtensionContext) {
     packageName,
   });
 
-  function getWorkspace(filePath: string) {
+  function getWorkspace(absoluteFilePath: string) {
     return previewjs.getWorkspace({
       versionCode: `vscode-${version}`,
       logLevel: "info",
-      filePath,
+      absoluteFilePath,
     });
   }
 

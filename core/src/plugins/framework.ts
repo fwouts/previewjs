@@ -24,11 +24,11 @@ export interface FrameworkPlugin {
   readonly viteConfig: (config: PreviewConfig) => vite.UserConfig;
   readonly detectComponents: (
     typeAnalyzer: TypeAnalyzer,
-    filePaths: string[]
+    absoluteFilePaths: string[]
   ) => Promise<Component[]>;
 }
 export interface Component {
-  readonly filePath: string;
+  readonly absoluteFilePath: string;
   readonly name: string;
   readonly exported: boolean;
   readonly offsets: Array<[start: number, end: number]>;

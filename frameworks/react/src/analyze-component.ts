@@ -15,11 +15,11 @@ import { detectPropTypes } from "./prop-types";
 
 export function analyzeReactComponent(
   typeResolver: TypeResolver,
-  filePath: string,
+  absoluteFilePath: string,
   componentName: string,
   signature: ts.Signature
 ): ComponentAnalysis {
-  const sourceFile = typeResolver.sourceFile(filePath);
+  const sourceFile = typeResolver.sourceFile(absoluteFilePath);
   let args: ts.Expression | null = null;
   let propTypes: ts.Expression | null = null;
   if (sourceFile) {

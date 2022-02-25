@@ -8,8 +8,8 @@ export function typescriptServiceHost(options: {
   getScriptFileNames: () => string[];
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
 }): ts.LanguageServiceHost {
-  const readFile = (filePath: string) => {
-    const entry = options.reader.readSync(filePath);
+  const readFile = (absoluteFilePath: string) => {
+    const entry = options.reader.readSync(absoluteFilePath);
     if (entry?.kind !== "file") {
       return;
     }
@@ -62,8 +62,8 @@ export function typescriptServiceHost(options: {
       };
     },
     getDefaultLibFileName: ts.getDefaultLibFilePath,
-    fileExists: (filePath) =>
-      options.reader.readSync(filePath)?.kind === "file",
+    fileExists: (absoluteFilePath) =>
+      options.reader.readSync(absoluteFilePath)?.kind === "file",
     directoryExists: (directoryName) =>
       options.reader.readSync(directoryName)?.kind === "directory",
     readFile,

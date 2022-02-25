@@ -105,10 +105,10 @@ class TypeResolver {
     this.checker = program.getTypeChecker();
   }
 
-  sourceFile(filePath: string) {
-    const sourceFile = this.program.getSourceFile(filePath);
+  sourceFile(absoluteFilePath: string) {
+    const sourceFile = this.program.getSourceFile(absoluteFilePath);
     if (!sourceFile) {
-      throw new Error(`No source file available for ${filePath}.`);
+      throw new Error(`No source file available for ${absoluteFilePath}.`);
     }
     return sourceFile;
   }

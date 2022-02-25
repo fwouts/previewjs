@@ -64,7 +64,7 @@ export class PreviewState {
        * File path where the component is loaded from. This typically corresponds to the first part
        * of the component ID, but not necessarily (e.g. storybook stories in a different file).
        */
-      relativeFilePath: string;
+      filePath: string;
 
       /**
        * Source of default props that should be passed to the component.
@@ -116,7 +116,7 @@ export class PreviewState {
 
   constructor(
     private readonly options: {
-      onFileChanged?: (relativeFilePath: string | null) => Promise<void>;
+      onFileChanged?: (filePath: string | null) => Promise<void>;
     } = {}
   ) {
     this.localApi = new LocalApi("/api/");
@@ -308,12 +308,12 @@ export class PreviewState {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
-    const relativeFilePath = filePathFromComponentId(componentId);
+    const filePath = filePathFromComponentId(componentId);
     const nameFromPath = componentNameFromComponentId(componentId);
     if (this.options.onFileChanged) {
-      await this.options.onFileChanged(relativeFilePath);
+      await this.options.onFileChanged(filePath);
     }
-    if (!relativeFilePath || !nameFromPath) {
+    if (!filePath || !nameFromPath) {
       this.component = null;
       return;
     }
@@ -335,11 +335,11 @@ export class PreviewState {
         };
       });
       const sources = await this.localApi.request(localEndpoints.ComputeProps, {
-        relativeFilePath,
+        filePath,
         componentName: name,
       });
       const details = {
-        relativeFilePath,
+        filePath,
         componentName: name,
         defaultProps: sources?.defaultPropsSource || "{}",
         invocation:
@@ -357,7 +357,7 @@ export class PreviewState {
           name,
           variantKey,
           details: {
-            relativeFilePath: details.relativeFilePath,
+            filePath: details.filePath,
             variants: null,
             defaultProps: details.defaultProps,
             defaultInvocation: details.invocation,
@@ -377,7 +377,7 @@ export class PreviewState {
     this.consoleLogs.onClear();
     this.controller.loadComponent({
       componentName: this.component.name,
-      relativeFilePath: this.component.details.relativeFilePath,
+      filePath: this.component.details.filePath,
       variantKey: this.component.variantKey,
       customVariantPropsSource: this.component.details.invocation,
       defaultPropsSource: this.component.details.defaultProps,

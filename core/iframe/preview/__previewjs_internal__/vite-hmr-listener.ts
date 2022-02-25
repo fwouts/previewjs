@@ -28,7 +28,7 @@ hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
       const params = new URLSearchParams(update.path.split("?")[1] || "");
       const p = params.get("p");
       const c = params.get("c");
-      if (p !== state.relativeFilePath || c !== state.componentName) {
+      if (p !== state.filePath || c !== state.componentName) {
         // Ignore old updates to /@component-loader.jsx, which are not needed
         // and may fail (e.g. if they import a file that no longer exists).
         return false;

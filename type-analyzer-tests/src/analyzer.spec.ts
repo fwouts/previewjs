@@ -1820,16 +1820,13 @@ type C<T> = { (): T } | { new(...args: never[]): T & object } | { new(...args: s
   function resolveType(
     source: string,
     name: string,
-    additionalFiles: { [relativeFilePath: string]: string } = {}
+    additionalFiles: { [filePath: string]: string } = {}
   ) {
     const rootDirPath = path.join(__dirname, "virtual");
     const mainSourceFilePath = path.join(rootDirPath, "main.ts");
     memoryReader.updateFile(mainSourceFilePath, source);
-    for (const [relativeFilePath, content] of Object.entries(additionalFiles)) {
-      memoryReader.updateFile(
-        path.join(rootDirPath, relativeFilePath),
-        content
-      );
+    for (const [filePath, content] of Object.entries(additionalFiles)) {
+      memoryReader.updateFile(path.join(rootDirPath, filePath), content);
     }
     const resolver = typeAnalyzer.analyze([mainSourceFilePath]);
     const sourceFile = resolver.sourceFile(mainSourceFilePath);

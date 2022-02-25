@@ -24,20 +24,20 @@ class PreviewJsWorkspace(
         return preview
     }
 
-    suspend fun update(filePath: String, content: String) {
+    suspend fun update(absoluteFilePath: String, content: String) {
         api.updatePendingFile(
             UpdatePendingFileRequest(
-                filePath = filePath,
+                absoluteFilePath = absoluteFilePath,
                 utf8Content = content
             )
         )
     }
 
-    suspend fun analyzeFile(filePath: String, options: AnalyzeFileOptions? = null): List<AnalyzedFileComponent> {
+    suspend fun analyzeFile(absoluteFilePath: String, options: AnalyzeFileOptions? = null): List<AnalyzedFileComponent> {
         return api.analyzeFile(
             AnalyzeFileRequest(
                 workspaceId = workspaceId,
-                filePath = filePath,
+                absoluteFilePath = absoluteFilePath,
                 options
             )
         ).components

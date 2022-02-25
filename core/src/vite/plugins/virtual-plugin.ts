@@ -45,15 +45,16 @@ export function virtualPlugin(options: {
       }
       const resolved = await resolveAbsoluteModuleId(absoluteId);
       if (resolved) {
-        const [filePath] = resolved;
-        if ((await fs.pathExists(filePath)) && !virtualImporter) {
+        const [absoluteFilePath] = resolved;
+        if ((await fs.pathExists(absoluteFilePath)) && !virtualImporter) {
           // This file doesn't need to be virtual.
           return null;
         }
         if (!absoluteId.endsWith(extension)) {
           absoluteId += extension;
         }
-        const resolvedId = VIRTUAL_PREFIX + filePath.replace(/\\/g, "/");
+        const resolvedId =
+          VIRTUAL_PREFIX + absoluteFilePath.replace(/\\/g, "/");
         return resolvedId;
       }
       return null;
@@ -70,22 +71,22 @@ export function virtualPlugin(options: {
         // This could be a file handled by another plugin, e.g. CSS modules.
         return null;
       }
-      const [filePath, entry] = resolved;
+      const [absoluteFilePath, entry] = resolved;
       if (entry.kind !== "file") {
-        console.error(`Unable to read from ${filePath}`);
+        console.error(`Unable to read from ${absoluteFilePath}`);
         return null;
       }
       let source = await entry.read();
-      const fileExtension = path.extname(filePath);
+      const fileExtension = path.extname(absoluteFilePath);
       if (!jsExtensions.has(fileExtension)) {
         return source;
       }
       // Transform with esbuild so we can find top-level entity names.
       const transformed = {
-        ...(await transformWithEsbuild(source, filePath, {
+        ...(await transformWithEsbuild(source, absoluteFilePath, {
           loader: fileExtension === ".ts" ? "ts" : "tsx",
           format: "esm",
-          sourcefile: path.relative(rootDirPath, filePath),
+          sourcefile: path.relative(rootDirPath, absoluteFilePath),
           ...options.esbuildOptions,
         })),
         // Prevent injectSourcesContent() from running on Vite side.
@@ -115,14 +116,15 @@ export function virtualPlugin(options: {
       if (!moduleGraph) {
         return;
       }
-      const relativeFilePath = path.relative(rootDirPath, context.file);
-      const filePath = path.join(rootDirPath, relativeFilePath);
-      const entry = await reader.read(filePath);
+      const filePath = path.relative(rootDirPath, context.file);
+      const absoluteFilePath = path.join(rootDirPath, filePath);
+      const entry = await reader.read(absoluteFilePath);
       if (!entry || entry.kind !== "file") {
         return;
       }
       // Note: backslash handling is Windows-specific.
-      const virtualModuleId = VIRTUAL_PREFIX + filePath.replace(/\\/g, "/");
+      const virtualModuleId =
+        VIRTUAL_PREFIX + absoluteFilePath.replace(/\\/g, "/");
       const node = moduleGraph.getModuleById(virtualModuleId);
       return node && [node];
     },
@@ -141,10 +143,10 @@ export function virtualPlugin(options: {
       ...jsExtensions,
       ...[...jsExtensions].map((extension) => `${path.sep}index${extension}`),
     ]) {
-      const filePath = `${baseFilePath}${suffix}`;
-      const entry = await reader.read(filePath);
+      const absoluteFilePath = `${baseFilePath}${suffix}`;
+      const entry = await reader.read(absoluteFilePath);
       if (entry !== null) {
-        return [filePath, entry] as const;
+        return [absoluteFilePath, entry] as const;
       }
     }
     return null;

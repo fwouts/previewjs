@@ -36,7 +36,7 @@ program
     });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
-      filePath: dirPath || process.cwd(),
+      absoluteFilePath: dirPath || process.cwd(),
       logLevel: "info",
     });
     if (!workspace) {

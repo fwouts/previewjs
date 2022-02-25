@@ -97,9 +97,11 @@ export async function createWorkspace({
   );
   router.onRequest(
     localEndpoints.ComputeProps,
-    async ({ relativeFilePath, componentName }) => {
+    async ({ filePath, componentName }) => {
       const component = (
-        await frameworkPlugin.detectComponents(typeAnalyzer, [relativeFilePath])
+        await frameworkPlugin.detectComponents(typeAnalyzer, [
+          path.join(rootDirPath, filePath),
+        ])
       ).find((c) => c.name === componentName);
       if (!component) {
         return null;
@@ -134,10 +136,10 @@ export async function createWorkspace({
       },
       ...middlewares,
     ],
-    onFileChanged: (filePath) => {
-      const relativeFilePath = path.relative(rootDirPath, filePath);
+    onFileChanged: (absoluteFilePath) => {
+      const filePath = path.relative(rootDirPath, absoluteFilePath);
       for (const name of Object.keys(collected)) {
-        if (name.startsWith(`${relativeFilePath}:`)) {
+        if (name.startsWith(`${filePath}:`)) {
           delete collected[name];
         }
       }
@@ -183,8 +185,8 @@ export async function createWorkspace({
 /**
  * Returns the absolute directory path of the closest ancestor containing node_modules.
  */
-export function findWorkspaceRoot(filePath: string): string {
-  let dirPath = path.resolve(filePath);
+export function findWorkspaceRoot(absoluteFilePath: string): string {
+  let dirPath = path.resolve(absoluteFilePath);
   while (dirPath !== path.dirname(dirPath)) {
     if (fs.existsSync(path.join(dirPath, "package.json"))) {
       return dirPath;
@@ -192,7 +194,7 @@ export function findWorkspaceRoot(filePath: string): string {
     dirPath = path.dirname(dirPath);
   }
   throw new Error(
-    `Unable to find package.json in the directory tree from ${filePath}. Does it exist?`
+    `Unable to find package.json in the directory tree from ${absoluteFilePath}. Does it exist?`
   );
 }
 

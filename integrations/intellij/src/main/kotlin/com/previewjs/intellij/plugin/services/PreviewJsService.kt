@@ -219,7 +219,7 @@ ${e.stackTraceToString()}""",
         workspaces[project]?.let { return it }
         val getWorkspaceResponse = api.getWorkspace(
                 GetWorkspaceRequest(
-                        filePath = projectDirPath
+                        absoluteFilePath = projectDirPath
                 )
         )
         if (getWorkspaceResponse.workspaceId == null) {

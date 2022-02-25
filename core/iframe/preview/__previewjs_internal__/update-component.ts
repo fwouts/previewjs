@@ -6,7 +6,7 @@ import { getState } from "./state";
 export async function updateComponent(
   load: () => Promise<{
     componentInfo: {
-      relativeFilePath: string;
+      filePath: string;
       componentName: string;
       Component: any;
       variants: Array<
@@ -25,7 +25,7 @@ export async function updateComponent(
   try {
     const { componentInfo, loadingError } = await load();
     if (
-      componentInfo.relativeFilePath !== currentState.relativeFilePath ||
+      componentInfo.filePath !== currentState.filePath ||
       componentInfo.componentName !== currentState.componentName
     ) {
       // A component we're not looking at anymore was updated.
@@ -58,7 +58,7 @@ export async function updateComponent(
     }
     sendMessageFromPreview({
       kind: "renderer-updated",
-      relativeFilePath: componentInfo.relativeFilePath,
+      filePath: componentInfo.filePath,
       componentName: componentInfo.componentName,
       variantKey: variant.key,
       // Note: we must remove `props` since it may not be serialisable.

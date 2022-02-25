@@ -4,12 +4,12 @@ import ts from "typescript";
 
 export function extractVueComponents(
   resolver: TypeResolver,
-  filePath: string,
+  absoluteFilePath: string,
   options: {
     offset?: number;
   } = {}
 ): Component[] {
-  const sourceFile = resolver.sourceFile(filePath);
+  const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
   }
@@ -49,7 +49,7 @@ export function extractVueComponents(
         );
         if (signature) {
           components.push({
-            filePath,
+            absoluteFilePath,
             name,
             exported: !!exportedName,
             offsets: [[statement.getFullStart(), statement.getEnd()]],
@@ -70,7 +70,7 @@ export function extractVueComponents(
       );
       if (signature) {
         components.push({
-          filePath,
+          absoluteFilePath,
           name,
           exported: !!exportedName,
           offsets: [[statement.getFullStart(), statement.getEnd()]],

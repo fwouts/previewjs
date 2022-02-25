@@ -29,8 +29,8 @@ export class FsReader implements Reader {
           ignoreInitial: true,
           ignorePermissionErrors: true,
         });
-        watcher.on("all", (_event, filePath) => {
-          this.listeners.notify(this.mappedPath(filePath), {
+        watcher.on("all", (_event, absoluteFilePath) => {
+          this.listeners.notify(this.mappedPath(absoluteFilePath), {
             virtual: false,
           });
         });
@@ -40,43 +40,43 @@ export class FsReader implements Reader {
       }
     : undefined;
 
-  async read(filePath: string): Promise<Entry | null> {
-    const realPath = this.realPath(filePath);
+  async read(absoluteFilePath: string): Promise<Entry | null> {
+    const realPath = this.realPath(absoluteFilePath);
     if (!(await fs.pathExists(realPath))) {
       return null;
     }
     return this.readExisting(realPath);
   }
 
-  readSync(filePath: string): EntrySync | null {
-    const realPath = this.realPath(filePath);
+  readSync(absoluteFilePath: string): EntrySync | null {
+    const realPath = this.realPath(absoluteFilePath);
     if (!fs.pathExistsSync(realPath)) {
       return null;
     }
     return this.readExistingSync(realPath);
   }
 
-  private async readExisting(filePath: string): Promise<Entry | null> {
-    const lstat = await fs.lstat(filePath);
+  private async readExisting(absoluteFilePath: string): Promise<Entry | null> {
+    const lstat = await fs.lstat(absoluteFilePath);
     if (lstat.isDirectory()) {
-      return this.readDirectory(filePath);
+      return this.readDirectory(absoluteFilePath);
     } else if (lstat.isFile()) {
-      return this.readFile(filePath);
+      return this.readFile(absoluteFilePath);
     } else if (lstat.isSymbolicLink()) {
-      return this.readSymbolicLink(filePath);
+      return this.readSymbolicLink(absoluteFilePath);
     } else {
       return null;
     }
   }
 
-  private readExistingSync(filePath: string): EntrySync | null {
-    const lstat = fs.lstatSync(filePath);
+  private readExistingSync(absoluteFilePath: string): EntrySync | null {
+    const lstat = fs.lstatSync(absoluteFilePath);
     if (lstat.isDirectory()) {
-      return this.readDirectorySync(filePath);
+      return this.readDirectorySync(absoluteFilePath);
     } else if (lstat.isFile()) {
-      return this.readFileSync(filePath);
+      return this.readFileSync(absoluteFilePath);
     } else if (lstat.isSymbolicLink()) {
-      return this.readSymbolicLinkSync(filePath);
+      return this.readSymbolicLinkSync(absoluteFilePath);
     } else {
       return null;
     }
@@ -112,57 +112,59 @@ export class FsReader implements Reader {
     };
   }
 
-  private async readFile(filePath: string): Promise<File> {
-    const name = path.basename(filePath);
+  private async readFile(absoluteFilePath: string): Promise<File> {
+    const name = path.basename(absoluteFilePath);
     let stat: Promise<fs.Stats> | null;
     const getStat = () => {
       if (stat) {
         return stat;
       }
-      return (stat = fs.lstat(filePath));
+      return (stat = fs.lstat(absoluteFilePath));
     };
     return {
       kind: "file",
       name,
-      realPath: async () => filePath,
+      realPath: async () => absoluteFilePath,
       lastModifiedMillis: async () => {
         return (await getStat()).mtimeMs;
       },
       size: async () => {
         return (await getStat()).size;
       },
-      read: () => fs.readFile(filePath, "utf8"),
+      read: () => fs.readFile(absoluteFilePath, "utf8"),
     };
   }
 
-  private readFileSync(filePath: string): FileSync {
-    const name = path.basename(filePath);
+  private readFileSync(absoluteFilePath: string): FileSync {
+    const name = path.basename(absoluteFilePath);
     let stat: fs.Stats | null;
     const getStat = () => {
       if (stat) {
         return stat;
       }
-      return (stat = fs.lstatSync(filePath));
+      return (stat = fs.lstatSync(absoluteFilePath));
     };
     return {
       kind: "file",
       name,
-      realPath: () => filePath,
+      realPath: () => absoluteFilePath,
       lastModifiedMillis: () => {
         return getStat().mtimeMs;
       },
       size: () => {
         return getStat().size;
       },
-      read: () => fs.readFileSync(filePath, "utf8"),
+      read: () => fs.readFileSync(absoluteFilePath, "utf8"),
     };
   }
 
-  private async readSymbolicLink(filePath: string): Promise<File | Directory> {
-    const name = path.basename(filePath);
-    const lstat = await fs.lstat(filePath);
+  private async readSymbolicLink(
+    absoluteFilePath: string
+  ): Promise<File | Directory> {
+    const name = path.basename(absoluteFilePath);
+    const lstat = await fs.lstat(absoluteFilePath);
     if (lstat.isSymbolicLink()) {
-      const target = await fs.readlink(filePath);
+      const target = await fs.readlink(absoluteFilePath);
       if (!(await fs.pathExists(target))) {
         // The target does not exist.
         return {
@@ -172,19 +174,19 @@ export class FsReader implements Reader {
         };
       }
     }
-    const stat = await fs.stat(filePath);
+    const stat = await fs.stat(absoluteFilePath);
     if (stat.isFile()) {
       return {
         kind: "file",
         name,
-        realPath: async () => filePath,
+        realPath: async () => absoluteFilePath,
         lastModifiedMillis: async () => {
           return Math.max(lstat.mtimeMs, stat.mtimeMs);
         },
         size: async () => {
           return stat.size;
         },
-        read: () => fs.readFile(filePath, "utf8"),
+        read: () => fs.readFile(absoluteFilePath, "utf8"),
       };
     } else {
       return {
@@ -193,8 +195,8 @@ export class FsReader implements Reader {
         entries: async () => {
           const entries = await Promise.all(
             (
-              await fs.readdir(filePath)
-            ).map((f) => this.readExisting(path.join(filePath, f)))
+              await fs.readdir(absoluteFilePath)
+            ).map((f) => this.readExisting(path.join(absoluteFilePath, f)))
           );
           return entries.filter(Boolean) as Entry[];
         },
@@ -202,11 +204,13 @@ export class FsReader implements Reader {
     }
   }
 
-  private readSymbolicLinkSync(filePath: string): FileSync | DirectorySync {
-    const name = path.basename(filePath);
-    const lstat = fs.lstatSync(filePath);
+  private readSymbolicLinkSync(
+    absoluteFilePath: string
+  ): FileSync | DirectorySync {
+    const name = path.basename(absoluteFilePath);
+    const lstat = fs.lstatSync(absoluteFilePath);
     if (lstat.isSymbolicLink()) {
-      const target = fs.readlinkSync(filePath);
+      const target = fs.readlinkSync(absoluteFilePath);
       if (!fs.pathExistsSync(target)) {
         // The target does not exist.
         return {
@@ -216,19 +220,19 @@ export class FsReader implements Reader {
         };
       }
     }
-    const stat = fs.statSync(filePath);
+    const stat = fs.statSync(absoluteFilePath);
     if (stat.isFile()) {
       return {
         kind: "file",
         name,
-        realPath: () => filePath,
+        realPath: () => absoluteFilePath,
         lastModifiedMillis: () => {
           return Math.max(lstat.mtimeMs, stat.mtimeMs);
         },
         size: () => {
           return stat.size;
         },
-        read: () => fs.readFileSync(filePath, "utf8"),
+        read: () => fs.readFileSync(absoluteFilePath, "utf8"),
       };
     } else {
       return {
@@ -236,25 +240,25 @@ export class FsReader implements Reader {
         name,
         entries: () => {
           const entries = fs
-            .readdirSync(filePath)
-            .map((f) => this.readExistingSync(path.join(filePath, f)));
+            .readdirSync(absoluteFilePath)
+            .map((f) => this.readExistingSync(path.join(absoluteFilePath, f)));
           return entries.filter(Boolean) as EntrySync[];
         },
       };
     }
   }
 
-  private realPath(filePath: string) {
+  private realPath(absoluteFilePath: string) {
     return path.join(
       this.options.mapping.from,
-      path.relative(this.options.mapping.to, filePath)
+      path.relative(this.options.mapping.to, absoluteFilePath)
     );
   }
 
-  private mappedPath(filePath: string) {
+  private mappedPath(absoluteFilePath: string) {
     return path.join(
       this.options.mapping.from,
-      path.relative(this.options.mapping.to, filePath)
+      path.relative(this.options.mapping.to, absoluteFilePath)
     );
   }
 }

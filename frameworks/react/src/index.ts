@@ -43,11 +43,13 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
             watch: false,
           }),
         ]),
-      detectComponents: async (typeAnalyzer, filePaths) => {
-        const resolver = typeAnalyzer.analyze(filePaths);
+      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+        const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
-        for (const filePath of filePaths) {
-          components.push(...extractReactComponents(resolver, filePath));
+        for (const absoluteFilePath of absoluteFilePaths) {
+          components.push(
+            ...extractReactComponents(resolver, absoluteFilePath)
+          );
         }
         return components;
       },

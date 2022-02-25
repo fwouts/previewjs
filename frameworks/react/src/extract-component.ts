@@ -5,9 +5,9 @@ import { analyzeReactComponent } from "./analyze-component";
 
 export function extractReactComponents(
   resolver: TypeResolver,
-  filePath: string
+  absoluteFilePath: string
 ): Component[] {
-  const sourceFile = resolver.sourceFile(filePath);
+  const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
   }
@@ -26,7 +26,7 @@ export function extractReactComponents(
       );
       if (signature) {
         components.push({
-          filePath,
+          absoluteFilePath,
           name: "default",
           exported: true,
           offsets: [[statement.getStart(), statement.getEnd()]],
@@ -49,7 +49,7 @@ export function extractReactComponents(
         );
         if (signature) {
           components.push({
-            filePath,
+            absoluteFilePath,
             name,
             exported: !!exportedName,
             offsets: [[statement.getStart(), statement.getEnd()]],
@@ -71,7 +71,7 @@ export function extractReactComponents(
         const signature = extractReactComponent(resolver.checker, statement);
         if (signature) {
           components.push({
-            filePath,
+            absoluteFilePath,
             name: name || "default",
             exported,
             offsets: [[statement.getStart(), statement.getEnd()]],
@@ -88,7 +88,7 @@ export function extractReactComponents(
       const signature = extractReactComponent(resolver.checker, statement);
       if (signature) {
         components.push({
-          filePath,
+          absoluteFilePath,
           name,
           exported: !!exportedName,
           offsets: [[statement.getStart(), statement.getEnd()]],
@@ -103,7 +103,7 @@ export function extractReactComponents(
     analyze: async () =>
       analyzeReactComponent(
         resolver,
-        component.filePath,
+        component.absoluteFilePath,
         component.name,
         signature
       ),

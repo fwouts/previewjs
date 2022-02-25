@@ -12,10 +12,10 @@ import ts from "typescript";
 
 export function analyzeVueComponentFromTemplate(
   typeAnalyzer: TypeAnalyzer,
-  filePath: string
+  absoluteFilePath: string
 ): ComponentAnalysis {
   // This virtual file exists thanks to transformReader().
-  const tsFilePath = `${filePath}.ts`;
+  const tsFilePath = `${absoluteFilePath}.ts`;
   const resolver = typeAnalyzer.analyze([tsFilePath]);
   const sourceFile = resolver.sourceFile(tsFilePath);
   for (const statement of sourceFile.statements) {

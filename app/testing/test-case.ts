@@ -4,7 +4,7 @@ import { AppController } from "./helpers/app-controller";
 import { AppDir } from "./test-runner";
 
 export interface TestSuite {
-  filePath: string;
+  absoluteFilePath: string;
   description: string;
   testCases: TestCase[];
 }
@@ -22,12 +22,12 @@ export interface TestCase {
 export async function testSuite(
   description: string,
   testFactory: (test: TestCreator) => void | Promise<void>,
-  filePath?: string | null
+  absoluteFilePath?: string | null
 ): Promise<TestSuite> {
-  if (!filePath) {
-    filePath = callerCallsite()?.getFileName();
+  if (!absoluteFilePath) {
+    absoluteFilePath = callerCallsite()?.getFileName();
   }
-  if (!filePath) {
+  if (!absoluteFilePath) {
     throw new Error(`Unable to detect caller file path`);
   }
   const testCases: TestCase[] = [];
@@ -40,7 +40,7 @@ export async function testSuite(
     });
   });
   return {
-    filePath,
+    absoluteFilePath,
     description,
     testCases,
   };

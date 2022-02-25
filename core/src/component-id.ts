@@ -6,6 +6,6 @@ export function generateComponentId(
   component: Component
 ) {
   return `${path
-    .relative(workspace.rootDirPath, component.filePath)
+    .relative(workspace.rootDirPath, component.absoluteFilePath)
     .replace(/\\/g, "/")}:${component.name}`;
 }

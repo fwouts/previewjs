@@ -112,7 +112,7 @@ class TestRunner {
     const api = await init(core, vfs, this.setupEnvironment);
     const workspace = await api.getWorkspace({
       versionCode: "test-test",
-      filePath: rootDirPath,
+      absoluteFilePath: rootDirPath,
       logLevel: "warn",
     });
     if (!workspace) {
@@ -197,11 +197,11 @@ class TestRunner {
             }
             lastDiskWriteMillis = Date.now();
           }
-          const filePath = path.join(rootDirPath, f);
+          const absoluteFilePath = path.join(rootDirPath, f);
           let text: string;
           switch (content.kind) {
             case "edit": {
-              const existing = await fs.readFile(filePath, "utf8");
+              const existing = await fs.readFile(absoluteFilePath, "utf8");
               text = existing.replace(content.search, content.replace);
               break;
             }
@@ -212,11 +212,11 @@ class TestRunner {
               throw assertNever(content);
           }
           if (inMemoryOnly === true) {
-            await api.updateFileInMemory(filePath, text);
+            await api.updateFileInMemory(absoluteFilePath, text);
           } else {
-            const dirPath = path.dirname(filePath);
+            const dirPath = path.dirname(absoluteFilePath);
             await fs.mkdirp(dirPath);
-            await fs.writeFile(filePath, text, "utf8");
+            await fs.writeFile(absoluteFilePath, text, "utf8");
           }
         },
         remove: (f) => fs.unlink(path.join(rootDirPath, f)),
@@ -248,7 +248,7 @@ class TestRunner {
 export interface AppDir {
   rootPath: string;
   update(
-    relativeFilePath: string,
+    filePath: string,
     content:
       | {
           kind: "edit";
@@ -263,5 +263,5 @@ export interface AppDir {
       inMemoryOnly?: boolean;
     }
   ): Promise<void>;
-  remove(relativeFilePath: string): Promise<void>;
+  remove(filePath: string): Promise<void>;
 }

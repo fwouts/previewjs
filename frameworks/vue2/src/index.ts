@@ -37,22 +37,27 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
             watch: false,
           }),
         ]),
-      detectComponents: async (typeAnalyzer, filePaths) => {
-        const resolver = typeAnalyzer.analyze(filePaths);
+      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+        const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
-        for (const filePath of filePaths) {
-          if (filePath.endsWith(".vue")) {
-            const name = path.basename(filePath, path.extname(filePath));
+        for (const absoluteFilePath of absoluteFilePaths) {
+          if (absoluteFilePath.endsWith(".vue")) {
+            const name = path.basename(
+              absoluteFilePath,
+              path.extname(absoluteFilePath)
+            );
             components.push({
-              filePath,
+              absoluteFilePath,
               name,
               exported: true,
               offsets: [[0, Infinity]],
               analyze: async () =>
-                analyzeVueComponentFromTemplate(typeAnalyzer, filePath),
+                analyzeVueComponentFromTemplate(typeAnalyzer, absoluteFilePath),
             });
           } else {
-            components.push(...extractVueComponents(resolver, filePath));
+            components.push(
+              ...extractVueComponents(resolver, absoluteFilePath)
+            );
           }
         }
         return components;

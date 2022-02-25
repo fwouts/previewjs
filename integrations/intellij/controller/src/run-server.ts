@@ -85,7 +85,7 @@ async function main() {
       const workspace = await previewjs.getWorkspace({
         versionCode: `intellij-${version}`,
         logLevel: "info",
-        filePath: req.filePath,
+        absoluteFilePath: req.absoluteFilePath,
       });
       if (!workspace) {
         return {
@@ -116,7 +116,7 @@ async function main() {
 
   endpoint<AnalyzeFileRequest, AnalyzeFileResponse>(
     "/analyze/file",
-    async ({ workspaceId, filePath, options }) => {
+    async ({ workspaceId, absoluteFilePath, options }) => {
       const workspace = workspaces[workspaceId];
       if (!workspace) {
         throw new NotFoundError();
@@ -124,7 +124,7 @@ async function main() {
       const components = (
         await workspace.frameworkPlugin.detectComponents(
           workspace.typeAnalyzer,
-          [filePath]
+          [absoluteFilePath]
         )
       )
         .map((c) => {
@@ -183,7 +183,7 @@ async function main() {
   endpoint<UpdatePendingFileRequest, UpdatePendingFileResponse>(
     "/pending-files/update",
     async (req) => {
-      await previewjs.updateFileInMemory(req.filePath, req.utf8Content);
+      await previewjs.updateFileInMemory(req.absoluteFilePath, req.utf8Content);
       return {};
     }
   );

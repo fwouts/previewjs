@@ -131,8 +131,8 @@ export class ViteManager {
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
       fakeExportedTypesPlugin({
-        readFile: (filePath) =>
-          this.options.reader.read(filePath).then((entry) => {
+        readFile: (absoluteFilePath) =>
+          this.options.reader.read(absoluteFilePath).then((entry) => {
             if (entry?.kind !== "file") {
               return null;
             }
@@ -243,12 +243,12 @@ export class ViteManager {
     return this.lastPingTimestamp;
   }
 
-  triggerReload(filePath: string) {
+  triggerReload(absoluteFilePath: string) {
     if (!this.viteServer) {
       return;
     }
     for (const onChange of this.viteServer.watcher.listeners("change")) {
-      onChange(filePath);
+      onChange(absoluteFilePath);
     }
   }
 

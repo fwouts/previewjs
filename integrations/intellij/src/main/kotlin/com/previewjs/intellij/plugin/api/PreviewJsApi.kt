@@ -57,7 +57,7 @@ data class CheckHealthResponse(
 
 
 data class GetWorkspaceRequest(
-        val filePath: String
+        val absoluteFilePath: String
 )
 
 data class GetWorkspaceResponse(
@@ -72,7 +72,7 @@ class DisposeWorkspaceResponse()
 
 data class AnalyzeFileRequest(
         val workspaceId: String,
-        val filePath: String,
+        val absoluteFilePath: String,
         val options: AnalyzeFileOptions? = null
 )
 
@@ -106,7 +106,7 @@ data class StopPreviewRequest(
 class StopPreviewResponse()
 
 data class UpdatePendingFileRequest(
-        val filePath: String,
+        val absoluteFilePath: String,
         val utf8Content: String?
 )
 
