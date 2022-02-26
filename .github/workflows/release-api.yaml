@@ -1,4 +1,4 @@
-name: Release @previewjs/config
+name: Release @previewjs/api
 
 on:
   release:
@@ -7,11 +7,11 @@ on:
 
 defaults:
   run:
-    working-directory: config
+    working-directory: api
 
 jobs:
   build:
-    if: startsWith(github.ref, 'refs/tags/config/v')
+    if: startsWith(github.ref, 'refs/tags/api/v')
     timeout-minutes: 10
     runs-on: ubuntu-latest
     strategy:
@@ -40,9 +40,9 @@ jobs:
         uses: sergeysova/jq-action@v2.1.0
         id: version
         with:
-          cmd: "jq .version config/package.json -r"
+          cmd: "jq .version api/package.json -r"
       - name: Extract version from release name
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\/config\/v/}" >> $GITHUB_ENV
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/api\/v/}" >> $GITHUB_ENV
       - name: Check that versions match
         run: '[[ "${{ steps.version.outputs.value }}" == "$VERSION" ]] && echo "Versions match"'
       - name: Publish
