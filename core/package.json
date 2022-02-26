@@ -21,9 +21,6 @@
     ".": {
       "default": "./dist/src/index.js"
     },
-    "./api": {
-      "default": "./dist/src/api/index.js"
-    },
     "./controller": {
       "import": "./dist/controller/index.js"
     }
@@ -32,9 +29,6 @@
     "*": {
       "*": [
         "./dist/src/index.d.ts"
-      ],
-      "api": [
-        "./dist/src/api/index.d.ts"
       ],
       "controller": [
         "./dist/controller/index.d.ts"
@@ -48,6 +42,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@previewjs/api": "1.0.0",
     "@previewjs/config": "1.0.2",
     "@previewjs/type-analyzer": "1.1.1",
     "@previewjs/vfs": "1.1.0",

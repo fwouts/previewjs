@@ -16,9 +16,12 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    include: ["@previewjs/api"],
+  },
   build: {
     commonjsOptions: {
-      include: [/core\/.*/, /node_modules/],
+      include: [/api\/.*/, /node_modules/],
     },
   },
 });

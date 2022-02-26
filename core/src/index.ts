@@ -1,3 +1,4 @@
+import { localEndpoints } from "@previewjs/api";
 import {
   CollectedTypes,
   createTypeAnalyzer,
@@ -9,7 +10,6 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import * as vite from "vite";
-import { localEndpoints } from "./api";
 import { computeProps } from "./compute-props";
 import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";

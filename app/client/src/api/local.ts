@@ -3,7 +3,7 @@ import {
   RequestOf,
   ResponseOf,
   WrappedResponse,
-} from "@previewjs/core/api";
+} from "@previewjs/api";
 import axios from "axios";
 
 export class LocalApi {
