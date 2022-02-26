@@ -1,31 +1,38 @@
-import { AnalyzedComponent } from "@previewjs/core";
+import { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
+  dereferenceType,
   EMPTY_OBJECT_TYPE,
+  helpers,
   maybeOptionalType,
   objectType,
-  resolveType,
-  TypeAnalyzer,
+  TypeResolver,
   UNKNOWN_TYPE,
   ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { ReactComponent } from ".";
+import { detectPropTypes } from "./prop-types";
 
 export function analyzeReactComponent(
-  typeAnalyzer: TypeAnalyzer,
-  component: ReactComponent,
-  args: ts.Expression | null,
-  propTypes: ts.Expression | null
-): AnalyzedComponent {
-  let resolved = computePropsType(typeAnalyzer, component.signature, propTypes);
+  typeResolver: TypeResolver,
+  absoluteFilePath: string,
+  componentName: string,
+  signature: ts.Signature
+): ComponentAnalysis {
+  const sourceFile = typeResolver.sourceFile(absoluteFilePath);
+  let args: ts.Expression | null = null;
+  let propTypes: ts.Expression | null = null;
+  if (sourceFile) {
+    args = helpers.extractArgs(sourceFile)[componentName] || null;
+    propTypes = detectPropTypes(sourceFile, componentName);
+  }
+  let resolved = computePropsType(typeResolver, signature, propTypes);
   let providedArgs = new Set<string>();
   if (args) {
-    const argsType = typeAnalyzer.checker.getTypeAtLocation(args);
+    const argsType = typeResolver.checker.getTypeAtLocation(args);
     providedArgs = new Set(argsType.getProperties().map((prop) => prop.name));
   }
   return {
-    name: component.name,
     propsType: resolved.type,
     types: { ...resolved.collected },
     providedArgs,
@@ -33,7 +40,7 @@ export function analyzeReactComponent(
 }
 
 function computePropsType(
-  typeAnalyzer: TypeAnalyzer,
+  typeResolver: TypeResolver,
   signature: ts.Signature,
   propTypes: ts.Expression | null
 ): {
@@ -41,13 +48,13 @@ function computePropsType(
   collected: CollectedTypes;
 } {
   if (propTypes) {
-    return computePropsTypeFromPropTypes(typeAnalyzer, propTypes);
+    return computePropsTypeFromPropTypes(typeResolver, propTypes);
   }
-  return computePropsTypeFromSignature(typeAnalyzer, signature);
+  return computePropsTypeFromSignature(typeResolver, signature);
 }
 
 function computePropsTypeFromSignature(
-  typeAnalyzer: TypeAnalyzer,
+  typeResolver: TypeResolver,
   signature: ts.Signature
 ): {
   type: ValueType;
@@ -66,13 +73,13 @@ function computePropsTypeFromSignature(
       collected: {},
     };
   }
-  const type = typeAnalyzer.checker.getTypeOfSymbolAtLocation(
+  const type = typeResolver.checker.getTypeOfSymbolAtLocation(
     firstParam,
     firstParam.valueDeclaration
   );
   try {
-    let { type: propsType, collected } = typeAnalyzer.resolveType(type);
-    [propsType] = resolveType(propsType, collected, []);
+    let { type: propsType, collected } = typeResolver.resolveType(type);
+    [propsType] = dereferenceType(propsType, collected, []);
     stripUnusedProps: if (
       propsType.kind === "object" &&
       ts.isParameter(firstParam.valueDeclaration)
@@ -102,7 +109,7 @@ function computePropsTypeFromSignature(
     return { type: propsType, collected };
   } catch (e) {
     console.warn(
-      `Unable to resolve props type for ${typeAnalyzer.checker.typeToString(
+      `Unable to resolve props type for ${typeResolver.checker.typeToString(
         type
       )}`,
       e
@@ -115,13 +122,13 @@ function computePropsTypeFromSignature(
 }
 
 function computePropsTypeFromPropTypes(
-  typeAnalyzer: TypeAnalyzer,
+  typeResolver: TypeResolver,
   propTypes: ts.Expression
 ): {
   type: ValueType;
   collected: CollectedTypes;
 } {
-  const type = typeAnalyzer.checker.getTypeAtLocation(propTypes);
+  const type = typeResolver.checker.getTypeAtLocation(propTypes);
   const fields: Record<string, ValueType> = {};
   let collected: CollectedTypes = {};
   for (const property of type.getProperties()) {
@@ -129,10 +136,10 @@ function computePropsTypeFromPropTypes(
       if (!property.valueDeclaration) {
         return UNKNOWN_TYPE;
       }
-      const propertyType = typeAnalyzer.checker.getTypeAtLocation(
+      const propertyType = typeResolver.checker.getTypeAtLocation(
         property.valueDeclaration
       );
-      const typeArguments = typeAnalyzer.resolveTypeArguments(propertyType);
+      const typeArguments = typeResolver.resolveTypeArguments(propertyType);
       const fieldType = typeArguments.types[0];
       if (fieldType) {
         collected = {

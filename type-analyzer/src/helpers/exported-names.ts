@@ -1,6 +1,6 @@
 import ts from "typescript";
 
-export function detectExportedNames(
+export function extractExportedNames(
   sourceFile: ts.SourceFile
 ): Record<string, string> {
   const nameToExportedName: Record<string, string> = {};

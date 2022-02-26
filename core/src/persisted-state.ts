@@ -5,7 +5,7 @@ import { PersistedState } from "./api";
 
 export class PersistedStateManager {
   constructor(
-    private readonly filePath: string = path.join(
+    private readonly absoluteFilePath: string = path.join(
       envPaths("previewjs").config,
       "state.json"
     )
@@ -18,7 +18,7 @@ export class PersistedStateManager {
 
   private async read(): Promise<PersistedState | null> {
     try {
-      const content = await fs.readFile(this.filePath, "utf8");
+      const content = await fs.readFile(this.absoluteFilePath, "utf8");
       return JSON.parse(content);
     } catch {
       return null;
@@ -30,8 +30,12 @@ export class PersistedStateManager {
       ...(await (this.read() || {})),
       ...partialState,
     };
-    await fs.ensureDir(path.dirname(this.filePath));
-    await fs.writeFile(this.filePath, JSON.stringify(state, null, 2), "utf8");
+    await fs.ensureDir(path.dirname(this.absoluteFilePath));
+    await fs.writeFile(
+      this.absoluteFilePath,
+      JSON.stringify(state, null, 2),
+      "utf8"
+    );
     return state;
   }
 }

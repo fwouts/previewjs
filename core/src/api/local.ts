@@ -20,7 +20,7 @@ export const UpdateState = declareEndpoint<
 
 export const ComputeProps = declareEndpoint<
   {
-    relativeFilePath: string;
+    filePath: string;
     componentName: string;
   },
   PreviewSources | null

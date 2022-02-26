@@ -46,19 +46,20 @@ export async function init(
   } = {};
 
   return {
-    updateFileInMemory(filePath: string, text: string | null) {
-      memoryReader.updateFile(filePath, text);
+    core: coreModule,
+    updateFileInMemory(absoluteFilePath: string, text: string | null) {
+      memoryReader.updateFile(absoluteFilePath, text);
     },
     async getWorkspace({
       versionCode,
       logLevel,
-      filePath,
+      absoluteFilePath,
     }: {
       versionCode: string;
       logLevel: LogLevel;
-      filePath: string;
+      absoluteFilePath: string;
     }) {
-      const rootDirPath = coreModule.findWorkspaceRoot(filePath);
+      const rootDirPath = coreModule.findWorkspaceRoot(absoluteFilePath);
       let workspace = workspaces[rootDirPath];
       if (workspace === undefined) {
         workspace = workspaces[rootDirPath] = await locking(async () => {

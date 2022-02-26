@@ -23,23 +23,23 @@ class VueTypeScriptReader implements Reader {
 
   constructor(private readonly reader: Reader) {
     reader.listeners.add({
-      onChange: (filePath, info) => {
-        this.listeners.notify(filePath, info);
+      onChange: (absoluteFilePath, info) => {
+        this.listeners.notify(absoluteFilePath, info);
       },
     });
   }
 
   observe = this.reader.observe?.bind(this.reader);
 
-  async read(filePath: string): Promise<File | Directory | null> {
-    if (filePath.endsWith(".vue.ts")) {
+  async read(absoluteFilePath: string): Promise<File | Directory | null> {
+    if (absoluteFilePath.endsWith(".vue.ts")) {
       const source = await this.reader.read(
-        filePath.substr(0, filePath.length - 3)
+        absoluteFilePath.substr(0, absoluteFilePath.length - 3)
       );
       if (source?.kind !== "file") {
         return null;
       }
-      const name = path.basename(filePath);
+      const name = path.basename(absoluteFilePath);
       return {
         kind: "file",
         name,
@@ -49,18 +49,18 @@ class VueTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    return this.reader.read(filePath);
+    return this.reader.read(absoluteFilePath);
   }
 
-  readSync(filePath: string): FileSync | DirectorySync | null {
-    if (filePath.endsWith(".vue.ts")) {
+  readSync(absoluteFilePath: string): FileSync | DirectorySync | null {
+    if (absoluteFilePath.endsWith(".vue.ts")) {
       const source = this.reader.readSync(
-        filePath.substr(0, filePath.length - 3)
+        absoluteFilePath.substr(0, absoluteFilePath.length - 3)
       );
       if (source?.kind !== "file") {
         return null;
       }
-      const name = path.basename(filePath);
+      const name = path.basename(absoluteFilePath);
       return {
         kind: "file",
         name,
@@ -70,7 +70,7 @@ class VueTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    return this.reader.readSync(filePath);
+    return this.reader.readSync(absoluteFilePath);
   }
 }
 

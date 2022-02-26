@@ -1,29 +1,32 @@
-import { DetectedComponent } from "@previewjs/core";
-import { detectExportedNames } from "@previewjs/core/ts-helpers";
+import { Component } from "@previewjs/core";
+import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
-
-export interface ReactComponent extends DetectedComponent {
-  signature: ts.Signature;
-}
+import { analyzeReactComponent } from "./analyze-component";
 
 export function extractReactComponents(
-  program: ts.Program,
-  filePath: string
-): ReactComponent[] {
-  const sourceFile = program.getSourceFile(filePath);
+  resolver: TypeResolver,
+  absoluteFilePath: string
+): Component[] {
+  const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
   }
-  const checker = program.getTypeChecker();
-  let components: ReactComponent[] = [];
-  const nameToExportedName = detectExportedNames(sourceFile);
+  let components: Array<
+    Omit<Component, "analyze"> & {
+      signature: ts.Signature;
+    }
+  > = [];
+  const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
-      const signature = extractReactComponent(checker, statement.expression);
+      const signature = extractReactComponent(
+        resolver.checker,
+        statement.expression
+      );
       if (signature) {
         components.push({
-          filePath,
+          absoluteFilePath,
           name: "default",
           exported: true,
           offsets: [[statement.getStart(), statement.getEnd()]],
@@ -41,12 +44,12 @@ export function extractReactComponents(
           continue;
         }
         const signature = extractReactComponent(
-          checker,
+          resolver.checker,
           declaration.initializer
         );
         if (signature) {
           components.push({
-            filePath,
+            absoluteFilePath,
             name,
             exported: !!exportedName,
             offsets: [[statement.getStart(), statement.getEnd()]],
@@ -65,10 +68,10 @@ export function extractReactComponents(
       const name = statement.name?.text;
       const exported = (name && !!nameToExportedName[name]) || isDefaultExport;
       if (isDefaultExport || (name && isValidReactComponentName(name))) {
-        const signature = extractReactComponent(checker, statement);
+        const signature = extractReactComponent(resolver.checker, statement);
         if (signature) {
           components.push({
-            filePath,
+            absoluteFilePath,
             name: name || "default",
             exported,
             offsets: [[statement.getStart(), statement.getEnd()]],
@@ -82,10 +85,10 @@ export function extractReactComponents(
       if (!isValidReactComponentName(name)) {
         continue;
       }
-      const signature = extractReactComponent(checker, statement);
+      const signature = extractReactComponent(resolver.checker, statement);
       if (signature) {
         components.push({
-          filePath,
+          absoluteFilePath,
           name,
           exported: !!exportedName,
           offsets: [[statement.getStart(), statement.getEnd()]],
@@ -95,7 +98,16 @@ export function extractReactComponents(
     }
   }
 
-  return components;
+  return components.map(({ signature, ...component }) => ({
+    ...component,
+    analyze: async () =>
+      analyzeReactComponent(
+        resolver,
+        component.absoluteFilePath,
+        component.name,
+        signature
+      ),
+  }));
 }
 
 function extractReactComponent(

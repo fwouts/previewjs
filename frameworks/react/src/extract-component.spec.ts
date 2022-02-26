@@ -1,7 +1,4 @@
-import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
+import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
@@ -17,12 +14,12 @@ const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
 
 describe("extractReactComponents", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     const frameworkPlugin = await reactFrameworkPlugin.create();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: path.join(__dirname, "virtual"),
       reader: createStackedReader([
         memoryReader,
@@ -35,7 +32,7 @@ describe("extractReactComponents", () => {
   });
 
   afterEach(() => {
-    typescriptAnalyzer.dispose();
+    typeAnalyzer.dispose();
   });
 
   it("detects expected components", async () => {
@@ -213,9 +210,6 @@ export default () => {
   function extract(source: string) {
     const rootDirPath = path.join(__dirname, "virtual");
     memoryReader.updateFile(path.join(rootDirPath, "App.tsx"), source);
-    return extractReactComponents(
-      typescriptAnalyzer.analyze([MAIN_FILE]),
-      MAIN_FILE
-    );
+    return extractReactComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
   }
 });

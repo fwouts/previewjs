@@ -1,14 +1,11 @@
 import { FrameworkPlugin } from "@previewjs/core";
 import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
-import {
   BOOLEAN_TYPE,
   createTypeAnalyzer,
   objectType,
   optionalType,
   STRING_TYPE,
+  TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
@@ -28,13 +25,13 @@ const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyze Vue 3 component", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await vue3FrameworkPlugin.create();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
         createStackedReader([
@@ -55,8 +52,8 @@ describe("analyze Vue 3 component", () => {
     });
   });
 
-  afterAll(() => {
-    typescriptAnalyzer.dispose();
+  afterEach(() => {
+    typeAnalyzer.dispose();
   });
 
   test("defineProps<Props>()", async () => {
@@ -75,7 +72,6 @@ defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -102,7 +98,6 @@ withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -128,7 +123,6 @@ const props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -155,7 +149,6 @@ const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -182,7 +175,6 @@ props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -210,7 +202,6 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -240,7 +231,6 @@ export default defineComponent({
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
@@ -307,7 +297,6 @@ export default defineComponent({
   `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         label: STRING_TYPE,
         sublabel: optionalType(STRING_TYPE),
@@ -322,10 +311,6 @@ export default defineComponent({
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    return analyzeVueComponentFromTemplate(
-      typescriptAnalyzer,
-      (program) => createTypeAnalyzer(ROOT_DIR_PATH, program, {}, {}),
-      MAIN_FILE
-    );
+    return analyzeVueComponentFromTemplate(typeAnalyzer, MAIN_FILE);
   }
 });

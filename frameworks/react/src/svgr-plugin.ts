@@ -21,16 +21,16 @@ export function svgrPlugin({
       // ID can either be an absolute path (when SVG is imported with
       // ./logo.svg) or a relative path (when SVG is imported through an
       // alias like foo/logo.svg).
-      let filePath = id;
+      let absoluteFilePath = id;
       for (const [mapFrom, mapTo] of Object.entries(alias)) {
         const matchStart = path.join(path.sep, mapFrom);
         if (id.startsWith(matchStart)) {
-          filePath = path.join(mapTo, path.relative(matchStart, id));
+          absoluteFilePath = path.join(mapTo, path.relative(matchStart, id));
         }
       }
       let componentCode: string;
-      if (await fs.pathExists(filePath)) {
-        const svg = await fs.readFile(filePath, "utf8");
+      if (await fs.pathExists(absoluteFilePath)) {
+        const svg = await fs.readFile(absoluteFilePath, "utf8");
         const generatedSvgrCode: string = await svgr(
           svg,
           {},
@@ -53,7 +53,7 @@ export const ${exportedComponentName} = () => <div>
         (exportedComponentName !== "default" ? code : "") +
           "\n" +
           componentCode,
-        filePath,
+        absoluteFilePath,
         {
           loader: "jsx",
         }

@@ -32,12 +32,12 @@ function generateComponentLoaderModule(
     componentName?: string;
   }
 ): string {
-  const relativeFilePath = urlParams.get("p");
+  const filePath = urlParams.get("p");
   const componentName = urlParams.get("c");
-  if (relativeFilePath === null || componentName === null) {
+  if (filePath === null || componentName === null) {
     throw new Error(`Invalid use of /render module`);
   }
-  const componentModuleId = `/${relativeFilePath.replace(/\\/g, "/")}`;
+  const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
   return `import React from 'react';
 import { sendMessageFromPreview } from '/__previewjs_internal__/messages';
 import { updateComponent } from '/__previewjs_internal__/update-component';
@@ -75,7 +75,7 @@ export async function update() {
       componentName === "default" ? "default" : `__previewjs__${componentName}`
     }"];
     if (!Component) {
-      throw new Error("No component named '${componentName}' could be found in ${relativeFilePath}");
+      throw new Error("No component named '${componentName}' could be found in ${filePath}");
     }
     return import.meta.hot.data.cached = {
       Component,
@@ -109,7 +109,7 @@ export async function update() {
   });
   return {
     componentInfo: {
-      relativeFilePath: ${JSON.stringify(relativeFilePath)},
+      filePath: ${JSON.stringify(filePath)},
       componentName: ${JSON.stringify(componentName)},
       variants,
       Component: (props) => {

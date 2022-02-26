@@ -1,18 +1,3 @@
-import ts from "typescript";
-
-export interface TypeAnalyzer {
-  checker: ts.TypeChecker;
-  sourceFile(filePath: string): ts.SourceFile;
-  resolveType(type: ts.Type): {
-    type: ValueType;
-    collected: CollectedTypes;
-  };
-  resolveTypeArguments(type: ts.Type): {
-    types: ValueType[];
-    collected: CollectedTypes;
-  };
-}
-
 export type ValueType =
   | AnyType
   | UnknownType

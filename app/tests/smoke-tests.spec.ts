@@ -27,7 +27,7 @@ export const smokeTests = fs
               "pages/index.vue:index",
               "app.vue:app",
             ];
-            let filePath: string | null = null;
+            let absoluteFilePath: string | null = null;
             let componentName: string | null = null;
             for (const candidate of candidates) {
               const colonPosition = candidate.indexOf(":");
@@ -35,17 +35,17 @@ export const smokeTests = fs
               if (
                 await fs.pathExists(path.join(appDir.rootPath, candidatePath))
               ) {
-                filePath = path.join(appDir.rootPath, candidatePath);
+                absoluteFilePath = path.join(appDir.rootPath, candidatePath);
                 componentName = candidate.substr(colonPosition + 1);
                 break;
               }
             }
-            if (!filePath || !componentName) {
+            if (!absoluteFilePath || !componentName) {
               throw new Error(`Unable to find an entry point for ${appName}`);
             }
             await controller.show(
               `${path
-                .relative(appDir.rootPath, filePath)
+                .relative(appDir.rootPath, absoluteFilePath)
                 .replace(/\\/g, "/")}:${componentName}`
             );
             const iframe = await controller.previewIframe();

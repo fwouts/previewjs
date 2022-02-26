@@ -1,9 +1,5 @@
 import { FrameworkPlugin } from "@previewjs/core";
 import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
-import {
   ANY_TYPE,
   arrayType,
   createTypeAnalyzer,
@@ -16,6 +12,7 @@ import {
   objectType,
   optionalType,
   STRING_TYPE,
+  TypeAnalyzer,
   unionType,
 } from "@previewjs/type-analyzer";
 import {
@@ -26,10 +23,7 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
-import { ReactComponent, reactFrameworkPlugin } from ".";
-import { analyzeReactComponent } from "./analyze-component";
-import { detectArgs } from "./args";
-import { detectPropTypes } from "./prop-types";
+import { reactFrameworkPlugin } from ".";
 import { REACT_SPECIAL_TYPES } from "./special-types";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
@@ -38,13 +32,13 @@ const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
-  let frameworkPlugin: FrameworkPlugin<ReactComponent>;
+  let typeAnalyzer: TypeAnalyzer;
+  let frameworkPlugin: FrameworkPlugin;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await reactFrameworkPlugin.create();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,
@@ -53,11 +47,12 @@ describe("analyzeReactComponent", () => {
         }), // required for TypeScript libs, e.g. Promise
       ]),
       tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      specialTypes: REACT_SPECIAL_TYPES,
     });
   });
 
-  afterAll(() => {
-    typescriptAnalyzer.dispose();
+  afterEach(() => {
+    typeAnalyzer.dispose();
   });
 
   test("local component with named export", async () => {
@@ -73,7 +68,6 @@ export { A }
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: EMPTY_OBJECT_TYPE,
       providedArgs: EMPTY_SET,
       types: {},
@@ -93,7 +87,6 @@ export { A as B }
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: EMPTY_OBJECT_TYPE,
       providedArgs: EMPTY_SET,
       types: {},
@@ -113,7 +106,6 @@ export default A
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: EMPTY_OBJECT_TYPE,
       providedArgs: EMPTY_SET,
       types: {},
@@ -131,7 +123,6 @@ export function A() {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: EMPTY_OBJECT_TYPE,
       providedArgs: EMPTY_SET,
       types: {},
@@ -149,7 +140,6 @@ export function A() {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -174,7 +164,6 @@ export function A() {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({ foo: STRING_TYPE }),
       providedArgs: EMPTY_SET,
       types: {
@@ -197,7 +186,6 @@ export const A = () => {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: EMPTY_OBJECT_TYPE,
       providedArgs: EMPTY_SET,
       types: {},
@@ -215,7 +203,6 @@ export const A = (props: { foo: string }) => {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -242,7 +229,6 @@ interface PanelTab {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         currentTab: namedType("App.tsx:PanelTab"),
         tabs: arrayType(namedType("App.tsx:PanelTab")),
@@ -275,7 +261,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         foo: STRING_TYPE,
         children: optionalType(NODE_TYPE),
@@ -298,7 +283,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         foo: STRING_TYPE,
         children: optionalType(NODE_TYPE),
@@ -321,7 +305,6 @@ export const A: React.FC<{ foo: string }> = () => {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({}),
       providedArgs: EMPTY_SET,
       types: {},
@@ -341,7 +324,6 @@ export const A: React.FC<{ foo: string }> = (props) => {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         foo: STRING_TYPE,
         children: optionalType(NODE_TYPE),
@@ -370,7 +352,6 @@ type Props = {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         a: STRING_TYPE,
         c: STRING_TYPE,
@@ -408,7 +389,6 @@ type Props = {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         a: STRING_TYPE,
         b: STRING_TYPE,
@@ -440,7 +420,6 @@ export class A extends PureComponent {}
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: EMPTY_OBJECT_TYPE,
       providedArgs: EMPTY_SET,
       types: {},
@@ -458,7 +437,6 @@ export class A extends PureComponent<{foo: string}> {}
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         foo: STRING_TYPE,
       }),
@@ -483,7 +461,6 @@ A.args = {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         foo: STRING_TYPE,
         bar: STRING_TYPE,
@@ -519,7 +496,6 @@ A.propTypes = {
         "A"
       )
     ).toEqual({
-      name: "A",
       propsType: objectType({
         user: objectType({
           foo: optionalType(unionType([NULL_TYPE, STRING_TYPE])),
@@ -540,25 +516,12 @@ A.propTypes = {
 
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    const program = typescriptAnalyzer.analyze([MAIN_FILE]);
-    const component = frameworkPlugin
-      .componentDetector(program, [MAIN_FILE])
-      .find((c) => c.name === componentName);
+    const component = (
+      await frameworkPlugin.detectComponents(typeAnalyzer, [MAIN_FILE])
+    ).find((c) => c.name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    const sourceFile = program.getSourceFile(MAIN_FILE)!;
-    const typeAnalyzer = createTypeAnalyzer(
-      ROOT_DIR_PATH,
-      program,
-      {},
-      REACT_SPECIAL_TYPES
-    );
-    return analyzeReactComponent(
-      typeAnalyzer,
-      component,
-      detectArgs(sourceFile, component.name),
-      detectPropTypes(sourceFile, component.name)
-    );
+    return component.analyze();
   }
 });

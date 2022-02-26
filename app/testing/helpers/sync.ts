@@ -63,12 +63,12 @@ export async function sync(srcPath: string, dstPath: string): Promise<void> {
 
   // Remove any old files.
   for (const f of existingFiles) {
-    const filePath = path.join(dstPath, f);
-    const fileStat = await stat(filePath);
+    const absoluteFilePath = path.join(dstPath, f);
+    const fileStat = await stat(absoluteFilePath);
     if (fileStat.isDirectory()) {
-      await remove(filePath);
+      await remove(absoluteFilePath);
     } else {
-      await unlink(filePath);
+      await unlink(absoluteFilePath);
     }
   }
 }

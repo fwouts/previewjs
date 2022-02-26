@@ -1,15 +1,12 @@
 import { FrameworkPlugin } from "@previewjs/core";
 import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
-import {
   createTypeAnalyzer,
   literalType,
   NUMBER_TYPE,
   objectType,
   optionalType,
   STRING_TYPE,
+  TypeAnalyzer,
   unionType,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
@@ -31,13 +28,13 @@ const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyze Vue 2 component", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await vue2FrameworkPlugin.create();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
         createStackedReader([
@@ -58,8 +55,8 @@ describe("analyze Vue 2 component", () => {
     });
   });
 
-  afterAll(() => {
-    typescriptAnalyzer.dispose();
+  afterEach(() => {
+    typeAnalyzer.dispose();
   });
 
   test("export default {} without props", async () => {
@@ -77,7 +74,6 @@ export default {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({}),
       providedArgs: EMPTY_SET,
       types: {},
@@ -93,7 +89,7 @@ export default {
 </template>
 <script>
 export default {
-  name: "App",
+  
   props: {
     a: String,
     b: { type: String },
@@ -110,7 +106,6 @@ export default {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         a: optionalType(STRING_TYPE),
         b: optionalType(STRING_TYPE),
@@ -136,14 +131,13 @@ export default {
 </template>
 <script>
 export default {
-  name: "App",
+  
   props: ["a", "b", "c"]
 }
 </script>
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         a: UNKNOWN_TYPE,
         b: UNKNOWN_TYPE,
@@ -177,7 +171,6 @@ export default class App extends Vue {
 `
       )
     ).toEqual({
-      name: "App",
       propsType: objectType({
         label: STRING_TYPE,
         size: optionalType(
@@ -195,10 +188,6 @@ export default class App extends Vue {
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    return analyzeVueComponentFromTemplate(
-      typescriptAnalyzer,
-      (program) => createTypeAnalyzer(ROOT_DIR_PATH, program, {}, {}),
-      MAIN_FILE
-    );
+    return analyzeVueComponentFromTemplate(typeAnalyzer, MAIN_FILE);
   }
 });

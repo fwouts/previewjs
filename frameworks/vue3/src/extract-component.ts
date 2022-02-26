@@ -1,22 +1,27 @@
-import { DetectedComponent, extractArgs } from "@previewjs/core";
-import { detectExportedNames } from "@previewjs/core/ts-helpers";
+import { Component, ComponentAnalysis } from "@previewjs/core";
+import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function extractVueComponents(
-  program: ts.Program,
-  filePath: string,
+  resolver: TypeResolver,
+  absoluteFilePath: string,
   options: {
     offset?: number;
   } = {}
-): DetectedComponent[] {
-  const checker = program.getTypeChecker();
-  const sourceFile = program.getSourceFile(filePath);
+): Component[] {
+  const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
   }
-  let components: DetectedComponent[] = [];
-  const nameToExportedName = detectExportedNames(sourceFile);
-  const args = extractArgs(sourceFile);
+  let components: Component[] = [];
+  const nameToExportedName = helpers.extractExportedNames(sourceFile);
+  const args = helpers.extractArgs(sourceFile);
+  // TODO: Handle JSX and Storybook stories.
+  const analysis: ComponentAnalysis = {
+    propsType: UNKNOWN_TYPE,
+    providedArgs: new Set(),
+    types: {},
+  };
 
   for (const statement of sourceFile.statements) {
     if (options.offset !== undefined) {
@@ -38,16 +43,17 @@ export function extractVueComponents(
           continue;
         }
         const signature = extractVueComponent(
-          checker,
+          resolver.checker,
           declaration.initializer,
           !!args[name]
         );
         if (signature) {
           components.push({
-            filePath,
+            absoluteFilePath,
             name,
             exported: !!exportedName,
             offsets: [[statement.getFullStart(), statement.getEnd()]],
+            analyze: async () => analysis,
           });
         }
       }
@@ -57,13 +63,18 @@ export function extractVueComponents(
       if (!isValidVueComponentName(name)) {
         continue;
       }
-      const signature = extractVueComponent(checker, statement, !!args[name]);
+      const signature = extractVueComponent(
+        resolver.checker,
+        statement,
+        !!args[name]
+      );
       if (signature) {
         components.push({
-          filePath,
+          absoluteFilePath,
           name,
           exported: !!exportedName,
           offsets: [[statement.getFullStart(), statement.getEnd()]],
+          analyze: async () => analysis,
         });
       }
     }

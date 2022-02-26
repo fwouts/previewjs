@@ -1,3 +1,4 @@
+import { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 import {
@@ -22,39 +23,92 @@ import {
   setType,
   STRING_TYPE,
   tupleType,
-  TypeAnalyzer,
   UNKNOWN_TYPE,
   ValueType,
   VOID_TYPE,
 } from "./definitions";
 import { computeIntersection } from "./intersection";
+import { typescriptServiceHost } from "./ts-service-host";
 import { computeUnion } from "./union";
+export type { TypeAnalyzer, TypeResolver };
 
-export function createTypeAnalyzer(
-  rootDirPath: string,
-  program: ts.Program,
-  collected: CollectedTypes,
-  specialTypes: Record<string, ValueType>
-): TypeAnalyzer {
-  return new TypeAnalyzerImpl(rootDirPath, program, collected, specialTypes);
+export function createTypeAnalyzer(options: {
+  rootDirPath: string;
+  reader: Reader;
+  collected?: CollectedTypes;
+  tsCompilerOptions?: Partial<ts.CompilerOptions>;
+  specialTypes?: Record<string, ValueType>;
+}): TypeAnalyzer {
+  return new TypeAnalyzer(
+    options.rootDirPath,
+    options.reader,
+    options.collected || {},
+    options.specialTypes || {},
+    options.tsCompilerOptions || {}
+  );
 }
 
-class TypeAnalyzerImpl implements TypeAnalyzer {
+class TypeAnalyzer {
+  private service: ts.LanguageService | null = null;
+  private entryPointFilePaths: string[] = [];
+
+  constructor(
+    private readonly rootDirPath: string,
+    reader: Reader,
+    private readonly collected: CollectedTypes,
+    private readonly specialTypes: Record<string, ValueType>,
+    tsCompilerOptions: Partial<ts.CompilerOptions>
+  ) {
+    this.service = ts.createLanguageService(
+      typescriptServiceHost({
+        rootDirPath,
+        reader,
+        getScriptFileNames: () => this.entryPointFilePaths,
+        tsCompilerOptions,
+      }),
+      ts.createDocumentRegistry()
+    );
+  }
+
+  analyze(filePaths: string[]) {
+    if (!this.service) {
+      throw new Error(`TypeAnalyzer already disposed of`);
+    }
+    this.entryPointFilePaths = filePaths;
+    const program = this.service.getProgram();
+    if (!program) {
+      throw new Error(`No program available.`);
+    }
+    return new TypeResolver(
+      this.rootDirPath,
+      this.collected,
+      this.specialTypes,
+      program
+    );
+  }
+
+  dispose() {
+    this.service?.dispose();
+    this.service = null;
+  }
+}
+
+class TypeResolver {
   readonly checker: ts.TypeChecker;
 
   constructor(
     private readonly rootDirPath: string,
-    private readonly program: ts.Program,
     private readonly collected: CollectedTypes,
-    private readonly specialTypes: Record<string, ValueType>
+    private readonly specialTypes: Record<string, ValueType>,
+    private readonly program: ts.Program
   ) {
     this.checker = program.getTypeChecker();
   }
 
-  sourceFile(filePath: string) {
-    const sourceFile = this.program.getSourceFile(filePath);
+  sourceFile(absoluteFilePath: string) {
+    const sourceFile = this.program.getSourceFile(absoluteFilePath);
     if (!sourceFile) {
-      throw new Error(`No source file available for ${filePath}.`);
+      throw new Error(`No source file available for ${absoluteFilePath}.`);
     }
     return sourceFile;
   }

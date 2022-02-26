@@ -1,8 +1,8 @@
 import {
   arrayType,
   CollectedTypes,
+  dereferenceType,
   isValid,
-  resolveType,
   ValueType,
 } from "@previewjs/type-analyzer";
 import { assertNever } from "assert-never";
@@ -19,7 +19,11 @@ export function generateValue(
   isFunctionReturnValue: boolean
 ): string {
   let encounteredAliases: string[];
-  [type, encounteredAliases] = resolveType(type, collected, rejectTypeNames);
+  [type, encounteredAliases] = dereferenceType(
+    type,
+    collected,
+    rejectTypeNames
+  );
   rejectTypeNames = [...rejectTypeNames, ...encounteredAliases];
   switch (type.kind) {
     case "any":

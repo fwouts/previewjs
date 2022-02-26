@@ -52,7 +52,7 @@ export class Previewer {
       logLevel: vite.UserConfig["logLevel"];
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
-      onFileChanged?(filePath: string): void;
+      onFileChanged?(absoluteFilePath: string): void;
     }
   ) {
     this.transformingReader = createStackedReader([
@@ -249,16 +249,17 @@ export class Previewer {
   }
 
   private readonly onFileChangeListener = {
-    onChange: (filePath: string, info: ReaderListenerInfo) => {
-      filePath = path.resolve(filePath);
+    onChange: (absoluteFilePath: string, info: ReaderListenerInfo) => {
+      absoluteFilePath = path.resolve(absoluteFilePath);
       const wrapperPath = this.config
         ? this.configWithWrapper(this.config).wrapper?.path
         : null;
       if (
         !info.virtual &&
-        (FILES_REQUIRING_RESTART.has(path.basename(filePath)) ||
+        (FILES_REQUIRING_RESTART.has(path.basename(absoluteFilePath)) ||
           (wrapperPath &&
-            filePath === path.resolve(this.options.rootDirPath, wrapperPath)))
+            absoluteFilePath ===
+              path.resolve(this.options.rootDirPath, wrapperPath)))
       ) {
         if (this.status.kind === "starting" || this.status.kind === "started") {
           const port = this.status.port;
@@ -273,9 +274,9 @@ export class Previewer {
         return;
       }
       if (info.virtual) {
-        this.viteManager?.triggerReload(filePath);
+        this.viteManager?.triggerReload(absoluteFilePath);
       } else if (this.options.onFileChanged) {
-        this.options.onFileChanged(filePath);
+        this.options.onFileChanged(absoluteFilePath);
       }
     },
   };

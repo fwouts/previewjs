@@ -13,9 +13,9 @@ export class ReaderListeners {
     this.listeners.delete(listener);
   }
 
-  notify = (filePath: string, info: ReaderListenerInfo) => {
+  notify = (absoluteFilePath: string, info: ReaderListenerInfo) => {
     for (const listener of [...this.listeners]) {
-      listener.onChange(filePath, info);
+      listener.onChange(absoluteFilePath, info);
     }
   };
 }

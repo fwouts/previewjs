@@ -7,54 +7,35 @@ import {
 import { Reader } from "@previewjs/vfs";
 import ts from "typescript";
 import vite from "vite";
-import { TypescriptAnalyzer } from "../ts-helpers";
 import { PackageDependencies } from "./dependencies";
 
-export interface FrameworkPluginFactory<
-  Options = {},
-  Component extends DetectedComponent = DetectedComponent
-> {
+export interface FrameworkPluginFactory<Options = {}> {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
-  create(options?: Options): Promise<FrameworkPlugin<Component>>;
+  create(options?: Options): Promise<FrameworkPlugin>;
 }
 
-export interface FrameworkPlugin<
-  Component extends DetectedComponent = DetectedComponent
-> {
+export interface FrameworkPlugin {
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;
   readonly transformReader?: (reader: Reader, rootDirPath: string) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
+  readonly specialTypes?: Record<string, ValueType>;
   readonly viteConfig: (config: PreviewConfig) => vite.UserConfig;
-  readonly componentDetector: ComponentDetector<Component>;
-  readonly componentAnalyzer?: (options: {
-    typescriptAnalyzer: TypescriptAnalyzer;
-    getTypeAnalyzer(
-      program: ts.Program,
-      specialTypes?: Record<string, ValueType>
-    ): TypeAnalyzer;
-  }) => ComponentAnalyzer;
+  readonly detectComponents: (
+    typeAnalyzer: TypeAnalyzer,
+    absoluteFilePaths: string[]
+  ) => Promise<Component[]>;
+}
+export interface Component {
+  readonly absoluteFilePath: string;
+  readonly name: string;
+  readonly exported: boolean;
+  readonly offsets: Array<[start: number, end: number]>;
+  readonly analyze: () => Promise<ComponentAnalysis>;
 }
 
-export type ComponentDetector<
-  Component extends DetectedComponent = DetectedComponent
-> = (program: ts.Program, filePaths: string[]) => Component[];
-
-export interface DetectedComponent {
-  filePath: string;
-  name: string;
-  exported: boolean;
-  offsets: Array<[start: number, end: number]>;
-}
-
-export type ComponentAnalyzer = (
-  filePath: string,
-  componentName: string
-) => AnalyzedComponent;
-
-export interface AnalyzedComponent {
-  name: string;
+export interface ComponentAnalysis {
   propsType: ValueType;
   types: CollectedTypes;
   providedArgs: ReadonlySet<string>;

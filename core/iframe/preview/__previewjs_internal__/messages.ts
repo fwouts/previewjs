@@ -16,7 +16,7 @@ export interface Bootstrapped {
 
 export interface RendererUpdated {
   kind: "renderer-updated";
-  relativeFilePath: string;
+  filePath: string;
   componentName: string;
   variantKey: string;
   variants: Variant[];
@@ -46,7 +46,7 @@ export interface ShowLoadingMessage {
 
 export interface RenderMessage {
   kind: "render";
-  relativeFilePath: string;
+  filePath: string;
   componentName: string;
   // Note: `null` means "first available preset variant, or fall back to custom".
   variantKey: string | null;

@@ -349,15 +349,17 @@ async function incrementVersion(oldVersion: string) {
   return version;
 }
 
-function packageJson(filePath: string) {
-  return new PackageJsonModifier(filePath);
+function packageJson(absoluteFilePath: string) {
+  return new PackageJsonModifier(absoluteFilePath);
 }
 
 class PackageJsonModifier {
-  constructor(private readonly filePath: string) {}
+  constructor(private readonly absoluteFilePath: string) {}
 
   async read() {
-    return JSON.parse(await fs.promises.readFile(this.filePath, "utf8"));
+    return JSON.parse(
+      await fs.promises.readFile(this.absoluteFilePath, "utf8")
+    );
   }
 
   async updateVersion(version: string) {
@@ -385,7 +387,7 @@ class PackageJsonModifier {
 
   private async write(info: any) {
     await fs.promises.writeFile(
-      this.filePath,
+      this.absoluteFilePath,
       JSON.stringify(info, null, 2) + "\n",
       "utf8"
     );
@@ -393,16 +395,16 @@ class PackageJsonModifier {
 }
 
 async function replaceInFile(
-  filePath: string,
+  absoluteFilePath: string,
   search: RegExp,
   replacement: string
 ) {
-  const originalContent = await fs.promises.readFile(filePath, "utf8");
+  const originalContent = await fs.promises.readFile(absoluteFilePath, "utf8");
   const updatedContent = originalContent.replace(search, replacement);
   if (originalContent === updatedContent) {
-    throw new Error(`No change in ${filePath}`);
+    throw new Error(`No change in ${absoluteFilePath}`);
   }
-  await fs.promises.writeFile(filePath, updatedContent, "utf8");
+  await fs.promises.writeFile(absoluteFilePath, updatedContent, "utf8");
 }
 
 main().catch((e) => {

@@ -2,21 +2,21 @@ import { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 
-export interface TypescriptAnalyzer {
-  analyze(filePaths: string[]): ts.Program;
-  dispose(): void;
-}
-
-export function createTypescriptAnalyzer(options: {
+export function typescriptServiceHost(options: {
   rootDirPath: string;
   reader: Reader;
+  getScriptFileNames: () => string[];
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
-}): TypescriptAnalyzer {
-  let entryPointFilePaths: string[] = [];
-  const serviceHost: ts.LanguageServiceHost = {
-    getScriptFileNames: () => {
-      return entryPointFilePaths;
-    },
+}): ts.LanguageServiceHost {
+  const readFile = (absoluteFilePath: string) => {
+    const entry = options.reader.readSync(absoluteFilePath);
+    if (entry?.kind !== "file") {
+      return;
+    }
+    return entry.read();
+  };
+  return {
+    getScriptFileNames: options.getScriptFileNames,
     getScriptVersion: (fileName) => {
       const entry = options.reader.readSync(fileName);
       if (!entry || entry.kind !== "file") {
@@ -35,7 +35,7 @@ export function createTypescriptAnalyzer(options: {
     getCompilationSettings: () => {
       const paths: ts.MapLike<string[]> = {};
       const configPath = path.join(options.rootDirPath, "tsconfig.json");
-      const { config } = ts.readConfigFile(configPath, serviceHost.readFile!);
+      const { config } = ts.readConfigFile(configPath, readFile);
       // TypeScript doesn't seem to be happy with relative paths,
       // even if we set getCurrentDirectory() to rootDirPath.
       // Instead, we convert all path mappings to absolute paths.
@@ -62,17 +62,11 @@ export function createTypescriptAnalyzer(options: {
       };
     },
     getDefaultLibFileName: ts.getDefaultLibFilePath,
-    fileExists: (filePath) =>
-      options.reader.readSync(filePath)?.kind === "file",
+    fileExists: (absoluteFilePath) =>
+      options.reader.readSync(absoluteFilePath)?.kind === "file",
     directoryExists: (directoryName) =>
       options.reader.readSync(directoryName)?.kind === "directory",
-    readFile: (filePath) => {
-      const entry = options.reader.readSync(filePath);
-      if (entry?.kind !== "file") {
-        return;
-      }
-      return entry.read();
-    },
+    readFile,
     readDirectory: () => {
       throw new Error(`readDirectory is not implemented`);
     },
@@ -85,24 +79,6 @@ export function createTypescriptAnalyzer(options: {
         .entries()
         .filter((entry) => entry.kind === "directory")
         .map((entry) => entry.name);
-    },
-  };
-  const service = ts.createLanguageService(
-    serviceHost,
-    ts.createDocumentRegistry()
-  );
-
-  return {
-    analyze(filePaths) {
-      entryPointFilePaths = filePaths;
-      const program = service.getProgram();
-      if (!program) {
-        throw new Error(`No program available.`);
-      }
-      return program;
-    },
-    dispose() {
-      service.dispose();
     },
   };
 }

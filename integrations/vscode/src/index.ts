@@ -64,11 +64,11 @@ export async function activate(context: vscode.ExtensionContext) {
     packageName,
   });
 
-  function getWorkspace(filePath: string) {
+  function getWorkspace(absoluteFilePath: string) {
     return previewjs.getWorkspace({
       versionCode: `vscode-${version}`,
       logLevel: "info",
-      filePath,
+      absoluteFilePath,
     });
   }
 
@@ -84,14 +84,20 @@ export async function activate(context: vscode.ExtensionContext) {
         if (!workspace) {
           return [];
         }
-        const components = await workspace.detectComponents(document.fileName);
+        const components = await workspace.frameworkPlugin.detectComponents(
+          workspace.typeAnalyzer,
+          [document.fileName]
+        );
         return components.map((c) => {
-          const start = document.positionAt(c.offset + 2);
+          const start = document.positionAt(c.offsets[0]![0]! + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
           lens.command = {
             command: "previewjs.open",
-            arguments: [document, c.componentId],
-            title: `Open ${c.componentName} in Preview.js`,
+            arguments: [
+              document,
+              previewjs.core.generateComponentId(workspace, c),
+            ],
+            title: `Open ${c.name} in Preview.js`,
           };
           return lens;
         });
@@ -146,12 +152,25 @@ export async function activate(context: vscode.ExtensionContext) {
             return;
           }
           const offset = document.offsetAt(editor.selection.active);
-          const components = await workspace.detectComponents(
-            document.fileName,
-            {
-              offset,
-            }
-          );
+          const components = (
+            await workspace.frameworkPlugin.detectComponents(
+              workspace.typeAnalyzer,
+              [document.fileName]
+            )
+          )
+            .map((c) => {
+              return c.offsets
+                .filter(([start, end]) => {
+                  return offset >= start && offset <= end;
+                })
+                .map(([start]) => ({
+                  componentName: c.name,
+                  exported: c.exported,
+                  offset: start,
+                  componentId: previewjs.core.generateComponentId(workspace, c),
+                }));
+            })
+            .flat();
           const component = components[0];
           if (!component) {
             vscode.window.showErrorMessage(

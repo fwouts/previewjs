@@ -19,7 +19,7 @@ export interface PreviewIframeController {
 }
 
 export interface LoadComponentOptions {
-  relativeFilePath: string;
+  filePath: string;
   componentName: string;
   variantKey: string | null;
   customVariantPropsSource: string;
