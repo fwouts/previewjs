@@ -15,6 +15,12 @@ type Package = {
 
 const packages: Package[] = [
   {
+    name: "api",
+    dirPath: "api",
+    tagName: "api",
+    type: "npm",
+  },
+  {
     name: "app",
     dirPath: "app",
     tagName: "app",
