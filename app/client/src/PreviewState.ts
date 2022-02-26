@@ -1,8 +1,4 @@
-import {
-  localEndpoints,
-  PersistedState,
-  webEndpoints,
-} from "@previewjs/core/api";
+import { localEndpoints, PersistedState, webEndpoints } from "@previewjs/api";
 import {
   createController,
   PreviewIframeController,

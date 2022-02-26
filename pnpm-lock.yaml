@@ -30,6 +30,14 @@ importers:
       turbo: 1.1.4
       typescript: 4.5.5
 
+  api:
+    specifiers:
+      rimraf: 3.0.2
+      typescript: ^4.5.5
+    devDependencies:
+      rimraf: 3.0.2
+      typescript: 4.5.5
+
   app:
     specifiers:
       '@emotion/react': 11.8.1
@@ -39,6 +47,7 @@ importers:
       '@fortawesome/free-solid-svg-icons': 5.15.4
       '@fortawesome/react-fontawesome': 0.1.16
       '@monaco-editor/react': 4.3.1
+      '@previewjs/api': workspace:*
       '@previewjs/config': 1.0.2
       '@previewjs/core': 1.2.0
       '@previewjs/loader': workspace:*
@@ -103,6 +112,7 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
+      '@previewjs/api': link:../api
       '@previewjs/loader': link:../loader
       '@previewjs/vfs': link:../vfs
       '@types/express': 4.17.13
@@ -134,6 +144,7 @@ importers:
       '@previewjs/app': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/loader': workspace:*
+      '@previewjs/vfs': workspace:*
       '@types/node': 17.0.8
       commander: 8.3.0
       cross-env: 7.0.3
@@ -143,6 +154,7 @@ importers:
       '@previewjs/app': link:../app
       '@previewjs/core': link:../core
       '@previewjs/loader': link:../loader
+      '@previewjs/vfs': link:../vfs
       commander: 8.3.0
     devDependencies:
       '@types/node': 17.0.8
@@ -164,6 +176,7 @@ importers:
 
   core:
     specifiers:
+      '@previewjs/api': 1.0.0
       '@previewjs/config': 1.0.2
       '@previewjs/type-analyzer': 1.1.1
       '@previewjs/vfs': 1.1.0
@@ -197,6 +210,7 @@ importers:
       vite: 2.7.13
       vite-tsconfig-paths: 3.4.1
     dependencies:
+      '@previewjs/api': link:../api
       '@previewjs/config': link:../config
       '@previewjs/type-analyzer': link:../type-analyzer
       '@previewjs/vfs': link:../vfs
@@ -16506,17 +16520,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -17711,7 +17714,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -23764,7 +23767,7 @@ packages:
       commander: 8.3.0
       glob: 7.2.0
       postcss: 8.4.6
-      postcss-selector-parser: 6.0.8
+      postcss-selector-parser: 6.0.9
     dev: true
 
   /q/1.5.1:

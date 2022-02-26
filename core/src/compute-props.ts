@@ -1,4 +1,4 @@
-import { localEndpoints } from "./api";
+import { localEndpoints } from "@previewjs/api";
 import { generateDefaultProps } from "./generators/generate-default-props";
 import { generateInvocation } from "./generators/generate-invocation";
 import { generateTypeDeclarations } from "./generators/generate-type-declarations";

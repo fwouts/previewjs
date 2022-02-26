@@ -1,0 +1,32 @@
+{
+  "name": "@previewjs/api",
+  "version": "1.0.0",
+  "license": "AGPL-3.0",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/vfs --no-deps --include-dependencies",
+    "build": "rimraf dist && tsc"
+  },
+  "devDependencies": {
+    "rimraf": "3.0.2",
+    "typescript": "^4.5.5"
+  }
+}
