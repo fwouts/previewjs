@@ -28,7 +28,6 @@ import java.util.*
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
 const val PACKAGE_NAME = "@previewjs/app"
-const val PACKAGE_VERSION = "1.2.0"
 
 @Service
 class PreviewJsSharedService : Disposable {
@@ -119,8 +118,6 @@ ${e.stackTraceToString()}""",
     private fun isInstalled(): Boolean {
         val builder = processBuilder("node dist/is-installed.js")
             .directory(nodeDirPath.toFile())
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
-        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = PACKAGE_VERSION
         val process = builder.start()
         if (process.waitFor() != 0) {
             throw Error(readInputStream(process.errorStream))
@@ -155,8 +152,6 @@ ${e.stackTraceToString()}""",
     private fun install(project: Project) {
         val builder = processBuilder("node dist/install.js")
             .directory(nodeDirPath.toFile())
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
-        builder.environment()["PREVIEWJS_PACKAGE_VERSION"] = PACKAGE_VERSION
         val process = builder.start()
         val reader = BufferedReader(InputStreamReader(process.inputStream))
         val consoleView = project.service<ProjectService>().consoleView

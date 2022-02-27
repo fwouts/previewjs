@@ -10,7 +10,7 @@ type Package = {
   dirPath: string;
   additionalDirPath?: string[];
   tagName: string;
-  type: "npm" | "intellij" | "vscode";
+  type: "npm" | "loader" | "intellij" | "vscode";
 };
 
 const packages: Package[] = [
@@ -70,6 +70,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "loader",
+    dirPath: "loader",
+    tagName: "loader",
+    type: "loader",
+  },
+  {
     name: "integration-intellij",
     dirPath: "integrations/intellij",
     additionalDirPath: ["loader"],
@@ -84,8 +90,6 @@ const packages: Package[] = [
     type: "vscode",
   },
 ];
-
-const unpublishedPackageNames = new Set(["loader"]);
 
 async function main() {
   const { stdout: gitBranch } = await execa("git", [
@@ -127,9 +131,6 @@ async function main() {
         }
         if (!scopedName) {
           throw new Error(`Expected a scoped package, found ${packageName}`);
-        }
-        if (!unpublishedPackageNames.has(scopedName)) {
-          deps.add(scopedName);
         }
       }
       localDependencies[packageInfo.name] = deps;
@@ -178,6 +179,25 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
     case "npm":
       version = await updateNodePackage(packageInfo.dirPath);
       break;
+    case "loader":
+      version = await updateNodePackage(packageInfo.dirPath);
+      const { version: appVersion } = await import("../app/package.json");
+      const releaseDirPath = path.join(packageInfo.dirPath, "src", "release");
+      await fs.promises.writeFile(
+        path.join(releaseDirPath, "package.json"),
+        JSON.stringify(
+          {
+            "@previewjs/app": appVersion,
+          },
+          null,
+          2
+        ),
+        "utf8"
+      );
+      await execa("npm", ["install"], {
+        cwd: releaseDirPath,
+      });
+      break;
     case "intellij":
       version = await updateIntellijVersion(packageInfo.dirPath);
       break;
@@ -206,31 +226,14 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
           `${depPackageInfo.dirPath}/package.json`
         ).updateDependency(packageName, version);
         break;
-      case "intellij":
-        if (packageName === "@previewjs/app") {
-          await replaceInFile(
-            "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
-            /const val PACKAGE_VERSION = "\d+\.\d+\.\d+"/,
-            `const val PACKAGE_VERSION = "${version}"`
-          );
-        } else {
-          throw new Error(
-            `Unexpected IntelliJ dependent for package: ${packageName}`
-          );
-        }
+      case "loader":
+        await packageJson(
+          `${depPackageInfo.dirPath}/package.json`
+        ).updateDependency(packageName, version);
         break;
+      case "intellij":
       case "vscode":
-        if (packageName === "@previewjs/app") {
-          await replaceInFile(
-            "integrations/vscode/esbuild.js",
-            /PREVIEWJS_PACKAGE_VERSION": JSON\.stringify\("\d+\.\d+\.\d+"\)/,
-            `PREVIEWJS_PACKAGE_VERSION": JSON.stringify("${version}")`
-          );
-        } else {
-          throw new Error(
-            `Unexpected VS Code dependent for package: ${packageName}`
-          );
-        }
+        // Nothing to do, the app package version is set in loader/src/release.
         break;
       default:
         throw assertNever(depPackageInfo.type);

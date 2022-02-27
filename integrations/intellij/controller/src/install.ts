@@ -18,8 +18,6 @@ async function main() {
 
   await install({
     installDir: path.join(__dirname, "installed"),
-    packageName,
-    packageVersion,
     onOutput: (chunk) => process.stdout.write(chunk),
   });
 }

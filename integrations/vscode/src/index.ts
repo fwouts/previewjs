@@ -36,22 +36,11 @@ export async function activate(context: vscode.ExtensionContext) {
   let requirePath = process.env.PREVIEWJS_MODULES_DIR;
   if (!requirePath) {
     requirePath = path.join(__dirname, "installed");
-    const packageVersion = process.env.PREVIEWJS_PACKAGE_VERSION;
-    if (!packageVersion) {
-      throw new Error(
-        `Missing environment variable: PREVIEWJS_PACKAGE_VERSION`
-      );
-    }
-    const installOptions = {
-      installDir: requirePath,
-      packageName,
-      packageVersion,
-    };
-    if (!(await isInstalled(installOptions))) {
+    if (!(await isInstalled({ installDir: requirePath }))) {
       const outputChannel = vscode.window.createOutputChannel("Preview.js");
       outputChannel.show();
       await install({
-        ...installOptions,
+        installDir: requirePath,
         onOutput: (chunk) => {
           outputChannel.append(chunk);
         },
