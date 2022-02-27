@@ -1,4 +1,6 @@
-export type Endpoint<Request, Response> = string;
+export type Endpoint<Request, Response> = {
+  path: string;
+};
 
 export type RequestOf<E> = E extends Endpoint<infer Request, any>
   ? Request

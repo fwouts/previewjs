@@ -9,14 +9,17 @@ export const GetInfo: Endpoint<
       version: string;
     };
   }
-> = "get-info";
+> = {
+  path: "get-info",
+};
 
-export const GetState: Endpoint<void, PersistedState> = "get-state";
+export const GetState: Endpoint<void, PersistedState> = {
+  path: "get-state",
+};
 
-export const UpdateState: Endpoint<
-  Partial<PersistedState>,
-  PersistedState
-> = "update-state";
+export const UpdateState: Endpoint<Partial<PersistedState>, PersistedState> = {
+  path: "update-state",
+};
 
 export const ComputeProps: Endpoint<
   {
@@ -24,7 +27,9 @@ export const ComputeProps: Endpoint<
     componentName: string;
   },
   PreviewSources | null
-> = "compute-props";
+> = {
+  path: "compute-props",
+};
 
 export interface PreviewSources {
   typeDeclarationsSource: string;

@@ -1,7 +1,9 @@
 import { Endpoint } from "./endpoint";
 
 export const CheckVersion: Endpoint<CheckVersionRequest, CheckVersionResponse> =
-  "versions/check";
+  {
+    path: "versions/check",
+  };
 
 export type CheckVersionRequest = {
   appInfo: VersionInfo;
