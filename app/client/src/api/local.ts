@@ -17,8 +17,7 @@ export class LocalApi {
   }
 
   async request<E extends Endpoint<unknown, unknown>>(
-    endpoint: E,
-    request: RequestOf<E>
+    ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>> {
     const { data } = await axios.post<WrappedResponse<ResponseOf<E>>>(
       `${this.url}${endpoint.id}`,
