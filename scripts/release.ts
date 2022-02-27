@@ -132,6 +132,7 @@ async function main() {
         if (!scopedName) {
           throw new Error(`Expected a scoped package, found ${packageName}`);
         }
+        deps.add(scopedName);
       }
       localDependencies[packageInfo.name] = deps;
     }
