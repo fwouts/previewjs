@@ -18,15 +18,11 @@ build({
   platform: "node",
   define: {
     "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify("@previewjs/app"),
-    ...(process.env.PREVIEWJS_DEV === "1"
-      ? {
-          "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
-            path.join(__dirname, "dev")
-          ),
-        }
-      : {
-          "process.env.PREVIEWJS_PACKAGE_VERSION": JSON.stringify("1.2.0"),
-        }),
+    ...(process.env.PREVIEWJS_DEV === "1" && {
+      "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
+        path.join(__dirname, "dev")
+      ),
+    }),
   },
 }).catch((err) => {
   process.stderr.write(err.stderr);
