@@ -76,7 +76,7 @@ importers:
       framer-motion: 5.6.0
       fs-extra: 10.0.1
       lodash: 4.17.21
-      mobx: 6.4.1
+      mobx: 6.4.2
       mobx-react-lite: 3.3.0
       monaco-editor: 0.32.1
       playwright: 1.19.2
@@ -106,8 +106,8 @@ importers:
       axios: 0.26.0
       express: 4.17.3
       framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
-      mobx: 6.4.1
-      mobx-react-lite: 3.3.0_ddbae5eb815b99520014906bec30d3a8
+      mobx: 6.4.2
+      mobx-react-lite: 3.3.0_4e589064ce40a783661f96d46f38f574
       monaco-editor: 0.32.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -20718,7 +20718,7 @@ packages:
     resolution: {integrity: sha512-xezyv7hnfFPuiDS3AiJuWs0OxlvooS++3L2lURvmh/1n7UG4O2Ehz9UkwWgg3wyLEPKGVfJLlr2DjjTCl9UJTg==}
     dev: true
 
-  /mobx-react-lite/3.3.0_ddbae5eb815b99520014906bec30d3a8:
+  /mobx-react-lite/3.3.0_4e589064ce40a783661f96d46f38f574:
     resolution: {integrity: sha512-U/kMSFtV/bNVgY01FuiGWpRkaQVHozBq5CEBZltFvPt4FcV111hEWkgwqVg9GPPZSEuEdV438PEz8mk8mKpYlA==}
     peerDependencies:
       mobx: ^6.1.0
@@ -20731,13 +20731,13 @@ packages:
       react-native:
         optional: true
     dependencies:
-      mobx: 6.4.1
+      mobx: 6.4.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /mobx/6.4.1:
-    resolution: {integrity: sha512-NFXx0uMbGBgsa0uxhH099L8cMuoRQWh01q6Sf0ZX/3hFU7svJ7yfTD+1LnLMa5wzY/b7gImAeMsR1p0wordDnA==}
+  /mobx/6.4.2:
+    resolution: {integrity: sha512-b4xQJYiH8sb0sEbfq/Ws3N77DEJtSihUFD1moeiz2jNoJ5B+mqJutt54ouO9iEfkp7Wk4jQDsVUOh7DPEW3wEw==}
     dev: false
 
   /modern-normalize/1.1.0:
