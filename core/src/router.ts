@@ -38,12 +38,12 @@ export class ApiRouter {
     endpoint: E,
     handler: RequestHandler<RequestOf<E>, ResponseOf<E>>
   ) {
-    if (this.handlers.has(endpoint)) {
+    if (this.handlers.has(endpoint.id)) {
       throw new Error(
-        `Multiple handlers registered for endpoint '${endpoint}'`
+        `Multiple handlers registered for endpoint '${endpoint.id}'`
       );
     }
-    this.handlers.set(endpoint, handler);
+    this.handlers.set(endpoint.id, handler);
   }
 }
 
