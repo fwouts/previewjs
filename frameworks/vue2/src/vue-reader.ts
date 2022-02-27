@@ -76,9 +76,12 @@ class VueTypeScriptReader implements Reader {
 
 function convertToTypeScript(vueTemplateSource: string, name: string) {
   const parsed = parseComponent(vueTemplateSource);
-  // TODO: Ignore non-JS compatible languages (same with Vue 3).
   const scriptContent = parsed.script?.content;
   if (!scriptContent) {
+    return "";
+  }
+  const lang = parsed.script?.lang;
+  if (lang && !["js", "javascript", "ts", "typescript"].includes(lang)) {
     return "";
   }
   const sourceFile = ts.createSourceFile(
