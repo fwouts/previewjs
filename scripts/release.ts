@@ -8,7 +8,7 @@ import path from "path";
 type Package = {
   name: string;
   dirPath: string;
-  additionalDirPath?: string[];
+  additionalChangelogPath?: string[];
   ignoreDeps?: string[];
   tagName: string;
   type: "npm" | "loader" | "intellij" | "vscode";
@@ -75,6 +75,7 @@ const packages: Package[] = [
     dirPath: "loader",
     tagName: "loader",
     type: "loader",
+    additionalChangelogPath: ["app/package.json"],
   },
   {
     name: "integration-intellij",
@@ -168,7 +169,10 @@ async function main() {
 async function releasePackage(packageInfo: Package, dependents: string[]) {
   const packageName = `@previewjs/${packageInfo.name}`;
   console.log(`About to release: ${packageName}`);
-  const changelog = await gitChangelog(packageName, [packageInfo.dirPath]);
+  const changelog = await gitChangelog(packageName, [
+    packageInfo.dirPath,
+    ...(packageInfo.additionalChangelogPath || []),
+  ]);
   if (!changelog) {
     console.log(`There is nothing to release.\n`);
     return;
