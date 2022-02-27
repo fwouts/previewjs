@@ -20,7 +20,7 @@ export class LocalApi {
     ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>> {
     const { data } = await axios.post<WrappedResponse<ResponseOf<E>>>(
-      `${this.url}${endpoint.id}`,
+      `${this.url}${endpoint.path}`,
       request
     );
     if (data.kind === "error") {

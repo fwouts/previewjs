@@ -1,9 +1,9 @@
-import { declareEndpoint } from "./endpoint";
+import { Endpoint } from "./endpoint";
 
-export const CheckVersion = declareEndpoint<
-  CheckVersionRequest,
-  CheckVersionResponse
->("versions/check");
+export const CheckVersion: Endpoint<CheckVersionRequest, CheckVersionResponse> =
+  {
+    path: "versions/check",
+  };
 
 export type CheckVersionRequest = {
   appInfo: VersionInfo;

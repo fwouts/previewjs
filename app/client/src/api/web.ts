@@ -15,7 +15,7 @@ export class WebApi {
     ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>> {
     const { data } = await axios.post<ResponseOf<E>>(
-      `${this.url}${endpoint.id}`,
+      `${this.url}${endpoint.path}`,
       request
     );
     return data;

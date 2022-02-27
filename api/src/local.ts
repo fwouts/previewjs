@@ -1,7 +1,7 @@
-import { declareEndpoint } from "./endpoint";
+import { Endpoint } from "./endpoint";
 import { PersistedState } from "./persisted-state";
 
-export const GetInfo = declareEndpoint<
+export const GetInfo: Endpoint<
   void,
   {
     appInfo: {
@@ -9,22 +9,27 @@ export const GetInfo = declareEndpoint<
       version: string;
     };
   }
->("get-info");
+> = {
+  path: "get-info",
+};
 
-export const GetState = declareEndpoint<void, PersistedState>("get-state");
+export const GetState: Endpoint<void, PersistedState> = {
+  path: "get-state",
+};
 
-export const UpdateState = declareEndpoint<
-  Partial<PersistedState>,
-  PersistedState
->("update-state");
+export const UpdateState: Endpoint<Partial<PersistedState>, PersistedState> = {
+  path: "update-state",
+};
 
-export const ComputeProps = declareEndpoint<
+export const ComputeProps: Endpoint<
   {
     filePath: string;
     componentName: string;
   },
   PreviewSources | null
->("compute-props");
+> = {
+  path: "compute-props",
+};
 
 export interface PreviewSources {
   typeDeclarationsSource: string;
