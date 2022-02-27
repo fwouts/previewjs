@@ -173,14 +173,11 @@ export class PreviewState {
       this.ping().catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
     document.addEventListener("keydown", this.keydownListener);
-    const { appInfo } = await this.localApi.request(
-      localEndpoints.GetInfo,
-      void 0
-    );
+    const { appInfo } = await this.localApi.request(localEndpoints.GetInfo);
     runInAction(() => {
       this.appInfo = appInfo;
     });
-    const state = await this.localApi.request(localEndpoints.GetState, void 0);
+    const state = await this.localApi.request(localEndpoints.GetState);
     runInAction(() => {
       this.persistedState = state;
     });
