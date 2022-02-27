@@ -193,7 +193,9 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         path.join(releaseDirPath, "package.json"),
         JSON.stringify(
           {
-            "@previewjs/app": appVersion,
+            dependencies: {
+              "@previewjs/app": appVersion,
+            },
           },
           null,
           2
