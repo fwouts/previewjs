@@ -210,7 +210,7 @@ importers:
       vite: 2.7.13
       vite-tsconfig-paths: 3.4.1
     dependencies:
-      '@previewjs/api': link:../api
+      '@previewjs/api': 1.0.0
       '@previewjs/config': link:../config
       '@previewjs/type-analyzer': link:../type-analyzer
       '@previewjs/vfs': link:../vfs
@@ -7038,6 +7038,10 @@ packages:
 
   /@popperjs/core/2.11.2:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
+    dev: false
+
+  /@previewjs/api/1.0.0:
+    resolution: {integrity: sha512-2tMDvut/6ex4C235Gng+sCkXRKLjBWxrhKNnIZCF22GUQxfxeYyiu4k0b68rwdprghx74nsnbrkQikcJOdVgJA==}
     dev: false
 
   /@react-hook/debounce/3.0.0_react@17.0.2:
