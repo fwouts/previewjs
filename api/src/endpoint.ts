@@ -1,6 +1,4 @@
-export type Endpoint<Request, Response> = {
-  id: string;
-};
+export type Endpoint<Request, Response> = string;
 
 export type RequestOf<E> = E extends Endpoint<infer Request, any>
   ? Request
@@ -18,9 +16,3 @@ export type WrappedResponse<Response> =
       kind: "error";
       message: string;
     };
-
-export function declareEndpoint<Request, Response>(
-  id: string
-): Endpoint<Request, Response> {
-  return { id };
-}
