@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/vfs --no-deps --include-dependencies",
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/api --no-deps --include-dependencies",
     "build": "rimraf dist && tsc"
   },
   "devDependencies": {
