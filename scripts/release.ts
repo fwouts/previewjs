@@ -82,12 +82,14 @@ const packages: Package[] = [
     dirPath: "integrations/intellij",
     tagName: "integrations/intellij",
     type: "intellij",
+    additionalChangelogPath: ["loader/src/release/package.json"],
   },
   {
     name: "integration-vscode",
     dirPath: "integrations/vscode",
     tagName: "integrations/vscode",
     type: "vscode",
+    additionalChangelogPath: ["loader/src/release/package.json"],
   },
 ];
 
