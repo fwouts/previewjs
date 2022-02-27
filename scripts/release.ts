@@ -31,7 +31,6 @@ const packages: Package[] = [
   {
     name: "core",
     dirPath: "core",
-    additionalDirPath: ["loader"],
     tagName: "core",
     type: "npm",
   },
@@ -80,14 +79,12 @@ const packages: Package[] = [
   {
     name: "integration-intellij",
     dirPath: "integrations/intellij",
-    additionalDirPath: ["loader"],
     tagName: "integrations/intellij",
     type: "intellij",
   },
   {
     name: "integration-vscode",
     dirPath: "integrations/vscode",
-    additionalDirPath: ["loader"],
     tagName: "integrations/vscode",
     type: "vscode",
   },
@@ -171,10 +168,7 @@ async function main() {
 async function releasePackage(packageInfo: Package, dependents: string[]) {
   const packageName = `@previewjs/${packageInfo.name}`;
   console.log(`About to release: ${packageName}`);
-  const changelog = await gitChangelog(packageName, [
-    packageInfo.dirPath,
-    ...(packageInfo.additionalDirPath || []),
-  ]);
+  const changelog = await gitChangelog(packageName, [packageInfo.dirPath]);
   if (!changelog) {
     console.log(`There is nothing to release.\n`);
     return;
