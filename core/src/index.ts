@@ -48,6 +48,11 @@ export async function createWorkspace({
   persistedStateManager?: PersistedStateManager;
   onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
 }): Promise<Workspace | null> {
+  if (frameworkPlugin.pluginApiVersion !== 2) {
+    throw new Error(
+      `Detected incompatible Preview.js framework plugin. Please install latest version of ${frameworkPlugin.name}.`
+    );
+  }
   let cacheDirPath: string;
   try {
     const { version } = JSON.parse(

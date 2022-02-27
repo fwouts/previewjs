@@ -15,6 +15,7 @@ export interface FrameworkPluginFactory<Options = {}> {
 }
 
 export interface FrameworkPlugin {
+  readonly pluginApiVersion?: number;
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;

@@ -23,6 +23,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
     const { extractVueComponents } = await import("./extract-component");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
+      pluginApiVersion: 2,
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,

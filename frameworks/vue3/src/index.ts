@@ -19,6 +19,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
     const { Parser } = await import("acorn");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
+      pluginApiVersion: 2,
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
