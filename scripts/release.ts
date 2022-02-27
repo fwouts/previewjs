@@ -9,6 +9,7 @@ type Package = {
   name: string;
   dirPath: string;
   additionalDirPath?: string[];
+  ignoreDeps?: string[];
   tagName: string;
   type: "npm" | "loader" | "intellij" | "vscode";
 };
@@ -25,6 +26,7 @@ const packages: Package[] = [
     dirPath: "app",
     tagName: "app",
     type: "npm",
+    ignoreDeps: ["loader"],
   },
   {
     name: "core",
@@ -109,8 +111,9 @@ async function main() {
   }
 
   const localDependencies: Record<string, Set<string>> = {
-    "integration-intellij": new Set(["app"]),
-    "integration-vscode": new Set(["app"]),
+    loader: new Set(["app"]),
+    "integration-intellij": new Set(["loader"]),
+    "integration-vscode": new Set(["loader"]),
   };
   for (const packageInfo of packages) {
     if (packageInfo.type === "npm") {
@@ -132,7 +135,9 @@ async function main() {
         if (!scopedName) {
           throw new Error(`Expected a scoped package, found ${packageName}`);
         }
-        deps.add(scopedName);
+        if (!packageInfo.ignoreDeps?.includes(scopedName)) {
+          deps.add(scopedName);
+        }
       }
       localDependencies[packageInfo.name] = deps;
     }
