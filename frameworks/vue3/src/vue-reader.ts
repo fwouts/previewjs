@@ -79,7 +79,10 @@ function convertToTypeScript(vueTemplateSource: string, name: string) {
   if (parsed.descriptor.scriptSetup) {
     return `import { defineProps } from '@vue/runtime-core';\n${parsed.descriptor.scriptSetup.content}`;
   } else if (parsed.descriptor.script) {
-    // TODO: Ignore non-JS compatible languages (same with Vue 2).
+    const lang = parsed.descriptor.script.lang;
+    if (lang && !["js", "javascript", "ts", "typescript"].includes(lang)) {
+      return "";
+    }
     const scriptContent = parsed.descriptor.script.content;
     const sourceFile = ts.createSourceFile(
       `${name}.vue.ts`,

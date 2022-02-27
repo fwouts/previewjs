@@ -62,4 +62,25 @@ type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props
 type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
 `);
   });
+
+  it("ignores incompatible script lang", async () => {
+    memoryReader.updateFile(
+      path.join(__dirname, "virtual", "App.vue"),
+      `
+<template>
+  <h1>{{ msg }}</h1>
+</template>
+<script lang="coffee">
+foo
+</script>
+    `
+    );
+    const virtualFile = await reader.read(
+      path.join(__dirname, "virtual", "App.vue.ts")
+    );
+    if (virtualFile?.kind !== "file") {
+      throw new Error();
+    }
+    expect(await virtualFile.read()).toEqual(``);
+  });
 });
