@@ -118,7 +118,6 @@ ${e.stackTraceToString()}""",
     private fun isInstalled(): Boolean {
         val builder = processBuilder("node dist/is-installed.js")
             .directory(nodeDirPath.toFile())
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
         val process = builder.start()
         if (process.waitFor() != 0) {
             throw Error(readInputStream(process.errorStream))
