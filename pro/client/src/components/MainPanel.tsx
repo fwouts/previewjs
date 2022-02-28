@@ -47,7 +47,7 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
                   >
                     {state.proInvalidLicenseReason
                       ? state.proInvalidLicenseReason
-                      : "Upgrade to Pro"}
+                      : "Switch to Pro"}
                   </AppVariant>
                   <VersionInfo state={state.preview} />
                 </>,
@@ -112,7 +112,7 @@ const AppVariant = styled.button<{ $warning?: boolean }>`
   background: hsl(213, 50%, 80%);
   color: hsl(213, 80%, 40%);
   padding: 2px 6px;
-  border-radius: 8px;
+  border-radius: 4px;
   align-self: stretch;
   white-space: nowrap;
 

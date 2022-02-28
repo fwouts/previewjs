@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { faCheckCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faFan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@previewjs/app/client/src/components";
 import assertNever from "assert-never";
@@ -26,7 +26,7 @@ export const LicenseModal = observer(({ state }: { state: AppState }) => {
             if (screen.loading) {
               return (
                 <CenteredContainer>
-                  <Icon icon={faSpinner} spin />
+                  <Icon icon={faFan} spin />
                 </CenteredContainer>
               );
             }
@@ -163,7 +163,7 @@ export const LicenseModal = observer(({ state }: { state: AppState }) => {
                         $style="danger"
                         onClick={() => screen.unlink()}
                       >
-                        Unlink license key from this device
+                        Unlink this device
                       </ModalButton>
                     </ModalRow>
                   </>
@@ -195,8 +195,8 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background: hsl(213, 100%, 100%);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   margin: 16px;
 `;
 
@@ -204,6 +204,8 @@ const ModalTitle = styled.h3`
   font-weight: 400;
   color: hsl(213, 60%, 20%);
   font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.9rem;
   margin: 12px 16px;
 `;
 
@@ -221,7 +223,7 @@ const CenteredContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 32px 64px;
+  padding: 48px 96px;
 `;
 
 const Icon = styled(FontAwesomeIcon)`
@@ -239,8 +241,8 @@ const Error = styled.p`
 
 const ModalInput = styled.input`
   display: block;
-  border-radius: 8px;
-  border: none;
+  border-radius: 4px;
+  border: 2px solid transparent;
   background: hsl(213, 20%, 90%);
   margin: 8px 0 16px 0;
   padding: 8px;
@@ -250,6 +252,10 @@ const ModalInput = styled.input`
   font-weight: 600;
   font-size: 1rem;
   width: 30rem;
+
+  &:focus {
+    border: 2px solid hsl(213, 40%, 60%);
+  }
 `;
 
 const ModalRow = styled.div`
@@ -272,40 +278,40 @@ const ModalList = styled.ul`
 const ButtonStyle = ({ $style }: ButtonStyleProps) => css`
   ${$style === "cta"
     ? css`
-        background: hsl(160, 60%, 35%);
-        border: none;
-        color: hsl(160, 20%, 100%);
+        border: 1.5px solid hsl(160, 60%, 35%);
+        color: hsl(160, 60%, 35%);
 
         &:hover {
-          background: hsl(160, 70%, 40%);
+          color: hsl(160, 70%, 20%);
+          background: hsl(160, 70%, 80%);
         }
       `
     : $style === "danger"
     ? css`
-        background: hsl(30, 60%, 55%);
-        border: 1.5px solid hsl(30, 70%, 50%);
-        color: hsl(30, 20%, 100%);
+        border: 1.5px solid hsl(25, 60%, 55%);
+        color: hsl(25, 60%, 55%);
 
         &:hover {
-          background: hsl(30, 70%, 40%);
+          color: hsl(25, 70%, 30%);
+          background: hsl(25, 70%, 80%);
         }
       `
     : css`
-        background: none;
         border: none;
         color: hsl(213, 30%, 40%);
-        font-weight: 600;
 
         &:hover {
           color: hsl(213, 60%, 20%);
         }
       `}
 
+  background: none;
+  border-radius: 4px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin: 0 8px;
   padding: 8px 16px;
-  border-radius: 6px;
   text-decoration: none;
 `;
 
