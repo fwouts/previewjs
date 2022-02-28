@@ -20,17 +20,17 @@ export class AppState {
   constructor() {
     makeAutoObservable(this);
     this.preview = new PreviewState({
-      onFileChanged: async (relativeFilePath) => {
-        await this.pro.onFileChanged(relativeFilePath);
+      onFileChanged: async (filePath) => {
+        await this.pro.onFileChanged(filePath);
       },
     });
     this.pro = new ProState(this.preview.localApi, this.preview.controller);
     this.sidePanel = new SidePanelState(
       this.preview.localApi,
-      () => this.pro.currentFile?.relativeFilePath || null,
+      () => this.pro.currentFile?.filePath || null,
       (file) => {
         this.preview.setComponent(
-          `${file.relativeFilePath}:${file.components[0]?.componentName}`
+          `${file.filePath}:${file.components[0]?.componentName}`
         );
       }
     );

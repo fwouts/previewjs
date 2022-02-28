@@ -7,7 +7,7 @@ const REFRESH_PERIOD_MILLIS = 5000;
 
 export interface FileInfo {
   loading: boolean;
-  relativeFilePath: string;
+  filePath: string;
   components: Component[];
 }
 
@@ -44,25 +44,25 @@ export class ProState {
     }
   }
 
-  async onFileChanged(relativeFilePath: string | null) {
-    if (!relativeFilePath) {
+  async onFileChanged(filePath: string | null) {
+    if (!filePath) {
       runInAction(() => {
         this.currentFile = {
           loading: false,
           components: [],
-          relativeFilePath: "",
+          filePath: "",
         };
       });
-    } else if (relativeFilePath !== this.currentFile?.relativeFilePath) {
+    } else if (filePath !== this.currentFile?.filePath) {
       runInAction(() => {
         this.currentFile = {
           loading: true,
-          relativeFilePath,
+          filePath,
           components: [],
         };
       });
       this.controller.showLoading();
-      await this.refreshFile(relativeFilePath);
+      await this.refreshFile(filePath);
     }
   }
 
@@ -72,29 +72,25 @@ export class ProState {
     }
 
     const promise = (async () => {
-      const relativeFilePath =
-        newRelativeFilePath || this.currentFile?.relativeFilePath;
-      if (!relativeFilePath) {
+      const filePath = newRelativeFilePath || this.currentFile?.filePath;
+      if (!filePath) {
         return;
       }
       const response = await this.localApi.request(AnalyzeFileEndpoint, {
-        relativeFilePath,
+        filePath,
       });
       if (!newRelativeFilePath && response.components.length === 0) {
         // It's likely a temporary syntax error.
         return;
       }
-      if (
-        !newRelativeFilePath &&
-        this.currentFile?.relativeFilePath !== relativeFilePath
-      ) {
+      if (!newRelativeFilePath && this.currentFile?.filePath !== filePath) {
         // The file changed in the meantime. Don't update.
         return;
       }
       runInAction(() => {
         this.currentFile = {
           loading: false,
-          relativeFilePath,
+          filePath,
           ...response,
         };
       });

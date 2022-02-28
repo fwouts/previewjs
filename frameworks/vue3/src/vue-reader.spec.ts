@@ -1,4 +1,4 @@
-import { createMemoryReader, Reader, Writer } from "@previewjs/core/vfs";
+import { createMemoryReader, Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { createVueTypeScriptReader } from "./vue-reader";
 
@@ -96,5 +96,27 @@ type PJS_CombinedProps<T> = T extends readonly [...any] ? {
 type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props']> : {}
 type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
 `);
+  });
+
+  it("ignores incompatible script lang", async () => {
+    memoryReader.updateFile(
+      path.join(__dirname, "virtual", "App.vue"),
+      `
+<script lang="coffee">
+foo
+</script>
+
+<template>
+  <h1>{{ msg }}</h1>
+</template>  
+    `
+    );
+    const virtualFile = await reader.read(
+      path.join(__dirname, "virtual", "App.vue.ts")
+    );
+    if (virtualFile?.kind !== "file") {
+      throw new Error();
+    }
+    expect(await virtualFile.read()).toEqual(``);
   });
 });

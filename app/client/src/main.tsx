@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import ReactDOM from "react-dom";
-import { filePathFromComponentId } from "./component-id";
+import { absoluteFilePathFromComponentId } from "./component-id";
 import {
   Preview,
   PreviewState,
@@ -22,9 +22,9 @@ const App = observer(() => (
       <>
         <SelectedFile
           key="file"
-          filePath={
+          absoluteFilePath={
             state.component?.componentId
-              ? filePathFromComponentId(state.component.componentId)
+              ? absoluteFilePathFromComponentId(state.component.componentId)
               : ""
           }
         />

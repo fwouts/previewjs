@@ -1,7 +1,7 @@
 import {
   CollectedTypes,
+  dereferenceType,
   objectType,
-  resolveType,
   ValueType,
 } from "@previewjs/type-analyzer";
 import prettier from "prettier";
@@ -20,7 +20,7 @@ export function generateInvocation(
   providedKeys: ReadonlySet<string>,
   collected: CollectedTypes
 ) {
-  [propsType] = resolveType(propsType, collected, []);
+  [propsType] = dereferenceType(propsType, collected, []);
   if (propsType.kind === "object") {
     propsType = objectType(
       Object.fromEntries(

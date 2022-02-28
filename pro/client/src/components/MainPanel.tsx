@@ -41,7 +41,7 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
                     />
                   </ToggleButton>
                   <SelectedFile
-                    filePath={state.pro.currentFile?.relativeFilePath || ""}
+                    absoluteFilePath={state.pro.currentFile?.filePath || ""}
                   />
                   <AppVariant onClick={() => state.toggleProModal()}>
                     <ProIcon icon={faStar} />
@@ -54,8 +54,8 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
             : [
                 <>
                   <SelectedFile
-                    filePath={
-                      state.preview.component?.details?.relativeFilePath || ""
+                    absoluteFilePath={
+                      state.preview.component?.details?.filePath || ""
                     }
                   />
                   <AppVariant

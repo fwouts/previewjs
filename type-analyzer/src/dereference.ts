@@ -6,7 +6,7 @@ import {
   ValueType,
 } from "./definitions";
 import { computeIntersection } from "./intersection";
-import { resolveTypeArguments } from "./type-parameters";
+import { evaluateType } from "./type-parameters";
 import { computeUnion } from "./union";
 
 /**
@@ -14,7 +14,7 @@ import { computeUnion } from "./union";
  *
  * For example for A | B, it may return { foo: string } with ["A", "B"].
  */
-export function resolveType(
+export function dereferenceType(
   type: ValueType,
   collected: CollectedTypes,
   rejectTypeNames: string[]
@@ -43,7 +43,7 @@ export function resolveType(
       const encountered: string[] = [];
       const subtypes: ValueType[] = [];
       for (const t of type.types) {
-        const [subtype, encounteredInSubtype] = resolveType(
+        const [subtype, encounteredInSubtype] = dereferenceType(
           t,
           collected,
           rejectTypeNames
@@ -57,7 +57,7 @@ export function resolveType(
       const encountered: string[] = [];
       const subtypes: ValueType[] = [];
       for (const t of type.types) {
-        const [subtype, encounteredInSubtype] = resolveType(
+        const [subtype, encounteredInSubtype] = dereferenceType(
           t,
           collected,
           rejectTypeNames
@@ -68,7 +68,7 @@ export function resolveType(
       return [computeIntersection(subtypes), encountered];
     }
     case "optional": {
-      const [resolved, encountered] = resolveType(
+      const [resolved, encountered] = dereferenceType(
         type.type,
         collected,
         rejectTypeNames
@@ -83,7 +83,7 @@ export function resolveType(
       if (!resolved) {
         return [UNKNOWN_TYPE, [type.name]];
       }
-      return [resolveTypeArguments(resolved, type.args), [type.name]];
+      return [evaluateType(resolved, type.args), [type.name]];
     }
     default:
       throw assertNever(type);

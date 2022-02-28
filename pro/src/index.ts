@@ -22,10 +22,10 @@ const setup: SetupPreviewEnvironment = async ({
     ],
     middlewares: [express.static(path.join(__dirname, "../client/build"))],
     onReady: async ({ router, workspace }) => {
-      router.onRequest(AnalyzeFileEndpoint, async ({ relativeFilePath }) => ({
+      router.onRequest(AnalyzeFileEndpoint, async ({ filePath }) => ({
         components: await analyzeFile({
           workspace,
-          relativeFilePath,
+          filePath,
         }),
       }));
       router.onRequest(AnalyzeProjectEndpoint, async ({ forceRefresh }) =>

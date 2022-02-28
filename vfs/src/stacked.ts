@@ -7,8 +7,8 @@ export class StackedReader implements Reader {
 
   constructor(private readonly readers: Reader[]) {
     const asReaderListener: ReaderListener = {
-      onChange: (filePath, info) => {
-        this.listeners.notify(filePath, info);
+      onChange: (absoluteFilePath, info) => {
+        this.listeners.notify(absoluteFilePath, info);
       },
     };
     for (const reader of this.readers) {
@@ -28,15 +28,17 @@ export class StackedReader implements Reader {
     };
   }
 
-  async read(filePath: string): Promise<Entry | null> {
+  async read(absoluteFilePath: string): Promise<Entry | null> {
     const found = await Promise.all(
-      this.readers.map((reader) => reader.read(filePath))
+      this.readers.map((reader) => reader.read(absoluteFilePath))
     );
     return merge(found);
   }
 
-  readSync(filePath: string): EntrySync | null {
-    const found = this.readers.map((reader) => reader.readSync(filePath));
+  readSync(absoluteFilePath: string): EntrySync | null {
+    const found = this.readers.map((reader) =>
+      reader.readSync(absoluteFilePath)
+    );
     return mergeSync(found);
   }
 }

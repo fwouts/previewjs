@@ -1,5 +1,6 @@
-export { createTypeAnalyzer } from "./analyzer";
+export * from "./analyzer";
 export * from "./definitions";
+export { dereferenceType } from "./dereference";
+export * as helpers from "./helpers";
 export { isValid } from "./is-valid";
-export { resolveType } from "./resolve";
-export { resolveTypeArguments } from "./type-parameters";
+export { evaluateType } from "./type-parameters";

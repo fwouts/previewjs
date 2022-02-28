@@ -2,7 +2,7 @@ import { declareEndpoint } from "@previewjs/core/api";
 
 export const AnalyzeFileEndpoint = declareEndpoint<
   {
-    relativeFilePath: string;
+    filePath: string;
   },
   {
     components: Component[];
@@ -27,14 +27,14 @@ export const AnalyzeProjectEndpoint = declareEndpoint<
 
 export const ComputePropsEndpoint = declareEndpoint<
   {
-    relativeFilePath: string;
+    filePath: string;
     componentName: string;
   },
   PreviewSources | null
 >("compute-props");
 
 export interface Component {
-  relativeFilePath: string;
+  filePath: string;
   key: string;
   label: string;
   componentName: string;

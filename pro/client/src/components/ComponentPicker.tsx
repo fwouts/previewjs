@@ -18,7 +18,7 @@ export const ComponentPicker = observer(
   ({ pro, preview }: { pro: ProState; preview: PreviewState }) => {
     const loading = pro.currentFile?.loading || false;
     const components = pro.currentFile?.components || [];
-    const currentRelativeFilePath = pro.currentFile?.relativeFilePath || null;
+    const currentRelativeFilePath = pro.currentFile?.filePath || null;
 
     const componentRef = useRef<HTMLDivElement>(null);
     useEffect(() => {

@@ -1,5 +1,5 @@
 export interface GetWorkspaceRequest {
-  filePath: string;
+  absoluteFilePath: string;
 }
 
 export interface GetWorkspaceResponse {
@@ -14,7 +14,7 @@ export interface DisposeWorkspaceResponse {}
 
 export interface AnalyzeFileRequest {
   workspaceId: string;
-  filePath: string;
+  absoluteFilePath: string;
   options?: {
     offset?: number;
   };
@@ -44,7 +44,7 @@ export interface StopPreviewRequest {
 export interface StopPreviewResponse {}
 
 export interface UpdatePendingFileRequest {
-  filePath: string;
+  absoluteFilePath: string;
   utf8Content: string | null;
 }
 

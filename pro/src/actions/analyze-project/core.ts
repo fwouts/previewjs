@@ -35,7 +35,7 @@ export async function analyzeProjectCore(
   if (!workspace) {
     return {};
   }
-  const filePaths = await findFiles(
+  const absoluteFilePaths = await findFiles(
     rootDirPath,
     "**/*.@(js|jsx|tsx|svelte|vue)"
   );
@@ -46,14 +46,14 @@ export async function analyzeProjectCore(
       exported: boolean;
     }>
   > = {};
-  const program = workspace.typescriptAnalyzer.analyze(filePaths);
+  const program = workspace.typescriptAnalyzer.analyze(absoluteFilePaths);
   if (!program) {
     return {};
   }
-  const found = frameworkPlugin.componentDetector(program, filePaths);
+  const found = frameworkPlugin.componentDetector(program, absoluteFilePaths);
   for (const component of found) {
-    const relativeFilePath = path.relative(rootDirPath, component.filePath);
-    const fileComponents = (components[relativeFilePath] ||= []);
+    const filePath = path.relative(rootDirPath, component.absoluteFilePath);
+    const fileComponents = (components[filePath] ||= []);
     fileComponents.push({
       componentName: component.name,
       exported: component.exported,

@@ -1,23 +1,25 @@
-import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
+import { localEndpoints } from "@previewjs/api";
+import {
+  CollectedTypes,
+  createTypeAnalyzer,
+  TypeAnalyzer,
+} from "@previewjs/type-analyzer";
+import { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import * as vite from "vite";
-import { localEndpoints } from "./api";
 import { computeProps } from "./compute-props";
 import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
-import { createTypescriptAnalyzer, TypescriptAnalyzer } from "./ts-helpers";
-import { Reader } from "./vfs";
+export { generateComponentId } from "./component-id";
 export { PersistedStateManager } from "./persisted-state";
 export type {
-  AnalyzedComponent,
-  ComponentAnalyzer,
-  ComponentDetector,
-  DetectedComponent,
+  Component,
+  ComponentAnalysis,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
@@ -26,8 +28,6 @@ export type {
   PreviewEnvironment,
   SetupPreviewEnvironment,
 } from "./preview-env";
-export { extractArgs } from "./storybook/args";
-export * as vfs from "./vfs";
 
 export async function createWorkspace({
   versionCode,
@@ -48,6 +48,11 @@ export async function createWorkspace({
   persistedStateManager?: PersistedStateManager;
   onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
 }): Promise<Workspace | null> {
+  if (frameworkPlugin.pluginApiVersion !== 2) {
+    throw new Error(
+      `Detected incompatible Preview.js framework plugin. Please install latest version of ${frameworkPlugin.name}.`
+    );
+  }
   let cacheDirPath: string;
   try {
     const { version } = JSON.parse(
@@ -68,24 +73,14 @@ export async function createWorkspace({
   if (frameworkPlugin.transformReader) {
     reader = frameworkPlugin.transformReader(reader, rootDirPath);
   }
-  const typescriptAnalyzer = createTypescriptAnalyzer({
+  const collected: CollectedTypes = {};
+  const typeAnalyzer = createTypeAnalyzer({
     reader,
     rootDirPath,
+    collected,
+    specialTypes: frameworkPlugin.specialTypes,
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
-  const collected: CollectedTypes = {};
-  const componentAnalyzer = frameworkPlugin.componentAnalyzer
-    ? frameworkPlugin.componentAnalyzer({
-        typescriptAnalyzer,
-        getTypeAnalyzer: (program, specialTypes) =>
-          createTypeAnalyzer(
-            rootDirPath,
-            program,
-            collected,
-            specialTypes || {}
-          ),
-      })
-    : null;
   const router = new ApiRouter();
   router.onRequest(localEndpoints.GetInfo, async () => {
     const separatorPosition = versionCode.indexOf("-");
@@ -107,15 +102,16 @@ export async function createWorkspace({
   );
   router.onRequest(
     localEndpoints.ComputeProps,
-    async ({ relativeFilePath, componentName }) => {
-      if (!componentAnalyzer) {
+    async ({ absoluteFilePath, componentName }) => {
+      const component = (
+        await frameworkPlugin.detectComponents(typeAnalyzer, [absoluteFilePath])
+      ).find((c) => c.name === componentName);
+      if (!component) {
         return null;
       }
       return computeProps({
-        componentAnalyzer,
         rootDirPath,
-        relativeFilePath,
-        componentName,
+        component,
       });
     }
   );
@@ -143,47 +139,12 @@ export async function createWorkspace({
       },
       ...middlewares,
     ],
-    onFileChanged: (filePath) => {
-      const relativeFilePath = path.relative(rootDirPath, filePath);
-      for (const name of Object.keys(collected)) {
-        if (name.startsWith(`${relativeFilePath}:`)) {
-          delete collected[name];
-        }
-      }
-    },
   });
   const workspace: Workspace = {
     rootDirPath,
     reader,
-    typescriptAnalyzer,
-    detectComponents: async (
-      filePath: string,
-      options: {
-        offset?: number;
-      } = {}
-    ) => {
-      const program = typescriptAnalyzer.analyze([filePath]);
-      return frameworkPlugin
-        .componentDetector(program, [filePath])
-        .map((c) => {
-          return c.offsets
-            .filter(([start, end]) => {
-              if (options?.offset === undefined) {
-                return true;
-              }
-              return options.offset >= start && options.offset <= end;
-            })
-            .map(([start]) => ({
-              componentName: c.name,
-              exported: c.exported,
-              offset: start,
-              componentId: `${path
-                .relative(rootDirPath, c.filePath)
-                .replace(/\\/g, "/")}:${c.name}`,
-            }));
-        })
-        .flat();
-    },
+    typeAnalyzer,
+    frameworkPlugin,
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -204,7 +165,7 @@ export async function createWorkspace({
       },
     },
     dispose: async () => {
-      typescriptAnalyzer.dispose();
+      typeAnalyzer.dispose();
     },
   };
   if (onReady) {
@@ -219,8 +180,8 @@ export async function createWorkspace({
 /**
  * Returns the absolute directory path of the closest ancestor containing node_modules.
  */
-export function findWorkspaceRoot(filePath: string): string {
-  let dirPath = path.resolve(filePath);
+export function findWorkspaceRoot(absoluteFilePath: string): string {
+  let dirPath = path.resolve(absoluteFilePath);
   while (dirPath !== path.dirname(dirPath)) {
     if (fs.existsSync(path.join(dirPath, "package.json"))) {
       return dirPath;
@@ -228,31 +189,19 @@ export function findWorkspaceRoot(filePath: string): string {
     dirPath = path.dirname(dirPath);
   }
   throw new Error(
-    `Unable to find package.json in the directory tree from ${filePath}. Does it exist?`
+    `Unable to find package.json in the directory tree from ${absoluteFilePath}. Does it exist?`
   );
 }
 
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
-  typescriptAnalyzer: TypescriptAnalyzer;
-  detectComponents(
-    filePath: string,
-    options?: {
-      offset?: number;
-    }
-  ): Promise<Component[]>;
+  typeAnalyzer: TypeAnalyzer;
+  frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
   dispose(): Promise<void>;
-}
-
-export interface Component {
-  componentName: string;
-  exported: boolean;
-  offset: number;
-  componentId: string;
 }
 
 export interface Preview {

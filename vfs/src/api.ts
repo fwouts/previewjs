@@ -4,15 +4,15 @@ export interface Reader {
     remove(listener: ReaderListener): void;
   };
   observe?(path: string): Promise<() => Promise<void>>;
-  read(filePath: string): Promise<Entry | null>;
-  readSync(filePath: string): EntrySync | null;
+  read(absoluteFilePath: string): Promise<Entry | null>;
+  readSync(absoluteFilePath: string): EntrySync | null;
 }
 
 export interface Writer {
   /**
    * Returns true if the content were modified.
    */
-  updateFile(filePath: string, sourceText: string | null): boolean;
+  updateFile(absoluteFilePath: string, sourceText: string | null): boolean;
 }
 
 export type Entry = File | Directory;
@@ -50,7 +50,7 @@ export interface DirectorySync {
 }
 
 export interface ReaderListener {
-  onChange: (filePath: string, info: ReaderListenerInfo) => void;
+  onChange: (absoluteFilePath: string, info: ReaderListenerInfo) => void;
 }
 
 export interface ReaderListenerInfo {

@@ -1,4 +1,9 @@
-import { Endpoint, RequestOf, ResponseOf, WrappedResponse } from "./api";
+import {
+  Endpoint,
+  RequestOf,
+  ResponseOf,
+  WrappedResponse,
+} from "@previewjs/api";
 
 export class ApiRouter {
   private handlers = new Map<string, RequestHandler<any, any>>();
@@ -33,12 +38,12 @@ export class ApiRouter {
     endpoint: E,
     handler: RequestHandler<RequestOf<E>, ResponseOf<E>>
   ) {
-    if (this.handlers.has(endpoint.id)) {
+    if (this.handlers.has(endpoint.path)) {
       throw new Error(
-        `Multiple handlers registered for endpoint '${endpoint.id}'`
+        `Multiple handlers registered for endpoint '${endpoint.path}'`
       );
     }
-    this.handlers.set(endpoint.id, handler);
+    this.handlers.set(endpoint.path, handler);
   }
 }
 

@@ -1,12 +1,5 @@
-import type {
-  DetectedComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
-import {
-  createFileSystemReader,
-  createStackedReader,
-} from "@previewjs/core/vfs";
-import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import type { Node } from "acorn";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
@@ -26,6 +19,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
     const { Parser } = await import("acorn");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
+      pluginApiVersion: 2,
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
@@ -40,42 +34,31 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             watch: false,
           }),
         ]),
-      componentDetector: (program, filePaths) => {
-        const components: DetectedComponent[] = [];
-        for (const filePath of filePaths) {
-          if (filePath.endsWith(".vue")) {
-            const name = path.basename(filePath, path.extname(filePath));
+      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+        const resolver = typeAnalyzer.analyze(absoluteFilePaths);
+        const components: Component[] = [];
+        for (const absoluteFilePath of absoluteFilePaths) {
+          if (absoluteFilePath.endsWith(".vue")) {
+            const name = path.basename(
+              absoluteFilePath,
+              path.extname(absoluteFilePath)
+            );
             components.push({
-              filePath,
+              absoluteFilePath,
               name,
               exported: true,
               offsets: [[0, Infinity]],
+              analyze: async () =>
+                analyzeVueComponentFromTemplate(typeAnalyzer, absoluteFilePath),
             });
           } else {
-            components.push(...extractVueComponents(program, filePath));
+            components.push(
+              ...extractVueComponents(resolver, absoluteFilePath)
+            );
           }
         }
         return components;
       },
-      componentAnalyzer:
-        ({ typescriptAnalyzer, getTypeAnalyzer }) =>
-        (filePath, componentName) => {
-          if (filePath.endsWith(".vue")) {
-            return analyzeVueComponentFromTemplate(
-              typescriptAnalyzer,
-              getTypeAnalyzer,
-              filePath
-            );
-          } else {
-            // TODO: Handle JSX and Storybook stories.
-            return {
-              name: componentName,
-              propsType: UNKNOWN_TYPE,
-              providedArgs: new Set(),
-              types: {},
-            };
-          }
-        },
       viteConfig: (config) => {
         return {
           plugins: [

@@ -1,15 +1,4 @@
 import {
-  createTypescriptAnalyzer,
-  TypescriptAnalyzer,
-} from "@previewjs/core/ts-helpers";
-import {
-  createFileSystemReader,
-  createMemoryReader,
-  createStackedReader,
-  Reader,
-  Writer,
-} from "@previewjs/core/vfs";
-import {
   ANY_TYPE,
   arrayType,
   BOOLEAN_TYPE,
@@ -30,20 +19,28 @@ import {
   setType,
   STRING_TYPE,
   tupleType,
+  TypeAnalyzer,
   unionType,
   UNKNOWN_TYPE,
   VOID_TYPE,
 } from "@previewjs/type-analyzer";
+import {
+  createFileSystemReader,
+  createMemoryReader,
+  createStackedReader,
+  Reader,
+  Writer,
+} from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 
 describe("TypeAnalyzer", () => {
   let memoryReader: Reader & Writer;
-  let typescriptAnalyzer: TypescriptAnalyzer;
+  let typeAnalyzer: TypeAnalyzer;
 
   beforeEach(() => {
     memoryReader = createMemoryReader();
-    typescriptAnalyzer = createTypescriptAnalyzer({
+    typeAnalyzer = createTypeAnalyzer({
       rootDirPath: path.join(__dirname, "virtual"),
       reader: createStackedReader([
         memoryReader,
@@ -51,11 +48,15 @@ describe("TypeAnalyzer", () => {
           watch: false,
         }), // required for TypeScript libs, e.g. Promise
       ]),
+      specialTypes: {
+        Component: NODE_TYPE,
+        ComponentType: functionType(NODE_TYPE),
+      },
     });
   });
 
   afterEach(() => {
-    typescriptAnalyzer.dispose();
+    typeAnalyzer.dispose();
   });
 
   test("string", async () => {
@@ -1819,33 +1820,25 @@ type C<T> = { (): T } | { new(...args: never[]): T & object } | { new(...args: s
   function resolveType(
     source: string,
     name: string,
-    additionalFiles: { [relativeFilePath: string]: string } = {}
+    additionalFiles: { [absoluteFilePath: string]: string } = {}
   ) {
     const rootDirPath = path.join(__dirname, "virtual");
     const mainSourceFilePath = path.join(rootDirPath, "main.ts");
     memoryReader.updateFile(mainSourceFilePath, source);
-    for (const [relativeFilePath, content] of Object.entries(additionalFiles)) {
+    for (const [absoluteFilePath, content] of Object.entries(additionalFiles)) {
       memoryReader.updateFile(
-        path.join(rootDirPath, relativeFilePath),
+        path.join(rootDirPath, absoluteFilePath),
         content
       );
     }
-    const typeAnalyzer = createTypeAnalyzer(
-      rootDirPath,
-      typescriptAnalyzer.analyze([mainSourceFilePath]),
-      {},
-      {
-        Component: NODE_TYPE,
-        ComponentType: functionType(NODE_TYPE),
-      }
-    );
-    const sourceFile = typeAnalyzer.sourceFile(mainSourceFilePath);
+    const resolver = typeAnalyzer.analyze([mainSourceFilePath]);
+    const sourceFile = resolver.sourceFile(mainSourceFilePath);
     if (!sourceFile) {
       throw new Error(`No source file found`);
     }
     const typeNode = getTypeNodeByName(sourceFile, name);
-    const type = typeAnalyzer.checker.getTypeAtLocation(typeNode);
-    const resolved = typeAnalyzer.resolveType(type);
+    const type = resolver.checker.getTypeAtLocation(typeNode);
+    const resolved = resolver.resolveType(type);
     return [resolved.type, resolved.collected];
   }
 });

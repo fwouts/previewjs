@@ -1,4 +1,5 @@
 import { PreviewConfig } from "@previewjs/config";
+import { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
 import { Server } from "http";
@@ -10,7 +11,6 @@ import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { FrameworkPlugin } from "../plugins/framework";
-import { Reader } from "../vfs";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
@@ -131,8 +131,8 @@ export class ViteManager {
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
       fakeExportedTypesPlugin({
-        readFile: (filePath) =>
-          this.options.reader.read(filePath).then((entry) => {
+        readFile: (absoluteFilePath) =>
+          this.options.reader.read(absoluteFilePath).then((entry) => {
             if (entry?.kind !== "file") {
               return null;
             }
@@ -243,12 +243,12 @@ export class ViteManager {
     return this.lastPingTimestamp;
   }
 
-  triggerReload(filePath: string) {
+  triggerReload(absoluteFilePath: string) {
     if (!this.viteServer) {
       return;
     }
     for (const onChange of this.viteServer.watcher.listeners("change")) {
-      onChange(filePath);
+      onChange(absoluteFilePath);
     }
   }
 

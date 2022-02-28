@@ -3,7 +3,7 @@ import {
   RequestOf,
   ResponseOf,
   WrappedResponse,
-} from "@previewjs/core/api";
+} from "@previewjs/api";
 import axios from "axios";
 
 export class LocalApi {
@@ -17,11 +17,10 @@ export class LocalApi {
   }
 
   async request<E extends Endpoint<unknown, unknown>>(
-    endpoint: E,
-    request: RequestOf<E>
+    ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>> {
     const { data } = await axios.post<WrappedResponse<ResponseOf<E>>>(
-      `${this.url}${endpoint.id}`,
+      `${this.url}${endpoint.path}`,
       request
     );
     if (data.kind === "error") {

@@ -197,7 +197,7 @@ const FileItem = observer(
     name: string;
     file: File;
   }) => {
-    const selected = file.relativeFilePath === state.currentRelativeFilePath;
+    const selected = file.filePath === state.currentRelativeFilePath;
     return (
       <ItemContainer onClick={() => state.onSelect(file)}>
         <LabelContainer

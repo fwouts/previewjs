@@ -1,4 +1,4 @@
-import { Endpoint, RequestOf, ResponseOf } from "@previewjs/core/api";
+import { Endpoint, RequestOf, ResponseOf } from "@previewjs/api";
 import axios from "axios";
 
 export class WebApi {
@@ -12,11 +12,10 @@ export class WebApi {
   }
 
   async request<E extends Endpoint<unknown, unknown>>(
-    endpoint: E,
-    request: RequestOf<E>
+    ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>> {
     const { data } = await axios.post<ResponseOf<E>>(
-      `${this.url}${endpoint.id}`,
+      `${this.url}${endpoint.path}`,
       request
     );
     return data;

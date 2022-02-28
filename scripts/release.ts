@@ -8,22 +8,29 @@ import path from "path";
 type Package = {
   name: string;
   dirPath: string;
-  additionalDirPath?: string[];
+  additionalChangelogPath?: string[];
+  ignoreDeps?: string[];
   tagName: string;
-  type: "npm" | "intellij" | "vscode";
+  type: "npm" | "loader" | "intellij" | "vscode";
 };
 
 const packages: Package[] = [
+  {
+    name: "api",
+    dirPath: "api",
+    tagName: "api",
+    type: "npm",
+  },
   {
     name: "app",
     dirPath: "app",
     tagName: "app",
     type: "npm",
+    ignoreDeps: ["loader"],
   },
   {
     name: "core",
     dirPath: "core",
-    additionalDirPath: ["loader"],
     tagName: "core",
     type: "npm",
   },
@@ -58,22 +65,33 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "vfs",
+    dirPath: "vfs",
+    tagName: "vfs",
+    type: "npm",
+  },
+  {
+    name: "loader",
+    dirPath: "loader",
+    tagName: "loader",
+    type: "loader",
+    additionalChangelogPath: ["app/package.json"],
+  },
+  {
     name: "integration-intellij",
     dirPath: "integrations/intellij",
-    additionalDirPath: ["loader"],
     tagName: "integrations/intellij",
     type: "intellij",
+    additionalChangelogPath: ["loader/src/release/package.json"],
   },
   {
     name: "integration-vscode",
     dirPath: "integrations/vscode",
-    additionalDirPath: ["loader"],
     tagName: "integrations/vscode",
     type: "vscode",
+    additionalChangelogPath: ["loader/src/release/package.json"],
   },
 ];
-
-const unpublishedPackageNames = new Set(["loader"]);
 
 async function main() {
   const { stdout: gitBranch } = await execa("git", [
@@ -93,8 +111,9 @@ async function main() {
   }
 
   const localDependencies: Record<string, Set<string>> = {
-    "integration-intellij": new Set(["app"]),
-    "integration-vscode": new Set(["app"]),
+    loader: new Set(["app"]),
+    "integration-intellij": new Set(["loader"]),
+    "integration-vscode": new Set(["loader"]),
   };
   for (const packageInfo of packages) {
     if (packageInfo.type === "npm") {
@@ -116,7 +135,7 @@ async function main() {
         if (!scopedName) {
           throw new Error(`Expected a scoped package, found ${packageName}`);
         }
-        if (!unpublishedPackageNames.has(scopedName)) {
+        if (!packageInfo.ignoreDeps?.includes(scopedName)) {
           deps.add(scopedName);
         }
       }
@@ -154,7 +173,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
   console.log(`About to release: ${packageName}`);
   const changelog = await gitChangelog(packageName, [
     packageInfo.dirPath,
-    ...(packageInfo.additionalDirPath || []),
+    ...(packageInfo.additionalChangelogPath || []),
   ]);
   if (!changelog) {
     console.log(`There is nothing to release.\n`);
@@ -165,6 +184,28 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
   switch (packageInfo.type) {
     case "npm":
       version = await updateNodePackage(packageInfo.dirPath);
+      break;
+    case "loader":
+      version = await updateNodePackage(packageInfo.dirPath);
+      const { version: appVersion } = await import("../app/package.json");
+      const releaseDirPath = path.join(packageInfo.dirPath, "src", "release");
+      await fs.promises.writeFile(
+        path.join(releaseDirPath, "package.json"),
+        JSON.stringify(
+          {
+            dependencies: {
+              "@previewjs/app": appVersion,
+            },
+          },
+          null,
+          2
+        ),
+        "utf8"
+      );
+      console.log(`Running npm install to update release lockfile...`);
+      await execa("npm", ["install"], {
+        cwd: releaseDirPath,
+      });
       break;
     case "intellij":
       version = await updateIntellijVersion(packageInfo.dirPath);
@@ -194,31 +235,14 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
           `${depPackageInfo.dirPath}/package.json`
         ).updateDependency(packageName, version);
         break;
-      case "intellij":
-        if (packageName === "@previewjs/app") {
-          await replaceInFile(
-            "integrations/intellij/src/main/kotlin/com/previewjs/intellij/plugin/services/PreviewJsService.kt",
-            /const val PACKAGE_VERSION = "\d+\.\d+\.\d+"/,
-            `const val PACKAGE_VERSION = "${version}"`
-          );
-        } else {
-          throw new Error(
-            `Unexpected IntelliJ dependent for package: ${packageName}`
-          );
-        }
+      case "loader":
+        await packageJson(
+          `${depPackageInfo.dirPath}/package.json`
+        ).updateDependency(packageName, version);
         break;
+      case "intellij":
       case "vscode":
-        if (packageName === "@previewjs/app") {
-          await replaceInFile(
-            "integrations/vscode/esbuild.js",
-            /PREVIEWJS_PACKAGE_VERSION": JSON\.stringify\("\d+\.\d+\.\d+"\)/,
-            `PREVIEWJS_PACKAGE_VERSION": JSON.stringify("${version}")`
-          );
-        } else {
-          throw new Error(
-            `Unexpected VS Code dependent for package: ${packageName}`
-          );
-        }
+        // Nothing to do, the app package version is set in loader/src/release.
         break;
       default:
         throw assertNever(depPackageInfo.type);
@@ -343,15 +367,17 @@ async function incrementVersion(oldVersion: string) {
   return version;
 }
 
-function packageJson(filePath: string) {
-  return new PackageJsonModifier(filePath);
+function packageJson(absoluteFilePath: string) {
+  return new PackageJsonModifier(absoluteFilePath);
 }
 
 class PackageJsonModifier {
-  constructor(private readonly filePath: string) {}
+  constructor(private readonly absoluteFilePath: string) {}
 
   async read() {
-    return JSON.parse(await fs.promises.readFile(this.filePath, "utf8"));
+    return JSON.parse(
+      await fs.promises.readFile(this.absoluteFilePath, "utf8")
+    );
   }
 
   async updateVersion(version: string) {
@@ -379,7 +405,7 @@ class PackageJsonModifier {
 
   private async write(info: any) {
     await fs.promises.writeFile(
-      this.filePath,
+      this.absoluteFilePath,
       JSON.stringify(info, null, 2) + "\n",
       "utf8"
     );
@@ -387,16 +413,16 @@ class PackageJsonModifier {
 }
 
 async function replaceInFile(
-  filePath: string,
+  absoluteFilePath: string,
   search: RegExp,
   replacement: string
 ) {
-  const originalContent = await fs.promises.readFile(filePath, "utf8");
+  const originalContent = await fs.promises.readFile(absoluteFilePath, "utf8");
   const updatedContent = originalContent.replace(search, replacement);
   if (originalContent === updatedContent) {
-    throw new Error(`No change in ${filePath}`);
+    throw new Error(`No change in ${absoluteFilePath}`);
   }
-  await fs.promises.writeFile(filePath, updatedContent, "utf8");
+  await fs.promises.writeFile(absoluteFilePath, updatedContent, "utf8");
 }
 
 main().catch((e) => {

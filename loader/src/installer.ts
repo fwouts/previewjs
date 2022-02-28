@@ -1,37 +1,35 @@
 import execa from "execa";
 import { mkdir, pathExists, readFile, writeFile } from "fs-extra";
 import path from "path";
+import packageLockJson from "./release/package-lock.json";
+import packageJson from "./release/package.json";
 
-export async function isInstalled(options: {
-  packageName: string;
-  packageVersion: string;
-  installDir: string;
-}) {
-  const versionCachePath = installedVersionInfoPath(options);
+export async function isInstalled(options: { installDir: string }) {
+  const installedPackageJsonPath = installedPackageJson(options);
   return (
-    (await pathExists(versionCachePath)) &&
-    (await readFile(versionCachePath, "utf8")) === versionId(options)
+    (await pathExists(installedPackageJsonPath)) &&
+    (await readFile(installedPackageJsonPath, "utf8")) ===
+      JSON.stringify(packageJson)
   );
 }
 
 export async function install(options: {
-  packageName: string;
-  packageVersion: string;
   installDir: string;
   onOutput: (chunk: string) => void;
 }) {
   options.onOutput(
     "Please wait while Preview.js installs dependencies. This could take a minute.\n\n"
   );
-  const packageJsonPath = path.join(options.installDir, "package.json");
   await mkdir(options.installDir, { recursive: true });
   await writeFile(
-    packageJsonPath,
-    JSON.stringify({
-      dependencies: {
-        [options.packageName]: options.packageVersion,
-      },
-    })
+    path.join(options.installDir, "package.json"),
+    JSON.stringify(packageJson),
+    "utf8"
+  );
+  await writeFile(
+    path.join(options.installDir, "package-lock.json"),
+    JSON.stringify(packageLockJson),
+    "utf8"
   );
   options.onOutput(
     `Dependencies will be installed in: ${options.installDir}\n\n`
@@ -54,27 +52,13 @@ export async function install(options: {
     options.onOutput(
       "\nPreview.js dependencies were installed successfully.\n\n"
     );
-    await writeFile(
-      installedVersionInfoPath(options),
-      versionId(options),
-      "utf8"
-    );
+    await writeFile(installedPackageJson(options), JSON.stringify(packageJson));
   } catch (e) {
     options.onOutput(`\nOh no, it looks like installation failed!\n\n${e}`);
     throw e;
   }
 }
 
-function installedVersionInfoPath({ installDir }: { installDir: string }) {
-  return path.join(installDir, ".install.info");
-}
-
-function versionId({
-  packageName,
-  packageVersion,
-}: {
-  packageName: string;
-  packageVersion: string;
-}) {
-  return `${packageName}-${packageVersion}`;
+function installedPackageJson({ installDir }: { installDir: string }) {
+  return path.join(installDir, "package.installed.json");
 }

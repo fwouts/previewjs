@@ -29,11 +29,11 @@ export class SidePanelState {
   }
 
   private ensureExpanded() {
-    const relativeFilePath = this.getCurrentRelativeFilePath();
-    if (!relativeFilePath) {
+    const filePath = this.getCurrentRelativeFilePath();
+    if (!filePath) {
       return;
     }
-    const segments = relativeFilePath.split(/[/\\]/g);
+    const segments = filePath.split(/[/\\]/g);
     runInAction(() => {
       if (!this.directory) {
         return;
@@ -101,10 +101,10 @@ export class SidePanelState {
       expanded: true,
       dirPath: "",
     };
-    for (const [filePath, fileComponents] of Object.entries(
+    for (const [absoluteFilePath, fileComponents] of Object.entries(
       analyzeProjectResponse.components
     )) {
-      const segments = filePath.split(/[/\\]/g);
+      const segments = absoluteFilePath.split(/[/\\]/g);
       this.recordEntry(directory, segments, fileComponents, segments);
     }
     return directory;
@@ -124,7 +124,7 @@ export class SidePanelState {
     if (rest.length === 0) {
       directory.entries[root] = {
         kind: "file",
-        relativeFilePath: allSegments.join("/"),
+        filePath: allSegments.join("/"),
         components: fileComponents,
       };
     } else {
@@ -160,7 +160,7 @@ export interface Directory {
 
 export interface File {
   kind: "file";
-  relativeFilePath: string;
+  filePath: string;
   components: ComponentInfo[];
 }
 

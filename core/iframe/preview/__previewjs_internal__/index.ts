@@ -15,7 +15,7 @@ setUpLinkInterception();
 overrideCopyCutPaste();
 
 async function load({
-  relativeFilePath,
+  absoluteFilePath,
   componentName,
   variantKey,
   defaultPropsSource,
@@ -23,10 +23,10 @@ async function load({
 }: RenderMessage) {
   try {
     const componentLoaderModuleId = `/@component-loader.jsx?p=${encodeURIComponent(
-      relativeFilePath
+      absoluteFilePath
     )}&c=${encodeURIComponent(componentName)}`;
     setState({
-      relativeFilePath,
+      absoluteFilePath,
       componentName,
       defaultPropsSource,
       customVariantPropsSource,

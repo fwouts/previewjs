@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-react",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -32,7 +32,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@previewjs/type-analyzer": "1.1.1",
+    "@previewjs/type-analyzer": "2.0.0",
+    "@previewjs/vfs": "1.1.1",
     "@svgr/core": "^5.5.0",
     "fs-extra": "^10.0.0",
     "typescript": "^4.5.5"
@@ -41,10 +42,10 @@
     "@previewjs/config": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@types/fs-extra": "9.0.13",
-    "@types/jest": "27.4.0",
+    "@types/jest": "27.4.1",
     "@types/prop-types": "15.7.4",
     "@types/react": "17.0.39",
-    "jest": "28.0.0-alpha.4",
+    "jest": "28.0.0-alpha.5",
     "next": "12.1.0",
     "rimraf": "3.0.2",
     "ts-jest": "27.1.3",

@@ -1,8 +1,4 @@
-import {
-  localEndpoints,
-  PersistedState,
-  webEndpoints,
-} from "@previewjs/core/api";
+import { localEndpoints, PersistedState, webEndpoints } from "@previewjs/api";
 import {
   createController,
   PreviewIframeController,
@@ -13,8 +9,8 @@ import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
 import {
+  absoluteFilePathFromComponentId,
   componentNameFromComponentId,
-  filePathFromComponentId,
 } from "./component-id";
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsoleLogsState } from "./components/ConsoleLogs";
@@ -36,7 +32,7 @@ export class PreviewState {
     /**
      * ID of the component, comprising of a file path and local component ID.
      *
-     * Follows the following format: <filePath>:<file-relative id>
+     * Follows the following format: <absoluteFilePath>:<file-relative id>
      *
      * For example, a component "Foo" in src/App.tsx will have the ID "src/App.tsx:Foo"
      */
@@ -64,7 +60,7 @@ export class PreviewState {
        * File path where the component is loaded from. This typically corresponds to the first part
        * of the component ID, but not necessarily (e.g. storybook stories in a different file).
        */
-      relativeFilePath: string;
+      absoluteFilePath: string;
 
       /**
        * Source of default props that should be passed to the component.
@@ -116,7 +112,7 @@ export class PreviewState {
 
   constructor(
     private readonly options: {
-      onFileChanged?: (relativeFilePath: string | null) => Promise<void>;
+      onFileChanged?: (absoluteFilePath: string | null) => Promise<void>;
     } = {}
   ) {
     this.localApi = new LocalApi("/api/");
@@ -177,14 +173,11 @@ export class PreviewState {
       this.ping().catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
     document.addEventListener("keydown", this.keydownListener);
-    const { appInfo } = await this.localApi.request(
-      localEndpoints.GetInfo,
-      void 0
-    );
+    const { appInfo } = await this.localApi.request(localEndpoints.GetInfo);
     runInAction(() => {
       this.appInfo = appInfo;
     });
-    const state = await this.localApi.request(localEndpoints.GetState, void 0);
+    const state = await this.localApi.request(localEndpoints.GetState);
     runInAction(() => {
       this.persistedState = state;
     });
@@ -308,12 +301,12 @@ export class PreviewState {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
-    const relativeFilePath = filePathFromComponentId(componentId);
+    const absoluteFilePath = absoluteFilePathFromComponentId(componentId);
     const nameFromPath = componentNameFromComponentId(componentId);
     if (this.options.onFileChanged) {
-      await this.options.onFileChanged(relativeFilePath);
+      await this.options.onFileChanged(absoluteFilePath);
     }
-    if (!relativeFilePath || !nameFromPath) {
+    if (!absoluteFilePath || !nameFromPath) {
       this.component = null;
       return;
     }
@@ -335,11 +328,11 @@ export class PreviewState {
         };
       });
       const sources = await this.localApi.request(localEndpoints.ComputeProps, {
-        relativeFilePath,
+        absoluteFilePath,
         componentName: name,
       });
       const details = {
-        relativeFilePath,
+        absoluteFilePath,
         componentName: name,
         defaultProps: sources?.defaultPropsSource || "{}",
         invocation:
@@ -357,7 +350,7 @@ export class PreviewState {
           name,
           variantKey,
           details: {
-            relativeFilePath: details.relativeFilePath,
+            absoluteFilePath: details.absoluteFilePath,
             variants: null,
             defaultProps: details.defaultProps,
             defaultInvocation: details.invocation,
@@ -377,7 +370,7 @@ export class PreviewState {
     this.consoleLogs.onClear();
     this.controller.loadComponent({
       componentName: this.component.name,
-      relativeFilePath: this.component.details.relativeFilePath,
+      absoluteFilePath: this.component.details.absoluteFilePath,
       variantKey: this.component.variantKey,
       customVariantPropsSource: this.component.details.invocation,
       defaultPropsSource: this.component.details.defaultProps,

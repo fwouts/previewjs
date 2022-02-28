@@ -16,21 +16,21 @@ const utf8Encoder = new TextEncoder();
 export class MemoryReader implements Reader, Writer {
   readonly listeners = new ReaderListeners();
 
-  private files: { [filePath: string]: MemoryFile } = {};
+  private files: { [absoluteFilePath: string]: MemoryFile } = {};
 
-  updateFile(filePath: string, sourceText: string | null): boolean {
+  updateFile(absoluteFilePath: string, sourceText: string | null): boolean {
     // Note: backslash handling is Windows-specific.
-    filePath = filePath.replace(/\//g, path.sep);
+    absoluteFilePath = absoluteFilePath.replace(/\//g, path.sep);
     let changed: boolean;
     if (sourceText === null) {
-      delete this.files[filePath];
+      delete this.files[absoluteFilePath];
       changed = true;
     } else {
-      const existingSource = this.files[filePath]?.sourceText;
+      const existingSource = this.files[absoluteFilePath]?.sourceText;
       if (sourceText === existingSource) {
         changed = false;
       } else {
-        this.files[filePath] = {
+        this.files[absoluteFilePath] = {
           sourceText,
           timestampMillis: Date.now(),
         };
@@ -38,31 +38,31 @@ export class MemoryReader implements Reader, Writer {
       }
     }
     if (changed) {
-      this.listeners.notify(filePath, {
+      this.listeners.notify(absoluteFilePath, {
         virtual: true,
       });
     }
     return changed;
   }
 
-  async read(filePath: string): Promise<Entry | null> {
-    const entry = this.readSync(filePath);
+  async read(absoluteFilePath: string): Promise<Entry | null> {
+    const entry = this.readSync(absoluteFilePath);
     if (!entry) {
       return null;
     }
     return fromSyncEntry(entry);
   }
 
-  readSync(filePath: string): EntrySync | null {
+  readSync(absoluteFilePath: string): EntrySync | null {
     // Note: backslash handling is Windows-specific.
-    filePath = filePath.replace(/\//g, path.sep);
-    const file = this.files[filePath];
+    absoluteFilePath = absoluteFilePath.replace(/\//g, path.sep);
+    const file = this.files[absoluteFilePath];
     if (file) {
-      return this.readFile(filePath, file);
+      return this.readFile(absoluteFilePath, file);
     }
-    const dirPath = filePath.endsWith(path.sep)
-      ? filePath.substr(0, filePath.length - 1)
-      : filePath;
+    const dirPath = absoluteFilePath.endsWith(path.sep)
+      ? absoluteFilePath.substr(0, absoluteFilePath.length - 1)
+      : absoluteFilePath;
     for (const otherFilePath of Object.keys(this.files)) {
       if (otherFilePath.startsWith(dirPath + path.sep)) {
         return this.readDirectory(dirPath);
@@ -71,10 +71,10 @@ export class MemoryReader implements Reader, Writer {
     return null;
   }
 
-  private readFile(filePath: string, file: MemoryFile): FileSync {
+  private readFile(absoluteFilePath: string, file: MemoryFile): FileSync {
     return {
       kind: "file",
-      name: path.basename(filePath),
+      name: path.basename(absoluteFilePath),
       realPath: () => null,
       lastModifiedMillis: () => file.timestampMillis,
       read: () => file.sourceText,
@@ -93,15 +93,15 @@ export class MemoryReader implements Reader, Writer {
   private readDirectoryEntries(dirPath: string): EntrySync[] {
     const directories = new Set<string>();
     const files: FileSync[] = [];
-    for (const [filePath, file] of Object.entries(this.files)) {
-      if (filePath.startsWith(dirPath + path.sep)) {
-        const relativePath = filePath.substr(dirPath.length + 1);
+    for (const [absoluteFilePath, file] of Object.entries(this.files)) {
+      if (absoluteFilePath.startsWith(dirPath + path.sep)) {
+        const relativePath = absoluteFilePath.substr(dirPath.length + 1);
         const [name, ...rest] = relativePath.split(path.sep);
         if (!name) {
           continue;
         }
         if (rest.length === 0) {
-          files.push(this.readFile(filePath, file));
+          files.push(this.readFile(absoluteFilePath, file));
         } else {
           directories.add(name);
         }

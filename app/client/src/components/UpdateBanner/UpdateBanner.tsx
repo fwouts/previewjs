@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { webEndpoints } from "@previewjs/core/api";
+import { webEndpoints } from "@previewjs/api";
 import React from "react";
 import { Link } from "..";
 

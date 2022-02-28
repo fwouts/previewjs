@@ -1,35 +1,27 @@
-import { AnalyzedComponent } from "@previewjs/core";
-import { TypescriptAnalyzer } from "@previewjs/core/ts-helpers";
+import { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
   objectType,
   optionalType,
   TypeAnalyzer,
+  TypeResolver,
   UNKNOWN_TYPE,
   ValueType,
 } from "@previewjs/type-analyzer";
-import path from "path";
 import ts from "typescript";
 
 export function analyzeVueComponentFromTemplate(
-  typescriptAnalyzer: TypescriptAnalyzer,
-  getTypeAnalyzer: (program: ts.Program) => TypeAnalyzer,
-  filePath: string
-): AnalyzedComponent {
+  typeAnalyzer: TypeAnalyzer,
+  absoluteFilePath: string
+): ComponentAnalysis {
   // This virtual file exists thanks to transformReader().
-  const tsFilePath = `${filePath}.ts`;
-  const name = path.basename(filePath, path.extname(filePath));
-  const program = typescriptAnalyzer.analyze([tsFilePath]);
-  const typeAnalyzer = getTypeAnalyzer(program);
-  const sourceFile = typeAnalyzer.sourceFile(tsFilePath);
+  const tsFilePath = `${absoluteFilePath}.ts`;
+  const resolver = typeAnalyzer.analyze([tsFilePath]);
+  const sourceFile = resolver.sourceFile(tsFilePath);
   for (const statement of sourceFile.statements) {
-    const definedProps = extractDefinePropsFromStatement(
-      typeAnalyzer,
-      statement
-    );
+    const definedProps = extractDefinePropsFromStatement(resolver, statement);
     if (definedProps) {
       return {
-        name,
         propsType: definedProps.type,
         providedArgs: new Set(),
         types: definedProps.collected,
@@ -39,10 +31,9 @@ export function analyzeVueComponentFromTemplate(
       ts.isTypeAliasDeclaration(statement) &&
       statement.name.text === "PJS_Props"
     ) {
-      const type = typeAnalyzer.checker.getTypeAtLocation(statement);
-      const defineComponentProps = typeAnalyzer.resolveType(type);
+      const type = resolver.checker.getTypeAtLocation(statement);
+      const defineComponentProps = resolver.resolveType(type);
       return {
-        name,
         propsType: defineComponentProps.type,
         providedArgs: new Set(),
         types: defineComponentProps.collected,
@@ -50,7 +41,6 @@ export function analyzeVueComponentFromTemplate(
     }
   }
   return {
-    name,
     propsType: UNKNOWN_TYPE,
     providedArgs: new Set(),
     types: {},
@@ -58,13 +48,13 @@ export function analyzeVueComponentFromTemplate(
 }
 
 function extractDefinePropsFromStatement(
-  typeAnalyzer: TypeAnalyzer,
+  resolver: TypeResolver,
   statement: ts.Statement
 ) {
   if (ts.isExpressionStatement(statement)) {
     // This may be a statement such as `defineProps()`.
     const definedProps = extractDefinePropsFromExpression(
-      typeAnalyzer,
+      resolver,
       statement.expression
     );
     if (definedProps) {
@@ -77,7 +67,7 @@ function extractDefinePropsFromStatement(
         continue;
       }
       const definedProps = extractDefinePropsFromExpression(
-        typeAnalyzer,
+        resolver,
         variableDeclaration.initializer
       );
       if (definedProps) {
@@ -89,7 +79,7 @@ function extractDefinePropsFromStatement(
 }
 
 function extractDefinePropsFromExpression(
-  typeAnalyzer: TypeAnalyzer,
+  resolver: TypeResolver,
   expression: ts.Expression
 ): {
   type: ValueType;
@@ -100,7 +90,7 @@ function extractDefinePropsFromExpression(
     expression.operatorToken.kind === ts.SyntaxKind.EqualsToken
   ) {
     // This may be an assignment such as `props = defineProps()`.
-    return extractDefinePropsFromExpression(typeAnalyzer, expression.right);
+    return extractDefinePropsFromExpression(resolver, expression.right);
   }
   if (
     !ts.isCallExpression(expression) ||
@@ -110,9 +100,9 @@ function extractDefinePropsFromExpression(
   }
   const functionName = expression.expression.text;
   if (functionName === "defineProps") {
-    const signature = typeAnalyzer.checker.getResolvedSignature(expression);
+    const signature = resolver.checker.getResolvedSignature(expression);
     if (signature) {
-      return typeAnalyzer.resolveType(signature.getReturnType());
+      return resolver.resolveType(signature.getReturnType());
     }
   }
   if (functionName === "withDefaults") {
@@ -121,14 +111,14 @@ function extractDefinePropsFromExpression(
       return null;
     }
     const definePropsType = extractDefinePropsFromExpression(
-      typeAnalyzer,
+      resolver,
       firstArgument
     );
     if (!definePropsType) {
       return null;
     }
-    const defaultsType = typeAnalyzer.resolveType(
-      typeAnalyzer.checker.getTypeAtLocation(secondArgument)
+    const defaultsType = resolver.resolveType(
+      resolver.checker.getTypeAtLocation(secondArgument)
     );
     if (
       defaultsType.type.kind !== "object" ||

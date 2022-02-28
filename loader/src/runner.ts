@@ -1,4 +1,5 @@
 import type * as core from "@previewjs/core";
+import type * as vfs from "@previewjs/vfs";
 import { LogLevel } from ".";
 import { locking } from "./locking";
 
@@ -10,6 +11,7 @@ export async function load({
   packageName: string;
 }) {
   const core = requireModule("@previewjs/core");
+  const vfs = requireModule("@previewjs/vfs");
   const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName).default;
 
@@ -24,17 +26,18 @@ export async function load({
     }
   }
 
-  return init(core, setupEnvironment);
+  return init(core, vfs, setupEnvironment);
 }
 
 export async function init(
   coreModule: typeof core,
+  vfsModule: typeof vfs,
   setupEnvironment: core.SetupPreviewEnvironment
 ) {
-  const memoryReader = coreModule.vfs.createMemoryReader();
-  const reader = coreModule.vfs.createStackedReader([
+  const memoryReader = vfsModule.createMemoryReader();
+  const reader = vfsModule.createStackedReader([
     memoryReader,
-    coreModule.vfs.createFileSystemReader({
+    vfsModule.createFileSystemReader({
       watch: true,
     }),
   ]);
@@ -43,19 +46,20 @@ export async function init(
   } = {};
 
   return {
-    updateFileInMemory(filePath: string, text: string | null) {
-      memoryReader.updateFile(filePath, text);
+    core: coreModule,
+    updateFileInMemory(absoluteFilePath: string, text: string | null) {
+      memoryReader.updateFile(absoluteFilePath, text);
     },
     async getWorkspace({
       versionCode,
       logLevel,
-      filePath,
+      absoluteFilePath,
     }: {
       versionCode: string;
       logLevel: LogLevel;
-      filePath: string;
+      absoluteFilePath: string;
     }) {
-      const rootDirPath = coreModule.findWorkspaceRoot(filePath);
+      const rootDirPath = coreModule.findWorkspaceRoot(absoluteFilePath);
       let workspace = workspaces[rootDirPath];
       if (workspace === undefined) {
         workspace = workspaces[rootDirPath] = await locking(async () => {

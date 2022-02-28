@@ -9,7 +9,7 @@ export function setState(newState: PreviewState) {
 }
 
 export interface PreviewState {
-  relativeFilePath: string;
+  absoluteFilePath: string;
   componentName: string;
   defaultPropsSource: string;
   customVariantPropsSource: string;
