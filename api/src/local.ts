@@ -23,7 +23,7 @@ export const UpdateState: Endpoint<Partial<PersistedState>, PersistedState> = {
 
 export const ComputeProps: Endpoint<
   {
-    absoluteFilePath: string;
+    filePath: string;
     componentName: string;
   },
   PreviewSources | null
