@@ -8,31 +8,26 @@ import { vue3FrameworkPlugin } from "@previewjs/plugin-vue3";
 import express from "express";
 import path from "path";
 import { analyzeFile } from "./actions/analyze-file";
-import { analyzeProject } from "./actions/analyze-project";
-import { AnalyzeFileEndpoint, AnalyzeProjectEndpoint } from "./api/endpoints";
+import { AnalyzeFileEndpoint } from "./api/endpoints";
 
-const setup: SetupPreviewEnvironment = async ({
-  rootDirPath,
-}): Promise<PreviewEnvironment | null> => {
-  return {
-    frameworkPluginFactories: [
-      reactFrameworkPlugin,
-      vue2FrameworkPlugin,
-      vue3FrameworkPlugin,
-    ],
-    middlewares: [express.static(path.join(__dirname, "../client/build"))],
-    onReady: async ({ router, workspace }) => {
-      router.onRequest(AnalyzeFileEndpoint, async ({ filePath }) => ({
-        components: await analyzeFile({
-          workspace,
-          filePath,
-        }),
-      }));
-      router.onRequest(AnalyzeProjectEndpoint, async ({ forceRefresh }) =>
-        analyzeProject(rootDirPath, { forceRefresh })
-      );
-    },
+const setup: SetupPreviewEnvironment =
+  async (): Promise<PreviewEnvironment | null> => {
+    return {
+      frameworkPluginFactories: [
+        reactFrameworkPlugin,
+        vue2FrameworkPlugin,
+        vue3FrameworkPlugin,
+      ],
+      middlewares: [express.static(path.join(__dirname, "../client/build"))],
+      onReady: async ({ router, workspace }) => {
+        router.onRequest(AnalyzeFileEndpoint, async ({ filePath }) => ({
+          components: await analyzeFile({
+            workspace,
+            filePath,
+          }),
+        }));
+      },
+    };
   };
-};
 
 export default setup;
