@@ -5,7 +5,6 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { ValidateLicenseTokenEndpoint } from "../networking/web-api";
 import { decodeLicense, encodeLicense } from "./license-encoding";
 import { ProState } from "./ProState";
-import { SidePanelState } from "./SidePanelState";
 
 const REVALIDATE_LICENSE_TOKEN_AFTER_MILLIS = 60 * 60 * 1000;
 
@@ -15,7 +14,6 @@ export class AppState {
 
   readonly preview: PreviewState;
   readonly pro: ProState;
-  readonly sidePanel: SidePanelState;
 
   constructor() {
     makeAutoObservable(this);
@@ -25,21 +23,9 @@ export class AppState {
       },
     });
     this.pro = new ProState(this.preview.localApi, this.preview.controller);
-    this.sidePanel = new SidePanelState(
-      this.preview.localApi,
-      () => this.pro.currentFile?.filePath || null,
-      (file) => {
-        this.preview.setComponent(
-          `${file.filePath}:${file.components[0]?.componentName}`
-        );
-      }
-    );
   }
 
   async start() {
-    if (!document.location.search) {
-      this.sidePanel.toggle();
-    }
     await this.preview.start();
     if (
       this.decodedLicense &&

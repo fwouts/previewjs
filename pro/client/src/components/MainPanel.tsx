@@ -1,10 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import {
-  faChevronLeft,
-  faChevronRight,
-  faStar,
-} from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Preview,
@@ -18,7 +14,6 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { AppState } from "../state/AppState";
 import { ComponentPicker } from "./ComponentPicker";
-import { SIDE_PANEL_EXPANDED_WIDTH_PX } from "./SidePanel";
 
 export const MainPanel = observer(({ state }: { state: AppState }) => {
   const width = useWindowWidth();
@@ -30,16 +25,6 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
           state.proEnabled
             ? [
                 <>
-                  <ToggleButton
-                    className="sidepanel-toggle"
-                    onClick={() => state.sidePanel.toggle()}
-                  >
-                    <FontAwesomeIcon
-                      icon={
-                        state.sidePanel.toggled ? faChevronLeft : faChevronRight
-                      }
-                    />
-                  </ToggleButton>
                   <SelectedFile
                     filePath={state.pro.currentFile?.filePath || ""}
                   />
@@ -87,9 +72,7 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
             />
           )
         }
-        width={
-          width - (state.sidePanel.toggled ? SIDE_PANEL_EXPANDED_WIDTH_PX : 0)
-        }
+        width={width}
       />
     </MainContainer>
   );

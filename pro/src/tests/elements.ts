@@ -9,26 +9,5 @@ export function elements(controller: AppController) {
         );
       },
     },
-
-    sidePanel: {
-      toggle: controller.element(".sidepanel-toggle"),
-      dir: {
-        get: (label: string) => {
-          return controller.element(
-            `xpath=//div[contains(@class, 'directory')][contains(., '${label}')]`
-          );
-        },
-      },
-      file: {
-        get: (label: string) => {
-          return controller.element(
-            `xpath=//div[contains(@class, 'file')][contains(., '${label}')]`
-          );
-        },
-        selected: () => {
-          return controller.element("#selected-file");
-        },
-      },
-    },
   };
 }
