@@ -116,8 +116,8 @@ export function virtualPlugin(options: {
       if (!moduleGraph) {
         return;
       }
-      const absoluteFilePath = path.relative(rootDirPath, context.file);
-      const absoluteFilePath = path.join(rootDirPath, absoluteFilePath);
+      const filePath = path.relative(rootDirPath, context.file);
+      const absoluteFilePath = path.join(rootDirPath, filePath);
       const entry = await reader.read(absoluteFilePath);
       if (!entry || entry.kind !== "file") {
         return;

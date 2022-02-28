@@ -102,9 +102,11 @@ export async function createWorkspace({
   );
   router.onRequest(
     localEndpoints.ComputeProps,
-    async ({ absoluteFilePath, componentName }) => {
+    async ({ filePath, componentName }) => {
       const component = (
-        await frameworkPlugin.detectComponents(typeAnalyzer, [absoluteFilePath])
+        await frameworkPlugin.detectComponents(typeAnalyzer, [
+          path.join(rootDirPath, filePath),
+        ])
       ).find((c) => c.name === componentName);
       if (!component) {
         return null;
@@ -139,6 +141,14 @@ export async function createWorkspace({
       },
       ...middlewares,
     ],
+    onFileChanged: (absoluteFilePath) => {
+      const filePath = path.relative(rootDirPath, absoluteFilePath);
+      for (const name of Object.keys(collected)) {
+        if (name.startsWith(`${filePath}:`)) {
+          delete collected[name];
+        }
+      }
+    },
   });
   const workspace: Workspace = {
     rootDirPath,
