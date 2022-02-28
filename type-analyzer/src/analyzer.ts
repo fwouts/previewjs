@@ -70,11 +70,11 @@ class TypeAnalyzer {
     );
   }
 
-  analyze(absoluteFilePaths: string[]) {
+  analyze(filePaths: string[]) {
     if (!this.service) {
       throw new Error(`TypeAnalyzer already disposed of`);
     }
-    this.entryPointFilePaths = absoluteFilePaths;
+    this.entryPointFilePaths = filePaths;
     const program = this.service.getProgram();
     if (!program) {
       throw new Error(`No program available.`);

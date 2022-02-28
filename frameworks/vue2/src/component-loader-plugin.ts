@@ -32,12 +32,12 @@ function generateComponentLoaderModule(
     componentName?: string;
   }
 ): string {
-  const absoluteFilePath = urlParams.get("p");
+  const filePath = urlParams.get("p");
   const componentName = urlParams.get("c");
-  if (absoluteFilePath === null || componentName === null) {
+  if (filePath === null || componentName === null) {
     throw new Error(`Invalid use of /render module`);
   }
-  const componentModuleId = `/${absoluteFilePath.replace(/\\/g, "/")}`;
+  const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
   return `import { sendMessageFromPreview } from '/__previewjs_internal__/messages';
 import { updateComponent } from '/__previewjs_internal__/update-component';
 
@@ -71,12 +71,12 @@ export async function update() {
   }
   const { Component, defaultProps, decorators } = await componentModulePromise.then((module) => {
     let Component = ${
-      absoluteFilePath.endsWith(".vue")
+      filePath.endsWith(".vue")
         ? `module.default`
         : `module["__previewjs__${componentName}"]`
     };
     if (!Component) {
-      throw new Error("No default component could be found in ${absoluteFilePath}");
+      throw new Error("No default component could be found in ${filePath}");
     }
     let defaultProps = {};
     let decorators = [];
@@ -150,7 +150,7 @@ export async function update() {
   });
   return {
     componentInfo: {
-      absoluteFilePath: ${JSON.stringify(absoluteFilePath)},
+      filePath: ${JSON.stringify(filePath)},
       componentName: ${JSON.stringify(componentName)},
       variants,
       Component: (h, props) => {
