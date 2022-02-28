@@ -2,7 +2,7 @@
 // in order to prevent the parent process from freezing.
 
 import { createWorkspace, loadPreviewEnv } from "@previewjs/core";
-import { createFileSystemReader } from "@previewjs/core/vfs";
+import { createFileSystemReader } from "@previewjs/vfs";
 import path from "path";
 import setupEnvironment from "../..";
 import { ProjectComponents } from "../analyze-project";
@@ -46,11 +46,10 @@ export async function analyzeProjectCore(
       exported: boolean;
     }>
   > = {};
-  const program = workspace.typescriptAnalyzer.analyze(absoluteFilePaths);
-  if (!program) {
-    return {};
-  }
-  const found = frameworkPlugin.componentDetector(program, absoluteFilePaths);
+  const found = await frameworkPlugin.detectComponents(
+    workspace.typeAnalyzer,
+    absoluteFilePaths
+  );
   for (const component of found) {
     const filePath = path.relative(rootDirPath, component.absoluteFilePath);
     const fileComponents = (components[filePath] ||= []);

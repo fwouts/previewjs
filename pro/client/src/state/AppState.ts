@@ -1,5 +1,5 @@
+import { localEndpoints } from "@previewjs/api";
 import { PreviewState } from "@previewjs/app/client/src/PreviewState";
-import { localEndpoints } from "@previewjs/core/api";
 import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ValidateLicenseTokenEndpoint } from "../networking/web-api";

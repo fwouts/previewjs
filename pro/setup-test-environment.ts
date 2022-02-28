@@ -1,5 +1,5 @@
+import { PersistedState } from "@previewjs/api";
 import { SetupPreviewEnvironment } from "@previewjs/core";
-import { PersistedState } from "@previewjs/core/api";
 import { encodeLicense } from "./client/src/state/license-encoding";
 import setupEnvironment from "./src";
 

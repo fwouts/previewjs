@@ -1,24 +1,30 @@
-import { declareEndpoint } from "@previewjs/core/api";
+import type { Endpoint } from "@previewjs/api";
 
-export const FetchUpgradeToProConfigEndpoint = declareEndpoint<
-  {},
-  UpgradeToProConfig
->("config/upgrade-to-pro");
+export const FetchUpgradeToProConfigEndpoint: Endpoint<{}, UpgradeToProConfig> =
+  {
+    path: "config/upgrade-to-pro",
+  };
 
-export const CreateLicenseTokenEndpoint = declareEndpoint<
+export const CreateLicenseTokenEndpoint: Endpoint<
   CreateLicenseTokenRequest,
   CreateLicenseTokenResponse
->("licenses/tokens/create");
+> = {
+  path: "licenses/tokens/create",
+};
 
-export const DeleteLicenseTokenEndpoint = declareEndpoint<
+export const DeleteLicenseTokenEndpoint: Endpoint<
   DeleteLicenseTokenRequest,
   DeleteLicenseTokenResponse
->("licenses/tokens/delete");
+> = {
+  path: "licenses/tokens/delete",
+};
 
-export const ValidateLicenseTokenEndpoint = declareEndpoint<
+export const ValidateLicenseTokenEndpoint: Endpoint<
   ValidateLicenseTokenRequest,
   ValidateLicenseTokenResponse
->("licenses/tokens/validate");
+> = {
+  path: "licenses/tokens/validate",
+};
 
 export interface UpgradeToProConfig {
   bodyHtml: string;

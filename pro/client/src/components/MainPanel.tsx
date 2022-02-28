@@ -41,7 +41,7 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
                     />
                   </ToggleButton>
                   <SelectedFile
-                    absoluteFilePath={state.pro.currentFile?.filePath || ""}
+                    filePath={state.pro.currentFile?.filePath || ""}
                   />
                   <AppVariant onClick={() => state.toggleProModal()}>
                     <ProIcon icon={faStar} />
@@ -54,9 +54,7 @@ export const MainPanel = observer(({ state }: { state: AppState }) => {
             : [
                 <>
                   <SelectedFile
-                    absoluteFilePath={
-                      state.preview.component?.details?.filePath || ""
-                    }
+                    filePath={state.preview.component?.details?.filePath || ""}
                   />
                   <AppVariant
                     $warning={!!state.proInvalidLicenseReason}

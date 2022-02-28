@@ -1,15 +1,17 @@
-import { declareEndpoint } from "@previewjs/core/api";
+import type { Endpoint } from "@previewjs/api";
 
-export const AnalyzeFileEndpoint = declareEndpoint<
+export const AnalyzeFileEndpoint: Endpoint<
   {
     filePath: string;
   },
   {
     components: Component[];
   }
->("analyze-file");
+> = {
+  path: "analyze-file",
+};
 
-export const AnalyzeProjectEndpoint = declareEndpoint<
+export const AnalyzeProjectEndpoint: Endpoint<
   {
     forceRefresh?: boolean;
   },
@@ -23,15 +25,19 @@ export const AnalyzeProjectEndpoint = declareEndpoint<
     >;
     cached: boolean;
   }
->("analyze-project");
+> = {
+  path: "analyze-project",
+};
 
-export const ComputePropsEndpoint = declareEndpoint<
+export const ComputePropsEndpoint: Endpoint<
   {
     filePath: string;
     componentName: string;
   },
   PreviewSources | null
->("compute-props");
+> = {
+  path: "compute-props",
+};
 
 export interface Component {
   filePath: string;
