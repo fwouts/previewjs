@@ -1,12 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-export const SelectedFile = ({
-  absoluteFilePath,
-}: {
-  absoluteFilePath: string;
-}) => {
-  const segments = absoluteFilePath.split(/[/\\]/);
+export const SelectedFile = ({ filePath }: { filePath: string }) => {
+  const segments = filePath.split(/[/\\]/);
   return (
     <Location>
       {segments.map((segment, i) => (

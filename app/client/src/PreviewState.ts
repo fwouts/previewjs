@@ -9,8 +9,8 @@ import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
 import {
-  absoluteFilePathFromComponentId,
   componentNameFromComponentId,
+  filePathFromComponentId,
 } from "./component-id";
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsoleLogsState } from "./components/ConsoleLogs";
@@ -32,7 +32,7 @@ export class PreviewState {
     /**
      * ID of the component, comprising of a file path and local component ID.
      *
-     * Follows the following format: <absoluteFilePath>:<file-relative id>
+     * Follows the following format: <filePath>:<file-relative id>
      *
      * For example, a component "Foo" in src/App.tsx will have the ID "src/App.tsx:Foo"
      */
@@ -60,7 +60,7 @@ export class PreviewState {
        * File path where the component is loaded from. This typically corresponds to the first part
        * of the component ID, but not necessarily (e.g. storybook stories in a different file).
        */
-      absoluteFilePath: string;
+      filePath: string;
 
       /**
        * Source of default props that should be passed to the component.
@@ -112,7 +112,7 @@ export class PreviewState {
 
   constructor(
     private readonly options: {
-      onFileChanged?: (absoluteFilePath: string | null) => Promise<void>;
+      onFileChanged?: (filePath: string | null) => Promise<void>;
     } = {}
   ) {
     this.localApi = new LocalApi("/api/");
@@ -301,12 +301,12 @@ export class PreviewState {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
-    const absoluteFilePath = absoluteFilePathFromComponentId(componentId);
+    const filePath = filePathFromComponentId(componentId);
     const nameFromPath = componentNameFromComponentId(componentId);
     if (this.options.onFileChanged) {
-      await this.options.onFileChanged(absoluteFilePath);
+      await this.options.onFileChanged(filePath);
     }
-    if (!absoluteFilePath || !nameFromPath) {
+    if (!filePath || !nameFromPath) {
       this.component = null;
       return;
     }
@@ -328,11 +328,11 @@ export class PreviewState {
         };
       });
       const sources = await this.localApi.request(localEndpoints.ComputeProps, {
-        absoluteFilePath,
+        filePath,
         componentName: name,
       });
       const details = {
-        absoluteFilePath,
+        filePath,
         componentName: name,
         defaultProps: sources?.defaultPropsSource || "{}",
         invocation:
@@ -350,7 +350,7 @@ export class PreviewState {
           name,
           variantKey,
           details: {
-            absoluteFilePath: details.absoluteFilePath,
+            filePath: details.filePath,
             variants: null,
             defaultProps: details.defaultProps,
             defaultInvocation: details.invocation,
@@ -370,7 +370,7 @@ export class PreviewState {
     this.consoleLogs.onClear();
     this.controller.loadComponent({
       componentName: this.component.name,
-      absoluteFilePath: this.component.details.absoluteFilePath,
+      filePath: this.component.details.filePath,
       variantKey: this.component.variantKey,
       customVariantPropsSource: this.component.details.invocation,
       defaultPropsSource: this.component.details.defaultProps,

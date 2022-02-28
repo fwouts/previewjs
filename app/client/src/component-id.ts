@@ -1,4 +1,4 @@
-export function absoluteFilePathFromComponentId(componentId: string) {
+export function filePathFromComponentId(componentId: string) {
   const colonPosition = componentId.lastIndexOf(":");
   if (colonPosition === -1) {
     return componentId;

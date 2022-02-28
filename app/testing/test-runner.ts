@@ -248,7 +248,7 @@ class TestRunner {
 export interface AppDir {
   rootPath: string;
   update(
-    absoluteFilePath: string,
+    filePath: string,
     content:
       | {
           kind: "edit";
@@ -263,5 +263,5 @@ export interface AppDir {
       inMemoryOnly?: boolean;
     }
   ): Promise<void>;
-  remove(absoluteFilePath: string): Promise<void>;
+  remove(filePath: string): Promise<void>;
 }
