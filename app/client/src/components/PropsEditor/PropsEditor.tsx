@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { faUndo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Editor, {
@@ -151,14 +150,15 @@ const UnconnectedPropsEditor = ({
   );
   return (
     <>
-      <FloatingRefreshButton
+      <button
         id="editor-refresh-button"
+        className="absolute bottom-0 left-0 m-2 p-2 bg-gray-500 bg-opacity-40 text-white rounded-md z-50 cursor-pointer disabled:bg-opacity-25 disabled:text-gray-500"
         title="Reset properties"
         disabled={!onReset}
         onClick={onReset}
       >
         <FontAwesomeIcon icon={faUndo} />
-      </FloatingRefreshButton>
+      </button>
       <Editor
         width={width}
         height={height}
@@ -196,24 +196,3 @@ const UnconnectedPropsEditor = ({
     </>
   );
 };
-
-export const FloatingRefreshButton = styled.button`
-  position: absolute;
-  bottom: 0;
-  z-index: 100;
-  background: hsla(213, 100%, 80%, 0.4);
-  color: #fff;
-  border-radius: 8px;
-  padding: 8px;
-  width: 32px;
-  height: 32px;
-  margin: 8px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-
-  &:disabled {
-    background: hsla(213, 20%, 60%, 0.1);
-    color: #666;
-  }
-`;
