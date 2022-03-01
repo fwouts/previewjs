@@ -1,8 +1,7 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Variant } from "@previewjs/core/controller";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { PreviewState } from "..";
@@ -39,20 +38,32 @@ const UnconnectedSelectedComponent = ({
 }) => {
   const variants = allVariants?.filter((v) => !v.isEditorDriven);
   return (
-    <Container onClick={onClick}>
-      <ComponentLabel id="component-label">{label}</ComponentLabel>
+    <div
+      className="inline-flex items-center cursor-pointer rounded-full overflow-hidden px-2 border-2 border-gray-500 bg-gray-800 text-gray-200"
+      onClick={onClick}
+    >
+      <span id="component-label" className="m-2 font-bold">
+        {label}
+      </span>
       {!variants ? (
-        <ComponentSpinnerIcon icon={faSpinner} spin />
+        <FontAwesomeIcon className="mr-2 animate-spin" icon={faSpinner} />
       ) : (
         variants.length > 0 && (
-          <VariantList id="variant-list">
+          <div
+            id="variant-list"
+            className="bg-gray-800 inline-flex items-center"
+          >
             {variants.map((v) => {
               const selected = currentVariantKey === v.key;
               return (
-                <VariantItem
+                <div
                   key={v.key}
-                  $selected={selected}
-                  className="variant"
+                  className={clsx([
+                    "variant mx-2 py-2 font-extralight",
+                    selected
+                      ? "text-blue-50 underline underline-offset-4"
+                      : "text-gray-400 hover:text-blue-100",
+                  ])}
                   id={selected ? "selected-variant" : undefined}
                   onClick={(e) => {
                     onVariantSelected(v.key);
@@ -60,64 +71,12 @@ const UnconnectedSelectedComponent = ({
                   }}
                 >
                   {v.label}
-                </VariantItem>
+                </div>
               );
             })}
-          </VariantList>
+          </div>
         )
       )}
-    </Container>
+    </div>
   );
 };
-
-const Container = styled.div`
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 16px;
-  margin-right: 8px;
-  color: hsl(213, 20%, 70%);
-  font-size: 1rem;
-  background: hsl(213, 60%, 95%);
-  color: hsl(213, 60%, 30%);
-  user-select: none;
-`;
-
-const ComponentSpinnerIcon = styled(FontAwesomeIcon)`
-  color: hsl(213, 60%, 20%);
-  margin-left: 8px;
-`;
-
-const ComponentLabel = styled.div`
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 0;
-`;
-
-const VariantList = styled.div`
-  display: inline-flex;
-  margin-left: 8px;
-  margin-right: -4px;
-  border-radius: 16px;
-  background: hsl(213, 40%, 80%);
-`;
-
-const VariantItem = styled.div<{ $selected?: boolean }>`
-  cursor: pointer;
-  padding: 3px 8px 1px 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: hsl(213, 40%, 50%);
-  ${({ $selected }) =>
-    $selected &&
-    css`
-      color: hsl(213, 80%, 10%);
-    `}
-  &:hover {
-    ${({ $selected }) =>
-      !$selected &&
-      css`
-        color: hsl(213, 60%, 30%);
-      `}
-`;

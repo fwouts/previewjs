@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -8,22 +7,13 @@ import { ActionLogsState } from "./ActionLogsState";
 
 export const ActionLogs = observer(({ state }: { state: ActionLogsState }) => {
   return (
-    <ActionLogsBox>
+    <div className="absolute overflow-hidden bottom-0 right-0 z-50">
       {state.logs.map((action) => (
         <ActionLog {...action} key={action.key} />
       ))}
-    </ActionLogsBox>
+    </div>
   );
 });
-
-const ActionLogsBox = styled.div`
-  position: absolute;
-  overflow: hidden;
-  bottom: 0;
-  right: 0;
-  z-index: 1000;
-  overflow: hidden;
-`;
 
 const ActionLog = (props: ActionLogProps) => {
   return (
@@ -37,7 +27,7 @@ const ActionLog = (props: ActionLogProps) => {
         initial={{ x: "100%", marginBottom: -100 }}
         transition={{ type: "tween" }}
       >
-        <ActionLogBox className="action-log">
+        <div className="action-log bg-blue-700 text-blue-100 bg-opacity-40 p-2 m-2 border-2 border-blue-300">
           {props.action.type === "fn" ? (
             <>
               Function prop invoked: <b>{props.action.path}</b>
@@ -45,27 +35,12 @@ const ActionLog = (props: ActionLogProps) => {
           ) : (
             <>
               Redirect prevented:{" "}
-              <ColoredLink href={props.action.path}>
-                {props.action.path}
-              </ColoredLink>
+              <Link href={props.action.path}>{props.action.path}</Link>
             </>
           )}
           {props.count > 1 && ` (x${props.count})`}
-        </ActionLogBox>
+        </div>
       </motion.div>
     </motion.div>
   );
 };
-
-const ActionLogBox = styled.div`
-  background: #fff;
-  border: 2px solid #6998f7;
-  border-radius: 8px;
-  padding: 8px;
-  margin: 8px;
-  animation-fill-mode: forwards;
-`;
-
-const ColoredLink = styled(Link)`
-  color: hsl(213, 100%, 10%);
-`;

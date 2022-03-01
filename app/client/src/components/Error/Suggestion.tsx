@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -27,37 +26,14 @@ export const Suggestion = ({ errorMessage }: { errorMessage?: string }) => {
     }
   }
   return advice ? (
-    <Container id="suggestion">
+    <div id="suggestion">
       {documentationUrl ? (
-        <SuggestionLink id="suggestion-link" href={documentationUrl}>
+        <Link id="suggestion-link" href={documentationUrl}>
           <FontAwesomeIcon icon={faExternalLinkAlt} /> {advice}
-        </SuggestionLink>
+        </Link>
       ) : (
-        <SuggestionText id="suggestion-text">{advice}</SuggestionText>
+        <div id="suggestion-text">{advice}</div>
       )}
-    </Container>
+    </div>
   ) : null;
 };
-
-const Container = styled.div`
-  display: inline-block;
-  font-size: 0.8rem;
-  border-radius: 8px;
-  padding: 8px;
-  background: hsl(0, 40%, 85%);
-  color: hsl(0, 80%, 20%);
-  margin-top: 8px;
-`;
-
-const SuggestionLink = styled(Link)`
-  text-decoration: none;
-  color: hsl(45, 70%, 10%);
-
-  &:hover {
-    color: hsl(45, 70%, 10%);
-  }
-`;
-
-const SuggestionText = styled.div`
-  color: hsl(45, 100%, 10%);
-`;
