@@ -1,5 +1,6 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 import { ErrorState } from "./ErrorState";
@@ -23,54 +24,31 @@ export const Error = observer(({ state }: { state: ErrorState }) => {
     return null;
   }
   return (
-    <Container $expandable={!!state.error.details} onClick={onToggle}>
-      <ErrorTitle id="error-title">{state.error.title}</ErrorTitle>
+    <div
+      className={clsx([
+        "flex flex-col min-h-0 bg-red-300 text-red-900 text-xs p-2",
+        state.error.details && "cursor-pointer",
+      ])}
+      onClick={onToggle}
+    >
+      <code id="error-title" className="whitespace-pre-wrap font-bold">
+        {state.error.title}
+      </code>
       {expanded ? (
-        <ErrorDetails id="error-details">{state.error.details}</ErrorDetails>
+        <code
+          id="error-details"
+          className="whitespace-pre-wrap overflow-x-hidden overflow-y-auto max-h-48"
+        >
+          {state.error.details}
+        </code>
       ) : (
-        state.error.details && <ClickToExpand>Click to expand</ClickToExpand>
+        state.error.details && (
+          <button className="self-start opacity-60">
+            <FontAwesomeIcon icon={faAngleRight} /> Click to expand
+          </button>
+        )
       )}
       <Suggestion errorMessage={state.error.title} />
-    </Container>
+    </div>
   );
 });
-
-const Container = styled.div<{ $expandable: boolean }>`
-  display: flex;
-  flex-direction: column;
-  background: hsl(0, 50%, 80%);
-  color: hsl(0, 80%, 20%);
-  padding: 8px;
-  min-height: 0;
-  ${({ $expandable }) =>
-    $expandable &&
-    css`
-      cursor: pointer;
-    `}
-`;
-
-const ErrorBase = styled.pre`
-  display: block;
-  margin: 0;
-  white-space: pre-wrap;
-`;
-
-const ErrorTitle = styled(ErrorBase)`
-  font-weight: 600;
-`;
-
-const ClickToExpand = styled.div`
-  font-size: 0.7rem;
-  font-weight: 200;
-  margin-top: 8px;
-
-  &::before {
-    content: "> ";
-  }
-`;
-
-const ErrorDetails = styled(ErrorBase)`
-  overflow-x: hidden;
-  overflow-y: auto;
-  max-height: 200px;
-`;

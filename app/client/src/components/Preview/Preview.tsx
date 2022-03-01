@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
@@ -32,16 +31,19 @@ export const Preview = observer(
 
     if (!state.reachable) {
       return (
-        <Fullscreen>
-          <AppError id="app-error">
+        <div className="h-screen bg-gray-700 text-gray-100 p-2 grid place-items-center text-lg">
+          <div
+            id="app-error"
+            className="p-4 rounded-lg text-red-800 bg-red-50 filter drop-shadow-lg"
+          >
             Server disconnected. Is Preview.js still running?
-          </AppError>
-        </Fullscreen>
+          </div>
+        </div>
       );
     }
 
     return (
-      <Container>
+      <div className="flex flex-col h-screen overflow-hidden">
         <ActionLogs state={state.actionLogs} />
         <Header>
           {header?.map((h, i) => (
@@ -50,11 +52,14 @@ export const Preview = observer(
         </Header>
         {subheader}
         {state.component ? (
-          <Iframe ref={iframeRef} src="/preview/" />
+          <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
         ) : (
-          <NoSelection id="no-selection">
+          <div
+            id="no-selection"
+            className="flex-grow bg-gray-700 text-gray-100 p-2 grid place-items-center text-lg"
+          >
             Please select a component to preview.
-          </NoSelection>
+          </div>
         )}
         <Error state={state.error} />
         <BottomPanel
@@ -84,44 +89,7 @@ export const Preview = observer(
           ]}
           height={panelHeight}
         />
-      </Container>
+      </div>
     );
   }
 );
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-`;
-
-const Fullscreen = styled.div`
-  background: hsl(213, 70%, 82%);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  height: 100vh;
-`;
-
-const AppError = styled.div`
-  box-shadow: 0 2px 4px 0 hsla(213, 20%, 70%, 0.2);
-  border-radius: 8px;
-  background: #fff;
-  padding: 8px;
-  color: hsl(0, 60%, 40%);
-`;
-
-const Iframe = styled.iframe`
-  border: none;
-  flex-grow: 1;
-`;
-
-const NoSelection = styled.div`
-  padding: 8px;
-  flex-grow: 1;
-  background: hsl(213, 90%, 10%);
-  color: hsl(213, 20%, 80%);
-`;
