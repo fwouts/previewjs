@@ -20,12 +20,6 @@ export const UpdateBanner = ({
     },
     [onDismiss]
   );
-  update = {
-    available: true,
-    bannerMessage: "Please update",
-    required: false,
-    url: "https://www.google.com",
-  };
   if (!update?.available) {
     return null;
   }
