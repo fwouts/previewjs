@@ -26,7 +26,7 @@ export const Error = observer(({ state }: { state: ErrorState }) => {
   return (
     <div
       className={clsx([
-        "flex flex-col min-h-0 bg-red-300 text-red-900 text-sm p-2",
+        "flex flex-col min-h-0 bg-red-300 text-red-900 text-xs p-2",
         state.error.details && "cursor-pointer",
       ])}
       onClick={onToggle}
@@ -44,8 +44,7 @@ export const Error = observer(({ state }: { state: ErrorState }) => {
       ) : (
         state.error.details && (
           <button className="self-start opacity-60">
-            <FontAwesomeIcon icon={faAngleRight} />
-            <span className="text-sm"> Click to expand</span>
+            <FontAwesomeIcon icon={faAngleRight} /> Click to expand
           </button>
         )
       )}

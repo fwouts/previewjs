@@ -24,7 +24,7 @@ export const ConsoleLogs = observer(
           {state.logs.map((log, i) => (
             <code
               className={clsx([
-                "p-2 text-sm whitespace-pre-wrap",
+                "p-2 text-xs whitespace-pre-wrap",
                 log.level === "log" && "bg-blue-50 text-blue-400",
                 log.level === "warn" && "bg-orange-50 text-orange-400",
                 log.level === "error" && "bg-red-50 text-red-600",
