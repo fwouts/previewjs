@@ -39,10 +39,10 @@ const UnconnectedSelectedComponent = ({
   const variants = allVariants?.filter((v) => !v.isEditorDriven);
   return (
     <div
-      className="inline-flex items-center cursor-pointer rounded-full overflow-hidden border-2 border-gray-500 bg-gray-800 text-gray-200"
+      className="inline-flex items-center cursor-pointer rounded-full overflow-hidden px-2 border-2 border-gray-500 bg-gray-800 text-gray-200"
       onClick={onClick}
     >
-      <span id="component-label" className="p-2">
+      <span id="component-label" className="m-2 font-bold">
         {label}
       </span>
       {!variants ? (
@@ -59,10 +59,10 @@ const UnconnectedSelectedComponent = ({
                 <div
                   key={v.key}
                   className={clsx([
-                    "variant p-2",
+                    "variant mx-2 py-2 font-extralight",
                     selected
-                      ? "bg-blue-600 text-blue-50"
-                      : "text-gray-400 hover:bg-blue-700 hover:text-blue-100",
+                      ? "text-blue-50 underline underline-offset-4"
+                      : "text-gray-400 hover:text-blue-100",
                   ])}
                   id={selected ? "selected-variant" : undefined}
                   onClick={(e) => {
