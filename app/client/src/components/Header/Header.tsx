@@ -1,16 +1,10 @@
-import styled from "@emotion/styled";
+const Container: React.FC = ({ children }) => (
+  <div className="text-sm bg-gray-900 filter drop-shadow">{children}</div>
+);
 
-const Container = styled.div`
-  font-size: 0.9rem;
-  background: hsl(213, 60%, 20%);
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 8px;
-`;
+const Row: React.FC = ({ children }) => (
+  <div className="flex flex-row items-center m-2">{children}</div>
+);
 
 export const Header = Container as typeof Container & { Row: typeof Row };
 Header.Row = Row;
