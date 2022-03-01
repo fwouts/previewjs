@@ -2,7 +2,7 @@ import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import {
   faAngleDown,
   faAngleUp,
-  faWindowMaximize,
+  faExternalLinkAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
@@ -66,7 +66,7 @@ export const BottomPanel = ({
           target="_blank"
           title="Open in browser"
         >
-          <FontAwesomeIcon icon={faWindowMaximize} />
+          <FontAwesomeIcon icon={faExternalLinkAlt} className="text-base" />
         </IconLink>
         <IconLink
           href="https://github.com/fwouts/previewjs"
