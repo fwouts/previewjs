@@ -35,7 +35,10 @@ export const Error = observer(({ state }: { state: ErrorState }) => {
         {state.error.title}
       </code>
       {expanded ? (
-        <code id="error-details" className="whitespace-pre-wrap">
+        <code
+          id="error-details"
+          className="whitespace-pre-wrap overflow-x-hidden overflow-y-auto max-h-48"
+        >
           {state.error.details}
         </code>
       ) : (
