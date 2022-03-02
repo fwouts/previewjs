@@ -470,8 +470,6 @@ importers:
 
   pro:
     specifiers:
-      '@emotion/react': ^11.5.0
-      '@emotion/styled': ^11.3.0
       '@fortawesome/fontawesome-svg-core': ^1.2.36
       '@fortawesome/free-solid-svg-icons': ^5.15.4
       '@fortawesome/react-fontawesome': ^0.1.15
@@ -491,6 +489,8 @@ importers:
       '@types/react-dom': ^17.0.9
       '@vitejs/plugin-react': ^1.0.1
       assert-never: ^1.2.1
+      autoprefixer: ^10.4.2
+      clsx: ^1.1.1
       cross-env: ^7.0.3
       env-paths: ^2
       eslint: ^8.5.0
@@ -498,16 +498,16 @@ importers:
       fs-extra: ^10.0.0
       mobx: ^6.3.10
       mobx-react-lite: ^3.2.3
+      postcss: ^8.4.4
       prettier: ^2.5.1
       react: ^17.0.2
       react-dom: ^17.0.2
       rimraf: ^3.0.2
+      tailwindcss: ^3.0.23
       typescript: ^4.5.4
       vite: ^2.7.9
       vite-plugin-svgr: ^0.6.0
     dependencies:
-      '@emotion/react': 11.8.1_a0c521d4794c7ad97f5f4c1c4a7d5818
-      '@emotion/styled': 11.8.1_d24c5a2cd50724e2cbcff1306f0cc72d
       '@fortawesome/fontawesome-svg-core': 1.2.36
       '@fortawesome/free-solid-svg-icons': 5.15.4
       '@fortawesome/react-fontawesome': 0.1.16_f515edce028694561ceb456e3dba224c
@@ -520,6 +520,7 @@ importers:
       '@react-hook/window-size': 3.0.7_react@17.0.2
       '@vitejs/plugin-react': 1.2.0
       assert-never: 1.2.1
+      clsx: 1.1.1
       env-paths: 2.2.1
       eslint: 8.10.0
       express: 4.17.3
@@ -536,12 +537,15 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
+      autoprefixer: 10.4.2_postcss@8.4.6
       cross-env: 7.0.3
+      postcss: 8.4.6
       prettier: 2.5.1
       rimraf: 3.0.2
+      tailwindcss: 3.0.23_c940fbabf228b85b1c73d314b43e31f1
       typescript: 4.5.5
-      vite: 2.8.4
-      vite-plugin-svgr: 0.6.0_vite@2.8.4
+      vite: 2.8.5
+      vite-plugin-svgr: 0.6.0_vite@2.8.5
 
   smoke-test-apps/aliases:
     specifiers:
@@ -23123,7 +23127,7 @@ packages:
       postcss: ^8.2.14
     dependencies:
       postcss: 8.4.6
-      postcss-selector-parser: 6.0.8
+      postcss-selector-parser: 6.0.9
     dev: true
 
   /postcss-nesting/7.0.1:
@@ -28573,13 +28577,13 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/0.6.0_vite@2.8.4:
+  /vite-plugin-svgr/0.6.0_vite@2.8.5:
     resolution: {integrity: sha512-+9eiWLzdlLK3ktnO7gzazMmR/KJyXTy7z6GeRbhv5HKEOFjLdNk3eB0qJaSpzJC3dr2pKWml0jAmxH7O6CcQtg==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.1.2
-      vite: 2.8.4
+      vite: 2.8.5
     transitivePeerDependencies:
       - supports-color
     dev: true
