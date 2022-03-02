@@ -70,7 +70,12 @@ export const ComponentPicker = observer(
             </button>
           );
         })}
-        {loading && <FontAwesomeIcon icon={faSpinner} spin />}
+        {loading && (
+          <FontAwesomeIcon
+            icon={faSpinner}
+            className="text-gray-300 animate-spin"
+          />
+        )}
       </div>
     );
   }
