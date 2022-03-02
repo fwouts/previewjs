@@ -8,7 +8,7 @@ import { ReactComponent as LogoSvg } from "../../../../../assets/logo.svg";
 export const VersionInfo = observer(({ state }: { state: PreviewState }) => {
   return (
     <Link
-      className="inline-flex items-center whitespace-nowrap text-blue-100"
+      className="inline-flex items-center whitespace-nowrap text-blue-100 ml-2"
       target="_blank"
       href="https://github.com/fwouts/previewjs/releases"
     >
