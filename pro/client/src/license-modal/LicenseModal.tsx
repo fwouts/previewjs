@@ -1,9 +1,8 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 import { faCheckCircle, faFan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@previewjs/app/client/src/components";
 import assertNever from "assert-never";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useMemo } from "react";
 import { AppState } from "../state/AppState";
@@ -17,53 +16,70 @@ export const LicenseModal = observer(({ state }: { state: AppState }) => {
     state.toggleProModal();
   }, [state]);
   return (
-    <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <ModalTitle>Preview.js Pro</ModalTitle>
-        <ModalBody>
+    <div
+      className="fixed inset-0 w-screen h-screen grid place-items-center z-50 bg-gray-700 bg-opacity-50 filter backdrop-blur"
+      onClick={onClose}
+    >
+      <div
+        className="bg-gray-50 rounded-md filter drop-shadow m-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h1 className="font-extrabold uppercase text-gray-800 text-sm mx-4 my-3">
+          Preview.js Pro
+        </h1>
+        <div className="m-4">
           {(() => {
             const screen = licenseState.screen;
             if (screen.loading) {
               return (
-                <CenteredContainer>
-                  <Icon icon={faFan} spin />
-                </CenteredContainer>
+                <div className="grid place-items-center my-12 mx-24">
+                  <FontAwesomeIcon
+                    icon={faFan}
+                    className="text-gray-700 text-6xl animate-spin"
+                  />
+                </div>
               );
             }
             switch (screen.kind) {
               case "welcome":
                 return (
                   <>
-                    <ModalText
+                    <div
+                      className="license-modal-body"
                       dangerouslySetInnerHTML={{
                         __html: screen.config.bodyHtml,
                       }}
                     />
-                    <ModalRow>
-                      <ModalLink
-                        $style="cta"
+                    <ActionsContainer>
+                      <Link
+                        className={clsx([buttonBase, buttonCta])}
                         href="https://previewjs.com/upgrade"
                       >
                         {screen.config.buttons.cta}
-                      </ModalLink>
-                      <ModalButton
+                      </Link>
+                      <button
+                        className={clsx([buttonBase, buttonDefault])}
                         onClick={() => licenseState.switchToEnterKey()}
                       >
                         {screen.config.buttons.enter}
-                      </ModalButton>
-                    </ModalRow>
+                      </button>
+                    </ActionsContainer>
                   </>
                 );
               case "enter-key":
                 if (screen.success) {
                   return (
-                    <CenteredContainer>
-                      <Icon icon={faCheckCircle} />
-                    </CenteredContainer>
+                    <div className="grid place-items-center my-12 mx-24">
+                      <FontAwesomeIcon
+                        icon={faCheckCircle}
+                        className="text-green-700 text-6xl"
+                      />
+                    </div>
                   );
                 }
                 return (
                   <form
+                    className="flex flex-col"
                     onSubmit={(e) => {
                       screen.submit();
                       e.preventDefault();
@@ -72,8 +88,9 @@ export const LicenseModal = observer(({ state }: { state: AppState }) => {
                     <label htmlFor="license-key-input">
                       Enter your license key:
                     </label>
-                    <ModalInput
+                    <input
                       id="license-key-input"
+                      className="rounded-md font-mono p-2 mt-2 mb-4 font-semibold w-96 outline-none border-2 border-blue-100 focus:border-blue-500"
                       autoFocus
                       autoComplete="off"
                       required
@@ -83,28 +100,38 @@ export const LicenseModal = observer(({ state }: { state: AppState }) => {
                         screen.updateLicenseKey(event.target.value)
                       }
                     />
-                    {screen.error && <Error>{screen.error}</Error>}
-                    <ModalRow>
-                      <ModalButton
+                    {screen.error && (
+                      <div className="bg-red-300 text-red-800 rounded p-2 mb-4">
+                        {screen.error}
+                      </div>
+                    )}
+                    <ActionsContainer>
+                      <button
+                        className={clsx([buttonBase, buttonDefault])}
                         onClick={() => licenseState.switchToWelcome()}
                       >
                         Go back
-                      </ModalButton>
-                      <ModalSubmit type="submit" value="Confirm" $style="cta" />
-                    </ModalRow>
+                      </button>
+                      <input
+                        className={clsx([buttonBase, buttonCta])}
+                        type="submit"
+                        value="Confirm"
+                      />
+                    </ActionsContainer>
                   </form>
                 );
               case "revoke-token":
                 return (
-                  <>
+                  <div className="license-modal-body">
                     <p>There are too many devices using this license key.</p>
                     <p>Pick unused devices to revoke access:</p>
-                    <ModalList>
+                    <ul className="mb-4">
                       {screen.existingTokens.map((t) => (
                         <li key={t.lastActiveTimestamp}>
                           <label>
                             <input
                               type="checkbox"
+                              className="mr-2"
                               onChange={(e) =>
                                 screen.toggleTokenForDeletion(
                                   t,
@@ -117,21 +144,25 @@ export const LicenseModal = observer(({ state }: { state: AppState }) => {
                           </label>
                         </li>
                       ))}
-                    </ModalList>
-                    {screen.error && <Error>{screen.error}</Error>}
-                    <ModalRow>
-                      <ModalButton
-                        $style="cta"
+                    </ul>
+                    {screen.error && (
+                      <div className="bg-red-300 text-red-800 rounded p-2 my-4">
+                        {screen.error}
+                      </div>
+                    )}
+                    <ActionsContainer>
+                      <button
+                        className={clsx([buttonBase, buttonCta])}
                         onClick={() => screen.confirm()}
                       >
                         Confirm
-                      </ModalButton>
-                    </ModalRow>
-                  </>
+                      </button>
+                    </ActionsContainer>
+                  </div>
                 );
               case "license-state":
                 return (
-                  <>
+                  <div className="license-modal-body">
                     <p>
                       License key:
                       <br />
@@ -151,176 +182,43 @@ export const LicenseModal = observer(({ state }: { state: AppState }) => {
                       ).toLocaleString()}
                       )
                     </p>
-                    <ModalRow>
-                      <ModalButton onClick={onClose}>Close</ModalButton>
-                      <ModalButton
-                        $style="cta"
+                    <ActionsContainer>
+                      <button
+                        className={clsx([buttonBase, buttonDefault])}
+                        onClick={onClose}
+                      >
+                        Close
+                      </button>
+                      <button
+                        className={clsx([buttonBase, buttonCta])}
                         onClick={() => screen.refresh()}
                       >
                         Refresh
-                      </ModalButton>
-                      <ModalButton
-                        $style="danger"
+                      </button>
+                      <button
+                        className={clsx([buttonBase, buttonDanger])}
                         onClick={() => screen.unlink()}
                       >
                         Unlink this device
-                      </ModalButton>
-                    </ModalRow>
-                  </>
+                      </button>
+                    </ActionsContainer>
+                  </div>
                 );
               default:
                 throw assertNever(screen);
             }
           })()}
-        </ModalBody>
-      </ModalContent>
-    </ModalOverlay>
+        </div>
+      </div>
+    </div>
   );
 });
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: hsla(213, 20%, 20%, 50%);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(2px);
-`;
+const buttonBase = "mx-2 py-2 px-4 rounded border-2 cursor-pointer";
+const buttonCta = "border-green-700 text-green-700 hover:text-green-800";
+const buttonDanger = "border-orange-500 text-orange-500 hover:text-orange-600";
+const buttonDefault = "border-transparent text-gray-700 hover:text-gray-800";
 
-const ModalContent = styled.div`
-  background: hsl(213, 100%, 100%);
-  border-radius: 6px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  margin: 16px;
-`;
-
-const ModalTitle = styled.h3`
-  font-weight: 400;
-  color: hsl(213, 60%, 20%);
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  margin: 12px 16px;
-`;
-
-const ModalBody = styled.div`
-  margin: 16px;
-
-  p {
-    margin-bottom: 16px;
-  }
-`;
-
-const ModalText = styled.div``;
-
-const CenteredContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48px 96px;
-`;
-
-const Icon = styled(FontAwesomeIcon)`
-  color: hsl(213, 60%, 60%);
-  font-size: 4rem;
-`;
-
-const Error = styled.p`
-  background: hsl(0, 50%, 80%);
-  color: hsl(0, 70%, 30%);
-  padding: 8px;
-  border-radius: 8px;
-  margin: 8px 0;
-`;
-
-const ModalInput = styled.input`
-  display: block;
-  border-radius: 4px;
-  border: 2px solid transparent;
-  background: hsl(213, 20%, 90%);
-  margin: 8px 0 16px 0;
-  padding: 8px;
-  outline: none;
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-  font-weight: 600;
-  font-size: 1rem;
-  width: 30rem;
-
-  &:focus {
-    border: 2px solid hsl(213, 40%, 60%);
-  }
-`;
-
-const ModalRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
-
-const ModalList = styled.ul`
-  list-style: none;
-  margin: 0;
-  margin-bottom: 16px;
-  padding: 0;
-
-  > li {
-    margin: 0;
-  }
-`;
-
-const ButtonStyle = ({ $style }: ButtonStyleProps) => css`
-  ${$style === "cta"
-    ? css`
-        border: 1.5px solid hsl(160, 60%, 35%);
-        color: hsl(160, 60%, 35%);
-
-        &:hover {
-          color: hsl(160, 70%, 20%);
-          background: hsl(160, 70%, 80%);
-        }
-      `
-    : $style === "danger"
-    ? css`
-        border: 1.5px solid hsl(25, 60%, 55%);
-        color: hsl(25, 60%, 55%);
-
-        &:hover {
-          color: hsl(25, 70%, 30%);
-          background: hsl(25, 70%, 80%);
-        }
-      `
-    : css`
-        border: none;
-        color: hsl(213, 30%, 40%);
-
-        &:hover {
-          color: hsl(213, 60%, 20%);
-        }
-      `}
-
-  background: none;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 1rem;
-  margin: 0 8px;
-  padding: 8px 16px;
-  text-decoration: none;
-`;
-
-interface ButtonStyleProps {
-  $style?: "cta" | "danger";
-}
-
-const ModalButton = styled.a<ButtonStyleProps>(ButtonStyle);
-
-const ModalSubmit = styled.input<ButtonStyleProps>(ButtonStyle);
-
-const ModalLink = styled(Link)<ButtonStyleProps>(ButtonStyle);
+const ActionsContainer: React.FC = ({ children }) => (
+  <div className="flex flex-row justify-center">{children}</div>
+);

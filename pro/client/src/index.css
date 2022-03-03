@@ -5,3 +5,7 @@
 .scrollbar-hidden::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+.license-modal-body p {
+  @apply mb-4;
+}
