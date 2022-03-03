@@ -46,7 +46,7 @@ export const Preview = observer(
       <div className="flex flex-col h-screen overflow-hidden">
         <ActionLogs state={state.actionLogs} />
         <Header>
-          {header?.map((h, i) => (
+          {header?.filter(Boolean).map((h, i) => (
             <Header.Row key={i}>{h}</Header.Row>
           ))}
         </Header>
