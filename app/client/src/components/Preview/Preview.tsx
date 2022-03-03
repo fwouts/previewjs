@@ -17,7 +17,7 @@ export const Preview = observer(
     width,
   }: {
     state: PreviewState;
-    header?: React.ReactNodeArray;
+    header?: React.ReactNode[];
     subheader?: React.ReactNode;
     width?: number;
   }) => {
