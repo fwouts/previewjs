@@ -40,15 +40,7 @@ const App = observer(() => (
           ]
         : []),
     ]}
-    subheader={
-      state.persistedState && (
-        <UpdateBanner
-          update={state.checkVersionResponse?.update}
-          dismissedAt={state.persistedState?.updateDismissed?.timestamp}
-          onDismiss={() => state.onUpdateDismissed()}
-        />
-      )
-    }
+    subheader={<UpdateBanner state={state} />}
   />
 ));
 

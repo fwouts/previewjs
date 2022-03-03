@@ -1,28 +1,21 @@
-import { webEndpoints } from "@previewjs/api";
 import clsx from "clsx";
 import React, { useCallback } from "react";
-import { Link } from "..";
+import { Link, PreviewState } from "..";
 
-export const UpdateBanner = ({
-  update,
-  dismissedAt,
-  onDismiss,
-}: {
-  update?: webEndpoints.UpdateAvailability;
-  dismissedAt?: number;
-  onDismiss(): void;
-}) => {
+export const UpdateBanner = ({ state }: { state: PreviewState }) => {
   const dismiss = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
       e.preventDefault();
-      onDismiss();
+      state.onUpdateDismissed();
     },
-    [onDismiss]
+    [state.onUpdateDismissed]
   );
-  if (!update?.available) {
+  const update = state.checkVersionResponse?.update;
+  if (!update?.available || !state.persistedState) {
     return null;
   }
+  const dismissedAt = state.persistedState.updateDismissed?.timestamp;
   if (
     !update.required &&
     dismissedAt &&
