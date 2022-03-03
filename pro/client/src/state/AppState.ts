@@ -4,7 +4,6 @@ import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ValidateLicenseTokenEndpoint } from "../networking/web-api";
 import { decodeLicense, encodeLicense } from "./license-encoding";
-import { ProState } from "./ProState";
 
 const REVALIDATE_LICENSE_TOKEN_AFTER_MILLIS = 60 * 60 * 1000;
 
@@ -13,16 +12,10 @@ export class AppState {
   proModalToggled = false;
 
   readonly preview: PreviewState;
-  readonly pro: ProState;
 
   constructor() {
     makeAutoObservable(this);
-    this.preview = new PreviewState({
-      onFileChanged: async (filePath) => {
-        await this.pro.onFileChanged(filePath);
-      },
-    });
-    this.pro = new ProState(this.preview.localApi, this.preview.controller);
+    this.preview = new PreviewState();
   }
 
   async start() {
@@ -35,7 +28,6 @@ export class AppState {
     ) {
       await this.checkProLicense();
     }
-    await this.pro.start();
   }
 
   async checkProLicense(): Promise<boolean> {
@@ -108,13 +100,12 @@ export class AppState {
   }
 
   async stop() {
-    this.pro.stop();
     this.preview.stop();
   }
 
-  toggleProModal() {
+  toggleProModal = () => {
     this.proModalToggled = !this.proModalToggled;
-  }
+  };
 
   private get decodedLicense(): LicensePersistedState | null {
     return decodeLicense(this.preview.persistedState?.license);

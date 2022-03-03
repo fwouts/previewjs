@@ -6,16 +6,6 @@ import svgrPlugin from "vite-plugin-svgr";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [reactPlugin(), svgrPlugin()],
-  optimizeDeps: {
-    include: ["@previewjs/api"],
-  },
-  build: {
-    outDir: "build",
-    chunkSizeWarningLimit: 10000,
-    commonjsOptions: {
-      include: [/api\/.*/, /node_modules/],
-    },
-  },
   server: {
     cors: {
       origin: null,
@@ -25,6 +15,14 @@ export default defineConfig({
         target: "http://localhost:8120",
         changeOrigin: true,
       },
+    },
+  },
+  optimizeDeps: {
+    include: ["@previewjs/api"],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/api\/.*/, /node_modules/],
     },
   },
   resolve: {
