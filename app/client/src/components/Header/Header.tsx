@@ -1,3 +1,5 @@
+import React from "react";
+
 const Container: React.FC = ({ children }) => (
   <div className="text-sm bg-gray-900 filter drop-shadow">{children}</div>
 );
