@@ -1,32 +1,24 @@
+import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
+import { Header } from "../../design/Header";
+import { PropsEditor } from "../../design/PropsEditor";
+import { TabbedPanel } from "../../design/TabbedPanel";
 import { PreviewState } from "../../PreviewState";
 import { ActionLogs } from "../ActionLogs";
-import { BottomPanel } from "../BottomPanel";
-import { ConsoleLogs } from "../ConsoleLogs";
+import { ConsolePanel } from "../ConsolePanel";
 import { Error } from "../Error";
-import { Header } from "../Header";
-import { PropsEditor } from "../PropsEditor";
+import { UpdateBanner } from "../UpdateBanner";
 
 export const Preview = observer(
-  ({
-    state,
-    header,
-    subheader,
-    width,
-  }: {
-    state: PreviewState;
-    header?: React.ReactNode[];
-    subheader?: React.ReactNode;
-    width?: number;
-  }) => {
+  ({ state, header }: { state: PreviewState; header?: React.ReactNode[] }) => {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
     useEffect(() => {
       state.setIframeRef(iframeRef);
     }, [state]);
-    const [defaultWidth, height] = useWindowSize();
-    width ||= defaultWidth;
+    const [width, height] = useWindowSize();
     const panelHeight = height * 0.3;
 
     if (!state.reachable) {
@@ -50,7 +42,7 @@ export const Preview = observer(
             <Header.Row key={i}>{h}</Header.Row>
           ))}
         </Header>
-        {subheader}
+        <UpdateBanner state={state.updateBanner} />
         {state.component ? (
           <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
         ) : (
@@ -62,7 +54,8 @@ export const Preview = observer(
           </div>
         )}
         <Error state={state.error} />
-        <BottomPanel
+        <TabbedPanel
+          defaultTabKey="props"
           tabs={[
             ...(state.component?.variantKey === "custom"
               ? [
@@ -70,11 +63,22 @@ export const Preview = observer(
                     label: "Properties",
                     key: "props",
                     notificationCount: 0,
-                    panel: (
+                    panel: state.component?.details && (
                       <PropsEditor
-                        state={state}
-                        height={panelHeight}
+                        documentId={state.component.componentId}
+                        height={height}
                         width={width}
+                        onUpdate={state.updateProps.bind(state)}
+                        onReset={
+                          state.component.details.invocation !==
+                          state.component.details.defaultInvocation
+                            ? state.resetProps.bind(state)
+                            : undefined
+                        }
+                        source={state.component.details.invocation}
+                        typeDeclarationsSource={
+                          state.component.details.typeDeclarations
+                        }
                       />
                     ),
                   },
@@ -84,10 +88,30 @@ export const Preview = observer(
               label: "Console",
               key: "console",
               notificationCount: state.consoleLogs.unreadCount,
-              panel: <ConsoleLogs state={state.consoleLogs} />,
+              panel: <ConsolePanel state={state.consoleLogs} />,
             },
           ]}
           height={panelHeight}
+          links={[
+            {
+              href: document.location.href,
+              title: "Open in browser",
+              icon: faExternalLinkAlt,
+              className: "text-base",
+            },
+            {
+              href: "https://github.com/fwouts/previewjs",
+              title: "GitHub",
+              icon: faGithub,
+              color: "#333",
+            },
+            {
+              href: "https://twitter.com/fwouts",
+              title: "Follow Preview.js's author on Twitter",
+              icon: faTwitter,
+              color: "#1DA1F2",
+            },
+          ]}
         />
       </div>
     );

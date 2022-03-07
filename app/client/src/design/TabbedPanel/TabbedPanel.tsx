@@ -1,35 +1,41 @@
-import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import {
   faAngleDown,
   faAngleUp,
-  faExternalLinkAlt,
+  IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import React, { useState } from "react";
 import { Link } from "../Link/Link";
 
-interface PanelTab {
+export type PanelTab = {
   label: string;
   key: string;
   notificationCount: number;
   panel: React.ReactNode;
-}
+};
 
-export const BottomPanel = ({
-  tabs,
-  height,
-}: {
+export type PanelLink = {
+  icon: IconDefinition;
+  title: string;
+  href: string;
+  color?: string;
+  className?: string;
+};
+
+export const TabbedPanel = (props: {
   tabs: PanelTab[];
+  defaultTabKey: string;
   height: number;
+  links: PanelLink[];
 }) => {
-  const [currentTabKey, setCurrentTabKey] = useState("props");
+  const [currentTabKey, setCurrentTabKey] = useState(props.defaultTabKey);
   const [visible, setVisible] = useState(true);
-  const currentTab = tabs.find((tab) => tab.key === currentTabKey);
+  const currentTab = props.tabs.find((tab) => tab.key === currentTabKey);
   return (
     <div>
       <div className="flex flex-row items-center bg-white shadow-inner">
-        {tabs.length > 0 && (
+        {props.tabs.length > 0 && (
           <button
             className="px-4 py-2 hover:text-blue-500"
             onClick={() => setVisible(!visible)}
@@ -37,7 +43,7 @@ export const BottomPanel = ({
             <FontAwesomeIcon icon={visible ? faAngleDown : faAngleUp} />
           </button>
         )}
-        {tabs.map((tab) => (
+        {props.tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => {
@@ -61,37 +67,27 @@ export const BottomPanel = ({
           </button>
         ))}
         <span className="flex-grow" />
-        <IconLink
-          href={document.location.href}
-          target="_blank"
-          title="Open in browser"
-        >
-          <FontAwesomeIcon icon={faExternalLinkAlt} className="text-base" />
-        </IconLink>
-        <IconLink
-          href="https://github.com/fwouts/previewjs"
-          target="_blank"
-          title="GitHub"
-        >
-          <FontAwesomeIcon icon={faGithub} color="#333" />
-        </IconLink>
-        <IconLink
-          href="https://twitter.com/fwouts"
-          target="_blank"
-          title="Follow Preview.js's author on Twitter"
-        >
-          <FontAwesomeIcon icon={faTwitter} color="#1DA1F2" />
-        </IconLink>
+        {props.links.map((link) => (
+          <Link
+            className="px-3 opacity-60 hover:opacity-100 text-xl"
+            key={link.href}
+            href={link.href}
+            target="_blank"
+            title={link.title}
+          >
+            <FontAwesomeIcon
+              icon={link.icon}
+              color={link.color}
+              className={link.className}
+            />
+          </Link>
+        ))}
       </div>
       {visible && currentTab && (
-        <div className="flex flex-col" style={{ height }}>
+        <div className="flex flex-col" style={{ height: props.height }}>
           {currentTab.panel}
         </div>
       )}
     </div>
   );
 };
-
-const IconLink = (props: React.ComponentProps<typeof Link>) => (
-  <Link className="px-3 opacity-60 hover:opacity-100 text-xl" {...props} />
-);

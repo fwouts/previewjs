@@ -1,16 +1,14 @@
+import { faCode } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import ReactDOM from "react-dom";
 import { filePathFromComponentId } from "./component-id";
-import {
-  Preview,
-  PreviewState,
-  SelectedComponent,
-  SelectedFile,
-  UpdateBanner,
-  VersionInfo,
-} from "./components";
+import { Preview } from "./components/Preview";
+import { FilePath } from "./design/FilePath";
+import { Pill } from "./design/Pill";
+import { SmallLogo } from "./design/SmallLogo";
 import "./index.css";
+import { PreviewState } from "./PreviewState";
 
 const state = new PreviewState();
 state.start().catch(console.error);
@@ -20,7 +18,7 @@ const App = observer(() => (
     state={state}
     header={[
       <>
-        <SelectedFile
+        <FilePath
           key="file"
           filePath={
             state.component?.componentId
@@ -28,19 +26,32 @@ const App = observer(() => (
               : ""
           }
         />
-        <VersionInfo key="info" state={state} />
+        <SmallLogo
+          key="info"
+          href="https://github.com/fwouts/previewjs/releases"
+          loading={!state.appInfo}
+          label={state.appInfo?.version}
+        />
       </>,
       ...(state.component
         ? [
-            <SelectedComponent
+            <Pill
               key="component"
-              state={state}
+              icon={faCode}
               label={state.component.name}
+              loading={!state.component.details?.variants}
+              buttons={
+                state.component.details?.variants?.filter(
+                  (v) => !v.isEditorDriven
+                ) || undefined
+              }
+              selectedButtonKey={state.component.variantKey}
+              onClick={() => state.setVariant("custom")}
+              onButtonClicked={state.setVariant.bind(state)}
             />,
           ]
         : []),
     ]}
-    subheader={<UpdateBanner state={state} />}
   />
 ));
 

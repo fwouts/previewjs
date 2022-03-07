@@ -1,2 +1,2 @@
-export * from "./Error";
-export * from "./ErrorState";
+export { Error } from "./Error";
+export { ErrorState } from "./ErrorState";
