@@ -76,14 +76,14 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: success-screenshots
+          name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
             app/tests/__screenshots__
       - name: Archive failure screenshots
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
-          name: failure-screenshots
+          name: failure-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
             app/__failures__
       - name: Update screenshots on non-main branches
