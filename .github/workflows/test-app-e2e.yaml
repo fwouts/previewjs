@@ -72,6 +72,13 @@ jobs:
         env:
           GROUP_INDEX: ${{ matrix.group }}
           GROUP_COUNT: 3
+      - name: Archive success screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: success-screenshots
+          path: |
+            app/tests/__screenshots__
       - name: Archive failure screenshots
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
@@ -84,6 +91,7 @@ jobs:
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes detected."
           else
+            git status
             export SCREENSHOTS_CHANGED=1
             echo "::set-env name=SCREENSHOTS_CHANGED::$SCREENSHOTS_CHANGED"
             git add app/tests/__screenshots__
