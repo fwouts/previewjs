@@ -1,6 +1,6 @@
 import React from "react";
 
-export const SelectedFile = ({ filePath }: { filePath: string }) => {
+export const FilePath = ({ filePath }: { filePath: string }) => {
   const segments = filePath.split(/[/\\]/);
   return (
     <div className="flex-grow flex flex-row flex-wrap text-blue-100">

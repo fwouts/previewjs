@@ -1,7 +1,7 @@
 import { LogLevel, LogMessage } from "@previewjs/core/controller";
 import { makeAutoObservable } from "mobx";
 
-export class ConsoleLogsState {
+export class ConsolePanelState {
   logs: LogMessage[] = [];
 
   constructor() {

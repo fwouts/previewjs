@@ -68,6 +68,42 @@ export class ErrorState {
     }
   }
 
+  get suggestion():
+    | {
+        message: string;
+        url?: string;
+      }
+    | undefined {
+    const error = this.error;
+    if (!error) {
+      return;
+    }
+    if (error.title?.startsWith(`Failed to resolve import `)) {
+      return {
+        message: "Show me how to configure aliases",
+        url: "https://previewjs.com/docs/config/aliases",
+      };
+    } else if (
+      error.title?.includes("Failed to execute 'createElement'") &&
+      error.title?.includes(".svg")
+    ) {
+      return {
+        message: "Help me set up SVGR",
+        url: "https://previewjs.com/docs/config/svgr",
+      };
+    } else if (error.title?.includes("Could not resolve")) {
+      const match = error.title.match(
+        /Could not resolve "((@[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+)|[a-zA-Z0-9-]+)/
+      );
+      return {
+        message: match
+          ? `Perhaps you need to install ${match[1]}?`
+          : "Perhaps you need to install a peer dependency?",
+      };
+    }
+    return;
+  }
+
   private setErrorWithDelay(error: ErrorDetails | null) {
     if (this.delayedErrorTimeoutHandle) {
       clearTimeout(this.delayedErrorTimeoutHandle);

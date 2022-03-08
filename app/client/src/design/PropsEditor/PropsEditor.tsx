@@ -7,10 +7,8 @@ import Editor, {
   OnMount,
   useMonaco,
 } from "@monaco-editor/react";
-import { observer } from "mobx-react-lite";
 import type monaco from "monaco-editor";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { PreviewState } from "..";
 import { revalidateMonacoEditor } from "./revalidate-monaco-editor";
 
 monacoLoader.config({
@@ -19,39 +17,7 @@ monacoLoader.config({
   },
 });
 
-export const PropsEditor = observer(
-  ({
-    state,
-    width,
-    height,
-  }: {
-    state: PreviewState;
-    width: number;
-    height: number;
-  }) => {
-    if (!state.component?.details) {
-      return null;
-    }
-    return (
-      <UnconnectedPropsEditor
-        documentId={state.component.componentId}
-        height={height}
-        width={width}
-        onUpdate={state.updateProps.bind(state)}
-        onReset={
-          state.component.details.invocation !==
-          state.component.details.defaultInvocation
-            ? state.resetProps.bind(state)
-            : undefined
-        }
-        source={state.component.details.invocation}
-        typeDeclarationsSource={state.component.details.typeDeclarations}
-      />
-    );
-  }
-);
-
-const UnconnectedPropsEditor = ({
+export const PropsEditor = ({
   documentId,
   source,
   typeDeclarationsSource,
