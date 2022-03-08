@@ -3,11 +3,9 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
 
 export class PersistedStateController {
-  private readonly localApi: LocalApi;
   private persistedState: PersistedState | null = null;
 
-  constructor() {
-    this.localApi = new LocalApi("/api/");
+  constructor(private readonly localApi: LocalApi) {
     makeAutoObservable(this);
   }
 

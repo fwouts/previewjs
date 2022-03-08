@@ -8,12 +8,11 @@ const REFRESH_PERIOD_MILLIS = 5000;
 
 export class UpdateBannerState {
   private checkVersionResponse: webEndpoints.CheckVersionResponse | null = null;
-  private readonly webApi: WebApi;
 
   constructor(
+    private readonly webApi: WebApi,
     private readonly persistedStateController: PersistedStateController
   ) {
-    this.webApi = new WebApi("https://previewjs.com/api/");
     makeAutoObservable(this);
   }
 

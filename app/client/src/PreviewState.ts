@@ -7,6 +7,7 @@ import {
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
+import { WebApi } from "./api/web";
 import {
   componentNameFromComponentId,
   filePathFromComponentId,
@@ -21,13 +22,17 @@ import "./window";
 const REFRESH_PERIOD_MILLIS = 5000;
 
 export class PreviewState {
-  readonly localApi: LocalApi;
   readonly iframeController: PreviewIframeController;
-  readonly persistedStateController = new PersistedStateController();
+  readonly persistedStateController = new PersistedStateController(
+    this.localApi
+  );
   readonly actionLogs = new ActionLogsState();
   readonly consoleLogs = new ConsolePanelState();
   readonly error = new ErrorState();
-  readonly updateBanner = new UpdateBannerState(this.persistedStateController);
+  readonly updateBanner = new UpdateBannerState(
+    this.webApi,
+    this.persistedStateController
+  );
   reachable = true;
 
   component: {
@@ -111,11 +116,12 @@ export class PreviewState {
   private pingInterval: NodeJS.Timer | null = null;
 
   constructor(
+    private readonly localApi: LocalApi,
+    private readonly webApi: WebApi,
     private readonly options: {
       onFileChanged?: (filePath: string | null) => Promise<void>;
     } = {}
   ) {
-    this.localApi = new LocalApi("/api/");
     this.iframeController = createController({
       getIframe: () => this.iframeRef.current,
       listener: (event) => {

@@ -2,6 +2,8 @@ import { faCode } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import ReactDOM from "react-dom";
+import { LocalApi } from "./api/local";
+import { WebApi } from "./api/web";
 import { filePathFromComponentId } from "./component-id";
 import { Preview } from "./components/Preview";
 import { FilePath } from "./design/FilePath";
@@ -10,7 +12,10 @@ import { SmallLogo } from "./design/SmallLogo";
 import "./index.css";
 import { PreviewState } from "./PreviewState";
 
-const state = new PreviewState();
+const state = new PreviewState(
+  new LocalApi("/api/"),
+  new WebApi("https://previewjs.com/api/")
+);
 state.start().catch(console.error);
 
 const App = observer(() => (
