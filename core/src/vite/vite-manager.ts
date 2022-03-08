@@ -213,6 +213,8 @@ export class ViteManager {
       plugins,
       define: {
         "process.env": process.env,
+        __filename: undefined,
+        __dirname: undefined,
         ...frameworkPluginViteConfig.define,
         ...this.options.config.vite?.define,
       },
