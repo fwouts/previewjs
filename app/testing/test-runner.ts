@@ -162,7 +162,10 @@ class TestRunner {
           __dirname,
           "..",
           "__failures__",
-          `${testSuite.description} - ${testCase.description}.png`
+          `${testSuite.description.replace(
+            ":",
+            " -"
+          )} - ${testCase.description.replace(":", " -")}.png`
         ),
       });
       return false;
