@@ -1,4 +1,4 @@
-import { localEndpoints, PersistedState, webEndpoints } from "@previewjs/api";
+import { localEndpoints, ResponseOf } from "@previewjs/api";
 import {
   createController,
   PreviewIframeController,
@@ -13,19 +13,26 @@ import {
   filePathFromComponentId,
 } from "./component-id";
 import { ActionLogsState } from "./components/ActionLogs";
-import { ConsoleLogsState } from "./components/ConsoleLogs";
-import { ErrorState } from "./components/Error";
+import { ConsolePanelState } from "./components/ConsolePanel";
+import { ErrorState } from "./components/Error/ErrorState";
+import { UpdateBannerState } from "./components/UpdateBanner";
+import { PersistedStateController } from "./PersistedStateController";
 import "./window";
 
 const REFRESH_PERIOD_MILLIS = 5000;
 
 export class PreviewState {
-  readonly localApi: LocalApi;
-  readonly webApi: WebApi;
-  readonly controller: PreviewIframeController;
+  readonly iframeController: PreviewIframeController;
+  readonly persistedStateController = new PersistedStateController(
+    this.localApi
+  );
   readonly actionLogs = new ActionLogsState();
-  readonly consoleLogs = new ConsoleLogsState();
+  readonly consoleLogs = new ConsolePanelState();
   readonly error = new ErrorState();
+  readonly updateBanner = new UpdateBannerState(
+    this.webApi,
+    this.persistedStateController
+  );
   reachable = true;
 
   component: {
@@ -100,9 +107,7 @@ export class PreviewState {
       variants: Variant[] | null;
     } | null;
   } | null = null;
-  appInfo: { platform: string; version: string } | null = null;
-  checkVersionResponse: webEndpoints.CheckVersionResponse | null = null;
-  persistedState: PersistedState | null = null;
+  appInfo: ResponseOf<typeof localEndpoints.GetInfo>["appInfo"] | null = null;
 
   private iframeRef: React.RefObject<HTMLIFrameElement | null> = {
     current: null,
@@ -111,13 +116,13 @@ export class PreviewState {
   private pingInterval: NodeJS.Timer | null = null;
 
   constructor(
+    private readonly localApi: LocalApi,
+    private readonly webApi: WebApi,
     private readonly options: {
       onFileChanged?: (filePath: string | null) => Promise<void>;
     } = {}
   ) {
-    this.localApi = new LocalApi("/api/");
-    this.webApi = new WebApi("https://previewjs.com/api/");
-    this.controller = createController({
+    this.iframeController = createController({
       getIframe: () => this.iframeRef.current,
       listener: (event) => {
         runInAction(() => {
@@ -152,7 +157,6 @@ export class PreviewState {
       iframeRef: observable.ref,
       pingInterval: observable.ref,
       appInfo: observable.ref,
-      checkVersionResponse: observable.ref,
     });
   }
 
@@ -167,7 +171,7 @@ export class PreviewState {
     };
     window.addEventListener("message", this.messageListener);
     window.addEventListener("popstate", this.popStateListener);
-    this.controller.start();
+    this.iframeController.start();
     await this.onUrlChanged();
     this.pingInterval = setInterval(() => {
       this.ping().catch(console.error);
@@ -177,24 +181,8 @@ export class PreviewState {
     runInAction(() => {
       this.appInfo = appInfo;
     });
-    const state = await this.localApi.request(localEndpoints.GetState);
-    runInAction(() => {
-      this.persistedState = state;
-    });
-    try {
-      const checkVersionResponse = await this.webApi.request(
-        webEndpoints.CheckVersion,
-        {
-          appInfo,
-        }
-      );
-      runInAction(() => {
-        this.checkVersionResponse = checkVersionResponse;
-      });
-    } catch (e) {
-      console.warn(e);
-      // Don't crash. This is an optional check.
-    }
+    await this.persistedStateController.start();
+    await this.updateBanner.start(appInfo);
   }
 
   stop() {
@@ -202,7 +190,7 @@ export class PreviewState {
       clearInterval(this.pingInterval);
       this.pingInterval = null;
     }
-    this.controller.stop();
+    this.iframeController.stop();
     window.removeEventListener("message", this.messageListener);
     window.removeEventListener("popstate", this.popStateListener);
     document.removeEventListener("keydown", this.keydownListener);
@@ -286,17 +274,6 @@ export class PreviewState {
     this.renderComponent();
   }
 
-  async onUpdateDismissed() {
-    const state = await this.localApi.request(localEndpoints.UpdateState, {
-      updateDismissed: {
-        timestamp: Date.now(),
-      },
-    });
-    runInAction(() => {
-      this.persistedState = state;
-    });
-  }
-
   private async onUrlChanged() {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
@@ -318,7 +295,7 @@ export class PreviewState {
         }
       });
     } else {
-      this.controller.showLoading();
+      this.iframeController.showLoading();
       runInAction(() => {
         this.component = {
           componentId,
@@ -368,7 +345,7 @@ export class PreviewState {
       return;
     }
     this.consoleLogs.onClear();
-    this.controller.loadComponent({
+    this.iframeController.loadComponent({
       componentName: this.component.name,
       filePath: this.component.details.filePath,
       variantKey: this.component.variantKey,
