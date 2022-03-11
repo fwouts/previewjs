@@ -5,8 +5,6 @@ import {
   Preview,
   SelectedComponent,
   SelectedFile,
-  UpdateBanner,
-  VersionInfo,
 } from "@previewjs/app/client/src/components";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
@@ -34,36 +32,23 @@ export const MainPanel = observer(
     return (
       <Preview
         state={preview}
-        header={
-          proEnabled
-            ? [
-                <>
-                  {selectedFile}
-                  <AppVariant onClick={() => toggleProModal()}>
-                    <FontAwesomeIcon icon={faStar} className="mr-2" />
-                    Pro Edition
-                  </AppVariant>
-                  <VersionInfo state={preview} />
-                </>,
-                selectedComponent,
-              ]
-            : [
-                <>
-                  {selectedFile}
-                  <AppVariant
-                    warning={!!proInvalidLicenseReason}
-                    onClick={() => toggleProModal()}
-                  >
-                    {proInvalidLicenseReason
-                      ? proInvalidLicenseReason
-                      : "Switch to Pro"}
-                  </AppVariant>
-                  <VersionInfo state={preview} />
-                </>,
-                selectedComponent,
-              ]
+        headerAddon={
+          proEnabled ? (
+            <AppVariant onClick={() => toggleProModal()}>
+              <FontAwesomeIcon icon={faStar} className="mr-2" />
+              Pro Edition
+            </AppVariant>
+          ) : (
+            <AppVariant
+              warning={!!proInvalidLicenseReason}
+              onClick={() => toggleProModal()}
+            >
+              {proInvalidLicenseReason
+                ? proInvalidLicenseReason
+                : "Switch to Pro"}
+            </AppVariant>
+          )
         }
-        subheader={<UpdateBanner state={preview} />}
       />
     );
   }
