@@ -46,7 +46,7 @@ export const Preview = observer(
     }
 
     return (
-      <div className="flex flex-col h-screen overflow-hidden">
+      <div className="flex flex-col h-screen overflow-hidden bg-white">
         <ActionLogs state={state.actionLogs} />
         <Header>
           <Header.Row>
