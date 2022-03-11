@@ -3,8 +3,11 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
+import { filePathFromComponentId } from "../../component-id";
+import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
 import { PropsEditor } from "../../design/PropsEditor";
+import { SmallLogo } from "../../design/SmallLogo";
 import { TabbedPanel } from "../../design/TabbedPanel";
 import { PreviewState } from "../../PreviewState";
 import { ActionLogs } from "../ActionLogs";
@@ -13,7 +16,15 @@ import { Error } from "../Error";
 import { UpdateBanner } from "../UpdateBanner";
 
 export const Preview = observer(
-  ({ state, header }: { state: PreviewState; header?: React.ReactNode[] }) => {
+  ({
+    state,
+    headerAddon,
+    subheader,
+  }: {
+    state: PreviewState;
+    headerAddon?: React.ReactNode[];
+    subheader?: React.ReactNode;
+  }) => {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
     useEffect(() => {
       state.setIframeRef(iframeRef);
@@ -38,9 +49,24 @@ export const Preview = observer(
       <div className="flex flex-col h-screen overflow-hidden">
         <ActionLogs state={state.actionLogs} />
         <Header>
-          {header?.filter(Boolean).map((h, i) => (
-            <Header.Row key={i}>{h}</Header.Row>
-          ))}
+          <Header.Row>
+            <FilePath
+              key="file"
+              filePath={
+                state.component?.componentId
+                  ? filePathFromComponentId(state.component.componentId)
+                  : ""
+              }
+            />
+            {headerAddon}
+            <SmallLogo
+              key="info"
+              href="https://github.com/fwouts/previewjs/releases"
+              loading={!state.appInfo}
+              label={state.appInfo?.version}
+            />
+          </Header.Row>
+          {subheader && <Header.Row>{subheader}</Header.Row>}
         </Header>
         <UpdateBanner state={state.updateBanner} />
         {state.component ? (
