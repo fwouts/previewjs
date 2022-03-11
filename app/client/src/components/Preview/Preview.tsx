@@ -22,7 +22,7 @@ export const Preview = observer(
     subheader,
   }: {
     state: PreviewState;
-    headerAddon?: React.ReactNode[];
+    headerAddon?: React.ReactNode;
     subheader?: React.ReactNode;
   }) => {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
