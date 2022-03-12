@@ -23,16 +23,10 @@ const REFRESH_PERIOD_MILLIS = 5000;
 
 export class PreviewState {
   readonly iframeController: PreviewIframeController;
-  readonly persistedStateController = new PersistedStateController(
-    this.localApi
-  );
   readonly actionLogs = new ActionLogsState();
   readonly consoleLogs = new ConsolePanelState();
   readonly error = new ErrorState();
-  readonly updateBanner = new UpdateBannerState(
-    this.webApi,
-    this.persistedStateController
-  );
+  readonly updateBanner: UpdateBannerState;
   reachable = true;
 
   component: {
@@ -117,11 +111,16 @@ export class PreviewState {
 
   constructor(
     private readonly localApi: LocalApi,
-    private readonly webApi: WebApi,
+    webApi: WebApi,
+    private readonly persistedStateController: PersistedStateController,
     private readonly options: {
       onFileChanged?: (filePath: string | null) => Promise<void>;
     } = {}
   ) {
+    this.updateBanner = new UpdateBannerState(
+      webApi,
+      this.persistedStateController
+    );
     this.iframeController = createController({
       getIframe: () => this.iframeRef.current,
       listener: (event) => {
