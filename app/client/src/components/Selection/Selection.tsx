@@ -1,5 +1,6 @@
 import { faCode, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { Pill } from "../../design/Pill";
 import { PreviewState } from "../../PreviewState";
 
