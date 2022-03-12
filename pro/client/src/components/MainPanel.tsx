@@ -29,7 +29,7 @@ export const MainPanel = observer(
             </AppVariant>
           )
         }
-        subheader={<Selection state={preview} />}
+        subheader={preview.component && <Selection state={preview} />}
       />
     );
   }
