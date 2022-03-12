@@ -11,7 +11,7 @@
   "scripts": {
     "build": "rimraf dist tsconfig.tsbuildinfo && tsc && tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite dev client",
-    "e2e-test": "cd ../app && cross-env SETUP_ENVIRONMENT_MODULE=../../pro/setup-test-environment.ts TESTS_MODULE=../../pro/test-suites.ts pnpm e2e-test"
+    "e2e-test": "cd ../app && cross-env PORT=8200 SETUP_ENVIRONMENT_MODULE=../../pro/setup-test-environment.ts TESTS_MODULE=../../pro/test-suites.ts pnpm e2e-test"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
