@@ -1,11 +1,7 @@
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { filePathFromComponentId } from "@previewjs/app/client/src/component-id";
-import {
-  Preview,
-  SelectedComponent,
-  SelectedFile,
-} from "@previewjs/app/client/src/components";
+import { Preview } from "@previewjs/app/client/src/components/Preview";
+import { Selection } from "@previewjs/app/client/src/components/Selection";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -17,18 +13,6 @@ export const MainPanel = observer(
   }: {
     state: AppState;
   }) => {
-    const selectedFile = (
-      <SelectedFile
-        filePath={
-          preview.component?.componentId
-            ? filePathFromComponentId(preview.component.componentId)
-            : ""
-        }
-      />
-    );
-    const selectedComponent = preview.component ? (
-      <SelectedComponent state={preview} label={preview.component.name} />
-    ) : null;
     return (
       <Preview
         state={preview}
@@ -49,6 +33,7 @@ export const MainPanel = observer(
             </AppVariant>
           )
         }
+        subheader={<Selection state={preview} />}
       />
     );
   }

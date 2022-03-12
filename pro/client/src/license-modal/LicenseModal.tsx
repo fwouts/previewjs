@@ -1,6 +1,6 @@
 import { faCheckCircle, faFan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "@previewjs/app/client/src/components";
+import { Link } from "@previewjs/app/client/src/design/Link";
 import assertNever from "assert-never";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";

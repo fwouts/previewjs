@@ -1,7 +1,9 @@
-import { localEndpoints } from "@previewjs/api";
+import { LocalApi } from "@previewjs/app/client/src/api/local";
+import { WebApi } from "@previewjs/app/client/src/api/web";
 import { PreviewState } from "@previewjs/app/client/src/PreviewState";
 import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
+import { LicenseModalState } from "src/license-modal/LicenseModalState";
 import { ValidateLicenseTokenEndpoint } from "../networking/web-api";
 import { decodeLicense, encodeLicense } from "./license-encoding";
 
@@ -12,10 +14,12 @@ export class AppState {
   proModalToggled = false;
 
   readonly preview: PreviewState;
+  readonly licenseModalState: LicenseModalState;
 
-  constructor() {
+  constructor(localApi: LocalApi, private readonly webApi: WebApi) {
     makeAutoObservable(this);
-    this.preview = new PreviewState();
+    this.preview = new PreviewState(localApi, webApi);
+    this.licenseModalState = new LicenseModalState(localApi, webApi);
   }
 
   async start() {
@@ -36,7 +40,7 @@ export class AppState {
       return false;
     }
     try {
-      const checkLicenseTokenResponse = await this.preview.webApi.request(
+      const checkLicenseTokenResponse = await this.webApi.request(
         ValidateLicenseTokenEndpoint,
         {
           licenseToken: license.token,
@@ -46,14 +50,8 @@ export class AppState {
         timestamp: Date.now(),
         ...checkLicenseTokenResponse,
       };
-      const state = await this.preview.localApi.request(
-        localEndpoints.UpdateState,
-        {
-          license: encodeLicense(license),
-        }
-      );
-      runInAction(() => {
-        this.preview.persistedState = state;
+      await this.preview.persistedStateController.update({
+        license: encodeLicense(license),
       });
     } catch (e) {
       // Don't crash. User could be offline.
@@ -80,22 +78,16 @@ export class AppState {
     maskedKey: string;
     token: string;
   }) {
-    const state = await this.preview.localApi.request(
-      localEndpoints.UpdateState,
-      {
-        license: encodeLicense({
-          maskedKey,
-          token,
-          checked: {
-            // We assume it's a valid one.
-            timestamp: Date.now(),
-            valid: true,
-          },
-        }),
-      }
-    );
-    runInAction(() => {
-      this.preview.persistedState = state;
+    await this.preview.persistedStateController.update({
+      license: encodeLicense({
+        maskedKey,
+        token,
+        checked: {
+          // We assume it's a valid one.
+          timestamp: Date.now(),
+          valid: true,
+        },
+      }),
     });
   }
 
@@ -108,6 +100,6 @@ export class AppState {
   };
 
   private get decodedLicense(): LicensePersistedState | null {
-    return decodeLicense(this.preview.persistedState?.license);
+    return decodeLicense(this.preview.persistedStateController.state?.license);
   }
 }
