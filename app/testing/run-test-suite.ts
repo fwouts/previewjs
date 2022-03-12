@@ -8,8 +8,9 @@ async function main() {
   const groupIndex = parseInt(process.env.GROUP_INDEX || "0");
   const setupEnvironmentPath =
     process.env.SETUP_ENVIRONMENT_MODULE || path.resolve(__dirname, "../src");
-  const testsPath =
-    process.env.TESTS_MODULE || path.resolve(__dirname, "../tests");
+  const testsPath = process.env.TESTS_MODULE
+    ? path.dirname(process.env.TESTS_MODULE)
+    : path.resolve(__dirname, "../tests");
   const headless = process.env.HEADLESS !== "0";
   const browser = await playwright.chromium.launch({
     headless,
