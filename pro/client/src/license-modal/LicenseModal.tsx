@@ -139,8 +139,8 @@ export const LicenseModal = observer(
                                   )
                                 }
                               />
-                              license token #{i + 1} (last used{" "}
-                              {new Date(t.lastActiveTimestamp).toDateString()})
+                              device last used{" "}
+                              {new Date(t.lastActiveTimestamp).toDateString()}
                             </label>
                           </li>
                         ))}
