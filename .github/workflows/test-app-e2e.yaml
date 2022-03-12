@@ -79,13 +79,15 @@ jobs:
           name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
             app/tests/__screenshots__
+            pro/tests/__screenshots__
       - name: Archive failure screenshots
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: failure-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
-            app/__failures__
+            app/tests/__failures__
+            pro/tests/__failures__
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
@@ -94,7 +96,7 @@ jobs:
             git status
             export SCREENSHOTS_CHANGED=1
             echo "::set-env name=SCREENSHOTS_CHANGED::$SCREENSHOTS_CHANGED"
-            git add app/tests/__screenshots__
+            git add app/tests/__screenshots__ pro/tests/__screenshots__
             git stash
             git config --global user.name 'CI bot'
             git config --global user.email 'fwouts@users.noreply.github.com'
