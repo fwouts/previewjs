@@ -159,7 +159,7 @@ class TestRunner {
       console.error(`Browser logs:\n${browserLogs.join("\n")}`);
       await page.screenshot({
         path: path.join(
-          __dirname,
+          this.outputDirPath,
           "..",
           "__failures__",
           `${testSuite.description.replace(

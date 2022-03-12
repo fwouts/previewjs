@@ -32,9 +32,7 @@ async function main() {
         (_, index) => index % groupCount === groupIndex
       ),
       filters: process.argv.slice(2),
-      outputDirPath: testsPath.includes(".")
-        ? path.dirname(testsPath)
-        : testsPath,
+      outputDirPath: testsPath,
       port: port + groupIndex,
     });
     const totalDurationMillis = Date.now() - startTimeMillis;
