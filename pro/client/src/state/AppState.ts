@@ -3,10 +3,8 @@ import { WebApi } from "@previewjs/app/client/src/api/web";
 import { PersistedStateController } from "@previewjs/app/client/src/PersistedStateController";
 import { PreviewState } from "@previewjs/app/client/src/PreviewState";
 import { makeAutoObservable } from "mobx";
-import { LicenseModalState } from "src/license-modal/LicenseModalState";
+import { LicenseModalState } from "../license-modal/LicenseModalState";
 import { LicenseState } from "./LicenseState";
-
-const REVALIDATE_LICENSE_TOKEN_AFTER_MILLIS = 60 * 60 * 1000;
 
 export class AppState {
   readonly preview: PreviewState;
