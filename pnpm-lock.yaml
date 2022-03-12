@@ -501,6 +501,7 @@ importers:
       rimraf: ^3.0.2
       tailwindcss: ^3.0.23
       typescript: ^4.5.4
+      universal-base64: ^2.1.0
       uuid: 8.3.2
       vite: ^2.7.9
       vite-plugin-svgr: ^0.6.0
@@ -521,6 +522,7 @@ importers:
       mobx-react-lite: 3.3.0_4e589064ce40a783661f96d46f38f574
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+      universal-base64: 2.1.0
       uuid: 8.3.2
     devDependencies:
       '@previewjs/api': link:../api
@@ -28847,6 +28849,10 @@ packages:
       unist-util-is: 4.1.0
       unist-util-visit-parents: 3.1.1
     dev: true
+
+  /universal-base64/2.1.0:
+    resolution: {integrity: sha512-WeOkACVnIXJZr/qlv7++Rl1zuZOHN96v2yS5oleUuv8eJOs5j9M5U3xQEIoWqn1OzIuIcgw0fswxWnUVGDfW6g==}
+    dev: false
 
   /universalify/0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
