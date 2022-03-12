@@ -6,11 +6,14 @@ import { WebApi } from "./api/web";
 import { Preview } from "./components/Preview";
 import { Selection } from "./components/Selection";
 import "./index.css";
+import { PersistedStateController } from "./PersistedStateController";
 import { PreviewState } from "./PreviewState";
 
+const localApi = new LocalApi("/api/");
 const state = new PreviewState(
-  new LocalApi("/api/"),
-  new WebApi("https://previewjs.com/api/")
+  localApi,
+  new WebApi("https://previewjs.com/api/"),
+  new PersistedStateController(localApi)
 );
 state.start().catch(console.error);
 
