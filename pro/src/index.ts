@@ -16,7 +16,7 @@ const setup: SetupPreviewEnvironment =
         vue2FrameworkPlugin,
         vue3FrameworkPlugin,
       ],
-      middlewares: [express.static(path.join(__dirname, "../client/build"))],
+      middlewares: [express.static(path.join(__dirname, "../client/dist"))],
     };
   };
 
