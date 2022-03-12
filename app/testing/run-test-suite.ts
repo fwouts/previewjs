@@ -33,8 +33,8 @@ async function main() {
       ),
       filters: process.argv.slice(2),
       outputDirPath: testsPath.includes(".")
-        ? testsPath
-        : path.dirname(testsPath),
+        ? path.dirname(testsPath)
+        : testsPath,
       port: port + groupIndex,
     });
     const totalDurationMillis = Date.now() - startTimeMillis;
