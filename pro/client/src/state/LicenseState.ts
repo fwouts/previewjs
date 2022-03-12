@@ -2,7 +2,7 @@ import { WebApi } from "@previewjs/app/client/src/api/web";
 import { PersistedStateController } from "@previewjs/app/client/src/PersistedStateController";
 import { LicenseInfo } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable } from "mobx";
-import uuid from "uuid";
+import * as uuid from "uuid";
 import {
   CreateLicenseTokenEndpoint,
   DeleteLicenseTokenEndpoint,
