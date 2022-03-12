@@ -10,6 +10,7 @@ packages:
   # Note: integrations/vscode uses Yarn because of https://github.com/microsoft/vscode-vsce/issues/421.
   - "integrations/vscode/dev"
   - "loader"
+  - "pro"
   - "test-apps/*"
   - "!test-apps/_tmp_*"
   - "smoke-test-apps/*"

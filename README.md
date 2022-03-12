@@ -23,6 +23,8 @@ Preview.js is available for:
 
 Preview.js is divided into multiple packages, each licensed under either AGPL-3.0 or MIT.
 
+Preview.js Pro is proprietary and not available under an open source license.
+
 Please refer to LICENSE under each directory to find out which license applies.
 
 Copyright (c) 2022 Zenc Labs Pty Ltd

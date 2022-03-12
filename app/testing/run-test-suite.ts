@@ -6,10 +6,15 @@ async function main() {
   let failed = false;
   const groupCount = parseInt(process.env.GROUP_COUNT || "1");
   const groupIndex = parseInt(process.env.GROUP_INDEX || "0");
-  const setupEnvironmentPath =
-    process.env.SETUP_ENVIRONMENT_MODULE || path.resolve(__dirname, "../src");
-  const testsPath =
-    process.env.TESTS_MODULE || path.resolve(__dirname, "../tests");
+  const port = parseInt(process.env.PORT || "8100");
+  const setupEnvironmentPath = path.resolve(
+    __dirname,
+    process.env.SETUP_ENVIRONMENT_MODULE || "../src"
+  );
+  const testsPath = path.resolve(
+    __dirname,
+    process.env.TESTS_MODULE || "../tests"
+  );
   const headless = process.env.HEADLESS !== "0";
   const browser = await playwright.chromium.launch({
     headless,
@@ -28,7 +33,7 @@ async function main() {
       ),
       filters: process.argv.slice(2),
       outputDirPath: testsPath,
-      port: 8100 + groupIndex,
+      port: port + groupIndex,
     });
     const totalDurationMillis = Date.now() - startTimeMillis;
     console.log(

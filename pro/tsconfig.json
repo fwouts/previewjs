@@ -1,0 +1,21 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2019", "DOM"],
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "outDir": "dist",
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@previewjs/app/*": ["../../previewjs/app/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "src/tests/samples"],
+  "references": [
+    {
+      "path": "../../previewjs/app"
+    }
+  ]
+}
