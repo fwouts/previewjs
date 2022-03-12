@@ -26,6 +26,7 @@ export class LicenseModalState {
       if (this.license.decodedLicense) {
         return this.switchToLicenseState(this.license.decodedLicense);
       } else {
+        return this.switchToWelcome();
       }
     } else {
       return (this.screen = null);
