@@ -8,27 +8,23 @@ import React from "react";
 import { AppState } from "../state/AppState";
 
 export const MainPanel = observer(
-  ({
-    state: { preview, proEnabled, proInvalidLicenseReason, toggleProModal },
-  }: {
-    state: AppState;
-  }) => {
+  ({ state: { preview, license, licenseModal } }: { state: AppState }) => {
     return (
       <Preview
         state={preview}
         headerAddon={
-          proEnabled ? (
-            <AppVariant onClick={() => toggleProModal()}>
+          license.proEnabled ? (
+            <AppVariant onClick={() => licenseModal.toggle()}>
               <FontAwesomeIcon icon={faStar} className="mr-2" />
               Pro Edition
             </AppVariant>
           ) : (
             <AppVariant
-              warning={!!proInvalidLicenseReason}
-              onClick={() => toggleProModal()}
+              warning={!!license.proInvalidLicenseReason}
+              onClick={() => licenseModal.toggle()}
             >
-              {proInvalidLicenseReason
-                ? proInvalidLicenseReason
+              {license.proInvalidLicenseReason
+                ? license.proInvalidLicenseReason
                 : "Switch to Pro"}
             </AppVariant>
           )

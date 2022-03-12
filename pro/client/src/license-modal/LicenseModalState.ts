@@ -1,41 +1,41 @@
-import { localEndpoints } from "@previewjs/api";
-import { LocalApi } from "@previewjs/app/client/src/api/local";
 import { WebApi } from "@previewjs/app/client/src/api/web";
-import { LicensePersistedState } from "@previewjs/pro-api/persisted-state";
+import { LicenseInfo } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import {
-  CreateLicenseTokenEndpoint,
   CreateLicenseTokenResponse,
-  DeleteLicenseTokenEndpoint,
   FetchUpgradeToProConfigEndpoint,
   TokenDescription,
   UpgradeToProConfig,
 } from "../networking/web-api";
-import { decodeLicense } from "../state/license-encoding";
+import { LicenseState } from "../state/LicenseState";
 
 export class LicenseModalState {
   screen:
+    | null
     | WelcomeScreen
     | EnterLicenseKeyScreen
     | RevokeLicenseTokenScreen
-    | LicenseStateScreen = new WelcomeScreen(this);
+    | LicenseStateScreen = null;
 
-  constructor(readonly localApi: LocalApi, readonly webApi: WebApi) {
+  constructor(readonly webApi: WebApi, readonly license: LicenseState) {
     makeAutoObservable(this);
-    const license = decodeLicense(
-      this.app.preview.persistedStateController.state?.license
-    );
-    if (license) {
-      this.switchToLicenseState(license);
+  }
+
+  toggle() {
+    if (this.screen === null) {
+      if (this.license.decodedLicense) {
+        return this.switchToLicenseState(this.license.decodedLicense);
+      } else {
+      }
     } else {
-      this.switchToWelcome();
+      return (this.screen = null);
     }
   }
 
   switchToWelcome() {
-    const screen = (this.screen = new WelcomeScreen(this));
-    screen.start().catch(console.error);
-    return screen;
+    this.screen = new WelcomeScreen(this);
+    this.screen.start().catch(console.error);
+    return this.screen;
   }
 
   switchToEnterKey() {
@@ -50,7 +50,7 @@ export class LicenseModalState {
     ));
   }
 
-  switchToLicenseState(licenseState: LicensePersistedState) {
+  switchToLicenseState(licenseState: LicenseInfo) {
     return (this.screen = new LicenseStateScreen(this, licenseState));
   }
 }
@@ -115,10 +115,7 @@ class EnterLicenseKeyScreen {
     );
     let response: CreateLicenseTokenResponse;
     try {
-      response = await this.parent.webApi.request(CreateLicenseTokenEndpoint, {
-        licenseKey: this.licenseKey,
-        name: this.parent.app.deviceName,
-      });
+      response = await this.parent.license.createLicenseToken(this.licenseKey);
     } catch (e) {
       console.error(e);
       runInAction(() => {
@@ -136,7 +133,7 @@ class EnterLicenseKeyScreen {
           this.success = true;
           this.error = null;
         });
-        this.parent.app.onNewLicenseToken({
+        this.parent.license.onNewLicenseToken({
           maskedKey,
           token: response.token,
         });
@@ -190,12 +187,7 @@ class RevokeLicenseTokenScreen {
     this.loading = true;
     try {
       for (const token of this.checked) {
-        await this.parent.webApi.request(DeleteLicenseTokenEndpoint, {
-          kind: "license-key",
-          licenseKey: this.licenseKey,
-          lastActiveTimestamp: token.lastActiveTimestamp,
-          name: token.name,
-        });
+        await this.parent.license.revokeToken(this.licenseKey, token.id);
       }
     } catch (e) {
       console.error(e);
@@ -222,7 +214,7 @@ class LicenseStateScreen {
 
   constructor(
     private readonly parent: LicenseModalState,
-    readonly licenseState: LicensePersistedState
+    readonly licenseInfo: LicenseInfo
   ) {
     makeAutoObservable(this);
   }
@@ -230,8 +222,8 @@ class LicenseStateScreen {
   async refresh() {
     this.loading = true;
     try {
-      const wasValid = this.licenseState.checked.valid;
-      const isValid = await this.parent.app.checkProLicense();
+      const wasValid = this.licenseInfo.checked.valid;
+      const isValid = await this.parent.license.checkProLicense();
       if (!wasValid && isValid) {
         document.location.reload();
       }
@@ -251,13 +243,7 @@ class LicenseStateScreen {
   async unlink() {
     this.loading = true;
     try {
-      await this.parent.webApi.request(DeleteLicenseTokenEndpoint, {
-        kind: "license-token",
-        licenseToken: this.licenseState.token,
-      });
-      await this.parent.localApi.request(localEndpoints.UpdateState, {
-        license: null,
-      });
+      await this.parent.license.unlink();
       document.location.reload();
     } catch (e) {
       console.error(e);

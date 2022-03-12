@@ -36,7 +36,7 @@ export interface UpgradeToProConfig {
 
 export interface CreateLicenseTokenRequest {
   licenseKey: string;
-  name: string;
+  id: string;
 }
 
 export type CreateLicenseTokenResponse =
@@ -55,7 +55,7 @@ export type CreateLicenseTokenResponse =
     };
 
 export interface TokenDescription {
-  name: string;
+  id: string;
   lastActiveTimestamp: number;
 }
 
@@ -63,8 +63,7 @@ export type DeleteLicenseTokenRequest =
   | {
       kind: "license-key";
       licenseKey: string;
-      name: string;
-      lastActiveTimestamp: number;
+      id: string;
     }
   | {
       kind: "license-token";

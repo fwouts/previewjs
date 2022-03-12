@@ -1,6 +1,6 @@
 // NOTE: Be careful when updating this. Backward compatibility is important!
 
-export interface LicensePersistedState {
+export interface LicenseInfo {
   maskedKey: string;
   token: string;
   checked:

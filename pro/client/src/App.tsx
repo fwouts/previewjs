@@ -8,7 +8,7 @@ export const App = observer(({ state }: { state: AppState }) => {
   return (
     <>
       <MainPanel state={state} />
-      {state.proModalToggled && <LicenseModal state={state} />}
+      <LicenseModal state={state.licenseModal} />
     </>
   );
 });
