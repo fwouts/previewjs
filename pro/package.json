@@ -7,7 +7,7 @@
     "email": "f@zenc.io"
   },
   "type": "commonjs",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
   "scripts": {
     "build": "rimraf dist tsconfig.tsbuildinfo && tsc && tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite dev client",
