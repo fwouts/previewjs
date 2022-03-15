@@ -1,5 +1,6 @@
 import { Workspace } from "@previewjs/core";
 import path from "path";
+import { Component } from "../api/endpoints";
 
 const JS_EXTENSIONS = new Set([".js", ".jsx", ".ts", ".tsx"]);
 
@@ -9,18 +10,18 @@ export async function analyzeFile({
 }: {
   workspace: Workspace;
   filePath: string;
-}) {
+}): Promise<Component[]> {
   {
     const absoluteFilePath = path.join(workspace.rootDirPath, filePath);
-    const components = (
+    const components: Component[] = (
       await workspace.frameworkPlugin.detectComponents(workspace.typeAnalyzer, [
         absoluteFilePath,
       ])
     ).map(({ name, exported }) => ({
       filePath: filePath.replace(/\\/g, "/"),
       key: name,
-      label: name,
-      componentName: name,
+      type: "component",
+      name: name,
       exported,
     }));
     const fileName = path.basename(absoluteFilePath);
@@ -47,10 +48,10 @@ export async function analyzeFile({
             workspace.rootDirPath,
             path.join(dirPath, entry.name)
           );
-          const suffix = entry.name.substring(
-            fileNameBase.length + 1,
-            entry.name.length - ext.length
-          );
+          const type: "story" | "component" =
+            entry.name.includes(".stories.") || entry.name.includes(".story.")
+              ? "story"
+              : "component";
           components.push(
             ...(
               await workspace.frameworkPlugin.detectComponents(
@@ -61,9 +62,9 @@ export async function analyzeFile({
               .filter((c) => c.exported)
               .map((c) => ({
                 filePath: siblingFilePath.replace(/\\/g, "/"),
-                key: `${suffix}/${c.name}`,
-                label: `${suffix}:${c.name}`,
-                componentName: c.name,
+                key: `${entry.name}/${c.name}`,
+                type,
+                name: c.name,
                 exported: true,
               }))
           );
@@ -77,15 +78,13 @@ export async function analyzeFile({
       if (b.exported && !a.exported) {
         return +1;
       }
-      const aColon = a.label.indexOf(":");
-      const bColon = b.label.indexOf(":");
-      if (aColon === -1 && bColon !== -1) {
+      if (a.type === "component" && b.type === "story") {
         return -1;
       }
-      if (aColon !== -1 && bColon === -1) {
+      if (b.type === "component" && a.type === "story") {
         return +1;
       }
-      return a.label.localeCompare(b.label);
+      return a.name.localeCompare(b.name);
     });
     return components;
   }

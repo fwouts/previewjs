@@ -10,10 +10,11 @@ export const AnalyzeFileEndpoint: Endpoint<
 > = {
   path: "analyze-file",
 };
+
 export interface Component {
   filePath: string;
   key: string;
-  label: string;
-  componentName: string;
+  type: "component" | "story";
+  name: string;
   exported: boolean;
 }

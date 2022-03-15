@@ -9,8 +9,9 @@ import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
 import {
+  actualFilePathFromComponentId,
   componentNameFromComponentId,
-  filePathFromComponentId,
+  currentFilePathFromComponentId,
 } from "./component-id";
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsolePanelState } from "./components/ConsolePanel";
@@ -277,12 +278,13 @@ export class PreviewState {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
-    const filePath = filePathFromComponentId(componentId);
+    const currentFilePath = currentFilePathFromComponentId(componentId);
+    const actualFilePath = actualFilePathFromComponentId(componentId);
     const nameFromPath = componentNameFromComponentId(componentId);
     if (this.options.onFileChanged) {
-      await this.options.onFileChanged(filePath);
+      await this.options.onFileChanged(currentFilePath);
     }
-    if (!filePath || !nameFromPath) {
+    if (!actualFilePath || !nameFromPath) {
       this.component = null;
       return;
     }
@@ -304,11 +306,11 @@ export class PreviewState {
         };
       });
       const sources = await this.localApi.request(localEndpoints.ComputeProps, {
-        filePath,
+        filePath: actualFilePath,
         componentName: name,
       });
       const details = {
-        filePath,
+        filePath: actualFilePath,
         componentName: name,
         defaultProps: sources?.defaultPropsSource || "{}",
         invocation:
