@@ -20,6 +20,10 @@ export function extractReactComponents(
 
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
+      if (ts.isIdentifier(statement.expression)) {
+        // Avoid duplicates.
+        continue;
+      }
       const signature = extractReactComponent(
         resolver.checker,
         statement.expression
