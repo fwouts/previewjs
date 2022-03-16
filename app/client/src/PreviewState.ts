@@ -8,11 +8,7 @@ import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
-import {
-  actualFilePathFromComponentId,
-  componentNameFromComponentId,
-  currentFilePathFromComponentId,
-} from "./component-id";
+import { decodeComponentId } from "./component-id";
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsolePanelState } from "./components/ConsolePanel";
 import { ErrorState } from "./components/Error/ErrorState";
@@ -278,17 +274,15 @@ export class PreviewState {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
-    const currentFilePath = currentFilePathFromComponentId(componentId);
-    const actualFilePath = actualFilePathFromComponentId(componentId);
-    const nameFromPath = componentNameFromComponentId(componentId);
+    const decodedComponentId = decodeComponentId(componentId);
     if (this.options.onFileChanged) {
-      await this.options.onFileChanged(currentFilePath);
+      await this.options.onFileChanged(decodedComponentId.currentFilePath);
     }
-    if (!actualFilePath || !nameFromPath) {
+    if (!decodedComponentId.component) {
       this.component = null;
       return;
     }
-    const name = nameFromPath;
+    const name = decodedComponentId.component.name;
     if (this.component?.componentId === componentId) {
       runInAction(() => {
         if (this.component) {
@@ -306,11 +300,11 @@ export class PreviewState {
         };
       });
       const sources = await this.localApi.request(localEndpoints.ComputeProps, {
-        filePath: actualFilePath,
+        filePath: decodedComponentId.component.filePath,
         componentName: name,
       });
       const details = {
-        filePath: actualFilePath,
+        filePath: decodedComponentId.component.filePath,
         componentName: name,
         defaultProps: sources?.defaultPropsSource || "{}",
         invocation:
