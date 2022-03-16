@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["ES2019", "DOM"],
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "composite": true,
     "baseUrl": ".",
@@ -11,8 +11,7 @@
       "@previewjs/app/*": ["../../previewjs/app/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "src/tests/samples"],
+  "include": ["src", "tests"],
   "references": [
     {
       "path": "../../previewjs/app"

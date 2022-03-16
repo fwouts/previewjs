@@ -6,9 +6,10 @@ import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { AppState } from "../state/AppState";
+import { ComponentPicker } from "./ComponentPicker";
 
 export const MainPanel = observer(
-  ({ state: { preview, license, licenseModal } }: { state: AppState }) => {
+  ({ state: { preview, license, licenseModal, pro } }: { state: AppState }) => {
     return (
       <Preview
         state={preview}
@@ -29,7 +30,13 @@ export const MainPanel = observer(
             </AppVariant>
           )
         }
-        subheader={preview.component && <Selection state={preview} />}
+        subheader={
+          license.proEnabled ? (
+            <ComponentPicker preview={preview} pro={pro} />
+          ) : (
+            preview.component && <Selection state={preview} />
+          )
+        }
       />
     );
   }
