@@ -11,11 +11,9 @@ export const ComponentPicker = observer(
   ({ pro, preview }: { pro: ProState; preview: PreviewState }) => {
     const loading = pro.currentFile?.loading || false;
     const components = pro.currentFile?.components || [];
-    const currentRelativeFilePath = pro.currentFile?.filePath || null;
-
-    const componentRef = useRef<HTMLDivElement>(null);
+    const selectionRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-      componentRef.current?.scrollIntoView({
+      selectionRef.current?.scrollIntoView({
         block: "end",
         inline: "start",
         behavior: "smooth",
@@ -31,7 +29,7 @@ export const ComponentPicker = observer(
             component.componentId === preview.component?.componentId || false;
           const icon = component.type === "story" ? faBook : faCode;
           return selected ? (
-            <Selection state={preview} icon={icon} ref={componentRef} />
+            <Selection state={preview} icon={icon} ref={selectionRef} />
           ) : (
             <button
               className={clsx([
