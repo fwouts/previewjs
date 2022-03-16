@@ -1,11 +1,11 @@
 import { expect, testSuite } from "@previewjs/app/testing";
 import { elements } from "./elements";
 
-const source = `
+const mainSource = `
 import React from "react";
 
-export function A() {
-  return <button>Hello from A</button>;
+export function A({ label = "Hello from A" }: {label?: string}) {
+  return <button>{label}</button>;
 }
 
 export function B() {
@@ -15,6 +15,23 @@ export function B() {
 function C() {
   return <button>Hello from C</button>;
 }
+`;
+
+const storySource = `
+import React from "react";
+import { A } from './Components';
+
+const Template = (args) => <A {...args} />;
+
+export const ShortLabel = Template.bind({});
+ShortLabel.args = {
+  label: 'short',
+};
+
+export const LongLabel = Template.bind({});
+LongLabel.args = {
+  label: 'this is a long label',
+};
 `;
 
 export const multipleComponentsTests = testSuite(
@@ -27,7 +44,11 @@ export const multipleComponentsTests = testSuite(
         const { component } = elements(controller);
         await appDir.update("src/Components.tsx", {
           kind: "replace",
-          text: source,
+          text: mainSource,
+        });
+        await appDir.update("src/Components.stories.js", {
+          kind: "replace",
+          text: storySource,
         });
         await controller.show("src/Components.tsx");
 
@@ -52,6 +73,18 @@ export const multipleComponentsTests = testSuite(
         expect(await controller.component.label().text()).toEqual("C");
         await previewIframe.waitForSelector(
           "xpath=//button[contains(., 'Hello from C')]"
+        );
+
+        await component.get("ShortLabel").click();
+        expect(await controller.component.label().text()).toEqual("ShortLabel");
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'short')]"
+        );
+
+        await component.get("LongLabel").click();
+        expect(await controller.component.label().text()).toEqual("LongLabel");
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'this is a long label')]"
         );
       }
     );
