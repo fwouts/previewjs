@@ -49,7 +49,7 @@ const AppVariant: React.FC<{
   <button
     className={clsx([
       "bg-blue-500 hover:bg-blue-400 text-blue-900 px-1.5 py-0.5 ml-2 text-sm font-semibold rounded whitespace-nowrap",
-      props.warning && "",
+      props.warning && "bg-orange-300 text-orange-900",
     ])}
     onClick={props.onClick}
   >
