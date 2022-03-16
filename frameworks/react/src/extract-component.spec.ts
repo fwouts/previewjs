@@ -152,6 +152,23 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     ]);
   });
 
+  it("ignores default export of identifier", async () => {
+    expect(
+      extract(`
+const A = () => {
+  return <div>Hello, World!</div>;
+};
+
+export default A;
+`)
+    ).toMatchObject([
+      {
+        name: "A",
+        exported: true,
+      },
+    ]);
+  });
+
   it("detects default export component (arrow function)", async () => {
     expect(
       extract(`
