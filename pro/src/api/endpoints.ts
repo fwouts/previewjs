@@ -12,8 +12,7 @@ export const AnalyzeFileEndpoint: Endpoint<
 };
 
 export interface Component {
-  filePath: string;
-  key: string;
+  componentId: string;
   type: "component" | "story";
   name: string;
   exported: boolean;

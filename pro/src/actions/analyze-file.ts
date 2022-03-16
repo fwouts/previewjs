@@ -1,4 +1,4 @@
-import { Workspace } from "@previewjs/core";
+import { generateComponentId, Workspace } from "@previewjs/core";
 import path from "path";
 import { Component } from "../api/endpoints";
 
@@ -18,10 +18,12 @@ export async function analyzeFile({
         absoluteFilePath,
       ])
     ).map(({ name, exported }) => ({
-      filePath: filePath.replace(/\\/g, "/"),
-      key: name,
+      componentId: generateComponentId({
+        currentFilePath: filePath,
+        name,
+      }),
       type: "component",
-      name: name,
+      name,
       exported,
     }));
     const fileName = path.basename(absoluteFilePath);
@@ -33,23 +35,21 @@ export async function analyzeFile({
     const dir = await workspace.reader.read(dirPath);
     if (dir?.kind === "directory") {
       for (const entry of await dir.entries()) {
-        const ext = path.extname(entry.name);
+        const siblingFileName = entry.name;
+        const ext = path.extname(siblingFileName);
         if (
           entry.kind === "file" &&
-          entry.name !== fileName &&
+          siblingFileName !== fileName &&
           // This could be A.stories.tsx or A.screenshot.tsx, etc.
-          entry.name
+          siblingFileName
             .toLowerCase()
             .startsWith(fileNameBase.toLowerCase() + ".") &&
           JS_EXTENSIONS.has(ext)
         ) {
-          const siblingAbsoluteFilePath = path.join(dirPath, entry.name);
-          const siblingFilePath = path.relative(
-            workspace.rootDirPath,
-            path.join(dirPath, entry.name)
-          );
+          const siblingAbsoluteFilePath = path.join(dirPath, siblingFileName);
           const type: "story" | "component" =
-            entry.name.includes(".stories.") || entry.name.includes(".story.")
+            siblingFileName.includes(".stories.") ||
+            siblingFileName.includes(".story.")
               ? "story"
               : "component";
           components.push(
@@ -61,8 +61,11 @@ export async function analyzeFile({
             )
               .filter((c) => c.exported)
               .map((c) => ({
-                filePath: siblingFilePath.replace(/\\/g, "/"),
-                key: `${entry.name}/${c.name}`,
+                componentId: generateComponentId({
+                  currentFilePath: filePath,
+                  siblingFileName,
+                  name: c.name,
+                }),
                 type,
                 name: c.name,
                 exported: true,

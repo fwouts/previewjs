@@ -27,9 +27,8 @@ export const ComponentPicker = observer(
         className="flex flex-row items-center overflow-x-auto scrollbar-hidden select-none"
       >
         {components.map((component) => {
-          const componentId = `${currentRelativeFilePath}:${component.key}`;
           const selected =
-            componentId === preview.component?.componentId || false;
+            component.componentId === preview.component?.componentId || false;
           const icon = component.type === "story" ? faBook : faCode;
           return selected ? (
             <Selection state={preview} icon={icon} ref={componentRef} />
@@ -39,8 +38,8 @@ export const ComponentPicker = observer(
                 "component inline-flex items-center shrink-0 text-gray-200 mx-5",
                 !component.exported && "text-gray-500",
               ])}
-              key={componentId}
-              onClick={() => preview.setComponent(componentId)}
+              key={component.componentId}
+              onClick={() => preview.setComponent(component.componentId)}
             >
               <FontAwesomeIcon
                 icon={icon || faCode}
