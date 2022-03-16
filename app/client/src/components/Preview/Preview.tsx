@@ -3,7 +3,7 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
-import { filePathFromComponentId } from "../../component-id";
+import { decodeComponentId } from "../../component-id";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
 import { PropsEditor } from "../../design/PropsEditor";
@@ -54,7 +54,8 @@ export const Preview = observer(
               key="file"
               filePath={
                 state.component?.componentId
-                  ? filePathFromComponentId(state.component.componentId)
+                  ? decodeComponentId(state.component.componentId)
+                      .currentFilePath
                   : ""
               }
             />

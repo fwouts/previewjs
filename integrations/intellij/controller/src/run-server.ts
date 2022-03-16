@@ -139,7 +139,13 @@ async function main() {
               componentName: c.name,
               exported: c.exported,
               offset: start,
-              componentId: previewjs.core.generateComponentId(workspace, c),
+              componentId: previewjs.core.generateComponentId({
+                currentFilePath: path.relative(
+                  workspace.rootDirPath,
+                  c.absoluteFilePath
+                ),
+                name: c.name,
+              }),
             }));
         })
         .flat();

@@ -99,7 +99,13 @@ export async function activate(context: vscode.ExtensionContext) {
             command: "previewjs.open",
             arguments: [
               document,
-              previewjs.core.generateComponentId(workspace, c),
+              previewjs.core.generateComponentId({
+                currentFilePath: path.relative(
+                  workspace.rootDirPath,
+                  c.absoluteFilePath
+                ),
+                name: c.name,
+              }),
             ],
             title: `Open ${c.name} in Preview.js`,
           };
@@ -172,10 +178,13 @@ export async function activate(context: vscode.ExtensionContext) {
                     componentName: c.name,
                     exported: c.exported,
                     offset: start,
-                    componentId: previewjs.core.generateComponentId(
-                      workspace,
-                      c
-                    ),
+                    componentId: previewjs.core.generateComponentId({
+                      currentFilePath: path.relative(
+                        workspace.rootDirPath,
+                        c.absoluteFilePath
+                      ),
+                      name: c.name,
+                    }),
                   }));
               })
               .flat();
