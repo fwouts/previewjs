@@ -10,7 +10,7 @@ export function analyzeVueComponentFromTemplate(
   const tsFilePath = `${absoluteFilePath}.ts`;
   const resolver = typeAnalyzer.analyze([tsFilePath]);
   const sourceFile = resolver.sourceFile(tsFilePath);
-  for (const statement of sourceFile.statements) {
+  for (const statement of sourceFile?.statements || []) {
     if (
       ts.isTypeAliasDeclaration(statement) &&
       statement.name.text === "PJS_Props"
