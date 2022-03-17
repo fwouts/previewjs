@@ -162,7 +162,6 @@ ${e.stackTraceToString()}""",
         builder.environment()["PORT"] = "$PORT"
         builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.getVersion()
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
-        builder.environment()["PREVIEWJS_MODULES_DIR"] = "/Users/fwouts/dev/previewjs/integrations/vscode/dev"
         val process = builder.start()
         serverProcess = process
         val serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
