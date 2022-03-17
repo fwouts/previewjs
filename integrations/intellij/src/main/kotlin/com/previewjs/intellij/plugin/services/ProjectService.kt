@@ -20,7 +20,10 @@ import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
+import com.previewjs.intellij.plugin.api.AnalyzeFileRequest
 import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
+import com.previewjs.intellij.plugin.api.StartPreviewRequest
+import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
 import kotlinx.coroutines.*
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
@@ -74,8 +77,12 @@ class ProjectService(private val project: Project) : Disposable {
             override fun documentChanged(event: DocumentEvent) {
                 val file = FileDocumentManager.getInstance().getFile(event.document)
                 if (file != null && file.isInLocalFileSystem && file.isWritable && event.document.text.length <= 1_048_576) {
-                    service.enqueueAction(project) { workspace ->
-                        workspace.update(file.path, event.document.text)
+                    service.enqueueAction(project) { api ->
+                        service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
+                        api.updatePendingFile(UpdatePendingFileRequest(
+                                absoluteFilePath = file.path,
+                                utf8Content = event.document.text
+                        ))
                     }
                     refreshTimerTask?.cancel()
                     refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
@@ -102,11 +109,18 @@ class ProjectService(private val project: Project) : Disposable {
 
     private fun updateComponents(file: VirtualFile, content: String? = null) {
         val fileEditors = editorManager.getEditors(file)
-        service.enqueueAction(project) { workspace ->
+        service.enqueueAction(project) { api ->
+            val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
             content?.let { content ->
-                workspace.update(file.path, content)
+                api.updatePendingFile(UpdatePendingFileRequest(
+                        absoluteFilePath = file.path,
+                        utf8Content = content
+                ))
             }
-            val components = workspace.analyzeFile(file.path)
+            val components = api.analyzeFile(AnalyzeFileRequest(
+                    workspaceId,
+                    absoluteFilePath = file.path,
+            )).components
             app.invokeLater(Runnable {
                 updateComponentHints(file, fileEditors, components)
             })
@@ -149,7 +163,7 @@ class ProjectService(private val project: Project) : Disposable {
                                             RecursivelyUpdatingRootPresentation(
                                                 presentationFactory.referenceOnHover(
                                                     presentationFactory.text("Open ${component.componentName} in Preview.js")
-                                                ) { _, _ -> openPreview(component.componentId) }
+                                                ) { _, _ -> openPreview(file.path, component.componentId) }
                                             ),
                                             HorizontalConstraints(INLAY_PRIORITY, false)
                                         )
@@ -163,10 +177,11 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    private fun openPreview(componentId: String) {
+    private fun openPreview(absoluteFilePath: String, componentId: String) {
         val app = ApplicationManager.getApplication()
-        service.enqueueAction(project) { workspace ->
-            val previewBaseUrl = workspace.startPreviewServer().url
+        service.enqueueAction(project) { api ->
+            val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
+            val previewBaseUrl = api.startPreview(StartPreviewRequest(workspaceId)).url
             val previewUrl = "$previewBaseUrl?p=$componentId"
             app.invokeLater(Runnable {
                 val toolWindow = ToolWindowManager.getInstance(project).getToolWindow("Preview.js")
@@ -182,8 +197,8 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     override fun dispose() {
-        service.enqueueAction(project) { workspace ->
-            Disposer.dispose(workspace)
+        service.enqueueAction(project) {
+            service.disposeWorkspaces(project)
         }
     }
 }

@@ -13,6 +13,7 @@ import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.ToolWindowManager
+import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
 import com.previewjs.intellij.plugin.api.api
@@ -45,21 +46,19 @@ class PreviewJsSharedService : Disposable {
     private val nodeDirPath = plugin.pluginPath.resolve("controller")
     private val properties = PropertiesComponent.getInstance()
     private var serverProcess: Process? = null
-    private var projects = Collections.synchronizedMap(WeakHashMap<Project, Boolean>())
-    private var workspaces = WeakHashMap<Project, PreviewJsWorkspace>()
+    private var workspaceIds = Collections.synchronizedMap(WeakHashMap<Project, MutableSet<String>>())
     @Volatile private var disposed = false
     private lateinit var api: PreviewJsApi
 
     data class Message(
             val project: Project,
-            val fn: suspend CoroutineScope.(workspace: PreviewJsWorkspace) -> Unit
+            val fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit
     )
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
         var installChecked = false
         for (msg in channel) {
-            val projectDirPath = msg.project.basePath ?: continue
             try {
                 if (!installChecked) {
                     val toolWindowManager = ToolWindowManager.getInstance(msg.project)
@@ -71,13 +70,11 @@ class PreviewJsSharedService : Disposable {
                     }
                     installChecked = true
                 }
-                projects[msg.project] = true
                 if (serverProcess == null) {
                     api = runServer()
                 }
-                val workspace = ensureWorkspaceReady(msg.project, projectDirPath) ?: continue
                 openDocsForFirstUsage()
-                (msg.fn)(workspace)
+                (msg.fn)(api)
             } catch (e: Throwable) {
                 NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
                         .createNotification(
@@ -93,7 +90,7 @@ ${e.stackTraceToString()}""",
         }
     }
 
-    fun enqueueAction(project: Project, fn: suspend CoroutineScope.(workspace: PreviewJsWorkspace) -> Unit) {
+    fun enqueueAction(project: Project, fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit) {
         coroutineScope.launch {
             actor.send(Message(project, fn))
         }
@@ -168,7 +165,7 @@ ${e.stackTraceToString()}""",
         thread {
             var line: String? = null
             while (!disposed && serverOutputReader.readLine().also{ line = it } != null) {
-                for (project in projects.keys) {
+                for (project in workspaceIds.keys) {
                     val consoleView = project.service<ProjectService>().consoleView
                     consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
                 }
@@ -210,20 +207,30 @@ ${e.stackTraceToString()}""",
         }
     }
 
-    private suspend fun ensureWorkspaceReady(project: Project, projectDirPath: String): PreviewJsWorkspace? {
-        workspaces[project]?.let { return it }
-        val getWorkspaceResponse = api.getWorkspace(
+    suspend fun ensureWorkspaceReady(project: Project, absoluteFilePath: String): String? {
+        val workspaceId = api.getWorkspace(
                 GetWorkspaceRequest(
-                        absoluteFilePath = projectDirPath
+                        absoluteFilePath = absoluteFilePath
                 )
-        )
-        if (getWorkspaceResponse.workspaceId == null) {
-            return null
+        ).workspaceId ?: return null
+        var ids = workspaceIds[project]
+        if (ids == null) {
+            ids = Collections.synchronizedSet(mutableSetOf())
+            workspaceIds[project] = ids
         }
-        val workspace = PreviewJsWorkspace(api, getWorkspaceResponse.workspaceId)
-        Disposer.register(this, workspace)
-        workspaces[project] = workspace
-        return workspace
+        ids!!.add(workspaceId)
+        return workspaceId
+    }
+
+    suspend fun disposeWorkspaces(project: Project) {
+        val workspaceIdsToDisposeOf = workspaceIds[project].orEmpty().toMutableSet()
+        for ((project, otherProjectWorkspaceIds) in workspaceIds.entries) {
+            workspaceIdsToDisposeOf.removeAll(otherProjectWorkspaceIds)
+        }
+        for (workspaceId in workspaceIdsToDisposeOf) {
+            api.disposeWorkspace(DisposeWorkspaceRequest(workspaceId))
+        }
+        workspaceIds.remove(project)
     }
 
     override fun dispose() {
