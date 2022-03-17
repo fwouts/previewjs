@@ -1,11 +1,9 @@
-import path from "path";
-import { Component, Workspace } from ".";
-
-export function generateComponentId(
-  workspace: Workspace,
-  component: Component
-) {
-  return `${path
-    .relative(workspace.rootDirPath, component.absoluteFilePath)
-    .replace(/\\/g, "/")}:${component.name}`;
+export function generateComponentId(options: {
+  currentFilePath: string;
+  siblingFileName?: string;
+  name: string;
+}) {
+  return `${options.currentFilePath.replace(/\\/g, "/")}:${
+    options.siblingFileName ? `${options.siblingFileName}/` : ""
+  }${options.name}`;
 }

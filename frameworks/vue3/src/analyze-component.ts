@@ -18,7 +18,7 @@ export function analyzeVueComponentFromTemplate(
   const tsFilePath = `${absoluteFilePath}.ts`;
   const resolver = typeAnalyzer.analyze([tsFilePath]);
   const sourceFile = resolver.sourceFile(tsFilePath);
-  for (const statement of sourceFile.statements) {
+  for (const statement of sourceFile?.statements || []) {
     const definedProps = extractDefinePropsFromStatement(resolver, statement);
     if (definedProps) {
       return {

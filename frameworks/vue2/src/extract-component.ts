@@ -95,7 +95,7 @@ function extractVueComponent(
       // JSX component.
       return callSignature;
     }
-    if (returnType.getProperty("template") && hasArgs) {
+    if (returnType.getProperty("template") || hasArgs) {
       // This is a story.
       return callSignature;
     }

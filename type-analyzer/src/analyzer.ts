@@ -108,7 +108,7 @@ class TypeResolver {
   sourceFile(absoluteFilePath: string) {
     const sourceFile = this.program.getSourceFile(absoluteFilePath);
     if (!sourceFile) {
-      throw new Error(`No source file available for ${absoluteFilePath}.`);
+      return null;
     }
     return sourceFile;
   }

@@ -57,7 +57,7 @@ importers:
       '@react-hook/window-size': 3.0.7
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
-      '@types/lodash': 4.14.179
+      '@types/lodash': 4.14.180
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
       '@types/rimraf': 3.0.2
@@ -120,7 +120,7 @@ importers:
       '@previewjs/loader': link:../loader
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
-      '@types/lodash': 4.14.179
+      '@types/lodash': 4.14.180
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
       '@types/rimraf': 3.0.2
@@ -201,7 +201,7 @@ importers:
       express: 4.17.3
       fs-extra: 10.0.1
       get-port: '5'
-      http-terminator: 3.0.4
+      http-terminator: 3.2.0
       jest: 28.0.0-alpha.5
       monaco-editor: 0.32.1
       prettier: 2.5.1
@@ -229,7 +229,7 @@ importers:
       express: 4.17.3
       fs-extra: 10.0.1
       get-port: 5.1.1
-      http-terminator: 3.0.4
+      http-terminator: 3.2.0
       monaco-editor: 0.32.1
       prettier: 2.5.1
       recrawl: 2.2.1
@@ -1359,7 +1359,7 @@ importers:
   type-analyzer:
     specifiers:
       '@previewjs/vfs': 1.1.1
-      '@types/lodash': 4.14.179
+      '@types/lodash': 4.14.180
       assert-never: ^1.2.1
       lodash: 4.17.21
       rimraf: 3.0.2
@@ -1369,7 +1369,7 @@ importers:
       assert-never: 1.2.1
       typescript: 4.5.5
     devDependencies:
-      '@types/lodash': 4.14.179
+      '@types/lodash': 4.14.180
       lodash: 4.17.21
       rimraf: 3.0.2
 
@@ -1395,7 +1395,7 @@ importers:
     specifiers:
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.1
-      '@types/lodash': 4.14.179
+      '@types/lodash': 4.14.180
       assert-never: ^1.2.1
       chokidar: 3.5.3
       fs-extra: ^10.0.1
@@ -1411,7 +1411,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.1
-      '@types/lodash': 4.14.179
+      '@types/lodash': 4.14.180
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       lodash: 4.17.21
       rimraf: 3.0.2
@@ -9832,8 +9832,8 @@ packages:
     resolution: {integrity: sha512-sFkIgeXh6HJR79DbTrZrsHWhfyr3q8v2Gswj3y0tRPEo57OEPVgDF/z/ePybHUGuSCwiDiAt/3YMta9ujUxQpQ==}
     dev: true
 
-  /@types/lodash/4.14.179:
-    resolution: {integrity: sha512-uwc1x90yCKqGcIOAT6DwOSuxnrAbpkdPsUOZtwrXb4D/6wZs+6qG7QnIawDuZWg0sWpxl+ltIKCaLoMlna678w==}
+  /@types/lodash/4.14.180:
+    resolution: {integrity: sha512-XOKXa1KIxtNXgASAnwj7cnttJxS4fksBRywK/9LzRV5YxrF80BXZIGeQSuoESQ/VkUj30Ae0+YcuHc15wJCB2g==}
     dev: true
 
   /@types/mdast/3.0.10:
@@ -18436,14 +18436,14 @@ packages:
       sshpk: 1.16.1
     dev: true
 
-  /http-terminator/3.0.4:
-    resolution: {integrity: sha512-9xQ5RFxwBxuGJhFgaBzykLUkSYRPyOb2xcR3EAYzj4Y8WteWmu5zsfEQncxLiyCJQHCdAexjuDcciUqw9W3/Sw==}
-    engines: {node: '>=10'}
+  /http-terminator/3.2.0:
+    resolution: {integrity: sha512-JLjck1EzPaWjsmIf8bziM3p9fgR1Y3JoUKAkyYEbZmFrIvJM6I8vVJfBGWlEtV9IWOvzNnaTtjuwZeBY2kwB4g==}
+    engines: {node: '>=14'}
     dependencies:
       delay: 5.0.0
       p-wait-for: 3.2.0
       roarr: 7.8.0
-      type-fest: 2.8.0
+      type-fest: 2.11.2
     dev: false
 
   /https-browserify/1.0.0:
@@ -23071,7 +23071,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.5.4
+      ts-pnp: 1.2.0_typescript@4.5.5
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -25245,7 +25245,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.5.4
+      ts-pnp: 1.2.0_typescript@4.5.5
       typescript: 4.5.5
       url-loader: 4.1.1_file-loader@6.1.1+webpack@4.44.2
       webpack: 4.44.2
@@ -28658,12 +28658,6 @@ packages:
   /type-fest/2.11.2:
     resolution: {integrity: sha512-reW2Y2Mpn0QNA/5fvtm5doROLwDPu2zOm5RtY7xQQS05Q7xgC8MOZ3yPNaP9m/s/sNjjFQtHo7VCNqYW2iI+Ig==}
     engines: {node: '>=12.20'}
-    dev: true
-
-  /type-fest/2.8.0:
-    resolution: {integrity: sha512-O+V9pAshf9C6loGaH0idwsmugI2LxVNR7DtS40gVo2EXZVYFgz9OuNtOhgHLdHdapOEWNdvz9Ob/eeuaWwwlxA==}
-    engines: {node: '>=12.20'}
-    dev: false
 
   /type-is/1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
