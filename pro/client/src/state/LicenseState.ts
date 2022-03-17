@@ -57,8 +57,15 @@ export class LicenseState {
     return license.checked.valid;
   }
 
-  get proEnabled() {
-    return this.decodedLicense?.checked.valid === true;
+  get proStatus() {
+    switch (this.decodedLicense?.checked.valid) {
+      case true:
+        return "enabled";
+      case false:
+        return "disabled";
+      default:
+        return "loading";
+    }
   }
 
   get proInvalidLicenseReason() {

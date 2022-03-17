@@ -14,12 +14,12 @@ export const MainPanel = observer(
       <Preview
         state={preview}
         headerAddon={
-          license.proEnabled ? (
+          license.proStatus === "enabled" ? (
             <AppVariant onClick={() => licenseModal.toggle()}>
               <FontAwesomeIcon icon={faStar} className="mr-2" />
               Pro Edition
             </AppVariant>
-          ) : (
+          ) : license.proStatus === "disabled" ? (
             <AppVariant
               warning={!!license.proInvalidLicenseReason}
               onClick={() => licenseModal.toggle()}
@@ -28,14 +28,14 @@ export const MainPanel = observer(
                 ? license.proInvalidLicenseReason
                 : "Switch to Pro"}
             </AppVariant>
-          )
+          ) : null
         }
         subheader={
-          license.proEnabled ? (
+          license.proStatus === "enabled" ? (
             <ComponentPicker preview={preview} pro={pro} />
-          ) : (
+          ) : license.proStatus === "disabled" ? (
             preview.component && <Selection state={preview} />
-          )
+          ) : null
         }
       />
     );
