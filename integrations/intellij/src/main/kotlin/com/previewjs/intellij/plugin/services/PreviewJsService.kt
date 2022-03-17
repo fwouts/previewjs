@@ -11,7 +11,6 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.ToolWindowManager
 import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
@@ -157,7 +156,7 @@ ${e.stackTraceToString()}""",
                 .redirectErrorStream(true)
                 .directory(nodeDirPath.toFile())
         builder.environment()["PORT"] = "$PORT"
-        builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.getVersion()
+        builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.version
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
         val process = builder.start()
         serverProcess = process
@@ -224,7 +223,7 @@ ${e.stackTraceToString()}""",
 
     suspend fun disposeWorkspaces(project: Project) {
         val workspaceIdsToDisposeOf = workspaceIds[project].orEmpty().toMutableSet()
-        for ((project, otherProjectWorkspaceIds) in workspaceIds.entries) {
+        for (otherProjectWorkspaceIds in workspaceIds.values) {
             workspaceIdsToDisposeOf.removeAll(otherProjectWorkspaceIds)
         }
         for (workspaceId in workspaceIdsToDisposeOf) {
