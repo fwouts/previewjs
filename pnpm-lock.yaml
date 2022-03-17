@@ -74,7 +74,7 @@ importers:
       eslint-plugin-react-hooks: 4.3.0
       execa: 5.1.1
       express: 4.17.3
-      framer-motion: 5.6.0
+      framer-motion: 6.2.8
       fs-extra: 10.0.1
       lodash: 4.17.21
       mobx: 6.4.2
@@ -109,7 +109,7 @@ importers:
       axios: 0.26.0
       clsx: 1.1.1
       express: 4.17.3
-      framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
+      framer-motion: 6.2.8_react-dom@17.0.2+react@17.0.2
       mobx: 6.4.2
       mobx-react-lite: 3.3.0_4e589064ce40a783661f96d46f38f574
       monaco-editor: 0.32.1
@@ -4777,7 +4777,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.16.7
-      '@babel/parser': 7.17.3
+      '@babel/parser': 7.17.7
       '@babel/types': 7.17.0
 
   /@babel/traverse/7.16.10:
@@ -14680,10 +14680,6 @@ packages:
   /de-indent/1.0.2:
     resolution: {integrity: sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0=}
 
-  /debounce/1.2.1:
-    resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
-    dev: false
-
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
     dependencies:
@@ -17364,26 +17360,17 @@ packages:
     dependencies:
       map-cache: 0.2.2
 
-  /framer-motion/5.6.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-Y4FtwUU+LUWLKSzoT6Sq538qluvhpe6izdQK8/xZeVjQZ/ORKGfZzyhzcUxNfscqnfEa3dUOA47s+dwrSipdGA==}
+  /framer-motion/6.2.8_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-4PtBWFJ6NqR350zYVt9AsFDtISTqsdqna79FvSYPfYDXuuqFmiKtZdkTnYPslnsOMedTW0pEvaQ7eqjD+sA+HA==}
     peerDependencies:
-      '@react-three/fiber': '*'
-      react: '>=16.8 || ^17.0.0'
-      react-dom: '>=16.8 || ^17.0.0'
-      three: ^0.135.0
-    peerDependenciesMeta:
-      '@react-three/fiber':
-        optional: true
-      three:
-        optional: true
+      react: '>=16.8 || ^17.0.0 || ^18.0.0'
+      react-dom: '>=16.8 || ^17.0.0 || ^18.0.0'
     dependencies:
       framesync: 6.0.1
       hey-listen: 1.0.8
       popmotion: 11.0.3
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      react-merge-refs: 1.1.0
-      react-use-measure: 2.1.1_react-dom@17.0.2+react@17.0.2
       style-value-types: 5.0.0
       tslib: 2.3.1
     optionalDependencies:
@@ -25008,10 +24995,6 @@ packages:
   /react-is/17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
 
-  /react-merge-refs/1.1.0:
-    resolution: {integrity: sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==}
-    dev: false
-
   /react-popper-tooltip/3.1.1_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-EnERAnnKRptQBJyaee5GJScWNUKQPDD2ywvzZyUjst/wj5U64C8/CnSYLNEmP2hG0IJ3ZhtDxE8oDN+KOyavXQ==}
     peerDependencies:
@@ -25612,17 +25595,6 @@ packages:
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.0
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    dev: false
-
-  /react-use-measure/2.1.1_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-nocZhN26cproIiIduswYpV5y5lQpSQS1y/4KuvUCjSKmw7ZWIS/+g3aFnX3WdBkyuGUtTLif3UTqnLLhbDoQig==}
-    peerDependencies:
-      react: '>=16.13'
-      react-dom: '>=16.13'
-    dependencies:
-      debounce: 1.2.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
