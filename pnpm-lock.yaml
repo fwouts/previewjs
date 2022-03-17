@@ -186,7 +186,7 @@ importers:
     specifiers:
       '@previewjs/api': 2.0.0
       '@previewjs/config': 1.0.3
-      '@previewjs/type-analyzer': 2.0.0
+      '@previewjs/type-analyzer': 2.0.1
       '@previewjs/vfs': 1.1.2
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -257,7 +257,7 @@ importers:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 2.0.0
+      '@previewjs/type-analyzer': 2.0.1
       '@previewjs/vfs': 1.1.2
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
@@ -310,7 +310,7 @@ importers:
       '@nuxt/config': ^2.15.8
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 2.0.0
+      '@previewjs/type-analyzer': 2.0.1
       '@previewjs/vfs': 1.1.2
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.1
@@ -357,7 +357,7 @@ importers:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 2.0.0
+      '@previewjs/type-analyzer': 2.0.1
       '@previewjs/vfs': 1.1.2
       '@types/jest': 27.4.1
       '@vitejs/plugin-vue': ^2.0.1
@@ -13064,10 +13064,10 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001297
-      electron-to-chromium: 1.4.38
+      caniuse-lite: 1.0.30001317
+      electron-to-chromium: 1.4.86
       escalade: 3.1.1
-      node-releases: 2.0.1
+      node-releases: 2.0.2
       picocolors: 1.0.0
 
   /browserslist/4.20.2:
@@ -22078,9 +22078,6 @@ packages:
   /node-releases/1.1.77:
     resolution: {integrity: sha512-rB1DUFUNAN4Gn9keO2K1efO35IDK7yKHCdCaIMvFO7yUYmmZYeDjnGKle26G4rwj+LKRQpjyUUvMkPglwGCYNQ==}
 
-  /node-releases/2.0.1:
-    resolution: {integrity: sha512-CqyzN6z7Q6aMeF/ktcMVTzhAHCEpf8SOarwpzpf8pNBY2k5/oM34UHldUwp8VKI7uxct2HxSRdJjBaZeESzcxA==}
-
   /node-releases/2.0.2:
     resolution: {integrity: sha512-XxYDdcQ6eKqp/YjI+tb2C5WM2LgjnZrfYg4vgQt49EK268b6gYCHsBLrK2qvJo4FmCtqmKezb0WZFK4fkrZNsg==}
 
@@ -24707,7 +24704,7 @@ packages:
     dependencies:
       commander: 8.3.0
       glob: 7.2.0
-      postcss: 8.4.8
+      postcss: 8.4.12
       postcss-selector-parser: 6.0.9
     dev: true
 
