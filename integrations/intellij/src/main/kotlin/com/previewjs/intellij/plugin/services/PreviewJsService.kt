@@ -24,6 +24,7 @@ import java.io.InputStreamReader
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.util.*
+import kotlin.concurrent.thread
 
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
@@ -44,9 +45,9 @@ class PreviewJsSharedService : Disposable {
     private val nodeDirPath = plugin.pluginPath.resolve("controller")
     private val properties = PropertiesComponent.getInstance()
     private var serverProcess: Process? = null
-    private var serverOutputReader: BufferedReader? = null
     private var projects = Collections.synchronizedMap(WeakHashMap<Project, Boolean>())
     private var workspaces = WeakHashMap<Project, PreviewJsWorkspace>()
+    @Volatile private var disposed = false
     private lateinit var api: PreviewJsApi
 
     data class Message(
@@ -88,16 +89,6 @@ ${e.stackTraceToString()}""",
                         )
                         .notify(msg.project)
                 return@actor
-            } finally {
-                serverOutputReader?.let {
-                    while (it.ready()) {
-                        val line = it.readLine()
-                        for (project in projects.keys) {
-                            val consoleView = project.service<ProjectService>().consoleView
-                            consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
-                        }
-                    }
-                }
             }
         }
     }
@@ -171,9 +162,19 @@ ${e.stackTraceToString()}""",
         builder.environment()["PORT"] = "$PORT"
         builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.getVersion()
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
+        builder.environment()["PREVIEWJS_MODULES_DIR"] = "/Users/fwouts/dev/previewjs/integrations/vscode/dev"
         val process = builder.start()
         serverProcess = process
-        serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
+        val serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
+        thread {
+            var line: String? = null
+            while (!disposed && serverOutputReader.readLine().also{ line = it } != null) {
+                for (project in projects.keys) {
+                    val consoleView = project.service<ProjectService>().consoleView
+                    consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
+                }
+            }
+        }
         val api = api("http://localhost:$PORT")
         var attempts = 0
         while (true) {
@@ -228,5 +229,6 @@ ${e.stackTraceToString()}""",
 
     override fun dispose() {
         serverProcess?.destroy()
+        disposed = true
     }
 }
