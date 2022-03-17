@@ -16,7 +16,7 @@ export const Item = (props: {
         initial={{ x: "100%", marginBottom: -100 }}
         transition={{ type: "tween" }}
       >
-        <div className="action-log bg-blue-700 text-blue-100 bg-opacity-40 p-2 m-2 border-2 border-blue-300">
+        <div className="action-log bg-blue-700 text-blue-100 bg-opacity-80 p-2 m-2 border-2 border-blue-300">
           {props.children}
         </div>
       </motion.div>
