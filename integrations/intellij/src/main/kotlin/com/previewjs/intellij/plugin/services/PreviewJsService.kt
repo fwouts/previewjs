@@ -223,13 +223,13 @@ ${e.stackTraceToString()}""",
 
     suspend fun disposeWorkspaces(project: Project) {
         val workspaceIdsToDisposeOf = workspaceIds[project].orEmpty().toMutableSet()
+        workspaceIds.remove(project)
         for (otherProjectWorkspaceIds in workspaceIds.values) {
             workspaceIdsToDisposeOf.removeAll(otherProjectWorkspaceIds)
         }
         for (workspaceId in workspaceIdsToDisposeOf) {
             api.disposeWorkspace(DisposeWorkspaceRequest(workspaceId))
         }
-        workspaceIds.remove(project)
     }
 
     override fun dispose() {
