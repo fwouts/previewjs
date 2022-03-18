@@ -62,7 +62,7 @@ export async function init(
       const rootDirPath = coreModule.findWorkspaceRoot(absoluteFilePath);
       let workspace = workspaces[rootDirPath];
       if (workspace === undefined) {
-        workspace = workspaces[rootDirPath] = await locking(async () => {
+        const created = await locking(async () => {
           const loaded = await coreModule.loadPreviewEnv({
             rootDirPath,
             setupEnvironment,
@@ -82,6 +82,15 @@ export async function init(
             onReady: previewEnv.onReady?.bind(previewEnv),
           });
         });
+        workspace = workspaces[rootDirPath] = created
+          ? {
+              ...created,
+              dispose: async () => {
+                delete workspaces[rootDirPath];
+                await created.dispose();
+              },
+            }
+          : null;
       }
       return workspace;
     },
@@ -93,7 +102,7 @@ export async function init(
         }
         promises.push(workspace.dispose());
       }
-      return Promise.all(promises);
+      await Promise.all(promises);
     },
   };
 }
