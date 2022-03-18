@@ -50,7 +50,7 @@ importers:
       '@previewjs/config': 1.0.3
       '@previewjs/core': 1.4.0
       '@previewjs/loader': workspace:*
-      '@previewjs/plugin-react': 2.0.1
+      '@previewjs/plugin-react': 2.0.2
       '@previewjs/plugin-vue2': 2.0.1
       '@previewjs/plugin-vue3': 2.0.1
       '@previewjs/vfs': 1.1.2
@@ -511,7 +511,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.16_f515edce028694561ceb456e3dba224c
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
-      '@previewjs/plugin-react': link:../frameworks/react
+      '@previewjs/plugin-react': 2.0.1
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@previewjs/vfs': 1.1.1
@@ -7480,8 +7480,36 @@ packages:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
     dev: false
 
+  /@previewjs/plugin-react/2.0.1:
+    resolution: {integrity: sha512-5YdTPekWJ8/VJnxWwV82c7SkRLhUON+RNlJzosYafu+LflgbBm6nNUG0BrvAPcGdf0TBQ61qwmBdCxRbHqXpIA==}
+    dependencies:
+      '@previewjs/type-analyzer': 2.0.1
+      '@previewjs/vfs': 1.1.2
+      '@svgr/core': 5.5.0
+      fs-extra: 10.0.1
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@previewjs/type-analyzer/2.0.1:
+    resolution: {integrity: sha512-qi69dbZ+pwJAWq27jR67BKy6AE43KcEGTpPH8nh+D5uhmwWmfvYjaoDqkZIkW9TNKjU7tt360n4+Mu18vYsjXg==}
+    dependencies:
+      '@previewjs/vfs': 1.1.2
+      assert-never: 1.2.1
+      typescript: 4.5.5
+    dev: false
+
   /@previewjs/vfs/1.1.1:
     resolution: {integrity: sha512-uz4D+YxhhHzPTj3KGh26rwzWysHFtAg5I7L9HZPeO69/syZZfpuC1wC3tnEs+8vObOEutpWebSAd8Xg+FnjRVg==}
+    dependencies:
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      fs-extra: 10.0.1
+    dev: false
+
+  /@previewjs/vfs/1.1.2:
+    resolution: {integrity: sha512-q7de1p0VrxAzgfx8S7VmIkvkH8CZuB8Nu1vUPqsgDI+yQM7GzWdnyiD/bA3mpEQTi/JzeqIP6+IVXkO5W5b2Bg==}
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
