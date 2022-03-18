@@ -99,7 +99,10 @@ ${e.stackTraceToString()}""",
                     // Something must be seriously wrong, abort.
                     notificationGroup.createNotification(
                         "Preview.js crashed",
-                        """Please report this issue at https://github.com/fwouts/previewjs/issues""",
+                        """Please report this issue at https://github.com/fwouts/previewjs/issues
+
+Include the content of the Preview.js logs panel for easier debugging.
+                        """.trimMargin(),
                         NotificationType.ERROR
                     )
                         .notify(msg.project)
