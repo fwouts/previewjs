@@ -77,13 +77,15 @@ class ProjectService(private val project: Project) : Disposable {
             override fun documentChanged(event: DocumentEvent) {
                 val file = FileDocumentManager.getInstance().getFile(event.document)
                 if (file != null && file.isInLocalFileSystem && file.isWritable && event.document.text.length <= 1_048_576) {
-                    service.enqueueAction(project) { api ->
+                    service.enqueueAction(project, { api ->
                         service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
                         api.updatePendingFile(UpdatePendingFileRequest(
                                 absoluteFilePath = file.path,
                                 utf8Content = event.document.text
                         ))
-                    }
+                    }, {
+                        "Warning: unable to update pending file ${file.path}\n\n${it.stackTraceToString()}"
+                    })
                     refreshTimerTask?.cancel()
                     refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
                         refreshTimerTask = null
@@ -109,7 +111,7 @@ class ProjectService(private val project: Project) : Disposable {
 
     private fun updateComponents(file: VirtualFile, content: String? = null) {
         val fileEditors = editorManager.getEditors(file)
-        service.enqueueAction(project) { api ->
+        service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
             content?.let { content ->
                 api.updatePendingFile(UpdatePendingFileRequest(
@@ -124,7 +126,9 @@ class ProjectService(private val project: Project) : Disposable {
             app.invokeLater(Runnable {
                 updateComponentHints(file, fileEditors, components)
             })
-        }
+        }, {
+            "Warning: unable to find components in ${file.path}\n\n${it.stackTraceToString()}"
+        })
     }
 
     private fun updateComponentHints(
@@ -179,7 +183,7 @@ class ProjectService(private val project: Project) : Disposable {
 
     private fun openPreview(absoluteFilePath: String, componentId: String) {
         val app = ApplicationManager.getApplication()
-        service.enqueueAction(project) { api ->
+        service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
             val previewBaseUrl = api.startPreview(StartPreviewRequest(workspaceId)).url
             val previewUrl = "$previewBaseUrl?p=$componentId"
@@ -193,13 +197,17 @@ class ProjectService(private val project: Project) : Disposable {
                 }
                 toolWindow?.show()
             })
-        }
+        }, {
+            "Warning: unable to open preview\n\n${it.stackTraceToString()}"
+        })
     }
 
     override fun dispose() {
-        service.enqueueAction(project) {
+        service.enqueueAction(project, {
             service.disposeWorkspaces(project)
-        }
+        }, {
+            "Warning: unable to dispose of workspaces\n\n${it.stackTraceToString()}"
+        })
     }
 }
 

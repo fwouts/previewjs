@@ -51,7 +51,8 @@ class PreviewJsSharedService : Disposable {
 
     data class Message(
             val project: Project,
-            val fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit
+            val fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
+            val getErrorMessage: (e: Throwable) -> String
     )
 
     @OptIn(ObsoleteCoroutinesApi::class)
@@ -73,25 +74,31 @@ class PreviewJsSharedService : Disposable {
                     api = runServer()
                 }
                 openDocsForFirstUsage()
-                (msg.fn)(api)
             } catch (e: Throwable) {
                 NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
-                        .createNotification(
-                                "Preview.js crashed",
-                                """Please report this issue at https://github.com/fwouts/previewjs/issues
+                    .createNotification(
+                        "Preview.js crashed",
+                        """Please report this issue at https://github.com/fwouts/previewjs/issues
 
 ${e.stackTraceToString()}""",
-                                NotificationType.ERROR
-                        )
-                        .notify(msg.project)
+                        NotificationType.ERROR
+                    )
+                    .notify(msg.project)
                 return@actor
+            }
+            try {
+                (msg.fn)(api)
+            } catch (e: Throwable) {
+                val errorMessage = (msg.getErrorMessage)(e)
+                val consoleView = msg.project.service<ProjectService>().consoleView
+                consoleView.print(errorMessage + "\n", ConsoleViewContentType.NORMAL_OUTPUT)
             }
         }
     }
 
-    fun enqueueAction(project: Project, fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit) {
+    fun enqueueAction(project: Project, fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit, getErrorMessage: (e: Throwable) -> String) {
         coroutineScope.launch {
-            actor.send(Message(project, fn))
+            actor.send(Message(project, fn, getErrorMessage))
         }
     }
 
