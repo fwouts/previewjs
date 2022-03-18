@@ -84,7 +84,7 @@ class ProjectService(private val project: Project) : Disposable {
                                 utf8Content = event.document.text
                         ))
                     }, {
-                        "Warning: unable to update pending file ${file.path}\n\n${it.stackTraceToString()}"
+                        "Warning: unable to update pending file ${file.path}"
                     })
                     refreshTimerTask?.cancel()
                     refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
@@ -127,7 +127,7 @@ class ProjectService(private val project: Project) : Disposable {
                 updateComponentHints(file, fileEditors, components)
             })
         }, {
-            "Warning: unable to find components in ${file.path}\n\n${it.stackTraceToString()}"
+            "Warning: unable to find components in ${file.path}"
         })
     }
 
@@ -198,7 +198,7 @@ class ProjectService(private val project: Project) : Disposable {
                 toolWindow?.show()
             })
         }, {
-            "Warning: unable to open preview\n\n${it.stackTraceToString()}"
+            "Warning: unable to open preview with component ID: $componentId"
         })
     }
 
@@ -206,7 +206,7 @@ class ProjectService(private val project: Project) : Disposable {
         service.enqueueAction(project, {
             service.disposeWorkspaces(project)
         }, {
-            "Warning: unable to dispose of workspaces\n\n${it.stackTraceToString()}"
+            "Warning: unable to dispose of workspaces"
         })
     }
 }

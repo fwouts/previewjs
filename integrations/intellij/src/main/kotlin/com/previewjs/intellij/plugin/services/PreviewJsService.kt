@@ -91,7 +91,7 @@ ${e.stackTraceToString()}""",
             } catch (e: Throwable) {
                 val errorMessage = (msg.getErrorMessage)(e)
                 val consoleView = msg.project.service<ProjectService>().consoleView
-                consoleView.print(errorMessage + "\n", ConsoleViewContentType.NORMAL_OUTPUT)
+                consoleView.print("$errorMessage\n\n${e.stackTraceToString()}\n", ConsoleViewContentType.NORMAL_OUTPUT)
             }
         }
     }
