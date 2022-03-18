@@ -98,7 +98,7 @@ ${e.stackTraceToString()}""",
                 if (errorCount > 10) {
                     // Something must be seriously wrong, abort.
                     notificationGroup.createNotification(
-                        "Preview.js crashed",
+                        "Preview.js tasks are failing repeatedly",
                         """Please report this issue at https://github.com/fwouts/previewjs/issues
 
 Include the content of the Preview.js logs panel for easier debugging.
