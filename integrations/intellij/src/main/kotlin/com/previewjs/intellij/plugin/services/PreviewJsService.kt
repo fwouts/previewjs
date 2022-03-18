@@ -11,6 +11,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.updateSettings.impl.pluginsAdvertisement.notificationGroup
 import com.intellij.openapi.wm.ToolWindowManager
 import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
@@ -58,6 +59,8 @@ class PreviewJsSharedService : Disposable {
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
         var installChecked = false
+        var errorCount = 0
+        val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
         for (msg in channel) {
             try {
                 if (!installChecked) {
@@ -75,14 +78,13 @@ class PreviewJsSharedService : Disposable {
                 }
                 openDocsForFirstUsage()
             } catch (e: Throwable) {
-                NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
-                    .createNotification(
-                        "Preview.js crashed",
-                        """Please report this issue at https://github.com/fwouts/previewjs/issues
+                notificationGroup.createNotification(
+                    "Preview.js crashed",
+                    """Please report this issue at https://github.com/fwouts/previewjs/issues
 
 ${e.stackTraceToString()}""",
-                        NotificationType.ERROR
-                    )
+                    NotificationType.ERROR
+                )
                     .notify(msg.project)
                 return@actor
             }
@@ -92,6 +94,17 @@ ${e.stackTraceToString()}""",
                 val errorMessage = (msg.getErrorMessage)(e)
                 val consoleView = msg.project.service<ProjectService>().consoleView
                 consoleView.print("$errorMessage\n\n${e.stackTraceToString()}\n", ConsoleViewContentType.NORMAL_OUTPUT)
+                errorCount += 1
+                if (errorCount > 10) {
+                    // Something must be seriously wrong, abort.
+                    notificationGroup.createNotification(
+                        "Preview.js crashed",
+                        """Please report this issue at https://github.com/fwouts/previewjs/issues""",
+                        NotificationType.ERROR
+                    )
+                        .notify(msg.project)
+                    return@actor
+                }
             }
         }
     }
