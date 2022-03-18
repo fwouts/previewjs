@@ -77,6 +77,9 @@ tasks {
     }
 
     withType<org.jetbrains.intellij.tasks.PrepareSandboxTask> {
+        project.delete(
+            files(buildDir)
+        )
         from(layout.projectDirectory.dir("controller")) {
             into("${properties("pluginName")}/controller")
             include("dist/**")
