@@ -179,7 +179,16 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
     console.log(`There is nothing to release.\n`);
     return;
   }
+  const prompt = inquirer.createPromptModule();
   console.log(`You are about to release the following:\n${changelog}`);
+  const { shouldRelease } = await prompt({
+    name: "shouldRelease",
+    type: "confirm",
+    message: `Would you like to release this?`,
+  });
+  if (!shouldRelease) {
+    return;
+  }
   let version: string;
   switch (packageInfo.type) {
     case "npm":
