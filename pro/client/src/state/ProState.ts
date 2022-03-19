@@ -1,6 +1,10 @@
 import { LocalApi } from "@previewjs/app/client/src/api/local";
 import { PreviewIframeController } from "@previewjs/core/controller";
-import { AnalyzeFileEndpoint, Component } from "@previewjs/pro-api/endpoints";
+import {
+  AnalyzeFileEndpoint,
+  AnalyzeProjectEndpoint,
+  Component,
+} from "@previewjs/pro-api/endpoints";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 
 const REFRESH_PERIOD_MILLIS = 5000;
@@ -31,10 +35,17 @@ export class ProState {
     });
   }
 
-  start() {
+  async start() {
     this.refreshFileInterval = setInterval(() => {
       this.refreshFile().catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
+    const analyzeProjectResponse = await this.localApi.request(
+      AnalyzeProjectEndpoint,
+      {
+        forceRefresh: true,
+      }
+    );
+    console.error(analyzeProjectResponse);
   }
 
   stop() {

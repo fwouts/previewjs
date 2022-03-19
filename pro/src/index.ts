@@ -9,7 +9,8 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import { analyzeFile } from "./actions/analyze-file";
-import { AnalyzeFileEndpoint } from "./api/endpoints";
+import { analyzeProject } from "./actions/analyze-project";
+import { AnalyzeFileEndpoint, AnalyzeProjectEndpoint } from "./api/endpoints";
 
 const setup: SetupPreviewEnvironment =
   async (): Promise<PreviewEnvironment | null> => {
@@ -27,6 +28,9 @@ const setup: SetupPreviewEnvironment =
             filePath,
           }),
         }));
+        router.onRequest(AnalyzeProjectEndpoint, async ({ forceRefresh }) =>
+          analyzeProject(workspace.rootDirPath, { forceRefresh })
+        );
       },
     };
   };

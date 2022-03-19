@@ -17,3 +17,21 @@ export interface Component {
   name: string;
   exported: boolean;
 }
+
+export const AnalyzeProjectEndpoint: Endpoint<
+  {
+    forceRefresh?: boolean;
+  },
+  {
+    components: Record<
+      string,
+      Array<{
+        componentName: string;
+        exported: boolean;
+      }>
+    >;
+    cached: boolean;
+  }
+> = {
+  path: "analyze-project",
+};
