@@ -55,11 +55,18 @@ export class ViteManager {
         })
       );
     });
-    router.use((req, res, next) => {
-      const viteServer = this.viteServer;
-      if (viteServer) {
-        viteServer.middlewares(req, res, next);
+    router.use(async (req, res, next) => {
+      const waitSeconds = 60;
+      const waitUntil = Date.now() + waitSeconds * 1000;
+      while (!this.viteServer) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        if (Date.now() > waitUntil) {
+          throw new Error(
+            `Vite server is not running after ${waitSeconds} seconds.`
+          );
+        }
       }
+      this.viteServer.middlewares(req, res, next);
     });
     this.middleware = router;
   }
