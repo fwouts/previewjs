@@ -80,7 +80,7 @@ importers:
       mobx: 6.4.2
       mobx-react-lite: 3.3.0
       monaco-editor: 0.32.1
-      playwright: 1.19.2
+      playwright: 1.20.0
       postcss: ^8.4.4
       react: 17.0.2
       react-dom: 17.0.2
@@ -135,7 +135,7 @@ importers:
       execa: 5.1.1
       fs-extra: 10.0.1
       lodash: 4.17.21
-      playwright: 1.19.2
+      playwright: 1.20.0
       postcss: 8.4.6
       rimraf: 3.0.2
       tailwindcss: 3.0.23_c940fbabf228b85b1c73d314b43e31f1
@@ -13809,7 +13809,6 @@ packages:
     engines: {node: '>=0.1.90'}
     requiresBuild: true
     dev: true
-    optional: true
 
   /combined-stream/1.0.8:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
@@ -23004,6 +23003,13 @@ packages:
     resolution: {integrity: sha512-ZIrVPH+A52Dw84R0L3/VS9Op04PuQ2SEoJL6bkshmiTic/HldyW9Tf7oH5mhJZBK7NmDx27vSMrYEXPXclpDKw==}
     engines: {node: '>= 6'}
 
+  /pixelmatch/5.2.1:
+    resolution: {integrity: sha512-WjcAdYSnKrrdDdqTcVEY7aB7UhhwjYQKYhHiBXdJef0MOaQeYpUdQ+iVyBLa5YBKS8MPVPPMX7rpOByISLpeEQ==}
+    hasBin: true
+    dependencies:
+      pngjs: 4.0.1
+    dev: true
+
   /pkg-dir/1.0.0:
     resolution: {integrity: sha1-ektQio1bstYp1EcFb/TpyTFM89Q=}
     engines: {node: '>=0.10.0'}
@@ -23048,17 +23054,19 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core/1.19.2:
-    resolution: {integrity: sha512-OsL3sJZIo1UxKNWSP7zW7sk3FyUGG06YRHxHeBw51eIOxTCQRx5t+hXd0cvXashN2CHnd3hIZTs2aKa/im4hZQ==}
+  /playwright-core/1.20.0:
+    resolution: {integrity: sha512-d25IRcdooS278Cijlp8J8A5fLQZ+/aY3dKRJvgX5yjXA69N0huIUdnh3xXSgn+LsQ9DCNmB7Ngof3eY630jgdA==}
     engines: {node: '>=12'}
     hasBin: true
     dependencies:
+      colors: 1.4.0
       commander: 8.3.0
       debug: 4.3.3
       extract-zip: 2.0.1
       https-proxy-agent: 5.0.0
       jpeg-js: 0.4.3
       mime: 3.0.0
+      pixelmatch: 5.2.1
       pngjs: 6.0.0
       progress: 2.0.3
       proper-lockfile: 4.1.2
@@ -23075,17 +23083,22 @@ packages:
       - utf-8-validate
     dev: true
 
-  /playwright/1.19.2:
-    resolution: {integrity: sha512-2JmGWr/Iw/Uu27bZULeHgjn8doNrRVxIYdhspMuMlfKNpzwAe/sfm7wH8uey6jiZxnPL4bC5V4ACQcF4dAGWnw==}
+  /playwright/1.20.0:
+    resolution: {integrity: sha512-YcFXhXttk9yvpc8PMbfvts6KEopXjxdBh47BdOiA7xhjF/gkXeSM0Hs9CSdbL9mp2xtlB5xqE7+D+F2soQOjbA==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.19.2
+      playwright-core: 1.20.0
     transitivePeerDependencies:
       - bufferutil
       - supports-color
       - utf-8-validate
+    dev: true
+
+  /pngjs/4.0.1:
+    resolution: {integrity: sha512-rf5+2/ioHeQxR6IxuYNYGFytUyG3lma/WW1nsmjeHlWwtb2aByla6dkVc8pmJ9nplzkTA0q2xx7mMWrOTqT4Gg==}
+    engines: {node: '>=8.0.0'}
     dev: true
 
   /pngjs/6.0.0:
