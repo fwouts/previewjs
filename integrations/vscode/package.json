@@ -90,6 +90,7 @@
     "build": "rimraf dist && tsc && node esbuild.js",
     "prod": "cross-env PREVIEWJS_DEV=0 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
     "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
+    "dev:pro": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/pro yarn dev",
     "dev:install": "code --install-extension previewjs-1.4.1.vsix --force",
     "dev:cleanup": "rimraf previewjs-1.4.1.vsix"
   },
