@@ -45,8 +45,8 @@ export async function install(options: {
         typeof chunk === "string" ? chunk : chunk.toString("utf8")
       );
     });
-    const { failed } = await installProcess;
-    if (failed) {
+    const { failed, isCanceled } = await installProcess;
+    if (failed || isCanceled) {
       throw new Error(`Preview.js could not install dependencies`);
     }
     options.onOutput(
