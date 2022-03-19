@@ -128,6 +128,9 @@ export class Previewer {
       kind: "starting",
       port,
       promise: (async () => {
+        // PostCSS requires the current directory to change because it relies
+        // on the `import-cwd` package to resolve plugins.
+        process.chdir(this.options.rootDirPath);
         this.config = await readConfig(this.options.rootDirPath);
         this.appServer = new Server({
           middlewares: [
