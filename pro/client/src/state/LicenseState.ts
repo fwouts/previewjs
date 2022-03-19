@@ -1,6 +1,5 @@
 import { WebApi } from "@previewjs/app/client/src/api/web";
 import { PersistedStateController } from "@previewjs/app/client/src/PersistedStateController";
-import { LicenseInfo } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable } from "mobx";
 import * as uuid from "uuid";
 import {
@@ -58,14 +57,10 @@ export class LicenseState {
   }
 
   get proStatus() {
-    switch (this.decodedLicense?.checked.valid) {
-      case true:
-        return "enabled";
-      case false:
-        return "disabled";
-      default:
-        return "loading";
+    if (this.decodedLicense === undefined) {
+      return "loading";
     }
+    return this.decodedLicense?.checked.valid ? "enabled" : "disabled";
   }
 
   get proInvalidLicenseReason() {
@@ -125,7 +120,10 @@ export class LicenseState {
     });
   }
 
-  get decodedLicense(): LicenseInfo | null {
+  get decodedLicense() {
+    if (this.persistedStateController.state === undefined) {
+      return undefined;
+    }
     return decodeLicense(this.persistedStateController.state?.license);
   }
 }
