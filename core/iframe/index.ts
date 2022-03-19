@@ -199,7 +199,7 @@ export interface LogMessage {
   message: string;
 }
 
-export type LogLevel = "log" | "warn" | "error";
+export type LogLevel = "log" | "info" | "warn" | "error";
 
 export interface Variant {
   key: string;

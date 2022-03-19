@@ -52,6 +52,7 @@ export function setUpLogInterception() {
       }
     };
   console.log = makeLogger("log", console.log);
+  console.info = makeLogger("info", console.info);
   console.warn = makeLogger("warn", console.warn);
   console.error = makeLogger("error", console.error);
 }

@@ -8,7 +8,7 @@ const dateFormat = new Intl.DateTimeFormat("default", {
 });
 
 export const Item = (props: {
-  level: "log" | "warn" | "error";
+  level: "log" | "info" | "warn" | "error";
   timestamp: number;
   message: string;
 }) => {
@@ -16,7 +16,8 @@ export const Item = (props: {
     <code
       className={clsx([
         "p-2 text-xs whitespace-pre-wrap",
-        props.level === "log" && "bg-blue-50 text-blue-400",
+        (props.level === "log" || props.level === "info") &&
+          "bg-blue-50 text-blue-400",
         props.level === "warn" && "bg-orange-50 text-orange-400",
         props.level === "error" && "bg-red-50 text-red-600",
       ])}
