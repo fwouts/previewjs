@@ -1,10 +1,10 @@
-import { faBook, faCode, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faCode } from "@fortawesome/free-solid-svg-icons";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import { PreviewState } from "@previewjs/app/client/src/PreviewState";
-import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
+import { ComponentButton } from "../design/ComponentButton";
+import { ComponentList } from "../design/ComponentList";
 import { ProState } from "../state/ProState";
 
 export const ComponentPicker = observer(
@@ -20,10 +20,7 @@ export const ComponentPicker = observer(
       });
     }, [preview.component?.componentId, loading]);
     return (
-      <div
-        id="component-list"
-        className="flex flex-row items-center overflow-x-auto scrollbar-hidden select-none"
-      >
+      <ComponentList loading={loading}>
         {components.map((component) => {
           const selected =
             component.componentId === preview.component?.componentId || false;
@@ -31,30 +28,15 @@ export const ComponentPicker = observer(
           return selected ? (
             <Selection state={preview} icon={icon} ref={selectionRef} />
           ) : (
-            <button
-              className={clsx([
-                "component inline-flex items-center shrink-0 text-gray-200 mx-5",
-                !component.exported && "text-gray-500",
-              ])}
-              key={component.componentId}
+            <ComponentButton
+              label={component.name}
+              icon={icon}
+              masked={!component.exported}
               onClick={() => preview.setComponent(component.componentId)}
-            >
-              <FontAwesomeIcon
-                icon={icon || faCode}
-                fixedWidth
-                className="mr-2"
-              />
-              {component.name}
-            </button>
+            />
           );
         })}
-        {loading && (
-          <FontAwesomeIcon
-            icon={faSpinner}
-            className="text-gray-300 animate-spin"
-          />
-        )}
-      </div>
+      </ComponentList>
     );
   }
 );
