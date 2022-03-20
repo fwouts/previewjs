@@ -65,7 +65,7 @@ export const SearchBox = ({
       return;
     }
     containerRef.current.scroll({
-      behavior: "smooth",
+      behavior: "auto",
       top: highlightedItemRef.current.offsetTop - listRef.current.offsetTop,
     });
   }, [highlightedIndex]);
