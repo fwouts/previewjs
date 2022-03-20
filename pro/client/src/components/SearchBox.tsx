@@ -158,7 +158,7 @@ function match(text: string, search: string) {
       continue;
     }
     // Capital-based matching, e.g. "LCN" will match "LongComponentName".
-    const wordCapitalParts = word.split(/(?=[A-Z])/);
+    const wordCapitalParts = word.toUpperCase().split("");
     const regex = new RegExp(
       wordCapitalParts
         .map((wordPartStart) => `${escapeRegex(wordPartStart)}[a-z0-9_]*`)
