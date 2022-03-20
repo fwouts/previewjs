@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { rCrop } from "ranges-crop";
 import { Ranges, rMerge } from "ranges-merge";
 import { rOffset } from "ranges-offset";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { FullscreenPopup } from "../design/FullscreenPopup";
 
 export const SearchBox = ({
@@ -15,6 +15,9 @@ export const SearchBox = ({
 }) => {
   const [rawSearch, setRawSearch] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const listRef = useRef<HTMLUListElement | null>(null);
+  const highlightedItemRef = useRef<HTMLLIElement | null>(null);
   const filteredItems = items
     .map((item) => {
       const search = rawSearch.trim();
@@ -53,6 +56,19 @@ export const SearchBox = ({
       onItemSelected(selectedItemIndex);
     }
   };
+  useEffect(() => {
+    if (
+      !containerRef.current ||
+      !listRef.current ||
+      !highlightedItemRef.current
+    ) {
+      return;
+    }
+    containerRef.current.scroll({
+      behavior: "smooth",
+      top: highlightedItemRef.current.offsetTop - listRef.current.offsetTop,
+    });
+  }, [highlightedIndex]);
   return (
     <FullscreenPopup onClose={() => {}}>
       <div className="w-96 flex flex-col">
@@ -81,34 +97,37 @@ export const SearchBox = ({
             setHighlightedIndex(-1);
           }}
         />
-        {filteredItems.length === 0 ? (
-          <div className="p-2 text-gray-700 text-center">No results</div>
-        ) : (
-          <ul>
-            {filteredItems.map(({ item, nameRanges, filePathRanges }, i) => (
-              <li
-                key={i}
-                className={clsx([
-                  "flex flex-row px-3 py-2 cursor-pointer",
-                  i === highlightedIndex
-                    ? "bg-blue-200 font-bold"
-                    : "hover:bg-blue-100 hover:font-semibold",
-                ])}
-                onClick={() => onFilteredItemSelected(i)}
-              >
-                <div className="flex-grow mr-4 text-gray-900">
-                  {bold(item.name, nameRanges)}
-                </div>
-                <div
-                  className="truncate text-gray-400 font-medium"
-                  style={{ direction: "rtl" }}
+        <div className="h-60 overflow-auto" ref={containerRef}>
+          {filteredItems.length === 0 ? (
+            <div className="p-2 text-gray-700 text-center">No results</div>
+          ) : (
+            <ul ref={listRef}>
+              {filteredItems.map(({ item, nameRanges, filePathRanges }, i) => (
+                <li
+                  key={i}
+                  className={clsx([
+                    "flex flex-row px-3 py-2 cursor-pointer",
+                    i === highlightedIndex
+                      ? "bg-blue-200 font-bold"
+                      : "hover:bg-blue-100 hover:font-semibold",
+                  ])}
+                  onClick={() => onFilteredItemSelected(i)}
+                  ref={i === highlightedIndex ? highlightedItemRef : null}
                 >
-                  {bold(item.filePath, filePathRanges)}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                  <div className="flex-grow mr-4 text-gray-900">
+                    {bold(item.name, nameRanges)}
+                  </div>
+                  <div
+                    className="truncate text-gray-400 font-medium"
+                    style={{ direction: "rtl" }}
+                  >
+                    {bold(item.filePath, filePathRanges)}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </FullscreenPopup>
   );
@@ -200,5 +219,81 @@ setupPreviews(SearchBox, {
   },
   empty: {
     items: [],
+  },
+  many: {
+    items: [
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+      {
+        name: "Foo",
+        filePath: "src/foo/Foo.tsx",
+      },
+    ],
   },
 });
