@@ -1,3 +1,5 @@
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setupPreviews } from "@previewjs/plugin-react/setup";
 import clsx from "clsx";
 import { rCrop } from "ranges-crop";
@@ -5,15 +7,23 @@ import { Ranges, rMerge } from "ranges-merge";
 import { rOffset } from "ranges-offset";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 
+export type SearchItem = {
+  name: string;
+  filePath: string;
+};
+
 export const SearchBox = ({
   items,
+  loading,
   onItemSelected,
 }: {
-  items: Array<{ name: string; filePath: string }>;
-  onItemSelected(index: number): void;
+  items: Array<SearchItem>;
+  loading?: boolean;
+  onItemSelected(item: SearchItem): void;
 }) => {
   const [rawSearch, setRawSearch] = useState("");
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [explicitlyHighlightedItem, setHighlightedItem] =
+    useState<SearchItem | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
   const highlightedItemRef = useRef<HTMLLIElement | null>(null);
@@ -46,13 +56,11 @@ export const SearchBox = ({
       };
     })
     .filter(Boolean);
-  const onFilteredItemSelected = (index = highlightedIndex) => {
-    setHighlightedIndex(index);
-    const selectedItemIndex = items.findIndex(
-      (item) => item === filteredItems[index]?.item
-    );
-    if (selectedItemIndex > -1) {
-      onItemSelected(selectedItemIndex);
+  const highlightedItem =
+    explicitlyHighlightedItem || filteredItems[0]?.item || null;
+  const onFilteredItemSelected = (item = highlightedItem) => {
+    if (item) {
+      onItemSelected(item);
     }
   };
   useEffect(() => {
@@ -69,7 +77,6 @@ export const SearchBox = ({
       minTop -
       containerRef.current.offsetHeight +
       highlightedItemRef.current.offsetHeight;
-    console.error(minTop, maxTop, containerRef.current.scrollTop);
     if (containerRef.current.scrollTop > minTop) {
       containerRef.current.scroll({
         behavior: "auto",
@@ -81,24 +88,38 @@ export const SearchBox = ({
         top: maxTop,
       });
     }
-  }, [highlightedIndex]);
+  }, [highlightedItem]);
   return (
     <div className="w-96 flex flex-col">
       <input
         className="m-2 rounded-md font-mono p-2 font-semibold outline-none border-2 border-blue-100 focus:border-blue-500"
         autoComplete="off"
+        autoFocus
         placeholder="Button"
         value={rawSearch}
         onKeyDown={(e) => {
+          const highlightedFilteredItemIndex = filteredItems.findIndex(
+            (f) => f.item === highlightedItem
+          );
           switch (e.key) {
-            case "ArrowDown":
-              setHighlightedIndex(
-                Math.min(filteredItems.length - 1, highlightedIndex + 1)
+            case "ArrowDown": {
+              const updatedIndex = Math.min(
+                filteredItems.length - 1,
+                highlightedFilteredItemIndex + 1
               );
+              setHighlightedItem(filteredItems[updatedIndex]?.item || null);
+              e.preventDefault();
               break;
-            case "ArrowUp":
-              setHighlightedIndex(Math.max(-1, highlightedIndex - 1));
+            }
+            case "ArrowUp": {
+              const updatedIndex = Math.max(
+                -1,
+                highlightedFilteredItemIndex - 1
+              );
+              setHighlightedItem(filteredItems[updatedIndex]?.item || null);
+              e.preventDefault();
               break;
+            }
             case "Enter":
               onFilteredItemSelected();
               break;
@@ -106,11 +127,24 @@ export const SearchBox = ({
         }}
         onChange={(e) => {
           setRawSearch(e.target.value);
-          setHighlightedIndex(-1);
+          const highlightedFilteredItemIndex = filteredItems.findIndex(
+            (f) => f.item === explicitlyHighlightedItem
+          );
+          if (highlightedFilteredItemIndex === -1) {
+            setHighlightedItem(null);
+          }
         }}
       />
       <div className="h-60 overflow-auto" ref={containerRef}>
-        {filteredItems.length === 0 ? (
+        {loading && (
+          <div className="text-gray-400 text-center p-2">
+            <FontAwesomeIcon
+              icon={faSpinner}
+              className="text-xl animate-spin"
+            />
+          </div>
+        )}
+        {filteredItems.length === 0 && !loading ? (
           <div className="p-2 text-gray-700 text-center">No results</div>
         ) : (
           <ul ref={listRef}>
@@ -119,12 +153,12 @@ export const SearchBox = ({
                 key={i}
                 className={clsx([
                   "flex flex-row px-3 py-2 cursor-pointer",
-                  i === highlightedIndex
+                  item === highlightedItem
                     ? "bg-blue-200 font-bold"
                     : "hover:bg-blue-100 hover:font-semibold",
                 ])}
-                onClick={() => onFilteredItemSelected(i)}
-                ref={i === highlightedIndex ? highlightedItemRef : null}
+                onClick={() => onFilteredItemSelected(item)}
+                ref={item === highlightedItem ? highlightedItemRef : null}
               >
                 <div className="flex-grow mr-4 text-gray-900">
                   {bold(item.name, nameRanges)}
@@ -211,100 +245,111 @@ function bold(text: string, ranges: Ranges) {
   return parts;
 }
 
-setupPreviews(SearchBox, {
-  example: {
-    items: [
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Bar",
-        filePath: "src/foo/Bar.tsx",
-      },
-      {
-        name: "LongComponentName",
-        filePath: "src/app/scripts/foo/bar/baz/qux/Bar.tsx",
-      },
-    ],
-  },
-  empty: {
-    items: [],
-  },
-  many: {
-    items: [
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-      {
-        name: "Foo",
-        filePath: "src/foo/Foo.tsx",
-      },
-    ],
-  },
+setupPreviews(SearchBox, () => {
+  const manyItems = [
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+    {
+      name: "Foo",
+      filePath: "src/foo/Foo.tsx",
+    },
+  ];
+  return {
+    example: {
+      items: [
+        {
+          name: "Foo",
+          filePath: "src/foo/Foo.tsx",
+        },
+        {
+          name: "Bar",
+          filePath: "src/foo/Bar.tsx",
+        },
+        {
+          name: "LongComponentName",
+          filePath: "src/app/scripts/foo/bar/baz/qux/Bar.tsx",
+        },
+      ],
+    },
+    empty: {
+      items: [],
+    },
+    many: {
+      items: manyItems,
+    },
+    "loading (empty)": {
+      items: [],
+      loading: true,
+    },
+    "loading (many)": {
+      items: manyItems,
+      loading: true,
+    },
+  };
 });
