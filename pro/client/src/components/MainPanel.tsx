@@ -1,4 +1,5 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import { observer } from "mobx-react-lite";
@@ -12,28 +13,42 @@ export const MainPanel = observer(
     return (
       <Preview
         state={preview}
-        headerAddon={
-          license.proStatus === "enabled" ? (
-            <VariantButton icon={faStar} onClick={() => licenseModal.toggle()}>
-              Pro Edition
-            </VariantButton>
-          ) : license.proStatus === "disabled" ? (
-            <VariantButton
-              warning={!!license.proInvalidLicenseReason}
-              onClick={() => licenseModal.toggle()}
+        headerAddon={{
+          left: (
+            <button
+              className="text-gray-100 hover:text-white hover:bg-gray-700 rounded-md text-lg px-2 mr-2 cursor-pointer"
+              onClick={() => pro.toggleSearch()}
             >
-              {license.proInvalidLicenseReason
-                ? license.proInvalidLicenseReason
-                : "Switch to Pro"}
-            </VariantButton>
-          ) : null
-        }
+              <FontAwesomeIcon icon={faSearch} fixedWidth />
+            </button>
+          ),
+          right:
+            license.proStatus === "enabled" ? (
+              <VariantButton
+                icon={faStar}
+                onClick={() => licenseModal.toggle()}
+              >
+                Pro Edition
+              </VariantButton>
+            ) : license.proStatus === "disabled" ? (
+              <VariantButton
+                warning={!!license.proInvalidLicenseReason}
+                onClick={() => licenseModal.toggle()}
+              >
+                {license.proInvalidLicenseReason
+                  ? license.proInvalidLicenseReason
+                  : "Switch to Pro"}
+              </VariantButton>
+            ) : null,
+        }}
         subheader={
-          license.proStatus === "enabled" ? (
-            <ComponentPicker preview={preview} pro={pro} />
-          ) : license.proStatus === "disabled" ? (
-            preview.component && <Selection state={preview} />
-          ) : null
+          license.proStatus === "enabled"
+            ? pro.currentFile?.filePath && (
+                <ComponentPicker preview={preview} pro={pro} />
+              )
+            : license.proStatus === "disabled"
+            ? preview.component && <Selection state={preview} />
+            : null
         }
       />
     );

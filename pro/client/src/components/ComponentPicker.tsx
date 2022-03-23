@@ -1,5 +1,4 @@
-import { faBook, faCode, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faCode } from "@fortawesome/free-solid-svg-icons";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import { PreviewState } from "@previewjs/app/client/src/PreviewState";
 import { observer } from "mobx-react-lite";
@@ -22,12 +21,6 @@ export const ComponentPicker = observer(
     }, [preview.component?.componentId, loading]);
     return (
       <>
-        <button
-          className="text-gray-100 hover:text-white hover:bg-gray-700 rounded-md text-lg px-2 py-2 mr-2 cursor-pointer"
-          onClick={() => pro.toggleSearch()}
-        >
-          <FontAwesomeIcon icon={faSearch} fixedWidth />
-        </button>
         <ComponentList loading={loading}>
           {components.map((component) => {
             const selected =
