@@ -20,25 +20,23 @@ export const ComponentPicker = observer(
       });
     }, [preview.component?.componentId, loading]);
     return (
-      <>
-        <ComponentList loading={loading}>
-          {components.map((component) => {
-            const selected =
-              component.componentId === preview.component?.componentId || false;
-            const icon = component.type === "story" ? faBook : faCode;
-            return selected ? (
-              <Selection state={preview} icon={icon} ref={selectionRef} />
-            ) : (
-              <ComponentButton
-                label={component.name}
-                icon={icon}
-                masked={!component.exported}
-                onClick={() => preview.setComponent(component.componentId)}
-              />
-            );
-          })}
-        </ComponentList>
-      </>
+      <ComponentList loading={loading}>
+        {components.map((component) => {
+          const selected =
+            component.componentId === preview.component?.componentId || false;
+          const icon = component.type === "story" ? faBook : faCode;
+          return selected ? (
+            <Selection state={preview} icon={icon} ref={selectionRef} />
+          ) : (
+            <ComponentButton
+              label={component.name}
+              icon={icon}
+              masked={!component.exported}
+              onClick={() => preview.setComponent(component.componentId)}
+            />
+          );
+        })}
+      </ComponentList>
     );
   }
 );
