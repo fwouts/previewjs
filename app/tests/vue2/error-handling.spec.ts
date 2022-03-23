@@ -116,11 +116,8 @@ export const errorHandlingTests = testSuite("vue2/error handling", (test) => {
         replace: " BROKEN",
       });
       await sleep(2);
-      expect(await controller.errors.title.text()).toEqual(
-        `CssSyntaxError: ${path.join(
-          appDir.rootPath,
-          "src/App.vue"
-        )}?vue&type=style&index=0&lang.css:21:3: Unknown word`
+      expect(await controller.errors.title.text()).toContain(
+        `CssSyntaxError: ${path.join(appDir.rootPath, "src/App.vue")}`
       );
       await appDir.update("src/App.vue", {
         kind: "edit",
