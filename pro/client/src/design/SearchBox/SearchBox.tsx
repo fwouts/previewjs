@@ -15,13 +15,21 @@ export type SearchItem = {
 export const SearchBox = ({
   items,
   loading,
+  labels,
   onItemSelected,
 }: {
   items: Array<SearchItem>;
+
   loading?: boolean;
+  labels: {
+    empty: string;
+    noResults: string;
+    loading: string;
+  };
   onItemSelected(item: SearchItem): void;
 }) => {
   const [rawSearch, setRawSearch] = useState("");
+  const search = rawSearch.trim();
   const [explicitlyHighlightedItem, setHighlightedItem] =
     useState<SearchItem | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -29,7 +37,6 @@ export const SearchBox = ({
   const highlightedItemRef = useRef<HTMLLIElement | null>(null);
   const filteredItems = items
     .map((item) => {
-      const search = rawSearch.trim();
       if (!search) {
         return {
           item,
@@ -137,15 +144,18 @@ export const SearchBox = ({
       />
       <div className="h-60 overflow-auto" ref={containerRef}>
         {loading && (
-          <div className="text-gray-400 text-center p-2">
+          <div className="flex flex-row justify-center items-center text-gray-400 text-center p-2">
             <FontAwesomeIcon
               icon={faSpinner}
               className="text-xl animate-spin"
             />
+            {labels.loading && <div className="ml-2">{labels.loading}</div>}
           </div>
         )}
         {filteredItems.length === 0 && !loading ? (
-          <div className="p-2 text-gray-700 text-center">No results</div>
+          <div className="p-2 text-gray-700 text-center">
+            {search ? labels.noResults : labels.empty}
+          </div>
         ) : (
           <ul ref={listRef}>
             {filteredItems.map(({ item, nameRanges, filePathRanges }, i) => (
@@ -246,6 +256,11 @@ function bold(text: string, ranges: Ranges) {
 }
 
 setupPreviews(SearchBox, () => {
+  const labels = {
+    empty: "No items",
+    noResults: "No results",
+    loading: "Loading",
+  };
   const manyItems = [
     {
       name: "Foo",
@@ -336,20 +351,25 @@ setupPreviews(SearchBox, () => {
           filePath: "src/app/scripts/foo/bar/baz/qux/Bar.tsx",
         },
       ],
+      labels,
     },
     empty: {
       items: [],
+      labels,
     },
     many: {
       items: manyItems,
+      labels,
     },
     "loading (empty)": {
       items: [],
       loading: true,
+      labels,
     },
     "loading (many)": {
       items: manyItems,
       loading: true,
+      labels,
     },
   };
 });

@@ -14,6 +14,11 @@ export const App = observer(({ state }: { state: AppState }) => {
         <FullscreenPopup onClose={() => state.pro.toggleSearch()}>
           <SearchBox
             loading={state.pro.search.status === "loading"}
+            labels={{
+              empty: "No components detected",
+              noResults: "No results",
+              loading: "Detecting components",
+            }}
             items={state.pro.search.components}
             onItemSelected={(item) => {
               state.preview.setComponent(`${item.filePath}:${item.name}`);
