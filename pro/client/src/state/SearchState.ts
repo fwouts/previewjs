@@ -23,17 +23,16 @@ export class SearchState {
 
   constructor(private readonly localApi: LocalApi) {
     makeAutoObservable(this);
-    this.refresh();
+    this.refresh(false);
   }
 
-  private async refresh() {
+  async refresh(forceRefresh = true) {
     this.state = {
       kind: "loading",
     };
     try {
       const response = await this.localApi.request(AnalyzeProjectEndpoint, {
-        // TODO: Offer refresh option.
-        forceRefresh: false,
+        forceRefresh,
       });
       runInAction(() => {
         this.state = {

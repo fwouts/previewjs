@@ -17,9 +17,14 @@ export const App = observer(({ state }: { state: AppState }) => {
             labels={{
               empty: "No components detected",
               noResults: "No results",
-              loading: "Detecting components",
+              loading:
+                "Please wait while Preview.js searches for components in your project...",
+              refreshButton: "Rerun detection of components",
             }}
             items={state.pro.search.components}
+            onRefresh={() => {
+              state.pro.search?.refresh();
+            }}
             onItemSelected={(item) => {
               state.preview.setComponent(`${item.filePath}:${item.name}`);
               state.pro.toggleSearch();

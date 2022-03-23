@@ -1,4 +1,4 @@
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSync } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setupPreviews } from "@previewjs/plugin-react/setup";
 import clsx from "clsx";
@@ -17,6 +17,7 @@ export const SearchBox = ({
   loading,
   labels,
   onItemSelected,
+  onRefresh,
 }: {
   items: Array<SearchItem>;
 
@@ -25,8 +26,10 @@ export const SearchBox = ({
     empty: string;
     noResults: string;
     loading: string;
+    refreshButton: string;
   };
   onItemSelected(item: SearchItem): void;
+  onRefresh(): void;
 }) => {
   const [rawSearch, setRawSearch] = useState("");
   const search = rawSearch.trim();
@@ -98,58 +101,67 @@ export const SearchBox = ({
   }, [highlightedItem]);
   return (
     <div className="w-96 flex flex-col">
-      <input
-        className="m-2 rounded-md font-mono p-2 font-semibold outline-none border-2 border-blue-100 focus:border-blue-500"
-        autoComplete="off"
-        autoFocus
-        placeholder="Button"
-        value={rawSearch}
-        onKeyDown={(e) => {
-          const highlightedFilteredItemIndex = filteredItems.findIndex(
-            (f) => f.item === highlightedItem
-          );
-          switch (e.key) {
-            case "ArrowDown": {
-              const updatedIndex = Math.min(
-                filteredItems.length - 1,
-                highlightedFilteredItemIndex + 1
-              );
-              setHighlightedItem(filteredItems[updatedIndex]?.item || null);
-              e.preventDefault();
-              break;
+      <div className="flex flex-row p-2">
+        <input
+          className="flex-grow rounded-md font-mono p-2 font-semibold outline-none border-2 border-blue-100 focus:border-blue-500"
+          autoComplete="off"
+          autoFocus
+          placeholder="Button"
+          value={rawSearch}
+          onKeyDown={(e) => {
+            const highlightedFilteredItemIndex = filteredItems.findIndex(
+              (f) => f.item === highlightedItem
+            );
+            switch (e.key) {
+              case "ArrowDown": {
+                const updatedIndex = Math.min(
+                  filteredItems.length - 1,
+                  highlightedFilteredItemIndex + 1
+                );
+                setHighlightedItem(filteredItems[updatedIndex]?.item || null);
+                e.preventDefault();
+                break;
+              }
+              case "ArrowUp": {
+                const updatedIndex = Math.max(
+                  -1,
+                  highlightedFilteredItemIndex - 1
+                );
+                setHighlightedItem(filteredItems[updatedIndex]?.item || null);
+                e.preventDefault();
+                break;
+              }
+              case "Enter":
+                onFilteredItemSelected();
+                break;
             }
-            case "ArrowUp": {
-              const updatedIndex = Math.max(
-                -1,
-                highlightedFilteredItemIndex - 1
-              );
-              setHighlightedItem(filteredItems[updatedIndex]?.item || null);
-              e.preventDefault();
-              break;
+          }}
+          onChange={(e) => {
+            setRawSearch(e.target.value);
+            const highlightedFilteredItemIndex = filteredItems.findIndex(
+              (f) => f.item === explicitlyHighlightedItem
+            );
+            if (highlightedFilteredItemIndex === -1) {
+              setHighlightedItem(null);
             }
-            case "Enter":
-              onFilteredItemSelected();
-              break;
-          }
-        }}
-        onChange={(e) => {
-          setRawSearch(e.target.value);
-          const highlightedFilteredItemIndex = filteredItems.findIndex(
-            (f) => f.item === explicitlyHighlightedItem
-          );
-          if (highlightedFilteredItemIndex === -1) {
-            setHighlightedItem(null);
-          }
-        }}
-      />
+          }}
+        />
+        <button
+          className={clsx([
+            "ml-2 p-2 text-gray-700",
+            loading ? "animate-spin" : "cursor-pointer",
+          ])}
+          disabled={loading}
+          onClick={loading ? undefined : onRefresh}
+          title={labels.refreshButton}
+        >
+          <FontAwesomeIcon icon={faSync} />
+        </button>
+      </div>
       <div className="h-60 overflow-auto" ref={containerRef}>
         {loading && (
-          <div className="flex flex-row justify-center items-center text-gray-400 text-center p-2">
-            <FontAwesomeIcon
-              icon={faSpinner}
-              className="text-xl animate-spin"
-            />
-            {labels.loading && <div className="ml-2">{labels.loading}</div>}
+          <div className="grid h-60 place-items-center text-gray-400 text-center p-2">
+            {labels.loading}
           </div>
         )}
         {filteredItems.length === 0 && !loading ? (
@@ -260,6 +272,7 @@ setupPreviews(SearchBox, () => {
     empty: "No items",
     noResults: "No results",
     loading: "Loading",
+    refreshButton: "Refresh",
   };
   const manyItems = [
     {
