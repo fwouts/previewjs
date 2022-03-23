@@ -2,6 +2,7 @@ import { LocalApi } from "@previewjs/app/client/src/api/local";
 import { PreviewIframeController } from "@previewjs/core/controller";
 import { AnalyzeFileEndpoint, Component } from "@previewjs/pro-api/endpoints";
 import { makeAutoObservable, observable, runInAction } from "mobx";
+import { SearchState } from "./SearchState";
 
 const REFRESH_PERIOD_MILLIS = 5000;
 
@@ -13,6 +14,7 @@ export interface FileInfo {
 
 export class ProState {
   currentFile: FileInfo | null = null;
+  search: SearchState | null = null;
 
   private refreshFileInterval: NodeJS.Timer | null = null;
   private refreshingFile: Promise<void> | null = null;
@@ -31,7 +33,7 @@ export class ProState {
     });
   }
 
-  start() {
+  async start() {
     this.refreshFileInterval = setInterval(() => {
       this.refreshFile().catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
@@ -41,6 +43,14 @@ export class ProState {
     if (this.refreshFileInterval) {
       clearInterval(this.refreshFileInterval);
       this.refreshFileInterval = null;
+    }
+  }
+
+  toggleSearch() {
+    if (this.search) {
+      this.search = null;
+    } else {
+      this.search = new SearchState(this.localApi);
     }
   }
 

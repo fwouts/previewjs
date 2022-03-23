@@ -483,6 +483,8 @@ importers:
       '@previewjs/plugin-vue3': 2.0.2
       '@previewjs/vfs': 1.1.1
       '@types/express': ^4.17.13
+      '@types/fs-extra': 9.0.13
+      '@types/glob': 7.2.0
       '@types/react': ^17.0.27
       '@types/react-dom': ^17.0.9
       '@types/uuid': 8.3.4
@@ -492,10 +494,15 @@ importers:
       clsx: ^1.1.1
       cross-env: ^7.0.3
       express: ^4.17.2
+      fs-extra: ^10.0.1
+      glob: ^7.2.0
       mobx: ^6.3.10
       mobx-react-lite: ^3.2.3
       postcss: ^8.4.4
       prettier: ^2.5.1
+      ranges-crop: ^5.0.12
+      ranges-merge: ^8.0.12
+      ranges-offset: ^3.0.12
       react: ^17.0.2
       react-dom: ^17.0.2
       rimraf: ^3.0.2
@@ -518,8 +525,13 @@ importers:
       assert-never: 1.2.1
       clsx: 1.1.1
       express: 4.17.3
+      fs-extra: 10.0.1
+      glob: 7.2.0
       mobx: 6.4.2
       mobx-react-lite: 3.3.0_4e589064ce40a783661f96d46f38f574
+      ranges-crop: 5.0.12
+      ranges-merge: 8.0.12
+      ranges-offset: 3.0.12
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       universal-base64: 2.1.0
@@ -529,6 +541,8 @@ importers:
       '@previewjs/app': link:../app
       '@previewjs/loader': link:../loader
       '@types/express': 4.17.13
+      '@types/fs-extra': 9.0.13
+      '@types/glob': 7.2.0
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
       '@types/uuid': 8.3.4
@@ -24817,6 +24831,39 @@ packages:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
 
+  /ranges-crop/5.0.12:
+    resolution: {integrity: sha512-1DIA+razQc5lbvUNNjF6/gzQStoN2NfMHjcLEmFEGc6PVbgWrJ6vnw6HyWlClSAWm1jeO88D1vdOSK6rQfZoyA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      ranges-merge: 8.0.12
+    dev: false
+
+  /ranges-merge/8.0.12:
+    resolution: {integrity: sha512-rYrql9CEh32JUfVnKH600fC8KE4hlhLuhDoqXIXopqT4mFyFhrer+Hj+aMQpSqe34MK+1dZ5SxymnKerNgC37g==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      ranges-push: 6.0.12
+      ranges-sort: 5.0.12
+    dev: false
+
+  /ranges-offset/3.0.12:
+    resolution: {integrity: sha512-m1V91a1r37qrJB7hojgUBbY0JDDzZit0YunJ7TEx2J2QGIj0QhbeLxFjQKreIjgZrwMI8Lc97I2Cff4YcgLjAQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: false
+
+  /ranges-push/6.0.12:
+    resolution: {integrity: sha512-THUoFJyZUXl/KdWAKyMYaQ4vJBAmTyv4uz9j2EHpVwzetZdMUjdDUizO0nROGyh5pHEnb+wXmkPYYjBZEl08uQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      string-collapse-leading-whitespace: 6.0.12
+      string-trim-spaces-only: 4.0.12
+    dev: false
+
+  /ranges-sort/5.0.12:
+    resolution: {integrity: sha512-/tCfYzEFrdNc4bpyPrXeVubkZCpIABzwyZXVH/x2H+tXnZEs+A/yk6shQEaBa5QUN+zyMzW2bTVoNkwM0TWKSQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: false
+
   /raw-body/2.4.1:
     resolution: {integrity: sha512-9WmIKF6mkvA0SLmA2Knm9+qj89e+j1zqgyn8aXGd7+nAduPoqgI9lO57SAZNn/Byzo5P7JhXTyg9PzaJbH73bA==}
     engines: {node: '>= 0.8'}
@@ -27241,6 +27288,11 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
+  /string-collapse-leading-whitespace/6.0.12:
+    resolution: {integrity: sha512-FKZOQgRgaEw1w0CydQAKQFyJ8n8CC6NaPqWlsJXa4uWtoUUK7da87k4GiFi5ulBfe/Ipp2Md6+afyho+SvydfQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: false
+
   /string-hash/1.1.3:
     resolution: {integrity: sha1-6Kr8CsGFW0Zmkp7X3RJ1311sgRs=}
     dev: false
@@ -27258,6 +27310,11 @@ packages:
 
   /string-similarity/4.0.4:
     resolution: {integrity: sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==}
+    dev: false
+
+  /string-trim-spaces-only/4.0.12:
+    resolution: {integrity: sha512-NbO7lUymVMheLnxZobLqRdzIvN5jLr+cPI6xTlytD2n1UTM35TUlUhHX51rswGFQBuWFTbKhTHycYvBb0qOZ3g==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: false
 
   /string-width/1.0.2:

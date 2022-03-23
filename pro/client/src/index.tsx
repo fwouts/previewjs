@@ -18,3 +18,13 @@ ReactDOM.render(
   document.getElementById("root")
 );
 state.start().catch(console.error);
+
+document.addEventListener("keydown", (e) => {
+  const modifier = navigator.userAgent.includes("Macintosh")
+    ? e.metaKey
+    : e.ctrlKey;
+  if (modifier && e.key === "k") {
+    e.preventDefault();
+    state.pro.toggleSearch();
+  }
+});

@@ -12,10 +12,12 @@ export const ComponentList: React.FC<{ loading?: boolean }> = ({
   >
     {children}
     {loading && (
-      <FontAwesomeIcon
-        icon={faSpinner}
-        className="text-gray-300 animate-spin"
-      />
+      <div className="p-2">
+        <FontAwesomeIcon
+          icon={faSpinner}
+          className="text-gray-300 animate-spin"
+        />
+      </div>
     )}
   </div>
 );

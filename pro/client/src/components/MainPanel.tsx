@@ -1,4 +1,5 @@
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import { observer } from "mobx-react-lite";
@@ -13,6 +14,14 @@ export const MainPanel = observer(
       <Preview
         state={preview}
         headerAddon={{
+          left: (
+            <button
+              className="text-gray-100 hover:text-white hover:bg-gray-700 rounded-md text-lg px-2 mr-2 cursor-pointer"
+              onClick={() => pro.toggleSearch()}
+            >
+              <FontAwesomeIcon icon={faSearch} fixedWidth />
+            </button>
+          ),
           right:
             license.proStatus === "enabled" ? (
               <VariantButton
@@ -33,11 +42,13 @@ export const MainPanel = observer(
             ) : null,
         }}
         subheader={
-          license.proStatus === "enabled" ? (
-            <ComponentPicker preview={preview} pro={pro} />
-          ) : license.proStatus === "disabled" ? (
-            preview.component && <Selection state={preview} />
-          ) : null
+          license.proStatus === "enabled"
+            ? pro.currentFile?.filePath && (
+                <ComponentPicker preview={preview} pro={pro} />
+              )
+            : license.proStatus === "disabled"
+            ? preview.component && <Selection state={preview} />
+            : null
         }
       />
     );

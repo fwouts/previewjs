@@ -6,7 +6,7 @@ import svgrPlugin from "vite-plugin-svgr";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [reactPlugin(), svgrPlugin()],
-  publicDir: path.resolve(__dirname, '../../app/client/public'),
+  publicDir: path.resolve(__dirname, "../../app/client/public"),
   server: {
     cors: {
       origin: null,
