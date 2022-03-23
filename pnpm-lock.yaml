@@ -89,7 +89,7 @@ importers:
       ts-node: 10.5.0
       ts-node-dev: 1.1.8
       typescript: 4.5.5
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
       vite-plugin-svgr: 0.6.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.36
@@ -142,8 +142,8 @@ importers:
       ts-node: 10.5.0_367793418afa917fddeb69e0b1aa8aae
       ts-node-dev: 1.1.8_typescript@4.5.5
       typescript: 4.5.5
-      vite: 2.9.0-beta.4
-      vite-plugin-svgr: 0.6.0_vite@2.9.0-beta.4
+      vite: 2.9.0-beta.6
+      vite-plugin-svgr: 0.6.0_vite@2.9.0-beta.6
 
   cli:
     specifiers:
@@ -175,12 +175,12 @@ importers:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
     devDependencies:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.5.5
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
 
   core:
     specifiers:
@@ -215,7 +215,7 @@ importers:
       tsconfig-paths: 3.12.0
       typescript: ^4.5.5
       uuid: 8.3.2
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
       vite-tsconfig-paths: 3.4.1
     dependencies:
       '@previewjs/api': link:../api
@@ -239,8 +239,8 @@ importers:
       tsconfig-paths: 3.12.0
       typescript: 4.5.5
       uuid: 8.3.2
-      vite: 2.9.0-beta.4_sass@1.49.9
-      vite-tsconfig-paths: 3.4.1_vite@2.9.0-beta.4
+      vite: 2.9.0-beta.6_sass@1.49.9
+      vite-tsconfig-paths: 3.4.1_vite@2.9.0-beta.6
     devDependencies:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -270,7 +270,7 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.3
       typescript: ^4.5.5
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -288,7 +288,7 @@ importers:
       next: 12.1.0
       rimraf: 3.0.2
       ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
 
   frameworks/react/preview:
     specifiers:
@@ -319,7 +319,7 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.3
       typescript: ^4.5.5
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
       vite-plugin-vue2: ^1.9.3
       vue: ^2.6.14
       vue-template-compiler: ^2.6.14
@@ -329,7 +329,7 @@ importers:
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.0.0
       typescript: 4.5.5
-      vite-plugin-vue2: 1.9.3_cdf333f986f22240d17c2ae1044233dc
+      vite-plugin-vue2: 1.9.3_170a9bd355d1b45bd0802d80c195f440
       vue: 2.6.14
       vue-template-compiler: 2.6.14
     devDependencies:
@@ -340,7 +340,7 @@ importers:
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       rimraf: 3.0.2
       ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
 
   frameworks/vue2/preview:
     specifiers:
@@ -368,12 +368,12 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.3
       typescript: ^4.5.5
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
       vue: ^3
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue': 2.0.1_vite@2.9.0-beta.4+vue@3.2.26
+      '@vitejs/plugin-vue': 2.0.1_vite@2.9.0-beta.6+vue@3.2.26
       '@vitejs/plugin-vue-jsx': 1.3.3
       '@vue/compiler-sfc': 3.2.26
       acorn: 8.7.0
@@ -386,7 +386,7 @@ importers:
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       rimraf: 3.0.2
       ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
 
   frameworks/vue3/preview:
     specifiers:
@@ -510,7 +510,7 @@ importers:
       typescript: ^4.5.4
       universal-base64: ^2.1.0
       uuid: 8.3.2
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
       vite-plugin-svgr: ^0.6.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.36
@@ -554,8 +554,8 @@ importers:
       rimraf: 3.0.2
       tailwindcss: 3.0.23_c940fbabf228b85b1c73d314b43e31f1
       typescript: 4.5.5
-      vite: 2.9.0-beta.4
-      vite-plugin-svgr: 0.6.0_vite@2.9.0-beta.4
+      vite: 2.9.0-beta.6
+      vite-plugin-svgr: 0.6.0_vite@2.9.0-beta.6
 
   smoke-test-apps/aliases:
     specifiers:
@@ -10770,14 +10770,14 @@ packages:
       vite: 2.7.10
     dev: true
 
-  /@vitejs/plugin-vue/2.0.1_vite@2.9.0-beta.4+vue@3.2.26:
+  /@vitejs/plugin-vue/2.0.1_vite@2.9.0-beta.6+vue@3.2.26:
     resolution: {integrity: sha512-wtdMnGVvys9K8tg+DxowU1ytTrdVveXr3LzdhaKakysgGXyrsfaeds2cDywtvujEASjWOwWL/OgWM+qoeM8Plg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
       vue: ^3.2.25
     dependencies:
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
       vue: 3.2.26
     dev: false
 
@@ -16164,18 +16164,18 @@ packages:
       eslint-plugin-testing-library:
         optional: true
     dependencies:
-      '@typescript-eslint/eslint-plugin': 4.33.0_3289a875d95a672b97ebf589745c66ef
-      '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.5.4
+      '@typescript-eslint/eslint-plugin': 4.33.0_959502c0ea240e86d4d2ba8b8c0fee45
+      '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.5.5
       babel-eslint: 10.1.0_eslint@7.32.0
       confusing-browser-globals: 1.0.11
       eslint: 7.32.0
       eslint-plugin-flowtype: 5.10.0_eslint@7.32.0
       eslint-plugin-import: 2.25.4_eslint@7.32.0
-      eslint-plugin-jest: 24.7.0_f42847b8cf886233a5558f157bd21430
+      eslint-plugin-jest: 24.7.0_3f4b3d5e9ff2eeb92498cbf02acbc5d8
       eslint-plugin-jsx-a11y: 6.5.1_eslint@7.32.0
       eslint-plugin-react: 7.28.0_eslint@7.32.0
       eslint-plugin-react-hooks: 4.3.0_eslint@7.32.0
-      eslint-plugin-testing-library: 3.10.2_eslint@7.32.0+typescript@4.5.4
+      eslint-plugin-testing-library: 3.10.2_eslint@7.32.0+typescript@4.5.5
     dev: false
 
   /eslint-import-resolver-node/0.3.6:
@@ -29593,18 +29593,18 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/0.6.0_vite@2.9.0-beta.4:
+  /vite-plugin-svgr/0.6.0_vite@2.9.0-beta.6:
     resolution: {integrity: sha512-+9eiWLzdlLK3ktnO7gzazMmR/KJyXTy7z6GeRbhv5HKEOFjLdNk3eB0qJaSpzJC3dr2pKWml0jAmxH7O6CcQtg==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.1.2
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-vue2/1.9.3_cdf333f986f22240d17c2ae1044233dc:
+  /vite-plugin-vue2/1.9.3_170a9bd355d1b45bd0802d80c195f440:
     resolution: {integrity: sha512-0KhHSEeht0VHJtt4Z2cJ9bWBq4dP3HoXpapqAHV+f+cUa6KywYdOd+z6sSGLpuGjN8F9YinrFIo8dfVmMOpc8Q==}
     peerDependencies:
       vite: ^2.0.0-beta.23
@@ -29629,14 +29629,14 @@ packages:
       rollup: 2.67.1
       slash: 3.0.0
       source-map: 0.7.3
-      vite: 2.9.0-beta.4
+      vite: 2.9.0-beta.6
       vue-template-compiler: 2.6.14
       vue-template-es2015-compiler: 1.9.1
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /vite-tsconfig-paths/3.4.1_vite@2.9.0-beta.4:
+  /vite-tsconfig-paths/3.4.1_vite@2.9.0-beta.6:
     resolution: {integrity: sha512-SgK3/pnTuJ3i+gMSAWLR6VCPSw26bnxawrmXGvCDjJgk8MAQgmbCrFrAzfwbwZBXSqSuvWEuX04Wt73qJKx8fQ==}
     peerDependencies:
       vite: '>2.0.0-0'
@@ -29645,7 +29645,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.1
       tsconfig-paths: 3.12.0
-      vite: 2.9.0-beta.4_sass@1.49.9
+      vite: 2.9.0-beta.6_sass@1.49.9
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -29698,8 +29698,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite/2.9.0-beta.4:
-    resolution: {integrity: sha512-ToelFqN8lBaiK34VHzTbixOImHoHBw/PCveV5Xynd4ie1twcE0G6t9MFgunuN1hoajWMraGL5bV+pZ3hENR7GA==}
+  /vite/2.9.0-beta.6:
+    resolution: {integrity: sha512-TS0dzn5eeXVLeREem1KRyUB7fYybwJCHqJksr1HENMh/A1fFJvRlQTO4n0LOAECdSp1UtsM3nMT3W0OY3vYoUw==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -29722,8 +29722,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite/2.9.0-beta.4_sass@1.49.9:
-    resolution: {integrity: sha512-ToelFqN8lBaiK34VHzTbixOImHoHBw/PCveV5Xynd4ie1twcE0G6t9MFgunuN1hoajWMraGL5bV+pZ3hENR7GA==}
+  /vite/2.9.0-beta.6_sass@1.49.9:
+    resolution: {integrity: sha512-TS0dzn5eeXVLeREem1KRyUB7fYybwJCHqJksr1HENMh/A1fFJvRlQTO4n0LOAECdSp1UtsM3nMT3W0OY3vYoUw==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
