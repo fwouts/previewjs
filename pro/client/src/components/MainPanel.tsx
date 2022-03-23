@@ -12,22 +12,26 @@ export const MainPanel = observer(
     return (
       <Preview
         state={preview}
-        headerAddon={
-          license.proStatus === "enabled" ? (
-            <VariantButton icon={faStar} onClick={() => licenseModal.toggle()}>
-              Pro Edition
-            </VariantButton>
-          ) : license.proStatus === "disabled" ? (
-            <VariantButton
-              warning={!!license.proInvalidLicenseReason}
-              onClick={() => licenseModal.toggle()}
-            >
-              {license.proInvalidLicenseReason
-                ? license.proInvalidLicenseReason
-                : "Switch to Pro"}
-            </VariantButton>
-          ) : null
-        }
+        headerAddon={{
+          right:
+            license.proStatus === "enabled" ? (
+              <VariantButton
+                icon={faStar}
+                onClick={() => licenseModal.toggle()}
+              >
+                Pro Edition
+              </VariantButton>
+            ) : license.proStatus === "disabled" ? (
+              <VariantButton
+                warning={!!license.proInvalidLicenseReason}
+                onClick={() => licenseModal.toggle()}
+              >
+                {license.proInvalidLicenseReason
+                  ? license.proInvalidLicenseReason
+                  : "Switch to Pro"}
+              </VariantButton>
+            ) : null,
+        }}
         subheader={
           license.proStatus === "enabled" ? (
             <ComponentPicker preview={preview} pro={pro} />

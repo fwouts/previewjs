@@ -18,11 +18,14 @@ import { UpdateBanner } from "../UpdateBanner";
 export const Preview = observer(
   ({
     state,
-    headerAddon,
+    headerAddon: { left: leftHeaderAddon, right: rightHeaderAddon } = {},
     subheader,
   }: {
     state: PreviewState;
-    headerAddon?: React.ReactNode;
+    headerAddon?: {
+      left?: React.ReactNode;
+      right?: React.ReactNode;
+    };
     subheader?: React.ReactNode;
   }) => {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -50,6 +53,7 @@ export const Preview = observer(
         <ActionLogs state={state.actionLogs} />
         <Header>
           <Header.Row>
+            {leftHeaderAddon}
             <FilePath
               key="file"
               filePath={
@@ -59,7 +63,7 @@ export const Preview = observer(
                   : ""
               }
             />
-            {headerAddon}
+            {rightHeaderAddon}
             <SmallLogo
               key="info"
               href="https://github.com/fwouts/previewjs/releases"
