@@ -14,7 +14,7 @@ export const MainPanel = observer(
       <Preview
         state={preview}
         headerAddon={{
-          left: (
+          left: license.proStatus === "enabled" && (
             <button
               className="text-gray-100 hover:text-white hover:bg-gray-700 rounded-md text-lg px-2 mr-2 cursor-pointer"
               onClick={() => pro.toggleSearch()}
