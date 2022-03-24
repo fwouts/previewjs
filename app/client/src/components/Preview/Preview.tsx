@@ -1,11 +1,13 @@
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCode, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
 import { decodeComponentId } from "../../component-id";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
+import { Link } from "../../design/Link";
 import { PropsEditor } from "../../design/PropsEditor";
 import { SmallLogo } from "../../design/SmallLogo";
 import { TabbedPanel } from "../../design/TabbedPanel";
@@ -18,15 +20,16 @@ import { UpdateBanner } from "../UpdateBanner";
 export const Preview = observer(
   ({
     state,
-    headerAddon: { left: leftHeaderAddon, right: rightHeaderAddon } = {},
+    appLabel,
+    headerAddon,
     subheader,
+    panelExtra,
   }: {
     state: PreviewState;
-    headerAddon?: {
-      left?: React.ReactNode;
-      right?: React.ReactNode;
-    };
+    appLabel: string;
+    headerAddon?: React.ReactNode;
     subheader?: React.ReactNode;
+    panelExtra?: React.ReactNode;
   }) => {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
     useEffect(() => {
@@ -53,7 +56,7 @@ export const Preview = observer(
         <ActionLogs state={state.actionLogs} />
         <Header>
           <Header.Row>
-            {leftHeaderAddon}
+            {headerAddon}
             {state.component?.componentId && (
               <FilePath
                 key="file"
@@ -62,16 +65,40 @@ export const Preview = observer(
                 }
               />
             )}
+            <Link
+              href={document.location.href}
+              target="_blank"
+              title="Open in new tab"
+              className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
+            >
+              <FontAwesomeIcon icon={faExpandAlt} fixedWidth />
+            </Link>
             <div className="flex-grow"></div>
-            {rightHeaderAddon}
             <SmallLogo
-              key="info"
-              href="https://github.com/fwouts/previewjs/releases"
-              loading={!state.appInfo}
-              label={state.appInfo?.version}
+              href="https://previewjs.com/docs"
+              label={appLabel}
+              title={state.appInfo?.version && `v${state.appInfo.version}`}
             />
+            <Link
+              className="ml-2 text-xl text-[#1DA1F2] hover:text-white"
+              href="https://twitter.com/previewjs"
+              target="_blank"
+              title="Follow Preview.js on Twitter"
+            >
+              <FontAwesomeIcon icon={faTwitter} fixedWidth />
+            </Link>
+            <Link
+              className="ml-2 text-xl bg-[#333] text-white rounded-md hover:bg-white hover:text-[#333]"
+              href="https://github.com/fwouts/previewjs"
+              target="_blank"
+              title="Star Preview.js on GitHub"
+            >
+              <FontAwesomeIcon icon={faGithub} fixedWidth />
+            </Link>
           </Header.Row>
-          {subheader && <Header.Row>{subheader}</Header.Row>}
+          {subheader && (
+            <Header.Row className="bg-gray-100">{subheader}</Header.Row>
+          )}
         </Header>
         <UpdateBanner state={state.updateBanner} />
         {state.component ? (
@@ -93,6 +120,7 @@ export const Preview = observer(
                   {
                     label: "Properties",
                     key: "props",
+                    icon: faCode,
                     notificationCount: 0,
                     panel: state.component?.details && (
                       <PropsEditor
@@ -118,31 +146,13 @@ export const Preview = observer(
             {
               label: "Console",
               key: "console",
+              icon: faBars,
               notificationCount: state.consoleLogs.unreadCount,
               panel: <ConsolePanel state={state.consoleLogs} />,
             },
           ]}
           height={panelHeight}
-          links={[
-            {
-              href: document.location.href,
-              title: "Open in browser",
-              icon: faExternalLinkAlt,
-              className: "text-base",
-            },
-            {
-              href: "https://github.com/fwouts/previewjs",
-              title: "GitHub",
-              icon: faGithub,
-              color: "#333",
-            },
-            {
-              href: "https://twitter.com/previewjs",
-              title: "Follow us on Twitter",
-              icon: faTwitter,
-              color: "#1DA1F2",
-            },
-          ]}
+          extra={panelExtra}
         />
       </div>
     );

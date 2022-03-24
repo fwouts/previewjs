@@ -11,8 +11,8 @@ export const ComponentButton = (props: {
 }) => (
   <button
     className={clsx([
-      "component inline-flex items-center shrink-0 text-gray-200 mx-5",
-      props.masked && "text-gray-500",
+      "component inline-flex items-center shrink-0 text-gray-700 mx-5",
+      props.masked && "text-gray-400",
     ])}
     onClick={props.onClick}
   >

@@ -13,34 +13,19 @@ export const MainPanel = observer(
     return (
       <Preview
         state={preview}
-        headerAddon={{
-          right:
-            license.proStatus === "enabled" ? (
-              <>
-                <button
-                  className="text-gray-100 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 ml-2 cursor-pointer"
-                  onClick={() => pro.toggleSearch()}
-                >
-                  <FontAwesomeIcon icon={faSearch} fixedWidth />
-                </button>
-                <VariantButton
-                  icon={faStar}
-                  onClick={() => licenseModal.toggle()}
-                >
-                  Pro Edition
-                </VariantButton>
-              </>
-            ) : license.proStatus === "disabled" ? (
-              <VariantButton
-                warning={!!license.proInvalidLicenseReason}
-                onClick={() => licenseModal.toggle()}
-              >
-                {license.proInvalidLicenseReason
-                  ? license.proInvalidLicenseReason
-                  : "Switch to Pro"}
-              </VariantButton>
-            ) : null,
-        }}
+        appLabel={
+          license.proStatus === "enabled" ? "Preview.js Pro" : "Preview.js"
+        }
+        headerAddon={
+          license.proStatus === "enabled" ? (
+            <button
+              className="text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 mr-2 cursor-pointer"
+              onClick={() => pro.toggleSearch()}
+            >
+              <FontAwesomeIcon icon={faSearch} fixedWidth />
+            </button>
+          ) : null
+        }
         subheader={
           license.proStatus === "enabled"
             ? pro.currentFile?.filePath && (
@@ -49,6 +34,22 @@ export const MainPanel = observer(
             : license.proStatus === "disabled"
             ? preview.component && <Selection state={preview} />
             : null
+        }
+        panelExtra={
+          license.proStatus === "enabled" ? (
+            <VariantButton icon={faStar} onClick={() => licenseModal.toggle()}>
+              Pro Edition
+            </VariantButton>
+          ) : license.proStatus === "disabled" ? (
+            <VariantButton
+              warning={!!license.proInvalidLicenseReason}
+              onClick={() => licenseModal.toggle()}
+            >
+              {license.proInvalidLicenseReason
+                ? license.proInvalidLicenseReason
+                : "Try Preview.js Pro"}
+            </VariantButton>
+          ) : null
         }
       />
     );
