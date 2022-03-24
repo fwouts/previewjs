@@ -45,7 +45,7 @@ export const Pill = forwardRef(
                     "button px-3 py-1 font-light",
                     selected
                       ? "text-gray-100 bg-gray-600"
-                      : "text-gray-800 hover:text-gray-600",
+                      : "text-gray-800 hover:bg-gray-200",
                   ])}
                   id={selected ? "selected-button" : undefined}
                   onClick={(e) => {
