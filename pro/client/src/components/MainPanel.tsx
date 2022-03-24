@@ -14,22 +14,22 @@ export const MainPanel = observer(
       <Preview
         state={preview}
         headerAddon={{
-          left: license.proStatus === "enabled" && (
-            <button
-              className="text-gray-100 hover:text-white hover:bg-gray-700 rounded-md text-lg px-2 mr-2 cursor-pointer"
-              onClick={() => pro.toggleSearch()}
-            >
-              <FontAwesomeIcon icon={faSearch} fixedWidth />
-            </button>
-          ),
           right:
             license.proStatus === "enabled" ? (
-              <VariantButton
-                icon={faStar}
-                onClick={() => licenseModal.toggle()}
-              >
-                Pro Edition
-              </VariantButton>
+              <>
+                <button
+                  className="text-gray-100 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 ml-2 cursor-pointer"
+                  onClick={() => pro.toggleSearch()}
+                >
+                  <FontAwesomeIcon icon={faSearch} fixedWidth />
+                </button>
+                <VariantButton
+                  icon={faStar}
+                  onClick={() => licenseModal.toggle()}
+                >
+                  Pro Edition
+                </VariantButton>
+              </>
             ) : license.proStatus === "disabled" ? (
               <VariantButton
                 warning={!!license.proInvalidLicenseReason}

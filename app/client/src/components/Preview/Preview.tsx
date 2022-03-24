@@ -54,15 +54,15 @@ export const Preview = observer(
         <Header>
           <Header.Row>
             {leftHeaderAddon}
-            <FilePath
-              key="file"
-              filePath={
-                state.component?.componentId
-                  ? decodeComponentId(state.component.componentId)
-                      .currentFilePath
-                  : ""
-              }
-            />
+            {state.component?.componentId && (
+              <FilePath
+                key="file"
+                filePath={
+                  decodeComponentId(state.component.componentId).currentFilePath
+                }
+              />
+            )}
+            <div className="flex-grow"></div>
             {rightHeaderAddon}
             <SmallLogo
               key="info"
