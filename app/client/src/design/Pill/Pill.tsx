@@ -1,7 +1,7 @@
 import { faSpinner, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
-import React, {ForwardedRef, forwardRef} from "react";
+import React, { ForwardedRef, forwardRef } from "react";
 
 export const Pill = forwardRef(
   (
@@ -22,7 +22,7 @@ export const Pill = forwardRef(
         className="inline-flex shrink-0 items-center cursor-pointer rounded-full overflow-hidden px-2 border-2 border-gray-500 bg-gray-800 text-gray-200"
         onClick={props.onClick}
       >
-        <span id="component-label" className="m-2 font-bold">
+        <span id="component-label" className="m-1">
           {props.loading ? (
             <FontAwesomeIcon
               className="mr-2 animate-spin"
@@ -45,7 +45,7 @@ export const Pill = forwardRef(
                 <div
                   key={v.key}
                   className={clsx([
-                    "button mx-2 py-2 font-extralight",
+                    "button px-2 py-1 font-extralight",
                     selected
                       ? "text-blue-50 underline underline-offset-4"
                       : "text-gray-400 hover:text-blue-100",
