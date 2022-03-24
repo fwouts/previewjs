@@ -56,6 +56,7 @@ export const Preview = observer(
         <ActionLogs state={state.actionLogs} />
         <Header>
           <Header.Row>
+            {headerAddon}
             {state.component?.componentId && (
               <FilePath
                 key="file"
@@ -68,12 +69,11 @@ export const Preview = observer(
               href={document.location.href}
               target="_blank"
               title="Open in new tab"
-              className="text-gray-300 ml-2 text-lg"
+              className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
             >
               <FontAwesomeIcon icon={faExpandAlt} fixedWidth />
             </Link>
             <div className="flex-grow"></div>
-            {headerAddon}
             <SmallLogo
               href="https://previewjs.com/docs"
               label={appLabel}
@@ -96,7 +96,9 @@ export const Preview = observer(
               <FontAwesomeIcon icon={faGithub} fixedWidth />
             </Link>
           </Header.Row>
-          {subheader && <Header.Row>{subheader}</Header.Row>}
+          {subheader && (
+            <Header.Row className="bg-gray-100">{subheader}</Header.Row>
+          )}
         </Header>
         <UpdateBanner state={state.updateBanner} />
         {state.component ? (

@@ -30,15 +30,21 @@ export const TabbedPanel = (props: {
   extra?: React.ReactNode;
 }) => {
   const [currentTabKey, setCurrentTabKey] = useState(props.defaultTabKey);
-  const [visible, setVisible] = useState(true);
+  const [rawVisible, setVisible] = useState(true);
   const currentTab = props.tabs.find((tab) => tab.key === currentTabKey);
+  const visible = rawVisible && !!currentTab;
   return (
     <div>
       <div className="flex flex-row items-center bg-white shadow-inner">
         {props.tabs.length > 0 && (
           <button
             className="px-4 py-2 hover:text-blue-500"
-            onClick={() => setVisible(!visible)}
+            onClick={() => {
+              if (props.tabs.length > 0 && !currentTab) {
+                setCurrentTabKey(props.tabs[0]!.key);
+              }
+              setVisible(!visible);
+            }}
           >
             <FontAwesomeIcon icon={visible ? faAngleDown : faAngleUp} />
           </button>
