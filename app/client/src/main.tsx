@@ -18,7 +18,11 @@ const state = new PreviewState(
 state.start().catch(console.error);
 
 const App = observer(() => (
-  <Preview state={state} subheader={<Selection state={state} />} />
+  <Preview
+    state={state}
+    appLabel="Preview.js"
+    subheader={<Selection state={state} />}
+  />
 ));
 
 ReactDOM.render(

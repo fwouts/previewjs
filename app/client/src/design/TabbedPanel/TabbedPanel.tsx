@@ -6,9 +6,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import React, { useState } from "react";
-import { Link } from "../Link/Link";
 
 export type PanelTab = {
+  icon: IconDefinition;
   label: string;
   key: string;
   notificationCount: number;
@@ -27,7 +27,7 @@ export const TabbedPanel = (props: {
   tabs: PanelTab[];
   defaultTabKey: string;
   height: number;
-  links: PanelLink[];
+  extra?: React.ReactNode;
 }) => {
   const [currentTabKey, setCurrentTabKey] = useState(props.defaultTabKey);
   const [visible, setVisible] = useState(true);
@@ -46,19 +46,21 @@ export const TabbedPanel = (props: {
         {props.tabs.map((tab) => (
           <button
             key={tab.key}
+            title={tab.label}
             onClick={() => {
               setVisible(true);
               setCurrentTabKey(tab.key);
             }}
             className={clsx([
               "panel-tab",
-              "px-4 self-stretch text-sm font-medium",
+              "px-4 self-stretch text-sm font-medium flex flex-row items-center",
               visible && tab.key === currentTabKey
                 ? "bg-gray-200 text-gray-900"
                 : "text-gray-400",
             ])}
           >
-            {tab.label}
+            <FontAwesomeIcon icon={tab.icon} />
+            <div className="ml-2">{tab.label}</div>
             {tab.notificationCount > 0 && (
               <span className="bg-red-600 text-white p-2 rounded-full inline-flex items-center justify-center h-5 min-w-5 ml-1 text-xs">
                 {tab.notificationCount}
@@ -67,21 +69,7 @@ export const TabbedPanel = (props: {
           </button>
         ))}
         <span className="flex-grow" />
-        {props.links.map((link) => (
-          <Link
-            className="px-3 opacity-60 hover:opacity-100 text-xl"
-            key={link.href}
-            href={link.href}
-            target="_blank"
-            title={link.title}
-          >
-            <FontAwesomeIcon
-              icon={link.icon}
-              color={link.color}
-              className={link.className}
-            />
-          </Link>
-        ))}
+        {props.extra}
       </div>
       {visible && currentTab && (
         <div className="flex flex-col" style={{ height: props.height }}>
