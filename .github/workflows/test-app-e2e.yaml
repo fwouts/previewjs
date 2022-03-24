@@ -111,7 +111,7 @@ jobs:
               git push origin ${{ github.head_ref }}
             fi
           fi
-        if: ${{ github.ref != 'refs/heads/main' && !matrix.os.includes('windows') }}
+        if: ${{ github.ref != 'refs/heads/main' && matrix.os != 'windows-2022' }}
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
@@ -132,4 +132,4 @@ jobs:
             })
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
-        if: ${{ github.ref == 'refs/heads/main' && !matrix.os.includes('windows') }}
+        if: ${{ github.ref == 'refs/heads/main' && matrix.os != 'windows-2022' }}
