@@ -74,7 +74,6 @@ export const TabbedPanel = (props: {
             )}
           </button>
         ))}
-        <span className="flex-grow" />
         {props.extra}
       </div>
       {visible && currentTab && (

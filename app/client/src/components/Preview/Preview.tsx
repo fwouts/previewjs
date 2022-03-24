@@ -2,6 +2,7 @@ import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faBars, faCode, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWindowSize } from "@react-hook/window-size";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
 import { decodeComponentId } from "../../component-id";
@@ -10,7 +11,7 @@ import { Header } from "../../design/Header";
 import { Link } from "../../design/Link";
 import { PropsEditor } from "../../design/PropsEditor";
 import { SmallLogo } from "../../design/SmallLogo";
-import { TabbedPanel } from "../../design/TabbedPanel";
+import { PanelTab, TabbedPanel } from "../../design/TabbedPanel";
 import { PreviewState } from "../../PreviewState";
 import { ActionLogs } from "../ActionLogs";
 import { ConsolePanel } from "../ConsolePanel";
@@ -23,13 +24,25 @@ export const Preview = observer(
     appLabel,
     headerAddon,
     subheader,
+    panelTabs,
     panelExtra,
+    viewport: {
+      width: viewportWidth = "auto",
+      height: viewportHeight = "auto",
+      theme = "light",
+    } = {},
   }: {
     state: PreviewState;
     appLabel: string;
     headerAddon?: React.ReactNode;
     subheader?: React.ReactNode;
+    panelTabs?: PanelTab[];
     panelExtra?: React.ReactNode;
+    viewport?: {
+      width?: number | "auto";
+      height?: number | "auto";
+      theme?: "light" | "dark";
+    };
   }) => {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
     useEffect(() => {
@@ -102,7 +115,27 @@ export const Preview = observer(
         </Header>
         <UpdateBanner state={state.updateBanner} />
         {state.component ? (
-          <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
+          <div
+            className={clsx([
+              "flex-grow flex flex-col items-center justify-center flex-nowrap overflow-auto",
+              theme === "dark" && "bg-gray-900",
+              (viewportWidth !== "auto" || viewportHeight !== "auto") &&
+                "bg-gray-600",
+            ])}
+          >
+            <iframe
+              className={clsx([
+                viewportHeight === "auto" ? "flex-grow" : "flex-shrink-0",
+                theme === "dark" ? "bg-gray-900" : "bg-white",
+                (viewportWidth !== "auto" || viewportHeight !== "auto") &&
+                  "rounded filter shadow-md",
+              ])}
+              ref={iframeRef}
+              src="/preview/"
+              width={viewportWidth === "auto" ? "auto" : viewportWidth}
+              height={viewportHeight === "auto" ? "auto" : viewportHeight}
+            />
+          </div>
         ) : (
           <div
             id="no-selection"
@@ -150,6 +183,7 @@ export const Preview = observer(
               notificationCount: state.consoleLogs.unreadCount,
               panel: <ConsolePanel state={state.consoleLogs} />,
             },
+            ...(panelTabs || []),
           ]}
           height={panelHeight}
           extra={panelExtra}
