@@ -10,7 +10,7 @@ on:
       - main
     paths:
       - "**"
-      - "!.github/workflows/test-app-e2e.yaml"
+      - ".github/workflows/test-app-e2e.yaml"
       - "!assets/**"
       - "!cli/**"
       - "!integrations/**"
@@ -19,7 +19,7 @@ on:
       - "*"
     paths:
       - "**"
-      - "!.github/workflows/test-app-e2e.yaml"
+      - ".github/workflows/test-app-e2e.yaml"
       - "!assets/**"
       - "!cli/**"
       - "!integrations/**"
