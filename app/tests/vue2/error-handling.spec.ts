@@ -1,4 +1,3 @@
-import path from "path";
 import { expect, testSuite } from "../../testing";
 
 export const errorHandlingTests = testSuite("vue2/error handling", (test) => {
@@ -117,7 +116,7 @@ export const errorHandlingTests = testSuite("vue2/error handling", (test) => {
       });
       await sleep(2);
       expect(await controller.errors.title.text()).toContain(
-        `CssSyntaxError: ${path.join(appDir.rootPath, "src/App.vue")}`
+        `CssSyntaxError: ${appDir.rootPath}`
       );
       await appDir.update("src/App.vue", {
         kind: "edit",
