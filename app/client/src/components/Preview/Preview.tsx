@@ -137,8 +137,8 @@ export const Preview = observer(
               color: "#333",
             },
             {
-              href: "https://twitter.com/fwouts",
-              title: "Follow Preview.js's author on Twitter",
+              href: "https://twitter.com/previewjs",
+              title: "Follow us on Twitter",
               icon: faTwitter,
               color: "#1DA1F2",
             },
