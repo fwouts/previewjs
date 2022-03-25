@@ -211,7 +211,7 @@ importers:
       sass: 1.49.9
       shx: 0.3.4
       strip-ansi: '6'
-      ts-jest: 27.1.3
+      ts-jest: 27.1.4
       tsconfig-paths: 3.12.0
       typescript: ^4.5.5
       uuid: 8.3.2
@@ -251,7 +251,7 @@ importers:
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       rimraf: 3.0.2
       shx: 0.3.4
-      ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
+      ts-jest: 27.1.4_ea15f9d441e1cca372e1506c86771ff1
 
   frameworks/react:
     specifiers:
@@ -268,7 +268,7 @@ importers:
       jest: 28.0.0-alpha.5
       next: 12.1.0
       rimraf: 3.0.2
-      ts-jest: 27.1.3
+      ts-jest: 27.1.4
       typescript: ^4.5.5
       vite: 2.9.0-beta.8
     dependencies:
@@ -287,7 +287,7 @@ importers:
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       next: 12.1.0
       rimraf: 3.0.2
-      ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
+      ts-jest: 27.1.4_ea15f9d441e1cca372e1506c86771ff1
       vite: 2.9.0-beta.8
 
   frameworks/react/preview:
@@ -317,7 +317,7 @@ importers:
       fs-extra: ^10.0.0
       jest: 28.0.0-alpha.5
       rimraf: 3.0.2
-      ts-jest: 27.1.3
+      ts-jest: 27.1.4
       typescript: ^4.5.5
       vite: 2.9.0-beta.8
       vite-plugin-vue2: ^1.9.3
@@ -339,7 +339,7 @@ importers:
       '@types/jest': 27.4.1
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       rimraf: 3.0.2
-      ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
+      ts-jest: 27.1.4_ea15f9d441e1cca372e1506c86771ff1
       vite: 2.9.0-beta.8
 
   frameworks/vue2/preview:
@@ -366,7 +366,7 @@ importers:
       acorn: ^8.7.0
       jest: 28.0.0-alpha.5
       rimraf: 3.0.2
-      ts-jest: 27.1.3
+      ts-jest: 27.1.4
       typescript: ^4.5.5
       vite: 2.9.0-beta.8
       vue: ^3
@@ -385,7 +385,7 @@ importers:
       '@types/jest': 27.4.1
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       rimraf: 3.0.2
-      ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
+      ts-jest: 27.1.4_ea15f9d441e1cca372e1506c86771ff1
       vite: 2.9.0-beta.8
 
   frameworks/vue3/preview:
@@ -1394,7 +1394,7 @@ importers:
       '@previewjs/vfs': workspace:*
       '@types/jest': 27.4.1
       jest: 28.0.0-alpha.5
-      ts-jest: 27.1.3
+      ts-jest: 27.1.4
       typescript: 4.5.5
     devDependencies:
       '@previewjs/core': link:../core
@@ -1402,7 +1402,7 @@ importers:
       '@previewjs/vfs': link:../vfs
       '@types/jest': 27.4.1
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
-      ts-jest: 27.1.3_ea15f9d441e1cca372e1506c86771ff1
+      ts-jest: 27.1.4_ea15f9d441e1cca372e1506c86771ff1
       typescript: 4.5.5
 
   vfs:
@@ -1416,7 +1416,7 @@ importers:
       jest: 28.0.0-alpha.5
       lodash: 4.17.21
       rimraf: 3.0.2
-      ts-jest: 27.1.3
+      ts-jest: 27.1.4
       typescript: 4.6.2
     dependencies:
       assert-never: 1.2.1
@@ -1429,7 +1429,7 @@ importers:
       jest: 28.0.0-alpha.5_e63aea8e3fc1db0f170a64393e94b2fd
       lodash: 4.17.21
       rimraf: 3.0.2
-      ts-jest: 27.1.3_0e8248a553598671670e70e346654d51
+      ts-jest: 27.1.4_0e8248a553598671670e70e346654d51
       typescript: 4.6.2
 
 packages:
@@ -28381,15 +28381,15 @@ packages:
     engines: {node: '>=6.10'}
     dev: true
 
-  /ts-jest/27.1.3_0e8248a553598671670e70e346654d51:
-    resolution: {integrity: sha512-6Nlura7s6uM9BVUAoqLH7JHyMXjz8gluryjpPXxr3IxZdAXnU6FhjvVLHFtfd1vsE1p8zD1OJfskkc0jhTSnkA==}
+  /ts-jest/27.1.4_0e8248a553598671670e70e346654d51:
+    resolution: {integrity: sha512-qjkZlVPWVctAezwsOD1OPzbZ+k7zA5z3oxII4dGdZo5ggX/PL7kvwTM0pXTr10fAtbiVpJaL3bWd502zAhpgSQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
     peerDependencies:
       '@babel/core': '>=7.0.0-beta.0 <8'
       '@types/jest': ^27.0.0
       babel-jest: '>=27.0.0 <28'
-      esbuild: ~0.14.0
+      esbuild: '*'
       jest: ^27.0.0
       typescript: '>=3.8 <5.0'
     peerDependenciesMeta:
@@ -28415,15 +28415,15 @@ packages:
       yargs-parser: 20.2.9
     dev: true
 
-  /ts-jest/27.1.3_ea15f9d441e1cca372e1506c86771ff1:
-    resolution: {integrity: sha512-6Nlura7s6uM9BVUAoqLH7JHyMXjz8gluryjpPXxr3IxZdAXnU6FhjvVLHFtfd1vsE1p8zD1OJfskkc0jhTSnkA==}
+  /ts-jest/27.1.4_ea15f9d441e1cca372e1506c86771ff1:
+    resolution: {integrity: sha512-qjkZlVPWVctAezwsOD1OPzbZ+k7zA5z3oxII4dGdZo5ggX/PL7kvwTM0pXTr10fAtbiVpJaL3bWd502zAhpgSQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
     peerDependencies:
       '@babel/core': '>=7.0.0-beta.0 <8'
       '@types/jest': ^27.0.0
       babel-jest: '>=27.0.0 <28'
-      esbuild: ~0.14.0
+      esbuild: '*'
       jest: ^27.0.0
       typescript: '>=3.8 <5.0'
     peerDependenciesMeta:
