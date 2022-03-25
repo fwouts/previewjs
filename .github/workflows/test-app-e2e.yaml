@@ -74,7 +74,7 @@ jobs:
           GROUP_COUNT: 3
       - name: Archive success screenshots
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
@@ -82,7 +82,7 @@ jobs:
             pro/tests/__screenshots__
       - name: Archive failure screenshots
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: failure-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
