@@ -70,7 +70,7 @@ importers:
       chalk: 4.1.2
       clsx: ^1.1.1
       eslint: 7.32.0
-      eslint-plugin-react: 7.29.2
+      eslint-plugin-react: 7.29.4
       eslint-plugin-react-hooks: 4.3.0
       execa: 5.1.1
       express: 4.17.3
@@ -130,7 +130,7 @@ importers:
       caller-callsite: 4.1.0
       chalk: 4.1.2
       eslint: 7.32.0
-      eslint-plugin-react: 7.29.2_eslint@7.32.0
+      eslint-plugin-react: 7.29.4_eslint@7.32.0
       eslint-plugin-react-hooks: 4.3.0_eslint@7.32.0
       execa: 5.1.1
       fs-extra: 10.0.1
@@ -16136,6 +16136,29 @@ packages:
 
   /eslint-plugin-react/7.29.2_eslint@7.32.0:
     resolution: {integrity: sha512-ypEBTKOy5liFQXZWMchJ3LN0JX1uPI6n7MN7OPHKacqXAxq5gYC30TdO7wqGYQyxD1OrzpobdHC3hDmlRWDg9w==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
+    dependencies:
+      array-includes: 3.1.4
+      array.prototype.flatmap: 1.2.5
+      doctrine: 2.1.0
+      eslint: 7.32.0
+      estraverse: 5.3.0
+      jsx-ast-utils: 3.2.1
+      minimatch: 3.1.2
+      object.entries: 1.1.5
+      object.fromentries: 2.0.5
+      object.hasown: 1.1.0
+      object.values: 1.1.5
+      prop-types: 15.8.1
+      resolve: 2.0.0-next.3
+      semver: 6.3.0
+      string.prototype.matchall: 4.0.6
+    dev: true
+
+  /eslint-plugin-react/7.29.4_eslint@7.32.0:
+    resolution: {integrity: sha512-CVCXajliVh509PcZYRFyu/BoUEz452+jtQJq2b3Bae4v3xBUWPLCmtmBM+ZinG4MzwmxJgJ2M5rMqhqLVn7MtQ==}
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
