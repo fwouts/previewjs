@@ -117,18 +117,21 @@ export const Preview = observer(
         {state.component ? (
           <div
             className={clsx([
-              "flex-grow flex flex-col items-center justify-center flex-nowrap overflow-auto",
-              theme === "dark" && "bg-gray-900",
-              (viewportWidth !== "auto" || viewportHeight !== "auto") &&
-                "bg-gray-600",
+              "flex-grow flex flex-col justify-center flex-nowrap overflow-auto",
+              viewportWidth !== "auto" || viewportHeight !== "auto"
+                ? "bg-gray-50"
+                : theme === "dark"
+                ? "bg-gray-900"
+                : "bg-white",
             ])}
           >
             <iframe
               className={clsx([
+                viewportWidth === "auto" ? "self-stretch" : "self-center",
                 viewportHeight === "auto" ? "flex-grow" : "flex-shrink-0",
-                theme === "dark" ? "bg-gray-900" : "bg-white",
+                theme === "dark" ? "bg-gray-800" : "bg-white",
                 (viewportWidth !== "auto" || viewportHeight !== "auto") &&
-                  "rounded filter shadow-md",
+                  "border-4 border-white rounded-xl filter drop-shadow-lg",
               ])}
               ref={iframeRef}
               src="/preview/"

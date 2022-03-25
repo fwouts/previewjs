@@ -1,12 +1,13 @@
 import {
-  faMountain,
+  faCircleHalfStroke,
+  faDisplay,
   faSearch,
   faStar,
-  faYinYang,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { VariantButton } from "../design/VariantButton";
@@ -47,9 +48,9 @@ export const MainPanel = observer(
           license.proStatus === "enabled"
             ? [
                 {
-                  icon: faMountain,
-                  key: "visual-tools",
-                  label: "Design",
+                  icon: faDisplay,
+                  key: "viewport",
+                  label: "Viewport",
                   notificationCount: 0,
                   panel: (
                     <div>
@@ -92,9 +93,6 @@ export const MainPanel = observer(
                           )
                         }
                       />
-                      <br />
-                      <button onClick={() => setTheme("light")}>light</button>
-                      <button onClick={() => setTheme("dark")}>dark</button>
                     </div>
                   ),
                 },
@@ -104,8 +102,18 @@ export const MainPanel = observer(
         panelExtra={
           license.proStatus === "enabled" ? (
             <>
-              <button>
-                <FontAwesomeIcon icon={faYinYang} />
+              <button
+                className={clsx([
+                  "self-stretch px-3 text-gray-800",
+                  theme === "dark" && "bg-gray-800",
+                ])}
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                <FontAwesomeIcon
+                  icon={faCircleHalfStroke}
+                  fixedWidth
+                  inverse={theme === "dark"}
+                />
               </button>
               <span className="flex-grow" />
               <VariantButton
