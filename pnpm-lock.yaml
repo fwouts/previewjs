@@ -481,7 +481,7 @@ importers:
       '@previewjs/plugin-react': 2.0.2
       '@previewjs/plugin-vue2': 2.0.1
       '@previewjs/plugin-vue3': 2.0.2
-      '@previewjs/vfs': 1.1.1
+      '@previewjs/vfs': 1.1.2
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
@@ -521,7 +521,7 @@ importers:
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
-      '@previewjs/vfs': 1.1.1
+      '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
       clsx: 1.1.1
       express: 4.17.3
@@ -7492,14 +7492,6 @@ packages:
 
   /@popperjs/core/2.11.2:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
-    dev: false
-
-  /@previewjs/vfs/1.1.1:
-    resolution: {integrity: sha512-uz4D+YxhhHzPTj3KGh26rwzWysHFtAg5I7L9HZPeO69/syZZfpuC1wC3tnEs+8vObOEutpWebSAd8Xg+FnjRVg==}
-    dependencies:
-      assert-never: 1.2.1
-      chokidar: 3.5.3
-      fs-extra: 10.0.1
     dev: false
 
   /@react-hook/debounce/3.0.0_react@17.0.2:
