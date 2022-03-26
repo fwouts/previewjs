@@ -1,7 +1,6 @@
 import {
   faArrowsLeftRightToLine,
   faCircleHalfStroke,
-  faClock,
   faDesktop,
   faDisplay,
   faExpand,
@@ -9,6 +8,7 @@ import {
   faMagnifyingGlassMinus,
   faMagnifyingGlassPlus,
   faMobilePhone,
+  faPencil,
   faSearch,
   faStar,
   faTablet,
@@ -39,18 +39,14 @@ interface ViewportOption {
 export const MainPanel = observer(
   ({ state: { preview, license, licenseModal, pro } }: { state: AppState }) => {
     const [viewportId, setViewportId] = useState("expand");
+    const [customWidth, setCustomWidth] = useState(100);
+    const [customHeight, setCustomHeight] = useState(100);
     const viewportOptions: ViewportOption[] = [
       {
         id: "expand",
         icon: faExpand,
         label: "Fill available space",
         dimensions: null,
-      },
-      {
-        id: "watch",
-        icon: faClock,
-        label: "Watch",
-        dimensions: { width: 100, height: 100 },
       },
       {
         id: "mobile-portrait",
@@ -89,6 +85,12 @@ export const MainPanel = observer(
         icon: faDesktop,
         label: "Desktop",
         dimensions: { width: 1920, height: 1080 },
+      },
+      {
+        id: "custom",
+        icon: faPencil,
+        label: "Custom",
+        dimensions: { width: customWidth, height: customHeight },
       },
     ];
     const [viewportScale, setViewportScale] = useState(1);
@@ -186,19 +188,44 @@ export const MainPanel = observer(
                                 rotation={viewport.rotateIcon ? 90 : undefined}
                               />
                             </div>
-                            {viewport.label}
-                            {viewport.dimensions && (
-                              <div
-                                className={clsx([
-                                  "ml-2 flex-grow text-right text-sm font-semibold",
-                                  viewport.id === viewportId
-                                    ? "text-blue-800"
-                                    : "text-gray-500",
-                                ])}
-                              >
-                                {viewport.dimensions.width}x
-                                {viewport.dimensions.height}
+                            <div className="flex-grow text-left">
+                              {viewport.label}
+                            </div>
+                            {viewport.id === "custom" &&
+                            viewportId === "custom" ? (
+                              <div className="flex flex-row">
+                                <input
+                                  type="number"
+                                  className="w-20 text-center rounded-md bg-blue-50"
+                                  value={customWidth}
+                                  onChange={(e) =>
+                                    setCustomWidth(parseInt(e.target.value))
+                                  }
+                                />
+                                <div className="mx-1">x</div>
+                                <input
+                                  type="number"
+                                  className="w-20 text-center rounded-md bg-blue-50"
+                                  value={customHeight}
+                                  onChange={(e) =>
+                                    setCustomHeight(parseInt(e.target.value))
+                                  }
+                                />
                               </div>
+                            ) : (
+                              viewport.dimensions && (
+                                <div
+                                  className={clsx([
+                                    "ml-2 text-sm font-semibold",
+                                    viewport.id === viewportId
+                                      ? "text-blue-800"
+                                      : "text-gray-500",
+                                  ])}
+                                >
+                                  {viewport.dimensions.width}x
+                                  {viewport.dimensions.height}
+                                </div>
+                              )
                             )}
                           </button>
                         ))}
