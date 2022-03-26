@@ -33,7 +33,7 @@ export const Preview = observer(
     panelTabs,
     panelExtra,
     viewport: {
-      dimensions: viewportDimensions,
+      size: viewportDimensions,
       scale: viewportScale = 1,
       background: viewportBackground = "light",
     } = {},
@@ -46,7 +46,7 @@ export const Preview = observer(
     panelTabs?: PanelTab[];
     panelExtra?: React.ReactNode;
     viewport?: {
-      dimensions?: {
+      size?: {
         width: number;
         height: number;
       } | null;

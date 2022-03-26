@@ -3,6 +3,7 @@ import { PreviewIframeController } from "@previewjs/core/controller";
 import { AnalyzeFileEndpoint, Component } from "@previewjs/pro-api/endpoints";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { SearchState } from "./SearchState";
+import { ViewportState } from "./ViewportState";
 
 const REFRESH_PERIOD_MILLIS = 5000;
 
@@ -15,6 +16,7 @@ export interface FileInfo {
 export class ProState {
   currentFile: FileInfo | null = null;
   search: SearchState | null = null;
+  viewport = new ViewportState();
 
   private refreshFileInterval: NodeJS.Timer | null = null;
   private refreshingFile: Promise<void> | null = null;

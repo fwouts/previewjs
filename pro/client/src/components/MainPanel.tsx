@@ -1,17 +1,11 @@
 import {
   faArrowsLeftRightToLine,
   faCircleHalfStroke,
-  faDesktop,
   faDisplay,
-  faExpand,
-  faLaptop,
   faMagnifyingGlassMinus,
   faMagnifyingGlassPlus,
-  faMobilePhone,
-  faPencil,
   faSearch,
   faStar,
-  faTablet,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,120 +13,14 @@ import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import { VariantButton } from "../design/VariantButton";
 import { AppState } from "../state/AppState";
 import { ComponentPicker } from "./ComponentPicker";
 
-// TODO: Move
-interface ViewportOption {
-  id: string;
-  icon: IconDefinition;
-  rotateIcon?: boolean;
-  label: string;
-  dimensions: {
-    width: number;
-    height: number;
-  } | null;
-}
-
 export const MainPanel = observer(
   ({ state: { preview, license, licenseModal, pro } }: { state: AppState }) => {
-    const [viewportId, setViewportId] = useState("expand");
-    const [customWidth, setCustomWidth] = useState(100);
-    const [customHeight, setCustomHeight] = useState(100);
-    const viewportOptions: ViewportOption[] = [
-      {
-        id: "expand",
-        icon: faExpand,
-        label: "Fill available space",
-        dimensions: null,
-      },
-      {
-        id: "mobile-portrait",
-        icon: faMobilePhone,
-        label: "Mobile (portrait)",
-        dimensions: { width: 375, height: 812 },
-      },
-      {
-        id: "mobile-landscape",
-        icon: faMobilePhone,
-        label: "Mobile (landscape)",
-        rotateIcon: true,
-        dimensions: { width: 812, height: 375 },
-      },
-      {
-        id: "tablet-portrait",
-        icon: faTablet,
-        label: "Tablet (portrait)",
-        dimensions: { width: 600, height: 1200 },
-      },
-      {
-        id: "tablet-landscape",
-        icon: faTablet,
-        rotateIcon: true,
-        label: "Tablet (landscape)",
-        dimensions: { width: 1200, height: 600 },
-      },
-      {
-        id: "laptop",
-        icon: faLaptop,
-        label: "Laptop",
-        dimensions: { width: 1440, height: 900 },
-      },
-      {
-        id: "desktop",
-        icon: faDesktop,
-        label: "Desktop",
-        dimensions: { width: 1920, height: 1080 },
-      },
-      {
-        id: "custom",
-        icon: faPencil,
-        label: "Custom",
-        dimensions: { width: customWidth, height: customHeight },
-      },
-    ];
-    const [viewportScale, setViewportScale] = useState(1);
     const [background, setTheme] = useState<"light" | "dark">("light");
-    const currentViewport = viewportOptions.find((v) => v.id === viewportId);
-    const [viewportContainerSize, setViewportContainerSize] = useState<{
-      width: number;
-      height: number;
-    }>({
-      width: 0,
-      height: 0,
-    });
-    const viewportDimensions = currentViewport?.dimensions;
-    const viewportContainerPadding = 24;
-    const viewportWidthRatio = viewportDimensions
-      ? (viewportContainerSize.width - viewportContainerPadding * 2) /
-        viewportDimensions.width
-      : 1;
-    const viewportHeightRatio = viewportDimensions
-      ? (viewportContainerSize.height - viewportContainerPadding * 2) /
-        viewportDimensions.height
-      : 1;
-    const scaleToFit = Math.min(viewportHeightRatio, viewportWidthRatio);
-    useLayoutEffect(() => {
-      setViewportScale(scaleToFit);
-    }, [scaleToFit]);
-    const increaseOrDecreaseScale = useCallback(
-      (stepsChange: number) => {
-        const scalePercent = Math.round(viewportScale * 100);
-        const steps = [
-          10, 30, 50, 67, 80, 90, 100, 110, 120, 133, 150, 170, 200, 240, 300,
-          400, 500,
-        ];
-        const currentIndex = steps.findIndex((s) => s >= scalePercent);
-        const newScalePercent =
-          steps[
-            Math.max(0, Math.min(steps.length - 1, currentIndex + stepsChange))
-          ]!;
-        setViewportScale(newScalePercent / 100);
-      },
-      [viewportScale, setViewportScale]
-    );
     return (
       <Preview
         state={preview}
@@ -169,17 +57,17 @@ export const MainPanel = observer(
                   panel: (
                     <div className="flex-grow bg-gray-600 overflow-auto">
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-2">
-                        {viewportOptions.map((viewport) => (
+                        {pro.viewport.options.map((viewport) => (
                           <button
                             key={viewport.id}
                             className={clsx([
                               "flex flex-row items-center p-2 m-2 rounded-md cursor-pointer",
-                              viewport.id === viewportId
+                              viewport.id === pro.viewport.currentViewport.id
                                 ? "bg-blue-200 text-blue-900"
                                 : "bg-gray-50 text-gray-900",
                             ])}
                             onClick={() => {
-                              setViewportId(viewport.id);
+                              pro.viewport.setViewportId(viewport.id);
                             }}
                           >
                             <div className="mr-2">
@@ -192,38 +80,42 @@ export const MainPanel = observer(
                               {viewport.label}
                             </div>
                             {viewport.id === "custom" &&
-                            viewportId === "custom" ? (
+                            pro.viewport.currentViewport.id === "custom" ? (
                               <div className="flex flex-row">
                                 <input
                                   type="number"
                                   className="w-20 text-center rounded-md bg-blue-50"
-                                  value={customWidth}
+                                  value={viewport.size?.width}
                                   onChange={(e) =>
-                                    setCustomWidth(parseInt(e.target.value))
+                                    pro.viewport.updateCustomViewport({
+                                      width: parseInt(e.target.value),
+                                    })
                                   }
                                 />
                                 <div className="mx-1">x</div>
                                 <input
                                   type="number"
                                   className="w-20 text-center rounded-md bg-blue-50"
-                                  value={customHeight}
+                                  value={viewport.size?.height}
                                   onChange={(e) =>
-                                    setCustomHeight(parseInt(e.target.value))
+                                    pro.viewport.updateCustomViewport({
+                                      height: parseInt(e.target.value),
+                                    })
                                   }
                                 />
                               </div>
                             ) : (
-                              viewport.dimensions && (
+                              viewport.size && (
                                 <div
                                   className={clsx([
                                     "ml-2 text-sm font-semibold",
-                                    viewport.id === viewportId
+                                    viewport.id ===
+                                    pro.viewport.currentViewport.id
                                       ? "text-blue-800"
                                       : "text-gray-500",
                                   ])}
                                 >
-                                  {viewport.dimensions.width}x
-                                  {viewport.dimensions.height}
+                                  {viewport.size.width}x{viewport.size.height}
                                 </div>
                               )
                             )}
@@ -243,25 +135,29 @@ export const MainPanel = observer(
                 <ZoomButton
                   title="Zoom in"
                   icon={faMagnifyingGlassPlus}
-                  onClick={() => increaseOrDecreaseScale(+1)}
+                  onClick={() => pro.viewport.increaseOrDecreaseScale(+1)}
                 />
                 <ZoomButton
                   title="Reset zoom to 100%"
-                  label={`${Math.round(viewportScale * 100)}%`}
-                  onClick={() => setViewportScale(1)}
+                  label={`${Math.round(pro.viewport.currentScale * 100)}%`}
+                  onClick={() => pro.viewport.setScale(1)}
                 />
                 <ZoomButton
                   title="Zoom out"
                   icon={faMagnifyingGlassMinus}
-                  onClick={() => increaseOrDecreaseScale(-1)}
+                  onClick={() => pro.viewport.increaseOrDecreaseScale(-1)}
                 />
-                {currentViewport?.dimensions && (
+                {pro.viewport.currentViewport.size && (
                   <ZoomButton
                     title="Fit to viewport"
                     icon={faArrowsLeftRightToLine}
                     rotate
-                    disabled={viewportScale === scaleToFit}
-                    onClick={() => setViewportScale(scaleToFit)}
+                    disabled={
+                      pro.viewport.currentScale === pro.viewport.scaleToFit
+                    }
+                    onClick={() =>
+                      pro.viewport.setScale(pro.viewport.scaleToFit)
+                    }
                   />
                 )}
               </div>
@@ -303,11 +199,13 @@ export const MainPanel = observer(
           ) : null
         }
         viewport={{
-          dimensions: currentViewport?.dimensions,
-          scale: viewportScale,
+          size: pro.viewport.currentViewport?.size,
+          scale: pro.viewport.currentScale,
           background,
         }}
-        onViewportContainerSizeUpdated={setViewportContainerSize}
+        onViewportContainerSizeUpdated={(size) =>
+          pro.viewport.setViewportContainerSize(size)
+        }
       />
     );
   }
