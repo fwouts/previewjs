@@ -166,7 +166,7 @@ export const MainPanel = observer(
                   notificationCount: 0,
                   panel: (
                     <div className="flex-grow bg-gray-600 overflow-auto">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-2">
                         {viewportOptions.map((viewport) => (
                           <button
                             key={viewport.id}
