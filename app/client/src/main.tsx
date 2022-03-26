@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
@@ -17,13 +17,22 @@ const state = new PreviewState(
 );
 state.start().catch(console.error);
 
-const App = observer(() => (
-  <Preview
-    state={state}
-    appLabel="Preview.js"
-    subheader={<Selection state={state} />}
-  />
-));
+const App = observer(() => {
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  useEffect(() => {
+    state.setIframeRef(iframeRef);
+  }, [state]);
+  return (
+    <Preview
+      state={state}
+      viewport={
+        <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
+      }
+      appLabel="Preview.js"
+      subheader={<Selection state={state} />}
+    />
+  );
+});
 
 ReactDOM.render(
   <React.StrictMode>
