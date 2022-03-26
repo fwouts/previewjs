@@ -23,7 +23,7 @@ export const MainPanel = observer(
     useEffect(() => {
       preview.setIframeRef(iframeRef);
     }, [preview]);
-    const [background, setTheme] = useState<"light" | "dark">("light");
+    const [background, setBackground] = useState<"light" | "dark">("light");
     return (
       <Preview
         state={preview}
@@ -72,7 +72,7 @@ export const MainPanel = observer(
                   background === "dark" && "bg-gray-800",
                 ])}
                 onClick={() =>
-                  setTheme(background === "dark" ? "light" : "dark")
+                  setBackground(background === "dark" ? "light" : "dark")
                 }
               >
                 <FontAwesomeIcon
