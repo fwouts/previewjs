@@ -187,6 +187,19 @@ export const MainPanel = observer(
                               />
                             </div>
                             {viewport.label}
+                            {viewport.dimensions && (
+                              <div
+                                className={clsx([
+                                  "ml-2 flex-grow text-right text-sm font-semibold",
+                                  viewport.id === viewportId
+                                    ? "text-blue-800"
+                                    : "text-gray-500",
+                                ])}
+                              >
+                                {viewport.dimensions.width}x
+                                {viewport.dimensions.height}
+                              </div>
+                            )}
                           </button>
                         ))}
                       </div>
