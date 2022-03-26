@@ -213,7 +213,7 @@ importers:
       strip-ansi: '6'
       ts-jest: 27.1.4
       tsconfig-paths: 3.14.1
-      typescript: ^4.5.5
+      typescript: 4.6.3
       uuid: 8.3.2
       vite: 2.9.0-beta.8
       vite-tsconfig-paths: 3.4.1
@@ -237,7 +237,7 @@ importers:
       sass: 1.49.9
       strip-ansi: 6.0.1
       tsconfig-paths: 3.14.1
-      typescript: 4.5.5
+      typescript: 4.6.3
       uuid: 8.3.2
       vite: 2.9.0-beta.8_sass@1.49.9
       vite-tsconfig-paths: 3.4.1_vite@2.9.0-beta.8
@@ -251,7 +251,7 @@ importers:
       jest: 28.0.0-alpha.7_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
       shx: 0.3.4
-      ts-jest: 27.1.4_667d81ca6d85091c758fe4fd0f825f2f
+      ts-jest: 27.1.4_6b0a3092d4d82c29d635032cdbc904fd
 
   frameworks/react:
     specifiers:
@@ -269,14 +269,14 @@ importers:
       next: 12.1.1
       rimraf: 3.0.2
       ts-jest: 27.1.4
-      typescript: ^4.5.5
+      typescript: ^4.6.3
       vite: 2.9.0-beta.8
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       '@svgr/core': 5.5.0
       fs-extra: 10.0.0
-      typescript: 4.5.5
+      typescript: 4.6.3
     devDependencies:
       '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
@@ -287,7 +287,7 @@ importers:
       jest: 28.0.0-alpha.7_9d72220e8b849b9689c7359a2f2e2419
       next: 12.1.1
       rimraf: 3.0.2
-      ts-jest: 27.1.4_667d81ca6d85091c758fe4fd0f825f2f
+      ts-jest: 27.1.4_6b0a3092d4d82c29d635032cdbc904fd
       vite: 2.9.0-beta.8
 
   frameworks/react/preview:
@@ -318,7 +318,7 @@ importers:
       jest: 28.0.0-alpha.7
       rimraf: 3.0.2
       ts-jest: 27.1.4
-      typescript: ^4.5.5
+      typescript: ^4.6.3
       vite: 2.9.0-beta.8
       vite-plugin-vue2: ^1.9.3
       vue: ^2.6.14
@@ -328,7 +328,7 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.0.0
-      typescript: 4.5.5
+      typescript: 4.6.3
       vite-plugin-vue2: 1.9.3_f29515b007722342a0683ee7348a64a6
       vue: 2.6.14
       vue-template-compiler: 2.6.14
@@ -339,7 +339,7 @@ importers:
       '@types/jest': 27.4.1
       jest: 28.0.0-alpha.7_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
-      ts-jest: 27.1.4_667d81ca6d85091c758fe4fd0f825f2f
+      ts-jest: 27.1.4_6b0a3092d4d82c29d635032cdbc904fd
       vite: 2.9.0-beta.8
 
   frameworks/vue2/preview:
@@ -367,7 +367,7 @@ importers:
       jest: 28.0.0-alpha.7
       rimraf: 3.0.2
       ts-jest: 27.1.4
-      typescript: ^4.5.5
+      typescript: ^4.6.3
       vite: 2.9.0-beta.8
       vue: ^3
     dependencies:
@@ -377,7 +377,7 @@ importers:
       '@vitejs/plugin-vue-jsx': 1.3.3
       '@vue/compiler-sfc': 3.2.26
       acorn: 8.7.0
-      typescript: 4.5.5
+      typescript: 4.6.3
       vue: 3.2.26
     devDependencies:
       '@previewjs/config': link:../../config
@@ -385,7 +385,7 @@ importers:
       '@types/jest': 27.4.1
       jest: 28.0.0-alpha.7_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
-      ts-jest: 27.1.4_667d81ca6d85091c758fe4fd0f825f2f
+      ts-jest: 27.1.4_6b0a3092d4d82c29d635032cdbc904fd
       vite: 2.9.0-beta.8
 
   frameworks/vue3/preview:
@@ -1377,11 +1377,11 @@ importers:
       assert-never: ^1.2.1
       lodash: 4.17.21
       rimraf: 3.0.2
-      typescript: ^4.5.5
+      typescript: ^4.6.3
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
-      typescript: 4.5.5
+      typescript: 4.6.3
     devDependencies:
       '@types/lodash': 4.14.180
       lodash: 4.17.21
@@ -23186,7 +23186,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.6.3
+      ts-pnp: 1.2.0_typescript@4.5.4
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -25307,7 +25307,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.6.3
+      ts-pnp: 1.2.0_typescript@4.5.4
       typescript: 4.6.3
       url-loader: 4.1.1_file-loader@6.1.1+webpack@4.44.2
       webpack: 4.44.2
@@ -26465,7 +26465,7 @@ packages:
   /rollup-plugin-friendly-type-imports/1.0.2:
     resolution: {integrity: sha512-EHSmPHH24zDdVL1BwY16qFsUMqglTZOGsDYSR7lnkVJc8Hi9md5MBmGAqmzaedhOB24JW0rmABNLZUXsCw63vw==}
     dependencies:
-      typescript: 4.5.5
+      typescript: 4.6.3
     dev: false
 
   /rollup-plugin-terser/5.3.1_rollup@1.32.1:
@@ -28519,40 +28519,6 @@ packages:
     engines: {node: '>=6.10'}
     dev: true
 
-  /ts-jest/27.1.4_667d81ca6d85091c758fe4fd0f825f2f:
-    resolution: {integrity: sha512-qjkZlVPWVctAezwsOD1OPzbZ+k7zA5z3oxII4dGdZo5ggX/PL7kvwTM0pXTr10fAtbiVpJaL3bWd502zAhpgSQ==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    hasBin: true
-    peerDependencies:
-      '@babel/core': '>=7.0.0-beta.0 <8'
-      '@types/jest': ^27.0.0
-      babel-jest: '>=27.0.0 <28'
-      esbuild: '*'
-      jest: ^27.0.0
-      typescript: '>=3.8 <5.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/jest':
-        optional: true
-      babel-jest:
-        optional: true
-      esbuild:
-        optional: true
-    dependencies:
-      '@types/jest': 27.4.1
-      bs-logger: 0.2.6
-      fast-json-stable-stringify: 2.1.0
-      jest: 28.0.0-alpha.7_9d72220e8b849b9689c7359a2f2e2419
-      jest-util: 27.5.1
-      json5: 2.2.0
-      lodash.memoize: 4.1.2
-      make-error: 1.3.6
-      semver: 7.3.5
-      typescript: 4.5.5
-      yargs-parser: 20.2.9
-    dev: true
-
   /ts-jest/27.1.4_6b0a3092d4d82c29d635032cdbc904fd:
     resolution: {integrity: sha512-qjkZlVPWVctAezwsOD1OPzbZ+k7zA5z3oxII4dGdZo5ggX/PL7kvwTM0pXTr10fAtbiVpJaL3bWd502zAhpgSQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
@@ -29054,7 +29020,6 @@ packages:
     resolution: {integrity: sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /ua-parser-js/0.7.31:
     resolution: {integrity: sha512-qLK/Xe9E2uzmYI3qLeOmI0tEOt+TBBQyUIAh4aAgU05FVYzeZrKUdkAZfBNVGRaHVgV0TDkdEngJSw/SyQchkQ==}
