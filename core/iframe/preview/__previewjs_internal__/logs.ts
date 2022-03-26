@@ -1,5 +1,6 @@
 import { LogLevel } from "../..";
 import { sendMessageFromPreview } from "./messages";
+import inspect from "./object-inspect";
 
 export function setUpLogInterception() {
   const makeLogger =
@@ -61,15 +62,7 @@ function formatLogMessage(...args: any[]) {
   if (args.length === 0) {
     return "";
   }
-  let message = toString(args.shift());
-  message = message.replace(/%s/g, () => toString(args.shift()));
-  return [message, ...args.map(toString)].join(" ");
-}
-
-function toString(value: any) {
-  // Note: this doesn't use value.toString() because this may not exist.
-  if (value instanceof Error && value.stack) {
-    return value.stack;
-  }
-  return `${value}`;
+  let message = inspect(args.shift());
+  message = message.replace(/%s/g, () => inspect(args.shift()));
+  return [message, ...args.map(inspect)].join(" ");
 }
