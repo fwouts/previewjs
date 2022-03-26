@@ -30,7 +30,7 @@ export const ExpandableError = (props: {
   return (
     <div
       className={clsx([
-        "flex flex-col min-h-0 bg-red-300 text-red-900 text-xs p-2",
+        "flex-shrink-0 flex flex-col min-h-0 bg-red-300 text-red-900 text-xs p-2",
         props.details && "cursor-pointer",
       ])}
       onClick={onToggle}
