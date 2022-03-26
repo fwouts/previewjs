@@ -8,31 +8,27 @@ import {
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { makeAutoObservable } from "mobx";
+import { ViewportSize } from "../components/Viewport";
 
 export interface ViewportOption {
   id: string;
   icon: IconDefinition;
   rotateIcon?: boolean;
   label: string;
-  size: Size | null;
-}
-
-export interface Size {
-  width: number;
-  height: number;
+  size: ViewportSize | null;
 }
 
 export class ViewportState {
   private currentViewportId = "expand";
   private scale = 1;
-  private customSize: Size = { width: 100, height: 100 };
-  private viewportContainerSize: Size = { width: 0, height: 0 };
+  private customSize: ViewportSize = { width: 100, height: 100 };
+  private viewportContainerSize: ViewportSize = { width: 0, height: 0 };
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setViewportContainerSize(size: Size) {
+  setViewportContainerSize(size: ViewportSize) {
     const shouldUpdateScale = this.scale === this.scaleToFit;
     this.viewportContainerSize = size;
     if (shouldUpdateScale) {

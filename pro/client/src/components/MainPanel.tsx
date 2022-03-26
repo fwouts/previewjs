@@ -9,15 +9,20 @@ import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { VariantButton } from "../design/VariantButton";
 import { AppState } from "../state/AppState";
 import { ComponentPicker } from "./ComponentPicker";
+import { Viewport } from "./Viewport";
 import { ViewportPanel } from "./ViewportPanel";
 import { ViewportZoomButtons } from "./ViewportZoomButtons";
 
 export const MainPanel = observer(
   ({ state: { preview, license, licenseModal, pro } }: { state: AppState }) => {
+    const iframeRef = useRef<HTMLIFrameElement | null>(null);
+    useEffect(() => {
+      preview.setIframeRef(iframeRef);
+    }, [preview]);
     const [background, setTheme] = useState<"light" | "dark">("light");
     return (
       <Preview
@@ -98,13 +103,18 @@ export const MainPanel = observer(
             </>
           ) : null
         }
-        viewport={{
-          size: pro.viewport.currentViewport?.size,
-          scale: pro.viewport.currentScale,
-          background,
-        }}
-        onViewportContainerSizeUpdated={(size) =>
-          pro.viewport.setViewportContainerSize(size)
+        viewport={
+          <Viewport
+            iframeRef={iframeRef}
+            viewport={{
+              size: pro.viewport.currentViewport?.size,
+              scale: pro.viewport.currentScale,
+              background,
+            }}
+            onViewportContainerSizeUpdated={(size) =>
+              pro.viewport.setViewportContainerSize(size)
+            }
+          />
         }
       />
     );

@@ -2,15 +2,8 @@ import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faBars, faCode, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWindowSize } from "@react-hook/window-size";
-import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from "react";
+import React from "react";
 import { decodeComponentId } from "../../component-id";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
@@ -32,12 +25,7 @@ export const Preview = observer(
     subheader,
     panelTabs,
     panelExtra,
-    viewport: {
-      size: viewportDimensions,
-      scale: viewportScale = 1,
-      background: viewportBackground = "light",
-    } = {},
-    onViewportContainerSizeUpdated,
+    viewport,
   }: {
     state: PreviewState;
     appLabel: string;
@@ -45,63 +33,10 @@ export const Preview = observer(
     subheader?: React.ReactNode;
     panelTabs?: PanelTab[];
     panelExtra?: React.ReactNode;
-    viewport?: {
-      size?: {
-        width: number;
-        height: number;
-      } | null;
-      scale?: number;
-      background?: "light" | "dark";
-    };
-    onViewportContainerSizeUpdated?(size: {
-      width: number;
-      height: number;
-    }): void;
+    viewport: React.ReactNode;
   }) => {
-    const iframeRef = useRef<HTMLIFrameElement | null>(null);
-    useEffect(() => {
-      state.setIframeRef(iframeRef);
-    }, [state]);
     const [width, height] = useWindowSize();
     const panelHeight = height * 0.3;
-    const viewportContainerRef = useRef<HTMLDivElement | null>(null);
-    const viewportContainerSizeRef =
-      useRef<{ width: number; height: number }>();
-    const viewportContainerResizeObserver = useMemo(
-      () =>
-        new ResizeObserver(() => {
-          updateViewportContainerSize();
-        }),
-      []
-    );
-    const observedRef = useRef<HTMLDivElement | null>(null);
-    const updateViewportContainerSize = useCallback(() => {
-      const viewportContainer = viewportContainerRef.current;
-      if (!viewportContainer || !onViewportContainerSizeUpdated) {
-        return;
-      }
-      if (observedRef.current !== viewportContainer) {
-        if (observedRef.current) {
-          viewportContainerResizeObserver.unobserve(observedRef.current);
-        }
-        viewportContainerResizeObserver.observe(viewportContainer);
-        observedRef.current = viewportContainer;
-      }
-      const size = {
-        width: viewportContainer.offsetWidth,
-        height: viewportContainer.offsetHeight,
-      };
-      console.error(size);
-      if (
-        !viewportContainerSizeRef.current ||
-        size.width !== viewportContainerSizeRef.current.width ||
-        size.height !== viewportContainerSizeRef.current.height
-      ) {
-        viewportContainerSizeRef.current = size;
-        onViewportContainerSizeUpdated(size);
-      }
-    }, [viewportContainerResizeObserver, onViewportContainerSizeUpdated]);
-    useLayoutEffect(updateViewportContainerSize);
 
     if (!state.reachable) {
       return (
@@ -167,58 +102,7 @@ export const Preview = observer(
         </Header>
         <UpdateBanner state={state.updateBanner} />
         {state.component ? (
-          <div
-            ref={viewportContainerRef}
-            className={clsx([
-              "flex-grow flex flex-col overflow-auto relative",
-              viewportDimensions
-                ? "bg-gray-50"
-                : viewportBackground === "dark"
-                ? "bg-gray-800"
-                : "bg-white",
-            ])}
-          >
-            <div
-              className={clsx([
-                viewportDimensions
-                  ? "absolute"
-                  : "flex-grow flex flex-col justify-center flex-nowrap overflow-auto",
-              ])}
-              style={{
-                transformOrigin: "0 0",
-                transform: `scaleX(${viewportScale}) scaleY(${viewportScale})`,
-                ...(viewportDimensions && viewportContainerSizeRef.current
-                  ? {
-                      left: Math.max(
-                        0,
-                        (viewportContainerSizeRef.current.width -
-                          viewportDimensions.width * viewportScale) /
-                          2
-                      ),
-                      top: Math.max(
-                        0,
-                        (viewportContainerSizeRef.current.height -
-                          viewportDimensions.height * viewportScale) /
-                          2
-                      ),
-                    }
-                  : {}),
-              }}
-            >
-              <iframe
-                className={clsx([
-                  viewportDimensions
-                    ? "self-center flex-shrink-0 border-4 border-white rounded-xl filter drop-shadow-lg"
-                    : "self-stretch flex-grow",
-                  viewportBackground === "dark" ? "bg-gray-800" : "bg-white",
-                ])}
-                ref={iframeRef}
-                src="/preview/"
-                width={viewportDimensions?.width}
-                height={viewportDimensions?.height}
-              />
-            </div>
-          </div>
+          viewport
         ) : (
           <div
             id="no-selection"
