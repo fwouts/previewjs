@@ -48,7 +48,14 @@ export const TabbedPanel = (props: {
             ])}
           >
             <FontAwesomeIcon icon={tab.icon} />
-            <div className="ml-2">{tab.label}</div>
+            <div
+              className={clsx([
+                "ml-2",
+                tab.key !== currentTabKey && "hidden sm:block",
+              ])}
+            >
+              {tab.label}
+            </div>
             {tab.notificationCount > 0 && (
               <span className="bg-red-600 text-white p-2 rounded-full inline-flex items-center justify-center h-5 min-w-5 ml-1 text-xs">
                 {tab.notificationCount}
@@ -56,7 +63,6 @@ export const TabbedPanel = (props: {
             )}
           </button>
         ))}
-        <span className="flex-grow" />
         {props.extra}
       </div>
       {currentTab && (

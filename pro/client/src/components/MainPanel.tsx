@@ -18,12 +18,15 @@ export const MainPanel = observer(
         }
         headerAddon={
           license.proStatus === "enabled" ? (
-            <button
-              className="text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 mr-2 cursor-pointer"
-              onClick={() => pro.toggleSearch()}
-            >
-              <FontAwesomeIcon icon={faSearch} fixedWidth />
-            </button>
+            <>
+              <span className="flex-grow" />
+              <button
+                className="text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 mr-2 cursor-pointer"
+                onClick={() => pro.toggleSearch()}
+              >
+                <FontAwesomeIcon icon={faSearch} fixedWidth />
+              </button>
+            </>
           ) : null
         }
         subheader={
