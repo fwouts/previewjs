@@ -115,28 +115,30 @@ export const Preview = observer(
         <TabbedPanel
           defaultTabKey="props"
           tabs={[
-            ...(state.component?.variantKey === "custom"
+            ...(state.component?.variantKey === null ||
+            state.component?.variantKey === "custom"
               ? [
                   {
                     label: "Properties",
                     key: "props",
                     icon: faCode,
                     notificationCount: 0,
-                    panel: state.component?.details && (
+                    panel: (
                       <PropsEditor
                         documentId={state.component.componentId}
                         height={height}
                         width={width}
                         onUpdate={state.updateProps.bind(state)}
                         onReset={
+                          state.component?.details &&
                           state.component.details.invocation !==
-                          state.component.details.defaultInvocation
+                            state.component.details.defaultInvocation
                             ? state.resetProps.bind(state)
                             : undefined
                         }
-                        source={state.component.details.invocation}
+                        source={state.component.details?.invocation}
                         typeDeclarationsSource={
-                          state.component.details.typeDeclarations
+                          state.component.details?.typeDeclarations
                         }
                       />
                     ),

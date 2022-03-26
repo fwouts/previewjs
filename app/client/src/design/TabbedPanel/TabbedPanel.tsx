@@ -28,7 +28,9 @@ export const TabbedPanel = (props: {
   const [currentTabKey, setCurrentTabKey] = useState<string | null>(
     props.defaultTabKey
   );
-  const currentTab = props.tabs.find((tab) => tab.key === currentTabKey);
+  const currentTab = currentTabKey
+    ? props.tabs.find((tab) => tab.key === currentTabKey) || props.tabs[0]
+    : null;
   return (
     <div>
       <div className="flex flex-row items-center bg-white shadow-inner">

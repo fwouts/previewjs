@@ -27,8 +27,8 @@ export const PropsEditor = ({
   onReset,
 }: {
   documentId: string;
-  source: string;
-  typeDeclarationsSource: string;
+  source?: string;
+  typeDeclarationsSource?: string;
   width: number;
   height: number;
   onUpdate(source: string): void;
@@ -59,7 +59,7 @@ export const PropsEditor = ({
   }, [documentId]);
   const monaco = useMonaco();
   useEffect(() => {
-    if (monaco) {
+    if (monaco && typeDeclarationsSource) {
       const libUri = monaco.Uri.parse("ts:filename/component.d.tsx");
       const existingModel = monaco.editor.getModel(libUri);
       if (existingModel) {
@@ -74,7 +74,7 @@ export const PropsEditor = ({
   }, [monaco, typeDeclarationsSource]);
   useEffect(() => {
     const model = modelRef.current;
-    if (!model || model.getValue() === source) {
+    if (!model || !source || model.getValue() === source) {
       return;
     }
     model.setValue(source);
@@ -92,10 +92,10 @@ export const PropsEditor = ({
       const existingModel = monaco.editor.getModel(usageUri);
       if (existingModel) {
         modelRef.current = existingModel;
-        existingModel.setValue(source);
+        existingModel.setValue(source || "");
       } else {
         modelRef.current = monaco.editor.createModel(
-          source,
+          source || "",
           "typescript",
           monaco.Uri.parse("file:///usage.d.tsx")
         );
