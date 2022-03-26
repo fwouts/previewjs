@@ -18,15 +18,12 @@ export const MainPanel = observer(
         }
         headerAddon={
           license.proStatus === "enabled" ? (
-            <>
-              <span className="flex-grow" />
-              <button
-                className="text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 mr-2 cursor-pointer"
-                onClick={() => pro.toggleSearch()}
-              >
-                <FontAwesomeIcon icon={faSearch} fixedWidth />
-              </button>
-            </>
+            <button
+              className="text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 mr-2 cursor-pointer"
+              onClick={() => pro.toggleSearch()}
+            >
+              <FontAwesomeIcon icon={faSearch} fixedWidth />
+            </button>
           ) : null
         }
         subheader={
@@ -40,18 +37,27 @@ export const MainPanel = observer(
         }
         panelExtra={
           license.proStatus === "enabled" ? (
-            <VariantButton icon={faStar} onClick={() => licenseModal.toggle()}>
-              Pro Edition
-            </VariantButton>
+            <>
+              <span className="flex-grow" />
+              <VariantButton
+                icon={faStar}
+                onClick={() => licenseModal.toggle()}
+              >
+                Pro Edition
+              </VariantButton>
+            </>
           ) : license.proStatus === "disabled" ? (
-            <VariantButton
-              warning={!!license.proInvalidLicenseReason}
-              onClick={() => licenseModal.toggle()}
-            >
-              {license.proInvalidLicenseReason
-                ? license.proInvalidLicenseReason
-                : "Try Preview.js Pro"}
-            </VariantButton>
+            <>
+              <span className="flex-grow" />
+              <VariantButton
+                warning={!!license.proInvalidLicenseReason}
+                onClick={() => licenseModal.toggle()}
+              >
+                {license.proInvalidLicenseReason
+                  ? license.proInvalidLicenseReason
+                  : "Try Preview.js Pro"}
+              </VariantButton>
+            </>
           ) : null
         }
       />
