@@ -10,7 +10,7 @@ import { Header } from "../../design/Header";
 import { Link } from "../../design/Link";
 import { PropsEditor } from "../../design/PropsEditor";
 import { SmallLogo } from "../../design/SmallLogo";
-import { TabbedPanel } from "../../design/TabbedPanel";
+import { PanelTab, TabbedPanel } from "../../design/TabbedPanel";
 import { PreviewState } from "../../PreviewState";
 import { ActionLogs } from "../ActionLogs";
 import { ConsolePanel } from "../ConsolePanel";
@@ -23,6 +23,7 @@ export const Preview = observer(
     appLabel,
     headerAddon,
     subheader,
+    panelTabs,
     panelExtra,
     viewport,
   }: {
@@ -30,6 +31,7 @@ export const Preview = observer(
     appLabel: string;
     headerAddon?: React.ReactNode;
     subheader?: React.ReactNode;
+    panelTabs?: PanelTab[];
     panelExtra?: React.ReactNode;
     viewport: React.ReactNode;
   }) => {
@@ -148,6 +150,7 @@ export const Preview = observer(
               notificationCount: state.consoleLogs.unreadCount,
               panel: <ConsolePanel state={state.consoleLogs} />,
             },
+            ...(panelTabs || []),
           ]}
           height={panelHeight}
           extra={panelExtra}
