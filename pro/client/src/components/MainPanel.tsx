@@ -1,12 +1,21 @@
-import { faSearch, faStar } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleHalfStroke,
+  faDisplay,
+  faSearch,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { VariantButton } from "../design/VariantButton";
 import { AppState } from "../state/AppState";
 import { ComponentPicker } from "./ComponentPicker";
+import { Viewport } from "./Viewport";
+import { ViewportPanel } from "./ViewportPanel";
+import { ViewportZoomButtons } from "./ViewportZoomButtons";
 
 export const MainPanel = observer(
   ({ state: { preview, license, licenseModal, pro } }: { state: AppState }) => {
@@ -14,6 +23,7 @@ export const MainPanel = observer(
     useEffect(() => {
       preview.setIframeRef(iframeRef);
     }, [preview]);
+    const [background, setBackground] = useState<"light" | "dark">("light");
     return (
       <Preview
         state={preview}
@@ -39,9 +49,38 @@ export const MainPanel = observer(
             ? preview.component && <Selection state={preview} />
             : null
         }
+        panelTabs={
+          license.proStatus === "enabled"
+            ? [
+                {
+                  icon: faDisplay,
+                  key: "viewport",
+                  label: "Viewport",
+                  notificationCount: 0,
+                  panel: <ViewportPanel state={pro.viewport} />,
+                },
+              ]
+            : []
+        }
         panelExtra={
           license.proStatus === "enabled" ? (
             <>
+              <ViewportZoomButtons state={pro.viewport} />
+              <button
+                className={clsx([
+                  "self-stretch px-3 text-gray-600",
+                  background === "dark" && "bg-gray-800",
+                ])}
+                onClick={() =>
+                  setBackground(background === "dark" ? "light" : "dark")
+                }
+              >
+                <FontAwesomeIcon
+                  icon={faCircleHalfStroke}
+                  fixedWidth
+                  inverse={background === "dark"}
+                />
+              </button>
               <span className="flex-grow" />
               <VariantButton
                 icon={faStar}
@@ -65,7 +104,17 @@ export const MainPanel = observer(
           ) : null
         }
         viewport={
-          <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
+          <Viewport
+            iframeRef={iframeRef}
+            viewport={{
+              size: pro.viewport.currentViewport?.size,
+              scale: pro.viewport.currentScale,
+              background,
+            }}
+            onViewportContainerSizeUpdated={(size) =>
+              pro.viewport.setViewportContainerSize(size)
+            }
+          />
         }
       />
     );
