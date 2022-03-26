@@ -37,18 +37,27 @@ export const MainPanel = observer(
         }
         panelExtra={
           license.proStatus === "enabled" ? (
-            <VariantButton icon={faStar} onClick={() => licenseModal.toggle()}>
-              Pro Edition
-            </VariantButton>
+            <>
+              <span className="flex-grow" />
+              <VariantButton
+                icon={faStar}
+                onClick={() => licenseModal.toggle()}
+              >
+                Pro Edition
+              </VariantButton>
+            </>
           ) : license.proStatus === "disabled" ? (
-            <VariantButton
-              warning={!!license.proInvalidLicenseReason}
-              onClick={() => licenseModal.toggle()}
-            >
-              {license.proInvalidLicenseReason
-                ? license.proInvalidLicenseReason
-                : "Try Preview.js Pro"}
-            </VariantButton>
+            <>
+              <span className="flex-grow" />
+              <VariantButton
+                warning={!!license.proInvalidLicenseReason}
+                onClick={() => licenseModal.toggle()}
+              >
+                {license.proInvalidLicenseReason
+                  ? license.proInvalidLicenseReason
+                  : "Try Preview.js Pro"}
+              </VariantButton>
+            </>
           ) : null
         }
       />
