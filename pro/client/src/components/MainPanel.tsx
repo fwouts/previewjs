@@ -1,24 +1,136 @@
 import {
+  faArrowsLeftRightToLine,
   faCircleHalfStroke,
+  faClock,
+  faDesktop,
   faDisplay,
+  faExpand,
+  faLaptop,
+  faMagnifyingGlassMinus,
+  faMagnifyingGlassPlus,
+  faMobilePhone,
   faSearch,
   faStar,
+  faTablet,
+  IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import { VariantButton } from "../design/VariantButton";
 import { AppState } from "../state/AppState";
 import { ComponentPicker } from "./ComponentPicker";
 
+// TODO: Move
+interface ViewportOption {
+  id: string;
+  icon: IconDefinition;
+  rotateIcon?: boolean;
+  label: string;
+  dimensions: {
+    width: number;
+    height: number;
+  } | null;
+}
+
 export const MainPanel = observer(
   ({ state: { preview, license, licenseModal, pro } }: { state: AppState }) => {
-    const [width, setWidth] = useState<number | null>(null);
-    const [height, setHeight] = useState<number | null>(null);
-    const [theme, setTheme] = useState<"light" | "dark">("light");
+    const [viewportId, setViewportId] = useState("expand");
+    const viewportOptions: ViewportOption[] = [
+      {
+        id: "expand",
+        icon: faExpand,
+        label: "Fill available space",
+        dimensions: null,
+      },
+      {
+        id: "watch",
+        icon: faClock,
+        label: "Watch",
+        dimensions: { width: 100, height: 100 },
+      },
+      {
+        id: "mobile-portrait",
+        icon: faMobilePhone,
+        label: "Mobile (portrait)",
+        dimensions: { width: 375, height: 812 },
+      },
+      {
+        id: "mobile-landscape",
+        icon: faMobilePhone,
+        label: "Mobile (landscape)",
+        rotateIcon: true,
+        dimensions: { width: 812, height: 375 },
+      },
+      {
+        id: "tablet-portrait",
+        icon: faTablet,
+        label: "Tablet (portrait)",
+        dimensions: { width: 600, height: 1200 },
+      },
+      {
+        id: "tablet-landscape",
+        icon: faTablet,
+        rotateIcon: true,
+        label: "Tablet (landscape)",
+        dimensions: { width: 1200, height: 600 },
+      },
+      {
+        id: "laptop",
+        icon: faLaptop,
+        label: "Laptop",
+        dimensions: { width: 1440, height: 900 },
+      },
+      {
+        id: "desktop",
+        icon: faDesktop,
+        label: "Desktop",
+        dimensions: { width: 1920, height: 1080 },
+      },
+    ];
+    const [viewportScale, setViewportScale] = useState(1);
+    const [background, setTheme] = useState<"light" | "dark">("light");
+    const currentViewport = viewportOptions.find((v) => v.id === viewportId);
+    const [viewportContainerSize, setViewportContainerSize] = useState<{
+      width: number;
+      height: number;
+    }>({
+      width: 0,
+      height: 0,
+    });
+    const viewportDimensions = currentViewport?.dimensions;
+    const viewportContainerPadding = 24;
+    const viewportWidthRatio = viewportDimensions
+      ? (viewportContainerSize.width - viewportContainerPadding * 2) /
+        viewportDimensions.width
+      : 1;
+    const viewportHeightRatio = viewportDimensions
+      ? (viewportContainerSize.height - viewportContainerPadding * 2) /
+        viewportDimensions.height
+      : 1;
+    const scaleToFit = Math.min(viewportHeightRatio, viewportWidthRatio);
+    useLayoutEffect(() => {
+      setViewportScale(scaleToFit);
+    }, [scaleToFit]);
+    const increaseOrDecreaseScale = useCallback(
+      (stepsChange: number) => {
+        const scalePercent = Math.round(viewportScale * 100);
+        const steps = [
+          10, 30, 50, 67, 80, 90, 100, 110, 120, 133, 150, 170, 200, 240, 300,
+          400, 500,
+        ];
+        const currentIndex = steps.findIndex((s) => s >= scalePercent);
+        const newScalePercent =
+          steps[
+            Math.max(0, Math.min(steps.length - 1, currentIndex + stepsChange))
+          ]!;
+        setViewportScale(newScalePercent / 100);
+      },
+      [viewportScale, setViewportScale]
+    );
     return (
       <Preview
         state={preview}
@@ -53,46 +165,31 @@ export const MainPanel = observer(
                   label: "Viewport",
                   notificationCount: 0,
                   panel: (
-                    <div>
-                      <input
-                        type="range"
-                        value={width?.toString(10)}
-                        max={1920}
-                        onChange={(e) =>
-                          setWidth(
-                            e.target.value ? parseInt(e.target.value) : null
-                          )
-                        }
-                      />
-                      <input
-                        type="number"
-                        value={width?.toString(10)}
-                        onChange={(e) =>
-                          setWidth(
-                            e.target.value ? parseInt(e.target.value) : null
-                          )
-                        }
-                      />
-                      <br />
-                      <input
-                        type="range"
-                        value={height?.toString(10)}
-                        max={1920}
-                        onChange={(e) =>
-                          setHeight(
-                            e.target.value ? parseInt(e.target.value) : null
-                          )
-                        }
-                      />
-                      <input
-                        type="number"
-                        value={height?.toString(10)}
-                        onChange={(e) =>
-                          setHeight(
-                            e.target.value ? parseInt(e.target.value) : null
-                          )
-                        }
-                      />
+                    <div className="flex-grow bg-gray-600 overflow-auto">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-2">
+                        {viewportOptions.map((viewport) => (
+                          <button
+                            key={viewport.id}
+                            className={clsx([
+                              "flex flex-row items-center p-2 m-2 rounded-md cursor-pointer",
+                              viewport.id === viewportId
+                                ? "bg-blue-200 text-blue-900"
+                                : "bg-gray-50 text-gray-900",
+                            ])}
+                            onClick={() => {
+                              setViewportId(viewport.id);
+                            }}
+                          >
+                            <div className="mr-2">
+                              <FontAwesomeIcon
+                                icon={viewport.icon}
+                                rotation={viewport.rotateIcon ? 90 : undefined}
+                              />
+                            </div>
+                            {viewport.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   ),
                 },
@@ -102,17 +199,45 @@ export const MainPanel = observer(
         panelExtra={
           license.proStatus === "enabled" ? (
             <>
+              <div className="flex flex-row rounded-md mx-2 p-0.5 border-2 border-gray-200">
+                <ZoomButton
+                  title="Zoom in"
+                  icon={faMagnifyingGlassPlus}
+                  onClick={() => increaseOrDecreaseScale(+1)}
+                />
+                <ZoomButton
+                  title="Reset zoom to 100%"
+                  label={`${Math.round(viewportScale * 100)}%`}
+                  onClick={() => setViewportScale(1)}
+                />
+                <ZoomButton
+                  title="Zoom out"
+                  icon={faMagnifyingGlassMinus}
+                  onClick={() => increaseOrDecreaseScale(-1)}
+                />
+                {currentViewport?.dimensions && (
+                  <ZoomButton
+                    title="Fit to viewport"
+                    icon={faArrowsLeftRightToLine}
+                    rotate
+                    disabled={viewportScale === scaleToFit}
+                    onClick={() => setViewportScale(scaleToFit)}
+                  />
+                )}
+              </div>
               <button
                 className={clsx([
-                  "self-stretch px-3 text-gray-800",
-                  theme === "dark" && "bg-gray-800",
+                  "self-stretch px-3 text-gray-600",
+                  background === "dark" && "bg-gray-800",
                 ])}
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={() =>
+                  setTheme(background === "dark" ? "light" : "dark")
+                }
               >
                 <FontAwesomeIcon
                   icon={faCircleHalfStroke}
                   fixedWidth
-                  inverse={theme === "dark"}
+                  inverse={background === "dark"}
                 />
               </button>
               <span className="flex-grow" />
@@ -138,11 +263,41 @@ export const MainPanel = observer(
           ) : null
         }
         viewport={{
-          width: width || "auto",
-          height: height || "auto",
-          theme,
+          dimensions: currentViewport?.dimensions,
+          scale: viewportScale,
+          background,
         }}
+        onViewportContainerSizeUpdated={setViewportContainerSize}
       />
     );
   }
+);
+
+// TODO: Move.
+const ZoomButton = (
+  props: {
+    title: string;
+    onClick(): void;
+    rotate?: boolean;
+    disabled?: boolean;
+  } & ({ icon: IconDefinition } | { label: string })
+) => (
+  <button
+    className={clsx(
+      ["self-stretch px-2"],
+      props.rotate && "rotate-45",
+      props.disabled
+        ? "text-gray-300"
+        : "cursor-pointer text-gray-600 hover:text-gray-900"
+    )}
+    title={props.title}
+    onClick={props.onClick}
+    disabled={props.disabled}
+  >
+    {"icon" in props ? (
+      <FontAwesomeIcon icon={props.icon} />
+    ) : (
+      <span className="text-sm grid place-self-center w-8">{props.label}</span>
+    )}
+  </button>
 );
