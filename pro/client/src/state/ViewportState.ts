@@ -122,14 +122,14 @@ export class ViewportState {
         id: "tablet-portrait",
         icon: faTablet,
         label: "Tablet (portrait)",
-        size: { width: 600, height: 1200 },
+        size: { width: 810, height: 1080 },
       },
       {
         id: "tablet-landscape",
         icon: faTablet,
         rotateIcon: true,
         label: "Tablet (landscape)",
-        size: { width: 1200, height: 600 },
+        size: { width: 1080, height: 810 },
       },
       {
         id: "laptop",
