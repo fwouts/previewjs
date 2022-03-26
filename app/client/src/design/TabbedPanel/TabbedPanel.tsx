@@ -1,8 +1,4 @@
-import {
-  faAngleDown,
-  faAngleUp,
-  IconDefinition,
-} from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import React, { useState } from "react";
@@ -29,38 +25,24 @@ export const TabbedPanel = (props: {
   height: number;
   extra?: React.ReactNode;
 }) => {
-  const [currentTabKey, setCurrentTabKey] = useState(props.defaultTabKey);
-  const [rawVisible, setVisible] = useState(true);
+  const [currentTabKey, setCurrentTabKey] = useState<string | null>(
+    props.defaultTabKey
+  );
   const currentTab = props.tabs.find((tab) => tab.key === currentTabKey);
-  const visible = rawVisible && !!currentTab;
   return (
     <div>
       <div className="flex flex-row items-center bg-white shadow-inner">
-        {props.tabs.length > 0 && (
-          <button
-            className="px-4 py-2 hover:text-blue-500"
-            onClick={() => {
-              if (props.tabs.length > 0 && !currentTab) {
-                setCurrentTabKey(props.tabs[0]!.key);
-              }
-              setVisible(!visible);
-            }}
-          >
-            <FontAwesomeIcon icon={visible ? faAngleDown : faAngleUp} />
-          </button>
-        )}
         {props.tabs.map((tab) => (
           <button
             key={tab.key}
             title={tab.label}
             onClick={() => {
-              setVisible(true);
-              setCurrentTabKey(tab.key);
+              setCurrentTabKey(tab.key === currentTabKey ? null : tab.key);
             }}
             className={clsx([
               "panel-tab",
-              "px-4 self-stretch text-sm font-medium flex flex-row items-center",
-              visible && tab.key === currentTabKey
+              "px-4 py-3 self-stretch text-sm font-medium flex flex-row items-center",
+              tab.key === currentTabKey
                 ? "bg-gray-200 text-gray-900"
                 : "text-gray-400",
             ])}
@@ -77,7 +59,7 @@ export const TabbedPanel = (props: {
         <span className="flex-grow" />
         {props.extra}
       </div>
-      {visible && currentTab && (
+      {currentTab && (
         <div className="flex flex-col" style={{ height: props.height }}>
           {currentTab.panel}
         </div>
