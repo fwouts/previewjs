@@ -3,13 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
 import { Selection } from "@previewjs/app/client/src/components/Selection";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { VariantButton } from "../design/VariantButton";
 import { AppState } from "../state/AppState";
 import { ComponentPicker } from "./ComponentPicker";
 
 export const MainPanel = observer(
   ({ state: { preview, license, licenseModal, pro } }: { state: AppState }) => {
+    const iframeRef = useRef<HTMLIFrameElement | null>(null);
+    useEffect(() => {
+      preview.setIframeRef(iframeRef);
+    }, [preview]);
     return (
       <Preview
         state={preview}
@@ -59,6 +63,9 @@ export const MainPanel = observer(
               </VariantButton>
             </>
           ) : null
+        }
+        viewport={
+          <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
         }
       />
     );

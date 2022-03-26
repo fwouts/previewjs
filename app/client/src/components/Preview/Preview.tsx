@@ -3,7 +3,7 @@ import { faBars, faCode, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { decodeComponentId } from "../../component-id";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
@@ -24,17 +24,15 @@ export const Preview = observer(
     headerAddon,
     subheader,
     panelExtra,
+    viewport,
   }: {
     state: PreviewState;
     appLabel: string;
     headerAddon?: React.ReactNode;
     subheader?: React.ReactNode;
     panelExtra?: React.ReactNode;
+    viewport: React.ReactNode;
   }) => {
-    const iframeRef = useRef<HTMLIFrameElement | null>(null);
-    useEffect(() => {
-      state.setIframeRef(iframeRef);
-    }, [state]);
     const [width, height] = useWindowSize();
     const panelHeight = height * 0.3;
 
@@ -102,7 +100,7 @@ export const Preview = observer(
         </Header>
         <UpdateBanner state={state.updateBanner} />
         {state.component ? (
-          <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
+          viewport
         ) : (
           <div
             id="no-selection"
