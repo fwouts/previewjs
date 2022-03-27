@@ -19,9 +19,11 @@ import com.previewjs.intellij.plugin.api.api
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.ConnectException
+import java.net.ServerSocket
 import java.net.SocketTimeoutException
 import java.util.*
 import kotlin.concurrent.thread
@@ -33,7 +35,6 @@ const val PACKAGE_NAME = "@previewjs/app"
 @Service
 class PreviewJsSharedService : Disposable {
     companion object {
-        const val PORT = 9120
         const val SHOWED_WELCOME_SCREEN_KEY = "com.previewjs.showed-welcome-screen"
     }
 
@@ -174,10 +175,18 @@ Include the content of the Preview.js logs panel for easier debugging.
     }
 
     private suspend fun runServer(project: Project): PreviewJsApi {
+        val port: Int
+        try {
+            ServerSocket(0).use { serverSocket ->
+                port = serverSocket.localPort
+            }
+        } catch (e: IOException) {
+            throw Error("No port is not available to run Preview.js controller")
+        }
         val builder = processBuilder( "node dist/run-server.js")
                 .redirectErrorStream(true)
                 .directory(nodeDirPath.toFile())
-        builder.environment()["PORT"] = "$PORT"
+        builder.environment()["PORT"] = "$port"
         builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.version
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
         val process = builder.start()
@@ -195,7 +204,7 @@ Include the content of the Preview.js logs panel for easier debugging.
                 }
             }
         }
-        val api = api("http://localhost:$PORT")
+        val api = api("http://localhost:$port")
         var attempts = 0
         while (true) {
             try {
