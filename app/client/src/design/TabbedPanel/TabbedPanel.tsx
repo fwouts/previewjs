@@ -39,12 +39,12 @@ export const TabbedPanel = (props: {
             key={tab.key}
             title={tab.label}
             onClick={() => {
-              setCurrentTabKey(tab.key === currentTabKey ? null : tab.key);
+              setCurrentTabKey(tab.key === currentTab?.key ? null : tab.key);
             }}
             className={clsx([
               "panel-tab",
               "px-4 py-3 self-stretch text-sm font-medium flex flex-row items-center",
-              tab.key === currentTabKey
+              tab.key === currentTab?.key
                 ? "bg-gray-200 text-gray-900"
                 : "text-gray-400",
             ])}
@@ -53,7 +53,7 @@ export const TabbedPanel = (props: {
             <div
               className={clsx([
                 "ml-2",
-                tab.key !== currentTabKey && "hidden sm:block",
+                tab.key !== currentTab?.key && "hidden sm:block",
               ])}
             >
               {tab.label}
