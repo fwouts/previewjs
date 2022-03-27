@@ -28,9 +28,7 @@ export const TabbedPanel = (props: {
   const [currentTabKey, setCurrentTabKey] = useState<string | null>(
     props.defaultTabKey
   );
-  const currentTab = currentTabKey
-    ? props.tabs.find((tab) => tab.key === currentTabKey) || props.tabs[0]
-    : null;
+  const currentTab = props.tabs.find((tab) => tab.key === currentTabKey);
   return (
     <div>
       <div className="flex flex-row items-center bg-white shadow-inner">
@@ -39,12 +37,12 @@ export const TabbedPanel = (props: {
             key={tab.key}
             title={tab.label}
             onClick={() => {
-              setCurrentTabKey(tab.key === currentTab?.key ? null : tab.key);
+              setCurrentTabKey(tab.key === currentTabKey ? null : tab.key);
             }}
             className={clsx([
               "panel-tab",
               "px-4 py-3 self-stretch text-sm font-medium flex flex-row items-center",
-              tab.key === currentTab?.key
+              tab.key === currentTabKey
                 ? "bg-gray-200 text-gray-900"
                 : "text-gray-400",
             ])}
@@ -53,7 +51,7 @@ export const TabbedPanel = (props: {
             <div
               className={clsx([
                 "ml-2",
-                tab.key !== currentTab?.key && "hidden sm:block",
+                tab.key !== currentTabKey && "hidden sm:block",
               ])}
             >
               {tab.label}
