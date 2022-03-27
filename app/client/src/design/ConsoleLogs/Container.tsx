@@ -17,7 +17,7 @@ export const Container = (props: {
     });
   });
   return (
-    <div className="flex flex-col min-h-0">
+    <div className="flex-grow flex flex-col min-h-0">
       <div
         ref={scrollableContainerRef}
         className="flex flex-col overflow-y-auto"

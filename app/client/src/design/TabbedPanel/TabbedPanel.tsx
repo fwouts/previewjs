@@ -66,7 +66,10 @@ export const TabbedPanel = (props: {
         {props.extra}
       </div>
       {currentTab && (
-        <div className="flex flex-col" style={{ height: props.height }}>
+        <div
+          className="flex flex-col bg-gray-200"
+          style={{ height: props.height }}
+        >
           {currentTab.panel}
         </div>
       )}
