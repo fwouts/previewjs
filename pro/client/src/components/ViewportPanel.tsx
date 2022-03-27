@@ -6,13 +6,13 @@ import { ViewportState } from "../state/ViewportState";
 
 export const ViewportPanel = observer(({ state }: { state: ViewportState }) => {
   return (
-    <div className="flex-grow bg-gray-600 overflow-auto">
+    <div className="flex-grow overflow-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-2">
         {state.options.map((viewport) => (
           <button
             key={viewport.id}
             className={clsx([
-              "flex flex-row items-center p-2 m-2 rounded-md cursor-pointer",
+              "flex flex-row items-center p-3 m-2 cursor-pointer filter drop-shadow-sm",
               viewport.id === state.currentViewport.id
                 ? "bg-blue-200 text-blue-900"
                 : "bg-gray-50 text-gray-900",
