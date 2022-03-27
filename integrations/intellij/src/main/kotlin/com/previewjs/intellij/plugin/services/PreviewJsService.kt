@@ -73,7 +73,7 @@ class PreviewJsSharedService : Disposable {
                     installChecked = true
                 }
                 if (serverProcess == null) {
-                    api = runServer()
+                    api = runServer(msg.project)
                 }
                 openDocsForFirstUsage()
             } catch (e: Throwable) {
@@ -173,7 +173,7 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
-    private suspend fun runServer(): PreviewJsApi {
+    private suspend fun runServer(project: Project): PreviewJsApi {
         val builder = processBuilder( "node dist/run-server.js")
                 .redirectErrorStream(true)
                 .directory(nodeDirPath.toFile())
@@ -186,7 +186,10 @@ Include the content of the Preview.js logs panel for easier debugging.
         thread {
             var line: String? = null
             while (!disposed && serverOutputReader.readLine().also{ line = it } != null) {
-                for (project in workspaceIds.keys) {
+                for (project in workspaceIds.keys + setOf(project)) {
+                    if (project.isDisposed) {
+                        continue
+                    }
                     val consoleView = project.service<ProjectService>().consoleView
                     consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
                 }

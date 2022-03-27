@@ -190,7 +190,7 @@ export async function createWorkspace({
 /**
  * Returns the absolute directory path of the closest ancestor containing node_modules.
  */
-export function findWorkspaceRoot(absoluteFilePath: string): string {
+export function findWorkspaceRoot(absoluteFilePath: string): string | null {
   let dirPath = path.resolve(absoluteFilePath);
   while (dirPath !== path.dirname(dirPath)) {
     if (fs.existsSync(path.join(dirPath, "package.json"))) {
@@ -198,9 +198,7 @@ export function findWorkspaceRoot(absoluteFilePath: string): string {
     }
     dirPath = path.dirname(dirPath);
   }
-  throw new Error(
-    `Unable to find package.json in the directory tree from ${absoluteFilePath}. Does it exist?`
-  );
+  return null;
 }
 
 export interface Workspace {

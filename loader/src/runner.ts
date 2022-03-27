@@ -60,6 +60,9 @@ export async function init(
       absoluteFilePath: string;
     }) {
       const rootDirPath = coreModule.findWorkspaceRoot(absoluteFilePath);
+      if (!rootDirPath) {
+        return null;
+      }
       let workspace = workspaces[rootDirPath];
       if (workspace === undefined) {
         const created = await locking(async () => {
