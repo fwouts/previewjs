@@ -38,7 +38,10 @@ import kotlin.concurrent.schedule
 
 class ProjectService(private val project: Project) : Disposable {
     companion object {
-        const val INLAY_PRIORITY = 1000
+        private const val INLAY_PRIORITY = 1000
+        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "vue")
+        private val LIVE_UPDATING_EXTENSIONS =
+            JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
     }
 
     private val app = ApplicationManager.getApplication()
@@ -55,25 +58,26 @@ class ProjectService(private val project: Project) : Disposable {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(object : DocumentListener {
             override fun documentChanged(event: DocumentEvent) {
                 val file = FileDocumentManager.getInstance().getFile(event.document)
-                if (file != null && file.isInLocalFileSystem && file.isWritable && event.document.text.length <= 1_048_576) {
-                    service.enqueueAction(project, { api ->
-                        service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-                        api.updatePendingFile(
-                            UpdatePendingFileRequest(
-                                absoluteFilePath = file.path,
-                                utf8Content = event.document.text
-                            )
+                if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
+                    return
+                }
+                service.enqueueAction(project, { api ->
+                    service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
+                    api.updatePendingFile(
+                        UpdatePendingFileRequest(
+                            absoluteFilePath = file.path,
+                            utf8Content = event.document.text
                         )
-                    }, {
-                        "Warning: unable to update pending file ${file.path}"
+                    )
+                }, {
+                    "Warning: unable to update pending file ${file.path}"
+                })
+                refreshTimerTask?.cancel()
+                refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
+                    refreshTimerTask = null
+                    app.invokeLater(Runnable {
+                        updateComponents(file)
                     })
-                    refreshTimerTask?.cancel()
-                    refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
-                        refreshTimerTask = null
-                        app.invokeLater(Runnable {
-                            updateComponents(file, event.document.text)
-                        })
-                    }
                 }
             }
         }, this)
@@ -123,18 +127,13 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-    private fun updateComponents(file: VirtualFile, content: String? = null) {
+    private fun updateComponents(file: VirtualFile) {
+        if (!JS_EXTENSIONS.contains(file.extension)) {
+            return
+        }
         val fileEditors = editorManager.getEditors(file)
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-            content?.let { content ->
-                api.updatePendingFile(
-                    UpdatePendingFileRequest(
-                        absoluteFilePath = file.path,
-                        utf8Content = content
-                    )
-                )
-            }
             val components = api.analyzeFile(
                 AnalyzeFileRequest(
                     workspaceId,
