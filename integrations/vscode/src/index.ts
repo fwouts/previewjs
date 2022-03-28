@@ -21,6 +21,21 @@ const codeLensLanguages = [
   "vue",
 ];
 
+const watchedExtensions = new Set([
+  ".js",
+  ".jsx",
+  ".ts",
+  ".tsx",
+  ".vue",
+  ".css",
+  ".sass",
+  ".scss",
+  ".less",
+  ".styl",
+  ".stylus",
+  ".svg",
+]);
+
 let dispose = async () => {
   // Do nothing.
 };
@@ -129,7 +144,10 @@ export async function activate(context: vscode.ExtensionContext) {
         updateDocument(e.document);
       });
       function updateDocument(document: vscode.TextDocument, saved = false) {
-        if (!path.isAbsolute(document.fileName)) {
+        if (
+          !path.isAbsolute(document.fileName) ||
+          !watchedExtensions.has(path.extname(document.fileName))
+        ) {
           return;
         }
         previewjs.updateFileInMemory(
