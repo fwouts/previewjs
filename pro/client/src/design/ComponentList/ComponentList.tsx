@@ -15,7 +15,7 @@ export const ComponentList: React.FC<{ loading?: boolean }> = ({
       <div className="p-2">
         <FontAwesomeIcon
           icon={faSpinner}
-          className="text-gray-300 animate-spin"
+          className="text-gray-800 animate-spin"
         />
       </div>
     )}
