@@ -71,7 +71,7 @@ export class ErrorState {
   get suggestion():
     | {
         message: string;
-        url?: string;
+        url: string;
       }
     | undefined {
     const error = this.error;
@@ -79,8 +79,13 @@ export class ErrorState {
       return;
     }
     if (error.title?.startsWith(`Failed to resolve import `)) {
+      const match = error.title.match(
+        /Failed to resolve import "((@[a-zA-Z0-9\\-]+\/[a-zA-Z0-9\\-]+)|[a-zA-Z0-9\\-]+)"/
+      );
       return {
-        message: "Show me how to configure aliases",
+        message: match
+          ? `Perhaps you need to install "${match[1]}" or configure aliases?`
+          : "Perhaps you need to install a peer dependency or configure aliases?",
         url: "https://previewjs.com/docs/config/aliases",
       };
     } else if (
@@ -90,15 +95,6 @@ export class ErrorState {
       return {
         message: "Help me set up SVGR",
         url: "https://previewjs.com/docs/config/svgr",
-      };
-    } else if (error.title?.includes("Could not resolve")) {
-      const match = error.title.match(
-        /Could not resolve "((@[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+)|[a-zA-Z0-9-]+)/
-      );
-      return {
-        message: match
-          ? `Perhaps you need to install ${match[1]}?`
-          : "Perhaps you need to install a peer dependency?",
       };
     }
     return;

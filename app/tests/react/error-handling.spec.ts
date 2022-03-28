@@ -60,7 +60,149 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
   );
 
   test(
-    "fails correctly when encountering broken imports",
+    "fails correctly when encountering broken module imports before update",
+    "react",
+    async ({ appDir, controller }) => {
+      await appDir.update(
+        "src/App.tsx",
+        {
+          kind: "replace",
+          text: `import logo from "some-module";
+
+        export function App() {
+          return <div>{logo}</div>;
+        }`,
+        },
+        {
+          inMemoryOnly: true,
+        }
+      );
+      await controller.show("src/App.tsx:App");
+      const previewIframe = await controller.previewIframe();
+      await sleep(2);
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`
+      );
+      expect(await controller.errors.suggestion.text()).toEqual(
+        ` Perhaps you need to install "some-module" or configure aliases?`
+      );
+      await appDir.update(
+        "src/App.tsx",
+        {
+          kind: "replace",
+          text: `import logo from "./logo.svg";
+
+          export function App() {
+            return <div id="recovered">{logo}</div>;
+          }`,
+        },
+        {
+          inMemoryOnly: true,
+        }
+      );
+      await controller.errors.title.waitUntilGone();
+      await previewIframe.waitForSelector("#recovered");
+    }
+  );
+
+  test(
+    "fails correctly when encountering broken module imports after update",
+    "react",
+    async ({ appDir, controller }) => {
+      await controller.show("src/App.tsx:App");
+      const previewIframe = await controller.previewIframe();
+      await previewIframe.waitForSelector(".App-logo");
+      await appDir.update(
+        "src/App.tsx",
+        {
+          kind: "replace",
+          text: `import logo from "some-module";
+
+        export function App() {
+          return <div>{logo}</div>;
+        }`,
+        },
+        {
+          inMemoryOnly: true,
+        }
+      );
+      await sleep(2);
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`
+      );
+      expect(await controller.errors.suggestion.text()).toEqual(
+        ` Perhaps you need to install "some-module" or configure aliases?`
+      );
+      await appDir.update(
+        "src/App.tsx",
+        {
+          kind: "replace",
+          text: `import logo from "./logo.svg";
+
+          export function App() {
+            return <div id="recovered">{logo}</div>;
+          }`,
+        },
+        {
+          inMemoryOnly: true,
+        }
+      );
+      await controller.errors.title.waitUntilGone();
+      await previewIframe.waitForSelector("#recovered");
+    }
+  );
+
+  test(
+    "fails correctly when encountering broken local imports before update",
+    "react",
+    async ({ appDir, controller }) => {
+      await appDir.update(
+        "src/App.tsx",
+        {
+          kind: "replace",
+          text: `import logo from "./missing.svg";
+
+        export function App() {
+          return <div>{logo}</div>;
+        }`,
+        },
+        {
+          inMemoryOnly: true,
+        }
+      );
+      await controller.show("src/App.tsx:App");
+      const previewIframe = await controller.previewIframe();
+      await sleep(2);
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
+      );
+      expect(await controller.errors.suggestion.text()).toEqual(
+        " Perhaps you need to install a peer dependency or configure aliases?"
+      );
+      await appDir.update(
+        "src/App.tsx",
+        {
+          kind: "replace",
+          text: `import logo from "./logo.svg";
+
+          export function App() {
+            return <div id="recovered">{logo}</div>;
+          }`,
+        },
+        {
+          inMemoryOnly: true,
+        }
+      );
+      await controller.errors.title.waitUntilGone();
+      await previewIframe.waitForSelector("#recovered");
+    }
+  );
+
+  test(
+    "fails correctly when encountering broken local imports after update",
     "react",
     async ({ appDir, controller }) => {
       await controller.show("src/App.tsx:App");
@@ -85,8 +227,8 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       expect(await controller.errors.title.text()).toEqual(
         `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
       );
-      expect(await controller.errors.suggestionLink.text()).toEqual(
-        " Show me how to configure aliases"
+      expect(await controller.errors.suggestion.text()).toEqual(
+        " Perhaps you need to install a peer dependency or configure aliases?"
       );
       await appDir.update(
         "src/App.tsx",

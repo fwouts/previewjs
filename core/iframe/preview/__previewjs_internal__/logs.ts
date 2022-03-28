@@ -20,10 +20,18 @@ export function setUpLogInterception() {
           // Silence.
           return;
         }
+        // This is a hack to intercept errors thrown in a module fetched by HMR.
+        // It specifically aims to intercept errors logged at the following line:
+        //
+        // https://github.com/vitejs/vite/blob/50a876537cc7b934ec5c1d11171b5ce02e3891a8/packages/vite/src/client/client.ts#L31
+        //
+        // This can easily break with new releases of Vite.js.
+        // Yes, there are tests to make sure that doesn't happen :)
         if (
           level === "error" &&
           args.length === 1 &&
-          firstArg instanceof Error
+          firstArg instanceof Error &&
+          new Error().stack.includes("warnFailedFetch")
         ) {
           // An example where this will occur is when importing a module
           // that throws an error in its root body.

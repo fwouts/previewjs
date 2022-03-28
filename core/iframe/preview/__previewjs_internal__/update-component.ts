@@ -24,6 +24,13 @@ export async function updateComponent(
   }
   try {
     const { componentInfo, loadingError } = await load();
+    if (loadingError) {
+      sendMessageFromPreview({
+        kind: "rendering-error",
+        message: loadingError,
+      });
+      return;
+    }
     if (
       componentInfo.filePath !== currentState.filePath ||
       componentInfo.componentName !== currentState.componentName
