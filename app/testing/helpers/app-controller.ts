@@ -183,6 +183,7 @@ export class AppController {
     appError: this.element("#app-error"),
     title: this.element("#error-title"),
     details: this.element("#error-details"),
+    suggestion: this.element("#suggestion"),
   };
 
   element(selector: string) {
