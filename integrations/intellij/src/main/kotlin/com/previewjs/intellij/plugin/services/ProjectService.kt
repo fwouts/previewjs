@@ -16,20 +16,23 @@ import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.wm.RegisterToolWindowTask
+import com.intellij.openapi.wm.ToolWindow
+import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.ui.content.ContentManagerListener
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
-import com.previewjs.intellij.plugin.api.AnalyzeFileRequest
-import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
-import com.previewjs.intellij.plugin.api.StartPreviewRequest
-import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
+import com.previewjs.intellij.plugin.api.*
 import kotlinx.coroutines.*
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
+import java.awt.event.ComponentEvent
+import java.awt.event.ComponentListener
 import java.util.*
-import javax.swing.JComponent
+import javax.swing.ImageIcon
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 import kotlin.concurrent.schedule
@@ -43,36 +46,13 @@ class ProjectService(private val project: Project) : Disposable {
     private val service = app.getService(PreviewJsSharedService::class.java)
     private val editorManager = FileEditorManager.getInstance(project)
     private var refreshTimerTask: TimerTask? = null
+    private var previewBrowser: JBCefBrowser? = null
+    private var previewToolWindow: ToolWindow? = null
+    private var currentPreviewId: String? = null
 
-    private val browser = JBCefBrowser()
-    val browserComponent: JComponent
-        get() = browser.component
     val consoleView = TextConsoleBuilderFactory.getInstance().createBuilder(project).console
 
     init {
-        Disposer.register(this, browser)
-        val browserBase: JBCefBrowserBase = browser
-        val linkHandler = JBCefJSQuery.create(browserBase)
-        linkHandler.addHandler { link ->
-            BrowserUtil.browse(link)
-            return@addHandler null
-        }
-        browser.jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
-            override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
-                browser.executeJavaScript(
-                    """
-                        window.openInExternalBrowser = function(url) {
-                            ${linkHandler.inject("url")}
-                        };
-                    """,
-                    browser.url,
-                    0
-                );
-            }
-        }, browser.cefBrowser)
-        browser.loadHTML(generateDefaultPreviewHtml(linkHandler))
-        Disposer.register(browser, linkHandler)
-
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(object : DocumentListener {
             override fun documentChanged(event: DocumentEvent) {
                 val file = FileDocumentManager.getInstance().getFile(event.document)
@@ -185,17 +165,57 @@ class ProjectService(private val project: Project) : Disposable {
         val app = ApplicationManager.getApplication()
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
-            val previewBaseUrl = api.startPreview(StartPreviewRequest(workspaceId)).url
+            val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
+            val previousPreviewId = currentPreviewId
+            if (previousPreviewId != null && previousPreviewId != startPreviewResponse.previewId) {
+                api.stopPreview(StopPreviewRequest(previewId = previousPreviewId))
+            }
+            currentPreviewId = startPreviewResponse.previewId
+            val previewBaseUrl = startPreviewResponse.url
             val previewUrl = "$previewBaseUrl?p=$componentId"
             app.invokeLater(Runnable {
-                val toolWindow = ToolWindowManager.getInstance(project).getToolWindow("Preview.js")
+                var browser = previewBrowser
+                if (browser == null) {
+                    browser = JBCefBrowser()
+                    previewBrowser = browser
+                    Disposer.register(this@ProjectService, browser)
+                    val browserBase: JBCefBrowserBase = browser
+                    val linkHandler = JBCefJSQuery.create(browserBase)
+                    linkHandler.addHandler { link ->
+                        BrowserUtil.browse(link)
+                        return@addHandler null
+                    }
+                    browser.jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
+                        override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
+                            browser.executeJavaScript(
+                                """
+                        window.openInExternalBrowser = function(url) {
+                            ${linkHandler.inject("url")}
+                        };
+                    """,
+                                browser.url,
+                                0
+                            );
+                        }
+                    }, browser.cefBrowser)
+                    Disposer.register(browser, linkHandler)
+                    previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
+                        RegisterToolWindowTask(
+                            id = "Preview.js",
+                            anchor = ToolWindowAnchor.RIGHT,
+                            icon = ImageIcon(javaClass.getResource("/logo-16.png")),
+                            component = browser.component,
+                            canCloseContent = false
+                        )
+                    )
+                }
                 val currentBrowserUrl = browser.cefBrowser.url
                 if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
                     browser.cefBrowser.executeJavaScript("window.__previewjs_navigate(\"${componentId}\");", previewUrl, 0)
                 } else {
                     browser.loadURL(previewUrl)
                 }
-                toolWindow?.show()
+                previewToolWindow?.show()
             })
         }, {
             "Warning: unable to open preview with component ID: $componentId"
@@ -203,11 +223,19 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     override fun dispose() {
-        service.enqueueAction(project, {
+        refreshTimerTask?.cancel()
+        refreshTimerTask = null
+        previewBrowser = null
+        previewToolWindow = null
+        service.enqueueAction(project, { api ->
+            val previewId = currentPreviewId
+            if (previewId != null) {
+                api.stopPreview(StopPreviewRequest(previewId = previewId))
+            }
             service.disposeWorkspaces(project)
+            currentPreviewId = null
         }, {
             "Warning: unable to dispose of workspaces"
         })
     }
 }
-
