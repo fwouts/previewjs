@@ -1,5 +1,9 @@
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { faBars, faCode, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCode,
+  faExternalLink,
+  faTerminal,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
@@ -58,21 +62,24 @@ export const Preview = observer(
           <Header.Row>
             {headerAddon}
             {state.component?.componentId && (
-              <FilePath
-                key="file"
-                filePath={
-                  decodeComponentId(state.component.componentId).currentFilePath
-                }
-              />
+              <>
+                <FilePath
+                  key="file"
+                  filePath={
+                    decodeComponentId(state.component.componentId)
+                      .currentFilePath
+                  }
+                />
+                <Link
+                  href={document.location.href}
+                  target="_blank"
+                  title="Open in new tab"
+                  className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
+                >
+                  <FontAwesomeIcon icon={faExternalLink} fixedWidth />
+                </Link>
+              </>
             )}
-            <Link
-              href={document.location.href}
-              target="_blank"
-              title="Open in new tab"
-              className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
-            >
-              <FontAwesomeIcon icon={faExpandAlt} fixedWidth />
-            </Link>
             <div className="flex-grow"></div>
             <SmallLogo
               href="https://previewjs.com/docs"
@@ -148,7 +155,7 @@ export const Preview = observer(
             {
               label: "Console",
               key: "console",
-              icon: faBars,
+              icon: faTerminal,
               notificationCount: state.consoleLogs.unreadCount,
               panel: <ConsolePanel state={state.consoleLogs} />,
             },
