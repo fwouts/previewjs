@@ -1,6 +1,5 @@
 package com.previewjs.intellij.plugin.services
 
-import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.ide.util.PropertiesComponent
@@ -11,7 +10,6 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindowManager
 import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
@@ -47,13 +45,15 @@ class PreviewJsSharedService : Disposable {
     private val properties = PropertiesComponent.getInstance()
     private var serverProcess: Process? = null
     private var workspaceIds = Collections.synchronizedMap(WeakHashMap<Project, MutableSet<String>>())
-    @Volatile private var disposed = false
+
+    @Volatile
+    private var disposed = false
     private lateinit var api: PreviewJsApi
 
     data class Message(
-            val project: Project,
-            val fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
-            val getErrorMessage: (e: Throwable) -> String
+        val project: Project,
+        val fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
+        val getErrorMessage: (e: Throwable) -> String
     )
 
     @OptIn(ObsoleteCoroutinesApi::class)
@@ -64,11 +64,7 @@ class PreviewJsSharedService : Disposable {
         for (msg in channel) {
             try {
                 if (!installChecked) {
-                    val toolWindowManager = ToolWindowManager.getInstance(msg.project)
                     if (!isInstalled()) {
-                        toolWindowManager.invokeLater {
-                            toolWindowManager.getToolWindow("Preview.js logs")!!.show()
-                        }
                         install(msg.project)
                     }
                     installChecked = true
@@ -92,8 +88,7 @@ ${e.stackTraceToString()}""",
                 (msg.fn)(api)
             } catch (e: Throwable) {
                 val errorMessage = (msg.getErrorMessage)(e)
-                val consoleView = msg.project.service<ProjectService>().consoleView
-                consoleView.print("$errorMessage\n\n${e.stackTraceToString()}\n", ConsoleViewContentType.NORMAL_OUTPUT)
+                msg.project.service<ProjectService>().printToConsole("$errorMessage\n\n${e.stackTraceToString()}\n")
                 errorCount += 1
                 if (errorCount > 10) {
                     // Something must be seriously wrong, abort.
@@ -112,7 +107,11 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
-    fun enqueueAction(project: Project, fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit, getErrorMessage: (e: Throwable) -> String) {
+    fun enqueueAction(
+        project: Project,
+        fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
+        getErrorMessage: (e: Throwable) -> String
+    ) {
         coroutineScope.launch {
             actor.send(Message(project, fn, getErrorMessage))
         }
@@ -164,10 +163,11 @@ Include the content of the Preview.js logs panel for easier debugging.
             .directory(nodeDirPath.toFile())
         val process = builder.start()
         val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val consoleView = project.service<ProjectService>().consoleView
+        val projectService = project.service<ProjectService>()
+        projectService.showConsole()
         var line: String?
         while (reader.readLine().also { line = it } != null) {
-            consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
+            projectService.printToConsole(ignoreBellPrefix(line + "\n"))
         }
         if (process.waitFor() != 0) {
             throw Error(readInputStream(process.errorStream))
@@ -183,9 +183,9 @@ Include the content of the Preview.js logs panel for easier debugging.
         } catch (e: IOException) {
             throw Error("No port is not available to run Preview.js controller")
         }
-        val builder = processBuilder( "node dist/run-server.js")
-                .redirectErrorStream(true)
-                .directory(nodeDirPath.toFile())
+        val builder = processBuilder("node dist/run-server.js")
+            .redirectErrorStream(true)
+            .directory(nodeDirPath.toFile())
         builder.environment()["PORT"] = "$port"
         builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.version
         builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
@@ -194,13 +194,12 @@ Include the content of the Preview.js logs panel for easier debugging.
         val serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
         thread {
             var line: String? = null
-            while (!disposed && serverOutputReader.readLine().also{ line = it } != null) {
+            while (!disposed && serverOutputReader.readLine().also { line = it } != null) {
                 for (project in workspaceIds.keys + setOf(project)) {
                     if (project.isDisposed) {
                         continue
                     }
-                    val consoleView = project.service<ProjectService>().consoleView
-                    consoleView.print(ignoreBellPrefix(line + "\n"), ConsoleViewContentType.NORMAL_OUTPUT)
+                    project.service<ProjectService>().printToConsole(ignoreBellPrefix(line + "\n"))
                 }
             }
         }
@@ -229,9 +228,10 @@ Include the content of the Preview.js logs panel for easier debugging.
     private fun processBuilder(command: String): ProcessBuilder {
         return if (System.getProperty("os.name").lowercase().contains("win")) {
             ProcessBuilder(
-                    "cmd.exe",
-                    "/C",
-                    command)
+                "cmd.exe",
+                "/C",
+                command
+            )
         } else {
             // Note: in production builds of IntelliJ / WebStorm, PATH is not initialised
             // from the shell. This means that /usr/local/bin or nvm paths may not be
@@ -242,14 +242,15 @@ Include the content of the Preview.js logs panel for easier debugging.
 
     suspend fun ensureWorkspaceReady(project: Project, absoluteFilePath: String): String? {
         val workspaceId = api.getWorkspace(
-                GetWorkspaceRequest(
-                        absoluteFilePath = absoluteFilePath
-                )
+            GetWorkspaceRequest(
+                absoluteFilePath = absoluteFilePath
+            )
         ).workspaceId ?: return null
         var ids = workspaceIds[project]
         if (ids == null) {
             ids = Collections.synchronizedSet(mutableSetOf())
             workspaceIds[project] = ids
+            project.service<ProjectService>().printToConsole("Preview.js initialised for project ${project.name}\n")
         }
         ids!!.add(workspaceId)
         return workspaceId

@@ -16,7 +16,6 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Preview.js logs" anchor="bottom" icon="/logo-16.png" factoryClass="com.previewjs.intellij.plugin.services.LogsWindowFactory"/>
         <projectService serviceImplementation="com.previewjs.intellij.plugin.services.ProjectService"/>
         <notificationGroup id="Preview.js" displayType="BALLOON" />
     </extensions>

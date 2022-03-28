@@ -1,9 +1,13 @@
 package com.previewjs.intellij.plugin.services
 
-import com.intellij.codeInsight.hints.*
+import com.intellij.codeInsight.hints.HorizontalConstrainedPresentation
+import com.intellij.codeInsight.hints.HorizontalConstraints
+import com.intellij.codeInsight.hints.InlineInlayRenderer
 import com.intellij.codeInsight.hints.presentation.PresentationFactory
 import com.intellij.codeInsight.hints.presentation.RecursivelyUpdatingRootPresentation
 import com.intellij.execution.filters.TextConsoleBuilderFactory
+import com.intellij.execution.ui.ConsoleView
+import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
@@ -20,21 +24,16 @@ import com.intellij.openapi.wm.RegisterToolWindowTask
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
-import com.intellij.ui.content.ContentManagerListener
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
 import com.previewjs.intellij.plugin.api.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Runnable
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
-import java.awt.event.ComponentEvent
-import java.awt.event.ComponentListener
 import java.util.*
 import javax.swing.ImageIcon
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
 import kotlin.concurrent.schedule
 
 class ProjectService(private val project: Project) : Disposable {
@@ -46,11 +45,11 @@ class ProjectService(private val project: Project) : Disposable {
     private val service = app.getService(PreviewJsSharedService::class.java)
     private val editorManager = FileEditorManager.getInstance(project)
     private var refreshTimerTask: TimerTask? = null
+    private var consoleView: ConsoleView? = null
+    private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var currentPreviewId: String? = null
-
-    val consoleView = TextConsoleBuilderFactory.getInstance().createBuilder(project).console
 
     init {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(object : DocumentListener {
@@ -59,10 +58,12 @@ class ProjectService(private val project: Project) : Disposable {
                 if (file != null && file.isInLocalFileSystem && file.isWritable && event.document.text.length <= 1_048_576) {
                     service.enqueueAction(project, { api ->
                         service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-                        api.updatePendingFile(UpdatePendingFileRequest(
+                        api.updatePendingFile(
+                            UpdatePendingFileRequest(
                                 absoluteFilePath = file.path,
                                 utf8Content = event.document.text
-                        ))
+                            )
+                        )
                     }, {
                         "Warning: unable to update pending file ${file.path}"
                     })
@@ -89,20 +90,57 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
+    fun showConsole() {
+        app.invokeLater {
+            getOrCreateConsole()
+            this.consoleToolWindow?.show()
+        }
+    }
+
+    fun printToConsole(text: String) {
+        app.invokeLater {
+            getOrCreateConsole().print(text, ConsoleViewContentType.NORMAL_OUTPUT)
+        }
+    }
+
+    private fun getOrCreateConsole(): ConsoleView {
+        val existingConsoleView = consoleView
+        if (existingConsoleView !== null) {
+            return existingConsoleView
+        }
+        val consoleView = TextConsoleBuilderFactory.getInstance().createBuilder(project).console
+        Disposer.register(this, consoleView)
+        this.consoleView = consoleView
+        this.consoleToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
+            RegisterToolWindowTask(
+                id = "Preview.js logs",
+                anchor = ToolWindowAnchor.BOTTOM,
+                icon = ImageIcon(javaClass.getResource("/logo-16.png")),
+                component = consoleView.component,
+                canCloseContent = false
+            )
+        )
+        return consoleView
+    }
+
     private fun updateComponents(file: VirtualFile, content: String? = null) {
         val fileEditors = editorManager.getEditors(file)
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
             content?.let { content ->
-                api.updatePendingFile(UpdatePendingFileRequest(
+                api.updatePendingFile(
+                    UpdatePendingFileRequest(
                         absoluteFilePath = file.path,
                         utf8Content = content
-                ))
+                    )
+                )
             }
-            val components = api.analyzeFile(AnalyzeFileRequest(
+            val components = api.analyzeFile(
+                AnalyzeFileRequest(
                     workspaceId,
                     absoluteFilePath = file.path,
-            )).components
+                )
+            ).components
             app.invokeLater(Runnable {
                 updateComponentHints(file, fileEditors, components)
             })
@@ -173,7 +211,7 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewId = startPreviewResponse.previewId
             val previewBaseUrl = startPreviewResponse.url
             val previewUrl = "$previewBaseUrl?p=$componentId"
-            app.invokeLater(Runnable {
+            app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {
                     browser = JBCefBrowser()
@@ -195,7 +233,7 @@ class ProjectService(private val project: Project) : Disposable {
                     """,
                                 browser.url,
                                 0
-                            );
+                            )
                         }
                     }, browser.cefBrowser)
                     Disposer.register(browser, linkHandler)
@@ -211,12 +249,16 @@ class ProjectService(private val project: Project) : Disposable {
                 }
                 val currentBrowserUrl = browser.cefBrowser.url
                 if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
-                    browser.cefBrowser.executeJavaScript("window.__previewjs_navigate(\"${componentId}\");", previewUrl, 0)
+                    browser.cefBrowser.executeJavaScript(
+                        "window.__previewjs_navigate(\"${componentId}\");",
+                        previewUrl,
+                        0
+                    )
                 } else {
                     browser.loadURL(previewUrl)
                 }
                 previewToolWindow?.show()
-            })
+            }
         }, {
             "Warning: unable to open preview with component ID: $componentId"
         })
@@ -227,6 +269,8 @@ class ProjectService(private val project: Project) : Disposable {
         refreshTimerTask = null
         previewBrowser = null
         previewToolWindow = null
+        consoleView = null
+        consoleToolWindow = null
         service.enqueueAction(project, { api ->
             val previewId = currentPreviewId
             if (previewId != null) {
