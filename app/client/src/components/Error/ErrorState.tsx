@@ -71,7 +71,7 @@ export class ErrorState {
   get suggestion():
     | {
         message: string;
-        url?: string;
+        url: string;
       }
     | undefined {
     const error = this.error;
@@ -96,7 +96,6 @@ export class ErrorState {
         message: "Help me set up SVGR",
         url: "https://previewjs.com/docs/config/svgr",
       };
-    } else if (error.title?.includes("Could not resolve")) {
     }
     return;
   }

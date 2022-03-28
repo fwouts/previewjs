@@ -12,7 +12,7 @@ export const ExpandableError = (props: {
   details?: React.ReactNode;
   suggestion?: {
     message: string;
-    url?: string;
+    url: string;
   };
 }) => {
   const [expanded, setExpanded] = useState(false);
@@ -35,7 +35,7 @@ export const ExpandableError = (props: {
       ])}
       onClick={onToggle}
     >
-      <code id="error-title" className="whitespace-pre-wrap font-bold">
+      <code id="error-title" className="whitespace-pre-wrap font-bold mb-2">
         {props.title}
       </code>
       {expanded ? (
@@ -53,16 +53,14 @@ export const ExpandableError = (props: {
         )
       )}
       {props.suggestion && (
-        <div id="suggestion">
-          {props.suggestion.url ? (
-            <Link id="suggestion-link" href={props.suggestion.url}>
-              <FontAwesomeIcon icon={faExternalLinkAlt} />{" "}
-              {props.suggestion.message}
-            </Link>
-          ) : (
-            <div id="suggestion-text">{props.suggestion.message}</div>
-          )}
-        </div>
+        <Link
+          id="suggestion"
+          className="self-start mt-2 p-2 rounded-md bg-gray-50 hover:bg-gray-200"
+          href={props.suggestion.url}
+        >
+          <FontAwesomeIcon icon={faExternalLinkAlt} />{" "}
+          {props.suggestion.message}
+        </Link>
       )}
     </div>
   );

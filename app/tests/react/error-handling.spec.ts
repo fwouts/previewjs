@@ -84,7 +84,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       expect(await controller.errors.title.text()).toEqual(
         `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`
       );
-      expect(await controller.errors.suggestionLink.text()).toEqual(
+      expect(await controller.errors.suggestion.text()).toEqual(
         ` Perhaps you need to install "some-module" or configure aliases?`
       );
       await appDir.update(
@@ -132,7 +132,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       expect(await controller.errors.title.text()).toEqual(
         `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`
       );
-      expect(await controller.errors.suggestionLink.text()).toEqual(
+      expect(await controller.errors.suggestion.text()).toEqual(
         ` Perhaps you need to install "some-module" or configure aliases?`
       );
       await appDir.update(
@@ -179,7 +179,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       expect(await controller.errors.title.text()).toEqual(
         `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
       );
-      expect(await controller.errors.suggestionLink.text()).toEqual(
+      expect(await controller.errors.suggestion.text()).toEqual(
         " Perhaps you need to install a peer dependency or configure aliases?"
       );
       await appDir.update(
@@ -227,7 +227,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       expect(await controller.errors.title.text()).toEqual(
         `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
       );
-      expect(await controller.errors.suggestionLink.text()).toEqual(
+      expect(await controller.errors.suggestion.text()).toEqual(
         " Perhaps you need to install a peer dependency or configure aliases?"
       );
       await appDir.update(
