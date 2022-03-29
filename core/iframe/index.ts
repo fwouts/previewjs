@@ -158,6 +158,9 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     if (this.lastMessage) {
       this.send(this.lastMessage);
     }
+    this.options.listener({
+      kind: "bootstrapped",
+    });
   }
 
   private clearExpectRenderTimeout() {
@@ -168,7 +171,15 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   }
 }
 
-export type PreviewEvent = PreviewUpdate | Action | LogMessage;
+export type PreviewEvent =
+  | PreviewBootstrapped
+  | PreviewUpdate
+  | Action
+  | LogMessage;
+
+export type PreviewBootstrapped = {
+  kind: "bootstrapped";
+};
 
 export type PreviewUpdate = {
   kind: "update";
