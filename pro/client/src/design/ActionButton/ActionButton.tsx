@@ -7,24 +7,27 @@ export const ActionButton = ({
   children,
   ...rest
 }: {
-  children: string;
-  type?: "default" | "cta" | "danger";
+  children: React.ReactNode;
+  type?: "default" | "info" | "cta" | "danger";
 } & ({ onClick(): void } | { href: string } | { submit: true })) => {
   const className = clsx([
-    "mx-2 py-2 px-4 rounded border-2 cursor-pointer",
-    type === "default" &&
-      "border-transparent text-gray-700 hover:text-gray-800",
-    type === "cta" && "border-green-700 text-green-700 hover:text-green-800",
-    type === "danger" &&
-      "border-orange-500 text-orange-500 hover:text-orange-600",
+    "mx-2 py-1 px-2 sm:px-4 font-medium border-2 border-transparent rounded cursor-pointer",
+    type === "default" && "text-gray-200 hover:bg-gray-700 hover:text-white",
+    type === "info" && "text-sky-500 hover:bg-sky-900 hover:text-white",
+    type === "cta" &&
+      "bg-green-700 text-green-100 hover:bg-green-600 hover:text-white",
+    type === "danger" && "text-orange-400 hover:bg-orange-700 hover:text-white",
   ]);
   if ("onClick" in rest) {
     return (
-      <button className={className} onClick={rest.onClick}>
+      <button type="button" className={className} onClick={rest.onClick}>
         {children}
       </button>
     );
   } else if ("submit" in rest) {
+    if (typeof children !== "string") {
+      throw new Error(`Unsupported non-string children for submit button`);
+    }
     return <input className={className} type="submit" value={children} />;
   } else {
     return (

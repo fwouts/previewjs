@@ -23,7 +23,7 @@ document.addEventListener("keydown", (e) => {
   const modifier = navigator.userAgent.includes("Macintosh")
     ? e.metaKey
     : e.ctrlKey;
-  if (modifier && e.key === "k") {
+  if (modifier && e.key === "k" && state.license.proStatus === "enabled") {
     e.preventDefault();
     state.pro.toggleSearch();
   }
