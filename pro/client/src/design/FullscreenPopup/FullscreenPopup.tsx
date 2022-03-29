@@ -9,7 +9,7 @@ export const FullscreenPopup: React.FC<{ onClose(): void }> = ({
     onClick={onClose}
   >
     <div
-      className="bg-gray-50 rounded-md filter drop-shadow m-4"
+      className="bg-gray-50 rounded-md filter drop-shadow m-4 overflow-auto"
       onClick={(e) => e.stopPropagation()}
     >
       {children}

@@ -3,16 +3,13 @@ import { LicenseInfo } from "@previewjs/pro-api/persisted-state";
 import { makeAutoObservable, runInAction } from "mobx";
 import {
   CreateLicenseTokenResponse,
-  FetchUpgradeToProConfigEndpoint,
   TokenDescription,
-  UpgradeToProConfig,
 } from "../networking/web-api";
 import { LicenseState } from "../state/LicenseState";
 
 export class LicenseModalState {
   screen:
     | null
-    | WelcomeScreen
     | EnterLicenseKeyScreen
     | RevokeLicenseTokenScreen
     | LicenseStateScreen = null;
@@ -26,17 +23,11 @@ export class LicenseModalState {
       if (this.license.decodedLicense) {
         return this.switchToLicenseState(this.license.decodedLicense);
       } else {
-        return this.switchToWelcome();
+        return this.switchToEnterKey();
       }
     } else {
       return (this.screen = null);
     }
-  }
-
-  switchToWelcome() {
-    this.screen = new WelcomeScreen(this);
-    this.screen.start().catch(console.error);
-    return this.screen;
   }
 
   switchToEnterKey() {
@@ -53,42 +44,6 @@ export class LicenseModalState {
 
   switchToLicenseState(licenseState: LicenseInfo) {
     return (this.screen = new LicenseStateScreen(this, licenseState));
-  }
-}
-
-class WelcomeScreen {
-  readonly kind = "welcome";
-
-  loading = false;
-  config: UpgradeToProConfig = {
-    bodyHtml: "",
-    buttons: {
-      cta: "Get a license key",
-      enter: "I already have a key",
-    },
-  };
-
-  constructor(private readonly parent: LicenseModalState) {
-    makeAutoObservable(this);
-  }
-
-  async start() {
-    runInAction(() => {
-      this.loading = true;
-    });
-    let config: UpgradeToProConfig;
-    try {
-      config = await this.parent.webApi.request(
-        FetchUpgradeToProConfigEndpoint,
-        {}
-      );
-    } catch (e) {
-      console.error(e);
-    }
-    runInAction(() => {
-      this.loading = false;
-      this.config = config;
-    });
   }
 }
 
@@ -242,6 +197,13 @@ class LicenseStateScreen {
   }
 
   async unlink() {
+    if (
+      !confirm(
+        "Are you sure you want to unlink your license key?\n\nYou won't be able to use Preview.js Pro features on this device anymore."
+      )
+    ) {
+      return;
+    }
     this.loading = true;
     try {
       await this.parent.license.unlink();
@@ -256,8 +218,7 @@ class LicenseStateScreen {
       runInAction(() => {
         this.loading = false;
       });
-      const screen = this.parent.switchToWelcome();
-      await screen.start();
+      this.parent.switchToEnterKey();
     }
   }
 }

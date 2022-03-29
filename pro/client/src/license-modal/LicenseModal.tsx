@@ -1,6 +1,12 @@
-import { faCheckCircle, faFan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckCircle,
+  faQuestionCircle,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "@previewjs/app/client/src/design/Link";
 import assertNever from "assert-never";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React, { useCallback } from "react";
 import { ActionButton } from "../design/ActionButton";
@@ -18,45 +24,23 @@ export const LicenseModal = observer(
     }
     return (
       <FullscreenPopup onClose={onClose}>
-        <h1 className="font-extrabold uppercase text-gray-800 text-sm mx-4 my-3">
+        <h1 className="font-extrabold uppercase text-gray-800 text-sm mx-6 my-4">
           Preview.js Pro
         </h1>
-        <div className="m-4">
+        <div>
           {(() => {
             const screen = state.screen;
             if (screen.loading) {
               return (
                 <div className="grid place-items-center my-12 mx-24">
                   <FontAwesomeIcon
-                    icon={faFan}
-                    className="text-gray-700 text-6xl animate-spin"
+                    icon={faSpinner}
+                    className="text-gray-400 text-3xl animate-spin"
                   />
                 </div>
               );
             }
             switch (screen.kind) {
-              case "welcome":
-                return (
-                  <>
-                    <div
-                      className="license-modal-body"
-                      dangerouslySetInnerHTML={{
-                        __html: screen.config.bodyHtml,
-                      }}
-                    />
-                    <ActionsContainer>
-                      <ActionButton
-                        type="cta"
-                        href="https://previewjs.com/upgrade"
-                      >
-                        {screen.config.buttons.cta}
-                      </ActionButton>
-                      <ActionButton onClick={() => state.switchToEnterKey()}>
-                        {screen.config.buttons.enter}
-                      </ActionButton>
-                    </ActionsContainer>
-                  </>
-                );
               case "enter-key":
                 if (screen.success) {
                   return (
@@ -70,35 +54,53 @@ export const LicenseModal = observer(
                 }
                 return (
                   <form
-                    className="flex flex-col"
                     onSubmit={(e) => {
                       screen.submit();
                       e.preventDefault();
                     }}
                   >
-                    <label htmlFor="license-key-input">
-                      Enter your license key:
-                    </label>
-                    <input
-                      id="license-key-input"
-                      className="rounded-md font-mono p-2 mt-2 mb-4 font-semibold w-96 outline-none border-2 border-blue-100 focus:border-blue-500"
-                      autoFocus
-                      autoComplete="off"
-                      required
-                      placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"
-                      value={screen.licenseKey}
-                      onChange={(event) =>
-                        screen.updateLicenseKey(event.target.value)
-                      }
-                    />
-                    {screen.error && (
-                      <div className="bg-red-300 text-red-800 rounded p-2 mb-4">
-                        {screen.error}
+                    <div className="px-4">
+                      <input
+                        id="license-key-input"
+                        className={clsx([
+                          "rounded-md my-2 p-2 w-96 outline-none border-2 border-blue-100 focus:border-blue-500",
+                          screen.licenseKey
+                            ? "font-mono font-semibold"
+                            : "font-medium",
+                        ])}
+                        autoFocus
+                        autoComplete="off"
+                        required
+                        placeholder="Enter your license key"
+                        value={screen.licenseKey}
+                        onChange={(event) =>
+                          screen.updateLicenseKey(event.target.value)
+                        }
+                      />
+                      {screen.error && (
+                        <div className="bg-red-300 text-red-800 text-sm py-2 rounded px-2.5 my-2">
+                          {screen.error}
+                        </div>
+                      )}
+                      <div className="my-4 text-sm flex flex-row items-center">
+                        <p className="ml-2.5 mr-2 flex-grow">
+                          Don't have a key yet?{" "}
+                        </p>
+                        <Link
+                          href="https://previewjs.com/checkout"
+                          className="bg-blue-200 hover:bg-blue-300 rounded p-1.5"
+                        >
+                          Start a free trial today
+                        </Link>
                       </div>
-                    )}
+                    </div>
                     <ActionsContainer>
-                      <ActionButton onClick={() => state.switchToWelcome()}>
-                        Go back
+                      <ActionButton onClick={onClose}>Back</ActionButton>
+                      <ActionButton
+                        type="info"
+                        href="https://previewjs.com/pro"
+                      >
+                        <FontAwesomeIcon icon={faQuestionCircle} /> Learn more
                       </ActionButton>
                       <ActionButton type="cta" submit>
                         Confirm
@@ -108,13 +110,15 @@ export const LicenseModal = observer(
                 );
               case "revoke-token":
                 return (
-                  <div className="license-modal-body">
-                    <p>There are too many devices using this license key.</p>
-                    <p>Pick unused devices to revoke access:</p>
-                    <ul className="mb-4">
+                  <>
+                    <div className="mt-2 p-4 text-sm text-center bg-red-200 text-red-800 rounded">
+                      <p>There are too many devices using this license key.</p>
+                      <p>Please unlink at least one.</p>
+                    </div>
+                    <ul className="m-4">
                       {screen.existingTokens.map((t, i) => (
                         <li key={t.lastActiveTimestamp}>
-                          <label>
+                          <label className="block text-sm mb-2 p-1 rounded cursor-pointer">
                             <input
                               type="checkbox"
                               className="mr-2"
@@ -126,7 +130,7 @@ export const LicenseModal = observer(
                               }
                             />
                             device last used{" "}
-                            {new Date(t.lastActiveTimestamp).toDateString()}
+                            {new Date(t.lastActiveTimestamp).toLocaleString()}
                           </label>
                         </li>
                       ))}
@@ -137,34 +141,47 @@ export const LicenseModal = observer(
                       </div>
                     )}
                     <ActionsContainer>
-                      <ActionButton type="cta" onClick={() => screen.confirm()}>
-                        Confirm
+                      <ActionButton onClick={() => state.switchToEnterKey()}>
+                        Back
+                      </ActionButton>
+                      <ActionButton
+                        type="danger"
+                        onClick={() => screen.confirm()}
+                      >
+                        Unlink devices
                       </ActionButton>
                     </ActionsContainer>
-                  </div>
+                  </>
                 );
               case "license-state":
                 return (
-                  <div className="license-modal-body">
-                    <p>
-                      License key:
-                      <br />
-                      <b>{screen.licenseInfo.maskedKey}</b>
-                    </p>
-                    <p>
-                      Status:
-                      <br />
-                      <b>
-                        {screen.licenseInfo.checked.valid
-                          ? "Valid"
-                          : screen.licenseInfo.checked.reason}
-                      </b>{" "}
-                      (last checked{" "}
-                      {new Date(
-                        screen.licenseInfo.checked.timestamp
-                      ).toLocaleString()}
-                      )
-                    </p>
+                  <>
+                    <div className="mx-4 my-6">
+                      <div className="uppercase text-xs font-bold">
+                        License key
+                      </div>
+                      <div className="bg-white text-gray-500 font-normal font-mono text-sm filter drop-shadow rounded w-max p-2 mt-1">
+                        {screen.licenseInfo.maskedKey}
+                      </div>
+                      <div className="mt-4 uppercase text-xs font-bold">
+                        Status
+                      </div>
+                      <div className="text-sm flex flex-row">
+                        {screen.licenseInfo.checked.valid ? (
+                          <div className="font-bold text-green-700">Valid</div>
+                        ) : (
+                          <div className="font-bold text-red-700">
+                            {screen.licenseInfo.checked.reason}
+                          </div>
+                        )}
+                        <div className="text-xs flex-grow text-right text-gray-500">
+                          Last checked:{" "}
+                          {new Date(
+                            screen.licenseInfo.checked.timestamp
+                          ).toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
                     <ActionsContainer>
                       <ActionButton onClick={onClose}>Close</ActionButton>
                       <ActionButton type="cta" onClick={() => screen.refresh()}>
@@ -174,10 +191,10 @@ export const LicenseModal = observer(
                         type="danger"
                         onClick={() => screen.unlink()}
                       >
-                        Unlink this device
+                        Unlink
                       </ActionButton>
                     </ActionsContainer>
-                  </div>
+                  </>
                 );
               default:
                 throw assertNever(screen);

@@ -31,7 +31,7 @@ export const TabbedPanel = (props: {
   const currentTab = props.tabs.find((tab) => tab.key === currentTabKey);
   return (
     <div>
-      <div className="flex flex-row items-center bg-white shadow-inner">
+      <div className="flex flex-row flex-wrap items-center bg-white shadow-inner">
         {props.tabs.map((tab) => (
           <button
             key={tab.key}

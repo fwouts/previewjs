@@ -1,10 +1,5 @@
 import type { Endpoint } from "@previewjs/api";
 
-export const FetchUpgradeToProConfigEndpoint: Endpoint<{}, UpgradeToProConfig> =
-  {
-    path: "config/upgrade-to-pro",
-  };
-
 export const CreateLicenseTokenEndpoint: Endpoint<
   CreateLicenseTokenRequest,
   CreateLicenseTokenResponse

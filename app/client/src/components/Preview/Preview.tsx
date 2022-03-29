@@ -152,13 +152,17 @@ export const Preview = observer(
                   },
                 ]
               : []),
-            {
-              label: "Console",
-              key: "console",
-              icon: faTerminal,
-              notificationCount: state.consoleLogs.unreadCount,
-              panel: <ConsolePanel state={state.consoleLogs} />,
-            },
+            ...(state.component
+              ? [
+                  {
+                    label: "Console",
+                    key: "console",
+                    icon: faTerminal,
+                    notificationCount: state.consoleLogs.unreadCount,
+                    panel: <ConsolePanel state={state.consoleLogs} />,
+                  },
+                ]
+              : []),
             ...(panelTabs || []),
           ]}
           height={panelHeight}

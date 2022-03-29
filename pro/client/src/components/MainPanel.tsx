@@ -1,8 +1,8 @@
 import {
   faCircleHalfStroke,
   faDisplay,
+  faKey,
   faSearch,
-  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
@@ -53,7 +53,7 @@ export const MainPanel = observer(
             : null
         }
         panelTabs={
-          license.proStatus === "enabled"
+          license.proStatus === "enabled" && preview.component
             ? [
                 {
                   icon: faDisplay,
@@ -68,28 +68,34 @@ export const MainPanel = observer(
         panelExtra={
           license.proStatus === "enabled" ? (
             <>
-              <ViewportZoomButtons state={pro.viewport} />
-              <button
-                className={clsx([
-                  "self-stretch px-3 text-gray-600",
-                  background === "dark" && "bg-gray-800",
-                ])}
-                onClick={() =>
-                  setBackground(background === "dark" ? "light" : "dark")
-                }
-              >
-                <FontAwesomeIcon
-                  icon={faCircleHalfStroke}
-                  fixedWidth
-                  inverse={background === "dark"}
-                />
-              </button>
+              {preview.component && (
+                <>
+                  <ViewportZoomButtons state={pro.viewport} />
+                  <button
+                    className={clsx([
+                      "self-stretch px-3 text-gray-600",
+                      background === "dark"
+                        ? "bg-gray-800 hover:bg-gray-600"
+                        : "hover:bg-gray-200",
+                    ])}
+                    onClick={() =>
+                      setBackground(background === "dark" ? "light" : "dark")
+                    }
+                  >
+                    <FontAwesomeIcon
+                      icon={faCircleHalfStroke}
+                      fixedWidth
+                      inverse={background === "dark"}
+                    />
+                  </button>
+                </>
+              )}
               <span className="flex-grow" />
               <VariantButton
-                icon={faStar}
                 onClick={() => licenseModal.toggle()}
+                title="Manage Preview.js Pro license"
               >
-                Pro Edition
+                <FontAwesomeIcon icon={faKey} fixedWidth />
               </VariantButton>
             </>
           ) : license.proStatus === "disabled" ? (

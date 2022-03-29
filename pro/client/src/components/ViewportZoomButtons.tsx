@@ -55,7 +55,7 @@ const Button = (
       props.rotate && "rotate-45",
       props.disabled
         ? "text-gray-300"
-        : "cursor-pointer text-gray-600 hover:text-gray-900"
+        : "cursor-pointer text-gray-600 hover:text-black"
     )}
     title={props.title}
     onClick={props.onClick}
