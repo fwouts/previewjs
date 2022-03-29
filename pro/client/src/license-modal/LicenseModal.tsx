@@ -59,11 +59,11 @@ export const LicenseModal = observer(
                       e.preventDefault();
                     }}
                   >
-                    <div className="px-4">
+                    <div className="px-4 max-w-lg">
                       <input
                         id="license-key-input"
                         className={clsx([
-                          "rounded-md my-2 p-2 w-96 outline-none border-2 border-blue-100 focus:border-blue-500",
+                          "rounded-md my-2 p-2 w-full outline-none border-2 border-blue-100 focus:border-blue-500",
                           screen.licenseKey
                             ? "font-mono font-semibold"
                             : "font-medium",
@@ -106,6 +106,23 @@ export const LicenseModal = observer(
                         Confirm
                       </ActionButton>
                     </ActionsContainer>
+                    <p className="p-3 pt-0 text-sm bg-gray-900 text-gray-400 shadow-inner">
+                      By confirming, you agree to the{" "}
+                      <Link
+                        href="https://previewjs.com/pro/eula"
+                        className="underline"
+                      >
+                        EULA
+                      </Link>{" "}
+                      and the{" "}
+                      <Link
+                        href="https://previewjs.com/privacy"
+                        className="underline"
+                      >
+                        Privacy Policy
+                      </Link>
+                      .
+                    </p>
                   </form>
                 );
               case "revoke-token":
