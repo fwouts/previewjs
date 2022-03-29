@@ -126,6 +126,9 @@ export class PreviewState {
             return;
           }
           switch (event.kind) {
+            case "bootstrapped":
+              this.consoleLogs.onClear();
+              break;
             case "update":
               this.error.update(event);
               if (event.rendering?.kind === "success") {
