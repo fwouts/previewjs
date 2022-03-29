@@ -35,6 +35,9 @@ export const MainPanel = observer(
             <button
               className="text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-lg px-1 mr-2 cursor-pointer"
               onClick={() => pro.toggleSearch()}
+              title={`Search components (${
+                navigator.userAgent.includes("Macintosh") ? "Cmd" : "Ctrl"
+              }+K)`}
             >
               <FontAwesomeIcon icon={faSearch} fixedWidth />
             </button>
