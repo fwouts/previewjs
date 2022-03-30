@@ -70,7 +70,14 @@ function formatLogMessage(...args: any[]) {
   if (args.length === 0) {
     return "";
   }
-  let message = inspect(args.shift());
-  message = message.replace(/%s/g, () => inspect(args.shift()));
-  return [message, ...args.map(inspect)].join(" ");
+  let message = formatValue(args.shift());
+  message = message.replace(/%s/g, () => formatValue(args.shift()));
+  return [message, ...args.map(formatValue)].join(" ");
+}
+
+function formatValue(value: any) {
+  if (typeof value === "string") {
+    return value;
+  }
+  return inspect(value);
 }
