@@ -2,6 +2,7 @@ import {
   faCheckCircle,
   faQuestionCircle,
   faSpinner,
+  faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@previewjs/app/client/src/design/Link";
@@ -208,7 +209,7 @@ export const LicenseModal = observer(
                         type="danger"
                         onClick={() => screen.unlink()}
                       >
-                        Unlink
+                        <FontAwesomeIcon icon={faWarning} /> Unlink
                       </ActionButton>
                     </ActionsContainer>
                   </>

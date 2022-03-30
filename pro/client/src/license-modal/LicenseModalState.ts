@@ -197,13 +197,6 @@ class LicenseStateScreen {
   }
 
   async unlink() {
-    if (
-      !confirm(
-        "Are you sure you want to unlink your license key?\n\nYou won't be able to use Preview.js Pro features on this device anymore."
-      )
-    ) {
-      return;
-    }
     this.loading = true;
     try {
       await this.parent.license.unlink();
