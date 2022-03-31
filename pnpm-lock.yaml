@@ -184,7 +184,7 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': 2.0.0
+      '@previewjs/api': 2.0.1
       '@previewjs/config': 1.0.3
       '@previewjs/type-analyzer': 2.0.1
       '@previewjs/vfs': 1.1.2
@@ -6857,11 +6857,11 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-27477996.646c2f6_30793d9d6b24634df96d91984952e36a:
+  /@nuxt/kit-edge/3.0.0-27477996.646c2f6_2e52236df573f2778b29fa6d0ecbdcad:
     resolution: {integrity: sha512-UyBLn9ZKL9hl6vIORDOPIDAzJtf6KNGixBW4msGREliHWn93ZrL+eOKzTfxoiQpD4g4kffq6Vh8yGgtPKLc9hg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27477996.646c2f6_30793d9d6b24634df96d91984952e36a
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27477996.646c2f6_2e52236df573f2778b29fa6d0ecbdcad
       c12: 0.2.4
       consola: 2.15.3
       defu: 6.0.0
@@ -6876,8 +6876,8 @@ packages:
       pkg-types: 0.3.2
       scule: 0.2.1
       semver: 7.3.5
-      unctx: 1.1.3_30793d9d6b24634df96d91984952e36a
-      unimport: 0.1.3_30793d9d6b24634df96d91984952e36a
+      unctx: 1.1.3_2e52236df573f2778b29fa6d0ecbdcad
+      unimport: 0.1.3_2e52236df573f2778b29fa6d0ecbdcad
       untyped: 0.4.3
     transitivePeerDependencies:
       - esbuild
@@ -6887,11 +6887,11 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-27477996.646c2f6_esbuild@0.14.28+rollup@2.70.1:
+  /@nuxt/kit-edge/3.0.0-27477996.646c2f6_esbuild@0.14.29+rollup@2.70.1:
     resolution: {integrity: sha512-UyBLn9ZKL9hl6vIORDOPIDAzJtf6KNGixBW4msGREliHWn93ZrL+eOKzTfxoiQpD4g4kffq6Vh8yGgtPKLc9hg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27477996.646c2f6_esbuild@0.14.28+rollup@2.70.1
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27477996.646c2f6_esbuild@0.14.29+rollup@2.70.1
       c12: 0.2.4
       consola: 2.15.3
       defu: 6.0.0
@@ -6906,8 +6906,8 @@ packages:
       pkg-types: 0.3.2
       scule: 0.2.1
       semver: 7.3.5
-      unctx: 1.1.3_esbuild@0.14.28+rollup@2.70.1
-      unimport: 0.1.3_esbuild@0.14.28+rollup@2.70.1
+      unctx: 1.1.3_esbuild@0.14.29+rollup@2.70.1
+      unimport: 0.1.3_esbuild@0.14.29+rollup@2.70.1
       untyped: 0.4.3
     transitivePeerDependencies:
       - esbuild
@@ -6934,7 +6934,7 @@ packages:
       '@cloudflare/kv-asset-handler': 0.2.0
       '@netlify/functions': 1.0.0
       '@nuxt/devalue': 2.0.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27477996.646c2f6_esbuild@0.14.28+rollup@2.70.1
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27477996.646c2f6_esbuild@0.14.29+rollup@2.70.1
       '@nuxt/ui-templates': /@nuxt/ui-templates-edge/0.0.0-27478060.9f119b8
       '@rollup/plugin-alias': 3.1.9_rollup@2.70.1
       '@rollup/plugin-commonjs': 21.0.3_rollup@2.70.1
@@ -6955,7 +6955,7 @@ packages:
       defu: 6.0.0
       destr: 1.1.0
       dot-prop: 7.2.0
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       etag: 1.8.1
       fs-extra: 10.0.1
       globby: 13.1.1
@@ -7045,7 +7045,7 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27477996.646c2f6_30793d9d6b24634df96d91984952e36a:
+  /@nuxt/schema-edge/3.0.0-27477996.646c2f6_2e52236df573f2778b29fa6d0ecbdcad:
     resolution: {integrity: sha512-RtjEWNYSnZuoSWoIRrm0awr5/YAK0mi3FXP4WCkWEkSRNPCAvkVoRfc4d5WIE9jf1uBUasxEbN3buxipDnRhQQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
@@ -7058,7 +7058,7 @@ packages:
       scule: 0.2.1
       std-env: 3.0.1
       ufo: 0.8.1
-      unimport: 0.1.3_30793d9d6b24634df96d91984952e36a
+      unimport: 0.1.3_2e52236df573f2778b29fa6d0ecbdcad
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -7066,7 +7066,7 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27477996.646c2f6_esbuild@0.14.28+rollup@2.70.1:
+  /@nuxt/schema-edge/3.0.0-27477996.646c2f6_esbuild@0.14.29+rollup@2.70.1:
     resolution: {integrity: sha512-RtjEWNYSnZuoSWoIRrm0awr5/YAK0mi3FXP4WCkWEkSRNPCAvkVoRfc4d5WIE9jf1uBUasxEbN3buxipDnRhQQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
@@ -7079,7 +7079,7 @@ packages:
       scule: 0.2.1
       std-env: 3.0.1
       ufo: 0.8.1
-      unimport: 0.1.3_esbuild@0.14.28+rollup@2.70.1
+      unimport: 0.1.3_esbuild@0.14.29+rollup@2.70.1
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -7205,14 +7205,14 @@ packages:
     peerDependencies:
       vue: 3.2.31
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27477996.646c2f6_30793d9d6b24634df96d91984952e36a
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27477996.646c2f6_2e52236df573f2778b29fa6d0ecbdcad
       '@vitejs/plugin-vue': 2.2.4_vite@2.8.6+vue@3.2.31
       '@vitejs/plugin-vue-jsx': 1.3.8
       autoprefixer: 10.4.4_postcss@8.4.12
       chokidar: 3.5.3
       cssnano: 5.1.5_postcss@8.4.12
       defu: 6.0.0
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       escape-string-regexp: 5.0.0
       externality: 0.2.1
       fs-extra: 10.0.1
@@ -7228,7 +7228,7 @@ packages:
       rollup: 2.70.1
       rollup-plugin-visualizer: 5.6.0_rollup@2.70.1
       ufo: 0.8.1
-      unplugin: 0.6.0_30793d9d6b24634df96d91984952e36a
+      unplugin: 0.6.0_2e52236df573f2778b29fa6d0ecbdcad
       vite: 2.8.6
       vite-node: 0.8.0
       vue: 3.2.31
@@ -11300,7 +11300,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
       eslint: '>= 1.6.0 < 7.0.0'
     dependencies:
-      '@vue/cli-service': 4.5.15_3eb559e04ce5a57e1f213da1f3616d03
+      '@vue/cli-service': 4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f
       '@vue/cli-shared-utils': 4.5.15
       eslint: 6.8.0
       eslint-loader: 2.2.1_eslint@6.8.0+webpack@4.46.0
@@ -11318,7 +11318,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.15_3eb559e04ce5a57e1f213da1f3616d03
+      '@vue/cli-service': 4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f
       '@vue/cli-shared-utils': 4.5.15
     dev: true
 
@@ -11327,7 +11327,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.15_3eb559e04ce5a57e1f213da1f3616d03
+      '@vue/cli-service': 4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f
     dev: true
 
   /@vue/cli-service/4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f:
@@ -22131,7 +22131,7 @@ packages:
       defu: 5.0.1
       destr: 1.1.0
       dot-prop: 7.2.0
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       etag: 1.8.1
       fs-extra: 10.0.1
       globby: 13.1.1
@@ -22166,7 +22166,7 @@ packages:
       table: 6.8.0
       ufo: 0.7.11
       unenv: 0.4.3
-      unimport: 0.1.3_esbuild@0.14.28+rollup@2.70.1
+      unimport: 0.1.3_esbuild@0.14.29+rollup@2.70.1
       unstorage: 0.3.3
     transitivePeerDependencies:
       - acorn
@@ -29281,13 +29281,13 @@ packages:
       - webpack
     dev: true
 
-  /unctx/1.1.3_30793d9d6b24634df96d91984952e36a:
+  /unctx/1.1.3_2e52236df573f2778b29fa6d0ecbdcad:
     resolution: {integrity: sha512-x3sI4ueuHw05zQgbzfpzF9XO+zw0C7sPCPoTRIgVPAXr76HALqcV97cJDEa5Nj+WCAl7V2rgSZR/p4uM78gO2g==}
     dependencies:
       acorn: 8.7.0
       estree-walker: 2.0.2
       magic-string: 0.26.1
-      unplugin: 0.5.2_30793d9d6b24634df96d91984952e36a
+      unplugin: 0.5.2_2e52236df573f2778b29fa6d0ecbdcad
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -29295,13 +29295,13 @@ packages:
       - webpack
     dev: true
 
-  /unctx/1.1.3_esbuild@0.14.28+rollup@2.70.1:
+  /unctx/1.1.3_esbuild@0.14.29+rollup@2.70.1:
     resolution: {integrity: sha512-x3sI4ueuHw05zQgbzfpzF9XO+zw0C7sPCPoTRIgVPAXr76HALqcV97cJDEa5Nj+WCAl7V2rgSZR/p4uM78gO2g==}
     dependencies:
       acorn: 8.7.0
       estree-walker: 2.0.2
       magic-string: 0.26.1
-      unplugin: 0.5.2_esbuild@0.14.28+rollup@2.70.1
+      unplugin: 0.5.2_esbuild@0.14.29+rollup@2.70.1
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -29387,7 +29387,7 @@ packages:
       - webpack
     dev: true
 
-  /unimport/0.1.3_30793d9d6b24634df96d91984952e36a:
+  /unimport/0.1.3_2e52236df573f2778b29fa6d0ecbdcad:
     resolution: {integrity: sha512-P21Psvf8rqgbx3pLpxvmOlTnwUU3bkRiou8hAijGfbuq5ioUILsffT48aTyIYDsYowoWoYtamn9d1IDxXOV37Q==}
     dependencies:
       '@rollup/pluginutils': 4.2.0
@@ -29398,7 +29398,7 @@ packages:
       mlly: 0.4.3
       pathe: 0.2.0
       scule: 0.2.1
-      unplugin: 0.3.3_30793d9d6b24634df96d91984952e36a
+      unplugin: 0.3.3_2e52236df573f2778b29fa6d0ecbdcad
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -29406,7 +29406,7 @@ packages:
       - webpack
     dev: true
 
-  /unimport/0.1.3_esbuild@0.14.28+rollup@2.70.1:
+  /unimport/0.1.3_esbuild@0.14.29+rollup@2.70.1:
     resolution: {integrity: sha512-P21Psvf8rqgbx3pLpxvmOlTnwUU3bkRiou8hAijGfbuq5ioUILsffT48aTyIYDsYowoWoYtamn9d1IDxXOV37Q==}
     dependencies:
       '@rollup/pluginutils': 4.2.0
@@ -29417,7 +29417,7 @@ packages:
       mlly: 0.4.3
       pathe: 0.2.0
       scule: 0.2.1
-      unplugin: 0.3.3_esbuild@0.14.28+rollup@2.70.1
+      unplugin: 0.3.3_esbuild@0.14.29+rollup@2.70.1
     transitivePeerDependencies:
       - esbuild
       - rollup
@@ -29542,7 +29542,7 @@ packages:
       webpack-virtual-modules: 0.4.3
     dev: true
 
-  /unplugin/0.3.3_30793d9d6b24634df96d91984952e36a:
+  /unplugin/0.3.3_2e52236df573f2778b29fa6d0ecbdcad:
     resolution: {integrity: sha512-WjZWpUqqcYPQ/efR00Zm2m1+J1LitwoZ4uhHV4VdZ+IpW0Nh/qnDYtVf+nLhozXdGxslMPecOshVR7NiWFl4gA==}
     peerDependencies:
       esbuild: '>=0.13'
@@ -29559,13 +29559,13 @@ packages:
       webpack:
         optional: true
     dependencies:
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       rollup: 2.70.1
       vite: 2.8.6
       webpack-virtual-modules: 0.4.3
     dev: true
 
-  /unplugin/0.3.3_esbuild@0.14.28+rollup@2.70.1:
+  /unplugin/0.3.3_esbuild@0.14.29+rollup@2.70.1:
     resolution: {integrity: sha512-WjZWpUqqcYPQ/efR00Zm2m1+J1LitwoZ4uhHV4VdZ+IpW0Nh/qnDYtVf+nLhozXdGxslMPecOshVR7NiWFl4gA==}
     peerDependencies:
       esbuild: '>=0.13'
@@ -29582,7 +29582,7 @@ packages:
       webpack:
         optional: true
     dependencies:
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       rollup: 2.70.1
       webpack-virtual-modules: 0.4.3
     dev: true
@@ -29609,7 +29609,7 @@ packages:
       webpack-virtual-modules: 0.4.3
     dev: true
 
-  /unplugin/0.5.2_30793d9d6b24634df96d91984952e36a:
+  /unplugin/0.5.2_2e52236df573f2778b29fa6d0ecbdcad:
     resolution: {integrity: sha512-3SPYtus/56cxyD4jfjrnqCvb6jPxvdqJNaRXnEaG2BhNEMaoygu/39AG+LwKmiIUzj4XHyitcfZ7scGlWfEigA==}
     peerDependencies:
       esbuild: '>=0.13'
@@ -29627,14 +29627,14 @@ packages:
         optional: true
     dependencies:
       chokidar: 3.5.3
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       rollup: 2.70.1
       vite: 2.8.6
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.4.3
     dev: true
 
-  /unplugin/0.5.2_esbuild@0.14.28+rollup@2.70.1:
+  /unplugin/0.5.2_esbuild@0.14.29+rollup@2.70.1:
     resolution: {integrity: sha512-3SPYtus/56cxyD4jfjrnqCvb6jPxvdqJNaRXnEaG2BhNEMaoygu/39AG+LwKmiIUzj4XHyitcfZ7scGlWfEigA==}
     peerDependencies:
       esbuild: '>=0.13'
@@ -29652,7 +29652,7 @@ packages:
         optional: true
     dependencies:
       chokidar: 3.5.3
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       rollup: 2.70.1
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.4.3
@@ -29680,7 +29680,7 @@ packages:
       webpack-virtual-modules: 0.4.3
     dev: true
 
-  /unplugin/0.6.0_30793d9d6b24634df96d91984952e36a:
+  /unplugin/0.6.0_2e52236df573f2778b29fa6d0ecbdcad:
     resolution: {integrity: sha512-CzXJyV3cTzxcuD6kRN4SXtNA5iDJOBZpz/RjfxNRyvytXSVmtpQKVu+snacS+kYanu6gxLgASXGDhd8+4XezLw==}
     peerDependencies:
       esbuild: '>=0.13'
@@ -29698,7 +29698,7 @@ packages:
         optional: true
     dependencies:
       chokidar: 3.5.3
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       rollup: 2.70.1
       vite: 2.8.6
       webpack-sources: 3.2.3
@@ -30137,7 +30137,7 @@ packages:
       stylus:
         optional: true
     dependencies:
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       postcss: 8.4.12
       resolve: 1.22.0
       rollup: 2.70.1
