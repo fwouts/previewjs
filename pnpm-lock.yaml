@@ -47,7 +47,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18
       '@monaco-editor/react': 4.4.1
       '@previewjs/api': workspace:*
-      '@previewjs/config': 1.0.3
+      '@previewjs/config': 1.0.4
       '@previewjs/core': 1.4.0
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': 2.0.2
@@ -185,7 +185,7 @@ importers:
   core:
     specifiers:
       '@previewjs/api': 2.0.1
-      '@previewjs/config': 1.0.3
+      '@previewjs/config': 1.0.4
       '@previewjs/type-analyzer': 2.0.1
       '@previewjs/vfs': 1.1.2
       '@types/express': 4.17.13
@@ -475,7 +475,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18
       '@previewjs/api': workspace:*
       '@previewjs/app': workspace:*
-      '@previewjs/config': 1.0.3
+      '@previewjs/config': 1.0.4
       '@previewjs/core': 1.4.0
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': 2.0.2
@@ -11300,7 +11300,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
       eslint: '>= 1.6.0 < 7.0.0'
     dependencies:
-      '@vue/cli-service': 4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f
+      '@vue/cli-service': 4.5.15_3eb559e04ce5a57e1f213da1f3616d03
       '@vue/cli-shared-utils': 4.5.15
       eslint: 6.8.0
       eslint-loader: 2.2.1_eslint@6.8.0+webpack@4.46.0
@@ -11318,7 +11318,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f
+      '@vue/cli-service': 4.5.15_3eb559e04ce5a57e1f213da1f3616d03
       '@vue/cli-shared-utils': 4.5.15
     dev: true
 
@@ -11327,7 +11327,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f
+      '@vue/cli-service': 4.5.15_3eb559e04ce5a57e1f213da1f3616d03
     dev: true
 
   /@vue/cli-service/4.5.15_3e2550bb49e9a3e1fb1556fb7f123f9f:
@@ -17452,17 +17452,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18681,7 +18670,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
