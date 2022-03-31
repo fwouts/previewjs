@@ -9,6 +9,7 @@
   "type": "commonjs",
   "main": "./dist/src/index.js",
   "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/pro --no-deps --include-dependencies",
     "build": "rimraf dist tsconfig.tsbuildinfo && tsc && tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite dev client",
     "e2e-test": "cd ../app && cross-env PORT=8200 SETUP_ENVIRONMENT_MODULE=../../pro/setup-test-environment.ts TESTS_MODULE=../../pro/tests pnpm e2e-test"

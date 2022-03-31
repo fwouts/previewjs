@@ -1,5 +1,6 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
+import path from "path";
 import { LogLevel } from ".";
 import { locking } from "./locking";
 
@@ -18,7 +19,7 @@ export async function load({
   function requireModule(name: string) {
     try {
       return require(require.resolve(name, {
-        paths: [installDir],
+        paths: [installDir, path.join(installDir, "node_modules", packageName)],
       }));
     } catch (e) {
       console.error(`Unable to load ${name} from ${installDir}`);
