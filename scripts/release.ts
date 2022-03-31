@@ -29,6 +29,13 @@ const packages: Package[] = [
     ignoreDeps: ["loader"],
   },
   {
+    name: "pro",
+    dirPath: "pro",
+    tagName: "pro",
+    type: "npm",
+    ignoreDeps: ["loader"],
+  },
+  {
     name: "core",
     dirPath: "core",
     tagName: "core",
@@ -75,7 +82,7 @@ const packages: Package[] = [
     dirPath: "loader",
     tagName: "loader",
     type: "loader",
-    additionalChangelogPath: ["app/package.json"],
+    additionalChangelogPath: ["pro/package.json"],
   },
   {
     name: "integration-intellij",
@@ -111,7 +118,7 @@ async function main() {
   }
 
   const localDependencies: Record<string, Set<string>> = {
-    loader: new Set(["app"]),
+    loader: new Set(["pro"]),
     "integration-intellij": new Set(["loader"]),
     "integration-vscode": new Set(["loader"]),
   };
@@ -196,14 +203,14 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       break;
     case "loader":
       version = await updateNodePackage(packageInfo.dirPath);
-      const { version: appVersion } = await import("../app/package.json");
+      const { version: proVersion } = await import("../pro/package.json");
       const releaseDirPath = path.join(packageInfo.dirPath, "src", "release");
       await fs.promises.writeFile(
         path.join(releaseDirPath, "package.json"),
         JSON.stringify(
           {
             dependencies: {
-              "@previewjs/app": appVersion,
+              "@previewjs/pro": proVersion,
             },
           },
           null,
