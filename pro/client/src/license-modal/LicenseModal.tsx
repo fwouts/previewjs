@@ -110,7 +110,7 @@ export const LicenseModal = observer(
                     <p className="p-3 pt-0 text-sm bg-gray-900 text-gray-400 shadow-inner">
                       By confirming, you agree to the{" "}
                       <Link
-                        href="https://previewjs.com/pro/eula"
+                        href="https://previewjs.com/eula"
                         className="underline"
                       >
                         EULA
