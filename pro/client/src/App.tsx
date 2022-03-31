@@ -13,7 +13,7 @@ export const App = observer(({ state }: { state: AppState }) => {
       {state.pro.search && (
         <FullscreenPopup onClose={() => state.pro.toggleSearch()}>
           <SearchBox
-            loading={state.pro.search.status === "loading"}
+            state={state.pro.search.state}
             labels={{
               empty: "No components detected",
               noResults: "No results",

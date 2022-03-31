@@ -12,25 +12,37 @@ export type SearchItem = {
   filePath: string;
 };
 
-export const SearchBox = ({
-  items,
-  loading,
-  labels,
-  onItemSelected,
-  onRefresh,
-}: {
+export interface SearchBoxProps {
   items: Array<SearchItem>;
 
-  loading?: boolean;
+  state?:
+    | {
+        kind: "loading";
+      }
+    | {
+        kind: "ready";
+      }
+    | {
+        kind: "error";
+        message: string;
+      };
   labels: {
     empty: string;
     noResults: string;
     loading: string;
     refreshButton: string;
   };
-  onItemSelected(item: SearchItem): void;
-  onRefresh(): void;
-}) => {
+  onItemSelected?(item: SearchItem): void;
+  onRefresh?(): void;
+}
+
+export const SearchBox = ({
+  items,
+  state = { kind: "ready" },
+  labels,
+  onItemSelected,
+  onRefresh,
+}: SearchBoxProps) => {
   const [rawSearch, setRawSearch] = useState("");
   const search = rawSearch.trim();
   const [explicitlyHighlightedItem, setHighlightedItem] =
@@ -69,7 +81,7 @@ export const SearchBox = ({
   const highlightedItem =
     explicitlyHighlightedItem || filteredItems[0]?.item || null;
   const onFilteredItemSelected = (item = highlightedItem) => {
-    if (item) {
+    if (item && onItemSelected) {
       onItemSelected(item);
     }
   };
@@ -105,7 +117,7 @@ export const SearchBox = ({
         <input
           className="flex-grow rounded-md font-mono p-2 font-semibold outline-none border-2 border-blue-100 focus:border-blue-500"
           autoComplete="off"
-          autoFocus
+          // autoFocus
           placeholder="Button"
           value={rawSearch}
           onKeyDown={(e) => {
@@ -149,22 +161,27 @@ export const SearchBox = ({
         <button
           className={clsx([
             "ml-2 p-2 text-gray-700",
-            loading ? "animate-spin" : "cursor-pointer",
+            state.kind === "loading" ? "animate-spin" : "cursor-pointer",
           ])}
-          disabled={loading}
-          onClick={loading ? undefined : onRefresh}
+          disabled={state.kind === "loading"}
+          onClick={state.kind === "loading" ? undefined : onRefresh}
           title={labels.refreshButton}
         >
           <FontAwesomeIcon icon={faSync} />
         </button>
       </div>
+      {state.kind === "error" && (
+        <div className="m-2 p-2 bg-red-200 text-red-900 rounded">
+          {state.message}
+        </div>
+      )}
       <div className="h-60 overflow-auto" ref={containerRef}>
-        {loading && (
+        {state.kind === "loading" && filteredItems.length === 0 && (
           <div className="grid h-60 place-items-center text-gray-400 text-center p-2">
             {labels.loading}
           </div>
         )}
-        {filteredItems.length === 0 && !loading ? (
+        {filteredItems.length === 0 && state.kind !== "loading" ? (
           <div className="p-2 text-gray-700 text-center">
             {search ? labels.noResults : labels.empty}
           </div>
@@ -267,7 +284,7 @@ function bold(text: string, ranges: Ranges) {
   return parts;
 }
 
-setupPreviews(SearchBox, () => {
+setupPreviews(SearchBox, (): Record<string, SearchBoxProps> => {
   const labels = {
     empty: "No items",
     noResults: "No results",
@@ -376,12 +393,28 @@ setupPreviews(SearchBox, () => {
     },
     "loading (empty)": {
       items: [],
-      loading: true,
+      state: { kind: "loading" },
       labels,
     },
     "loading (many)": {
       items: manyItems,
-      loading: true,
+      state: { kind: "loading" },
+      labels,
+    },
+    "error (empty)": {
+      items: [],
+      state: {
+        kind: "error",
+        message: "bad stuff happened",
+      },
+      labels,
+    },
+    "error (many)": {
+      items: manyItems,
+      state: {
+        kind: "error",
+        message: "bad stuff happened",
+      },
       labels,
     },
   };
