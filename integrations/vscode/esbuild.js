@@ -18,7 +18,7 @@ build({
   platform: "node",
   define: {
     "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify(
-      process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/app"
+      process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/pro"
     ),
     ...(process.env.PREVIEWJS_DEV === "1" && {
       "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(

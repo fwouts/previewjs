@@ -6,7 +6,7 @@ import {
 import { makeAutoObservable, runInAction } from "mobx";
 
 export class SearchState {
-  private state:
+  state:
     | {
         kind: "loading";
       }
@@ -16,7 +16,7 @@ export class SearchState {
       }
     | {
         kind: "error";
-        exception: unknown;
+        message: string;
       } = {
     kind: "loading",
   };
@@ -40,18 +40,14 @@ export class SearchState {
           response,
         };
       });
-    } catch (e) {
+    } catch (e: any) {
       runInAction(() => {
         this.state = {
           kind: "error",
-          exception: e,
+          message: e.message || e.stack || "An unknown error occurred",
         };
       });
     }
-  }
-
-  get status() {
-    return this.state.kind;
   }
 
   get components() {

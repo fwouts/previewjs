@@ -4,9 +4,7 @@
   </a>
 </div>
 
-Preview.js is an extension for Visual Studio Code and IntelliJ/WebStorm.
-
-It lets you preview Vue and React components instantly.
+Preview.js lets you preview Vue and React components instantly in your IDE.
 
 ![Demo](assets/previewjs-overview.gif)
 
@@ -16,6 +14,8 @@ Preview.js is available for:
 
 - [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs)
 - [IntelliJ / WebStorm](https://plugins.jetbrains.com/plugin/18384-preview-js)
+
+## Documentation
 
 [Read the docs to learn more](https://previewjs.com)
 

@@ -28,7 +28,7 @@ import kotlin.concurrent.thread
 
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
-const val PACKAGE_NAME = "@previewjs/app"
+const val PACKAGE_NAME = "@previewjs/pro"
 
 @Service
 class PreviewJsSharedService : Disposable {
