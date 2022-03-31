@@ -117,7 +117,7 @@ export const SearchBox = ({
         <input
           className="flex-grow rounded-md font-mono p-2 font-semibold outline-none border-2 border-blue-100 focus:border-blue-500"
           autoComplete="off"
-          // autoFocus
+          autoFocus
           placeholder="Button"
           value={rawSearch}
           onKeyDown={(e) => {
