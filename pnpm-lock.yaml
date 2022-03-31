@@ -82,8 +82,8 @@ importers:
       monaco-editor: 0.33.0
       playwright: 1.20.1
       postcss: 8.4.12
-      react: 17.0.2
-      react-dom: 17.0.2
+      react: 18.0.0
+      react-dom: 18.0.0
       rimraf: 3.0.2
       tailwindcss: 3.0.23
       ts-node: 10.7.0
@@ -96,25 +96,25 @@ importers:
       '@fortawesome/free-brands-svg-icons': 6.1.1
       '@fortawesome/free-regular-svg-icons': 6.1.1
       '@fortawesome/free-solid-svg-icons': 6.1.1
-      '@fortawesome/react-fontawesome': 0.1.18_6909f5698ccb6b468185370814560628
-      '@monaco-editor/react': 4.4.1_66b714495a9e953b0598750a09f73ca1
+      '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
+      '@monaco-editor/react': 4.4.1_55ae72ee85f73450ca6b27cb2ac63883
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@previewjs/vfs': link:../vfs
-      '@react-hook/window-size': 3.0.7_react@17.0.2
+      '@react-hook/window-size': 3.0.7_react@18.0.0
       assert-never: 1.2.1
       axios: 0.26.1
       clsx: 1.1.1
       express: 4.17.3
-      framer-motion: 6.2.8_react-dom@17.0.2+react@17.0.2
+      framer-motion: 6.2.8_react-dom@18.0.0+react@18.0.0
       mobx: 6.5.0
-      mobx-react-lite: 3.3.0_3b110ddd052df537d55bc762cdd4d0b8
+      mobx-react-lite: 3.3.0_ec6945183068133ff61c88d19e8f3079
       monaco-editor: 0.33.0
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
     devDependencies:
       '@previewjs/api': link:../api
       '@previewjs/loader': link:../loader
@@ -503,8 +503,8 @@ importers:
       ranges-crop: ^5.0.12
       ranges-merge: ^8.0.12
       ranges-offset: ^3.0.12
-      react: ^17.0.2
-      react-dom: ^17.0.2
+      react: ^18.0.0
+      react-dom: ^18.0.0
       rimraf: 3.0.2
       tailwindcss: 3.0.23
       typescript: 4.6.3
@@ -515,7 +515,7 @@ importers:
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.1
       '@fortawesome/free-solid-svg-icons': 6.1.1
-      '@fortawesome/react-fontawesome': 0.1.18_6909f5698ccb6b468185370814560628
+      '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
       '@previewjs/plugin-react': link:../frameworks/react
@@ -528,12 +528,12 @@ importers:
       fs-extra: 10.0.1
       glob: 7.2.0
       mobx: 6.4.2
-      mobx-react-lite: 3.3.0_4e589064ce40a783661f96d46f38f574
+      mobx-react-lite: 3.3.0_0f29db4e81154c6b3d252847ce474d66
       ranges-crop: 5.0.12
       ranges-merge: 8.0.12
       ranges-offset: 3.0.12
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
       universal-base64: 2.1.0
       uuid: 8.3.2
     devDependencies:
@@ -5305,7 +5305,7 @@ packages:
       '@fortawesome/fontawesome-common-types': 6.1.1
     dev: false
 
-  /@fortawesome/react-fontawesome/0.1.18_6909f5698ccb6b468185370814560628:
+  /@fortawesome/react-fontawesome/0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d:
     resolution: {integrity: sha512-RwLIB4TZw0M9gvy5u+TusAA0afbwM4JQIimNH/j3ygd6aIvYPQLqXMhC9ErY26J23rDPyDZldIfPq/HpTTJ/tQ==}
     peerDependencies:
       '@fortawesome/fontawesome-svg-core': ~1 || ~6
@@ -5313,7 +5313,7 @@ packages:
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.1
       prop-types: 15.8.1
-      react: 17.0.2
+      react: 18.0.0
     dev: false
 
   /@gar/promisify/1.1.2:
@@ -6082,7 +6082,7 @@ packages:
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react/4.4.1_66b714495a9e953b0598750a09f73ca1:
+  /@monaco-editor/react/4.4.1_55ae72ee85f73450ca6b27cb2ac63883:
     resolution: {integrity: sha512-95E/XPC4dbm/7qdkhSsU/a1kRgcn2PYhRTVIc+/cixWCZrwRURW1DRPaIZ2lOawBJ6kAOLywxuD4A4UmbT0ZIw==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
@@ -6092,8 +6092,8 @@ packages:
       '@monaco-editor/loader': 1.3.0_monaco-editor@0.33.0
       monaco-editor: 0.33.0
       prop-types: 15.8.1
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
     dev: false
 
   /@mrmlnc/readdir-enhanced/2.2.1:
@@ -7483,49 +7483,49 @@ packages:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
     dev: false
 
-  /@react-hook/debounce/3.0.0_react@17.0.2:
+  /@react-hook/debounce/3.0.0_react@18.0.0:
     resolution: {integrity: sha512-ir/kPrSfAzY12Gre0sOHkZ2rkEmM4fS5M5zFxCi4BnCeXh2nvx9Ujd+U4IGpKCuPA+EQD0pg1eK2NGLvfWejag==}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@react-hook/latest': 1.0.3_react@17.0.2
-      react: 17.0.2
+      '@react-hook/latest': 1.0.3_react@18.0.0
+      react: 18.0.0
     dev: false
 
-  /@react-hook/event/1.2.6_react@17.0.2:
+  /@react-hook/event/1.2.6_react@18.0.0:
     resolution: {integrity: sha512-JUL5IluaOdn5w5Afpe/puPa1rj8X6udMlQ9dt4hvMuKmTrBS1Ya6sb4sVgvfe2eU4yDuOfAhik8xhbcCekbg9Q==}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      react: 17.0.2
+      react: 18.0.0
     dev: false
 
-  /@react-hook/latest/1.0.3_react@17.0.2:
+  /@react-hook/latest/1.0.3_react@18.0.0:
     resolution: {integrity: sha512-dy6duzl+JnAZcDbNTfmaP3xHiKtbXYOaz3G51MGVljh548Y8MWzTr+PHLOfvpypEVW9zwvl+VyKjbWKEVbV1Rg==}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      react: 17.0.2
+      react: 18.0.0
     dev: false
 
-  /@react-hook/throttle/2.2.0_react@17.0.2:
+  /@react-hook/throttle/2.2.0_react@18.0.0:
     resolution: {integrity: sha512-LJ5eg+yMV8lXtqK3lR+OtOZ2WH/EfWvuiEEu0M3bhR7dZRfTyEJKxH1oK9uyBxiXPtWXiQggWbZirMCXam51tg==}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@react-hook/latest': 1.0.3_react@17.0.2
-      react: 17.0.2
+      '@react-hook/latest': 1.0.3_react@18.0.0
+      react: 18.0.0
     dev: false
 
-  /@react-hook/window-size/3.0.7_react@17.0.2:
+  /@react-hook/window-size/3.0.7_react@18.0.0:
     resolution: {integrity: sha512-bK5ed/jN+cxy0s1jt2CelCnUt7jZRseUvPQ22ZJkUl/QDOsD+7CA/6wcqC3c0QweM/fPBRP6uI56TJ48SnlVww==}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@react-hook/debounce': 3.0.0_react@17.0.2
-      '@react-hook/event': 1.2.6_react@17.0.2
-      '@react-hook/throttle': 2.2.0_react@17.0.2
-      react: 17.0.2
+      '@react-hook/debounce': 3.0.0_react@18.0.0
+      '@react-hook/event': 1.2.6_react@18.0.0
+      '@react-hook/throttle': 2.2.0_react@18.0.0
+      react: 18.0.0
     dev: false
 
   /@rollup/plugin-alias/3.1.9_rollup@2.70.1:
@@ -17593,7 +17593,7 @@ packages:
     dependencies:
       map-cache: 0.2.2
 
-  /framer-motion/6.2.8_react-dom@17.0.2+react@17.0.2:
+  /framer-motion/6.2.8_react-dom@18.0.0+react@18.0.0:
     resolution: {integrity: sha512-4PtBWFJ6NqR350zYVt9AsFDtISTqsdqna79FvSYPfYDXuuqFmiKtZdkTnYPslnsOMedTW0pEvaQ7eqjD+sA+HA==}
     peerDependencies:
       react: '>=16.8 || ^17.0.0 || ^18.0.0'
@@ -17602,8 +17602,8 @@ packages:
       framesync: 6.0.1
       hey-listen: 1.0.8
       popmotion: 11.0.3
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
       style-value-types: 5.0.0
       tslib: 2.3.1
     optionalDependencies:
@@ -21689,25 +21689,7 @@ packages:
       pkg-types: 0.3.2
     dev: true
 
-  /mobx-react-lite/3.3.0_3b110ddd052df537d55bc762cdd4d0b8:
-    resolution: {integrity: sha512-U/kMSFtV/bNVgY01FuiGWpRkaQVHozBq5CEBZltFvPt4FcV111hEWkgwqVg9GPPZSEuEdV438PEz8mk8mKpYlA==}
-    peerDependencies:
-      mobx: ^6.1.0
-      react: ^16.8.0 || ^17
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      mobx: 6.5.0
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    dev: false
-
-  /mobx-react-lite/3.3.0_4e589064ce40a783661f96d46f38f574:
+  /mobx-react-lite/3.3.0_0f29db4e81154c6b3d252847ce474d66:
     resolution: {integrity: sha512-U/kMSFtV/bNVgY01FuiGWpRkaQVHozBq5CEBZltFvPt4FcV111hEWkgwqVg9GPPZSEuEdV438PEz8mk8mKpYlA==}
     peerDependencies:
       mobx: ^6.1.0
@@ -21721,8 +21703,26 @@ packages:
         optional: true
     dependencies:
       mobx: 6.4.2
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
+    dev: false
+
+  /mobx-react-lite/3.3.0_ec6945183068133ff61c88d19e8f3079:
+    resolution: {integrity: sha512-U/kMSFtV/bNVgY01FuiGWpRkaQVHozBq5CEBZltFvPt4FcV111hEWkgwqVg9GPPZSEuEdV438PEz8mk8mKpYlA==}
+    peerDependencies:
+      mobx: ^6.1.0
+      react: ^16.8.0 || ^17
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: 6.5.0
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
     dev: false
 
   /mobx/6.4.2:
@@ -25288,6 +25288,16 @@ packages:
       scheduler: 0.21.0-alpha-f2c381131-20211004
     dev: false
 
+  /react-dom/18.0.0_react@18.0.0:
+    resolution: {integrity: sha512-XqX7uzmFo0pUceWFCt7Gff6IyIMzFUn7QMZrbrQfGxtaxXZIcGQzoNpRLE3fQLnS4XzLLPMZX2T9TRcSrasicw==}
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      loose-envify: 1.4.0
+      react: 18.0.0
+      scheduler: 0.21.0
+    dev: false
+
   /react-draggable/4.4.4_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-6e0WdcNLwpBx/YIDpoyd2Xb04PB0elrDrulKUgdrIlwuYvxh5Ok9M+F8cljm8kPXXs43PmMzek9RrB1b7mLMqA==}
     peerDependencies:
@@ -26063,6 +26073,13 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
+    dev: false
+
+  /react/18.0.0:
+    resolution: {integrity: sha512-x+VL6wbT4JRVPm7EGxXhZ8w8LTROaxPXOqhlGyVSrv0sB1jkyFGgXxJ8LVoPRLvPR6/CIZGFmfzqUa2NYeMr2A==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
     dev: false
 
   /react/18.0.0-alpha-f2c381131-20211004:
@@ -26932,6 +26949,12 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
+    dev: false
+
+  /scheduler/0.21.0:
+    resolution: {integrity: sha512-1r87x5fz9MXqswA2ERLo0EbOAU74DpIUO090gIasYTqlVoJeMcl+Z1Rg7WHz+qtPujhS/hGIt9kxZOYBV3faRQ==}
+    dependencies:
+      loose-envify: 1.4.0
     dev: false
 
   /scheduler/0.21.0-alpha-f2c381131-20211004:
