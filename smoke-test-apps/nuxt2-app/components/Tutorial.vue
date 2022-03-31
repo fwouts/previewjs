@@ -8,7 +8,7 @@
       rel="stylesheet"
     />
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-      <div class="mt-8 bg-white overflow-hidden sm:rounded-lg p-6">
+      <div class="mt-8 bg-white overflow-hidden p-6">
         <h2 class="text-2xl leading-7 font-semibold">
           Welcome to your Nuxt Application
         </h2>
@@ -21,16 +21,6 @@
             >Nuxt documentation</a
           >, whether you are new or have previous experience with the
           framework.<br />
-        </p>
-        <p class="mt-4 pt-4 text-gray-800 border-t border-dashed">
-          To get started, remove
-          <code class="bg-gray-100 text-sm p-1 rounded border"
-            >components/Tutorial.vue</code
-          >
-          and start coding in
-          <code class="bg-gray-100 text-sm p-1 rounded border"
-            >pages/index.vue</code
-          >. Have fun!
         </p>
       </div>
     </div>
