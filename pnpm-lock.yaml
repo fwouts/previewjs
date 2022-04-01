@@ -941,17 +941,17 @@ importers:
       '@types/node': ^16.10.2
       '@types/react': ^16
       '@types/react-dom': ^16
-      react: 18.0.0-alpha-f2c381131-20211004
-      react-dom: 18.0.0-alpha-f2c381131-20211004
+      react: 18.0.0
+      react-dom: 18.0.0
       react-scripts: 4.0.3
       typescript: ^4.4.3
     dependencies:
       '@types/node': 16.11.17
       '@types/react': 16.14.21
       '@types/react-dom': 16.9.14
-      react: 18.0.0-alpha-f2c381131-20211004
-      react-dom: 18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635
-      react-scripts: 4.0.3_87352f2a13c2ab97de5c27cd7b59ede2
+      react: 18.0.0
+      react-dom: 18.0.0_react@18.0.0
+      react-scripts: 4.0.3_9abc3a25b6f8fef504ca6dd5d7b80c44
       typescript: 4.5.4
 
   smoke-test-apps/custom-preview:
@@ -25134,17 +25134,6 @@ packages:
       scheduler: 0.20.2
     dev: false
 
-  /react-dom/18.0.0-alpha-f2c381131-20211004_4dd5d306b9d43f72893e315a470a8635:
-    resolution: {integrity: sha512-5iYL8W9ySJmn+MtXKOgxD4LoxHaZ0tSM+cjc5966SHFhJxEjKgXPr6X6NuSEbK5OQ8GSVtEJlDE9BmZ1monBWA==}
-    peerDependencies:
-      react: 18.0.0-alpha-f2c381131-20211004
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      react: 18.0.0-alpha-f2c381131-20211004
-      scheduler: 0.21.0-alpha-f2c381131-20211004
-    dev: false
-
   /react-dom/18.0.0_react@18.0.0:
     resolution: {integrity: sha512-XqX7uzmFo0pUceWFCt7Gff6IyIMzFUn7QMZrbrQfGxtaxXZIcGQzoNpRLE3fQLnS4XzLLPMZX2T9TRcSrasicw==}
     peerDependencies:
@@ -25405,7 +25394,7 @@ packages:
       - webpack-plugin-serve
     dev: false
 
-  /react-scripts/4.0.3_87352f2a13c2ab97de5c27cd7b59ede2:
+  /react-scripts/4.0.3_9abc3a25b6f8fef504ca6dd5d7b80c44:
     resolution: {integrity: sha512-S5eO4vjUzUisvkIPB7jVsKtuH2HhWcASREYWHAQ1FP5HyCv3xgn+wpILAEWkmy+A+tTNbSZClhxjT3qz6g4L1A==}
     engines: {node: ^10.12.0 || >=12.0.0}
     hasBin: true
@@ -25459,7 +25448,7 @@ packages:
       postcss-preset-env: 6.7.0
       postcss-safe-parser: 5.0.2
       prompts: 2.4.0
-      react: 18.0.0-alpha-f2c381131-20211004
+      react: 18.0.0
       react-app-polyfill: 2.0.0
       react-dev-utils: 11.0.4
       react-refresh: 0.8.3
@@ -25937,14 +25926,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
-
-  /react/18.0.0-alpha-f2c381131-20211004:
-    resolution: {integrity: sha512-d0t/breMQrKn968PeVs2RwNiPmQdZkJhK1OFBkZ5Veka4vfLtu0Vl+kfliaAq/a98k2ksUoF8ECDrV3fXeXIQQ==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
     dev: false
 
   /read-cache/1.0.0:
@@ -26812,13 +26793,6 @@ packages:
     resolution: {integrity: sha512-1r87x5fz9MXqswA2ERLo0EbOAU74DpIUO090gIasYTqlVoJeMcl+Z1Rg7WHz+qtPujhS/hGIt9kxZOYBV3faRQ==}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
-
-  /scheduler/0.21.0-alpha-f2c381131-20211004:
-    resolution: {integrity: sha512-9IFi0sFfOCld+bgWuMjWuiIr8qmOYZx1HIUVwHZwphnnq9anXY9D2HatjT2ITZifjO1vsSy93isp3f4+vdgreA==}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
     dev: false
 
   /schema-utils/1.0.0:
