@@ -72,7 +72,10 @@ export async function updateComponent(
       variants: componentInfo.variants.map(({ props, ...rest }) => rest),
       loadingError,
     });
-    render(componentInfo.Component, { ...defaultProps, ...variant.props });
+    await render(componentInfo.Component, {
+      ...defaultProps,
+      ...variant.props,
+    });
   } catch (error: any) {
     sendMessageFromPreview({
       kind: "rendering-error",

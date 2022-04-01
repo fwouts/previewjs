@@ -52,7 +52,7 @@ window.addEventListener(
     const data = event.data;
     switch (data.kind) {
       case "show-loading":
-        render(null, {});
+        render(null, {}).catch(console.error);
         root.innerHTML = `<div class="previewjs-loader">
           <img src="../loading.svg" />
         </div>`;

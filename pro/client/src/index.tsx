@@ -1,7 +1,7 @@
 import { LocalApi } from "@previewjs/app/client/src/api/local";
 import { WebApi } from "@previewjs/app/client/src/api/web";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "../../../app/client/src/index.css";
 import { App } from "./App";
 import "./index.css";
@@ -11,11 +11,11 @@ const state = new AppState(
   new LocalApi("/api/"),
   new WebApi("https://previewjs.com/api/")
 );
-ReactDOM.render(
+const root = createRoot(document.getElementById("root")!);
+root.render(
   <React.StrictMode>
     <App state={state} />
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
 state.start().catch(console.error);
 

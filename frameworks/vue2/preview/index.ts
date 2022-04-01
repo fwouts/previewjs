@@ -5,7 +5,7 @@ import Vue from "vue";
 const root = document.getElementById("root");
 let app: Vue | null = null;
 // TODO: Type Renderer properly.
-export function render<P>(Renderer: any, props: P) {
+export async function render<P>(Renderer: any, props: P) {
   if (app) {
     app.$destroy();
     app = null;
