@@ -1,7 +1,7 @@
 import { App, createApp, DefineComponent } from "vue";
 
 let app: App | null = null;
-export function render<P extends Record<string, unknown>>(
+export async function render<P extends Record<string, unknown>>(
   Renderer: DefineComponent<P, {}, any>,
   props: P
 ) {
