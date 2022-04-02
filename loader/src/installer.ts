@@ -34,6 +34,31 @@ export async function install(options: {
   options.onOutput(
     `Dependencies will be installed in: ${options.installDir}\n\n`
   );
+  try {
+    const npmVersionProcess = await execa("npm", ["-v"], {
+      cwd: options.installDir,
+      reject: false,
+    });
+    if (npmVersionProcess.failed) {
+      throw new Error(
+        `Preview.js was unable to run npm. Is it installed?\n\nIf not, you may need to restart Visual Studio Code after installing it.`
+      );
+    }
+    if (npmVersionProcess.exitCode !== 0) {
+      throw new Error(
+        `Preview.js was unable to run npm (exit code ${npmVersionProcess.exitCode}):\n\n${npmVersionProcess.stderr}`
+      );
+    }
+    const version = npmVersionProcess.stdout;
+    if (parseInt(version) < 7) {
+      throw new Error(
+        `Preview.js needs npm 7+ to run, but current version is: ${version}\n\nPlease upgrade then restart Visual Studio Code.`
+      );
+    }
+  } catch (e) {
+    options.onOutput(`${e}`);
+    throw e;
+  }
   options.onOutput(`$ npm install\n\n`);
   try {
     const installProcess = execa("npm", ["install"], {
