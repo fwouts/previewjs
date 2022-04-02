@@ -41,7 +41,7 @@ export async function install(options: {
     });
     if (npmVersionProcess.failed) {
       throw new Error(
-        `Preview.js was unable to run npm. Is it installed?\n\nIf not, you may need to restart Visual Studio Code after installing it.`
+        `Preview.js was unable to run npm. Is it installed?\n\nIf not, you may need to restart your IDE after installing it.`
       );
     }
     if (npmVersionProcess.exitCode !== 0) {
@@ -52,7 +52,7 @@ export async function install(options: {
     const version = npmVersionProcess.stdout;
     if (parseInt(version) < 7) {
       throw new Error(
-        `Preview.js needs npm 7+ to run, but current version is: ${version}\n\nPlease upgrade then restart Visual Studio Code.`
+        `Preview.js needs npm 7+ to run, but current version is: ${version}\n\nPlease upgrade then restart your IDE.`
       );
     }
   } catch (e) {
