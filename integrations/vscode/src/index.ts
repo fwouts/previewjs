@@ -1,7 +1,7 @@
 import { install, isInstalled, load } from "@previewjs/loader";
 import { readFileSync } from "fs";
 import path from "path";
-import vscode from "vscode";
+import vscode, { OutputChannel } from "vscode";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
 import {
   ensurePreviewServerStarted,
@@ -40,10 +40,7 @@ let dispose = async () => {
   // Do nothing.
 };
 
-export async function activate(context: vscode.ExtensionContext) {
-  const config = vscode.workspace.getConfiguration();
-  const outputChannel = vscode.window.createOutputChannel("Preview.js");
-
+async function initializePreviewJs(outputChannel: OutputChannel) {
   const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
   if (!packageName) {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
@@ -63,12 +60,34 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   }
 
-  const previewjs = await load({
+  return load({
     installDir: requirePath,
     packageName,
   });
+}
 
-  function getWorkspace(absoluteFilePath: string) {
+export async function activate(context: vscode.ExtensionContext) {
+  const config = vscode.workspace.getConfiguration();
+  const outputChannel = vscode.window.createOutputChannel("Preview.js");
+  let previewjsInitialized: Awaited<
+    ReturnType<typeof initializePreviewJs>
+  > | null = null;
+  let initializationFailed = false;
+  const previewjsInitPromise = initializePreviewJs(outputChannel)
+    .then((p) => (previewjsInitialized = p))
+    .catch(() => {
+      // Do not display error, as it would already be in outputChannel
+      // and we want to avoid displaying it every time someone awaits this
+      // promise.
+      initializationFailed = true;
+      return null;
+    });
+
+  async function getWorkspace(absoluteFilePath: string) {
+    const previewjs = await previewjsInitPromise;
+    if (!previewjs) {
+      return null;
+    }
     return previewjs.getWorkspace({
       versionCode: `vscode-${version}`,
       logLevel: "info",
@@ -92,7 +111,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   dispose = async () => {
     outputChannel.dispose();
-    await previewjs.dispose();
+    await (await previewjsInitPromise)?.dispose();
   };
 
   await openUsageOnFirstTimeStart(context);
@@ -100,9 +119,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerCodeLensProvider(codeLensLanguages, {
       provideCodeLenses: catchErrors(async (document: vscode.TextDocument) => {
         const workspace = await getWorkspace(document.fileName);
-        if (!workspace) {
+        if (!workspace || !previewjsInitialized) {
           return [];
         }
+        const previewjs = previewjsInitialized;
         const components = await workspace.frameworkPlugin.detectComponents(
           workspace.typeAnalyzer,
           [document.fileName]
@@ -145,12 +165,13 @@ export async function activate(context: vscode.ExtensionContext) {
       });
       function updateDocument(document: vscode.TextDocument, saved = false) {
         if (
+          !previewjsInitialized ||
           !path.isAbsolute(document.fileName) ||
           !watchedExtensions.has(path.extname(document.fileName))
         ) {
           return;
         }
-        previewjs.updateFileInMemory(
+        previewjsInitialized.updateFileInMemory(
           document.fileName,
           saved ? null : document.getText()
         );
@@ -161,6 +182,15 @@ export async function activate(context: vscode.ExtensionContext) {
       "previewjs.open",
       catchErrors(
         async (document?: vscode.TextDocument, componentId?: string) => {
+          if (!previewjsInitialized) {
+            vscode.window.showErrorMessage(
+              initializationFailed
+                ? "Preview.js was unable to start successfully. Please check Preview.js output panel or file a bug at https://github.com/fwouts/previewjs/issues."
+                : "Preview.js is not ready yet. Please check Preview.js output panel or file a bug at https://github.com/fwouts/previewjs/issues."
+            );
+            return;
+          }
+          const previewjs = previewjsInitialized;
           if (typeof componentId !== "string") {
             // If invoked from clicking the button, the value may be { groupId: 0 }.
             componentId = undefined;
