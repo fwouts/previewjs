@@ -48,7 +48,7 @@ importers:
       '@monaco-editor/react': 4.4.1
       '@previewjs/api': workspace:*
       '@previewjs/config': 1.0.4
-      '@previewjs/core': 1.6.0
+      '@previewjs/core': 1.5.0
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': 2.0.3
       '@previewjs/plugin-vue2': 2.0.2
@@ -99,7 +99,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
       '@monaco-editor/react': 4.4.1_55ae72ee85f73450ca6b27cb2ac63883
       '@previewjs/config': link:../config
-      '@previewjs/core': link:../core
+      '@previewjs/core': 1.5.0
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
@@ -476,7 +476,7 @@ importers:
       '@previewjs/api': workspace:*
       '@previewjs/app': workspace:*
       '@previewjs/config': 1.0.4
-      '@previewjs/core': 1.6.0
+      '@previewjs/core': 1.5.0
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': 2.0.3
       '@previewjs/plugin-vue2': 2.0.2
@@ -517,7 +517,7 @@ importers:
       '@fortawesome/free-solid-svg-icons': 6.1.1
       '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
       '@previewjs/config': link:../config
-      '@previewjs/core': link:../core
+      '@previewjs/core': 1.5.0
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
@@ -7546,6 +7546,62 @@ packages:
 
   /@popperjs/core/2.11.2:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
+    dev: false
+
+  /@previewjs/api/2.0.1:
+    resolution: {integrity: sha512-PSME0ykgoZXfBBUhqtF7MAA5Ek5EY8QGuhXwHMVCyS0bTsjwUG62IeL0uy+Jy7yNNz+JhnuruuH4Gf/4lW70gQ==}
+    dev: false
+
+  /@previewjs/config/1.0.4:
+    resolution: {integrity: sha512-4YfDrduv6mbU64/YkqTpqWRMihpKx786oEHql7pvcY3U0dAlUg1BPLOSDAH5rTHaCNMIbvWgYSiikpN8NFYvQw==}
+    dev: false
+
+  /@previewjs/core/1.5.0:
+    resolution: {integrity: sha512-yVmBKLoGoMdneS3JJLExDxmRAdqzEXtyYRkRiMo/nF8gaDTPrvIinn22vAA4XuLikrSKGpjA9m/Zq5GJpUToWw==}
+    dependencies:
+      '@previewjs/api': 2.0.1
+      '@previewjs/config': 1.0.4
+      '@previewjs/type-analyzer': 2.0.2
+      '@previewjs/vfs': 1.1.3
+      acorn: 8.7.0
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      env-paths: 2.2.1
+      express: 4.17.3
+      fs-extra: 10.0.1
+      get-port: 5.1.1
+      http-terminator: 3.2.0
+      monaco-editor: 0.33.0
+      prettier: 2.6.1
+      recrawl: 2.2.1
+      rollup-plugin-friendly-type-imports: 1.0.2
+      sass: 1.49.10
+      strip-ansi: 6.0.1
+      tsconfig-paths: 3.14.1
+      typescript: 4.6.3
+      uuid: 8.3.2
+      vite: 2.9.0_sass@1.49.10
+      vite-tsconfig-paths: 3.4.1_vite@2.9.0
+    transitivePeerDependencies:
+      - less
+      - stylus
+      - supports-color
+    dev: false
+
+  /@previewjs/type-analyzer/2.0.2:
+    resolution: {integrity: sha512-z0Rs5qgfrSZN9tWdpBrRvSkFpSj0cIPdvG6rcc9cZK6ISqCFJn9M1aJwlGqaFEUCnCC1r+h7KkymGqSquqNotw==}
+    dependencies:
+      '@previewjs/vfs': 1.1.3
+      assert-never: 1.2.1
+      typescript: 4.6.3
+    dev: false
+
+  /@previewjs/vfs/1.1.3:
+    resolution: {integrity: sha512-FdgJy7FyanXiU8HpF+VWI6DuxTFjezP/7EpJuotB0BkUPiMjaKzfdfZD1jJmT/WxQmmX553y2N4YhNvJ4OvTWQ==}
+    dependencies:
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      fs-extra: 10.0.1
     dev: false
 
   /@react-hook/debounce/3.0.0_react@18.0.0:
@@ -17317,6 +17373,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.14.8_debug@4.3.3:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
+
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18535,7 +18602,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -23254,7 +23321,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.5.4
+      ts-pnp: 1.2.0_typescript@4.6.3
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -25374,7 +25441,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.5.4
+      ts-pnp: 1.2.0_typescript@4.6.3
       typescript: 4.6.3
       url-loader: 4.1.1_file-loader@6.1.1+webpack@4.44.2
       webpack: 4.44.2
@@ -29879,6 +29946,20 @@ packages:
       - supports-color
     dev: false
 
+  /vite-tsconfig-paths/3.4.1_vite@2.9.0:
+    resolution: {integrity: sha512-SgK3/pnTuJ3i+gMSAWLR6VCPSw26bnxawrmXGvCDjJgk8MAQgmbCrFrAzfwbwZBXSqSuvWEuX04Wt73qJKx8fQ==}
+    peerDependencies:
+      vite: '>2.0.0-0'
+    dependencies:
+      debug: 4.3.3
+      globrex: 0.1.2
+      recrawl-sync: 2.2.1
+      tsconfig-paths: 3.14.1
+      vite: 2.9.0_sass@1.49.10
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /vite-tsconfig-paths/3.4.1_vite@2.9.1:
     resolution: {integrity: sha512-SgK3/pnTuJ3i+gMSAWLR6VCPSw26bnxawrmXGvCDjJgk8MAQgmbCrFrAzfwbwZBXSqSuvWEuX04Wt73qJKx8fQ==}
     peerDependencies:
@@ -29916,6 +29997,31 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /vite/2.9.0_sass@1.49.10:
+    resolution: {integrity: sha512-5NAnNqzPmZzJvrswZGeTS2JHrBGIzIWJA2hBTTMYuoBVEMh0xwE0b5yyIXFxf7F07hrK4ugX2LJ7q6t7iIbd4Q==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.14.29
+      postcss: 8.4.12
+      resolve: 1.22.0
+      rollup: 2.70.1
+      sass: 1.49.10
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /vite/2.9.1:
     resolution: {integrity: sha512-vSlsSdOYGcYEJfkQ/NeLXgnRv5zZfpAsdztkIrs7AZHV8RCMZQkwjo4DS5BnrYTqoWqLoUe1Cah4aVO4oNNqCQ==}
