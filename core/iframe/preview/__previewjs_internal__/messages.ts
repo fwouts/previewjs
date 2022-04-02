@@ -20,7 +20,6 @@ export interface RendererUpdated {
   componentName: string;
   variantKey: string;
   variants: Variant[];
-  loadingError: string | null;
 }
 
 export interface RenderingError {

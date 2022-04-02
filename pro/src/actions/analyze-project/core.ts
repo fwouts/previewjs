@@ -32,7 +32,7 @@ export async function analyzeProjectCore(
   }
   const absoluteFilePaths = await findFiles(
     rootDirPath,
-    "**/*.@(js|jsx|tsx|svelte|vue)"
+    "**/*.@(js|jsx|ts|tsx|svelte|vue)"
   );
   const components: Record<
     string,

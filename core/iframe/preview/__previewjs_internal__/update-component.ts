@@ -63,6 +63,10 @@ export async function updateComponent(
         variant.props = properties;
         `);
     }
+    await render(componentInfo.Component, {
+      ...defaultProps,
+      ...variant.props,
+    });
     sendMessageFromPreview({
       kind: "renderer-updated",
       filePath: componentInfo.filePath,
@@ -70,11 +74,6 @@ export async function updateComponent(
       variantKey: variant.key,
       // Note: we must remove `props` since it may not be serialisable.
       variants: componentInfo.variants.map(({ props, ...rest }) => rest),
-      loadingError,
-    });
-    await render(componentInfo.Component, {
-      ...defaultProps,
-      ...variant.props,
     });
   } catch (error: any) {
     sendMessageFromPreview({
