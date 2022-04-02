@@ -80,7 +80,7 @@ importers:
       mobx: 6.5.0
       mobx-react-lite: 3.3.0
       monaco-editor: 0.33.0
-      playwright: 1.20.1
+      playwright: 1.20.2
       postcss: 8.4.12
       react: 18.0.0
       react-dom: 18.0.0
@@ -135,7 +135,7 @@ importers:
       execa: 5.1.1
       fs-extra: 10.0.1
       lodash: 4.17.21
-      playwright: 1.20.1
+      playwright: 1.20.2
       postcss: 8.4.12
       rimraf: 3.0.2
       tailwindcss: 3.0.23_b89136460714832cdda11d1e9d57d1ff
@@ -23172,8 +23172,8 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core/1.20.1:
-    resolution: {integrity: sha512-A8ZsZ09gaSbxP0UijoLyzp3LJc0kWMxDooLPi+mm4/5iYnTbd6PF5nKjoFw1a7KwjZIEgdhJduah4BcUIh+IPA==}
+  /playwright-core/1.20.2:
+    resolution: {integrity: sha512-iV6+HftSPalynkq0CYJala1vaTOq7+gU9BRfKCdM9bAxNq/lFLrwbluug2Wt5OoUwbMABcnTThIEm3/qUhCdJQ==}
     engines: {node: '>=12'}
     hasBin: true
     dependencies:
@@ -23201,13 +23201,13 @@ packages:
       - utf-8-validate
     dev: true
 
-  /playwright/1.20.1:
-    resolution: {integrity: sha512-d/25SFUk6Rkt3h+RU13T7h6o0UTCLKXKYJILWVlC+NmrE7Tvn3LlXxoREfFXVNFikRZWTV60WBCZKgNbj7RfrA==}
+  /playwright/1.20.2:
+    resolution: {integrity: sha512-p6GE8A/f2G7t8FIk/AwQ94nT7R7tyPRJyKt1FwRjwBDf4WdpgoAr4hDfMgHy+CkClR22adFjopGwhxXAPsewhg==}
     engines: {node: '>=12'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.20.1
+      playwright-core: 1.20.2
     transitivePeerDependencies:
       - bufferutil
       - supports-color
