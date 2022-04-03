@@ -5,7 +5,7 @@ export type PreviewToAppMessage =
   | Bootstrapped
   | Action
   | LogMessage
-  | RendererUpdated
+  | RenderingSuccess
   | RenderingError
   | ViteErrorMessage
   | ViteBeforeUpdateMessage;
@@ -14,13 +14,12 @@ export interface Bootstrapped {
   kind: "bootstrapped";
 }
 
-export interface RendererUpdated {
-  kind: "renderer-updated";
+export interface RenderingSuccess {
+  kind: "rendering-success";
   filePath: string;
   componentName: string;
   variantKey: string;
   variants: Variant[];
-  loadingError: string | null;
 }
 
 export interface RenderingError {

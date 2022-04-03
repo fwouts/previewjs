@@ -109,7 +109,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "log-message":
         listener(data);
         break;
-      case "renderer-updated":
+      case "rendering-success":
         this.clearExpectRenderTimeout();
         listener({
           kind: "update",
