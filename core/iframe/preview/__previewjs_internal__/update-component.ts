@@ -2,7 +2,6 @@ import { Variant } from "../..";
 import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 
-// TODO: Extract type definitions.
 export async function updateComponent({
   wrapperModule,
   wrapperName,

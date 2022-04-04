@@ -4,7 +4,6 @@ import { version } from "react/package.json";
 
 const moduleName = parseInt(version) >= 18 ? "./render-18" : "./render-16";
 
-// TODO: Extract type definitions.
 export async function load({
   wrapperModule,
   wrapperName,
