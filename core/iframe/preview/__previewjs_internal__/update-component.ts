@@ -43,6 +43,12 @@ export async function updateComponent({
       componentModule,
       componentName,
     });
+    variants.push({
+      key: "custom",
+      label: componentName,
+      props: {},
+      isEditorDriven: true,
+    });
     const variant =
       variants.find((v) => v.key === currentState.variantKey) || variants[0];
     if (!variant) {

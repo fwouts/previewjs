@@ -215,5 +215,5 @@ export type LogLevel = "log" | "info" | "warn" | "error";
 export interface Variant {
   key: string;
   label: string;
-  isEditorDriven: boolean;
+  isEditorDriven?: boolean;
 }

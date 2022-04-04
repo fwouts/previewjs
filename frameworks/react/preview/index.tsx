@@ -34,15 +34,8 @@ export async function load({
     return {
       key: variant.key,
       label: variant.label,
-      isEditorDriven: false,
       props: variant.props,
     };
-  });
-  variants.push({
-    key: "custom",
-    label: `<${componentName} />`,
-    props: {},
-    isEditorDriven: true,
   });
   const Renderer = (props) => {
     return (
