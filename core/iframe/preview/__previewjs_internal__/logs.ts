@@ -19,16 +19,8 @@ export function setUpLogInterception() {
         ) {
           if (firstArg.toLowerCase().startsWith("[hmr] failed to reload")) {
             sendMessageFromPreview({
-              kind: "vite-error",
-              payload: {
-                type: "error",
-                err: {
-                  message: firstArg
-                    .slice(6)
-                    .replace(" (see errors above)", "."), // remove [hmr] and confusing message
-                  stack: null,
-                },
-              },
+              kind: "hmr-error",
+              message: firstArg.slice(6).replace(" (see errors above)", "."), // remove [hmr] and confusing message
             });
           }
           // Silence.
