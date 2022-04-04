@@ -24,6 +24,13 @@ export async function updateComponent({
     return;
   }
   try {
+    if (loadingError) {
+      sendMessageFromPreview({
+        kind: "rendering-error",
+        message: loadingError,
+      });
+      return;
+    }
     const { variants, render } = await load({
       wrapperModule,
       wrapperName,

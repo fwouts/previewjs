@@ -17,6 +17,20 @@ export function setUpLogInterception() {
           (firstArg.toLowerCase().includes("[hmr]") ||
             firstArg.toLowerCase().startsWith("[vite]"))
         ) {
+          if (firstArg.toLowerCase().startsWith("[hmr] failed to reload")) {
+            sendMessageFromPreview({
+              kind: "vite-error",
+              payload: {
+                type: "error",
+                err: {
+                  message: firstArg
+                    .slice(6)
+                    .replace(" (see errors above)", "."), // remove [hmr] and confusing message
+                  stack: null,
+                },
+              },
+            });
+          }
           // Silence.
           return;
         }
