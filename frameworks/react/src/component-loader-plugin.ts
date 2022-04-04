@@ -1,3 +1,5 @@
+// TODO: Extract into core!
+
 import type { PreviewConfig } from "@previewjs/config";
 import { URLSearchParams } from "url";
 import type { Plugin } from "vite";
@@ -38,12 +40,11 @@ function generateComponentLoaderModule(
     throw new Error(`Invalid use of /render module`);
   }
   const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
-  return `import React from 'react';
-import { sendMessageFromPreview } from '/__previewjs_internal__/messages';
-import { updateComponent } from '/__previewjs_internal__/update-component';
+  return `import { updateComponent } from '/__previewjs_internal__/update-component';
+import { load } from '/__previewjs_internal__/renderer/index';
 
-export async function update() {
-  let loadingError = null;
+export async function refresh() {
+  let moduleLoadingError = null;
   ${
     wrapper
       ? `
@@ -53,15 +54,14 @@ export async function update() {
   } else {
     wrapperModulePromise = import("/${wrapper.path}");
   }
-  const Wrapper = await wrapperModulePromise.then(module => {
-    return module["${wrapper.componentName || "Wrapper"}"];
-  }).catch(e => {
+  const wrapperModule = await wrapperModulePromise.catch(e => {
     console.error(e);
-    loadingError = e.stack || e.message || null;
-  }) || React.Fragment;
+    moduleLoadingError = e.stack || e.message || null;
+    return null;
+  });
   `
       : `
-  const Wrapper = React.Fragment;
+  const wrapperModule = null;
   `
   }
   let componentModulePromise;
@@ -70,66 +70,23 @@ export async function update() {
   } else {
     componentModulePromise = import("${componentModuleId}");
   }
-  const { Component, decorators } = await componentModulePromise.then((module) => {
-    const Component = module["${
-      componentName === "default" ? "default" : `__previewjs__${componentName}`
-    }"];
-    if (!Component) {
-      throw new Error("No component named '${componentName}' could be found in ${filePath}");
-    }
-    return import.meta.hot.data.cached = {
-      Component,
-      decorators: [
-        ...(Component.decorators || []),
-        ...(module.default?.decorators || []),
-      ],
-    };
-  }).catch(e => {
+  const componentModule = await componentModulePromise.catch(e => {
     console.error(e);
-    loadingError = e.stack || e.message || null;
-    return import.meta.hot.data.cached || {
-      Component: () => <p>Oops! Something went wrong...</p>,
-      decorators: [],
-    };
+    moduleLoadingError = e.stack || e.message || null;
+    return null;
   });
-  const variants = (Component.__previewjs_variants || []).map(
-    (variant) => {
-      return {
-        key: variant.key,
-        label: variant.label,
-        isEditorDriven: false,
-        props: variant.props,
-      };
-    });
-  variants.push({
-    key: "custom",
-    label: "<${componentName} />",
-    props: {},
-    isEditorDriven: true,
-  });
-  return {
-    componentInfo: {
-      filePath: ${JSON.stringify(filePath)},
-      componentName: ${JSON.stringify(componentName)},
-      variants,
-      Component: (props) => {
-        return <Wrapper>
-          {decorators.reduce(
-            (component, decorator) => () => decorator(component),
-            () => <Component {...Component.args} {...props} />
-          )()}
-        </Wrapper>
-      },
-    },
-    loadingError
-  };
+  await updateComponent({
+    wrapperModule,
+    wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
+    componentModule,
+    componentFilePath: ${JSON.stringify(filePath)},
+    componentName: ${JSON.stringify(componentName)},
+    moduleLoadingError,
+    load,
+  })
 }
 
 import.meta.hot.accept();
-
-function refresh() {
-  updateComponent(update);
-}
 
 ${
   wrapper
