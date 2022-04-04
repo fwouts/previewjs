@@ -544,7 +544,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
   test(
     "shows error when file is missing before update",
     "react",
-    async ({ appDir, controller }) => {
+    async ({ controller }) => {
       await controller.show("src/App-missing.tsx:App");
       await controller.errors.title.waitUntilVisible();
       expect(await controller.errors.title.text()).toStartWith(

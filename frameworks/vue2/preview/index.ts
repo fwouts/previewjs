@@ -12,11 +12,19 @@ export const load: RendererLoader = async ({
 }) => {
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
-  let Component = componentFilePath.endsWith(".vue")
-    ? componentModule.default
-    : componentModule[`__previewjs__${componentName}`];
-  if (!Component) {
-    throw new Error("No default component could be found in ${filePath}");
+  let Component: any;
+  if (componentFilePath.endsWith(".vue")) {
+    Component = componentModule.default;
+    if (!Component) {
+      throw new Error(
+        `No default component could be found in ${componentFilePath}`
+      );
+    }
+  } else {
+    Component = componentModule[`__previewjs__${componentName}`];
+    if (!Component) {
+      throw new Error(`No component named '${componentName}'`);
+    }
   }
   let defaultProps = {};
   let storyDecorators = [];

@@ -71,9 +71,10 @@ export const errorHandlingTests = testSuite("vue3/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      // We don't expect to see an error.
-      await controller.errors.title.waitUntilGone();
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules."
+      );
       await previewIframe.waitForSelector(".logo");
       await previewIframe.waitForSelector(".hello");
       await appDir.update(
@@ -129,6 +130,33 @@ export const errorHandlingTests = testSuite("vue3/error handling", (test) => {
         replace: "#app {",
       });
       await controller.errors.title.waitUntilGone();
+    }
+  );
+
+  test(
+    "shows error when file is missing before update",
+    "vue3",
+    async ({ controller }) => {
+      await controller.show("src/AppMissing.vue:AppMissing");
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toStartWith(
+        `Failed to resolve import "/src/AppMissing.vue"`
+      );
+    }
+  );
+
+  test(
+    "shows error when file is missing after update",
+    "vue3",
+    async ({ appDir, controller }) => {
+      await controller.show("src/App.vue:App");
+      const previewIframe = await controller.previewIframe();
+      await previewIframe.waitForSelector(".logo");
+      await appDir.rename("src/App.vue", "src/App-renamed.vue");
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `ENOENT: no such file or directory, open '/src/App.vue'`
+      );
     }
   );
 });

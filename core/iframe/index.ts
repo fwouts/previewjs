@@ -133,7 +133,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           },
         });
         break;
-      case "hmr-error":
+      case "vite-logs-error":
         // We listen to HMR errors to learn about reload errors, for
         // which there is no Vite error. In other cases, we'd rather
         // prioritise Vite errors.

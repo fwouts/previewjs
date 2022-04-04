@@ -30,7 +30,7 @@ export interface RenderingError {
 }
 
 export interface HmrErrorMessage {
-  kind: "hmr-error";
+  kind: "vite-logs-error";
   message: string;
 }
 
