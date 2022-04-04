@@ -21,7 +21,7 @@ async function load({
   customVariantPropsSource,
 }: RenderMessage) {
   try {
-    const componentLoaderModuleId = `/@component-loader.jsx?p=${encodeURIComponent(
+    const componentLoaderModuleId = `/@component-loader.js?p=${encodeURIComponent(
       filePath
     )}&c=${encodeURIComponent(componentName)}`;
     setState({

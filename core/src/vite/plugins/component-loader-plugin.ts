@@ -1,12 +1,10 @@
-// TODO: Extract into core!
-
 import type { PreviewConfig } from "@previewjs/config";
 import { URLSearchParams } from "url";
 import type { Plugin } from "vite";
 
-const COMPONENT_LOADER_MODULE = "/@component-loader.jsx";
+const COMPONENT_LOADER_MODULE = "/@component-loader.js";
 
-export function reactComponentLoaderPlugin(options: {
+export function componentLoaderPlugin(options: {
   config: PreviewConfig;
 }): Plugin {
   return {
@@ -37,7 +35,7 @@ function generateComponentLoaderModule(
   const filePath = urlParams.get("p");
   const componentName = urlParams.get("c");
   if (filePath === null || componentName === null) {
-    throw new Error(`Invalid use of /render module`);
+    throw new Error(`Invalid use of /@component-loader.js module`);
   }
   const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
   return `import { updateComponent } from '/__previewjs_internal__/update-component';

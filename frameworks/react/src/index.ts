@@ -2,7 +2,6 @@ import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
-import { reactComponentLoaderPlugin } from "./component-loader-plugin";
 import { extractReactComponents } from "./extract-component";
 import { optimizeReactDepsPlugin } from "./optimize-deps-plugin";
 import { reactImportsPlugin } from "./react-imports-plugin";
@@ -58,9 +57,6 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
         return {
           plugins: [
             optimizeReactDepsPlugin(),
-            reactComponentLoaderPlugin({
-              config,
-            }),
             svgrPlugin({
               exportedComponentName: svgr?.componentName || "ReactComponent",
               alias: config.alias,

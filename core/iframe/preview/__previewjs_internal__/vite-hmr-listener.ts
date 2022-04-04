@@ -23,7 +23,7 @@ hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
     if (
       update.type === "js-update" &&
       state &&
-      update.path.startsWith("/@component-loader.jsx")
+      update.path.startsWith("/@component-loader.js")
     ) {
       const params = new URLSearchParams(update.path.split("?")[1] || "");
       const p = params.get("p");
