@@ -42,7 +42,7 @@ function generateComponentLoaderModule(
 import { load } from '/__previewjs_internal__/renderer/index';
 
 export async function refresh() {
-  let moduleLoadingError = null;
+  let loadingError = null;
   ${
     wrapper
       ? `
@@ -54,7 +54,7 @@ export async function refresh() {
   }
   const wrapperModule = await wrapperModulePromise.catch(e => {
     console.error(e);
-    moduleLoadingError = e.stack || e.message || null;
+    loadingError = e.stack || e.message || null;
     return null;
   });
   `
@@ -70,7 +70,7 @@ export async function refresh() {
   }
   const componentModule = await componentModulePromise.catch(e => {
     console.error(e);
-    moduleLoadingError = e.stack || e.message || null;
+    loadingError = e.stack || e.message || null;
     return null;
   });
   await updateComponent({
@@ -79,7 +79,7 @@ export async function refresh() {
     componentModule,
     componentFilePath: ${JSON.stringify(filePath)},
     componentName: ${JSON.stringify(componentName)},
-    moduleLoadingError,
+    loadingError,
     load,
   })
 }

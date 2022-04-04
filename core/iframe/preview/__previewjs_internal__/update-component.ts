@@ -8,7 +8,7 @@ export async function updateComponent({
   componentModule,
   componentFilePath,
   componentName,
-  moduleLoadingError,
+  loadingError,
   load,
 }: {
   wrapperModule: any;
@@ -16,7 +16,7 @@ export async function updateComponent({
   componentModule: any;
   componentFilePath: string;
   componentName: string;
-  moduleLoadingError: string | null;
+  loadingError: string | null;
   load: RendererLoader;
 }) {
   const currentState = getState();
@@ -68,7 +68,7 @@ export async function updateComponent({
       variantKey: variant.key,
       // Note: we must remove `props` since it may not be serialisable.
       variants: variants.map(({ props, ...rest }) => rest),
-      loadingError: moduleLoadingError,
+      loadingError,
     });
     await render({
       ...defaultProps,
