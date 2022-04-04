@@ -17,13 +17,10 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
   async create({ vueOptionsModule } = {}) {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { createVuePlugin } = await import("vite-plugin-vue2");
-    const { vueComponentLoaderPlugin } = await import(
-      "./component-loader-plugin"
-    );
     const { extractVueComponents } = await import("./extract-component");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 2,
+      pluginApiVersion: 3,
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
@@ -73,9 +70,6 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
             },
           },
           plugins: [
-            vueComponentLoaderPlugin({
-              config,
-            }),
             createVuePlugin({
               jsx: true,
             }),

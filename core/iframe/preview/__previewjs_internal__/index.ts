@@ -6,9 +6,8 @@ import {
   RenderMessage,
   sendMessageFromPreview,
 } from "./messages";
-import { render } from "./renderer/index";
+import { detach } from "./renderer/index";
 import { setState } from "./state";
-import { updateComponent } from "./update-component";
 
 setUpLogInterception();
 setUpLinkInterception();
@@ -22,7 +21,7 @@ async function load({
   customVariantPropsSource,
 }: RenderMessage) {
   try {
-    const componentLoaderModuleId = `/@component-loader.jsx?p=${encodeURIComponent(
+    const componentLoaderModuleId = `/@component-loader.js?p=${encodeURIComponent(
       filePath
     )}&c=${encodeURIComponent(componentName)}`;
     setState({
@@ -32,11 +31,11 @@ async function load({
       customVariantPropsSource,
       variantKey,
     });
-    const { update } = await import(
+    const { refresh } = await import(
       /* @vite-ignore */
       `/preview${componentLoaderModuleId}`
     );
-    await updateComponent(update);
+    await refresh();
   } catch (error: any) {
     sendMessageFromPreview({
       kind: "rendering-error",
@@ -52,7 +51,7 @@ window.addEventListener(
     const data = event.data;
     switch (data.kind) {
       case "show-loading":
-        render(null, {}).catch(console.error);
+        detach().catch(console.error);
         root.innerHTML = `<div class="previewjs-loader">
           <img src="../loading.svg" />
         </div>`;

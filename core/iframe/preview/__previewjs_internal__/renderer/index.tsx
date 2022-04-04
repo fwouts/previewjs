@@ -1,5 +1,9 @@
-export async function render(component: any, props: any) {
+export async function load() {
   // This is a dummy function that is replaced by
   // a framework-specific implementation at runtime.
-  console.error("Dummy renderer was invoked!");
+  console.error("Dummy loader was invoked!");
+}
+
+export async function detach() {}
+{
 }

@@ -11,6 +11,7 @@ import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { FrameworkPlugin } from "../plugins/framework";
+import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
@@ -147,6 +148,9 @@ export class ViteManager {
           }),
       }),
       cssModulesWithoutSuffixPlugin(),
+      componentLoaderPlugin({
+        config: this.options.config,
+      }),
       ...(frameworkPluginViteConfig.plugins || []),
       ...(this.options.config.vite?.plugins || []),
     ];

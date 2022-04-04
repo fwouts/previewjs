@@ -14,9 +14,20 @@ export function setUpLogInterception() {
         const firstArg = args[0];
         if (
           typeof firstArg === "string" &&
-          (firstArg.toLowerCase().includes("[hmr]") ||
-            firstArg.toLowerCase().startsWith("[vite]"))
+          (firstArg.includes("[hmr]") || firstArg.startsWith("[vite]"))
         ) {
+          if (firstArg.startsWith("[hmr] Failed to reload")) {
+            sendMessageFromPreview({
+              kind: "vite-logs-error",
+              message: firstArg.slice(6).replace(" (see errors above)", "."), // remove [hmr] and confusing message
+            });
+          }
+          // if (firstArg.startsWith("[vite] Internal Server Error")) {
+          //   sendMessageFromPreview({
+          //     kind: "vite-logs-error",
+          //     message: firstArg.slice(39), // remove [vite] Internal Server Error prefix
+          //   });
+          // }
           // Silence.
           return;
         }

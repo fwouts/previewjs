@@ -133,6 +133,25 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           },
         });
         break;
+      case "vite-logs-error":
+        // We listen to HMR errors to learn about reload errors, for
+        // which there is no Vite error. In other cases, we'd rather
+        // prioritise Vite errors.
+        if (!this.viteError) {
+          this.viteError = {
+            type: "error",
+            err: {
+              message: data.message,
+              stack: "",
+            },
+          };
+          listener({
+            kind: "update",
+            viteError: this.viteError,
+            rendering: null,
+          });
+        }
+        break;
       case "vite-error":
         this.viteError = data.payload;
         listener({
@@ -215,5 +234,20 @@ export type LogLevel = "log" | "info" | "warn" | "error";
 export interface Variant {
   key: string;
   label: string;
-  isEditorDriven: boolean;
+  isEditorDriven?: boolean;
 }
+
+export type RendererLoader = (options: {
+  wrapperModule: any;
+  wrapperName?: string;
+  componentFilePath: string;
+  componentModule: any;
+  componentName?: string;
+}) => Promise<{
+  variants: Array<
+    Variant & {
+      props?: any;
+    }
+  >;
+  render: (props: any) => Promise<void>;
+}>;

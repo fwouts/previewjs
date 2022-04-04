@@ -68,9 +68,10 @@ export const errorHandlingTests = testSuite("vue2/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      // We don't expect to see an error.
-      await controller.errors.title.waitUntilGone();
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules."
+      );
       await previewIframe.waitForSelector("#app");
       await previewIframe.waitForSelector(".hello");
       await appDir.update(
@@ -124,6 +125,34 @@ export const errorHandlingTests = testSuite("vue2/error handling", (test) => {
         replace: "#app {",
       });
       await controller.errors.title.waitUntilGone();
+    }
+  );
+
+  test(
+    "shows error when file is missing before update",
+    "vue2",
+    async ({ controller }) => {
+      await controller.show("src/AppMissing.vue:AppMissing");
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toStartWith(
+        `Failed to resolve import "/src/AppMissing.vue"`
+      );
+    }
+  );
+
+  test(
+    "shows error when file is missing after update",
+    "vue2",
+    async ({ appDir, controller }) => {
+      await controller.show("src/App.vue:App");
+      const previewIframe = await controller.previewIframe();
+      await previewIframe.waitForSelector("#app");
+      await appDir.rename("src/App.vue", "src/App-renamed.vue");
+      await controller.errors.title.waitUntilVisible();
+      // TODO: Consider replacing error message.
+      expect(await controller.errors.title.text()).toEqual(
+        `/src/App.vue has no corresponding SFC entry in the cache. This is a vite-plugin-vue2 internal error, please open an issue`
+      );
     }
   );
 });

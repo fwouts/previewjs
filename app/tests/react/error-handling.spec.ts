@@ -250,6 +250,57 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
   );
 
   test(
+    "fails correctly when encountering broken CSS imports before update",
+    "react",
+    async ({ appDir, controller }) => {
+      await appDir.update("src/App.tsx", {
+        kind: "edit",
+        search: "App.css",
+        replace: "App-missing.css",
+      });
+      await controller.show("src/App.tsx:App");
+      const previewIframe = await controller.previewIframe();
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toStartWith(
+        `TypeError: Failed to fetch dynamically imported module`
+      );
+      await appDir.update("src/App.tsx", {
+        kind: "edit",
+        search: "App-missing.css",
+        replace: "App.css",
+      });
+      await controller.errors.title.waitUntilGone();
+      await previewIframe.waitForSelector(".App-logo");
+    }
+  );
+
+  test(
+    "fails correctly when encountering broken CSS imports after update",
+    "react",
+    async ({ appDir, controller }) => {
+      await controller.show("src/App.tsx:App");
+      const previewIframe = await controller.previewIframe();
+      await previewIframe.waitForSelector(".App-logo");
+      await appDir.update("src/App.tsx", {
+        kind: "edit",
+        search: "App.css",
+        replace: "App-missing.css",
+      });
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`
+      );
+      await appDir.update("src/App.tsx", {
+        kind: "edit",
+        search: "App-missing.css",
+        replace: "App.css",
+      });
+      await controller.errors.title.waitUntilGone();
+      await previewIframe.waitForSelector(".App-logo");
+    }
+  );
+
+  test(
     "fails correctly when encountering broken syntax (case 1)",
     "react",
     async ({ appDir, controller }) => {
@@ -487,6 +538,71 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
         replace: " {",
       });
       await controller.errors.title.waitUntilGone();
+    }
+  );
+
+  test(
+    "shows error when file is missing before update",
+    "react",
+    async ({ controller }) => {
+      await controller.show("src/App-missing.tsx:App");
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toStartWith(
+        `Failed to resolve import "/src/App-missing.tsx"`
+      );
+    }
+  );
+
+  test(
+    "shows error when file is missing after update",
+    "react",
+    async ({ appDir, controller }) => {
+      await controller.show("src/App.tsx:App");
+      const previewIframe = await controller.previewIframe();
+      await previewIframe.waitForSelector(".App-logo");
+      await appDir.rename("src/App.tsx", "src/App-renamed.tsx");
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`
+      );
+    }
+  );
+
+  test(
+    "shows error when component is missing before update",
+    "react",
+    async ({ appDir, controller }) => {
+      await appDir.update("src/App.tsx", {
+        kind: "replace",
+        text: `import React from 'react';
+       
+export const App2 = () => <div>Hello, World!</div>;`,
+      });
+      await controller.show("src/App.tsx:App");
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `Error: No component named 'App'`
+      );
+    }
+  );
+
+  test(
+    "shows error when component is missing after update",
+    "react",
+    async ({ appDir, controller }) => {
+      await controller.show("src/App.tsx:App");
+      const previewIframe = await controller.previewIframe();
+      await previewIframe.waitForSelector(".App-logo");
+      await appDir.update("src/App.tsx", {
+        kind: "replace",
+        text: `import React from 'react';
+       
+export const App2 = () => <div>Hello, World!</div>;`,
+      });
+      await controller.errors.title.waitUntilVisible();
+      expect(await controller.errors.title.text()).toEqual(
+        `Error: No component named 'App'`
+      );
     }
   );
 

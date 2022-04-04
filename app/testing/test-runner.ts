@@ -222,6 +222,8 @@ class TestRunner {
             await fs.writeFile(absoluteFilePath, text, "utf8");
           }
         },
+        rename: (from, to) =>
+          fs.rename(path.join(rootDirPath, from), path.join(rootDirPath, to)),
         remove: (f) => fs.unlink(path.join(rootDirPath, f)),
       };
       return appDir;
@@ -266,5 +268,6 @@ export interface AppDir {
       inMemoryOnly?: boolean;
     }
   ): Promise<void>;
+  rename(fromFilePath: string, toFilePath: string): Promise<void>;
   remove(filePath: string): Promise<void>;
 }
