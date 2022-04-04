@@ -12,14 +12,11 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   async create() {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
-    const { vueComponentLoaderPlugin } = await import(
-      "./component-loader-plugin"
-    );
     const { extractVueComponents } = await import("./extract-component");
     const { Parser } = await import("acorn");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 2,
+      pluginApiVersion: 3,
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
@@ -62,9 +59,6 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
       viteConfig: (config) => {
         return {
           plugins: [
-            vueComponentLoaderPlugin({
-              config,
-            }),
             createVuePlugin(),
             vueJsxPlugin(),
             {

@@ -217,3 +217,18 @@ export interface Variant {
   label: string;
   isEditorDriven?: boolean;
 }
+
+export type RendererLoader = (options: {
+  wrapperModule: any;
+  wrapperName?: string;
+  componentFilePath: string;
+  componentModule: any;
+  componentName?: string;
+}) => Promise<{
+  variants: Array<
+    Variant & {
+      props?: any;
+    }
+  >;
+  render: (props: any) => Promise<void>;
+}>;

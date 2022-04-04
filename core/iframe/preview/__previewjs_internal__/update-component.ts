@@ -1,4 +1,4 @@
-import { Variant } from "../..";
+import { RendererLoader } from "../..";
 import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 
@@ -17,19 +17,7 @@ export async function updateComponent({
   componentFilePath: string;
   componentName: string;
   moduleLoadingError: string | null;
-  load: (options: {
-    wrapperModule: any;
-    wrapperName: string;
-    componentModule: any;
-    componentName: string;
-  }) => Promise<{
-    variants: Array<
-      Variant & {
-        props?: any;
-      }
-    >;
-    render: (props: any) => Promise<void>;
-  }>;
+  load: RendererLoader;
 }) {
   const currentState = getState();
   if (!currentState) {
@@ -39,6 +27,7 @@ export async function updateComponent({
     const { variants, render } = await load({
       wrapperModule,
       wrapperName,
+      componentFilePath,
       componentModule,
       componentName,
     });

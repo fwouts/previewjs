@@ -23,7 +23,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
   async create({ svgr } = {}) {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 2,
+      pluginApiVersion: 3,
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
