@@ -2,24 +2,30 @@ import type { Component } from "solid-js";
 import styles from "./App.module.css";
 import logo from "./logo.svg";
 
-const App: Component = (props: { label: string }) => {
+const App: Component = () => {
   return (
     <div class={styles.App}>
       <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
+        <SolidLogo />
+        <p>Hello, World!</p>
+        <SolidLink label="Learn Solid" />
       </header>
     </div>
+  );
+};
+
+const SolidLogo = () => <img src={logo} class={styles.logo} alt="logo" />;
+
+const SolidLink = ({ label }: { label: string }) => {
+  return (
+    <a
+      class={styles.link}
+      href="https://github.com/solidjs/solid"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {label}
+    </a>
   );
 };
 
