@@ -148,7 +148,6 @@ function isValidComponentReturnType(type: ts.Type): boolean {
 
 const jsxElementTypes = new Set(["Element", "FunctionElement"]);
 function isJsxElement(type: ts.Type): boolean {
-  console.error(type);
   if (type.isUnion()) {
     for (const subtype of type.types) {
       if (isJsxElement(subtype)) {

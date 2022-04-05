@@ -1,19 +1,15 @@
 import { FrameworkPlugin } from "@previewjs/core";
 import {
-  ANY_TYPE,
   arrayType,
   createTypeAnalyzer,
   EMPTY_OBJECT_TYPE,
-  functionType,
   namedType,
   NODE_TYPE,
-  NULL_TYPE,
   NUMBER_TYPE,
   objectType,
   optionalType,
   STRING_TYPE,
   TypeAnalyzer,
-  unionType,
 } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
@@ -30,7 +26,7 @@ const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 const EMPTY_SET: ReadonlySet<string> = new Set();
 
-describe("analyzeReactComponent", () => {
+describe("analyzeSolidComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -223,7 +219,7 @@ interface PanelTab {
   label: string;
   key: string;
   notificationCount: number;
-  panel: React.ReactNode;
+  panel: JSX.Element;
 }
 `,
         "A"
@@ -248,13 +244,13 @@ interface PanelTab {
     });
   });
 
-  test("constant function with FunctionComponent type and no parameter", async () => {
+  test("constant function with Component type and no parameter", async () => {
     expect(
       await analyze(
         `
-import { FunctionComponent } from 'solid';
+import { Component } from 'solid-js';
 
-export const A: FunctionComponent<{ foo: string }> = (props) => {
+export const A: Component<{ foo: string }> = (props) => {
   return <div>Hello, World!</div>;
 };
 `,
@@ -270,13 +266,13 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     });
   });
 
-  test("constant function with FunctionComponent type and a parameter", async () => {
+  test("constant function with Component type and a parameter", async () => {
     expect(
       await analyze(
         `
-import { FunctionComponent } from 'solid';
+import { Component } from 'solid-js';
 
-export const A: FunctionComponent<{ foo: string }> = (props) => {
+export const A: Component<{ foo: string }> = (props) => {
   return <div>Hello, {foo}!</div>;
 };
 `,
@@ -292,166 +288,13 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     });
   });
 
-  test("constant function with FC type alias and no parameter", async () => {
-    expect(
-      await analyze(
-        `
-import React from 'solid';
-
-export const A: React.FC<{ foo: string }> = () => {
-  return <div>Hello, World!</div>;
-};
-`,
-        "A"
-      )
-    ).toEqual({
-      propsType: objectType({}),
-      providedArgs: EMPTY_SET,
-      types: {},
-    });
-  });
-
-  test("constant function with FC type alias and a parameter", async () => {
-    expect(
-      await analyze(
-        `
-import React from 'solid';
-
-export const A: React.FC<{ foo: string }> = (props) => {
-  return <div>Hello, World!</div>;
-};
-`,
-        "A"
-      )
-    ).toEqual({
-      propsType: objectType({
-        foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
-      }),
-      providedArgs: EMPTY_SET,
-      types: {},
-    });
-  });
-
-  test("constant function with typed props but only using few props", async () => {
-    expect(
-      await analyze(
-        `
-import React from 'solid';
-
-export const A: React.FC<Props> = ({ a: foo, c }) => {
-  return <div>Hello, World!</div>;
-};
-
-type Props = {
-  a: string;
-  b: string;
-  c: string;
-}
-`,
-        "A"
-      )
-    ).toEqual({
-      propsType: objectType({
-        a: STRING_TYPE,
-        c: STRING_TYPE,
-      }),
-      providedArgs: EMPTY_SET,
-      types: {
-        "App.tsx:Props": {
-          type: objectType({
-            a: STRING_TYPE,
-            b: STRING_TYPE,
-            c: STRING_TYPE,
-          }),
-          parameters: {},
-        },
-      },
-    });
-  });
-
-  test("constant function with typed props using rest props", async () => {
-    expect(
-      await analyze(
-        `
-import React from 'solid';
-
-export const A: React.FC<Props> = ({ a, ...rest }) => {
-  return <div>Hello, World!</div>;
-};
-
-type Props = {
-  a: string;
-  b: string;
-  c: string;
-}
-`,
-        "A"
-      )
-    ).toEqual({
-      propsType: objectType({
-        a: STRING_TYPE,
-        b: STRING_TYPE,
-        c: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
-      }),
-      providedArgs: EMPTY_SET,
-      types: {
-        "App.tsx:Props": {
-          type: objectType({
-            a: STRING_TYPE,
-            b: STRING_TYPE,
-            c: STRING_TYPE,
-          }),
-          parameters: {},
-        },
-      },
-    });
-  });
-
-  test("PureComponent subclass with no props", async () => {
-    expect(
-      await analyze(
-        `
-import { PureComponent } from 'solid';
-
-export class A extends PureComponent {}
-`,
-        "A"
-      )
-    ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
-      types: {},
-    });
-  });
-
-  test("PureComponent subclass with explicit props type", async () => {
-    expect(
-      await analyze(
-        `
-import { PureComponent } from 'solid';
-
-export class A extends PureComponent<{foo: string}> {}
-`,
-        "A"
-      )
-    ).toEqual({
-      propsType: objectType({
-        foo: STRING_TYPE,
-      }),
-      providedArgs: EMPTY_SET,
-      types: {},
-    });
-  });
-
   test("Storybook args support", async () => {
     expect(
       await analyze(
         `
-import React from 'solid';
+import Solid from 'solid-js';
 
-export const A: React.FC<{ foo: string, bar: string }> = (props) => {
+export const A: Solid.Component<{ foo: string, bar: string }> = (props) => {
   return <div>{foo}</div>;
 };
 A.args = {
@@ -468,49 +311,6 @@ A.args = {
       }),
       providedArgs: new Set(["foo"]),
       types: {},
-    });
-  });
-
-  test("PropsType support", async () => {
-    expect(
-      await analyze(
-        `
-import React from 'solid';
-import PropTypes from 'prop-types';
-
-export const A = ({ user, onLogin, onLogout, onCreateAccount }) => {
-  return <div>Hello, World!</div>;
-};
-A.propTypes = {
-  user: PropTypes.shape({
-    foo: PropTypes.string,
-    bar: PropTypes.string.isRequired,
-  }).isRequired,
-  impersonate: PropTypes.shape({
-    foo: PropTypes.string.isRequired,
-  }),
-  onLogin: PropTypes.func.isRequired,
-  onLogout: PropTypes.func,
-};
-`,
-        "A"
-      )
-    ).toEqual({
-      propsType: objectType({
-        user: objectType({
-          foo: optionalType(unionType([NULL_TYPE, STRING_TYPE])),
-          bar: STRING_TYPE,
-        }),
-        impersonate: optionalType(
-          objectType({
-            foo: STRING_TYPE,
-          })
-        ),
-        onLogin: functionType(ANY_TYPE),
-        onLogout: optionalType(functionType(ANY_TYPE)),
-      }),
-      providedArgs: EMPTY_SET,
-      types: expect.anything(),
     });
   });
 
