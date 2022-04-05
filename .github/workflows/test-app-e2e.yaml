@@ -53,6 +53,8 @@ jobs:
             group: 2
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
