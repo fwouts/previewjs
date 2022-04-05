@@ -30,11 +30,12 @@ export const load: RendererLoader = async ({
     };
   });
   const Renderer = (props) => {
+    const effectiveProps = { ...Component.args, ...props };
     return (
       <Wrapper>
         {decorators.reduce(
           (component, decorator) => () => decorator(component),
-          () => <Component {...Component.args} {...props} />
+          () => <Component {...effectiveProps} />
         )()}
       </Wrapper>
     );

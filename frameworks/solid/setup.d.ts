@@ -1,7 +1,7 @@
-import React from "react";
+import { Component } from "solid-js";
 
 export declare function setupPreviews<Props>(
-  component: React.ComponentType<Props>,
+  component: Component<Props>,
   variants: VariantsProps<Props> | (() => VariantsProps<Props>)
 ): void;
 

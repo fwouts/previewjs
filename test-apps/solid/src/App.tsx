@@ -1,32 +1,37 @@
-import type { Component } from "solid-js";
-import styles from "./App.module.css";
+import { JSX } from "solid-js";
+import "./App.css";
+import { Dependency } from "./Dependency";
 import logo from "./logo.svg";
+import { Foo } from "./types";
 
-const App: Component = () => {
+interface AppProps {
+  children: JSX.Element;
+  foo: Foo;
+  complex: JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
+    bar: "hi!";
+  };
+}
+
+function App(props: AppProps) {
   return (
-    <div class={styles.App}>
-      <header class={styles.header}>
-        <SolidLogo />
-        <p>Hello, World!</p>
-        <SolidLink label="Learn Solid" />
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+        <Dependency />
       </header>
     </div>
   );
-};
+}
 
-const SolidLogo = () => <img src={logo} class={styles.logo} alt="logo" />;
-
-const SolidLink = ({ label }: { label: string }) => {
-  return (
-    <a
-      class={styles.link}
-      href="https://github.com/solidjs/solid"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {label}
-    </a>
-  );
-};
-
-export default App;
+export { App };
