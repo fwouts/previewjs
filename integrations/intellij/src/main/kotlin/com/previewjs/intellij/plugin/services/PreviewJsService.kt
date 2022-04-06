@@ -236,7 +236,10 @@ Include the content of the Preview.js logs panel for easier debugging.
             // Note: in production builds of IntelliJ / WebStorm, PATH is not initialised
             // from the shell. This means that /usr/local/bin or nvm paths may not be
             // present. This is why we start an interactive login shell.
-            return ProcessBuilder(System.getenv()["SHELL"] ?: "bash", "-cil", command)
+            val shell = System.getenv()["SHELL"] ?: "bash"
+            val builder = ProcessBuilder(shell, "-lic", command)
+            builder.environment()["TERM"] = "xterm"  // needed for fish
+            return builder
         }
     }
 
