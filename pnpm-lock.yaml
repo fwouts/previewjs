@@ -2278,6 +2278,7 @@ packages:
       '@babel/core': 7.17.8
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-create-class-features-plugin': 7.17.6_@babel+core@7.17.8
+<<<<<<< Updated upstream
       '@babel/helper-plugin-utils': 7.16.7
       '@babel/plugin-syntax-private-property-in-object': 7.14.5_@babel+core@7.17.8
     transitivePeerDependencies:
@@ -2294,6 +2295,39 @@ packages:
       '@babel/helper-plugin-utils': 7.16.7
     dev: false
 
+  /@babel/plugin-proposal-unicode-property-regex/7.16.7_@babel+core@7.17.8:
+=======
+      '@babel/helper-plugin-utils': 7.16.7
+      '@babel/plugin-syntax-private-property-in-object': 7.14.5_@babel+core@7.17.8
+    transitivePeerDependencies:
+      - supports-color
+
+  /@babel/plugin-proposal-unicode-property-regex/7.16.7_@babel+core@7.12.3:
+>>>>>>> Stashed changes
+    resolution: {integrity: sha512-QRK0YI/40VLhNVGIjRNAAQkEHws0cswSdFFjpFyt943YmJIU1da9uW63Iu6NFV6CxTZW5eTDCrwZUstBWgp/Rg==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+<<<<<<< Updated upstream
+      '@babel/core': 7.17.8
+      '@babel/helper-create-regexp-features-plugin': 7.17.0_@babel+core@7.17.8
+      '@babel/helper-plugin-utils': 7.16.7
+
+  /@babel/plugin-syntax-async-generators/7.8.4_@babel+core@7.12.3:
+    resolution: {integrity: sha512-tycmZxkGfZaxhMRbXlPXuVFpdWlXpir2W4AMhSJgRKzk/eDlIXOhb2LHWoLpDF7TEHylV5zNhykX6KAgHJmTNw==}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+=======
+>>>>>>> Stashed changes
+      '@babel/core': 7.12.3
+      '@babel/helper-create-regexp-features-plugin': 7.17.0_@babel+core@7.12.3
+      '@babel/helper-plugin-utils': 7.16.7
+    dev: false
+
+<<<<<<< Updated upstream
+=======
   /@babel/plugin-proposal-unicode-property-regex/7.16.7_@babel+core@7.17.8:
     resolution: {integrity: sha512-QRK0YI/40VLhNVGIjRNAAQkEHws0cswSdFFjpFyt943YmJIU1da9uW63Iu6NFV6CxTZW5eTDCrwZUstBWgp/Rg==}
     engines: {node: '>=4'}
@@ -2313,6 +2347,7 @@ packages:
       '@babel/helper-plugin-utils': 7.16.7
     dev: false
 
+>>>>>>> Stashed changes
   /@babel/plugin-syntax-async-generators/7.8.4_@babel+core@7.17.8:
     resolution: {integrity: sha512-tycmZxkGfZaxhMRbXlPXuVFpdWlXpir2W4AMhSJgRKzk/eDlIXOhb2LHWoLpDF7TEHylV5zNhykX6KAgHJmTNw==}
     peerDependencies:
@@ -2684,6 +2719,7 @@ packages:
       '@babel/helper-plugin-utils': 7.16.7
 
   /@babel/plugin-transform-arrow-functions/7.16.7_@babel+core@7.12.3:
+<<<<<<< Updated upstream
     resolution: {integrity: sha512-9ffkFFMbvzTvv+7dTp/66xvZAWASuPD5Tl9LK3Z9vhOmANo6j94rik+5YMBt4CwHVMWLWpMsriIc2zsa3WW3xQ==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
@@ -2694,20 +2730,32 @@ packages:
     dev: false
 
   /@babel/plugin-transform-arrow-functions/7.16.7_@babel+core@7.17.8:
+=======
+>>>>>>> Stashed changes
     resolution: {integrity: sha512-9ffkFFMbvzTvv+7dTp/66xvZAWASuPD5Tl9LK3Z9vhOmANo6j94rik+5YMBt4CwHVMWLWpMsriIc2zsa3WW3xQ==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.17.8
+=======
+      '@babel/core': 7.12.3
+>>>>>>> Stashed changes
       '@babel/helper-plugin-utils': 7.16.7
 
+<<<<<<< Updated upstream
   /@babel/plugin-transform-async-to-generator/7.16.8_@babel+core@7.12.3:
     resolution: {integrity: sha512-MtmUmTJQHCnyJVrScNzNlofQJ3dLFuobYn3mwOTKHnSCMtbNsqvF71GQmJfFjdrXSsAA7iysFmYWw4bXZ20hOg==}
+=======
+  /@babel/plugin-transform-arrow-functions/7.16.7_@babel+core@7.17.8:
+    resolution: {integrity: sha512-9ffkFFMbvzTvv+7dTp/66xvZAWASuPD5Tl9LK3Z9vhOmANo6j94rik+5YMBt4CwHVMWLWpMsriIc2zsa3WW3xQ==}
+>>>>>>> Stashed changes
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.12.3
       '@babel/helper-module-imports': 7.16.7
       '@babel/helper-plugin-utils': 7.16.7
@@ -2717,11 +2765,46 @@ packages:
     dev: false
 
   /@babel/plugin-transform-async-to-generator/7.16.8_@babel+core@7.17.8:
+=======
+      '@babel/core': 7.17.8
+      '@babel/helper-plugin-utils': 7.16.7
+
+  /@babel/plugin-transform-async-to-generator/7.16.8_@babel+core@7.12.3:
+>>>>>>> Stashed changes
     resolution: {integrity: sha512-MtmUmTJQHCnyJVrScNzNlofQJ3dLFuobYn3mwOTKHnSCMtbNsqvF71GQmJfFjdrXSsAA7iysFmYWw4bXZ20hOg==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
+      '@babel/core': 7.17.8
+=======
+      '@babel/core': 7.12.3
+>>>>>>> Stashed changes
+      '@babel/helper-module-imports': 7.16.7
+      '@babel/helper-plugin-utils': 7.16.7
+      '@babel/helper-remap-async-to-generator': 7.16.8
+    transitivePeerDependencies:
+      - supports-color
+
+<<<<<<< Updated upstream
+  /@babel/plugin-transform-block-scoped-functions/7.16.7_@babel+core@7.12.3:
+    resolution: {integrity: sha512-JUuzlzmF40Z9cXyytcbZEZKckgrQzChbQJw/5PuEHYeqzCsvebDx0K0jWnIIVcmmDOAVctCgnYs0pMcrYj2zJg==}
+=======
+  /@babel/plugin-transform-async-to-generator/7.16.8_@babel+core@7.17.8:
+    resolution: {integrity: sha512-MtmUmTJQHCnyJVrScNzNlofQJ3dLFuobYn3mwOTKHnSCMtbNsqvF71GQmJfFjdrXSsAA7iysFmYWw4bXZ20hOg==}
+>>>>>>> Stashed changes
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+<<<<<<< Updated upstream
+      '@babel/core': 7.12.3
+      '@babel/helper-plugin-utils': 7.16.7
+    dev: false
+
+  /@babel/plugin-transform-block-scoped-functions/7.16.7_@babel+core@7.17.8:
+=======
       '@babel/core': 7.17.8
       '@babel/helper-module-imports': 7.16.7
       '@babel/helper-plugin-utils': 7.16.7
@@ -2730,49 +2813,66 @@ packages:
       - supports-color
 
   /@babel/plugin-transform-block-scoped-functions/7.16.7_@babel+core@7.12.3:
+>>>>>>> Stashed changes
     resolution: {integrity: sha512-JUuzlzmF40Z9cXyytcbZEZKckgrQzChbQJw/5PuEHYeqzCsvebDx0K0jWnIIVcmmDOAVctCgnYs0pMcrYj2zJg==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/core': 7.12.3
-      '@babel/helper-plugin-utils': 7.16.7
-    dev: false
-
-  /@babel/plugin-transform-block-scoped-functions/7.16.7_@babel+core@7.17.8:
-    resolution: {integrity: sha512-JUuzlzmF40Z9cXyytcbZEZKckgrQzChbQJw/5PuEHYeqzCsvebDx0K0jWnIIVcmmDOAVctCgnYs0pMcrYj2zJg==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.17.8
+=======
+      '@babel/core': 7.12.3
+>>>>>>> Stashed changes
       '@babel/helper-plugin-utils': 7.16.7
 
+<<<<<<< Updated upstream
   /@babel/plugin-transform-block-scoping/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-ObZev2nxVAYA4bhyusELdo9hb3H+A56bxH3FZMbEImZFiEDYVHXQSJ1hQKFlDnlt8G9bBrCZ5ZpURZUrV4G5qQ==}
+=======
+  /@babel/plugin-transform-block-scoped-functions/7.16.7_@babel+core@7.17.8:
+    resolution: {integrity: sha512-JUuzlzmF40Z9cXyytcbZEZKckgrQzChbQJw/5PuEHYeqzCsvebDx0K0jWnIIVcmmDOAVctCgnYs0pMcrYj2zJg==}
+>>>>>>> Stashed changes
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.12.3
       '@babel/helper-plugin-utils': 7.16.7
     dev: false
 
   /@babel/plugin-transform-block-scoping/7.16.7_@babel+core@7.17.8:
+=======
+      '@babel/core': 7.17.8
+      '@babel/helper-plugin-utils': 7.16.7
+
+  /@babel/plugin-transform-block-scoping/7.16.7_@babel+core@7.12.3:
+>>>>>>> Stashed changes
     resolution: {integrity: sha512-ObZev2nxVAYA4bhyusELdo9hb3H+A56bxH3FZMbEImZFiEDYVHXQSJ1hQKFlDnlt8G9bBrCZ5ZpURZUrV4G5qQ==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.17.8
+=======
+      '@babel/core': 7.12.3
+>>>>>>> Stashed changes
       '@babel/helper-plugin-utils': 7.16.7
 
+<<<<<<< Updated upstream
   /@babel/plugin-transform-classes/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-WY7og38SFAGYRe64BrjKf8OrE6ulEHtr5jEYaZMwox9KebgqPi67Zqz8K53EKk1fFEJgm96r32rkKZ3qA2nCWQ==}
+=======
+  /@babel/plugin-transform-block-scoping/7.16.7_@babel+core@7.17.8:
+    resolution: {integrity: sha512-ObZev2nxVAYA4bhyusELdo9hb3H+A56bxH3FZMbEImZFiEDYVHXQSJ1hQKFlDnlt8G9bBrCZ5ZpURZUrV4G5qQ==}
+>>>>>>> Stashed changes
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.12.3
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
@@ -2784,6 +2884,37 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@babel/plugin-transform-classes/7.16.7_@babel+core@7.17.8:
+=======
+      '@babel/core': 7.17.8
+      '@babel/helper-plugin-utils': 7.16.7
+
+  /@babel/plugin-transform-classes/7.16.7_@babel+core@7.12.3:
+>>>>>>> Stashed changes
+    resolution: {integrity: sha512-WY7og38SFAGYRe64BrjKf8OrE6ulEHtr5jEYaZMwox9KebgqPi67Zqz8K53EKk1fFEJgm96r32rkKZ3qA2nCWQ==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+<<<<<<< Updated upstream
+      '@babel/core': 7.17.8
+=======
+      '@babel/core': 7.12.3
+>>>>>>> Stashed changes
+      '@babel/helper-annotate-as-pure': 7.16.7
+      '@babel/helper-environment-visitor': 7.16.7
+      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-optimise-call-expression': 7.16.7
+      '@babel/helper-plugin-utils': 7.16.7
+      '@babel/helper-replace-supers': 7.16.7
+      '@babel/helper-split-export-declaration': 7.16.7
+      globals: 11.12.0
+    transitivePeerDependencies:
+      - supports-color
+<<<<<<< Updated upstream
+=======
     dev: false
 
   /@babel/plugin-transform-classes/7.16.7_@babel+core@7.17.8:
@@ -2803,6 +2934,7 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+>>>>>>> Stashed changes
 
   /@babel/plugin-transform-computed-properties/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-gN72G9bcmenVILj//sv1zLNaPyYcOzUho2lIJBMh/iakJ9ygCo/hEF9cpGb61SCMEDxbbyBoVQxrt+bWKu5KGw==}
@@ -3383,6 +3515,10 @@ packages:
       '@babel/core': 7.17.8
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-plugin-utils': 7.16.7
+<<<<<<< Updated upstream
+
+  /@babel/plugin-transform-regenerator/7.16.7_@babel+core@7.12.3:
+=======
 
   /@babel/plugin-transform-regenerator/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-mF7jOgGYCkSJagJ6XCujSQg+6xC1M77/03K2oBmVJWoFGNUtnVJO4WHKJk3dnPC8HCcj4xBQP1Egm8DWh3Pb3Q==}
@@ -3395,39 +3531,89 @@ packages:
     dev: false
 
   /@babel/plugin-transform-regenerator/7.16.7_@babel+core@7.17.8:
+>>>>>>> Stashed changes
     resolution: {integrity: sha512-mF7jOgGYCkSJagJ6XCujSQg+6xC1M77/03K2oBmVJWoFGNUtnVJO4WHKJk3dnPC8HCcj4xBQP1Egm8DWh3Pb3Q==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
+      '@babel/core': 7.12.3
+=======
       '@babel/core': 7.17.8
+>>>>>>> Stashed changes
       regenerator-transform: 0.14.5
 
+<<<<<<< Updated upstream
+  /@babel/plugin-transform-regenerator/7.16.7_@babel+core@7.17.8:
+    resolution: {integrity: sha512-mF7jOgGYCkSJagJ6XCujSQg+6xC1M77/03K2oBmVJWoFGNUtnVJO4WHKJk3dnPC8HCcj4xBQP1Egm8DWh3Pb3Q==}
+=======
   /@babel/plugin-transform-reserved-words/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-KQzzDnZ9hWQBjwi5lpY5v9shmm6IVG0U9pB18zvMu2i4H90xpT4gmqwPYsn8rObiadYe2M0gmgsiOIF5A/2rtg==}
+>>>>>>> Stashed changes
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
+      '@babel/core': 7.17.8
+      regenerator-transform: 0.14.5
+
+  /@babel/plugin-transform-reserved-words/7.16.7_@babel+core@7.12.3:
+=======
       '@babel/core': 7.12.3
       '@babel/helper-plugin-utils': 7.16.7
     dev: false
 
   /@babel/plugin-transform-reserved-words/7.16.7_@babel+core@7.17.8:
+>>>>>>> Stashed changes
     resolution: {integrity: sha512-KQzzDnZ9hWQBjwi5lpY5v9shmm6IVG0U9pB18zvMu2i4H90xpT4gmqwPYsn8rObiadYe2M0gmgsiOIF5A/2rtg==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+<<<<<<< Updated upstream
+      '@babel/core': 7.12.3
+=======
       '@babel/core': 7.17.8
+>>>>>>> Stashed changes
       '@babel/helper-plugin-utils': 7.16.7
 
+<<<<<<< Updated upstream
+  /@babel/plugin-transform-reserved-words/7.16.7_@babel+core@7.17.8:
+    resolution: {integrity: sha512-KQzzDnZ9hWQBjwi5lpY5v9shmm6IVG0U9pB18zvMu2i4H90xpT4gmqwPYsn8rObiadYe2M0gmgsiOIF5A/2rtg==}
+=======
   /@babel/plugin-transform-runtime/7.17.0_@babel+core@7.17.8:
     resolution: {integrity: sha512-fr7zPWnKXNc1xoHfrIU9mN/4XKX4VLZ45Q+oMhfsYIaHvg7mHgmhfOy/ckRWqDK7XF3QDigRpkh5DKq6+clE8A==}
+>>>>>>> Stashed changes
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+      '@babel/core': 7.17.8
+<<<<<<< Updated upstream
+      '@babel/helper-plugin-utils': 7.16.7
+
+  /@babel/plugin-transform-runtime/7.17.0_@babel+core@7.17.8:
+    resolution: {integrity: sha512-fr7zPWnKXNc1xoHfrIU9mN/4XKX4VLZ45Q+oMhfsYIaHvg7mHgmhfOy/ckRWqDK7XF3QDigRpkh5DKq6+clE8A==}
+=======
+      '@babel/helper-module-imports': 7.16.7
+      '@babel/helper-plugin-utils': 7.16.7
+      babel-plugin-polyfill-corejs2: 0.3.1_@babel+core@7.17.8
+      babel-plugin-polyfill-corejs3: 0.5.2_@babel+core@7.17.8
+      babel-plugin-polyfill-regenerator: 0.3.1_@babel+core@7.17.8
+      semver: 6.3.0
+    transitivePeerDependencies:
+      - supports-color
+
+  /@babel/plugin-transform-shorthand-properties/7.16.7_@babel+core@7.12.3:
+    resolution: {integrity: sha512-hah2+FEnoRoATdIb05IOXf+4GzXYTq75TVhIn1PewihbpyrNWUt2JbudKQOETWw6QpLe+AIUpJ5MVLYTQbeeUg==}
+>>>>>>> Stashed changes
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.17.8
       '@babel/helper-module-imports': 7.16.7
       '@babel/helper-plugin-utils': 7.16.7
@@ -3440,10 +3626,7 @@ packages:
 
   /@babel/plugin-transform-shorthand-properties/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-hah2+FEnoRoATdIb05IOXf+4GzXYTq75TVhIn1PewihbpyrNWUt2JbudKQOETWw6QpLe+AIUpJ5MVLYTQbeeUg==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
+=======
       '@babel/core': 7.12.3
       '@babel/helper-plugin-utils': 7.16.7
     dev: false
@@ -3459,10 +3642,38 @@ packages:
 
   /@babel/plugin-transform-spread/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-+pjJpgAngb53L0iaA5gU/1MLXJIfXcYepLgXB3esVRf4fqmj8f2cxM3/FKaHsZms08hFQJkFccEWuIpm429TXg==}
+>>>>>>> Stashed changes
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
+      '@babel/core': 7.12.3
+      '@babel/helper-plugin-utils': 7.16.7
+<<<<<<< Updated upstream
+    dev: false
+
+  /@babel/plugin-transform-shorthand-properties/7.16.7_@babel+core@7.17.8:
+    resolution: {integrity: sha512-hah2+FEnoRoATdIb05IOXf+4GzXYTq75TVhIn1PewihbpyrNWUt2JbudKQOETWw6QpLe+AIUpJ5MVLYTQbeeUg==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.17.8
+      '@babel/helper-plugin-utils': 7.16.7
+
+  /@babel/plugin-transform-spread/7.16.7_@babel+core@7.12.3:
+=======
+      '@babel/helper-skip-transparent-expression-wrappers': 7.16.0
+    dev: false
+
+  /@babel/plugin-transform-spread/7.16.7_@babel+core@7.17.8:
+>>>>>>> Stashed changes
+    resolution: {integrity: sha512-+pjJpgAngb53L0iaA5gU/1MLXJIfXcYepLgXB3esVRf4fqmj8f2cxM3/FKaHsZms08hFQJkFccEWuIpm429TXg==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+<<<<<<< Updated upstream
       '@babel/core': 7.12.3
       '@babel/helper-plugin-utils': 7.16.7
       '@babel/helper-skip-transparent-expression-wrappers': 7.16.0
@@ -3477,6 +3688,11 @@ packages:
       '@babel/core': 7.17.8
       '@babel/helper-plugin-utils': 7.16.7
       '@babel/helper-skip-transparent-expression-wrappers': 7.16.0
+=======
+      '@babel/core': 7.17.8
+      '@babel/helper-plugin-utils': 7.16.7
+      '@babel/helper-skip-transparent-expression-wrappers': 7.16.0
+>>>>>>> Stashed changes
 
   /@babel/plugin-transform-sticky-regex/7.16.7_@babel+core@7.12.3:
     resolution: {integrity: sha512-NJa0Bd/87QV5NZZzTuZG5BPJjLYadeSZ9fO6oOUoL4iQx+9EEuw/eEM92SrsT19Yc2jgB1u1hsjqDtH02c3Drw==}
@@ -13874,6 +14090,7 @@ packages:
     dev: false
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   /esbuild-android-64/0.14.29:
     resolution: {integrity: sha512-tJuaN33SVZyiHxRaVTo1pwW+rn3qetJX/SRuc/83rrKYtyZG0XfsQ1ao1nEudIt9w37ZSNXR236xEfm2C43sbw==}
     engines: {node: '>=12'}
@@ -13885,6 +14102,8 @@ packages:
   /esbuild-android-64/0.14.30:
     resolution: {integrity: sha512-vdJ7t8A8msPfKpYUGUV/KaTQRiZ0vDa2XSTlzXVkGGVHLKPeb85PBUtYJcEgw3htW3IdX5i1t1IMdQCwJJgNAg==}
 =======
+=======
+>>>>>>> Stashed changes
   /esbuild-android-64/0.14.31:
     resolution: {integrity: sha512-MYkuJ91w07nGmr4EouejOZK2j/f5TCnsKxY8vRr2+wpKKfHD1LTJK28VbZa+y1+AL7v1V9G98ezTUwsV3CmXNw==}
 >>>>>>> Stashed changes
@@ -13892,6 +14111,7 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     dev: true
     optional: true
@@ -13930,6 +14150,8 @@ packages:
     dev: true
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     optional: true
 
   /esbuild-android-arm64/0.14.31:
@@ -13938,6 +14160,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     dev: true
     optional: true
@@ -13965,6 +14188,8 @@ packages:
     os: [darwin]
     requiresBuild: true
     dev: true
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     optional: true
@@ -14002,8 +14227,13 @@ packages:
     optional: true
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   /esbuild-freebsd-64/0.14.30:
     resolution: {integrity: sha512-mec1jENcImVVagddZlGWsdAUwBnzR5cgnhzCxv+9fSMxKbx1uZYLLUAnLPp8m/i934zrumR1xGjJ5VoWdPlI2w==}
+=======
+  /esbuild-linux-32/0.14.31:
+    resolution: {integrity: sha512-XYtOk/GodSkv+UOYVwryGpGPuFnszsMvRMKq6cIUfFfdssHuKDsU9IZveyCG44J106J39ABenQ5EetbYtVJHUw==}
+>>>>>>> Stashed changes
 =======
   /esbuild-linux-32/0.14.31:
     resolution: {integrity: sha512-XYtOk/GodSkv+UOYVwryGpGPuFnszsMvRMKq6cIUfFfdssHuKDsU9IZveyCG44J106J39ABenQ5EetbYtVJHUw==}
@@ -14031,8 +14261,13 @@ packages:
     optional: true
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   /esbuild-freebsd-arm64/0.14.30:
     resolution: {integrity: sha512-cpjbTs6Iok/AfeB0JgTzyUJTMStC1SQULmany5nHx6S4GTkSgaAHuJzZO0GcVWqghI4e0YL/bjXAhN5Mn6feNw==}
+=======
+  /esbuild-linux-arm64/0.14.31:
+    resolution: {integrity: sha512-V/H0tv+xpQ9IOHM+o85oCKNNidIEc5CcnDWl0V+hPd2F03dqdbFkWPBGphx8rD4JSQn6UefUQ1iH7y1qIzO8Fw==}
+>>>>>>> Stashed changes
 =======
   /esbuild-linux-arm64/0.14.31:
     resolution: {integrity: sha512-V/H0tv+xpQ9IOHM+o85oCKNNidIEc5CcnDWl0V+hPd2F03dqdbFkWPBGphx8rD4JSQn6UefUQ1iH7y1qIzO8Fw==}
@@ -14060,8 +14295,13 @@ packages:
     optional: true
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   /esbuild-linux-32/0.14.30:
     resolution: {integrity: sha512-liIONVT4F2kZmOMwtwASqZ8WkIjb5HHBR9HUffdHiuotSTF3CyZO+EJf+Og+SYYuuVIvt0qHNSFjBA/iSESteQ==}
+=======
+  /esbuild-linux-riscv64/0.14.31:
+    resolution: {integrity: sha512-l13yvmsVfawAnoYfcpuvml+nTlrOmtdceXYufSkXl2DOb0JKcuR6ARlAzuQCDcpo49SOJy1cCxpwlOIsUQBfzA==}
+>>>>>>> Stashed changes
 =======
   /esbuild-linux-riscv64/0.14.31:
     resolution: {integrity: sha512-l13yvmsVfawAnoYfcpuvml+nTlrOmtdceXYufSkXl2DOb0JKcuR6ARlAzuQCDcpo49SOJy1cCxpwlOIsUQBfzA==}
@@ -14097,8 +14337,13 @@ packages:
     optional: true
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   /esbuild-linux-64/0.14.30:
     resolution: {integrity: sha512-LUnpzoMpRqFON5En4qEj6NWiyH6a1K+Y2qYNKrCy5qPTjDoG/EWeqMz69n8Uv7pRuvDKl3FNGJ1dufTrA5i0sw==}
+=======
+  /esbuild-sunos-64/0.14.31:
+    resolution: {integrity: sha512-9uA+V8w9Eehu4ldb95lPWdgCMcMO5HH6pXmfkk5usn3JsSZxKdLKsXB4hYgP80wscZvVYXJl2G+KNxsUTfPhZw==}
+>>>>>>> Stashed changes
 =======
   /esbuild-sunos-64/0.14.31:
     resolution: {integrity: sha512-9uA+V8w9Eehu4ldb95lPWdgCMcMO5HH6pXmfkk5usn3JsSZxKdLKsXB4hYgP80wscZvVYXJl2G+KNxsUTfPhZw==}
@@ -14115,6 +14360,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     dev: true
     optional: true
@@ -14468,6 +14714,8 @@ packages:
     dev: true
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     optional: true
 
   /esbuild-windows-64/0.14.31:
@@ -14478,8 +14726,13 @@ packages:
     requiresBuild: true
     optional: true
 
+<<<<<<< Updated upstream
   /esbuild-windows-arm64/0.14.30:
     resolution: {integrity: sha512-F1kLyQH7zSgjh5eLxogGZN7C9+KNs9m+s7Q6WZoMmCWT/6j998zlaoECHyM8izJRRfsvw2eZlEa1jO6/IOU1AQ==}
+=======
+  /esbuild-windows-arm64/0.14.31:
+    resolution: {integrity: sha512-RXeU42FJoG1sriNHg73h4S+5B7L/gw+8T7U9u8IWqSSEbY6fZvBh4uofugiU1szUDqqP00GHwZ09WgYe3lGZiw==}
+>>>>>>> Stashed changes
     engines: {node: '>=12'}
     cpu: [arm64]
     os: [win32]
@@ -14490,6 +14743,7 @@ packages:
     resolution: {integrity: sha512-iaiZZ9vUF5wJV8ob1tl+5aJTrwDczlvGP0JoMmnpC2B0ppiMCu8n8gmy5ZTGl5bcG081XBVn+U+jP+mPFm5T5Q==}
     hasBin: true
     requiresBuild: true
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     dev: true
 
@@ -14570,6 +14824,8 @@ packages:
       esbuild-windows-32: 0.14.30
       esbuild-windows-64: 0.14.30
       esbuild-windows-arm64: 0.14.30
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     dev: true
