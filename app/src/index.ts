@@ -1,5 +1,6 @@
 import type { SetupPreviewEnvironment } from "@previewjs/core";
 import { reactFrameworkPlugin } from "@previewjs/plugin-react";
+import { solidFrameworkPlugin } from "@previewjs/plugin-solid";
 import { vue2FrameworkPlugin } from "@previewjs/plugin-vue2";
 import { vue3FrameworkPlugin } from "@previewjs/plugin-vue3";
 import express from "express";
@@ -10,6 +11,7 @@ const setup: SetupPreviewEnvironment = async () => {
   return {
     frameworkPluginFactories: [
       reactFrameworkPlugin,
+      solidFrameworkPlugin,
       vue2FrameworkPlugin,
       vue3FrameworkPlugin,
     ],
