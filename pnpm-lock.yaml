@@ -50,7 +50,7 @@ importers:
       '@previewjs/config': 1.0.4
       '@previewjs/core': 2.0.0
       '@previewjs/loader': workspace:*
-      '@previewjs/plugin-react': 3.0.0
+      '@previewjs/plugin-react': 2.1.0
       '@previewjs/plugin-solid': 1.0.2
       '@previewjs/plugin-vue2': 2.0.3
       '@previewjs/plugin-vue3': 2.0.4
@@ -101,7 +101,7 @@ importers:
       '@monaco-editor/react': 4.4.1_55ae72ee85f73450ca6b27cb2ac63883
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
-      '@previewjs/plugin-react': link:../frameworks/react
+      '@previewjs/plugin-react': 2.1.0
       '@previewjs/plugin-solid': 1.0.2
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
@@ -480,7 +480,7 @@ importers:
       '@previewjs/config': 1.0.4
       '@previewjs/core': 2.0.0
       '@previewjs/loader': workspace:*
-      '@previewjs/plugin-react': 3.0.0
+      '@previewjs/plugin-react': 2.1.0
       '@previewjs/plugin-solid': 1.0.2
       '@previewjs/plugin-vue2': 2.0.3
       '@previewjs/plugin-vue3': 2.0.4
@@ -521,7 +521,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
-      '@previewjs/plugin-react': link:../frameworks/react
+      '@previewjs/plugin-react': 2.1.0
       '@previewjs/plugin-solid': 1.0.2
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
@@ -7532,6 +7532,18 @@ packages:
 
   /@popperjs/core/2.11.2:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
+    dev: false
+
+  /@previewjs/plugin-react/2.1.0:
+    resolution: {integrity: sha512-a6RuSD7x5d9VwunAEI9G18JhIEY2eJczhBGxgn0V5RvUN3dAPsRN0eJypr3mwjUGQqsYSVfYG5Rk9pJeGZ5JmQ==}
+    dependencies:
+      '@previewjs/type-analyzer': 2.0.2
+      '@previewjs/vfs': 1.1.3
+      '@svgr/core': 5.5.0
+      fs-extra: 10.0.1
+      typescript: 4.6.3
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@previewjs/plugin-solid/1.0.1:
@@ -16392,18 +16404,18 @@ packages:
       eslint-plugin-testing-library:
         optional: true
     dependencies:
-      '@typescript-eslint/eslint-plugin': 4.33.0_3289a875d95a672b97ebf589745c66ef
-      '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.5.4
+      '@typescript-eslint/eslint-plugin': 4.33.0_0c49e12669280545a7ea3f36dba6eb0a
+      '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.6.3
       babel-eslint: 10.1.0_eslint@7.32.0
       confusing-browser-globals: 1.0.11
       eslint: 7.32.0
       eslint-plugin-flowtype: 5.10.0_eslint@7.32.0
       eslint-plugin-import: 2.25.4_eslint@7.32.0
-      eslint-plugin-jest: 24.7.0_f42847b8cf886233a5558f157bd21430
+      eslint-plugin-jest: 24.7.0_012529635eb9b641f5155884af76fbb6
       eslint-plugin-jsx-a11y: 6.5.1_eslint@7.32.0
       eslint-plugin-react: 7.28.0_eslint@7.32.0
       eslint-plugin-react-hooks: 4.3.0_eslint@7.32.0
-      eslint-plugin-testing-library: 3.10.2_eslint@7.32.0+typescript@4.5.4
+      eslint-plugin-testing-library: 3.10.2_eslint@7.32.0+typescript@4.6.3
     dev: false
 
   /eslint-import-resolver-node/0.3.6:
@@ -23532,7 +23544,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.6.3
+      ts-pnp: 1.2.0_typescript@4.5.4
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -25652,7 +25664,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.6.3
+      ts-pnp: 1.2.0_typescript@4.5.4
       typescript: 4.6.3
       url-loader: 4.1.1_file-loader@6.1.1+webpack@4.44.2
       webpack: 4.44.2
