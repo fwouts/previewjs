@@ -27,14 +27,14 @@ const packages: Package[] = [
     dirPath: "app",
     tagName: "app",
     type: "npm",
-    ignoreDeps: ["loader"],
+    ignoreDeps: ["loader", "plugin-solid"],
   },
   {
     name: "pro",
     dirPath: "pro",
     tagName: "pro",
     type: "npm",
-    ignoreDeps: ["loader"],
+    ignoreDeps: ["loader", "plugin-solid"],
   },
   {
     name: "core",
