@@ -4,6 +4,7 @@ import execa from "execa";
 import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
+import { inspect } from "util";
 
 type Package = {
   name: string;
@@ -156,7 +157,9 @@ async function main() {
     );
     if (!nextPackageWithoutDeps) {
       throw new Error(
-        `Invalid state: no package left without updated dependencies.`
+        `Invalid state: no package left without updated dependencies.\n\nRemaining:\n${inspect(
+          localDependencies
+        )}`
       );
     }
     const scopedName = nextPackageWithoutDeps[0];
