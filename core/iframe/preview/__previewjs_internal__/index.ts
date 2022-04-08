@@ -1,17 +1,46 @@
 import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
-import { setUpLogInterception } from "./logs";
 import {
   AppToPreviewMessage,
   RenderMessage,
   sendMessageFromPreview,
 } from "./messages";
-import { detach } from "./renderer/index";
+import { detach, load as rendererLoad } from "./renderer/index";
 import { setState } from "./state";
+import { updateComponent } from "./update-component";
 
-setUpLogInterception();
+// setUpLogInterception();
 setUpLinkInterception();
 overrideCopyCutPaste();
+
+// TODO: Remove, just for testing.
+async function test() {
+  const wrapperModule = await import(
+    // @ts-ignore
+    "../__previewjs__/Wrapper.tsx"
+  );
+  const componentModule = await import(
+    // @ts-ignore
+    "../design/HeroHeader/HeroHeader.tsx"
+  );
+  setState({
+    filePath: "design/HeroHeader/HeroHeader.tsx",
+    componentName: "HeroHeader",
+    defaultPropsSource: "{}",
+    customVariantPropsSource: "properties = {}",
+    variantKey: "example",
+  });
+  await updateComponent({
+    wrapperModule,
+    wrapperName: "Wrapper",
+    componentModule,
+    componentFilePath: "design/HeroHeader/HeroHeader.tsx",
+    componentName: "HeroHeader",
+    loadingError: null,
+    load: rendererLoad,
+  });
+}
+test().catch(console.error);
 
 async function load({
   filePath,

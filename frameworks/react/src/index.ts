@@ -63,9 +63,6 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
             }),
             reactImportsPlugin(),
           ],
-          define: {
-            "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
-          },
         };
       },
     };

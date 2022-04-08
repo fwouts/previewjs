@@ -73,6 +73,43 @@ export class ViteManager {
   }
 
   async start(server: Server, port: number) {
+    const defaultLogger = vite.createLogger(this.options.logLevel);
+    this.viteServer = await vite.createServer({
+      ...(await this.viteConfig()),
+      server: {
+        middlewareMode: true,
+        hmr: {
+          overlay: false,
+          server,
+          clientPort: port,
+        },
+      },
+      customLogger: {
+        info: defaultLogger.info,
+        warn: defaultLogger.warn,
+        error: (message, options) => {
+          defaultLogger.error(message, options);
+          const errorMessage = options?.error?.stack
+            ? options.error.stack
+            : stripAnsi(message);
+          this.viteServer?.ws.send({
+            type: "error",
+            err: {
+              message: errorMessage,
+              stack: "",
+            },
+          });
+        },
+        warnOnce: defaultLogger.warnOnce,
+        clearScreen: () => {},
+        hasWarned: defaultLogger.hasWarned,
+        hasErrorLogged: defaultLogger.hasErrorLogged,
+      },
+      clearScreen: false,
+    });
+  }
+
+  async viteConfig(): Promise<vite.InlineConfig> {
     // Find valid tsconfig.json files.
     //
     // Useful when the project may contain some invalid files.
@@ -122,7 +159,6 @@ export class ViteManager {
       ...this.options.config.alias,
       ...this.options.config.vite?.resolve?.alias,
     };
-    const defaultLogger = vite.createLogger(this.options.logLevel);
     const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig({
       ...this.options.config,
       alias,
@@ -181,49 +217,18 @@ export class ViteManager {
         },
       };
     });
-
-    this.viteServer = await vite.createServer({
+    return {
       ...frameworkPluginViteConfig,
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
       base: "/preview/",
-      server: {
-        middlewareMode: true,
-        hmr: {
-          overlay: false,
-          server,
-          clientPort: port,
-        },
-      },
-      customLogger: {
-        info: defaultLogger.info,
-        warn: defaultLogger.warn,
-        error: (message, options) => {
-          defaultLogger.error(message, options);
-          const errorMessage = options?.error?.stack
-            ? options.error.stack
-            : stripAnsi(message);
-          this.viteServer?.ws.send({
-            type: "error",
-            err: {
-              message: errorMessage,
-              stack: "",
-            },
-          });
-        },
-        warnOnce: defaultLogger.warnOnce,
-        clearScreen: () => {},
-        hasWarned: defaultLogger.hasWarned,
-        hasErrorLogged: defaultLogger.hasErrorLogged,
-      },
-      clearScreen: false,
       cacheDir: this.options.config.vite?.cacheDir || this.options.cacheDir,
       publicDir:
         this.options.config.vite?.publicDir || this.options.config.publicDir,
       plugins,
       define: {
-        "process.env": process.env,
+        "process.env": "{RUNNING_INSIDE_PREVIEWJS: 1}",
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
@@ -238,7 +243,7 @@ export class ViteManager {
           ...frameworkPluginViteConfig.resolve?.alias,
         },
       },
-    });
+    };
   }
 
   async stop() {

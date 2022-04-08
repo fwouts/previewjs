@@ -1,9 +1,5 @@
 import type { RendererLoader } from "@previewjs/core/controller";
 import React from "react";
-// @ts-ignore Vite is fine with this
-import { version } from "react/package.json";
-
-const moduleName = parseInt(version) >= 18 ? "./render-18" : "./render-16";
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -45,13 +41,13 @@ export const load: RendererLoader = async ({
   return {
     variants,
     render: async (props) => {
-      const { render } = await import(/* @vite-ignore */ moduleName);
+      const { render } = await import("./render-16");
       await render(Renderer, props);
     },
   };
 };
 
 export async function detach() {
-  const { render } = await import(/* @vite-ignore */ moduleName);
+  const { render } = await import("./render-16");
   render(null, {});
 }

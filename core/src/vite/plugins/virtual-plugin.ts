@@ -31,7 +31,7 @@ export function virtualPlugin(options: {
       if (path.isAbsolute(id)) {
         absoluteId = id;
       } else {
-        if (!importer) {
+        if (!importer || importer.indexOf(`/node_modules/`) !== -1) {
           return null;
         }
         if (virtualImporter) {
