@@ -7,12 +7,7 @@ declare global {
   }
 }
 
-export const Link = (
-  props: React.DetailedHTMLProps<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  >
-) => {
+export const Link = (props: React.ComponentProps<"a">) => {
   const onClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       if (props.href) {
