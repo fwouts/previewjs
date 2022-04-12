@@ -75,7 +75,7 @@ importers:
       eslint-plugin-react-hooks: 4.4.0
       execa: 5.1.1
       express: 4.17.3
-      framer-motion: 6.2.8
+      framer-motion: 6.2.9
       fs-extra: 10.0.1
       lodash: 4.17.21
       mobx: 6.5.0
@@ -111,7 +111,7 @@ importers:
       axios: 0.26.1
       clsx: 1.1.1
       express: 4.17.3
-      framer-motion: 6.2.8_react-dom@18.0.0+react@18.0.0
+      framer-motion: 6.2.9_react-dom@18.0.0+react@18.0.0
       mobx: 6.5.0
       mobx-react-lite: 3.3.0_ec6945183068133ff61c88d19e8f3079
       monaco-editor: 0.33.0
@@ -194,7 +194,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
       '@types/jest': 27.4.1
-      '@types/prettier': 2.4.4
+      '@types/prettier': 2.6.0
       '@types/uuid': 8.3.4
       acorn: 8.7.0
       assert-never: 1.2.1
@@ -210,7 +210,7 @@ importers:
       recrawl: 2.2.1
       rimraf: 3.0.2
       rollup-plugin-friendly-type-imports: 1.0.3
-      sass: 1.49.11
+      sass: 1.50.0
       shx: 0.3.4
       strip-ansi: '6'
       ts-jest: 27.1.4
@@ -236,19 +236,19 @@ importers:
       prettier: 2.6.2
       recrawl: 2.2.1
       rollup-plugin-friendly-type-imports: 1.0.3
-      sass: 1.49.11
+      sass: 1.50.0
       strip-ansi: 6.0.1
       tsconfig-paths: 3.14.1
       typescript: 4.6.3
       uuid: 8.3.2
-      vite: 2.9.1_sass@1.49.11
+      vite: 2.9.1_sass@1.50.0
       vite-tsconfig-paths: 3.4.1_vite@2.9.1
     devDependencies:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
       '@types/jest': 27.4.1
-      '@types/prettier': 2.4.4
+      '@types/prettier': 2.6.0
       '@types/uuid': 8.3.4
       jest: 28.0.0-alpha.8_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
@@ -9887,6 +9887,10 @@ packages:
   /@types/prettier/2.4.4:
     resolution: {integrity: sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==}
 
+  /@types/prettier/2.6.0:
+    resolution: {integrity: sha512-G/AdOadiZhnJp0jXCaBQU449W2h716OW/EoXeYkCytxKL06X1WCXB4DZpp8TpZ8eyIJVS1cw4lrlkkSYU21cDw==}
+    dev: true
+
   /@types/pretty-hrtime/1.0.1:
     resolution: {integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==}
     dev: true
@@ -17870,8 +17874,8 @@ packages:
     dependencies:
       map-cache: 0.2.2
 
-  /framer-motion/6.2.8_react-dom@18.0.0+react@18.0.0:
-    resolution: {integrity: sha512-4PtBWFJ6NqR350zYVt9AsFDtISTqsdqna79FvSYPfYDXuuqFmiKtZdkTnYPslnsOMedTW0pEvaQ7eqjD+sA+HA==}
+  /framer-motion/6.2.9_react-dom@18.0.0+react@18.0.0:
+    resolution: {integrity: sha512-XMP4Z5j9KlGw8aeo7n8BXTJFbt1Vv5XRzHVOKiAna1yBG4SPwTdk/8bJRfztYb0Jmw90hzBTC/3Q2dhfdtXisQ==}
     peerDependencies:
       react: '>=16.8 || ^17.0.0 || ^18.0.0'
       react-dom: '>=16.8 || ^17.0.0 || ^18.0.0'
@@ -27190,8 +27194,8 @@ packages:
       source-map-js: 1.0.1
     dev: false
 
-  /sass/1.49.11:
-    resolution: {integrity: sha512-wvS/geXgHUGs6A/4ud5BFIWKO1nKd7wYIGimDk4q4GFkJicILActpv9ueMT4eRGSsp1BdKHuw1WwAHXbhsJELQ==}
+  /sass/1.50.0:
+    resolution: {integrity: sha512-cLsD6MEZ5URXHStxApajEh7gW189kkjn4Rc8DQweMyF+o5HF5nfEz8QYLMlPsTOD88DknatTmBWkOcw5/LnJLQ==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
@@ -30327,7 +30331,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.1
       tsconfig-paths: 3.14.1
-      vite: 2.9.1_sass@1.49.11
+      vite: 2.9.1_sass@1.50.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -30379,7 +30383,7 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vite/2.9.1_sass@1.49.11:
+  /vite/2.9.1_sass@1.50.0:
     resolution: {integrity: sha512-vSlsSdOYGcYEJfkQ/NeLXgnRv5zZfpAsdztkIrs7AZHV8RCMZQkwjo4DS5BnrYTqoWqLoUe1Cah4aVO4oNNqCQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
@@ -30399,7 +30403,7 @@ packages:
       postcss: 8.4.12
       resolve: 1.22.0
       rollup: 2.70.1
-      sass: 1.49.11
+      sass: 1.50.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: false
