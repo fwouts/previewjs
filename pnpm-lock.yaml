@@ -264,7 +264,7 @@ importers:
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.1
-      '@types/prop-types': 15.7.4
+      '@types/prop-types': 15.7.5
       '@types/react': 17.0.44
       fs-extra: ^10.0.0
       jest: 28.0.0-alpha.8
@@ -284,7 +284,7 @@ importers:
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.1
-      '@types/prop-types': 15.7.4
+      '@types/prop-types': 15.7.5
       '@types/react': 17.0.44
       jest: 28.0.0-alpha.8_9d72220e8b849b9689c7359a2f2e2419
       next: 12.1.4
@@ -294,13 +294,13 @@ importers:
 
   frameworks/react/preview:
     specifiers:
-      '@types/prop-types': 15.7.4
+      '@types/prop-types': 15.7.5
       '@types/react': 17.0.44
       '@types/react-dom': 17.0.14
       rimraf: 3.0.2
       shx: 0.3.4
     dependencies:
-      '@types/prop-types': 15.7.4
+      '@types/prop-types': 15.7.5
       '@types/react': 17.0.44
       '@types/react-dom': 17.0.14
     devDependencies:
@@ -9898,6 +9898,9 @@ packages:
   /@types/prop-types/15.7.4:
     resolution: {integrity: sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==}
 
+  /@types/prop-types/15.7.5:
+    resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+
   /@types/pug/2.0.4:
     resolution: {integrity: sha1-h3L80EGOPNLMFxVV1zAHQVBR9LI=}
     dev: true
@@ -9995,7 +9998,7 @@ packages:
   /@types/react/17.0.44:
     resolution: {integrity: sha512-Ye0nlw09GeMp2Suh8qoOv0odfgCoowfM/9MG6WeRD60Gq9wS90bdkdRtYbRkNhXOpG4H+YXGvj4wOWhAC0LJ1g==}
     dependencies:
-      '@types/prop-types': 15.7.4
+      '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.0.10
 
