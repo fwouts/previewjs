@@ -85,11 +85,8 @@ export async function createWorkspace({
       },
     };
   });
-  router.onRequest(localEndpoints.GetState, persistedStateManager.getState);
-  router.onRequest(
-    localEndpoints.UpdateState,
-    persistedStateManager.updateState
-  );
+  router.onRequest(localEndpoints.GetState, persistedStateManager.get);
+  router.onRequest(localEndpoints.UpdateState, persistedStateManager.update);
   router.onRequest(
     localEndpoints.ComputeProps,
     async ({ filePath, componentName }) => {
