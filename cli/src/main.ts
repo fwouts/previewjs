@@ -39,14 +39,14 @@ program
       return {
         ...env,
         persistedStateManager: {
-          getEndpoint: async (_, req) => {
+          get: async (_, req) => {
             const cookie = req.cookies["state"];
             if (cookie) {
               return JSON.parse(cookie);
             }
             return {};
           },
-          updateEndpoint: async (partialState, req, res) => {
+          update: async (partialState, req, res) => {
             const existingCookie = req.cookies["state"];
             let existingState: PersistedState = {};
             if (existingCookie) {
