@@ -10,11 +10,13 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import * as vite from "vite";
+import { analyzeProject, ProjectAnalysis } from "./analyze-project";
 import { computeProps } from "./compute-props";
 import { PersistedStateManager } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
+export type { ProjectAnalysis } from "./analyze-project";
 export { generateComponentId } from "./component-id";
 export { PersistedStateManager } from "./persisted-state";
 export type {
@@ -52,23 +54,6 @@ export async function createWorkspace({
     throw new Error(
       `Detected incompatible Preview.js framework plugin. Please install latest version of ${frameworkPlugin.name}.`
     );
-  }
-  let cacheDirPath: string;
-  try {
-    const { version } = JSON.parse(
-      fs.readFileSync(
-        path.resolve(__dirname, "..", "..", "package.json"),
-        "utf8"
-      )
-    );
-    cacheDirPath = path.resolve(
-      rootDirPath,
-      "node_modules",
-      ".previewjs",
-      `v${version}`
-    );
-  } catch (e) {
-    throw new Error(`Unable to detect @previewjs/core version.`);
   }
   if (frameworkPlugin.transformReader) {
     reader = frameworkPlugin.transformReader(reader, rootDirPath);
@@ -112,7 +97,6 @@ export async function createWorkspace({
         return null;
       }
       return computeProps({
-        rootDirPath,
         component,
       });
     }
@@ -121,7 +105,6 @@ export async function createWorkspace({
     reader,
     rootDirPath,
     previewDirPath: path.join(__dirname, "..", "..", "iframe", "preview"),
-    cacheDirPath,
     frameworkPlugin,
     logLevel,
     middlewares: [
@@ -174,6 +157,11 @@ export async function createWorkspace({
         };
       },
     },
+    components: {
+      list: (options) => {
+        return analyzeProject(workspace, options);
+      },
+    },
     dispose: async () => {
       typeAnalyzer.dispose();
     },
@@ -208,6 +196,9 @@ export interface Workspace {
   frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
+  };
+  components: {
+    list(options?: { forceRefresh?: boolean }): Promise<ProjectAnalysis>;
   };
   dispose(): Promise<void>;
 }

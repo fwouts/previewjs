@@ -5,10 +5,8 @@ import { generateTypeDeclarations } from "./generators/generate-type-declaration
 import { Component } from "./plugins/framework";
 
 export async function computeProps({
-  rootDirPath,
   component,
 }: {
-  rootDirPath: string;
   component: Component;
 }): Promise<localEndpoints.PreviewSources> {
   const result = await component.analyze();
