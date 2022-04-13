@@ -75,7 +75,6 @@ async function analyzeProjectCore(
       exported: component.exported,
     });
   }
-  workspace.dispose();
   return components;
 }
 
