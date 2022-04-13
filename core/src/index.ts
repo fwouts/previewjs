@@ -5,6 +5,7 @@ import {
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import { Reader } from "@previewjs/vfs";
+import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
@@ -12,13 +13,16 @@ import path from "path";
 import * as vite from "vite";
 import { analyzeProject, ProjectAnalysis } from "./analyze-project";
 import { computeProps } from "./compute-props";
-import { PersistedStateManager } from "./persisted-state";
+import {
+  LocalFilePersistedStateManager,
+  PersistedStateManager,
+} from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { ProjectAnalysis } from "./analyze-project";
 export { generateComponentId } from "./component-id";
-export { PersistedStateManager } from "./persisted-state";
+export type { PersistedStateManager } from "./persisted-state";
 export type {
   Component,
   ComponentAnalysis,
@@ -39,7 +43,7 @@ export async function createWorkspace({
   logLevel,
   middlewares,
   onReady,
-  persistedStateManager = new PersistedStateManager(),
+  persistedStateManager = new LocalFilePersistedStateManager(),
 }: {
   versionCode: string;
   rootDirPath: string;
@@ -81,10 +85,8 @@ export async function createWorkspace({
       },
     };
   });
-  router.onRequest(localEndpoints.GetState, () => persistedStateManager.get());
-  router.onRequest(localEndpoints.UpdateState, (stateUpdate) =>
-    persistedStateManager.update(stateUpdate)
-  );
+  router.onRequest(localEndpoints.GetState, persistedStateManager.get);
+  router.onRequest(localEndpoints.UpdateState, persistedStateManager.update);
   router.onRequest(
     localEndpoints.ComputeProps,
     async ({ filePath, componentName }) => {
@@ -109,6 +111,7 @@ export async function createWorkspace({
     logLevel,
     middlewares: [
       express.json(),
+      cookieParser(),
       express
         .Router()
         .use(
@@ -117,7 +120,7 @@ export async function createWorkspace({
         ),
       async (req, res, next) => {
         if (req.path.startsWith("/api/")) {
-          res.json(await router.handle(req.path.substr(5), req.body));
+          res.json(await router.handle(req.path.substr(5), req.body, req, res));
         } else {
           next();
         }
