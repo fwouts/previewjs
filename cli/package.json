@@ -18,6 +18,7 @@
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "dependencies": {
+    "@previewjs/api": "workspace:*",
     "@previewjs/app": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@previewjs/loader": "workspace:*",
@@ -26,6 +27,7 @@
     "commander": "8.3.0"
   },
   "devDependencies": {
+    "@types/express": "4.17.13",
     "@types/node": "17.0.8",
     "cross-env": "7.0.3",
     "ts-node-dev": "1.1.8",

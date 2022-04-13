@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-import app from "@previewjs/app";
+import { PersistedState } from "@previewjs/api";
 import * as core from "@previewjs/core";
 import { init } from "@previewjs/loader";
+import setupEnvironment from "@previewjs/pro";
 import * as vfs from "@previewjs/vfs";
 import { program } from "commander";
 import { readFileSync } from "fs";
@@ -33,7 +34,38 @@ program
   .option(...PORT_OPTION)
   .option(...VERBOSE_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    const previewjs = await init(core, vfs, app);
+    const previewjs = await init(core, vfs, async ({ rootDirPath }) => {
+      const env = await setupEnvironment({ rootDirPath });
+      return {
+        ...env,
+        persistedStateManager: {
+          getEndpoint: async (_, req) => {
+            const cookie = req.cookies["state"];
+            if (cookie) {
+              return JSON.parse(cookie);
+            }
+            return {};
+          },
+          updateEndpoint: async (partialState, req, res) => {
+            const existingCookie = req.cookies["state"];
+            let existingState: PersistedState = {};
+            if (existingCookie) {
+              existingState = JSON.parse(existingCookie);
+            }
+            const state = {
+              ...existingState,
+              ...partialState,
+            };
+            res.cookie("state", JSON.stringify(state), {
+              maxAge: 1000 * 3600 * 24 * 365,
+              httpOnly: true,
+              sameSite: "strict",
+            });
+            return state;
+          },
+        },
+      };
+    });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
       absoluteFilePath: dirPath || process.cwd(),
