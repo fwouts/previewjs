@@ -415,7 +415,7 @@ class PackageJsonModifier {
       dependencies: Object.fromEntries(
         Object.entries(dependencies).map(([depName, depVersion]) => [
           depName,
-          depName === name ? version : depVersion,
+          depName === name ? `^${version}` : depVersion,
         ])
       ),
       devDependencies,
@@ -429,19 +429,6 @@ class PackageJsonModifier {
       "utf8"
     );
   }
-}
-
-async function replaceInFile(
-  absoluteFilePath: string,
-  search: RegExp,
-  replacement: string
-) {
-  const originalContent = await fs.promises.readFile(absoluteFilePath, "utf8");
-  const updatedContent = originalContent.replace(search, replacement);
-  if (originalContent === updatedContent) {
-    throw new Error(`No change in ${absoluteFilePath}`);
-  }
-  await fs.promises.writeFile(absoluteFilePath, updatedContent, "utf8");
 }
 
 main().catch((e) => {

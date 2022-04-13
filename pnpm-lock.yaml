@@ -40,22 +40,22 @@ importers:
 
   app:
     specifiers:
-      '@fortawesome/fontawesome-svg-core': 6.1.1
-      '@fortawesome/free-brands-svg-icons': 6.1.1
-      '@fortawesome/free-regular-svg-icons': 6.1.1
-      '@fortawesome/free-solid-svg-icons': 6.1.1
-      '@fortawesome/react-fontawesome': 0.1.18
-      '@monaco-editor/react': 4.4.2
+      '@fortawesome/fontawesome-svg-core': ^6.1.1
+      '@fortawesome/free-brands-svg-icons': ^6.1.1
+      '@fortawesome/free-regular-svg-icons': ^6.1.1
+      '@fortawesome/free-solid-svg-icons': ^6.1.1
+      '@fortawesome/react-fontawesome': ^0.1.18
+      '@monaco-editor/react': ^4.4.2
       '@previewjs/api': workspace:*
-      '@previewjs/config': 1.0.4
-      '@previewjs/core': 2.0.0
+      '@previewjs/config': ^1.0.4
+      '@previewjs/core': ^2.0.0
       '@previewjs/loader': workspace:*
-      '@previewjs/plugin-react': 3.0.1
-      '@previewjs/plugin-solid': 1.0.2
-      '@previewjs/plugin-vue2': 3.0.0
-      '@previewjs/plugin-vue3': 3.0.0
-      '@previewjs/vfs': 1.1.3
-      '@react-hook/window-size': 3.0.7
+      '@previewjs/plugin-react': ^3.0.1
+      '@previewjs/plugin-solid': ^1.0.2
+      '@previewjs/plugin-vue2': ^3.0.0
+      '@previewjs/plugin-vue3': ^3.0.0
+      '@previewjs/vfs': ^1.1.3
+      '@react-hook/window-size': ^3.0.7
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/lodash': 4.14.181
@@ -64,9 +64,9 @@ importers:
       '@types/rimraf': 3.0.2
       '@typescript-eslint/parser': 5.19.0
       '@vitejs/plugin-react': 1.3.0
-      assert-never: 1.2.1
+      assert-never: ^1.2.1
       autoprefixer: 10.4.4
-      axios: 0.26.1
+      axios: ^0.26.1
       caller-callsite: 4.1.0
       chalk: 4.1.2
       clsx: ^1.1.1
@@ -74,17 +74,17 @@ importers:
       eslint-plugin-react: 7.29.4
       eslint-plugin-react-hooks: 4.4.0
       execa: 5.1.1
-      express: 4.17.3
-      framer-motion: 6.2.10
+      express: ^4.17.3
+      framer-motion: ^6.2.10
       fs-extra: 10.0.1
       lodash: 4.17.21
-      mobx: 6.5.0
-      mobx-react-lite: 3.3.0
-      monaco-editor: 0.33.0
+      mobx: ^6.5.0
+      mobx-react-lite: ^3.3.0
+      monaco-editor: ^0.33.0
       playwright: 1.21.0
       postcss: 8.4.12
-      react: 18.0.0
-      react-dom: 18.0.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
       rimraf: 3.0.2
       tailwindcss: 3.0.24
       ts-node: 10.7.0
@@ -155,7 +155,7 @@ importers:
       '@previewjs/pro': workspace:*
       '@previewjs/vfs': workspace:*
       '@types/node': 17.0.8
-      commander: 8.3.0
+      commander: ^8.3.0
       cross-env: 7.0.3
       ts-node-dev: 1.1.8
       typescript: 4.6.3
@@ -186,10 +186,10 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': 2.0.1
-      '@previewjs/config': 1.0.4
-      '@previewjs/type-analyzer': 2.0.3
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/api': ^2.0.1
+      '@previewjs/config': ^1.0.4
+      '@previewjs/type-analyzer': ^2.0.3
+      '@previewjs/vfs': ^1.1.3
       '@types/cookie-parser': 1.4.2
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
@@ -197,31 +197,31 @@ importers:
       '@types/jest': 27.4.1
       '@types/prettier': 2.6.0
       '@types/uuid': 8.3.4
-      acorn: 8.7.0
-      assert-never: 1.2.1
-      chokidar: 3.5.3
-      cookie-parser: 1.4.6
-      env-paths: '2'
-      express: 4.17.3
-      fs-extra: 10.0.1
-      get-port: '5'
+      acorn: ^8.7.0
+      assert-never: ^1.2.1
+      chokidar: ^3.5.3
+      cookie-parser: ^1.4.6
+      env-paths: ^2
+      express: ^4.17.3
+      fs-extra: ^10.0.1
+      get-port: ^5
       glob: ^7.2.0
-      http-terminator: 3.2.0
+      http-terminator: ^3.2.0
       jest: 28.0.0-alpha.8
-      monaco-editor: 0.33.0
-      prettier: 2.6.2
-      recrawl: 2.2.1
+      monaco-editor: ^0.33.0
+      prettier: ^2.6.2
+      recrawl: ^2.2.1
       rimraf: 3.0.2
-      rollup-plugin-friendly-type-imports: 1.0.3
-      sass: 1.50.0
+      rollup-plugin-friendly-type-imports: ^1.0.3
+      sass: ^1.50.0
       shx: 0.3.4
-      strip-ansi: '6'
+      strip-ansi: ^6
       ts-jest: 27.1.4
-      tsconfig-paths: 3.14.1
-      typescript: 4.6.3
-      uuid: 8.3.2
-      vite: 2.9.1
-      vite-tsconfig-paths: 3.4.1
+      tsconfig-paths: ^3.14.1
+      typescript: ^4.6.3
+      uuid: ^8.3.2
+      vite: ^2.9.1
+      vite-tsconfig-paths: ^3.4.1
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
@@ -265,8 +265,8 @@ importers:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 2.0.3
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/type-analyzer': ^2.0.3
+      '@previewjs/vfs': ^1.1.3
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.1
@@ -300,9 +300,9 @@ importers:
 
   frameworks/react/preview:
     specifiers:
-      '@types/prop-types': 15.7.5
-      '@types/react': 17.0.44
-      '@types/react-dom': 18.0.0
+      '@types/prop-types': ^15.7.5
+      '@types/react': ^17.0.44
+      '@types/react-dom': ^18.0.0
       rimraf: 3.0.2
       shx: 0.3.4
     dependencies:
@@ -318,8 +318,8 @@ importers:
       '@nuxt/config': ^2.15.8
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 2.0.3
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/type-analyzer': ^2.0.3
+      '@previewjs/vfs': ^1.1.3
       '@types/fs-extra': 9.0.13
       '@types/jest': 27.4.1
       fs-extra: ^10.0.0
@@ -354,7 +354,7 @@ importers:
     specifiers:
       rimraf: 3.0.2
       shx: 0.3.4
-      vue: 2.6.14
+      vue: ^2.6.14
     dependencies:
       vue: 2.6.14
     devDependencies:
@@ -365,8 +365,8 @@ importers:
     specifiers:
       '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': 2.0.3
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/type-analyzer': ^2.0.3
+      '@previewjs/vfs': ^1.1.3
       '@types/jest': 27.4.1
       '@vitejs/plugin-vue': ^2.0.1
       '@vitejs/plugin-vue-jsx': ^1.2.0
@@ -398,13 +398,13 @@ importers:
 
   frameworks/vue3/preview:
     specifiers:
-      '@vue/reactivity': 3.2.32
-      '@vue/runtime-core': 3.2.32
-      '@vue/runtime-dom': 3.2.32
-      '@vue/shared': 3.2.32
+      '@vue/reactivity': ^3.2.32
+      '@vue/runtime-core': ^3.2.32
+      '@vue/runtime-dom': ^3.2.32
+      '@vue/shared': ^3.2.32
       rimraf: 3.0.2
       shx: 0.3.4
-      vue: 3.2.32
+      vue: ^3.2.32
     dependencies:
       '@vue/reactivity': 3.2.32
       '@vue/runtime-core': 3.2.32
@@ -478,19 +478,19 @@ importers:
 
   pro:
     specifiers:
-      '@fortawesome/fontawesome-svg-core': 6.1.1
-      '@fortawesome/free-solid-svg-icons': 6.1.1
-      '@fortawesome/react-fontawesome': 0.1.18
+      '@fortawesome/fontawesome-svg-core': ^6.1.1
+      '@fortawesome/free-solid-svg-icons': ^6.1.1
+      '@fortawesome/react-fontawesome': ^0.1.18
       '@previewjs/api': workspace:*
       '@previewjs/app': workspace:*
-      '@previewjs/config': 1.0.4
-      '@previewjs/core': 2.0.0
+      '@previewjs/config': ^1.0.4
+      '@previewjs/core': ^2.0.0
       '@previewjs/loader': workspace:*
-      '@previewjs/plugin-react': 3.0.1
-      '@previewjs/plugin-solid': 1.0.2
-      '@previewjs/plugin-vue2': 3.0.0
-      '@previewjs/plugin-vue3': 3.0.0
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/plugin-react': ^3.0.1
+      '@previewjs/plugin-solid': ^1.0.2
+      '@previewjs/plugin-vue2': ^3.0.0
+      '@previewjs/plugin-vue3': ^3.0.0
+      '@previewjs/vfs': ^1.1.3
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/react': 17.0.44
@@ -516,7 +516,7 @@ importers:
       tailwindcss: 3.0.24
       typescript: 4.6.3
       universal-base64: ^2.1.0
-      uuid: 8.3.2
+      uuid: ^8.3.2
       vite: 2.9.1
       vite-plugin-svgr: 0.6.0
     dependencies:
@@ -1104,7 +1104,7 @@ importers:
     dependencies:
       vue: 3.2.26
     devDependencies:
-      nuxt3: 3.0.0-27496606.e43ba6e
+      nuxt3: 3.0.0-27497374.59593a0
 
   smoke-test-apps/solid-js:
     specifiers:
@@ -1417,7 +1417,7 @@ importers:
 
   type-analyzer:
     specifiers:
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/vfs': ^1.1.3
       '@types/lodash': 4.14.181
       assert-never: ^1.2.1
       lodash: ^4.17.21
@@ -1456,7 +1456,7 @@ importers:
       '@types/jest': 27.4.1
       '@types/lodash': 4.14.181
       assert-never: ^1.2.1
-      chokidar: 3.5.3
+      chokidar: ^3.5.3
       fs-extra: ^10.0.1
       jest: 28.0.0-alpha.8
       lodash: 4.17.21
@@ -6880,11 +6880,11 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/kit-edge/3.0.0-27496606.e43ba6e:
-    resolution: {integrity: sha512-ULQzA2zoj0eEkz+UjBjVgYoJt8tHLY58kqXip/OvH65683Nld0MJ2cHMpjkgSXv8o/n/AfXU7u18flx26Y4bJA==}
+  /@nuxt/kit-edge/3.0.0-27497374.59593a0:
+    resolution: {integrity: sha512-YivYgL8gaZXSJhKlxZHF5qfQacA55CYVAJidJee4kuOM122ZIOdHf3kVTtXfhBu4dkczLbwpSK44cdZ0eGhzKA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27496606.e43ba6e
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27497374.59593a0
       c12: 0.2.5
       consola: 2.15.3
       defu: 6.0.0
@@ -6910,11 +6910,11 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-27496606.e43ba6e_83dd4d1a11bf7faa2d41f89ea3fae952:
-    resolution: {integrity: sha512-ULQzA2zoj0eEkz+UjBjVgYoJt8tHLY58kqXip/OvH65683Nld0MJ2cHMpjkgSXv8o/n/AfXU7u18flx26Y4bJA==}
+  /@nuxt/kit-edge/3.0.0-27497374.59593a0_83dd4d1a11bf7faa2d41f89ea3fae952:
+    resolution: {integrity: sha512-YivYgL8gaZXSJhKlxZHF5qfQacA55CYVAJidJee4kuOM122ZIOdHf3kVTtXfhBu4dkczLbwpSK44cdZ0eGhzKA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27496606.e43ba6e_83dd4d1a11bf7faa2d41f89ea3fae952
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27497374.59593a0_83dd4d1a11bf7faa2d41f89ea3fae952
       c12: 0.2.5
       consola: 2.15.3
       defu: 6.0.0
@@ -6975,8 +6975,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27496606.e43ba6e:
-    resolution: {integrity: sha512-7NfOhOJg+Y5D/BjVI+97armzsO9C2V6ByujKid6EkNvIOzmAigmCCsVi7X1+21oZJI0HmnuhhiNoVYcU0pCkbw==}
+  /@nuxt/schema-edge/3.0.0-27497374.59593a0:
+    resolution: {integrity: sha512-YokNDkFV1n6RZMFCP34L2KwoEc+Jj7JRvYpcb8g/ILNnfPy1apXGZKW/xVW2+bOpIZGUqo34KbZgZTFQ/9RJtA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       c12: 0.2.5
@@ -6996,8 +6996,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-27496606.e43ba6e_83dd4d1a11bf7faa2d41f89ea3fae952:
-    resolution: {integrity: sha512-7NfOhOJg+Y5D/BjVI+97armzsO9C2V6ByujKid6EkNvIOzmAigmCCsVi7X1+21oZJI0HmnuhhiNoVYcU0pCkbw==}
+  /@nuxt/schema-edge/3.0.0-27497374.59593a0_83dd4d1a11bf7faa2d41f89ea3fae952:
+    resolution: {integrity: sha512-YokNDkFV1n6RZMFCP34L2KwoEc+Jj7JRvYpcb8g/ILNnfPy1apXGZKW/xVW2+bOpIZGUqo34KbZgZTFQ/9RJtA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     dependencies:
       c12: 0.2.5
@@ -7129,13 +7129,13 @@ packages:
       ufo: 0.7.9
     dev: false
 
-  /@nuxt/vite-builder-edge/3.0.0-27496606.e43ba6e_vue@3.2.32:
-    resolution: {integrity: sha512-MKc/3cls4PFlOj9ZFwlxD9YsrjrNC4jPWM2Np9HTpCEDCcVorpiaeGOpPx4V2Q456l4lQRqoYZjO4X8XQFThnA==}
+  /@nuxt/vite-builder-edge/3.0.0-27497374.59593a0_vue@3.2.32:
+    resolution: {integrity: sha512-rL5nr0XqEDf5Yt72ydQkLutuIU+Pffuzxq1uDlNZdDkjjM1akiedoWNPpxrK8satPd5/pRVDdeGEhaTEKVKLFA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     peerDependencies:
       vue: 3.2.32
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27496606.e43ba6e_83dd4d1a11bf7faa2d41f89ea3fae952
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27497374.59593a0_83dd4d1a11bf7faa2d41f89ea3fae952
       '@vitejs/plugin-vue': 2.3.1_vite@2.9.1+vue@3.2.32
       '@vitejs/plugin-vue-jsx': 1.3.9
       autoprefixer: 10.4.4_postcss@8.4.12
@@ -9515,9 +9515,9 @@ packages:
       postcss: 7.0.39
       postcss-functions: 3.0.0
       postcss-js: 2.0.3
-      postcss-load-config: 3.1.1_ts-node@10.7.0
+      postcss-load-config: 3.1.4_postcss@7.0.39+ts-node@10.7.0
       postcss-nested: 4.2.3
-      postcss-selector-parser: 6.0.9
+      postcss-selector-parser: 6.0.10
       postcss-value-parser: 4.2.0
       pretty-hrtime: 1.0.3
       purgecss: 4.1.3
@@ -10694,7 +10694,7 @@ packages:
       debug: 4.3.3
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.3.6
+      semver: 7.3.7
       tsutils: 3.21.0_typescript@4.6.3
       typescript: 4.6.3
     transitivePeerDependencies:
@@ -11685,8 +11685,8 @@ packages:
     resolution: {integrity: sha512-Iu8Tbg3f+emIIMmI2ycSI8QcEuAUgPTgHwesDU1eKMLE4YC/c/sFbGc70QgMq31ijRftV0R7vCm9co6rldCeOA==}
     dev: true
 
-  /@vueuse/head/0.7.5_vue@3.2.32:
-    resolution: {integrity: sha512-L+XQ5Act0nT/ZyO8Qo10J4FyM1qPOyQb6MT4MMn6+AITzrStpmKs/nUDDLJKD/rCcNWl/65XbdQm4T2vKp3VOQ==}
+  /@vueuse/head/0.7.6_vue@3.2.32:
+    resolution: {integrity: sha512-cOWqCkT3WiF5oEpw+VVEWUJd9RLD5rc7DmnFp3cePsejp+t7686uKD9Z9ZU7Twb7R/BI8iexKTmXo9D/F3v6UA==}
     peerDependencies:
       vue: '>=3'
     dependencies:
@@ -14748,7 +14748,7 @@ packages:
       postcss: ^8.2.15
     dependencies:
       cssnano-preset-default: 5.2.7_postcss@8.4.12
-      lilconfig: 2.0.4
+      lilconfig: 2.0.5
       postcss: 8.4.12
       yaml: 1.10.2
     dev: true
@@ -17452,17 +17452,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18132,8 +18121,8 @@ packages:
     resolution: {integrity: sha512-C9MbuWVQ88mGb3lmqtp/iqXdALBo34oyjrVT1hx+FYRgcQReNXiKWvzXM6eQdpp4MWQkMGNnp4tlRBT7wsgmmg==}
     dev: true
 
-  /h3/0.7.2:
-    resolution: {integrity: sha512-fupR1TmeWgT/90agQTJeMXBm0QdRwFcCY8iWzUkia6Km7eP2xlGAnx3XNJ3sTBp8++TfI0u8Lpj4GSL2hdUbtg==}
+  /h3/0.7.3:
+    resolution: {integrity: sha512-4Gz3vukxfZC53pMDfmzUI7mSb3HUqId6tmnrDGck9HuXQzG09tDWOOigfnIFODZrYmySaCUg7OnNnplrsoogKw==}
     dependencies:
       cookie-es: 0.5.0
       destr: 1.1.1
@@ -18673,7 +18662,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -22143,7 +22132,7 @@ packages:
       fs-extra: 10.0.1
       globby: 13.1.1
       gzip-size: 7.0.0
-      h3: 0.7.2
+      h3: 0.7.3
       hasha: 5.2.2
       hookable: 5.1.1
       http-proxy: 1.18.1
@@ -22478,8 +22467,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /nuxi-edge/3.0.0-27496606.e43ba6e:
-    resolution: {integrity: sha512-HLviKUTE7A2JC5kW8zhmaSNkxWKd2pamUn1QPxZYLzu+PNVnQDoKvFzk2DJ3baIDjZatUSHJBD3D/0qidFlc4A==}
+  /nuxi-edge/3.0.0-27497374.59593a0:
+    resolution: {integrity: sha512-se8L38eCNtZk7qPu0XZacIlGgL8eHd8Li5FTLhfmm4UbCaPKO7W309Skx20bkCm42N9v4rkiDgVsuZ8XAYevfw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     optionalDependencies:
@@ -22517,18 +22506,18 @@ packages:
       - webpack-command
     dev: false
 
-  /nuxt3/3.0.0-27496606.e43ba6e:
-    resolution: {integrity: sha512-fI91bEWu3LYhnGRvrfjQMXtSDqJ8eG7y4TGSuHZEwhY9txo7Cz/hpij+vB77xWEht0Hfo7BV6Dy1pDRfD0sjRg==}
+  /nuxt3/3.0.0-27497374.59593a0:
+    resolution: {integrity: sha512-ll/iIaRGLXffA+FVsg7EN+VWcP1HLWIn7WIQRWpUjJ/2J+jtCWIH3ETTYn8ikSaA9/v86PSakxmw4cKkL4greA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0}
     hasBin: true
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27496606.e43ba6e
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27496606.e43ba6e
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-27497374.59593a0
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-27497374.59593a0
       '@nuxt/ui-templates': /@nuxt/ui-templates-edge/0.0.0-27479051.598a8a0
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27496606.e43ba6e_vue@3.2.32
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-27497374.59593a0_vue@3.2.32
       '@vue/reactivity': 3.2.32
       '@vue/shared': 3.2.32
-      '@vueuse/head': 0.7.5_vue@3.2.32
+      '@vueuse/head': 0.7.6_vue@3.2.32
       chokidar: 3.5.3
       cookie-es: 0.5.0
       defu: 6.0.0
@@ -22536,14 +22525,14 @@ packages:
       escape-string-regexp: 5.0.0
       fs-extra: 10.0.1
       globby: 13.1.1
-      h3: 0.7.2
+      h3: 0.7.3
       hash-sum: 2.0.0
       hookable: 5.1.1
       knitwork: 0.1.1
       magic-string: 0.26.1
       mlly: 0.5.1
       nitropack: 0.2.7
-      nuxi: /nuxi-edge/3.0.0-27496606.e43ba6e
+      nuxi: /nuxi-edge/3.0.0-27497374.59593a0
       ohash: 0.1.0
       ohmyfetch: 0.4.15
       pathe: 0.2.0
@@ -23494,7 +23483,7 @@ packages:
       postcss: ^8.2.2
     dependencies:
       postcss: 8.4.12
-      postcss-selector-parser: 6.0.9
+      postcss-selector-parser: 6.0.10
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -23846,6 +23835,24 @@ packages:
       yaml: 1.10.2
     dev: true
 
+  /postcss-load-config/3.1.4_postcss@7.0.39+ts-node@10.7.0:
+    resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
+    engines: {node: '>= 10'}
+    peerDependencies:
+      postcss: '>=8.0.9'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      lilconfig: 2.0.5
+      postcss: 7.0.39
+      ts-node: 10.7.0_22ec373cc6e5c139fea80a5e1bbc5c61
+      yaml: 1.10.2
+    dev: true
+
   /postcss-load-config/3.1.4_postcss@8.4.12+ts-node@10.7.0:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
     engines: {node: '>= 10'}
@@ -23960,7 +23967,7 @@ packages:
       caniuse-api: 3.0.0
       cssnano-utils: 3.1.0_postcss@8.4.12
       postcss: 8.4.12
-      postcss-selector-parser: 6.0.9
+      postcss-selector-parser: 6.0.10
     dev: true
 
   /postcss-minify-font-values/4.0.2:
@@ -24040,7 +24047,7 @@ packages:
       postcss: ^8.2.15
     dependencies:
       postcss: 8.4.12
-      postcss-selector-parser: 6.0.9
+      postcss-selector-parser: 6.0.10
     dev: true
 
   /postcss-modules-extract-imports/2.0.0:
@@ -24116,7 +24123,7 @@ packages:
     resolution: {integrity: sha512-rOv0W1HquRCamWy2kFl3QazJMMe1ku6rCFoAAH+9AcxdbpDeBr6k968MLWuLjvjMcGEip01ak09hKOEgpK9hvw==}
     dependencies:
       postcss: 7.0.39
-      postcss-selector-parser: 6.0.9
+      postcss-selector-parser: 6.0.10
     dev: true
 
   /postcss-nested/5.0.6_postcss@8.4.12:
@@ -24560,7 +24567,7 @@ packages:
       postcss: ^8.2.15
     dependencies:
       postcss: 8.4.12
-      postcss-selector-parser: 6.0.9
+      postcss-selector-parser: 6.0.10
     dev: true
 
   /postcss-url/10.1.3_postcss@8.4.12:
@@ -28067,7 +28074,7 @@ packages:
     dependencies:
       browserslist: 4.20.2
       postcss: 8.4.12
-      postcss-selector-parser: 6.0.9
+      postcss-selector-parser: 6.0.10
     dev: true
 
   /stylis-rule-sheet/0.0.10_stylis@3.5.4:
