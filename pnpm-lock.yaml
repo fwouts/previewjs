@@ -7414,7 +7414,7 @@ packages:
   /@previewjs/plugin-solid/1.0.1:
     resolution: {integrity: sha512-q+eHa/pfoBsSiwCpi8MzgNiz5qDoqOei1UM5zRhPBfS6WQYEYwJUgNPJQeiFnQC32SjQyqQBdY3FIsQQctGyZg==}
     dependencies:
-      '@previewjs/type-analyzer': 2.0.2
+      '@previewjs/type-analyzer': 2.0.3
       '@previewjs/vfs': 1.1.3
       fs-extra: 10.0.1
       vite-plugin-solid: 2.2.6
@@ -7428,7 +7428,7 @@ packages:
   /@previewjs/plugin-solid/1.0.2:
     resolution: {integrity: sha512-/tHiAwep50nm/E1NpQz+FSsyQVLX0rOYp5WHHeu5IJzBlTe/7JAENuP2a39CT5SK5nT4rF2GOE7IEPHOi+Iavw==}
     dependencies:
-      '@previewjs/type-analyzer': 2.0.2
+      '@previewjs/type-analyzer': 2.0.3
       '@previewjs/vfs': 1.1.3
       fs-extra: 10.0.1
       typescript: 4.6.3
@@ -7440,11 +7440,12 @@ packages:
       - supports-color
     dev: false
 
-  /@previewjs/type-analyzer/2.0.2:
-    resolution: {integrity: sha512-z0Rs5qgfrSZN9tWdpBrRvSkFpSj0cIPdvG6rcc9cZK6ISqCFJn9M1aJwlGqaFEUCnCC1r+h7KkymGqSquqNotw==}
+  /@previewjs/type-analyzer/2.0.3:
+    resolution: {integrity: sha512-aiB1nusSd0R6QSKJzKqSTdL9Y9A5SLXPfES1FcCdEu0bSXb3VJL8DWtj1GOi86Guyh/o6VTIsISzpDXt/PMgtg==}
     dependencies:
       '@previewjs/vfs': 1.1.3
       assert-never: 1.2.1
+      lodash: 4.17.21
       typescript: 4.6.3
     dev: false
 
@@ -17528,6 +17529,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.14.8_debug@4.3.3:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
+
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18738,7 +18750,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
