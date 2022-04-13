@@ -5,8 +5,14 @@ import * as core from "@previewjs/core";
 import { init } from "@previewjs/loader";
 import setupEnvironment from "@previewjs/pro";
 import * as vfs from "@previewjs/vfs";
+import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
+import { prompt, registerPrompt } from "inquirer";
+import autocompletePrompt from "inquirer-autocomplete-prompt";
+import open from "open";
+
+registerPrompt("autocomplete", autocompletePrompt);
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -29,12 +35,16 @@ interface SharedOptions {
   verbose: boolean;
 }
 
+const noComponentOption = chalk.blueBright("Skip component selection");
+const forceRefreshOption = chalk.magenta("Refresh component list");
+
 program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .option(...VERBOSE_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    const previewjs = await init(core, vfs, async ({ rootDirPath }) => {
+    const rootDirPath = dirPath || process.cwd();
+    const previewjs = await init(core, vfs, async () => {
       const env = await setupEnvironment({ rootDirPath });
       return {
         ...env,
@@ -68,14 +78,59 @@ program
     });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
-      absoluteFilePath: dirPath || process.cwd(),
+      absoluteFilePath: rootDirPath,
       logLevel: "info",
     });
     if (!workspace) {
-      throw new Error(`No supported framework was detected in ${dirPath}`);
+      throw new Error(`No supported framework was detected in ${rootDirPath}`);
     }
     const port = parseInt(options.port);
-    await workspace.preview.start(async () => port);
+    await promptComponent();
+
+    async function promptComponent(forceRefresh = false): Promise<void> {
+      console.log(`Analyzing project for components...`);
+      const { components, cached } = await workspace!.components.list({
+        forceRefresh,
+      });
+      if (cached) {
+        console.log(`Using cached component list from previous run.`);
+      }
+      const allComponents = Object.entries(components)
+        .map(([filePath, fileComponents]) =>
+          fileComponents.map(({ componentName, exported }) => ({
+            filePath,
+            componentName,
+            exported,
+          }))
+        )
+        .flat();
+      const { componentId } = await prompt([
+        {
+          type: "autocomplete",
+          name: "componentId",
+          message: "Select a component",
+          source: (_: unknown, input = "") => [
+            ...(!input ? [noComponentOption, forceRefreshOption] : []),
+            ...allComponents
+              .filter(
+                ({ filePath, componentName }) =>
+                  filePath.toLowerCase().includes(input.toLowerCase()) ||
+                  componentName.toLowerCase().includes(input.toLowerCase())
+              )
+              .map(
+                ({ filePath, componentName }) => `${filePath}:${componentName}`
+              ),
+          ],
+        },
+      ]);
+      if (componentId === forceRefreshOption) {
+        return promptComponent(true);
+      }
+      await workspace!.preview.start(async () => port);
+      const pathSuffix =
+        componentId === noComponentOption ? "" : `/?p=${componentId}`;
+      open(`http://localhost:${port}${pathSuffix}`);
+    }
   });
 
 program.parseAsync(process.argv).catch((e) => {
