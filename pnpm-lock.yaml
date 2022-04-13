@@ -50,7 +50,7 @@ importers:
       '@previewjs/config': ^1.0.4
       '@previewjs/core': ^2.1.0
       '@previewjs/loader': workspace:*
-      '@previewjs/plugin-react': ^3.0.2
+      '@previewjs/plugin-react': ^3.0.1
       '@previewjs/plugin-solid': ^1.0.2
       '@previewjs/plugin-vue2': ^3.0.0
       '@previewjs/plugin-vue3': ^3.0.0
@@ -103,7 +103,7 @@ importers:
       '@previewjs/core': link:../core
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-solid': 1.0.2
-      '@previewjs/plugin-vue2': link:../frameworks/vue2
+      '@previewjs/plugin-vue2': 3.0.1_vite@2.9.1
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@previewjs/vfs': link:../vfs
       '@react-hook/window-size': 3.0.7_react@18.0.0
@@ -500,7 +500,7 @@ importers:
       '@previewjs/config': ^1.0.4
       '@previewjs/core': ^2.1.0
       '@previewjs/loader': workspace:*
-      '@previewjs/plugin-react': ^3.0.2
+      '@previewjs/plugin-react': ^3.0.1
       '@previewjs/plugin-solid': ^1.0.2
       '@previewjs/plugin-vue2': ^3.0.0
       '@previewjs/plugin-vue3': ^3.0.0
@@ -541,7 +541,7 @@ importers:
       '@previewjs/core': link:../core
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-solid': 1.0.2
-      '@previewjs/plugin-vue2': link:../frameworks/vue2
+      '@previewjs/plugin-vue2': 3.0.1_vite@2.9.1
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -7456,6 +7456,22 @@ packages:
       - supports-color
     dev: false
 
+  /@previewjs/plugin-vue2/3.0.1_vite@2.9.1:
+    resolution: {integrity: sha512-PTyheKk8ZyXk6im6/c3kI+g1Ha48HJ9LDpS0mFEuyL0uXPOaoVp8tVST1a178zndrBRdTwtrXVYeDci1tXVqzg==}
+    dependencies:
+      '@nuxt/config': 2.15.8
+      '@previewjs/type-analyzer': 2.0.4
+      '@previewjs/vfs': 1.1.4
+      fs-extra: 10.0.1
+      typescript: 4.6.3
+      vite-plugin-vue2: 1.9.3_1fbe351b36f927d48c27a4a7ec773da4
+      vue: 2.6.14
+      vue-template-compiler: 2.6.14
+    transitivePeerDependencies:
+      - supports-color
+      - vite
+    dev: false
+
   /@previewjs/type-analyzer/2.0.3:
     resolution: {integrity: sha512-aiB1nusSd0R6QSKJzKqSTdL9Y9A5SLXPfES1FcCdEu0bSXb3VJL8DWtj1GOi86Guyh/o6VTIsISzpDXt/PMgtg==}
     dependencies:
@@ -7465,8 +7481,25 @@ packages:
       typescript: 4.6.3
     dev: false
 
+  /@previewjs/type-analyzer/2.0.4:
+    resolution: {integrity: sha512-TMvRml/rUNc6UXLTUYcZvj4DBDIRsc8zJ4G9PV6dnB9Xb4Qk4p/HZKPNVnw0xajUsVKd7u2d2qYaFGzmyT/d9Q==}
+    dependencies:
+      '@previewjs/vfs': 1.1.4
+      assert-never: 1.2.1
+      lodash: 4.17.21
+      typescript: 4.6.3
+    dev: false
+
   /@previewjs/vfs/1.1.3:
     resolution: {integrity: sha512-FdgJy7FyanXiU8HpF+VWI6DuxTFjezP/7EpJuotB0BkUPiMjaKzfdfZD1jJmT/WxQmmX553y2N4YhNvJ4OvTWQ==}
+    dependencies:
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      fs-extra: 10.0.1
+    dev: false
+
+  /@previewjs/vfs/1.1.4:
+    resolution: {integrity: sha512-kifLgGATzAXZls/hB9A5cUL+I+7CNpr+mq9KL2yOKfxaGDfrMSxKhtqd1p8VC9beDIfMrsg80CWYn/J5tBKJ+w==}
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -16286,18 +16319,18 @@ packages:
       eslint-plugin-testing-library:
         optional: true
     dependencies:
-      '@typescript-eslint/eslint-plugin': 4.33.0_3289a875d95a672b97ebf589745c66ef
-      '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.5.4
+      '@typescript-eslint/eslint-plugin': 4.33.0_0c49e12669280545a7ea3f36dba6eb0a
+      '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.6.3
       babel-eslint: 10.1.0_eslint@7.32.0
       confusing-browser-globals: 1.0.11
       eslint: 7.32.0
       eslint-plugin-flowtype: 5.10.0_eslint@7.32.0
       eslint-plugin-import: 2.25.4_eslint@7.32.0
-      eslint-plugin-jest: 24.7.0_f42847b8cf886233a5558f157bd21430
+      eslint-plugin-jest: 24.7.0_012529635eb9b641f5155884af76fbb6
       eslint-plugin-jsx-a11y: 6.5.1_eslint@7.32.0
       eslint-plugin-react: 7.28.0_eslint@7.32.0
       eslint-plugin-react-hooks: 4.3.0_eslint@7.32.0
-      eslint-plugin-testing-library: 3.10.2_eslint@7.32.0+typescript@4.5.4
+      eslint-plugin-testing-library: 3.10.2_eslint@7.32.0+typescript@4.6.3
     dev: false
 
   /eslint-import-resolver-node/0.3.6:
@@ -17466,6 +17499,17 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+
+  /follow-redirects/1.14.8_debug@4.3.3:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -18677,7 +18721,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -23422,7 +23466,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.6.3
+      ts-pnp: 1.2.0_typescript@4.5.4
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -25587,7 +25631,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.6.3
+      ts-pnp: 1.2.0_typescript@4.5.4
       typescript: 4.6.3
       url-loader: 4.1.1_file-loader@6.1.1+webpack@4.44.2
       webpack: 4.44.2
