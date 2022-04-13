@@ -45,7 +45,7 @@ importers:
       '@fortawesome/free-regular-svg-icons': 6.1.1
       '@fortawesome/free-solid-svg-icons': 6.1.1
       '@fortawesome/react-fontawesome': 0.1.18
-      '@monaco-editor/react': 4.4.1
+      '@monaco-editor/react': 4.4.2
       '@previewjs/api': workspace:*
       '@previewjs/config': 1.0.4
       '@previewjs/core': 2.0.0
@@ -98,7 +98,7 @@ importers:
       '@fortawesome/free-regular-svg-icons': 6.1.1
       '@fortawesome/free-solid-svg-icons': 6.1.1
       '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
-      '@monaco-editor/react': 4.4.1_55ae72ee85f73450ca6b27cb2ac63883
+      '@monaco-editor/react': 4.4.2_55ae72ee85f73450ca6b27cb2ac63883
       '@previewjs/config': link:../config
       '@previewjs/core': link:../core
       '@previewjs/plugin-react': link:../frameworks/react
@@ -6135,12 +6135,12 @@ packages:
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react/4.4.1_55ae72ee85f73450ca6b27cb2ac63883:
-    resolution: {integrity: sha512-95E/XPC4dbm/7qdkhSsU/a1kRgcn2PYhRTVIc+/cixWCZrwRURW1DRPaIZ2lOawBJ6kAOLywxuD4A4UmbT0ZIw==}
+  /@monaco-editor/react/4.4.2_55ae72ee85f73450ca6b27cb2ac63883:
+    resolution: {integrity: sha512-QwQKkP5zXK8oA6uMpZcyQqYKQbMFUIE1Z9gPhYajk4qXdt/kGCu3RvO9SGKGlS9MSciCyd3WjEksVMDoyxQk4w==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
-      react: ^16.8.0 || ^17.0.0
-      react-dom: ^16.8.0 || ^17.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       '@monaco-editor/loader': 1.3.0_monaco-editor@0.33.0
       monaco-editor: 0.33.0
