@@ -24,15 +24,9 @@ const PORT_OPTION = [
   "Port number on which to run the Preview.js server",
   "8120",
 ] as const;
-const VERBOSE_OPTION = [
-  "-v, --verbose",
-  "Enable verbose logging",
-  false,
-] as const;
 
 interface SharedOptions {
   port: string;
-  verbose: boolean;
 }
 
 const noComponentOption = chalk.blueBright("Skip component selection");
@@ -41,7 +35,6 @@ const forceRefreshOption = chalk.magenta("Refresh component list");
 program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
-  .option(...VERBOSE_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
     const rootDirPath = path.resolve(dirPath || process.cwd());
     let setupEnvironment: core.SetupPreviewEnvironment;
