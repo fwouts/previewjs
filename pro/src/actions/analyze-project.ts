@@ -34,37 +34,41 @@ export async function analyzeProject(
   if (!workspace) {
     throw new Error(`Unable to create workspace`);
   }
-  // Jest + TypeScript + fork = unhappy days.
-  const blocking = options.blocking || !!process.env["JEST_WORKER_ID"];
-  if (blocking) {
-    return await workspace.components.list(options);
-  }
-  const subprocess = fork(
-    path.join(__dirname, "analyze-project", "subprocess"),
-    [
-      rootDirPath,
-      JSON.stringify({
-        ...options,
-        blocking: true,
-      }),
-    ],
-    {
-      cwd: process.cwd(),
-      silent: true,
+  try {
+    // Jest + TypeScript + fork = unhappy days.
+    const blocking = options.blocking || !!process.env["JEST_WORKER_ID"];
+    if (blocking) {
+      return await workspace.components.list(options);
     }
-  );
-  subprocess.stderr!.pipe(process.stderr);
-  let subprocessErrorOutput = "";
-  subprocess.stderr!.on("data", (data) => {
-    subprocessErrorOutput += `${data}`;
-  });
-  const components = await new Promise<ProjectAnalysis>((resolve, reject) => {
-    subprocess.on("exit", (code) => {
-      if (code !== null && code !== 0) {
-        reject(new Error(subprocessErrorOutput));
+    const subprocess = fork(
+      path.join(__dirname, "analyze-project", "subprocess"),
+      [
+        rootDirPath,
+        JSON.stringify({
+          ...options,
+          blocking: true,
+        }),
+      ],
+      {
+        cwd: process.cwd(),
+        silent: true,
       }
+    );
+    subprocess.stderr!.pipe(process.stderr);
+    let subprocessErrorOutput = "";
+    subprocess.stderr!.on("data", (data) => {
+      subprocessErrorOutput += `${data}`;
     });
-    subprocess.on("message", resolve);
-  });
-  return components;
+    const components = await new Promise<ProjectAnalysis>((resolve, reject) => {
+      subprocess.on("exit", (code) => {
+        if (code !== null && code !== 0) {
+          reject(new Error(subprocessErrorOutput));
+        }
+      });
+      subprocess.on("message", resolve);
+    });
+    return components;
+  } finally {
+    await workspace.dispose();
+  }
 }
