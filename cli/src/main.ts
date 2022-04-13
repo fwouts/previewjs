@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
-import { load } from "@previewjs/loader";
+import app from "@previewjs/app";
+import * as core from "@previewjs/core";
+import { init } from "@previewjs/loader";
+import * as vfs from "@previewjs/vfs";
 import { program } from "commander";
 import { readFileSync } from "fs";
 
@@ -30,10 +33,7 @@ program
   .option(...PORT_OPTION)
   .option(...VERBOSE_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    const previewjs = await load({
-      installDir: process.env.PREVIEWJS_MODULES_DIR || "..",
-      packageName: process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/app",
-    });
+    const previewjs = await init(core, vfs, app);
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
       absoluteFilePath: dirPath || process.cwd(),
