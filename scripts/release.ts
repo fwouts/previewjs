@@ -37,6 +37,12 @@ const packages: Package[] = [
     ignoreDeps: ["loader", "plugin-solid"],
   },
   {
+    name: "cli",
+    dirPath: "cli",
+    tagName: "cli",
+    type: "npm",
+  },
+  {
     name: "core",
     dirPath: "core",
     tagName: "core",
