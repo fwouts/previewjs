@@ -1,44 +1,53 @@
+import {
+  createWorkspace,
+  loadPreviewEnv,
+  ProjectAnalysis,
+} from "@previewjs/core";
+import { createFileSystemReader } from "@previewjs/vfs";
 import { fork } from "child_process";
-import fs from "fs-extra";
 import path from "path";
-import { getDefaultCacheDir } from "../caching/default-cache-dir";
-import { analyzeProjectCore } from "./analyze-project/core";
+import setupEnvironment from "..";
 
 export async function analyzeProject(
   rootDirPath: string,
   options: {
+    blocking?: boolean;
     forceRefresh?: boolean;
   } = {}
-): Promise<ProjectAnalysis> {
-  const cacheFilePath = path.join(
-    getDefaultCacheDir(rootDirPath),
-    "components.json"
-  );
-  useCache: if (!options.forceRefresh && (await fs.pathExists(cacheFilePath))) {
-    const stat = await fs.stat(cacheFilePath);
-    if (stat.mtimeMs < Date.now() - 24 * 3600 * 1000) {
-      // We want to force refresh once a day at least.
-      break useCache;
-    }
-    return {
-      components: JSON.parse(await fs.readFile(cacheFilePath, "utf8")),
-      cached: true,
-    };
+) {
+  const loaded = await loadPreviewEnv({
+    rootDirPath,
+    setupEnvironment,
+  });
+  if (!loaded) {
+    throw new Error(`Unable to create preview environment`);
   }
-  const components = await analyzeBackground(rootDirPath);
-  await fs.mkdirp(path.dirname(cacheFilePath));
-  await fs.writeFile(cacheFilePath, JSON.stringify(components));
-  return { components, cached: false };
-}
-
-async function analyzeBackground(rootDirPath: string) {
-  if (process.env["JEST_WORKER_ID"]) {
-    // Jest + TypeScript + fork = unhappy days.
-    return await analyzeProjectCore(rootDirPath);
+  const { frameworkPlugin } = loaded;
+  const workspace = await createWorkspace({
+    versionCode: "",
+    rootDirPath,
+    reader: createFileSystemReader(),
+    frameworkPlugin,
+    middlewares: [],
+    logLevel: "silent",
+  });
+  if (!workspace) {
+    throw new Error(`Unable to create workspace`);
+  }
+  // Jest + TypeScript + fork = unhappy days.
+  const blocking = options.blocking || !!process.env["JEST_WORKER_ID"];
+  if (blocking) {
+    return await workspace.components.list(options);
   }
   const subprocess = fork(
     path.join(__dirname, "analyze-project", "subprocess"),
-    [rootDirPath],
+    [
+      rootDirPath,
+      JSON.stringify({
+        ...options,
+        blocking: true,
+      }),
+    ],
     {
       cwd: process.cwd(),
       silent: true,
@@ -49,15 +58,7 @@ async function analyzeBackground(rootDirPath: string) {
   subprocess.stderr!.on("data", (data) => {
     subprocessErrorOutput += `${data}`;
   });
-  const components = await new Promise<
-    Record<
-      string,
-      Array<{
-        componentName: string;
-        exported: boolean;
-      }>
-    >
-  >((resolve, reject) => {
+  const components = await new Promise<ProjectAnalysis>((resolve, reject) => {
     subprocess.on("exit", (code) => {
       if (code !== null && code !== 0) {
         reject(new Error(subprocessErrorOutput));
@@ -67,16 +68,3 @@ async function analyzeBackground(rootDirPath: string) {
   });
   return components;
 }
-
-export interface ProjectAnalysis {
-  components: ProjectComponents;
-  cached: boolean;
-}
-
-export type ProjectComponents = Record<
-  string,
-  Array<{
-    componentName: string;
-    exported: boolean;
-  }>
->;
