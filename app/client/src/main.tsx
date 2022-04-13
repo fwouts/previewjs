@@ -29,7 +29,7 @@ const App = observer(() => {
         <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
       }
       appLabel="Preview.js"
-      subheader={<Selection state={state} />}
+      subheader={(state.component && <Selection state={state} />) || null}
     />
   );
 });
