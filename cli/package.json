@@ -18,7 +18,7 @@
     "preview": "dist/main.js"
   },
   "scripts": {
-    "prepublish": "pnpm build",
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/cli --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
     "dev": "ts-node-dev --respawn src/main.ts"
   },
