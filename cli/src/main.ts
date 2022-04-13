@@ -90,7 +90,6 @@ program
             ...partialState,
           };
           res.cookie("state", JSON.stringify(state), {
-            maxAge: 1000 * 3600 * 24 * 365,
             httpOnly: true,
             sameSite: "strict",
           });
