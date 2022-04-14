@@ -45,7 +45,7 @@ program
     } catch {
       console.log(
         chalk.cyan(
-          `Optional peer dependency @previewjs/pro not detected. Falling back to @previewjs/app instead.`
+          `Optional peer dependency @previewjs/pro not detected. Falling back to @previewjs/app instead.\n`
         )
       );
       setupEnvironment = (await import("@previewjs/app")).default;
@@ -53,11 +53,14 @@ program
     const previewEnv = await setupEnvironment({ rootDirPath });
     const frameworkPlugin = await readConfig(rootDirPath).frameworkPlugin;
     if (!frameworkPlugin) {
-      throw new Error(
+      console.error(
         `${chalk.red(
           `No framework plugin found.`
-        )}\n\nPlease set it up in preview.config.js.\n\nSee https://previewjs.com/docs/config/framework-plugin for more info.`
+        )} Please set it up in preview.config.js.\n\n${chalk.green(
+          `See https://previewjs.com/docs/config/framework-plugin for more info.`
+        )}`
       );
+      process.exit(1);
     }
     const workspace = await core.createWorkspace({
       versionCode: `cli-${version}`,
