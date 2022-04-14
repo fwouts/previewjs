@@ -151,6 +151,7 @@ importers:
     specifiers:
       '@previewjs/api': ^2.0.1
       '@previewjs/app': ^1.6.1
+      '@previewjs/config': ^1.0.4
       '@previewjs/core': ^2.1.0
       '@previewjs/vfs': ^1.1.4
       '@types/express': 4.17.13
@@ -169,6 +170,7 @@ importers:
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/app': link:../app
+      '@previewjs/config': link:../config
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
       chalk: 4.1.2
