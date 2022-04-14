@@ -90,7 +90,7 @@ importers:
       ts-node: 10.7.0
       ts-node-dev: 1.1.8
       typescript: 4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
       vite-plugin-svgr: 0.6.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.1
@@ -144,8 +144,8 @@ importers:
       ts-node: 10.7.0_22ec373cc6e5c139fea80a5e1bbc5c61
       ts-node-dev: 1.1.8_typescript@4.6.3
       typescript: 4.6.3
-      vite: 2.9.1
-      vite-plugin-svgr: 0.6.0_vite@2.9.1
+      vite: 2.9.4
+      vite-plugin-svgr: 0.6.0_vite@2.9.4
 
   cli:
     specifiers:
@@ -191,12 +191,12 @@ importers:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
     devDependencies:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
 
   core:
     specifiers:
@@ -292,7 +292,7 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.4
       typescript: ^4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -310,7 +310,7 @@ importers:
       next: 12.1.5
       rimraf: 3.0.2
       ts-jest: 27.1.4_4a735823562cc1cc7d61a30e7b4d23f3
-      vite: 2.9.1
+      vite: 2.9.4
 
   frameworks/react/preview:
     specifiers:
@@ -341,7 +341,7 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.4
       typescript: ^4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
       vite-plugin-vue2: ^1.9.3
       vue: ^2.6.14
       vue-template-compiler: ^2.6.14
@@ -351,7 +351,7 @@ importers:
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.0.0
       typescript: 4.6.3
-      vite-plugin-vue2: 1.9.3_1fbe351b36f927d48c27a4a7ec773da4
+      vite-plugin-vue2: 1.9.3_649cf48a7312c7346e568fdaf89bbbc4
       vue: 2.6.14
       vue-template-compiler: 2.6.14
     devDependencies:
@@ -362,7 +362,7 @@ importers:
       jest: 28.0.0-alpha.8_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
       ts-jest: 27.1.4_4a735823562cc1cc7d61a30e7b4d23f3
-      vite: 2.9.1
+      vite: 2.9.4
 
   frameworks/vue2/preview:
     specifiers:
@@ -390,12 +390,12 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.4
       typescript: ^4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
       vue: ^3
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue': 2.0.1_vite@2.9.1+vue@3.2.26
+      '@vitejs/plugin-vue': 2.0.1_vite@2.9.4+vue@3.2.26
       '@vitejs/plugin-vue-jsx': 1.3.3
       '@vue/compiler-sfc': 3.2.26
       acorn: 8.7.0
@@ -408,7 +408,7 @@ importers:
       jest: 28.0.0-alpha.8_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
       ts-jest: 27.1.4_4a735823562cc1cc7d61a30e7b4d23f3
-      vite: 2.9.1
+      vite: 2.9.4
 
   frameworks/vue3/preview:
     specifiers:
@@ -536,7 +536,7 @@ importers:
       typescript: 4.6.3
       universal-base64: ^2.1.0
       uuid: ^8.3.2
-      vite: 2.9.1
+      vite: 2.9.4
       vite-plugin-svgr: 0.6.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.1
@@ -576,8 +576,8 @@ importers:
       rimraf: 3.0.2
       tailwindcss: 3.0.24_ts-node@10.7.0
       typescript: 4.6.3
-      vite: 2.9.1
-      vite-plugin-svgr: 0.6.0_vite@2.9.1
+      vite: 2.9.4
+      vite-plugin-svgr: 0.6.0_vite@2.9.4
 
   smoke-test-apps/aliases:
     specifiers:
@@ -1739,7 +1739,6 @@ packages:
       '@babel/types': 7.17.0
       jsesc: 2.5.2
       source-map: 0.5.7
-    dev: true
 
   /@babel/helper-annotate-as-pure/7.16.0:
     resolution: {integrity: sha512-ItmYF9vR4zA8cByDocY05o0LGUkp1zhbTQOH1NFyl5xXEqlTJQCEJjieriw+aFpxo16swMxUnUiKS7a/r4vtHg==}
@@ -1868,7 +1867,7 @@ packages:
       '@babel/core': 7.16.5
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -1885,7 +1884,7 @@ packages:
       '@babel/core': 7.17.2
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -1903,7 +1902,7 @@ packages:
       '@babel/core': 7.17.8
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -1920,7 +1919,7 @@ packages:
       '@babel/core': 7.17.9
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -2060,7 +2059,6 @@ packages:
     dependencies:
       '@babel/template': 7.16.7
       '@babel/types': 7.17.0
-    dev: true
 
   /@babel/helper-get-function-arity/7.16.0:
     resolution: {integrity: sha512-ASCquNcywC1NkYh/z7Cgp3w31YW8aojjYIlNg4VeJiHkqyP4AzIvr4qx7pYDb4/s8YcsZWqqOSxgkvjUz1kpDQ==}
@@ -2150,7 +2148,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.16.7
       '@babel/helper-validator-identifier': 7.16.7
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
     transitivePeerDependencies:
       - supports-color
@@ -2219,7 +2217,7 @@ packages:
       '@babel/helper-environment-visitor': 7.16.7
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
     transitivePeerDependencies:
       - supports-color
@@ -4969,7 +4967,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.16.7
-      '@babel/parser': 7.17.8
+      '@babel/parser': 7.17.9
       '@babel/types': 7.17.0
 
   /@babel/traverse/7.16.10:
@@ -5092,7 +5090,6 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@babel/types/7.15.0:
     resolution: {integrity: sha512-OBvfqnllOIdX4ojTHpwZbpvz4j3EWyjkZEdmjH0/cgsd6QOdSgU8rLSk6ard/pcW7rlmjdVSX/AWOaORR1uNOQ==}
@@ -11024,14 +11021,14 @@ packages:
       vite: 2.7.10
     dev: true
 
-  /@vitejs/plugin-vue/2.0.1_vite@2.9.1+vue@3.2.26:
+  /@vitejs/plugin-vue/2.0.1_vite@2.9.4+vue@3.2.26:
     resolution: {integrity: sha512-wtdMnGVvys9K8tg+DxowU1ytTrdVveXr3LzdhaKakysgGXyrsfaeds2cDywtvujEASjWOwWL/OgWM+qoeM8Plg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
       vue: ^3.2.25
     dependencies:
-      vite: 2.9.1
+      vite: 2.9.4
       vue: 3.2.26
     dev: false
 
@@ -11106,7 +11103,7 @@ packages:
       '@babel/helper-module-imports': 7.16.7
       '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.16.5
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
@@ -11123,7 +11120,7 @@ packages:
       '@babel/helper-module-imports': 7.16.7
       '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.17.2
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
@@ -11140,7 +11137,7 @@ packages:
       '@babel/helper-module-imports': 7.16.7
       '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.17.9
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
@@ -17614,6 +17611,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.14.8_debug@4.3.3:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
+
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18824,7 +18832,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -20843,7 +20851,6 @@ packages:
     resolution: {integrity: sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==}
     engines: {node: '>=6'}
     hasBin: true
-    dev: true
 
   /jsonc-parser/2.3.1:
     resolution: {integrity: sha512-H8jvkz1O50L3dMZCsLqiuB2tA7muqbSg1AtGEkN0leAqGjsUzDJir3Zwr02BhqdcITPg3ei3mZ+HjMocAknhhg==}
@@ -21266,7 +21273,7 @@ packages:
     dependencies:
       big.js: 5.2.2
       emojis-list: 3.0.0
-      json5: 2.2.0
+      json5: 2.2.1
 
   /local-pkg/0.4.1:
     resolution: {integrity: sha512-lL87ytIGP2FU5PWwNDo0w3WhIo2gopIAxPg9RxDYF7m4rr5ahuZxP22xnJHIvaLTe4Z9P6uKKY2UHiwyB4pcrw==}
@@ -30169,18 +30176,18 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/0.6.0_vite@2.9.1:
+  /vite-plugin-svgr/0.6.0_vite@2.9.4:
     resolution: {integrity: sha512-+9eiWLzdlLK3ktnO7gzazMmR/KJyXTy7z6GeRbhv5HKEOFjLdNk3eB0qJaSpzJC3dr2pKWml0jAmxH7O6CcQtg==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.1.2
-      vite: 2.9.1
+      vite: 2.9.4
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-vue2/1.9.3_1fbe351b36f927d48c27a4a7ec773da4:
+  /vite-plugin-vue2/1.9.3_649cf48a7312c7346e568fdaf89bbbc4:
     resolution: {integrity: sha512-0KhHSEeht0VHJtt4Z2cJ9bWBq4dP3HoXpapqAHV+f+cUa6KywYdOd+z6sSGLpuGjN8F9YinrFIo8dfVmMOpc8Q==}
     peerDependencies:
       vite: ^2.0.0-beta.23
@@ -30205,7 +30212,7 @@ packages:
       rollup: 2.67.1
       slash: 3.0.0
       source-map: 0.7.3
-      vite: 2.9.1
+      vite: 2.9.4
       vue-template-compiler: 2.6.14
       vue-template-es2015-compiler: 1.9.1
     transitivePeerDependencies:
