@@ -1,5 +1,9 @@
 import * as core from "@previewjs/core";
 import { init } from "@previewjs/loader";
+import { reactFrameworkPlugin } from "@previewjs/plugin-react";
+import { solidFrameworkPlugin } from "@previewjs/plugin-solid";
+import { vue2FrameworkPlugin } from "@previewjs/plugin-vue2";
+import { vue3FrameworkPlugin } from "@previewjs/plugin-vue3";
 import * as vfs from "@previewjs/vfs";
 import assertNever from "assert-never";
 import chalk from "chalk";
@@ -109,7 +113,12 @@ class TestRunner {
   ): Promise<boolean> {
     const rootDirPath = await prepareTestDir();
     const appDir = await prepareAppDir();
-    const api = await init(core, vfs, this.setupEnvironment);
+    const api = await init(core, vfs, this.setupEnvironment, [
+      reactFrameworkPlugin,
+      solidFrameworkPlugin,
+      vue2FrameworkPlugin,
+      vue3FrameworkPlugin,
+    ]);
     const workspace = await api.getWorkspace({
       versionCode: "test-test",
       absoluteFilePath: rootDirPath,

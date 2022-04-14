@@ -15,6 +15,12 @@ export async function load({
   const vfs = requireModule("@previewjs/vfs");
   const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName).default;
+  const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
+    requireModule("@previewjs/plugin-react").reactFrameworkPlugin,
+    requireModule("@previewjs/plugin-solid").solidFrameworkPlugin,
+    requireModule("@previewjs/plugin-vue2").vue2FrameworkPlugin,
+    requireModule("@previewjs/plugin-vue3").vue3FrameworkPlugin,
+  ];
 
   function requireModule(name: string) {
     try {
@@ -27,13 +33,14 @@ export async function load({
     }
   }
 
-  return init(core, vfs, setupEnvironment);
+  return init(core, vfs, setupEnvironment, frameworkPluginFactories);
 }
 
 export async function init(
   coreModule: typeof core,
   vfsModule: typeof vfs,
-  setupEnvironment: core.SetupPreviewEnvironment
+  setupEnvironment: core.SetupPreviewEnvironment,
+  frameworkPluginFactories?: core.FrameworkPluginFactory[]
 ) {
   const memoryReader = vfsModule.createMemoryReader();
   const reader = vfsModule.createStackedReader([
@@ -70,6 +77,7 @@ export async function init(
           const loaded = await coreModule.loadPreviewEnv({
             rootDirPath,
             setupEnvironment,
+            frameworkPluginFactories,
           });
           if (!loaded) {
             return null;

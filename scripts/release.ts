@@ -213,12 +213,25 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
     case "loader":
       version = await updateNodePackage(packageInfo.dirPath);
       const { version: proVersion } = await import("../pro/package.json");
+      const { version: reactPluginVersion } = await import(
+        "../frameworks/react/package.json"
+      );
+      const { version: vue2PluginVersion } = await import(
+        "../frameworks/vue2/package.json"
+      );
+      const { version: vue3PluginVersion } = await import(
+        "../frameworks/vue3/package.json"
+      );
       const releaseDirPath = path.join(packageInfo.dirPath, "src", "release");
       await fs.promises.writeFile(
         path.join(releaseDirPath, "package.json"),
         JSON.stringify(
           {
             dependencies: {
+              "@previewjs/plugin-react": reactPluginVersion,
+              "@previewjs/plugin-solid": "1.0.2",
+              "@previewjs/plugin-vue2": vue2PluginVersion,
+              "@previewjs/plugin-vue3": vue3PluginVersion,
               "@previewjs/pro": proVersion,
             },
           },
