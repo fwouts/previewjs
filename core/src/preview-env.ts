@@ -16,7 +16,6 @@ export type SetupPreviewEnvironment = (options: {
 }) => Promise<PreviewEnvironment | null>;
 
 export type PreviewEnvironment = {
-  frameworkPluginFactories?: FrameworkPluginFactory[];
   middlewares?: RequestHandler[];
   persistedStateManager?: PersistedStateManager;
   onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
@@ -25,9 +24,11 @@ export type PreviewEnvironment = {
 export async function loadPreviewEnv({
   rootDirPath,
   setupEnvironment,
+  frameworkPluginFactories,
 }: {
   rootDirPath: string;
   setupEnvironment: SetupPreviewEnvironment;
+  frameworkPluginFactories?: FrameworkPluginFactory[];
 }) {
   const previewEnv = await setupEnvironment({ rootDirPath });
   if (!previewEnv) {
@@ -38,7 +39,7 @@ export async function loadPreviewEnv({
   ).frameworkPlugin;
   fallbackToDefault: if (!frameworkPlugin) {
     const dependencies = await extractPackageDependencies(rootDirPath);
-    for (const candidate of previewEnv.frameworkPluginFactories || []) {
+    for (const candidate of frameworkPluginFactories || []) {
       if (await candidate.isCompatible(dependencies)) {
         frameworkPlugin = await candidate.create();
         break fallbackToDefault;
