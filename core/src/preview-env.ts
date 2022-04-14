@@ -13,7 +13,7 @@ import { ApiRouter } from "./router";
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;
-}) => Promise<PreviewEnvironment | null>;
+}) => Promise<PreviewEnvironment>;
 
 export type PreviewEnvironment = {
   middlewares?: RequestHandler[];
@@ -31,9 +31,6 @@ export async function loadPreviewEnv({
   frameworkPluginFactories?: FrameworkPluginFactory[];
 }) {
   const previewEnv = await setupEnvironment({ rootDirPath });
-  if (!previewEnv) {
-    return null;
-  }
   let frameworkPlugin: FrameworkPlugin | undefined = await readConfig(
     rootDirPath
   ).frameworkPlugin;
