@@ -15,7 +15,7 @@
   },
   "homepage": "https://previewjs.com",
   "bin": {
-    "preview": "dist/main.js"
+    "previewjs": "dist/main.js"
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/cli --no-deps --include-dependencies",
