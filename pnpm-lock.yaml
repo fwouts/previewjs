@@ -48,7 +48,7 @@ importers:
       '@monaco-editor/react': ^4.4.2
       '@previewjs/api': workspace:*
       '@previewjs/config': ^1.0.4
-      '@previewjs/core': ^3.0.0
+      '@previewjs/core': ^2.1.0
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': workspace:*
       '@previewjs/plugin-solid': 1.0.2
@@ -100,7 +100,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
       '@monaco-editor/react': 4.4.2_55ae72ee85f73450ca6b27cb2ac63883
       '@previewjs/config': link:../config
-      '@previewjs/core': link:../core
+      '@previewjs/core': 2.1.0
       '@previewjs/vfs': link:../vfs
       '@react-hook/window-size': 3.0.7_react@18.0.0
       assert-never: 1.2.1
@@ -152,7 +152,7 @@ importers:
       '@previewjs/api': ^2.0.1
       '@previewjs/app': ^1.6.1
       '@previewjs/config': ^1.0.4
-      '@previewjs/core': ^3.0.0
+      '@previewjs/core': ^2.1.0
       '@previewjs/vfs': ^1.1.4
       '@types/express': 4.17.13
       '@types/inquirer': 8.2.1
@@ -171,7 +171,7 @@ importers:
       '@previewjs/api': link:../api
       '@previewjs/app': link:../app
       '@previewjs/config': link:../config
-      '@previewjs/core': link:../core
+      '@previewjs/core': 2.1.0
       '@previewjs/vfs': link:../vfs
       chalk: 4.1.2
       commander: 8.3.0
@@ -508,7 +508,7 @@ importers:
       '@previewjs/api': workspace:*
       '@previewjs/app': workspace:*
       '@previewjs/config': ^1.0.4
-      '@previewjs/core': ^3.0.0
+      '@previewjs/core': ^2.1.0
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': workspace:*
       '@previewjs/vfs': ^1.1.4
@@ -545,7 +545,7 @@ importers:
       '@fortawesome/free-solid-svg-icons': 6.1.1
       '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
       '@previewjs/config': link:../config
-      '@previewjs/core': link:../core
+      '@previewjs/core': 2.1.0
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
       clsx: 1.1.1
@@ -1741,7 +1741,6 @@ packages:
       '@babel/types': 7.17.0
       jsesc: 2.5.2
       source-map: 0.5.7
-    dev: true
 
   /@babel/helper-annotate-as-pure/7.16.0:
     resolution: {integrity: sha512-ItmYF9vR4zA8cByDocY05o0LGUkp1zhbTQOH1NFyl5xXEqlTJQCEJjieriw+aFpxo16swMxUnUiKS7a/r4vtHg==}
@@ -1870,7 +1869,7 @@ packages:
       '@babel/core': 7.16.5
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -1887,7 +1886,7 @@ packages:
       '@babel/core': 7.17.2
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -1905,7 +1904,7 @@ packages:
       '@babel/core': 7.17.8
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -1922,7 +1921,7 @@ packages:
       '@babel/core': 7.17.9
       '@babel/helper-annotate-as-pure': 7.16.7
       '@babel/helper-environment-visitor': 7.16.7
-      '@babel/helper-function-name': 7.16.7
+      '@babel/helper-function-name': 7.17.9
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
       '@babel/helper-replace-supers': 7.16.7
@@ -2062,7 +2061,6 @@ packages:
     dependencies:
       '@babel/template': 7.16.7
       '@babel/types': 7.17.0
-    dev: true
 
   /@babel/helper-get-function-arity/7.16.0:
     resolution: {integrity: sha512-ASCquNcywC1NkYh/z7Cgp3w31YW8aojjYIlNg4VeJiHkqyP4AzIvr4qx7pYDb4/s8YcsZWqqOSxgkvjUz1kpDQ==}
@@ -2152,7 +2150,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.16.7
       '@babel/helper-validator-identifier': 7.16.7
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
     transitivePeerDependencies:
       - supports-color
@@ -2221,7 +2219,7 @@ packages:
       '@babel/helper-environment-visitor': 7.16.7
       '@babel/helper-member-expression-to-functions': 7.16.7
       '@babel/helper-optimise-call-expression': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
     transitivePeerDependencies:
       - supports-color
@@ -4971,7 +4969,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.16.7
-      '@babel/parser': 7.17.8
+      '@babel/parser': 7.17.9
       '@babel/types': 7.17.0
 
   /@babel/traverse/7.16.10:
@@ -5094,7 +5092,6 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@babel/types/7.15.0:
     resolution: {integrity: sha512-OBvfqnllOIdX4ojTHpwZbpvz4j3EWyjkZEdmjH0/cgsd6QOdSgU8rLSk6ard/pcW7rlmjdVSX/AWOaORR1uNOQ==}
@@ -7579,6 +7576,48 @@ packages:
     resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
     dev: false
 
+  /@previewjs/api/2.0.1:
+    resolution: {integrity: sha512-PSME0ykgoZXfBBUhqtF7MAA5Ek5EY8QGuhXwHMVCyS0bTsjwUG62IeL0uy+Jy7yNNz+JhnuruuH4Gf/4lW70gQ==}
+    dev: false
+
+  /@previewjs/config/1.0.4:
+    resolution: {integrity: sha512-4YfDrduv6mbU64/YkqTpqWRMihpKx786oEHql7pvcY3U0dAlUg1BPLOSDAH5rTHaCNMIbvWgYSiikpN8NFYvQw==}
+    dev: false
+
+  /@previewjs/core/2.1.0:
+    resolution: {integrity: sha512-7h2dnuXDq/tKzGhGZFRXqs3AuAX+2iUe6eQfCnhPRDBB0b+L2iyi2ir4U8m8DpRzB+z1Wm81qMm52vZeW1hpsA==}
+    dependencies:
+      '@previewjs/api': 2.0.1
+      '@previewjs/config': 1.0.4
+      '@previewjs/type-analyzer': 2.0.4
+      '@previewjs/vfs': 1.1.4
+      acorn: 8.7.0
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      cookie-parser: 1.4.6
+      env-paths: 2.2.1
+      express: 4.17.3
+      fs-extra: 10.0.1
+      get-port: 5.1.1
+      glob: 7.2.0
+      http-terminator: 3.2.0
+      monaco-editor: 0.33.0
+      prettier: 2.6.2
+      recrawl: 2.2.1
+      rollup-plugin-friendly-type-imports: 1.0.3
+      sass: 1.50.0
+      strip-ansi: 6.0.1
+      tsconfig-paths: 3.14.1
+      typescript: 4.6.3
+      uuid: 8.3.2
+      vite: 2.9.4_sass@1.50.0
+      vite-tsconfig-paths: 3.4.1_vite@2.9.4
+    transitivePeerDependencies:
+      - less
+      - stylus
+      - supports-color
+    dev: false
+
   /@previewjs/plugin-solid/1.0.1:
     resolution: {integrity: sha512-q+eHa/pfoBsSiwCpi8MzgNiz5qDoqOei1UM5zRhPBfS6WQYEYwJUgNPJQeiFnQC32SjQyqQBdY3FIsQQctGyZg==}
     dependencies:
@@ -7615,12 +7654,29 @@ packages:
       lodash: 4.17.21
       typescript: 4.6.3
 
+  /@previewjs/type-analyzer/2.0.4:
+    resolution: {integrity: sha512-TMvRml/rUNc6UXLTUYcZvj4DBDIRsc8zJ4G9PV6dnB9Xb4Qk4p/HZKPNVnw0xajUsVKd7u2d2qYaFGzmyT/d9Q==}
+    dependencies:
+      '@previewjs/vfs': 1.1.4
+      assert-never: 1.2.1
+      lodash: 4.17.21
+      typescript: 4.6.3
+    dev: false
+
   /@previewjs/vfs/1.1.3:
     resolution: {integrity: sha512-FdgJy7FyanXiU8HpF+VWI6DuxTFjezP/7EpJuotB0BkUPiMjaKzfdfZD1jJmT/WxQmmX553y2N4YhNvJ4OvTWQ==}
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
       fs-extra: 10.0.1
+
+  /@previewjs/vfs/1.1.4:
+    resolution: {integrity: sha512-kifLgGATzAXZls/hB9A5cUL+I+7CNpr+mq9KL2yOKfxaGDfrMSxKhtqd1p8VC9beDIfMrsg80CWYn/J5tBKJ+w==}
+    dependencies:
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      fs-extra: 10.0.1
+    dev: false
 
   /@react-hook/debounce/3.0.0_react@18.0.0:
     resolution: {integrity: sha512-ir/kPrSfAzY12Gre0sOHkZ2rkEmM4fS5M5zFxCi4BnCeXh2nvx9Ujd+U4IGpKCuPA+EQD0pg1eK2NGLvfWejag==}
@@ -11108,7 +11164,7 @@ packages:
       '@babel/helper-module-imports': 7.16.7
       '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.16.5
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
@@ -11125,7 +11181,7 @@ packages:
       '@babel/helper-module-imports': 7.16.7
       '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.17.2
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
@@ -11142,7 +11198,7 @@ packages:
       '@babel/helper-module-imports': 7.16.7
       '@babel/plugin-syntax-jsx': 7.16.7_@babel+core@7.17.9
       '@babel/template': 7.16.7
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.17.9
       '@babel/types': 7.17.0
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
@@ -15779,7 +15835,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-android-arm64/0.13.15:
@@ -15804,7 +15859,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-64/0.13.15:
@@ -15829,7 +15883,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.13.15:
@@ -15854,7 +15907,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.13.15:
@@ -15879,7 +15931,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.13.15:
@@ -15904,7 +15955,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-32/0.13.15:
@@ -15929,7 +15979,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-64/0.13.15:
@@ -15954,7 +16003,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm/0.13.15:
@@ -15979,7 +16027,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.13.15:
@@ -16004,7 +16051,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.13.15:
@@ -16029,7 +16075,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.13.15:
@@ -16054,7 +16099,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-riscv64/0.14.29:
@@ -16071,7 +16115,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-s390x/0.14.29:
@@ -16088,7 +16131,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-netbsd-64/0.13.15:
@@ -16113,7 +16155,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.13.15:
@@ -16138,7 +16179,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-sunos-64/0.13.15:
@@ -16163,7 +16203,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-32/0.13.15:
@@ -16188,7 +16227,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-64/0.13.15:
@@ -16213,7 +16251,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.13.15:
@@ -16238,7 +16275,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild/0.11.23:
@@ -16324,7 +16360,6 @@ packages:
       esbuild-windows-32: 0.14.36
       esbuild-windows-64: 0.14.36
       esbuild-windows-arm64: 0.14.36
-    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -17616,6 +17651,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.14.8_debug@4.3.3:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.3_supports-color@6.1.0
+
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18826,7 +18872,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8
+      follow-redirects: 1.14.8_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -30228,6 +30274,20 @@ packages:
       - supports-color
     dev: false
 
+  /vite-tsconfig-paths/3.4.1_vite@2.9.4:
+    resolution: {integrity: sha512-SgK3/pnTuJ3i+gMSAWLR6VCPSw26bnxawrmXGvCDjJgk8MAQgmbCrFrAzfwbwZBXSqSuvWEuX04Wt73qJKx8fQ==}
+    peerDependencies:
+      vite: '>2.0.0-0'
+    dependencies:
+      debug: 4.3.3
+      globrex: 0.1.2
+      recrawl-sync: 2.2.1
+      tsconfig-paths: 3.14.1
+      vite: 2.9.4_sass@1.50.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /vite/2.7.10:
     resolution: {integrity: sha512-KEY96ntXUid1/xJihJbgmLZx7QSC2D4Tui0FdS0Old5OokYzFclcofhtxtjDdGOk/fFpPbHv9yw88+rB93Tb8w==}
     engines: {node: '>=12.2.0'}
@@ -30323,6 +30383,31 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /vite/2.9.4_sass@1.50.0:
+    resolution: {integrity: sha512-7pO6ruZMsyTpaPB7kGtW+yj15Ze5g+E4w4Ramk1sAJLIuI4uPd5sauqubmZNpq0Yc1vLVxoXRf2Uj+qWxk5aXw==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.14.36
+      postcss: 8.4.12
+      resolve: 1.22.0
+      rollup: 2.70.1
+      sass: 1.50.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /vm-browserify/1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
