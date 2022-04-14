@@ -54,9 +54,17 @@ export async function createWorkspace({
   persistedStateManager?: PersistedStateManager;
   onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
 }): Promise<Workspace | null> {
-  if (frameworkPlugin.pluginApiVersion !== 3) {
+  const expectedPluginApiVersion = 3;
+  if (
+    !frameworkPlugin.pluginApiVersion ||
+    frameworkPlugin.pluginApiVersion < expectedPluginApiVersion
+  ) {
     throw new Error(
-      `Detected incompatible Preview.js framework plugin. Please install latest version of ${frameworkPlugin.name}.`
+      `Preview.js framework plugin ${frameworkPlugin.name} is incompatible with this version of Preview.js. Please upgrade it.`
+    );
+  } else if (frameworkPlugin.pluginApiVersion > expectedPluginApiVersion) {
+    throw new Error(
+      `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
     );
   }
   if (frameworkPlugin.transformReader) {
