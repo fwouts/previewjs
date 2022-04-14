@@ -90,7 +90,7 @@ importers:
       ts-node: 10.7.0
       ts-node-dev: 1.1.8
       typescript: 4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
       vite-plugin-svgr: 0.6.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.1
@@ -144,8 +144,8 @@ importers:
       ts-node: 10.7.0_22ec373cc6e5c139fea80a5e1bbc5c61
       ts-node-dev: 1.1.8_typescript@4.6.3
       typescript: 4.6.3
-      vite: 2.9.1
-      vite-plugin-svgr: 0.6.0_vite@2.9.1
+      vite: 2.9.4
+      vite-plugin-svgr: 0.6.0_vite@2.9.4
 
   cli:
     specifiers:
@@ -193,12 +193,12 @@ importers:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
     devDependencies:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
 
   core:
     specifiers:
@@ -236,7 +236,7 @@ importers:
       tsconfig-paths: ^3.14.1
       typescript: ^4.6.3
       uuid: ^8.3.2
-      vite: ^2.9.1
+      vite: ^2.9.4
       vite-tsconfig-paths: ^3.4.1
     dependencies:
       '@previewjs/api': link:../api
@@ -262,8 +262,8 @@ importers:
       tsconfig-paths: 3.14.1
       typescript: 4.6.3
       uuid: 8.3.2
-      vite: 2.9.1_sass@1.50.0
-      vite-tsconfig-paths: 3.4.1_vite@2.9.1
+      vite: 2.9.4_sass@1.50.0
+      vite-tsconfig-paths: 3.4.1_vite@2.9.4
     devDependencies:
       '@types/cookie-parser': 1.4.2
       '@types/express': 4.17.13
@@ -294,7 +294,7 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.4
       typescript: ^4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -312,7 +312,7 @@ importers:
       next: 12.1.5
       rimraf: 3.0.2
       ts-jest: 27.1.4_4a735823562cc1cc7d61a30e7b4d23f3
-      vite: 2.9.1
+      vite: 2.9.4
 
   frameworks/react/preview:
     specifiers:
@@ -343,7 +343,7 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.4
       typescript: ^4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
       vite-plugin-vue2: ^1.9.3
       vue: ^2.6.14
       vue-template-compiler: ^2.6.14
@@ -353,7 +353,7 @@ importers:
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.0.0
       typescript: 4.6.3
-      vite-plugin-vue2: 1.9.3_1fbe351b36f927d48c27a4a7ec773da4
+      vite-plugin-vue2: 1.9.3_649cf48a7312c7346e568fdaf89bbbc4
       vue: 2.6.14
       vue-template-compiler: 2.6.14
     devDependencies:
@@ -364,7 +364,7 @@ importers:
       jest: 28.0.0-alpha.8_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
       ts-jest: 27.1.4_4a735823562cc1cc7d61a30e7b4d23f3
-      vite: 2.9.1
+      vite: 2.9.4
 
   frameworks/vue2/preview:
     specifiers:
@@ -392,12 +392,12 @@ importers:
       rimraf: 3.0.2
       ts-jest: 27.1.4
       typescript: ^4.6.3
-      vite: 2.9.1
+      vite: 2.9.4
       vue: ^3
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue': 2.0.1_vite@2.9.1+vue@3.2.26
+      '@vitejs/plugin-vue': 2.0.1_vite@2.9.4+vue@3.2.26
       '@vitejs/plugin-vue-jsx': 1.3.3
       '@vue/compiler-sfc': 3.2.26
       acorn: 8.7.0
@@ -410,7 +410,7 @@ importers:
       jest: 28.0.0-alpha.8_9d72220e8b849b9689c7359a2f2e2419
       rimraf: 3.0.2
       ts-jest: 27.1.4_4a735823562cc1cc7d61a30e7b4d23f3
-      vite: 2.9.1
+      vite: 2.9.4
 
   frameworks/vue3/preview:
     specifiers:
@@ -538,7 +538,7 @@ importers:
       typescript: 4.6.3
       universal-base64: ^2.1.0
       uuid: ^8.3.2
-      vite: 2.9.1
+      vite: 2.9.4
       vite-plugin-svgr: 0.6.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.1
@@ -578,8 +578,8 @@ importers:
       rimraf: 3.0.2
       tailwindcss: 3.0.24_ts-node@10.7.0
       typescript: 4.6.3
-      vite: 2.9.1
-      vite-plugin-svgr: 0.6.0_vite@2.9.1
+      vite: 2.9.4
+      vite-plugin-svgr: 0.6.0_vite@2.9.4
 
   smoke-test-apps/aliases:
     specifiers:
@@ -7579,8 +7579,8 @@ packages:
   /@previewjs/plugin-solid/1.0.1:
     resolution: {integrity: sha512-q+eHa/pfoBsSiwCpi8MzgNiz5qDoqOei1UM5zRhPBfS6WQYEYwJUgNPJQeiFnQC32SjQyqQBdY3FIsQQctGyZg==}
     dependencies:
-      '@previewjs/type-analyzer': 2.0.3
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/type-analyzer': 2.0.4
+      '@previewjs/vfs': 1.1.4
       fs-extra: 10.0.1
       vite-plugin-solid: 2.2.6
     transitivePeerDependencies:
@@ -7593,8 +7593,8 @@ packages:
   /@previewjs/plugin-solid/1.0.2:
     resolution: {integrity: sha512-/tHiAwep50nm/E1NpQz+FSsyQVLX0rOYp5WHHeu5IJzBlTe/7JAENuP2a39CT5SK5nT4rF2GOE7IEPHOi+Iavw==}
     dependencies:
-      '@previewjs/type-analyzer': 2.0.3
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/type-analyzer': 2.0.4
+      '@previewjs/vfs': 1.1.4
       fs-extra: 10.0.1
       typescript: 4.6.3
       vite-plugin-solid: 2.2.6
@@ -7604,16 +7604,16 @@ packages:
       - stylus
       - supports-color
 
-  /@previewjs/type-analyzer/2.0.3:
-    resolution: {integrity: sha512-aiB1nusSd0R6QSKJzKqSTdL9Y9A5SLXPfES1FcCdEu0bSXb3VJL8DWtj1GOi86Guyh/o6VTIsISzpDXt/PMgtg==}
+  /@previewjs/type-analyzer/2.0.4:
+    resolution: {integrity: sha512-TMvRml/rUNc6UXLTUYcZvj4DBDIRsc8zJ4G9PV6dnB9Xb4Qk4p/HZKPNVnw0xajUsVKd7u2d2qYaFGzmyT/d9Q==}
     dependencies:
-      '@previewjs/vfs': 1.1.3
+      '@previewjs/vfs': 1.1.4
       assert-never: 1.2.1
       lodash: 4.17.21
       typescript: 4.6.3
 
-  /@previewjs/vfs/1.1.3:
-    resolution: {integrity: sha512-FdgJy7FyanXiU8HpF+VWI6DuxTFjezP/7EpJuotB0BkUPiMjaKzfdfZD1jJmT/WxQmmX553y2N4YhNvJ4OvTWQ==}
+  /@previewjs/vfs/1.1.4:
+    resolution: {integrity: sha512-kifLgGATzAXZls/hB9A5cUL+I+7CNpr+mq9KL2yOKfxaGDfrMSxKhtqd1p8VC9beDIfMrsg80CWYn/J5tBKJ+w==}
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -11023,14 +11023,14 @@ packages:
       vite: 2.7.10
     dev: true
 
-  /@vitejs/plugin-vue/2.0.1_vite@2.9.1+vue@3.2.26:
+  /@vitejs/plugin-vue/2.0.1_vite@2.9.4+vue@3.2.26:
     resolution: {integrity: sha512-wtdMnGVvys9K8tg+DxowU1ytTrdVveXr3LzdhaKakysgGXyrsfaeds2cDywtvujEASjWOwWL/OgWM+qoeM8Plg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
       vue: ^3.2.25
     dependencies:
-      vite: 2.9.1
+      vite: 2.9.4
       vue: 3.2.26
     dev: false
 
@@ -11672,7 +11672,7 @@ packages:
   /@vue/compiler-core/3.2.26:
     resolution: {integrity: sha512-N5XNBobZbaASdzY9Lga2D9Lul5vdCIOXvUMd6ThcN8zgqQhPKfCV+wfAJNNJKQkSHudnYRO2gEB+lp0iN3g2Tw==}
     dependencies:
-      '@babel/parser': 7.17.9
+      '@babel/parser': 7.17.8
       '@vue/shared': 3.2.26
       estree-walker: 2.0.2
       source-map: 0.6.1
@@ -15776,7 +15776,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-android-arm64/0.13.15:
@@ -15801,7 +15800,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-64/0.13.15:
@@ -15826,7 +15824,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.13.15:
@@ -15851,7 +15848,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.13.15:
@@ -15876,7 +15872,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.13.15:
@@ -15901,7 +15896,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-32/0.13.15:
@@ -15926,7 +15920,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-64/0.13.15:
@@ -15951,7 +15944,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm/0.13.15:
@@ -15976,7 +15968,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.13.15:
@@ -16001,7 +15992,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.13.15:
@@ -16026,7 +16016,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.13.15:
@@ -16051,7 +16040,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-riscv64/0.14.29:
@@ -16068,7 +16056,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-s390x/0.14.29:
@@ -16085,7 +16072,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-netbsd-64/0.13.15:
@@ -16110,7 +16096,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.13.15:
@@ -16135,7 +16120,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-sunos-64/0.13.15:
@@ -16160,7 +16144,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-32/0.13.15:
@@ -16185,7 +16168,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-64/0.13.15:
@@ -16210,7 +16192,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.13.15:
@@ -16235,7 +16216,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild/0.11.23:
@@ -16321,7 +16301,6 @@ packages:
       esbuild-windows-32: 0.14.36
       esbuild-windows-64: 0.14.36
       esbuild-windows-arm64: 0.14.36
-    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -17613,17 +17592,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.14.8_debug@4.3.3:
-    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.3_supports-color@6.1.0
-
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
     engines: {node: '>=0.10.0'}
@@ -18834,7 +18802,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.8_debug@4.3.3
+      follow-redirects: 1.14.8
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -30178,18 +30146,18 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/0.6.0_vite@2.9.1:
+  /vite-plugin-svgr/0.6.0_vite@2.9.4:
     resolution: {integrity: sha512-+9eiWLzdlLK3ktnO7gzazMmR/KJyXTy7z6GeRbhv5HKEOFjLdNk3eB0qJaSpzJC3dr2pKWml0jAmxH7O6CcQtg==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.1.2
-      vite: 2.9.1
+      vite: 2.9.4
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-vue2/1.9.3_1fbe351b36f927d48c27a4a7ec773da4:
+  /vite-plugin-vue2/1.9.3_649cf48a7312c7346e568fdaf89bbbc4:
     resolution: {integrity: sha512-0KhHSEeht0VHJtt4Z2cJ9bWBq4dP3HoXpapqAHV+f+cUa6KywYdOd+z6sSGLpuGjN8F9YinrFIo8dfVmMOpc8Q==}
     peerDependencies:
       vite: ^2.0.0-beta.23
@@ -30214,14 +30182,14 @@ packages:
       rollup: 2.67.1
       slash: 3.0.0
       source-map: 0.7.3
-      vite: 2.9.1
+      vite: 2.9.4
       vue-template-compiler: 2.6.14
       vue-template-es2015-compiler: 1.9.1
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /vite-tsconfig-paths/3.4.1_vite@2.9.1:
+  /vite-tsconfig-paths/3.4.1_vite@2.9.4:
     resolution: {integrity: sha512-SgK3/pnTuJ3i+gMSAWLR6VCPSw26bnxawrmXGvCDjJgk8MAQgmbCrFrAzfwbwZBXSqSuvWEuX04Wt73qJKx8fQ==}
     peerDependencies:
       vite: '>2.0.0-0'
@@ -30230,7 +30198,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.1
       tsconfig-paths: 3.14.1
-      vite: 2.9.1_sass@1.50.0
+      vite: 2.9.4_sass@1.50.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -30282,31 +30250,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vite/2.9.1_sass@1.50.0:
-    resolution: {integrity: sha512-vSlsSdOYGcYEJfkQ/NeLXgnRv5zZfpAsdztkIrs7AZHV8RCMZQkwjo4DS5BnrYTqoWqLoUe1Cah4aVO4oNNqCQ==}
-    engines: {node: '>=12.2.0'}
-    hasBin: true
-    peerDependencies:
-      less: '*'
-      sass: '*'
-      stylus: '*'
-    peerDependenciesMeta:
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-    dependencies:
-      esbuild: 0.14.29
-      postcss: 8.4.12
-      resolve: 1.22.0
-      rollup: 2.70.1
-      sass: 1.50.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: false
-
   /vite/2.9.4:
     resolution: {integrity: sha512-7pO6ruZMsyTpaPB7kGtW+yj15Ze5g+E4w4Ramk1sAJLIuI4uPd5sauqubmZNpq0Yc1vLVxoXRf2Uj+qWxk5aXw==}
     engines: {node: '>=12.2.0'}
@@ -30330,6 +30273,31 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /vite/2.9.4_sass@1.50.0:
+    resolution: {integrity: sha512-7pO6ruZMsyTpaPB7kGtW+yj15Ze5g+E4w4Ramk1sAJLIuI4uPd5sauqubmZNpq0Yc1vLVxoXRf2Uj+qWxk5aXw==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.14.36
+      postcss: 8.4.12
+      resolve: 1.22.0
+      rollup: 2.70.1
+      sass: 1.50.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /vm-browserify/1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
