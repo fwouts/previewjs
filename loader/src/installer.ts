@@ -50,9 +50,9 @@ export async function install(options: {
       );
     }
     const version = npmVersionProcess.stdout;
-    if (parseInt(version) < 7) {
+    if (parseInt(version) < 6) {
       throw new Error(
-        `Preview.js needs npm 7+ to run, but current version is: ${version}\n\nPlease upgrade then restart your IDE.`
+        `Preview.js needs npm 6+ to run, but current version is: ${version}\n\nPlease upgrade then restart your IDE.`
       );
     }
   } catch (e) {
