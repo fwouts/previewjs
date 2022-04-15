@@ -89,6 +89,7 @@ const packages: Package[] = [
     dirPath: "loader",
     tagName: "loader",
     type: "loader",
+    additionalChangelogPath: ["pro/package.json"],
   },
   {
     name: "integration-intellij",
