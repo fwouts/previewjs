@@ -223,7 +223,6 @@ export class ViteManager {
         this.options.config.vite?.publicDir || this.options.config.publicDir,
       plugins,
       define: {
-        "process.env": process.env,
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
