@@ -1,6 +1,6 @@
 {
   "name": "previewjs",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
@@ -91,8 +91,8 @@
     "prod": "cross-env PREVIEWJS_DEV=0 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
     "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
     "dev:community": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app yarn dev",
-    "dev:install": "code --install-extension previewjs-1.6.1.vsix --force",
-    "dev:cleanup": "rimraf previewjs-1.6.1.vsix"
+    "dev:install": "code --install-extension previewjs-1.6.2.vsix --force",
+    "dev:cleanup": "rimraf previewjs-1.6.2.vsix"
   },
   "devDependencies": {
     "@types/vscode": "1.43.0",
