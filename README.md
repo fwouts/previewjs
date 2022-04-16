@@ -3,6 +3,7 @@
     <img src="assets/banner.svg" alt="Preview.js" />
   </a>
   <br />
+  <br />
   <a href="https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs" target="_blank">
     <img src="https://img.shields.io/visual-studio-marketplace/v/zenclabs.previewjs?label=vscode extension" />
     <img src="https://img.shields.io/visual-studio-marketplace/d/zenclabs.previewjs" />
@@ -13,6 +14,7 @@
     <img src="https://img.shields.io/jetbrains/plugin/d/18384" />
   </a>
 </div>
+<br />
 
 Preview.js lets you preview Vue and React components instantly in your IDE.
 
