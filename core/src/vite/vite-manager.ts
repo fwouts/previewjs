@@ -194,7 +194,11 @@ export class ViteManager {
           overlay: false,
           server,
           clientPort: port,
+          ...(typeof this.options.config.vite?.server?.hmr === "object"
+            ? this.options.config.vite?.server?.hmr
+            : {}),
         },
+        ...this.options.config.vite?.server,
       },
       customLogger: {
         info: defaultLogger.info,
