@@ -527,7 +527,7 @@ importers:
       cross-env: 7.0.3
       express: ^4.17.3
       fs-extra: 10.1.0
-      mobx: 6.3.10
+      mobx: 6.5.0
       mobx-react-lite: 3.3.0
       postcss: 8.4.12
       prettier: 2.6.2
@@ -567,8 +567,8 @@ importers:
       clsx: 1.1.1
       cross-env: 7.0.3
       fs-extra: 10.1.0
-      mobx: 6.3.10
-      mobx-react-lite: 3.3.0_33facee1fe03bf0b647b0f23944d5031
+      mobx: 6.5.0
+      mobx-react-lite: 3.3.0_ec6945183068133ff61c88d19e8f3079
       postcss: 8.4.12
       prettier: 2.6.2
       ranges-crop: 5.1.2
@@ -21697,24 +21697,6 @@ packages:
       pkg-types: 0.3.2
     dev: true
 
-  /mobx-react-lite/3.3.0_33facee1fe03bf0b647b0f23944d5031:
-    resolution: {integrity: sha512-U/kMSFtV/bNVgY01FuiGWpRkaQVHozBq5CEBZltFvPt4FcV111hEWkgwqVg9GPPZSEuEdV438PEz8mk8mKpYlA==}
-    peerDependencies:
-      mobx: ^6.1.0
-      react: ^16.8.0 || ^17
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      mobx: 6.3.10
-      react: 18.0.0
-      react-dom: 18.0.0_react@18.0.0
-    dev: true
-
   /mobx-react-lite/3.3.0_ec6945183068133ff61c88d19e8f3079:
     resolution: {integrity: sha512-U/kMSFtV/bNVgY01FuiGWpRkaQVHozBq5CEBZltFvPt4FcV111hEWkgwqVg9GPPZSEuEdV438PEz8mk8mKpYlA==}
     peerDependencies:
@@ -21731,10 +21713,6 @@ packages:
       mobx: 6.5.0
       react: 18.0.0
       react-dom: 18.0.0_react@18.0.0
-    dev: true
-
-  /mobx/6.3.10:
-    resolution: {integrity: sha512-lfuIN5TGXBNy/5s3ggr1L+IbD+LvfZVlj5q1ZuqyV9AfMtunYQvE8G0WfewS9tgIR3I1q8HJEEbcAOsxEgLwRw==}
     dev: true
 
   /mobx/6.5.0:
