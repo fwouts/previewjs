@@ -15,7 +15,7 @@
     "e2e-test": "cd ../app && cross-env PORT=8200 SETUP_ENVIRONMENT_MODULE=../../pro/setup-test-environment.ts TESTS_MODULE=../../pro/tests pnpm e2e-test"
   },
   "dependencies": {
-    "@previewjs/core": "^3.0.1",
+    "@previewjs/core": "^3.1.0",
     "@previewjs/vfs": "^1.1.4",
     "express": "^4.17.3"
   },
