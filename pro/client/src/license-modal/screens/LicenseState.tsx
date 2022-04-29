@@ -21,7 +21,7 @@ export const LicenseState = ({ screen }: { screen: LicenseStateScreen }) => (
             {screen.licenseInfo.checked.reason}
           </div>
         )}
-        <div className="text-xs flex-grow text-right text-gray-500">
+        <div className="ml-2 text-xs flex-grow text-right text-gray-500">
           Last checked:{" "}
           {new Date(screen.licenseInfo.checked.timestamp).toLocaleString()}
         </div>
