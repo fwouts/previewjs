@@ -13,7 +13,7 @@ importers:
       assert-never: 1.2.1
       axios: 0.27.2
       execa: 5.1.1
-      inquirer: 8.2.2
+      inquirer: 8.2.4
       license-checker: 25.0.1
       prettier: 2.6.2
       ts-node: 10.7.0
@@ -26,7 +26,7 @@ importers:
       assert-never: 1.2.1
       axios: 0.27.2
       execa: 5.1.1
-      inquirer: 8.2.2
+      inquirer: 8.2.4
       license-checker: 25.0.1
       prettier: 2.6.2
       ts-node: 10.7.0_22ec373cc6e5c139fea80a5e1bbc5c61
@@ -19129,6 +19129,27 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       through: 2.3.8
+
+  /inquirer/8.2.4:
+    resolution: {integrity: sha512-nn4F01dxU8VeKfq192IjLsxu0/OmMZ4Lg3xKAns148rCaXP6ntAoEkVYZThWjwON8AlzdZZi6oqnhNbxUG9hVg==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      cli-cursor: 3.1.0
+      cli-width: 3.0.0
+      external-editor: 3.1.0
+      figures: 3.2.0
+      lodash: 4.17.21
+      mute-stream: 0.0.8
+      ora: 5.4.1
+      run-async: 2.4.1
+      rxjs: 7.5.5
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      through: 2.3.8
+      wrap-ansi: 7.0.0
+    dev: true
 
   /internal-ip/4.3.0:
     resolution: {integrity: sha512-S1zBo1D6zcsyuC6PMmY5+55YMILQ9av8lotMx447Bq6SAgo/sDK6y6uUKmuYhW7eacnIhFfsPmCNYdDzsnnDCg==}
