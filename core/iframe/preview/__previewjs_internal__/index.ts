@@ -45,18 +45,25 @@ async function load({
 }
 
 const root = document.getElementById("root");
+let loading = false;
 window.addEventListener(
   "message",
   (event: MessageEvent<AppToPreviewMessage>) => {
     const data = event.data;
     switch (data.kind) {
       case "show-loading":
-        detach().catch(console.error);
-        root.innerHTML = `<div class="previewjs-loader">
-          <img src="../loading.svg" />
-        </div>`;
+        loading = true;
+        detach().then(() => {
+          if (!loading) {
+            return;
+          }
+          root.innerHTML = `<div class="previewjs-loader">
+            <img src="../loading.svg" />
+          </div>`;
+        });
         break;
       case "render":
+        loading = false;
         load(data).catch(console.error);
         break;
     }
