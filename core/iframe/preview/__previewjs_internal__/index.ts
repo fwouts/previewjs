@@ -53,14 +53,16 @@ window.addEventListener(
     switch (data.kind) {
       case "show-loading":
         loading = true;
-        detach().then(() => {
-          if (!loading) {
-            return;
-          }
-          root.innerHTML = `<div class="previewjs-loader">
+        detach()
+          .then(() => {
+            if (!loading || !root) {
+              return;
+            }
+            root.innerHTML = `<div class="previewjs-loader">
             <img src="../loading.svg" />
           </div>`;
-        });
+          })
+          .catch(console.error);
         break;
       case "render":
         loading = false;
