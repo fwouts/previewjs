@@ -169,7 +169,6 @@ class TestRunner {
       await page.screenshot({
         path: path.join(
           this.outputDirPath,
-          "..",
           "__failures__",
           `${testSuite.description.replace(
             ":",
