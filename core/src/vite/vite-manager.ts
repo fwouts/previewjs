@@ -160,7 +160,7 @@ export class ViteManager {
     // the file system. We want it to read from our reader, which could
     // be using an in-memory version instead.
     const plugins = vitePlugins.flat().map((plugin) => {
-      if (!plugin || !plugin.handleHotUpdate) {
+      if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
         return plugin;
       }
       const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
