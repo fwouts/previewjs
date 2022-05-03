@@ -74,7 +74,23 @@ export function setUpLogInterception() {
   console.log = makeLogger("log", console.log);
   console.info = makeLogger("info", console.info);
   console.warn = makeLogger("warn", console.warn);
-  console.error = makeLogger("error", console.error);
+  const errorLogger = makeLogger("error", console.error);
+  console.error = errorLogger;
+  window.onerror = (message, source, lineno, colno, error) => {
+    if (error.stack && error.message) {
+      message = error.stack;
+      if (!message.includes(error.message)) {
+        message = error.message + "\n" + message;
+      }
+    } else {
+      message = `${message}`;
+    }
+    errorLogger(message);
+    sendMessageFromPreview({
+      kind: "rendering-error",
+      message,
+    });
+  };
 }
 
 function formatLogMessage(...args: any[]) {
