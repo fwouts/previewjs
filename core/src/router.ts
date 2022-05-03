@@ -4,13 +4,19 @@ import {
   ResponseOf,
   WrappedResponse,
 } from "@previewjs/api";
+import {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+} from "express";
 
 export class ApiRouter {
   private handlers = new Map<string, RequestHandler<any, any>>();
 
   async handle(
     path: string,
-    request: unknown
+    request: unknown,
+    expressRequest: ExpressRequest,
+    expressResponse: ExpressResponse
   ): Promise<WrappedResponse<unknown>> {
     const handler = this.handlers.get(path);
     if (!handler) {
@@ -20,7 +26,7 @@ export class ApiRouter {
       };
     }
     try {
-      const response = await handler(request);
+      const response = await handler(request, expressRequest, expressResponse);
       return {
         kind: "success",
         response,
@@ -47,6 +53,15 @@ export class ApiRouter {
   }
 }
 
+export type RequestHandlerForEndpoint<E> = E extends Endpoint<
+  infer Request,
+  infer Response
+>
+  ? RequestHandler<Request, Response>
+  : never;
+
 export type RequestHandler<Request, Response> = (
-  request: Request
+  request: Request,
+  expressRequest: ExpressRequest,
+  expressResponse: ExpressResponse
 ) => Promise<Response>;

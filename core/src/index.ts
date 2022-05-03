@@ -5,18 +5,24 @@ import {
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import { Reader } from "@previewjs/vfs";
+import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import * as vite from "vite";
+import { analyzeProject, ProjectAnalysis } from "./analyze-project";
 import { computeProps } from "./compute-props";
-import { PersistedStateManager } from "./persisted-state";
+import {
+  LocalFilePersistedStateManager,
+  PersistedStateManager,
+} from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
+export type { ProjectAnalysis } from "./analyze-project";
 export { generateComponentId } from "./component-id";
-export { PersistedStateManager } from "./persisted-state";
+export type { PersistedStateManager } from "./persisted-state";
 export type {
   Component,
   ComponentAnalysis,
@@ -37,7 +43,7 @@ export async function createWorkspace({
   logLevel,
   middlewares,
   onReady,
-  persistedStateManager = new PersistedStateManager(),
+  persistedStateManager = new LocalFilePersistedStateManager(),
 }: {
   versionCode: string;
   rootDirPath: string;
@@ -48,27 +54,18 @@ export async function createWorkspace({
   persistedStateManager?: PersistedStateManager;
   onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
 }): Promise<Workspace | null> {
-  if (frameworkPlugin.pluginApiVersion !== 3) {
+  const expectedPluginApiVersion = 3;
+  if (
+    !frameworkPlugin.pluginApiVersion ||
+    frameworkPlugin.pluginApiVersion < expectedPluginApiVersion
+  ) {
     throw new Error(
-      `Detected incompatible Preview.js framework plugin. Please install latest version of ${frameworkPlugin.name}.`
+      `Preview.js framework plugin ${frameworkPlugin.name} is incompatible with this version of Preview.js. Please upgrade it.`
     );
-  }
-  let cacheDirPath: string;
-  try {
-    const { version } = JSON.parse(
-      fs.readFileSync(
-        path.resolve(__dirname, "..", "..", "package.json"),
-        "utf8"
-      )
+  } else if (frameworkPlugin.pluginApiVersion > expectedPluginApiVersion) {
+    throw new Error(
+      `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
     );
-    cacheDirPath = path.resolve(
-      rootDirPath,
-      "node_modules",
-      ".previewjs",
-      `v${version}`
-    );
-  } catch (e) {
-    throw new Error(`Unable to detect @previewjs/core version.`);
   }
   if (frameworkPlugin.transformReader) {
     reader = frameworkPlugin.transformReader(reader, rootDirPath);
@@ -96,10 +93,8 @@ export async function createWorkspace({
       },
     };
   });
-  router.onRequest(localEndpoints.GetState, () => persistedStateManager.get());
-  router.onRequest(localEndpoints.UpdateState, (stateUpdate) =>
-    persistedStateManager.update(stateUpdate)
-  );
+  router.onRequest(localEndpoints.GetState, persistedStateManager.get);
+  router.onRequest(localEndpoints.UpdateState, persistedStateManager.update);
   router.onRequest(
     localEndpoints.ComputeProps,
     async ({ filePath, componentName }) => {
@@ -112,7 +107,6 @@ export async function createWorkspace({
         return null;
       }
       return computeProps({
-        rootDirPath,
         component,
       });
     }
@@ -121,11 +115,11 @@ export async function createWorkspace({
     reader,
     rootDirPath,
     previewDirPath: path.join(__dirname, "..", "..", "iframe", "preview"),
-    cacheDirPath,
     frameworkPlugin,
     logLevel,
     middlewares: [
       express.json(),
+      cookieParser(),
       express
         .Router()
         .use(
@@ -134,7 +128,7 @@ export async function createWorkspace({
         ),
       async (req, res, next) => {
         if (req.path.startsWith("/api/")) {
-          res.json(await router.handle(req.path.substr(5), req.body));
+          res.json(await router.handle(req.path.substr(5), req.body, req, res));
         } else {
           next();
         }
@@ -174,6 +168,11 @@ export async function createWorkspace({
         };
       },
     },
+    components: {
+      list: (options) => {
+        return analyzeProject(workspace, options);
+      },
+    },
     dispose: async () => {
       typeAnalyzer.dispose();
     },
@@ -208,6 +207,9 @@ export interface Workspace {
   frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
+  };
+  components: {
+    list(options?: { forceRefresh?: boolean }): Promise<ProjectAnalysis>;
   };
   dispose(): Promise<void>;
 }

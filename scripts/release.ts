@@ -37,6 +37,12 @@ const packages: Package[] = [
     ignoreDeps: ["loader", "plugin-solid"],
   },
   {
+    name: "cli",
+    dirPath: "cli",
+    tagName: "cli",
+    type: "npm",
+  },
+  {
     name: "core",
     dirPath: "core",
     tagName: "core",
@@ -207,12 +213,25 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
     case "loader":
       version = await updateNodePackage(packageInfo.dirPath);
       const { version: proVersion } = await import("../pro/package.json");
+      const { version: reactPluginVersion } = await import(
+        "../frameworks/react/package.json"
+      );
+      const { version: vue2PluginVersion } = await import(
+        "../frameworks/vue2/package.json"
+      );
+      const { version: vue3PluginVersion } = await import(
+        "../frameworks/vue3/package.json"
+      );
       const releaseDirPath = path.join(packageInfo.dirPath, "src", "release");
       await fs.promises.writeFile(
         path.join(releaseDirPath, "package.json"),
         JSON.stringify(
           {
             dependencies: {
+              "@previewjs/plugin-react": reactPluginVersion,
+              "@previewjs/plugin-solid": "1.0.2",
+              "@previewjs/plugin-vue2": vue2PluginVersion,
+              "@previewjs/plugin-vue3": vue3PluginVersion,
               "@previewjs/pro": proVersion,
             },
           },
@@ -222,7 +241,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         "utf8"
       );
       console.log(`Running npm install to update release lockfile...`);
-      await execa("npm", ["install"], {
+      await execa("pnpm", ["npm", "install"], {
         cwd: releaseDirPath,
       });
       break;
@@ -415,7 +434,7 @@ class PackageJsonModifier {
       dependencies: Object.fromEntries(
         Object.entries(dependencies).map(([depName, depVersion]) => [
           depName,
-          depName === name ? version : depVersion,
+          depName === name ? `^${version}` : depVersion,
         ])
       ),
       devDependencies,
@@ -429,19 +448,6 @@ class PackageJsonModifier {
       "utf8"
     );
   }
-}
-
-async function replaceInFile(
-  absoluteFilePath: string,
-  search: RegExp,
-  replacement: string
-) {
-  const originalContent = await fs.promises.readFile(absoluteFilePath, "utf8");
-  const updatedContent = originalContent.replace(search, replacement);
-  if (originalContent === updatedContent) {
-    throw new Error(`No change in ${absoluteFilePath}`);
-  }
-  await fs.promises.writeFile(absoluteFilePath, updatedContent, "utf8");
 }
 
 main().catch((e) => {

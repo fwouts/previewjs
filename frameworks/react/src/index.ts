@@ -11,6 +11,7 @@ import { svgrPlugin } from "./svgr-plugin";
 export const reactFrameworkPlugin: FrameworkPluginFactory<{
   svgr?: {
     componentName?: string;
+    disable?: boolean;
   };
 }> = {
   isCompatible: async (dependencies) => {
@@ -57,10 +58,13 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
         return {
           plugins: [
             optimizeReactDepsPlugin(),
-            svgrPlugin({
-              exportedComponentName: svgr?.componentName || "ReactComponent",
-              alias: config.alias,
-            }),
+            svgr?.disable
+              ? null
+              : svgrPlugin({
+                  exportedComponentName:
+                    svgr?.componentName || "ReactComponent",
+                  alias: config.alias,
+                }),
             reactImportsPlugin(),
           ],
           define: {

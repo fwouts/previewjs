@@ -160,7 +160,7 @@ export class ViteManager {
     // the file system. We want it to read from our reader, which could
     // be using an in-memory version instead.
     const plugins = vitePlugins.flat().map((plugin) => {
-      if (!plugin || !plugin.handleHotUpdate) {
+      if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
         return plugin;
       }
       const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
@@ -194,7 +194,11 @@ export class ViteManager {
           overlay: false,
           server,
           clientPort: port,
+          ...(typeof this.options.config.vite?.server?.hmr === "object"
+            ? this.options.config.vite?.server?.hmr
+            : {}),
         },
+        ...this.options.config.vite?.server,
       },
       customLogger: {
         info: defaultLogger.info,
@@ -223,7 +227,6 @@ export class ViteManager {
         this.options.config.vite?.publicDir || this.options.config.publicDir,
       plugins,
       define: {
-        "process.env": process.env,
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,

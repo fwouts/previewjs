@@ -13,10 +13,9 @@ import { ApiRouter } from "./router";
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;
-}) => Promise<PreviewEnvironment | null>;
+}) => Promise<PreviewEnvironment>;
 
 export type PreviewEnvironment = {
-  frameworkPluginFactories?: FrameworkPluginFactory[];
   middlewares?: RequestHandler[];
   persistedStateManager?: PersistedStateManager;
   onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
@@ -25,20 +24,19 @@ export type PreviewEnvironment = {
 export async function loadPreviewEnv({
   rootDirPath,
   setupEnvironment,
+  frameworkPluginFactories,
 }: {
   rootDirPath: string;
   setupEnvironment: SetupPreviewEnvironment;
+  frameworkPluginFactories?: FrameworkPluginFactory[];
 }) {
   const previewEnv = await setupEnvironment({ rootDirPath });
-  if (!previewEnv) {
-    return null;
-  }
   let frameworkPlugin: FrameworkPlugin | undefined = await readConfig(
     rootDirPath
   ).frameworkPlugin;
   fallbackToDefault: if (!frameworkPlugin) {
     const dependencies = await extractPackageDependencies(rootDirPath);
-    for (const candidate of previewEnv.frameworkPluginFactories || []) {
+    for (const candidate of frameworkPluginFactories || []) {
       if (await candidate.isCompatible(dependencies)) {
         frameworkPlugin = await candidate.create();
         break fallbackToDefault;

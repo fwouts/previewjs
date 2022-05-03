@@ -41,7 +41,9 @@ function generateComponentLoaderModule(
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
 
+let counter = 0;
 export async function refresh() {
+  const currentCounter = ++counter;
   let loadingError = null;
   ${
     wrapper
@@ -73,6 +75,10 @@ export async function refresh() {
     loadingError = e.stack || e.message || null;
     return null;
   });
+  if (currentCounter !== counter) {
+    // Abort to avoid double rendering.
+    return;
+  }
   await updateComponent({
     wrapperModule,
     wrapperName: ${JSON.stringify(wrapper?.componentName || null)},

@@ -14,6 +14,7 @@ import express from "express";
 import { pathExistsSync } from "fs-extra";
 import path from "path";
 import * as vite from "vite";
+import { getCacheDir } from "./caching";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
 import { ViteManager } from "./vite/vite-manager";
@@ -48,7 +49,6 @@ export class Previewer {
       reader: Reader;
       previewDirPath: string;
       rootDirPath: string;
-      cacheDirPath: string;
       logLevel: vite.UserConfig["logLevel"];
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
@@ -153,7 +153,7 @@ export class Previewer {
             "index.html"
           ),
           reader: this.transformingReader,
-          cacheDir: path.join(this.options.cacheDirPath, "vite"),
+          cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
           config: this.configWithWrapper(this.config),
           logLevel: this.options.logLevel,
           frameworkPlugin: this.options.frameworkPlugin,
