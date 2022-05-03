@@ -30,8 +30,7 @@ export default {
     });
     await previewIframe.waitForSelector(".App-updated-1");
     await controller.console.items.withText("Render 1").waitUntilVisible();
-    // TODO: Ensure there is a single log message. Currently we render twice.
-    expect(await controller.console.items.count()).toEqual(2);
+    expect(await controller.console.items.count()).toEqual(1);
 
     appDir.update("src/App.vue", {
       kind: "replace",
@@ -54,8 +53,7 @@ export default {
     });
     await previewIframe.waitForSelector(".App-updated-2");
     await controller.console.items.withText("Render 2").waitUntilVisible();
-    // TODO: Ensure there is a single log message. Currently we render twice.
-    expect(await controller.console.items.count()).toEqual(2);
+    expect(await controller.console.items.count()).toEqual(1);
   });
 
   test("hides errors once resolved", "vue2", async ({ appDir, controller }) => {
