@@ -17,7 +17,7 @@ export const Container = (props: {
     });
   });
   return (
-    <div className="flex-grow flex flex-col min-h-0">
+    <div id="console-container" className="flex-grow flex flex-col min-h-0">
       <div
         ref={scrollableContainerRef}
         className="flex flex-col overflow-y-auto"
@@ -26,6 +26,7 @@ export const Container = (props: {
       </div>
       {props.children.length > 0 && (
         <button
+          id="clear-console-button"
           className="p-2 text-gray-400 border-t-2 border-gray-100 hover:text-gray-600"
           onClick={props.onClear}
         >
