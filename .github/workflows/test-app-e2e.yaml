@@ -29,26 +29,26 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [16]
+        node-version: [18]
         os: [ubuntu-20.04, macos-11, windows-2022]
         group: [0, 1, 2]
         include:
-          - node-version: 12
+          - node-version: 14
             os: ubuntu-latest
             group: 0
-          - node-version: 12
+          - node-version: 14
             os: ubuntu-latest
             group: 1
-          - node-version: 12
+          - node-version: 14
             os: ubuntu-latest
             group: 2
-          - node-version: 14
+          - node-version: 16
             os: ubuntu-latest
             group: 0
-          - node-version: 14
+          - node-version: 16
             os: ubuntu-latest
             group: 1
-          - node-version: 14
+          - node-version: 16
             os: ubuntu-latest
             group: 2
     steps:
