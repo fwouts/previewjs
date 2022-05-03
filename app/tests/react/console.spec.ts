@@ -99,7 +99,7 @@ function Foo() {
               .withText("The above error occurred in the <Foo> component")
               .waitUntilExists();
             expect(await controller.console.items.count()).toEqual(
-              version === 18 ? 3 : 2
+              version === 18 ? 4 : 2
             );
           } else {
             // TODO: Remove this horrible wait.

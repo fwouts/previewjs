@@ -66,9 +66,6 @@ window.addEventListener(
         break;
       case "render":
         loading = false;
-        sendMessageFromPreview({
-          kind: "before-render",
-        });
         load(data).catch(console.error);
         break;
     }
