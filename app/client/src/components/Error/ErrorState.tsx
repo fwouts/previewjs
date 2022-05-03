@@ -17,7 +17,20 @@ export class ErrorState {
   update(event: PreviewUpdate) {
     const viteError = event.viteError;
     if (viteError) {
-      const message = viteError.err.message;
+      let message =
+        viteError.err.message +
+        (viteError.err.stack ? `\n${viteError.err.stack}` : "");
+      // Remove any redundant line breaks (but not spaces,
+      // which could be useful indentation).
+      message = message.replace(/^\n+/g, "\n").trim();
+      const stripPrefix = "Internal server error: ";
+      if (message.startsWith(stripPrefix)) {
+        message = message.substr(stripPrefix.length);
+      }
+      if (/^Transform failed with \d+ errors?:?\n.*/.test(message)) {
+        const lineBreakPosition = message.indexOf("\n");
+        message = message.substring(lineBreakPosition + 1);
+      }
       const lineBreakPosition = message.indexOf("\n");
       let title: string;
       let rest: string;
@@ -27,16 +40,6 @@ export class ErrorState {
       } else {
         title = message;
         rest = "";
-      }
-      if (viteError.err.stack) {
-        rest += `\n${viteError.err.stack}`;
-      }
-      // Remove any leading line breaks (but not spaces,
-      // which could be useful indentation).
-      rest = rest.replace(/^\n*/g, "");
-      const stripPrefix = "Internal server error: ";
-      if (title.startsWith(stripPrefix)) {
-        title = title.substr(stripPrefix.length);
       }
       if (title.endsWith(":") || title.endsWith(".")) {
         title = title.substr(0, title.length - 1).trim();
