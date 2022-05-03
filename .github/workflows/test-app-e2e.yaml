@@ -76,7 +76,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
+          name: success-screenshots-${{ runner.os }}-v2-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
             app/tests/__screenshots__
             pro/tests/__screenshots__
@@ -84,7 +84,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
-          name: failure-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
+          name: failure-screenshots-${{ runner.os }}-v2-${{ matrix.node-version }}-${{ matrix.group }}
           path: |
             app/tests/__failures__
             pro/tests/__failures__
