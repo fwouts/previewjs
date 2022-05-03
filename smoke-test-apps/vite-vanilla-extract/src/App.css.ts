@@ -12,11 +12,7 @@ const appLogoSpin = keyframes({
 export const appLogoStyle = style({
   height: "40vmin",
   pointerEvents: "none",
-  "@media": {
-    "prefers-reduced-motion: no-preference": {
-      animation: `${appLogoSpin} infinite 20s linear`,
-    },
-  },
+  animation: `${appLogoSpin} infinite 20s linear`,
 });
 
 export const appHeaderStyle = style({
