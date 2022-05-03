@@ -372,7 +372,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`
       );
       await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toContain(
+      expect(await controller.errors.details.text()).toStartWith(
         `Error in src${path.sep}App.tsx:4:10\n`
       );
       await appDir.update(
@@ -463,7 +463,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       await controller.errors.title.waitUntilVisible();
       expect(await controller.errors.title.text()).toEqual("Expected error");
       await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toStartWith(
+      expect(await controller.errors.details.text()).toContain(
         `/preview/src/Dependency.tsx`
       );
       await appDir.update(
