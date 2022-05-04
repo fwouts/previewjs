@@ -94,7 +94,7 @@ importers:
       ts-node-dev: 1.1.8
       typescript: 4.6.4
       vite: 2.9.7
-      vite-plugin-svgr: 0.6.0
+      vite-plugin-svgr: 2.1.0
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
@@ -149,7 +149,7 @@ importers:
       ts-node-dev: 1.1.8_typescript@4.6.4
       typescript: 4.6.4
       vite: 2.9.7
-      vite-plugin-svgr: 0.6.0_vite@2.9.7
+      vite-plugin-svgr: 2.1.0_vite@2.9.7
 
   cli:
     specifiers:
@@ -548,7 +548,7 @@ importers:
       universal-base64: 2.1.0
       uuid: 8.3.2
       vite: 2.9.7
-      vite-plugin-svgr: 0.6.0
+      vite-plugin-svgr: 2.1.0
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
@@ -589,7 +589,7 @@ importers:
       universal-base64: 2.1.0
       uuid: 8.3.2
       vite: 2.9.7
-      vite-plugin-svgr: 0.6.0_vite@2.9.7
+      vite-plugin-svgr: 2.1.0_vite@2.9.7
 
   smoke-test-apps/aliases:
     specifiers:
@@ -26334,8 +26334,8 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/0.6.0_vite@2.9.7:
-    resolution: {integrity: sha512-+9eiWLzdlLK3ktnO7gzazMmR/KJyXTy7z6GeRbhv5HKEOFjLdNk3eB0qJaSpzJC3dr2pKWml0jAmxH7O6CcQtg==}
+  /vite-plugin-svgr/2.1.0_vite@2.9.7:
+    resolution: {integrity: sha512-3J19p8pmGfRt297yvc8Fd36+0AC0sLgA/gZYQDjotNAhv3CmSTQyviXIrDbwiRFVrsZjSlHJH1vca7OGFmjDcA==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
