@@ -279,11 +279,7 @@ importers:
       jest: 28.0.3
       rimraf: 3.0.2
       shx: 0.3.4
-<<<<<<< HEAD
-      ts-jest: 28.0.1_fbnhyoylzq4psu5fkjtyqwnpyy
-=======
-      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
->>>>>>> main
+      ts-jest: 28.0.1_jw4qpfj6m43htbnoqw2i363564
 
   frameworks/react:
     specifiers:
@@ -323,11 +319,7 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       rimraf: 3.0.2
-<<<<<<< HEAD
-      ts-jest: 28.0.1_fbnhyoylzq4psu5fkjtyqwnpyy
-=======
-      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
->>>>>>> main
+      ts-jest: 28.0.1_jw4qpfj6m43htbnoqw2i363564
       vite: 2.9.7
 
   frameworks/react/preview:
@@ -379,11 +371,7 @@ importers:
       '@types/jest': 27.5.0
       jest: 28.0.3
       rimraf: 3.0.2
-<<<<<<< HEAD
-      ts-jest: 28.0.1_fbnhyoylzq4psu5fkjtyqwnpyy
-=======
-      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
->>>>>>> main
+      ts-jest: 28.0.1_jw4qpfj6m43htbnoqw2i363564
       vite: 2.9.7
 
   frameworks/vue2/preview:
@@ -429,11 +417,7 @@ importers:
       '@types/jest': 27.5.0
       jest: 28.0.3
       rimraf: 3.0.2
-<<<<<<< HEAD
-      ts-jest: 28.0.1_fbnhyoylzq4psu5fkjtyqwnpyy
-=======
-      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
->>>>>>> main
+      ts-jest: 28.0.1_jw4qpfj6m43htbnoqw2i363564
       vite: 2.9.7
 
   frameworks/vue3/preview:
@@ -1580,29 +1564,17 @@ importers:
       '@previewjs/core': workspace:*
       '@previewjs/type-analyzer': workspace:*
       '@previewjs/vfs': workspace:*
-<<<<<<< HEAD
-      '@types/jest': 27.4.1
-      jest: 28.0.0-alpha.8
-      ts-jest: 28.0.1
-=======
       '@types/jest': 27.5.0
       jest: 28.0.3
-      ts-jest: 28.0.0
->>>>>>> main
+      ts-jest: 28.0.1
       typescript: 4.6.4
     devDependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
       '@previewjs/vfs': link:../vfs
-<<<<<<< HEAD
-      '@types/jest': 27.4.1
-      jest: 28.0.0-alpha.8
-      ts-jest: 28.0.1_fbnhyoylzq4psu5fkjtyqwnpyy
-=======
       '@types/jest': 27.5.0
       jest: 28.0.3
-      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
->>>>>>> main
+      ts-jest: 28.0.1_jw4qpfj6m43htbnoqw2i363564
       typescript: 4.6.4
 
   vfs:
@@ -1629,11 +1601,7 @@ importers:
       jest: 28.0.3
       lodash: 4.17.21
       rimraf: 3.0.2
-<<<<<<< HEAD
-      ts-jest: 28.0.1_fbnhyoylzq4psu5fkjtyqwnpyy
-=======
-      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
->>>>>>> main
+      ts-jest: 28.0.1_jw4qpfj6m43htbnoqw2i363564
       typescript: 4.6.4
 
 packages:
@@ -25191,15 +25159,9 @@ packages:
     engines: {node: '>=6.10'}
     dev: true
 
-<<<<<<< HEAD
-  /ts-jest/28.0.1_fbnhyoylzq4psu5fkjtyqwnpyy:
+  /ts-jest/28.0.1_jw4qpfj6m43htbnoqw2i363564:
     resolution: {integrity: sha512-PbkbitaT/9ZYAqqzk3UYTvCq080Seo46T3m/AdwcZ0D8WH2uBhG6PvA8oOAWsZIknzPQU66fYobvFCL8IqIhmg==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
-=======
-  /ts-jest/28.0.0_jw4qpfj6m43htbnoqw2i363564:
-    resolution: {integrity: sha512-JOUGExRO4vNaQdc920/sJjFZxe9lBGa6WIuNWkvtZoORGI9dyHTBqhuaJUdBVWIfqj+vaK3TRt/B1T0hQ0ROaA==}
-    engines: {node: ^12.13.0 || ^14.15.0 || ^16.13.0 || >=17.0.0}
->>>>>>> main
     hasBin: true
     peerDependencies:
       '@babel/core': '>=7.0.0-beta.0 <8'
