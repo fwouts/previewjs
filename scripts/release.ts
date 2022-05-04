@@ -61,6 +61,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "plugin-solid",
+    dirPath: "frameworks/solid",
+    tagName: "plugins/solid",
+    type: "npm",
+  },
+  {
     name: "plugin-vue2",
     dirPath: "frameworks/vue2",
     tagName: "plugins/vue2",
