@@ -15,6 +15,7 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { vue3FrameworkPlugin } from ".";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { createVueTypeScriptReader } from "./vue-reader";

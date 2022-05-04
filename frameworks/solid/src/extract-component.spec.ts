@@ -7,6 +7,7 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { solidFrameworkPlugin } from ".";
 import { extractSolidComponents } from "./extract-component";
 

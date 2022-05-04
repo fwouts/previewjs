@@ -24,7 +24,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/vfs --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
     "assert-never": "^1.2.1",
@@ -33,12 +33,11 @@
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
-    "@types/jest": "27.5.0",
     "@types/lodash": "4.14.182",
-    "jest": "28.0.3",
     "lodash": "4.17.21",
     "rimraf": "3.0.2",
-    "ts-jest": "28.0.1",
-    "typescript": "4.6.4"
+    "typescript": "4.6.4",
+    "vite": "2.9.7",
+    "vitest": "0.10.2"
   }
 }

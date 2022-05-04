@@ -39,7 +39,7 @@
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && tsc -p iframe && shx cp -r node_modules/monaco-editor dist/monaco-editor",
     "build:watch": "tsc --watch",
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
     "@previewjs/api": "^2.0.1",
@@ -73,12 +73,10 @@
     "@types/express": "4.17.13",
     "@types/fs-extra": "9.0.13",
     "@types/glob": "7.2.0",
-    "@types/jest": "27.5.0",
     "@types/prettier": "2.6.0",
     "@types/uuid": "8.3.4",
-    "jest": "28.0.3",
     "rimraf": "3.0.2",
     "shx": "0.3.4",
-    "ts-jest": "28.0.1"
+    "vitest": "0.10.2"
   }
 }

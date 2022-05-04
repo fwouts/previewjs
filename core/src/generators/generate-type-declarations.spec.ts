@@ -21,6 +21,7 @@ import {
   UNKNOWN_TYPE,
   VOID_TYPE,
 } from "@previewjs/type-analyzer";
+import { describe, expect, test } from "vitest";
 import { generateTypeDeclarations } from "./generate-type-declarations";
 
 describe("generateTypeDeclarations", () => {

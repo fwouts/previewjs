@@ -25,7 +25,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
     "@previewjs/type-analyzer": "^2.0.4",
@@ -41,10 +41,8 @@
     "@previewjs/config": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@types/fs-extra": "9.0.13",
-    "@types/jest": "27.5.0",
-    "jest": "28.0.3",
     "rimraf": "3.0.2",
-    "ts-jest": "28.0.1",
-    "vite": "2.9.7"
+    "vite": "2.9.7",
+    "vitest": "0.10.2"
   }
 }
