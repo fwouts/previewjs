@@ -3,6 +3,7 @@ import { Action, LogMessage, Variant } from "../..";
 
 export type PreviewToAppMessage =
   | Bootstrapped
+  | BeforeRender
   | Action
   | LogMessage
   | RendererUpdated
@@ -13,6 +14,10 @@ export type PreviewToAppMessage =
 
 export interface Bootstrapped {
   kind: "bootstrapped";
+}
+
+export interface BeforeRender {
+  kind: "before-render";
 }
 
 export interface RendererUpdated {

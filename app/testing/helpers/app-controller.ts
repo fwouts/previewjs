@@ -121,7 +121,7 @@ export class AppController {
     tabs: {
       get: (label: string) => {
         return this.element(
-          `xpath=//button[contains(@class, 'panel-tab')][contains(., '${label}')])`
+          `xpath=//button[contains(@class, 'panel-tab')][contains(., '${label}')]`
         );
       },
     },
@@ -132,6 +132,21 @@ export class AppController {
       return this.element(
         `xpath=//*[contains(@class, 'action-log')][contains(., '${label}')]`
       );
+    },
+  };
+
+  console = {
+    container: this.element("#console-container"),
+    clearButton: this.element("#clear-console-button"),
+    items: {
+      count: async () => {
+        return (await this.page.$$(".console-item")).length;
+      },
+      withText: (text: string) => {
+        return this.element(
+          `xpath=//*[contains(@class, 'console-item')][contains(., '${text}')]`
+        );
+      },
     },
   };
 
