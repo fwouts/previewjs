@@ -9,15 +9,14 @@
     "url": "https://github.com/fwouts/previewjs"
   },
   "scripts": {
-    "test": "jest"
+    "test": "vitest"
   },
   "devDependencies": {
     "@previewjs/core": "workspace:*",
     "@previewjs/type-analyzer": "workspace:*",
     "@previewjs/vfs": "workspace:*",
-    "@types/jest": "27.5.0",
-    "jest": "28.0.3",
-    "ts-jest": "28.0.1",
-    "typescript": "4.6.4"
+    "typescript": "4.6.4",
+    "vite": "2.9.7",
+    "vitest": "0.10.2"
   }
 }

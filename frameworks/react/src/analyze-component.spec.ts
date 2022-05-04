@@ -23,6 +23,7 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { reactFrameworkPlugin } from ".";
 import { REACT_SPECIAL_TYPES } from "./special-types";
 

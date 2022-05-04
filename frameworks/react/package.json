@@ -29,7 +29,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
     "@previewjs/type-analyzer": "^2.0.4",
@@ -42,15 +42,13 @@
     "@previewjs/config": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@types/fs-extra": "9.0.13",
-    "@types/jest": "27.5.0",
     "@types/prop-types": "15.7.5",
     "@types/react": "18.0.8",
-    "jest": "28.0.3",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "rimraf": "3.0.2",
-    "ts-jest": "28.0.1",
-    "vite": "2.9.7"
+    "vite": "2.9.7",
+    "vitest": "0.10.2"
   }
 }

@@ -19,6 +19,7 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { solidFrameworkPlugin } from ".";
 import { SOLID_SPECIAL_TYPES } from "./special-types";
 

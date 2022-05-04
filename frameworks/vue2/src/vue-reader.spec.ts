@@ -1,5 +1,6 @@
 import { createMemoryReader, Reader, Writer } from "@previewjs/vfs";
 import path from "path";
+import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 describe("createVueTypeScriptReader", () => {
