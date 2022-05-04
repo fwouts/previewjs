@@ -16,7 +16,7 @@
 </div>
 <br />
 
-Preview.js lets you preview Vue and React components instantly in your IDE.
+Preview.js lets you preview React, Solid and Vue components instantly in your IDE.
 
 ![Demo](assets/previewjs-overview.gif)
 

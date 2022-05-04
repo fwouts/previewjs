@@ -1,6 +1,6 @@
 # Preview.js for Visual Studio Code
 
-Preview.js lets you preview Vue and React components instantly in your IDE.
+Preview.js lets you preview React, Solid and Vue components instantly in your IDE.
 
 ![Gif preview](https://s3.previewjs.com/previewjs-overview.gif)
 
