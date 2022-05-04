@@ -28,7 +28,7 @@ export async function load({
         paths: [installDir, path.join(installDir, "node_modules", packageName)],
       }));
     } catch (e) {
-      console.error(`Unable to load ${name} from ${installDir}`);
+      console.error(`Unable to load ${name} from ${installDir}`, e);
       throw e;
     }
   }
