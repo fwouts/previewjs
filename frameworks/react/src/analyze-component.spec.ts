@@ -263,7 +263,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -285,7 +284,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -326,7 +324,6 @@ export const A: React.FC<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -396,7 +393,6 @@ type Props = {
         a: STRING_TYPE,
         b: STRING_TYPE,
         c: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {
@@ -467,7 +463,6 @@ A.args = {
       propsType: objectType({
         foo: STRING_TYPE,
         bar: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: new Set(["foo"]),
       types: {},
