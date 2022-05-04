@@ -17,11 +17,11 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       await sleep(2);
       await controller.errors.title.waitUntilVisible();
       expect(await controller.errors.title.text()).toEqual(
-        `Transform failed with 1 error`
+        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`
       );
       await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`
+      expect(await controller.errors.details.text()).toStartWith(
+        `Error in src${path.sep}App.tsx:21:15\n`
       );
       // The component should still be shown.
       await previewIframe.waitForSelector(".App-logo");
@@ -48,11 +48,11 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       await sleep(2);
       await controller.errors.title.waitUntilVisible();
       expect(await controller.errors.title.text()).toEqual(
-        `Transform failed with 1 error`
+        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`
       );
       await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`
+      expect(await controller.errors.details.text()).toStartWith(
+        `Error in src${path.sep}App.tsx:21:15\n`
       );
       // The component should still be shown.
       await previewIframe.waitForSelector(".App-logo");
@@ -322,11 +322,11 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       await sleep(2);
       await controller.errors.title.waitUntilVisible();
       expect(await controller.errors.title.text()).toEqual(
-        `Transform failed with 1 error`
+        `src${path.sep}App.tsx:2:32: ERROR: Unexpected "/"`
       );
       await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:2:32: ERROR: Unexpected "/"`
+      expect(await controller.errors.details.text()).toStartWith(
+        `Error in src${path.sep}App.tsx:2:32\n`
       );
       await appDir.update(
         "src/App.tsx",
@@ -369,11 +369,11 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       await sleep(2);
       await controller.errors.title.waitUntilVisible();
       expect(await controller.errors.title.text()).toEqual(
-        `Transform failed with 1 error`
+        `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`
       );
       await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toContain(
-        `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`
+      expect(await controller.errors.details.text()).toStartWith(
+        `Error in src${path.sep}App.tsx:4:10\n`
       );
       await appDir.update(
         "src/App.tsx",

@@ -127,7 +127,13 @@ export class PreviewState {
           }
           switch (event.kind) {
             case "bootstrapped":
+            case "before-render":
               this.consoleLogs.onClear();
+              this.error.update({
+                kind: "update",
+                rendering: null,
+                viteError: null,
+              });
               break;
             case "update":
               this.error.update(event);

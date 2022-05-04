@@ -241,7 +241,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         "utf8"
       );
       console.log(`Running npm install to update release lockfile...`);
-      await execa("npm", ["install"], {
+      await execa("pnpm", ["npm", "install"], {
         cwd: releaseDirPath,
       });
       break;

@@ -105,6 +105,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "bootstrapped":
         this.onBootstrapped();
         break;
+      case "before-render":
       case "action":
       case "log-message":
         listener(data);
@@ -192,12 +193,17 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
 export type PreviewEvent =
   | PreviewBootstrapped
+  | BeforeRender
   | PreviewUpdate
   | Action
   | LogMessage;
 
 export type PreviewBootstrapped = {
   kind: "bootstrapped";
+};
+
+export type BeforeRender = {
+  kind: "before-render";
 };
 
 export type PreviewUpdate = {

@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React from "react";
 
 export const VariantButton: React.FC<{
+  children: React.ReactNode;
   warning?: boolean;
   title?: string;
   onClick(): void;
