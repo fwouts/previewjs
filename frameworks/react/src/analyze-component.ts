@@ -87,6 +87,8 @@ function computePropsTypeFromSignature(
       if (ts.isObjectBindingPattern(firstParam.valueDeclaration.name)) {
         const bindingPattern = firstParam.valueDeclaration.name;
         const usedProps = new Set<string>();
+        // TODO: Integrate this into Solid plugin as well.
+        const propsWithDefault = new Set<string>();
         for (const element of bindingPattern.elements) {
           if (element.dotDotDotToken) {
             break stripUnusedProps;
@@ -96,12 +98,18 @@ function computePropsTypeFromSignature(
             break stripUnusedProps;
           }
           usedProps.add(elementName.text);
+          if (element.initializer) {
+            propsWithDefault.add(elementName.text);
+          }
         }
         propsType = objectType(
           Object.fromEntries(
-            Object.entries(propsType.fields).filter(([key]) =>
-              usedProps.has(key)
-            )
+            Object.entries(propsType.fields)
+              .filter(([key]) => usedProps.has(key))
+              .map(([key, type]) => [
+                key,
+                maybeOptionalType(type, propsWithDefault.has(key)),
+              ])
           )
         );
       }

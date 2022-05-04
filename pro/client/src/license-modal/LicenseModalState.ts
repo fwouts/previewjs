@@ -47,7 +47,7 @@ export class LicenseModalState {
   }
 }
 
-class EnterLicenseKeyScreen {
+export class EnterLicenseKeyScreen {
   readonly kind = "enter-key";
 
   licenseKey = "";
@@ -61,6 +61,10 @@ class EnterLicenseKeyScreen {
 
   updateLicenseKey(licenseKey: string) {
     this.licenseKey = licenseKey.trim();
+  }
+
+  back() {
+    this.parent.toggle();
   }
 
   async submit() {
@@ -109,7 +113,7 @@ class EnterLicenseKeyScreen {
   }
 }
 
-class RevokeLicenseTokenScreen {
+export class RevokeLicenseTokenScreen {
   readonly kind = "revoke-token";
 
   loading = false;
@@ -132,6 +136,10 @@ class RevokeLicenseTokenScreen {
     } else {
       this.checked.delete(token);
     }
+  }
+
+  back() {
+    this.parent.switchToEnterKey();
   }
 
   async confirm() {
@@ -162,7 +170,7 @@ class RevokeLicenseTokenScreen {
   }
 }
 
-class LicenseStateScreen {
+export class LicenseStateScreen {
   readonly kind = "license-state";
 
   loading = false;
@@ -194,6 +202,10 @@ class LicenseStateScreen {
         this.loading = false;
       });
     }
+  }
+
+  close() {
+    this.parent.toggle();
   }
 
   async unlink() {

@@ -13,7 +13,7 @@ import path from "path";
 
 export async function sync(srcPath: string, dstPath: string): Promise<void> {
   if (!(await pathExists(srcPath))) {
-    return;
+    throw new Error(`No such directory: ${srcPath}`);
   }
   if (!(await pathExists(dstPath))) {
     await mkdir(dstPath, { recursive: true });

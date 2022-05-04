@@ -27,14 +27,14 @@ const packages: Package[] = [
     dirPath: "app",
     tagName: "app",
     type: "npm",
-    ignoreDeps: ["loader", "plugin-solid"],
+    ignoreDeps: ["loader"],
   },
   {
     name: "pro",
     dirPath: "pro",
     tagName: "pro",
     type: "npm",
-    ignoreDeps: ["loader", "plugin-solid"],
+    ignoreDeps: ["loader"],
   },
   {
     name: "cli",
@@ -89,6 +89,7 @@ const packages: Package[] = [
     dirPath: "loader",
     tagName: "loader",
     type: "loader",
+    additionalChangelogPath: ["pro/package.json"],
   },
   {
     name: "integration-intellij",
@@ -215,6 +216,9 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       const { version: reactPluginVersion } = await import(
         "../frameworks/react/package.json"
       );
+      const { version: solidPluginVersion } = await import(
+        "../frameworks/solid/package.json"
+      );
       const { version: vue2PluginVersion } = await import(
         "../frameworks/vue2/package.json"
       );
@@ -228,7 +232,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
           {
             dependencies: {
               "@previewjs/plugin-react": reactPluginVersion,
-              "@previewjs/plugin-solid": "1.0.2",
+              "@previewjs/plugin-solid": solidPluginVersion,
               "@previewjs/plugin-vue2": vue2PluginVersion,
               "@previewjs/plugin-vue3": vue3PluginVersion,
               "@previewjs/pro": proVersion,
@@ -240,7 +244,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         "utf8"
       );
       console.log(`Running npm install to update release lockfile...`);
-      await execa("npm", ["install"], {
+      await execa("pnpm", ["npm", "install"], {
         cwd: releaseDirPath,
       });
       break;

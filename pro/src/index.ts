@@ -3,7 +3,6 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import { analyzeFile } from "./actions/analyze-file";
-import { analyzeProject } from "./actions/analyze-project";
 import { AnalyzeFileEndpoint, AnalyzeProjectEndpoint } from "./api/endpoints";
 
 const setup: SetupPreviewEnvironment = async () => {
@@ -16,8 +15,10 @@ const setup: SetupPreviewEnvironment = async () => {
           filePath,
         }),
       }));
-      router.onRequest(AnalyzeProjectEndpoint, async ({ forceRefresh }) =>
-        analyzeProject(workspace.rootDirPath, { forceRefresh })
+      router.onRequest(
+        AnalyzeProjectEndpoint,
+        async ({ forceRefresh }) =>
+          await workspace.components.list({ forceRefresh })
       );
     },
   };

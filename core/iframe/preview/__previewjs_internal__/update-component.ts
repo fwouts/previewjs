@@ -31,6 +31,9 @@ export async function updateComponent({
       });
       return;
     }
+    sendMessageFromPreview({
+      kind: "before-render",
+    });
     const { variants, render } = await load({
       wrapperModule,
       wrapperName,

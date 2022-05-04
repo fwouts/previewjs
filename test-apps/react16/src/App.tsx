@@ -37,4 +37,8 @@ function App(props: AppProps) {
   );
 }
 
+function Other() {
+  return <div className="OtherSameFile">Hello</div>;
+}
+
 export { App };

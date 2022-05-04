@@ -263,7 +263,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -285,7 +284,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -326,20 +324,19 @@ export const A: React.FC<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
     });
   });
 
-  test("constant function with typed props but only using few props", async () => {
+  test("constant function with typed props but only some props", async () => {
     expect(
       await analyze(
         `
 import React from 'react';
 
-export const A: React.FC<Props> = ({ a: foo, c }) => {
+export const A: React.FC<Props> = ({ a: foo, c, d = "test" }) => {
   return <div>Hello, World!</div>;
 };
 
@@ -347,6 +344,7 @@ type Props = {
   a: string;
   b: string;
   c: string;
+  d: string;
 }
 `,
         "A"
@@ -355,6 +353,7 @@ type Props = {
       propsType: objectType({
         a: STRING_TYPE,
         c: STRING_TYPE,
+        d: optionalType(STRING_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {
@@ -363,6 +362,7 @@ type Props = {
             a: STRING_TYPE,
             b: STRING_TYPE,
             c: STRING_TYPE,
+            d: STRING_TYPE,
           }),
           parameters: {},
         },
@@ -393,7 +393,6 @@ type Props = {
         a: STRING_TYPE,
         b: STRING_TYPE,
         c: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {
@@ -464,7 +463,6 @@ A.args = {
       propsType: objectType({
         foo: STRING_TYPE,
         bar: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: new Set(["foo"]),
       types: {},

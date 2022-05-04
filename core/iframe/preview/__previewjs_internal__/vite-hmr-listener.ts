@@ -4,7 +4,10 @@ import { getState } from "./state";
 
 // @ts-ignore
 const hmr = import.meta.hot;
+let error: ErrorPayload | null = null;
+let isFirstUpdate = true;
 hmr.on("vite:error", (payload: ErrorPayload) => {
+  error = payload;
   if (typeof payload.err?.message !== "string") {
     // This error doesn't match the expected payload.
     // For example, this can happen with invalid CSS with the
@@ -18,6 +21,14 @@ hmr.on("vite:error", (payload: ErrorPayload) => {
   });
 });
 hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
+  // This is a copy of Vite logic that is disabled when the error overlay is off:
+  // https://github.com/vitejs/vite/blob/f3d15f106f378c3850b62fbebd69fc8f7c7f944b/packages/vite/src/client/client.ts#L61
+  if (error && isFirstUpdate) {
+    window.location.reload();
+  } else {
+    error = null;
+    isFirstUpdate = false;
+  }
   const state = getState();
   payload.updates = payload.updates.filter((update) => {
     if (

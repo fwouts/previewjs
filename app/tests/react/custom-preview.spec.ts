@@ -13,13 +13,14 @@ export function Button(props: { label: string; disabled?: boolean }) {
 `;
 
 export const customPreviewTests = testSuite("react/custom preview", (test) => {
-  test(
-    "shows variants when already configured",
-    "react",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
+  for (const version of [16, 17, 18]) {
+    test(
+      `${version}/shows variants when already configured`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
 ${originalSource}
 
 setupPreviews(Button, {
@@ -32,30 +33,30 @@ setupPreviews(Button, {
   },
 });
 `,
-      });
-      await controller.show("src/Button.tsx:Button");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'default variant')]"
-      );
-    }
-  );
+        });
+        await controller.show("src/Button.tsx:Button");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'default variant')]"
+        );
+      }
+    );
 
-  test(
-    "shows variants once preview added and hides once removed",
-    "react",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: originalSource,
-      });
-      await controller.show("src/Button.tsx:Button");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector("#button");
+    test(
+      `${version}/shows variants once preview added and hides once removed`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: originalSource,
+        });
+        await controller.show("src/Button.tsx:Button");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector("#button");
 
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
 ${originalSource}
 
 setupPreviews(Button, {
@@ -68,39 +69,39 @@ setupPreviews(Button, {
   },
 });
 `,
-      });
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'default variant')]"
-      );
+        });
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'default variant')]"
+        );
 
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: originalSource,
-      });
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'default variant')]",
-        {
-          state: "hidden",
-        }
-      );
-      await previewIframe.waitForSelector("#button");
-    }
-  );
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: originalSource,
+        });
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'default variant')]",
+          {
+            state: "hidden",
+          }
+        );
+        await previewIframe.waitForSelector("#button");
+      }
+    );
 
-  test(
-    "supports variants defined as function",
-    "react",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: originalSource,
-      });
-      await controller.show("src/Button.tsx:Button");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector("#button");
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
+    test(
+      `${version}/supports variants defined as function`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: originalSource,
+        });
+        await controller.show("src/Button.tsx:Button");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector("#button");
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
 ${originalSource}
 
 setupPreviews(Button, () => ({
@@ -109,27 +110,27 @@ setupPreviews(Button, () => ({
   },
 }));
 `,
-      });
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'custom label')]"
-      );
-    }
-  );
+        });
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'custom label')]"
+        );
+      }
+    );
 
-  test(
-    "updates when preview is updated",
-    "react",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: originalSource,
-      });
-      await controller.show("src/Button.tsx:Button");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector("#button");
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
+    test(
+      `${version}/updates when preview is updated`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: originalSource,
+        });
+        await controller.show("src/Button.tsx:Button");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector("#button");
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
 ${originalSource}
 
 setupPreviews(Button, {
@@ -142,15 +143,15 @@ setupPreviews(Button, {
   },
 });
 `,
-      });
+        });
 
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'default')]"
-      );
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'default')]"
+        );
 
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
 ${originalSource}
 
 setupPreviews(Button, {
@@ -163,29 +164,29 @@ setupPreviews(Button, {
   },
 });
 `,
-      });
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'foo label')]"
-      );
-    }
-  );
+        });
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'foo label')]"
+        );
+      }
+    );
 
-  test(
-    "hides props editor for configured variants",
-    "react",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: originalSource,
-      });
-      await controller.show("src/Button.tsx:Button");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector("#button");
-      await controller.props.editor.isReady();
+    test(
+      `${version}/hides props editor for configured variants`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: originalSource,
+        });
+        await controller.show("src/Button.tsx:Button");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector("#button");
+        await controller.props.editor.isReady();
 
-      await appDir.update("src/Button.tsx", {
-        kind: "replace",
-        text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: `import { setupPreviews } from '@previewjs/plugin-react/setup';
 ${originalSource}
 
 setupPreviews(Button, {
@@ -194,20 +195,23 @@ setupPreviews(Button, {
   },
 });
 `,
-      });
+        });
 
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'default')]"
-      );
-      await controller.props.editor.waitUntilGone();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'default')]"
+        );
+        await controller.props.editor.waitUntilGone();
 
-      await controller.component.label().click();
-      await controller.props.editor.isReady();
+        await controller.component.label().click();
+        await controller.props.editor.isReady();
 
-      await controller.props.editor.replaceText(`properties = {
+        await controller.props.editor.replaceText(`properties = {
         label: "foo"
       }`);
-      await previewIframe.waitForSelector("xpath=//button[contains(., 'foo')]");
-    }
-  );
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'foo')]"
+        );
+      }
+    );
+  }
 });
