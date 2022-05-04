@@ -1,13 +1,10 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "ignoreDeps": [
-    "@fortawesome/fontawesome-svg-core",
-    "@fortawesome/react-fontawesome"
-  ],
-  "ignorePaths": [
-    "smoke-test-apps/**",
-    "test-apps/**"
+  "extends": ["config:base"],
+  "ignorePaths": ["smoke-test-apps/**", "test-apps/**"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "rangeStrategy": "replace"
+    }
   ]
 }
