@@ -1,5 +1,6 @@
 {
   "extends": ["config:base"],
+  "ignoreDeps": ["@previewjs/*"],
   "ignorePaths": ["smoke-test-apps/**", "test-apps/**"],
   "packageRules": [
     {
