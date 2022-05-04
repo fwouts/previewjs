@@ -214,7 +214,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       '@types/prettier': 2.6.0
       '@types/uuid': 8.3.4
       acorn: ^8.7.0
@@ -227,7 +227,7 @@ importers:
       get-port: ^5
       glob: ^8.0.0
       http-terminator: ^3.2.0
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       monaco-editor: ^0.33.0
       prettier: ^2.6.2
       recrawl: ^2.2.1
@@ -273,13 +273,13 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       '@types/prettier': 2.6.0
       '@types/uuid': 8.3.4
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       rimraf: 3.0.2
       shx: 0.3.4
-      ts-jest: 28.0.0_fbnhyoylzq4psu5fkjtyqwnpyy
+      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
 
   frameworks/react:
     specifiers:
@@ -289,11 +289,11 @@ importers:
       '@previewjs/vfs': ^1.1.4
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.2
       fs-extra: ^10.0.0
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       next: 12.1.6
       react: ^18.1.0
       react-dom: ^18.1.0
@@ -311,15 +311,15 @@ importers:
       '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.2
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       next: 12.1.6_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       rimraf: 3.0.2
-      ts-jest: 28.0.0_fbnhyoylzq4psu5fkjtyqwnpyy
+      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
       vite: 2.9.7
 
   frameworks/react/preview:
@@ -345,9 +345,9 @@ importers:
       '@previewjs/type-analyzer': ^2.0.4
       '@previewjs/vfs': ^1.1.4
       '@types/fs-extra': 9.0.13
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       fs-extra: ^10.0.0
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       rimraf: 3.0.2
       ts-jest: 28.0.0
       typescript: ^4.6.3
@@ -368,10 +368,10 @@ importers:
       '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
-      '@types/jest': 27.4.1
-      jest: 28.0.0-alpha.8
+      '@types/jest': 27.5.0
+      jest: 28.0.3
       rimraf: 3.0.2
-      ts-jest: 28.0.0_fbnhyoylzq4psu5fkjtyqwnpyy
+      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
       vite: 2.9.7
 
   frameworks/vue2/preview:
@@ -391,12 +391,12 @@ importers:
       '@previewjs/core': workspace:*
       '@previewjs/type-analyzer': ^2.0.4
       '@previewjs/vfs': ^1.1.4
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       '@vitejs/plugin-vue': ^2.0.1
       '@vitejs/plugin-vue-jsx': ^1.2.0
       '@vue/compiler-sfc': ^3.0.0
       acorn: ^8.7.0
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       rimraf: 3.0.2
       ts-jest: 28.0.0
       typescript: ^4.6.3
@@ -414,10 +414,10 @@ importers:
     devDependencies:
       '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
-      '@types/jest': 27.4.1
-      jest: 28.0.0-alpha.8
+      '@types/jest': 27.5.0
+      jest: 28.0.3
       rimraf: 3.0.2
-      ts-jest: 28.0.0_fbnhyoylzq4psu5fkjtyqwnpyy
+      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
       vite: 2.9.7
 
   frameworks/vue3/preview:
@@ -1564,28 +1564,28 @@ importers:
       '@previewjs/core': workspace:*
       '@previewjs/type-analyzer': workspace:*
       '@previewjs/vfs': workspace:*
-      '@types/jest': 27.4.1
-      jest: 28.0.0-alpha.8
+      '@types/jest': 27.5.0
+      jest: 28.0.3
       ts-jest: 28.0.0
       typescript: 4.6.4
     devDependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
       '@previewjs/vfs': link:../vfs
-      '@types/jest': 27.4.1
-      jest: 28.0.0-alpha.8
-      ts-jest: 28.0.0_fbnhyoylzq4psu5fkjtyqwnpyy
+      '@types/jest': 27.5.0
+      jest: 28.0.3
+      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
       typescript: 4.6.4
 
   vfs:
     specifiers:
       '@types/fs-extra': 9.0.13
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       '@types/lodash': 4.14.182
       assert-never: ^1.2.1
       chokidar: ^3.5.3
       fs-extra: ^10.0.1
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 28.0.0
@@ -1596,12 +1596,12 @@ importers:
       fs-extra: 10.1.0
     devDependencies:
       '@types/fs-extra': 9.0.13
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       '@types/lodash': 4.14.182
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       lodash: 4.17.21
       rimraf: 3.0.2
-      ts-jest: 28.0.0_fbnhyoylzq4psu5fkjtyqwnpyy
+      ts-jest: 28.0.0_jw4qpfj6m43htbnoqw2i363564
       typescript: 4.6.4
 
 packages:
@@ -7721,8 +7721,8 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
 
-  /@types/jest/27.4.1:
-    resolution: {integrity: sha512-23iPJADSmicDVrWk+HT58LMJtzLAnB2AgIzplQuq/bSrGaxCrlvRFjGbXmamnnk/mAmCdLStiGqggu28ocUyiw==}
+  /@types/jest/27.5.0:
+    resolution: {integrity: sha512-9RBFx7r4k+msyj/arpfaa0WOOEcaAZNmN+j80KFbFCoSqCJGHTz7YMAMGQW9Xmqm5w6l5c25vbSjMwlikJi5+g==}
     dependencies:
       jest-matcher-utils: 27.5.1
       pretty-format: 27.5.1
@@ -17241,9 +17241,9 @@ packages:
       - ts-node
       - utf-8-validate
 
-  /jest/28.0.0-alpha.8:
-    resolution: {integrity: sha512-PsNHLd2WMEAtPKv+1tTM8LFND86Pz9/jYjYG9TEd0FXwXRY2tDOiZ3JnClKwqwvkYkNsbYz2XUR93XF/2Ux1qA==}
-    engines: {node: ^12.13.0 || ^14.15.0 || ^16.13.0 || >=17.0.0}
+  /jest/28.0.3:
+    resolution: {integrity: sha512-uS+T5J3w5xyzd1KSJCGKhCo8WTJXbNl86f5SW11wgssbandJOVLRKKUxmhdFfmKxhPeksl1hHZ0HaA8VBzp7xA==}
+    engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     hasBin: true
     peerDependencies:
       node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
@@ -25159,7 +25159,7 @@ packages:
     engines: {node: '>=6.10'}
     dev: true
 
-  /ts-jest/28.0.0_fbnhyoylzq4psu5fkjtyqwnpyy:
+  /ts-jest/28.0.0_jw4qpfj6m43htbnoqw2i363564:
     resolution: {integrity: sha512-JOUGExRO4vNaQdc920/sJjFZxe9lBGa6WIuNWkvtZoORGI9dyHTBqhuaJUdBVWIfqj+vaK3TRt/B1T0hQ0ROaA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.13.0 || >=17.0.0}
     hasBin: true
@@ -25180,10 +25180,10 @@ packages:
       esbuild:
         optional: true
     dependencies:
-      '@types/jest': 27.4.1
+      '@types/jest': 27.5.0
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
-      jest: 28.0.0-alpha.8
+      jest: 28.0.3
       jest-util: 28.0.2
       json5: 2.2.1
       lodash.memoize: 4.1.2
