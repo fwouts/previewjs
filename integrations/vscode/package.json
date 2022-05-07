@@ -86,11 +86,11 @@
   },
   "main": "./dist/index.js",
   "scripts": {
-    "vscode:prepublish": "yarn build",
+    "vscode:prepublish": "pnpm build",
     "build": "rimraf dist && tsc && node esbuild.js",
-    "prod": "cross-env PREVIEWJS_DEV=0 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
-    "dev": "cross-env PREVIEWJS_DEV=1 yarn vsce package --yarn && yarn dev:install && yarn dev:cleanup",
-    "dev:community": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app yarn dev",
+    "prod": "cross-env PREVIEWJS_DEV=0 pnpm vsce package --no-dependencies && pnpm dev:install && pnpm dev:cleanup",
+    "dev": "cross-env PREVIEWJS_DEV=1 pnpm vsce package --no-dependencies && pnpm dev:install && pnpm dev:cleanup",
+    "dev:community": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm dev",
     "dev:install": "code --install-extension previewjs-1.7.0.vsix --force",
     "dev:cleanup": "rimraf previewjs-1.7.0.vsix"
   },

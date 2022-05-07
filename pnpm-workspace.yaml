@@ -7,7 +7,7 @@ packages:
   - "frameworks/*"
   - "frameworks/*/preview"
   - "integrations/intellij/controller"
-  # Note: integrations/vscode uses Yarn because of https://github.com/microsoft/vscode-vsce/issues/421.
+  - "integrations/vscode"
   - "integrations/vscode/dev"
   - "loader"
   - "pro"
