@@ -62,7 +62,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/lodash': 4.14.182
       '@types/node': 17.0.8
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       '@types/react-dom': 18.0.3
       '@types/rimraf': 3.0.2
       '@typescript-eslint/parser': 5.22.0
@@ -118,7 +118,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/lodash': 4.14.182
       '@types/node': 17.0.8
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       '@types/react-dom': 18.0.3
       '@types/rimraf': 3.0.2
       '@typescript-eslint/parser': 5.22.0_e4zyhrvfnqudwdx5bevnvkluy4
@@ -286,7 +286,7 @@ importers:
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       fs-extra: ^10.0.0
       next: 12.1.6
       react: 18.1.0
@@ -306,7 +306,7 @@ importers:
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       next: 12.1.6_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
@@ -317,13 +317,13 @@ importers:
   frameworks/react/preview:
     specifiers:
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       '@types/react-dom': 18.0.3
       rimraf: 3.0.2
       shx: 0.3.4
     dependencies:
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       '@types/react-dom': 18.0.3
     devDependencies:
       rimraf: 3.0.2
@@ -560,7 +560,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       '@types/react-dom': 18.0.3
       '@types/uuid': 8.3.4
       '@vitejs/plugin-react': 1.3.2
@@ -602,7 +602,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
       '@types/react-dom': 18.0.3
       '@types/uuid': 8.3.4
       '@vitejs/plugin-react': 1.3.2
@@ -7633,7 +7633,7 @@ packages:
   /@types/react-dom/18.0.3:
     resolution: {integrity: sha512-1RRW9kst+67gveJRYPxGmVy8eVJ05O43hg77G2j5m76/RFJtMbcfAs2viQ2UNsvvDg8F7OfQZx8qQcl6ymygaQ==}
     dependencies:
-      '@types/react': 18.0.8
+      '@types/react': 18.0.9
 
   /@types/react-is/17.0.3:
     resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}
@@ -7693,6 +7693,13 @@ packages:
 
   /@types/react/18.0.8:
     resolution: {integrity: sha512-+j2hk9BzCOrrOSJASi5XiOyBbERk9jG5O73Ya4M0env5Ixi6vUNli4qy994AINcEF+1IEHISYFfIT4zwr++LKw==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.0.11
+
+  /@types/react/18.0.9:
+    resolution: {integrity: sha512-9bjbg1hJHUm4De19L1cHiW0Jvx3geel6Qczhjd0qY5VKVE2X5+x77YxAepuCwVh4vrgZJdgEJw48zrhRIeF4Nw==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
