@@ -64,17 +64,42 @@ async function extractPackageDependencies(
     ...dependencies,
     ...devDependencies,
   };
-  return Object.fromEntries<{ majorVersion: number }>(
-    Object.entries(allDependencies).map(([name, version]) => {
-      let majorVersion: number;
-      if (typeof version !== "string") {
-        majorVersion = 0;
-      } else if (version.startsWith("^") || version.startsWith("~")) {
-        majorVersion = parseInt(version.slice(1));
-      } else {
-        majorVersion = parseInt(version);
+  return Object.fromEntries(
+    Object.entries(allDependencies).map(
+      ([name, version]): [string, PackageDependencies[string]] => {
+        let majorVersion: number;
+        if (typeof version !== "string") {
+          majorVersion = 0;
+        } else if (version.startsWith("^") || version.startsWith("~")) {
+          majorVersion = parseInt(version.slice(1));
+        } else {
+          majorVersion = parseInt(version);
+        }
+        const readInstalledVersion = async () => {
+          try {
+            const modulePath = require.resolve(`${name}/package.json`, {
+              paths: [rootDirPath],
+            });
+            const packageInfo = JSON.parse(
+              await fs.readFile(modulePath, "utf8")
+            );
+            const version = packageInfo["version"];
+            if (!version || typeof version !== "string") {
+              throw new Error(
+                `Invalid version found for package: ${modulePath}`
+              );
+            }
+            return version;
+          } catch (e) {
+            console.error(
+              `Unable to read installed version of package: ${name}`,
+              e
+            );
+            return null;
+          }
+        };
+        return [name, { majorVersion, readInstalledVersion }];
       }
-      return [name, { majorVersion }];
-    })
+    )
   );
 }
