@@ -1582,7 +1582,6 @@ importers:
   type-analyzer:
     specifiers:
       '@previewjs/core': workspace:*
-      '@previewjs/type-analyzer': workspace:*
       '@previewjs/vfs': ^1.1.4
       '@types/lodash': 4.14.182
       assert-never: ^1.2.1
@@ -1598,7 +1597,6 @@ importers:
       typescript: 4.6.4
     devDependencies:
       '@previewjs/core': link:../core
-      '@previewjs/type-analyzer': 'link:'
       '@types/lodash': 4.14.182
       rimraf: 3.0.2
       vite: 2.9.7
