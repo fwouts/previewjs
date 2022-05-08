@@ -1290,6 +1290,64 @@ interface A {
     ]);
   });
 
+  test("extended interface type", async () => {
+    expect(
+      resolveType(
+        `
+interface B {
+  foo: string;
+}
+
+interface C {
+  bar: string;
+}
+
+interface A extends B, C {
+  baz: string;
+}
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        ["main.ts:A"]: {
+          type: objectType({
+            foo: STRING_TYPE,
+            bar: STRING_TYPE,
+            baz: STRING_TYPE,
+          }),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
+  test("extended array type", async () => {
+    expect(
+      resolveType(
+        `
+interface B {
+  foo: string;
+}
+
+interface A extends B, Array<string> {
+  baz: string;
+}
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        ["main.ts:A"]: {
+          type: arrayType(STRING_TYPE),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
   test("recursive class type", async () => {
     expect(
       resolveType(
