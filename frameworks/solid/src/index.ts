@@ -8,11 +8,11 @@ import { SOLID_SPECIAL_TYPES } from "./special-types";
 
 export const solidFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    const solid = dependencies["solid-js"];
-    if (!solid) {
+    const version = await dependencies["solid-js"]?.readInstalledVersion();
+    if (!version) {
       return false;
     }
-    return solid.majorVersion === 1;
+    return parseInt(version) === 1;
   },
   async create() {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
