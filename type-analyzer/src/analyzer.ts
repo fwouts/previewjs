@@ -251,7 +251,7 @@ class TypeResolver {
       case "Record":
         return true;
       default:
-        return !!this.specialTypes[typeName];
+        return Object.keys(this.specialTypes).includes(typeName);
     }
   }
 
@@ -259,20 +259,18 @@ class TypeResolver {
     type: ts.Type,
     genericTypeNames: Set<string>
   ): ValueType {
+    const specialTypeNames = Object.keys(this.specialTypes);
     const typeArguments = (
       this.checker.getTypeArguments(type as ts.TypeReference) || []
     ).map((t) => this.resolveTypeInternal(t, genericTypeNames));
-    if (type.symbol?.name) {
-      const specialType = this.specialTypes[type.symbol.name];
-      if (specialType) {
-        return specialType;
-      }
+    if (type.symbol?.name && specialTypeNames.includes(type.symbol.name)) {
+      return this.specialTypes[type.symbol.name]!;
     }
-    if (type.aliasSymbol?.name) {
-      const specialType = this.specialTypes[type.aliasSymbol.name];
-      if (specialType) {
-        return specialType;
-      }
+    if (
+      type.aliasSymbol?.name &&
+      specialTypeNames.includes(type.aliasSymbol.name)
+    ) {
+      return this.specialTypes[type.aliasSymbol.name]!;
     }
     if (type.symbol?.name === "Array") {
       return arrayType(typeArguments[0] || UNKNOWN_TYPE);
