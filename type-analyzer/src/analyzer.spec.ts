@@ -1818,62 +1818,6 @@ type C<T> = { (): T } | { new(...args: never[]): T & object } | { new(...args: s
     ]);
   });
 
-  test.only("extending array", async () => {
-    expect(
-      resolveType(
-        `
-interface RecursiveArray<T> extends Array<T> {
-  foo: number;
-}
-
-type A = {
-  foo: string,
-  bar: RecursiveArray<string>,
-};
-`,
-        "A"
-      )
-    ).toEqual([
-      namedType("main.ts:A"),
-      {
-        ["main.ts:A"]: {
-          type: objectType({
-            foo: STRING_TYPE,
-            bar: NUMBER_TYPE,
-          }),
-          parameters: {},
-        },
-      },
-    ]);
-  });
-
-  test("recursive array", async () => {
-    expect(
-      resolveType(
-        `
-interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
-
-type A = {
-  foo: string,
-  bar: RecursiveArray<string>,
-};
-`,
-        "A"
-      )
-    ).toEqual([
-      namedType("main.ts:A"),
-      {
-        ["main.ts:A"]: {
-          type: objectType({
-            foo: STRING_TYPE,
-            bar: NUMBER_TYPE,
-          }),
-          parameters: {},
-        },
-      },
-    ]);
-  });
-
   function resolveType(
     source: string,
     name: string,
