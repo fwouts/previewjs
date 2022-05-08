@@ -77,16 +77,34 @@ async function extractPackageDependencies(
         }
         const readInstalledVersion = async () => {
           try {
-            const modulePath = require.resolve(`${name}/package.json`, {
+            const moduleEntryPath = require.resolve(name, {
               paths: [rootDirPath],
             });
+            let packagePath = moduleEntryPath;
+            let packageJsonPath: string | null = null;
+            while (packagePath !== path.dirname(packagePath)) {
+              const candidatePackageJsonPath = path.join(
+                packagePath,
+                "package.json"
+              );
+              if (fs.existsSync(candidatePackageJsonPath)) {
+                packageJsonPath = candidatePackageJsonPath;
+                break;
+              }
+              packagePath = path.dirname(packagePath);
+            }
+            if (!packageJsonPath) {
+              throw new Error(
+                `No package.json path found from: ${moduleEntryPath}`
+              );
+            }
             const packageInfo = JSON.parse(
-              await fs.readFile(modulePath, "utf8")
+              await fs.readFile(packageJsonPath, "utf8")
             );
             const version = packageInfo["version"];
             if (!version || typeof version !== "string") {
               throw new Error(
-                `Invalid version found for package: ${modulePath}`
+                `Invalid version found for package: ${packageJsonPath}`
               );
             }
             return version;
