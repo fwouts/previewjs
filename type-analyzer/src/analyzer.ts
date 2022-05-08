@@ -393,17 +393,12 @@ class TypeResolver {
     // Note: for a React component, we don't expect more than one call signature.
     if (callSignatures.length > 0) {
       const callSignature = callSignatures[0]!;
-      const returnType = this.resolveTypeInternal(
-        callSignature.getReturnType(),
-        genericTypeNames
+      return functionType(
+        this.resolveTypeInternal(
+          callSignature.getReturnType(),
+          genericTypeNames
+        )
       );
-      if (!returnType) {
-        console.debug(
-          `Unable to resolve return type in ${this.checker.typeToString(type)}`
-        );
-        return UNKNOWN_TYPE;
-      }
-      return functionType(returnType);
     }
     const arrayItemType = type.getNumberIndexType();
     if (arrayItemType) {
@@ -433,10 +428,9 @@ class TypeResolver {
           // For now, we ignore property names such as "foo.bar".
           continue;
         }
-        const propertyTsType = (this.checker as any).getTypeOfPropertyOfType(
-          type,
-          property.name
-        );
+        const propertyTsType: ts.Type | undefined = (
+          this.checker as any
+        ).getTypeOfPropertyOfType(type, property.name);
         fields[propertyName!] = maybeOptionalType(
           propertyTsType
             ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
