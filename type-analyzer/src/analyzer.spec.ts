@@ -147,6 +147,25 @@ type A = Array<string>;
     ]);
   });
 
+  test("readonly array", async () => {
+    expect(
+      resolveType(
+        `
+type A = ReadonlyArray<string>;
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        "main.ts:A": {
+          type: arrayType(STRING_TYPE),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
   test("array of interface", async () => {
     expect(
       resolveType(
@@ -1343,6 +1362,45 @@ interface A extends B, Array<string> {
         ["main.ts:A"]: {
           type: arrayType(STRING_TYPE),
           parameters: {},
+        },
+      },
+    ]);
+  });
+
+  test("recursive array", async () => {
+    expect(
+      resolveType(
+        `
+interface RecursiveArray<T> extends Array<T | ReadonlyArray<T> | RecursiveArray<T>> {}
+
+type A = RecursiveArray<string>;
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        ["main.ts:A"]: {
+          type: arrayType(
+            unionType([
+              STRING_TYPE,
+              namedType("main.ts:RecursiveArray", [STRING_TYPE]),
+              namedType("ReadonlyArray", [STRING_TYPE]),
+            ])
+          ),
+          parameters: {},
+        },
+        ["main.ts:RecursiveArray"]: {
+          type: arrayType(
+            unionType([
+              namedType("main.ts:RecursiveArray", [namedType("T")]),
+              namedType("T"),
+              namedType("ReadonlyArray", [namedType("T")]),
+            ])
+          ),
+          parameters: {
+            T: null,
+          },
         },
       },
     ]);
