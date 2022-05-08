@@ -64,17 +64,60 @@ async function extractPackageDependencies(
     ...dependencies,
     ...devDependencies,
   };
-  return Object.fromEntries<{ majorVersion: number }>(
-    Object.entries(allDependencies).map(([name, version]) => {
-      let majorVersion: number;
-      if (typeof version !== "string") {
-        majorVersion = 0;
-      } else if (version.startsWith("^") || version.startsWith("~")) {
-        majorVersion = parseInt(version.slice(1));
-      } else {
-        majorVersion = parseInt(version);
+  return Object.fromEntries(
+    Object.entries(allDependencies).map(
+      ([name, version]): [string, PackageDependencies[string]] => {
+        let majorVersion: number;
+        if (typeof version !== "string") {
+          majorVersion = 0;
+        } else if (version.startsWith("^") || version.startsWith("~")) {
+          majorVersion = parseInt(version.slice(1));
+        } else {
+          majorVersion = parseInt(version);
+        }
+        const readInstalledVersion = async () => {
+          try {
+            const moduleEntryPath = require.resolve(name, {
+              paths: [rootDirPath],
+            });
+            let packagePath = moduleEntryPath;
+            let packageJsonPath: string | null = null;
+            while (packagePath !== path.dirname(packagePath)) {
+              const candidatePackageJsonPath = path.join(
+                packagePath,
+                "package.json"
+              );
+              if (fs.existsSync(candidatePackageJsonPath)) {
+                packageJsonPath = candidatePackageJsonPath;
+                break;
+              }
+              packagePath = path.dirname(packagePath);
+            }
+            if (!packageJsonPath) {
+              throw new Error(
+                `No package.json path found from: ${moduleEntryPath}`
+              );
+            }
+            const packageInfo = JSON.parse(
+              await fs.readFile(packageJsonPath, "utf8")
+            );
+            const version = packageInfo["version"];
+            if (!version || typeof version !== "string") {
+              throw new Error(
+                `Invalid version found for package: ${packageJsonPath}`
+              );
+            }
+            return version;
+          } catch (e) {
+            console.error(
+              `Unable to read installed version of package: ${name}`,
+              e
+            );
+            return null;
+          }
+        };
+        return [name, { majorVersion, readInstalledVersion }];
       }
-      return [name, { majorVersion }];
-    })
+    )
   );
 }

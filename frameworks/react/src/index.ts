@@ -15,11 +15,11 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
   };
 }> = {
   isCompatible: async (dependencies) => {
-    const react = dependencies["react"];
-    if (!react) {
+    const version = await dependencies["react"]?.readInstalledVersion();
+    if (!version) {
       return false;
     }
-    return react.majorVersion >= 16;
+    return parseInt(version) >= 16;
   },
   async create({ svgr } = {}) {
     const previewDirPath = path.resolve(__dirname, "..", "preview");

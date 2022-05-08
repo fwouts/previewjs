@@ -251,7 +251,7 @@ class TypeResolver {
       case "Record":
         return true;
       default:
-        return !!this.specialTypes[typeName];
+        return Object.keys(this.specialTypes).includes(typeName);
     }
   }
 
@@ -259,20 +259,18 @@ class TypeResolver {
     type: ts.Type,
     genericTypeNames: Set<string>
   ): ValueType {
+    const specialTypeNames = Object.keys(this.specialTypes);
     const typeArguments = (
       this.checker.getTypeArguments(type as ts.TypeReference) || []
     ).map((t) => this.resolveTypeInternal(t, genericTypeNames));
-    if (type.symbol?.name) {
-      const specialType = this.specialTypes[type.symbol.name];
-      if (specialType) {
-        return specialType;
-      }
+    if (type.symbol?.name && specialTypeNames.includes(type.symbol.name)) {
+      return this.specialTypes[type.symbol.name]!;
     }
-    if (type.aliasSymbol?.name) {
-      const specialType = this.specialTypes[type.aliasSymbol.name];
-      if (specialType) {
-        return specialType;
-      }
+    if (
+      type.aliasSymbol?.name &&
+      specialTypeNames.includes(type.aliasSymbol.name)
+    ) {
+      return this.specialTypes[type.aliasSymbol.name]!;
     }
     if (type.symbol?.name === "Array") {
       return arrayType(typeArguments[0] || UNKNOWN_TYPE);
@@ -395,17 +393,12 @@ class TypeResolver {
     // Note: for a React component, we don't expect more than one call signature.
     if (callSignatures.length > 0) {
       const callSignature = callSignatures[0]!;
-      const returnType = this.resolveTypeInternal(
-        callSignature.getReturnType(),
-        genericTypeNames
+      return functionType(
+        this.resolveTypeInternal(
+          callSignature.getReturnType(),
+          genericTypeNames
+        )
       );
-      if (!returnType) {
-        console.debug(
-          `Unable to resolve return type in ${this.checker.typeToString(type)}`
-        );
-        return UNKNOWN_TYPE;
-      }
-      return functionType(returnType);
     }
     const arrayItemType = type.getNumberIndexType();
     if (arrayItemType) {
@@ -416,6 +409,9 @@ class TypeResolver {
       if (tupleTypes.length > 0) {
         return tupleType(tupleTypes);
       }
+      return arrayType(
+        this.resolveTypeInternal(arrayItemType, genericTypeNames)
+      );
     }
     if (flags & ts.TypeFlags.Object) {
       const indexType = type.getStringIndexType();
@@ -432,10 +428,9 @@ class TypeResolver {
           // For now, we ignore property names such as "foo.bar".
           continue;
         }
-        const propertyTsType = (this.checker as any).getTypeOfPropertyOfType(
-          type,
-          property.name
-        );
+        const propertyTsType: ts.Type | undefined = (
+          this.checker as any
+        ).getTypeOfPropertyOfType(type, property.name);
         fields[propertyName!] = maybeOptionalType(
           propertyTsType
             ? this.resolveTypeInternal(propertyTsType, genericTypeNames)

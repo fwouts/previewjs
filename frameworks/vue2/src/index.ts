@@ -9,10 +9,11 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
   vueOptionsModule?: string;
 }> = {
   isCompatible: async (dependencies) => {
-    return (
-      dependencies["vue"]?.majorVersion === 2 ||
-      dependencies["nuxt"]?.majorVersion === 2
-    );
+    const version = await dependencies["vue"]?.readInstalledVersion();
+    if (!version) {
+      return false;
+    }
+    return parseInt(version) === 2;
   },
   async create({ vueOptionsModule } = {}) {
     const { loadNuxtConfig } = await import("@nuxt/config");
