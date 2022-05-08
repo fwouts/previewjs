@@ -104,11 +104,7 @@ async function extractPackageDependencies(
             const version = packageInfo["version"];
             if (!version || typeof version !== "string") {
               throw new Error(
-<<<<<<< HEAD
-                `Invalid version found for package: ${modulePath}`
-=======
                 `Invalid version found for package: ${packageJsonPath}`
->>>>>>> main
               );
             }
             return version;
