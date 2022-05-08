@@ -178,9 +178,6 @@ export function intersectionType(types: ValueType[]): ValueType {
   if (types.length === 0) {
     return ANY_TYPE;
   }
-  if (types.length === 0) {
-    throw new Error(`Intersection of no types is invalid.`);
-  }
   if (types.length === 1) {
     return types[0]!;
   }

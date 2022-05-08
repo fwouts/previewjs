@@ -116,7 +116,7 @@ function computePropsTypeFromSignature(
     }
     return { type: propsType, collected };
   } catch (e) {
-    console.warn(
+    console.error(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(
         type
       )}`,
