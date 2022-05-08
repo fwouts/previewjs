@@ -416,6 +416,9 @@ class TypeResolver {
       if (tupleTypes.length > 0) {
         return tupleType(tupleTypes);
       }
+      return arrayType(
+        this.resolveTypeInternal(arrayItemType, genericTypeNames)
+      );
     }
     if (flags & ts.TypeFlags.Object) {
       const indexType = type.getStringIndexType();
