@@ -165,7 +165,6 @@ function generateTypeScriptType(
         usedTypes
       )}>`;
     case "object":
-      // console.error(type.fields);
       return `{
               ${Object.entries(type.fields)
                 .filter(([propName]) => propName !== "children")
