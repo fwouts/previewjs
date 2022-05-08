@@ -32,7 +32,7 @@ export class ApiRouter {
         response,
       };
     } catch (e: any) {
-      console.warn(e);
+      console.error(`Handler ${path} failed`, e);
       return {
         kind: "error",
         message: e.message,
