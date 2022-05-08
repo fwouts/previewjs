@@ -7,7 +7,11 @@ import { createVueTypeScriptReader } from "./vue-reader";
 
 export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    return dependencies["vue"]?.majorVersion === 3 || !!dependencies["nuxt3"];
+    const version = await dependencies["vue"]?.readInstalledVersion();
+    if (!version) {
+      return false;
+    }
+    return parseInt(version) === 3;
   },
   async create() {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
