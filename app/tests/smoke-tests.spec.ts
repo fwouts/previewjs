@@ -19,6 +19,9 @@ export const smokeTests = fs
           `../smoke-test-apps/${appName}`,
           async ({ outputDirPath, appDir, controller }) => {
             const candidates = [
+              "App.tsx:App",
+              "App.jsx:App",
+              "App.js:App",
               "src/App.tsx:App",
               "src/App.jsx:App",
               "src/App.js:App",

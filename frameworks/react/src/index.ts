@@ -56,6 +56,11 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
       },
       viteConfig: (config) => {
         return {
+          resolve: {
+            alias: {
+              "react-native": "react-native-web",
+            },
+          },
           plugins: [
             optimizeReactDepsPlugin(),
             svgr?.disable
