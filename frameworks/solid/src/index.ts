@@ -1,6 +1,7 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
+import type { Plugin } from "vite";
 import vitePluginSolid from "vite-plugin-solid";
 import { extractSolidComponents } from "./extract-component";
 import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin";
@@ -39,7 +40,7 @@ export const solidFrameworkPlugin: FrameworkPluginFactory = {
       viteConfig: () => {
         return {
           plugins: [
-            vitePluginSolid(),
+            vitePluginSolid() as Plugin,
             optimizeSolidDepsPlugin(),
             {
               name: "previewjs:disable-solid-hmr",
