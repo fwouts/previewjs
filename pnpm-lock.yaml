@@ -112,7 +112,7 @@ importers:
       '@previewjs/config': link:../config
       '@previewjs/loader': link:../loader
       '@previewjs/plugin-react': link:../frameworks/react
-      '@previewjs/plugin-solid': link:../frameworks/solid
+      '@previewjs/plugin-solid': 1.0.2
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@react-hook/window-size': 3.0.7_react@18.1.0
@@ -518,7 +518,7 @@ importers:
       '@previewjs/app': link:../../../app
       '@previewjs/core': link:../../../core
       '@previewjs/plugin-react': link:../../../frameworks/react
-      '@previewjs/plugin-solid': link:../../../frameworks/solid
+      '@previewjs/plugin-solid': 1.0.2
       '@previewjs/plugin-vue2': link:../../../frameworks/vue2
       '@previewjs/plugin-vue3': link:../../../frameworks/vue3
       '@previewjs/pro': link:../../../pro
@@ -5189,6 +5189,8 @@ packages:
       hable: 3.0.0
       hash-sum: 2.0.0
       lodash: 4.17.21
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@nuxt/devalue/1.2.5:
@@ -5326,6 +5328,8 @@ packages:
       get-port-please: 2.5.0
       node-res: 5.0.1
       serve-static: 1.15.0
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@nuxt/opencollective/0.3.2:
@@ -5902,6 +5906,35 @@ packages:
 
   /@popperjs/core/2.11.5:
     resolution: {integrity: sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==}
+
+  /@previewjs/plugin-solid/1.0.2:
+    resolution: {integrity: sha512-/tHiAwep50nm/E1NpQz+FSsyQVLX0rOYp5WHHeu5IJzBlTe/7JAENuP2a39CT5SK5nT4rF2GOE7IEPHOi+Iavw==}
+    dependencies:
+      '@previewjs/type-analyzer': 2.1.0
+      '@previewjs/vfs': 1.1.4
+      fs-extra: 10.1.0
+      typescript: 4.6.4
+      vite-plugin-solid: 2.2.6
+    transitivePeerDependencies:
+      - less
+      - sass
+      - stylus
+      - supports-color
+
+  /@previewjs/type-analyzer/2.1.0:
+    resolution: {integrity: sha512-IXnqz57Y9g+X51ZiggfeL1788wfTNCGTVpaoa7qceXuTPrWX3CHdD8i+mWLD/CKLjwIE/BicqTq//O4kT0xHNg==}
+    dependencies:
+      '@previewjs/vfs': 1.1.4
+      assert-never: 1.2.1
+      lodash: 4.17.21
+      typescript: 4.6.4
+
+  /@previewjs/vfs/1.1.4:
+    resolution: {integrity: sha512-kifLgGATzAXZls/hB9A5cUL+I+7CNpr+mq9KL2yOKfxaGDfrMSxKhtqd1p8VC9beDIfMrsg80CWYn/J5tBKJ+w==}
+    dependencies:
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      fs-extra: 10.1.0
 
   /@react-hook/debounce/3.0.0_react@18.1.0:
     resolution: {integrity: sha512-ir/kPrSfAzY12Gre0sOHkZ2rkEmM4fS5M5zFxCi4BnCeXh2nvx9Ujd+U4IGpKCuPA+EQD0pg1eK2NGLvfWejag==}
@@ -11538,7 +11571,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.11
@@ -15579,7 +15612,7 @@ packages:
       range-parser: 1.2.1
       safe-buffer: 5.2.1
       send: 0.18.0_supports-color@6.1.0
-      serve-static: 1.15.0
+      serve-static: 1.15.0_supports-color@6.1.0
       setprototypeof: 1.2.0
       statuses: 2.0.1
       type-is: 1.6.18
@@ -16064,6 +16097,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: true
+
+  /follow-redirects/1.14.9_debug@4.3.4:
+    resolution: {integrity: sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4_supports-color@6.1.0
 
   /fontfaceobserver/2.1.0:
     resolution: {integrity: sha512-ReOsO2F66jUa0jmv2nlM/s1MiutJx/srhAe2+TE8dJCMi02ZZOcCTxTCQFr3Yet+uODUtnr4Mewg+tNQ+4V1Ng==}
@@ -17338,7 +17383,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.9
+      follow-redirects: 1.14.9_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -23471,6 +23516,14 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
 
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha1-mEcocL8igTL8vdhoEputEsPAKeM=}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
+
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha1-mEcocL8igTL8vdhoEputEsPAKeM=}
     peerDependencies:
@@ -25932,6 +25985,19 @@ packages:
       escape-html: 1.0.3
       parseurl: 1.3.3
       send: 0.18.0
+    transitivePeerDependencies:
+      - supports-color
+
+  /serve-static/1.15.0_supports-color@6.1.0:
+    resolution: {integrity: sha512-XGuRDNjXUijsUL0vl6nSD7cwURuzEgglbOaFuZM9g3kwDXOWVTck0jLzjPzGD+TazWbboZYu52/9/XPdUgne9g==}
+    engines: {node: '>= 0.8.0'}
+    dependencies:
+      encodeurl: 1.0.2
+      escape-html: 1.0.3
+      parseurl: 1.3.3
+      send: 0.18.0_supports-color@6.1.0
+    transitivePeerDependencies:
+      - supports-color
 
   /server-destroy/1.0.1:
     resolution: {integrity: sha1-8Tv5KOQrnD55OD5hzDmYtdFObN0=}
