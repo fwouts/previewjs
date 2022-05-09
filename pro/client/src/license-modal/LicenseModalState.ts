@@ -188,7 +188,7 @@ export class LicenseStateScreen {
     try {
       const wasValid = this.licenseInfo.checked.valid;
       const isValid = await this.parent.license.checkProLicense();
-      if (!wasValid && isValid) {
+      if (wasValid !== isValid) {
         document.location.reload();
       }
     } catch (e) {
@@ -208,11 +208,13 @@ export class LicenseStateScreen {
     this.parent.toggle();
   }
 
-  async unlink() {
+  async unlink(reload = true) {
     this.loading = true;
     try {
       await this.parent.license.unlink();
-      document.location.reload();
+      if (reload) {
+        document.location.reload();
+      }
     } catch (e) {
       console.error(e);
       runInAction(() => {

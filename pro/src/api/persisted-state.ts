@@ -7,10 +7,14 @@ export interface LicenseInfo {
     | {
         timestamp: number;
         valid: true;
+        trial?: {
+          remainingDays: number;
+        } | null;
       }
     | {
         timestamp: number;
         valid: false;
         reason: string;
+        wasTrial?: boolean;
       };
 }

@@ -12,7 +12,7 @@ import { ViewportState } from "../state/ViewportState";
 
 export const ViewportZoomButtons = observer(
   ({ state }: { state: ViewportState }) => (
-    <div className="flex flex-row rounded-md mx-2 p-0.5 border-2 border-gray-200">
+    <div className="flex flex-row rounded-md mx-2 my-1 p-0.5 border-2 bg-gray-100">
       <Button
         title="Zoom in"
         icon={faMagnifyingGlassPlus}

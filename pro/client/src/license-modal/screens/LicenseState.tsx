@@ -29,12 +29,26 @@ export const LicenseState = observer(
       </div>
       <ActionsContainer>
         <ActionButton onClick={() => screen.close()}>Close</ActionButton>
-        <ActionButton type="cta" onClick={() => screen.refresh()}>
-          Refresh
-        </ActionButton>
-        <ActionButton type="danger" onClick={() => screen.unlink()}>
-          <FontAwesomeIcon icon={faWarning} /> Unlink
-        </ActionButton>
+        {!screen.licenseInfo.checked.valid &&
+        screen.licenseInfo.checked.wasTrial ? (
+          <>
+            <ActionButton type="cta" href="https://previewjs.com/checkout">
+              Buy a license
+            </ActionButton>
+            <ActionButton onClick={() => screen.unlink(false)}>
+              Enter license
+            </ActionButton>
+          </>
+        ) : (
+          <>
+            <ActionButton type="cta" onClick={() => screen.refresh()}>
+              Refresh
+            </ActionButton>
+            <ActionButton type="danger" onClick={() => screen.unlink()}>
+              <FontAwesomeIcon icon={faWarning} /> Unlink
+            </ActionButton>
+          </>
+        )}
       </ActionsContainer>
     </>
   )

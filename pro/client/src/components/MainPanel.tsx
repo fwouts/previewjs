@@ -45,13 +45,62 @@ export const MainPanel = observer(
           ) : null
         }
         subheader={
-          license.proStatus === "enabled"
-            ? pro.currentFile?.filePath && (
-                <ComponentPicker preview={preview} pro={pro} />
-              )
-            : license.proStatus === "disabled"
-            ? preview.component && <Selection state={preview} />
-            : null
+          license.proStatus === "enabled" && pro.currentFile?.filePath ? (
+            <ComponentPicker preview={preview} pro={pro} />
+          ) : license.proStatus === "disabled" ? (
+            preview.component && <Selection state={preview} />
+          ) : null
+        }
+        footer={
+          <div className="flex-shrink-0 flex flex-row justify-end py-1 bg-white">
+            {license.proStatus === "enabled" ? (
+              <>
+                {preview.component && (
+                  <>
+                    <ViewportZoomButtons state={pro.viewport} />
+                    <button
+                      className={clsx([
+                        "self-stretch px-3 text-gray-600 rounded-md",
+                        background === "dark"
+                          ? "bg-gray-800 hover:bg-gray-600"
+                          : "hover:bg-gray-200",
+                      ])}
+                      onClick={() =>
+                        setBackground(background === "dark" ? "light" : "dark")
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faCircleHalfStroke}
+                        fixedWidth
+                        inverse={background === "dark"}
+                      />
+                    </button>
+                  </>
+                )}
+                <VariantButton
+                  onClick={() => licenseModal.toggle()}
+                  title="Manage Preview.js Pro license"
+                >
+                  <FontAwesomeIcon icon={faKey} fixedWidth />
+                  <span className="ml-2">{license.proLabel}</span>
+                </VariantButton>
+              </>
+            ) : license.proStatus === "disabled" ? (
+              <VariantButton
+                warning={!!license.proInvalidLicenseReason}
+                onClick={() => licenseModal.toggle()}
+              >
+                {license.proInvalidLicenseReason ? (
+                  license.proInvalidLicenseReason
+                ) : (
+                  <>
+                    <FontAwesomeIcon icon={faToggleOff} />
+                    <span className="ml-2">Enable Preview.js Pro</span>
+                  </>
+                )}
+              </VariantButton>
+            ) : null}
+          </div>
         }
         panelTabs={
           license.proStatus === "enabled" && preview.component
@@ -65,60 +114,6 @@ export const MainPanel = observer(
                 },
               ]
             : []
-        }
-        panelExtra={
-          license.proStatus === "enabled" ? (
-            <>
-              {preview.component && (
-                <>
-                  <ViewportZoomButtons state={pro.viewport} />
-                  <button
-                    className={clsx([
-                      "self-stretch px-3 text-gray-600",
-                      background === "dark"
-                        ? "bg-gray-800 hover:bg-gray-600"
-                        : "hover:bg-gray-200",
-                    ])}
-                    onClick={() =>
-                      setBackground(background === "dark" ? "light" : "dark")
-                    }
-                  >
-                    <FontAwesomeIcon
-                      icon={faCircleHalfStroke}
-                      fixedWidth
-                      inverse={background === "dark"}
-                    />
-                  </button>
-                </>
-              )}
-              <div className="self-stretch flex flex-row flex-grow">
-                <span className="flex-grow" />
-                <VariantButton
-                  onClick={() => licenseModal.toggle()}
-                  title="Manage Preview.js Pro license"
-                >
-                  <FontAwesomeIcon icon={faKey} fixedWidth />
-                </VariantButton>
-              </div>
-            </>
-          ) : license.proStatus === "disabled" ? (
-            <div className="self-stretch flex flex-row flex-grow">
-              <span className="flex-grow" />
-              <VariantButton
-                warning={!!license.proInvalidLicenseReason}
-                onClick={() => licenseModal.toggle()}
-              >
-                {license.proInvalidLicenseReason ? (
-                  license.proInvalidLicenseReason
-                ) : (
-                  <>
-                    <FontAwesomeIcon icon={faToggleOff} />
-                    <span className="ml-2">Enable Pro</span>
-                  </>
-                )}
-              </VariantButton>
-            </div>
-          ) : null
         }
         viewport={
           <Viewport

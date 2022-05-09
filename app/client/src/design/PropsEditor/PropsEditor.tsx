@@ -7,6 +7,7 @@ import Editor, {
   OnMount,
   useMonaco,
 } from "@monaco-editor/react";
+import clsx from "clsx";
 import type monaco from "monaco-editor";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { revalidateMonacoEditor } from "./revalidate-monaco-editor";
@@ -118,7 +119,12 @@ export const PropsEditor = ({
     <>
       <button
         id="editor-refresh-button"
-        className="absolute bottom-0 left-0 m-2 p-2 bg-gray-500 bg-opacity-40 text-white rounded-md z-50 cursor-pointer disabled:bg-opacity-25 disabled:text-gray-500"
+        className={clsx([
+          "absolute right-0 m-2 p-2 bg-gray-500 rounded-md z-50",
+          onReset
+            ? "bg-opacity-40 text-white cursor-pointer hover:bg-gray-400"
+            : "bg-opacity-25 text-gray-500",
+        ])}
         title="Reset properties"
         disabled={!onReset}
         onClick={onReset}
