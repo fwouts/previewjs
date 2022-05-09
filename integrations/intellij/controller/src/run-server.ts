@@ -17,6 +17,7 @@ import {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
+import { getInstallDir, getPackageNameFromEnvironment } from "./config";
 
 const port = parseInt(process.env.PORT || "9100");
 const version = process.env.PREVIEWJS_INTELLIJ_VERSION;
@@ -31,13 +32,9 @@ main().catch((e) => {
 });
 
 async function main() {
-  const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
-  if (!packageName) {
-    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
-  }
   const previewjs = await load({
-    installDir: path.join(__dirname, "installed"),
-    packageName,
+    installDir: getInstallDir(),
+    packageName: getPackageNameFromEnvironment(),
   });
 
   const workspaces: Record<string, Workspace> = {};

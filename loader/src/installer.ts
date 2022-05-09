@@ -1,20 +1,32 @@
 import execa from "execa";
-import { mkdir, pathExists, readFile, writeFile } from "fs-extra";
+import { mkdir, writeFile } from "fs-extra";
 import path from "path";
+import { loadModules } from "./modules";
 import packageLockJson from "./release/package-lock.json";
 import packageJson from "./release/package.json";
 
-export async function isInstalled(options: { installDir: string }) {
-  const installedPackageJsonPath = installedPackageJson(options);
-  return (
-    (await pathExists(installedPackageJsonPath)) &&
-    (await readFile(installedPackageJsonPath, "utf8")) ===
-      JSON.stringify(packageJson)
-  );
+export async function isInstalled({
+  installDir,
+  packageName,
+}: {
+  installDir: string;
+  packageName: string;
+}) {
+  try {
+    loadModules({
+      installDir,
+      packageName,
+      logError: false,
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 export async function install(options: {
   installDir: string;
+  packageName: string;
   onOutput: (chunk: string) => void;
 }) {
   options.onOutput(
@@ -31,9 +43,6 @@ export async function install(options: {
     JSON.stringify(packageLockJson),
     "utf8"
   );
-  options.onOutput(
-    `Dependencies will be installed in: ${options.installDir}\n\n`
-  );
   try {
     const npmVersionProcess = await execa("npm", ["-v"], {
       cwd: options.installDir,
@@ -41,12 +50,12 @@ export async function install(options: {
     });
     if (npmVersionProcess.failed) {
       throw new Error(
-        `Preview.js was unable to run npm. Is it installed?\n\nIf not, you may need to restart your IDE after installing it.`
+        `Preview.js was unable to run npm.\n\nYou can manually run "npm install" in ${options.installDir}\n\nYou will need to restart your IDE after doing so.`
       );
     }
     if (npmVersionProcess.exitCode !== 0) {
       throw new Error(
-        `Preview.js was unable to run npm (exit code ${npmVersionProcess.exitCode}):\n\n${npmVersionProcess.stderr}`
+        `Preview.js was unable to run npm (exit code ${npmVersionProcess.exitCode}):\n\n${npmVersionProcess.stderr}\n\nYou can manually run "npm install" in ${options.installDir}\n\nYou will need to restart your IDE after doing so.`
       );
     }
     const version = npmVersionProcess.stdout;
@@ -74,16 +83,21 @@ export async function install(options: {
     if (failed || isCanceled) {
       throw new Error(`Preview.js could not install dependencies`);
     }
+    try {
+      loadModules({
+        ...options,
+        logError: true,
+      });
+    } catch (e) {
+      throw new Error(
+        `npm install succeeded but @previewjs modules could not be loaded.`
+      );
+    }
     options.onOutput(
       "\nPreview.js dependencies were installed successfully.\n\n"
     );
-    await writeFile(installedPackageJson(options), JSON.stringify(packageJson));
   } catch (e) {
     options.onOutput(`\nOh no, it looks like installation failed!\n\n${e}`);
     throw e;
   }
-}
-
-function installedPackageJson({ installDir }: { installDir: string }) {
-  return path.join(installDir, "package.installed.json");
 }

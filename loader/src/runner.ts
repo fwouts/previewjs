@@ -1,38 +1,15 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
-import path from "path";
 import { LogLevel } from ".";
 import { locking } from "./locking";
+import { loadModules } from "./modules";
 
-export async function load({
-  installDir,
-  packageName,
-}: {
+export async function load(options: {
   installDir: string;
   packageName: string;
 }) {
-  const core = requireModule("@previewjs/core");
-  const vfs = requireModule("@previewjs/vfs");
-  const setupEnvironment: core.SetupPreviewEnvironment =
-    requireModule(packageName).default;
-  const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
-    requireModule("@previewjs/plugin-react").reactFrameworkPlugin,
-    requireModule("@previewjs/plugin-solid").solidFrameworkPlugin,
-    requireModule("@previewjs/plugin-vue2").vue2FrameworkPlugin,
-    requireModule("@previewjs/plugin-vue3").vue3FrameworkPlugin,
-  ];
-
-  function requireModule(name: string) {
-    try {
-      return require(require.resolve(name, {
-        paths: [installDir, path.join(installDir, "node_modules", packageName)],
-      }));
-    } catch (e) {
-      console.error(`Unable to load ${name} from ${installDir}`, e);
-      throw e;
-    }
-  }
-
+  const { core, vfs, setupEnvironment, frameworkPluginFactories } =
+    loadModules(options);
   return init(core, vfs, setupEnvironment, frameworkPluginFactories);
 }
 

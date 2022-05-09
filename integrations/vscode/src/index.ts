@@ -48,11 +48,12 @@ async function initializePreviewJs(outputChannel: OutputChannel) {
 
   let requirePath = process.env.PREVIEWJS_MODULES_DIR;
   if (!requirePath) {
-    requirePath = path.join(__dirname, "installed");
-    if (!(await isInstalled({ installDir: requirePath }))) {
+    requirePath = path.join(__dirname, "..", "dependencies");
+    if (!(await isInstalled({ installDir: requirePath, packageName }))) {
       outputChannel.show();
       await install({
         installDir: requirePath,
+        packageName,
         onOutput: (chunk) => {
           outputChannel.append(chunk);
         },

@@ -1,5 +1,5 @@
 import { isInstalled } from "@previewjs/loader";
-import path from "path";
+import { getInstallDir, getPackageNameFromEnvironment } from "./config";
 
 main().catch((e) => {
   console.error(e);
@@ -8,7 +8,8 @@ main().catch((e) => {
 
 async function main() {
   const installed = await isInstalled({
-    installDir: path.join(__dirname, "installed"),
+    installDir: getInstallDir(),
+    packageName: getPackageNameFromEnvironment(),
   });
   process.stdout.write(installed ? "installed" : "missing");
 }

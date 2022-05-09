@@ -1,5 +1,5 @@
 import { install } from "@previewjs/loader";
-import path from "path";
+import { getInstallDir, getPackageNameFromEnvironment } from "./config";
 
 main().catch((e) => {
   console.error(e);
@@ -8,7 +8,8 @@ main().catch((e) => {
 
 async function main() {
   await install({
-    installDir: path.join(__dirname, "installed"),
+    installDir: getInstallDir(),
+    packageName: getPackageNameFromEnvironment(),
     onOutput: (chunk) => process.stdout.write(chunk),
   });
 }
