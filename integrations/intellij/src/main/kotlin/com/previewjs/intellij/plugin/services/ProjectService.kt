@@ -16,7 +16,11 @@ import com.intellij.openapi.editor.Inlay
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.editor.impl.EditorImpl
-import com.intellij.openapi.fileEditor.*
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.FileEditorManagerListener
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
@@ -27,12 +31,17 @@ import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
-import com.previewjs.intellij.plugin.api.*
+import com.previewjs.intellij.plugin.api.AnalyzeFileRequest
+import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
+import com.previewjs.intellij.plugin.api.StartPreviewRequest
+import com.previewjs.intellij.plugin.api.StopPreviewRequest
+import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
 import kotlinx.coroutines.Runnable
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 import javax.swing.ImageIcon
 import kotlin.concurrent.schedule
 
@@ -55,39 +64,47 @@ class ProjectService(private val project: Project) : Disposable {
     private var currentPreviewId: String? = null
 
     init {
-        EditorFactory.getInstance().eventMulticaster.addDocumentListener(object : DocumentListener {
-            override fun documentChanged(event: DocumentEvent) {
-                val file = FileDocumentManager.getInstance().getFile(event.document)
-                if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
-                    return
-                }
-                service.enqueueAction(project, { api ->
-                    service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-                    api.updatePendingFile(
-                        UpdatePendingFileRequest(
-                            absoluteFilePath = file.path,
-                            utf8Content = event.document.text
+        EditorFactory.getInstance().eventMulticaster.addDocumentListener(
+            object : DocumentListener {
+                override fun documentChanged(event: DocumentEvent) {
+                    val file = FileDocumentManager.getInstance().getFile(event.document)
+                    if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
+                        return
+                    }
+                    service.enqueueAction(project, { api ->
+                        service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
+                        api.updatePendingFile(
+                            UpdatePendingFileRequest(
+                                absoluteFilePath = file.path,
+                                utf8Content = event.document.text
+                            )
                         )
-                    )
-                }, {
-                    "Warning: unable to update pending file ${file.path}"
-                })
-                refreshTimerTask?.cancel()
-                refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
-                    refreshTimerTask = null
-                    app.invokeLater(Runnable {
-                        updateComponents(file)
+                    }, {
+                        "Warning: unable to update pending file ${file.path}"
                     })
+                    refreshTimerTask?.cancel()
+                    refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
+                        refreshTimerTask = null
+                        app.invokeLater(
+                            Runnable {
+                                updateComponents(file)
+                            }
+                        )
+                    }
                 }
-            }
-        }, this)
+            },
+            this
+        )
 
         project.messageBus.connect(project)
-            .subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object : FileEditorManagerListener {
-                override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
-                    updateComponents(file)
+            .subscribe(
+                FileEditorManagerListener.FILE_EDITOR_MANAGER,
+                object : FileEditorManagerListener {
+                    override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
+                        updateComponents(file)
+                    }
                 }
-            })
+            )
 
         for (file in editorManager.openFiles) {
             updateComponents(file)
@@ -140,9 +157,11 @@ class ProjectService(private val project: Project) : Disposable {
                     absoluteFilePath = file.path,
                 )
             ).components
-            app.invokeLater(Runnable {
-                updateComponentHints(file, fileEditors, components)
-            })
+            app.invokeLater(
+                Runnable {
+                    updateComponentHints(file, fileEditors, components)
+                }
+            )
         }, {
             "Warning: unable to find components in ${file.path}"
         })
@@ -222,19 +241,22 @@ class ProjectService(private val project: Project) : Disposable {
                         BrowserUtil.browse(link)
                         return@addHandler null
                     }
-                    browser.jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
-                        override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
-                            browser.executeJavaScript(
-                                """
+                    browser.jbCefClient.addLoadHandler(
+                        object : CefLoadHandlerAdapter() {
+                            override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
+                                browser.executeJavaScript(
+                                    """
                         window.openInExternalBrowser = function(url) {
                             ${linkHandler.inject("url")}
                         };
                     """,
-                                browser.url,
-                                0
-                            )
-                        }
-                    }, browser.cefBrowser)
+                                    browser.url,
+                                    0
+                                )
+                            }
+                        },
+                        browser.cefBrowser
+                    )
                     Disposer.register(browser, linkHandler)
                     previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
                         RegisterToolWindowTask(

@@ -4,7 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -12,18 +12,18 @@ import java.util.concurrent.TimeUnit
 
 fun api(baseUrl: String): PreviewJsApi {
     val moshi = Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
     val okHttpClient: OkHttpClient = OkHttpClient().newBuilder()
-            .connectTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .build()
+        .connectTimeout(5, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .build()
     val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+        .baseUrl(baseUrl)
+        .client(okHttpClient)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
 
     return retrofit.create(PreviewJsApi::class.java)
 }
@@ -52,62 +52,61 @@ interface PreviewJsApi {
 }
 
 data class CheckHealthResponse(
-        val ready: Boolean
+    val ready: Boolean
 )
 
-
 data class GetWorkspaceRequest(
-        val absoluteFilePath: String
+    val absoluteFilePath: String
 )
 
 data class GetWorkspaceResponse(
-        val workspaceId: String?
+    val workspaceId: String?
 )
 
 data class DisposeWorkspaceRequest(
-        val workspaceId: String
+    val workspaceId: String
 )
 
-class DisposeWorkspaceResponse()
+class DisposeWorkspaceResponse
 
 data class AnalyzeFileRequest(
-        val workspaceId: String,
-        val absoluteFilePath: String,
-        val options: AnalyzeFileOptions? = null
+    val workspaceId: String,
+    val absoluteFilePath: String,
+    val options: AnalyzeFileOptions? = null
 )
 
 data class AnalyzeFileOptions(
-        val offset: Int?
+    val offset: Int?
 )
 
 data class AnalyzeFileResponse(
-        val components: List<AnalyzedFileComponent>
+    val components: List<AnalyzedFileComponent>
 )
 
 data class AnalyzedFileComponent(
-        val componentName: String,
-        val offset: Int,
-        val componentId: String,
+    val componentName: String,
+    val offset: Int,
+    val componentId: String,
 )
 
 data class StartPreviewRequest(
-        val workspaceId: String,
+    val workspaceId: String,
 )
 
 data class StartPreviewResponse(
-        val previewId: String,
-        val url: String
+    val previewId: String,
+    val url: String
 )
 
 data class StopPreviewRequest(
-        val previewId: String
+    val previewId: String
 )
 
-class StopPreviewResponse()
+class StopPreviewResponse
 
 data class UpdatePendingFileRequest(
-        val absoluteFilePath: String,
-        val utf8Content: String?
+    val absoluteFilePath: String,
+    val utf8Content: String?
 )
 
-class UpdatePendingFileResponse()
+class UpdatePendingFileResponse

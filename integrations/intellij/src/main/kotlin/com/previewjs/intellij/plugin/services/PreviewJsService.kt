@@ -14,8 +14,13 @@ import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
 import com.previewjs.intellij.plugin.api.api
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.actor
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -23,9 +28,9 @@ import java.io.InputStreamReader
 import java.net.ConnectException
 import java.net.ServerSocket
 import java.net.SocketTimeoutException
-import java.util.*
+import java.util.Collections
+import java.util.WeakHashMap
 import kotlin.concurrent.thread
-
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
 const val PACKAGE_NAME = "@previewjs/pro"
@@ -36,7 +41,6 @@ class PreviewJsSharedService : Disposable {
         const val SHOWED_WELCOME_SCREEN_KEY = "com.previewjs.showed-welcome-screen"
     }
 
-    @OptIn(ObsoleteCoroutinesApi::class)
     private val coroutineContext = SupervisorJob() + Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext)
 
@@ -197,11 +201,11 @@ Include the content of the Preview.js logs panel for easier debugging.
         thread {
             var line: String? = null
             while (!disposed && serverOutputReader.readLine().also { line = it } != null) {
-                for (project in workspaceIds.keys + setOf(project)) {
-                    if (project.isDisposed) {
+                for (p in workspaceIds.keys + setOf(project)) {
+                    if (p.isDisposed) {
                         continue
                     }
-                    project.service<ProjectService>().printToConsole(ignoreBellPrefix(line + "\n"))
+                    p.service<ProjectService>().printToConsole(ignoreBellPrefix(line + "\n"))
                 }
             }
         }
@@ -240,7 +244,7 @@ Include the content of the Preview.js logs panel for easier debugging.
             // present. This is why we start an interactive login shell.
             val shell = System.getenv()["SHELL"] ?: "bash"
             val builder = ProcessBuilder(shell, "-lic", command)
-            builder.environment()["TERM"] = "xterm"  // needed for fish
+            builder.environment()["TERM"] = "xterm" // needed for fish
             return builder
         }
     }
