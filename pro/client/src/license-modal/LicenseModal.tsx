@@ -6,6 +6,7 @@ import React from "react";
 import { FullscreenPopup } from "../design/FullscreenPopup";
 import { LicenseModalState } from "./LicenseModalState";
 import { EnterLicenseKey } from "./screens/EnterLicenseKey";
+import { LicenseState } from "./screens/LicenseState";
 import { RevokeLicenseToken } from "./screens/RevokeLicenseToken";
 
 export const LicenseModal = observer(
@@ -37,7 +38,7 @@ export const LicenseModal = observer(
               case "revoke-token":
                 return <RevokeLicenseToken screen={screen} />;
               case "license-state":
-                return;
+                return <LicenseState screen={screen} />;
               default:
                 throw assertNever(screen);
             }

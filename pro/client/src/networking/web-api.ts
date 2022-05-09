@@ -74,8 +74,12 @@ export type ValidateLicenseTokenRequest = {
 export type ValidateLicenseTokenResponse =
   | {
       valid: true;
+      trial: {
+        remainingDays: number;
+      } | null;
     }
   | {
       valid: false;
+      wasTrial: boolean;
       reason: string;
     };
