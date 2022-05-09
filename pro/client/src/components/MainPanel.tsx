@@ -3,6 +3,7 @@ import {
   faDisplay,
   faKey,
   faSearch,
+  faToggleOff,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Preview } from "@previewjs/app/client/src/components/Preview";
@@ -90,26 +91,33 @@ export const MainPanel = observer(
                   </button>
                 </>
               )}
-              <span className="flex-grow" />
-              <VariantButton
-                onClick={() => licenseModal.toggle()}
-                title="Manage Preview.js Pro license"
-              >
-                <FontAwesomeIcon icon={faKey} fixedWidth />
-              </VariantButton>
+              <div className="self-stretch flex flex-row flex-grow">
+                <span className="flex-grow" />
+                <VariantButton
+                  onClick={() => licenseModal.toggle()}
+                  title="Manage Preview.js Pro license"
+                >
+                  <FontAwesomeIcon icon={faKey} fixedWidth />
+                </VariantButton>
+              </div>
             </>
           ) : license.proStatus === "disabled" ? (
-            <>
+            <div className="self-stretch flex flex-row flex-grow">
               <span className="flex-grow" />
               <VariantButton
                 warning={!!license.proInvalidLicenseReason}
                 onClick={() => licenseModal.toggle()}
               >
-                {license.proInvalidLicenseReason
-                  ? license.proInvalidLicenseReason
-                  : "Try Preview.js Pro"}
+                {license.proInvalidLicenseReason ? (
+                  license.proInvalidLicenseReason
+                ) : (
+                  <>
+                    <FontAwesomeIcon icon={faToggleOff} />
+                    <span className="ml-2">Enable Pro</span>
+                  </>
+                )}
               </VariantButton>
-            </>
+            </div>
           ) : null
         }
         viewport={
