@@ -15,18 +15,16 @@ export const LicenseState = observer(
           {screen.licenseInfo.maskedKey}
         </div>
         <div className="mt-4 uppercase text-xs font-bold">Status</div>
-        <div className="text-sm flex flex-row">
-          {screen.licenseInfo.checked.valid ? (
-            <div className="font-bold text-green-700">Valid</div>
-          ) : (
-            <div className="font-bold text-red-700">
-              {screen.licenseInfo.checked.reason}
-            </div>
-          )}
-          <div className="ml-2 text-xs flex-grow text-right text-gray-500">
-            Last checked:{" "}
-            {new Date(screen.licenseInfo.checked.timestamp).toLocaleString()}
+        {screen.licenseInfo.checked.valid ? (
+          <div className="font-bold text-green-700">Valid</div>
+        ) : (
+          <div className="font-bold text-red-700">
+            {screen.licenseInfo.checked.reason}
           </div>
+        )}
+        <div className="text-xs text-gray-500">
+          Last checked:{" "}
+          {new Date(screen.licenseInfo.checked.timestamp).toLocaleString()}
         </div>
       </div>
       <ActionsContainer>
