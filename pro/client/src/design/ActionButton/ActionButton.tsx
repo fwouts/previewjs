@@ -11,7 +11,7 @@ export const ActionButton = ({
   type?: "default" | "info" | "cta" | "danger";
 } & ({ onClick(): void } | { href: string } | { submit: true })) => {
   const className = clsx([
-    "mx-2 py-1 px-2 sm:px-4 font-medium border-2 border-transparent rounded cursor-pointer",
+    "py-1 px-2 sm:px-4 font-medium border-2 border-transparent rounded cursor-pointer",
     type === "default" && "text-gray-200 hover:bg-gray-700 hover:text-white",
     type === "info" && "text-sky-500 hover:bg-sky-900 hover:text-white",
     type === "cta" &&
