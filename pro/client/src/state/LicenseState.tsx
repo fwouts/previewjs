@@ -1,6 +1,9 @@
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { WebApi } from "@previewjs/app/client/src/api/web";
 import { PersistedStateController } from "@previewjs/app/client/src/PersistedStateController";
 import { makeAutoObservable } from "mobx";
+import React from "react";
 import * as uuid from "uuid";
 import {
   CreateLicenseTokenEndpoint,
@@ -61,6 +64,25 @@ export class LicenseState {
       return "loading";
     }
     return this.decodedLicense?.checked.valid ? "enabled" : "disabled";
+  }
+
+  get proLabel() {
+    if (this.decodedLicense?.checked.valid === true) {
+      const remainingDays = this.decodedLicense.checked.trial?.remainingDays;
+      if (remainingDays !== undefined) {
+        return `Pro trial: ${remainingDays} day${
+          remainingDays === 1 ? "" : "s"
+        } remaining`;
+      } else {
+        return (
+          <>
+            <span className="mr-2">Preview.js Pro</span>
+            <FontAwesomeIcon icon={faCheck} />
+          </>
+        );
+      }
+    }
+    return null;
   }
 
   get proInvalidLicenseReason() {

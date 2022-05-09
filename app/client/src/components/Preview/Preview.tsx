@@ -27,16 +27,16 @@ export const Preview = observer(
     appLabel,
     headerAddon,
     subheader,
+    footer,
     panelTabs,
-    panelExtra,
     viewport,
   }: {
     state: PreviewState;
     appLabel: string;
     headerAddon?: React.ReactNode;
     subheader?: React.ReactNode;
+    footer?: React.ReactNode;
     panelTabs?: PanelTab[];
-    panelExtra?: React.ReactNode;
     viewport: React.ReactNode;
   }) => {
     const [width, height] = useWindowSize();
@@ -166,8 +166,8 @@ export const Preview = observer(
             ...(panelTabs || []),
           ]}
           height={panelHeight}
-          extra={panelExtra}
         />
+        {footer}
       </div>
     );
   }

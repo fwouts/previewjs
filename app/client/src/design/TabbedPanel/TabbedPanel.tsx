@@ -23,7 +23,6 @@ export const TabbedPanel = (props: {
   tabs: PanelTab[];
   defaultTabKey: string;
   height: number;
-  extra?: React.ReactNode;
 }) => {
   const [currentTabKey, setCurrentTabKey] = useState<string | null>(
     props.defaultTabKey
@@ -48,14 +47,7 @@ export const TabbedPanel = (props: {
             ])}
           >
             <FontAwesomeIcon icon={tab.icon} />
-            <div
-              className={clsx([
-                "ml-2",
-                tab.key !== currentTabKey && "hidden sm:block",
-              ])}
-            >
-              {tab.label}
-            </div>
+            <div className={clsx(["ml-2"])}>{tab.label}</div>
             {tab.notificationCount > 0 && (
               <span className="bg-red-600 text-white p-2 rounded-full inline-flex items-center justify-center h-5 min-w-5 ml-1 text-xs">
                 {tab.notificationCount}
@@ -63,7 +55,6 @@ export const TabbedPanel = (props: {
             )}
           </button>
         ))}
-        {props.extra}
       </div>
       {currentTab && (
         <div
