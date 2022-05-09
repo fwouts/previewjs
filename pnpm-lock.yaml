@@ -55,7 +55,7 @@ importers:
       '@previewjs/core': ^3.2.1
       '@previewjs/loader': workspace:*
       '@previewjs/plugin-react': workspace:*
-      '@previewjs/plugin-solid': 1.0.2
+      '@previewjs/plugin-solid': 1.0.3
       '@previewjs/plugin-vue2': workspace:*
       '@previewjs/plugin-vue3': workspace:*
       '@previewjs/vfs': ^1.1.4
@@ -112,7 +112,7 @@ importers:
       '@previewjs/config': link:../config
       '@previewjs/loader': link:../loader
       '@previewjs/plugin-react': link:../frameworks/react
-      '@previewjs/plugin-solid': 1.0.2
+      '@previewjs/plugin-solid': link:../frameworks/solid
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
       '@react-hook/window-size': 3.0.7_react@18.1.0
@@ -509,7 +509,7 @@ importers:
       '@previewjs/app': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/plugin-react': workspace:*
-      '@previewjs/plugin-solid': 1.0.2
+      '@previewjs/plugin-solid': 1.0.3
       '@previewjs/plugin-vue2': workspace:*
       '@previewjs/plugin-vue3': workspace:*
       '@previewjs/pro': workspace:*
@@ -518,7 +518,7 @@ importers:
       '@previewjs/app': link:../../../app
       '@previewjs/core': link:../../../core
       '@previewjs/plugin-react': link:../../../frameworks/react
-      '@previewjs/plugin-solid': 1.0.2
+      '@previewjs/plugin-solid': link:../../../frameworks/solid
       '@previewjs/plugin-vue2': link:../../../frameworks/vue2
       '@previewjs/plugin-vue3': link:../../../frameworks/vue3
       '@previewjs/pro': link:../../../pro
@@ -6742,35 +6742,6 @@ packages:
   /@popperjs/core/2.11.5:
     resolution: {integrity: sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==}
 
-  /@previewjs/plugin-solid/1.0.2:
-    resolution: {integrity: sha512-/tHiAwep50nm/E1NpQz+FSsyQVLX0rOYp5WHHeu5IJzBlTe/7JAENuP2a39CT5SK5nT4rF2GOE7IEPHOi+Iavw==}
-    dependencies:
-      '@previewjs/type-analyzer': 2.1.0
-      '@previewjs/vfs': 1.1.4
-      fs-extra: 10.1.0
-      typescript: 4.6.4
-      vite-plugin-solid: 2.2.6
-    transitivePeerDependencies:
-      - less
-      - sass
-      - stylus
-      - supports-color
-
-  /@previewjs/type-analyzer/2.1.0:
-    resolution: {integrity: sha512-IXnqz57Y9g+X51ZiggfeL1788wfTNCGTVpaoa7qceXuTPrWX3CHdD8i+mWLD/CKLjwIE/BicqTq//O4kT0xHNg==}
-    dependencies:
-      '@previewjs/vfs': 1.1.4
-      assert-never: 1.2.1
-      lodash: 4.17.21
-      typescript: 4.6.4
-
-  /@previewjs/vfs/1.1.4:
-    resolution: {integrity: sha512-kifLgGATzAXZls/hB9A5cUL+I+7CNpr+mq9KL2yOKfxaGDfrMSxKhtqd1p8VC9beDIfMrsg80CWYn/J5tBKJ+w==}
-    dependencies:
-      assert-never: 1.2.1
-      chokidar: 3.5.3
-      fs-extra: 10.1.0
-
   /@react-hook/debounce/3.0.0_react@18.1.0:
     resolution: {integrity: sha512-ir/kPrSfAzY12Gre0sOHkZ2rkEmM4fS5M5zFxCi4BnCeXh2nvx9Ujd+U4IGpKCuPA+EQD0pg1eK2NGLvfWejag==}
     peerDependencies:
@@ -10942,7 +10913,7 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.3.3
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
 
@@ -14530,6 +14501,7 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -17005,6 +16977,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: true
+
+  /follow-redirects/1.15.0_debug@4.3.4:
+    resolution: {integrity: sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4_supports-color@6.1.0
 
   /fontfaceobserver/2.1.0:
     resolution: {integrity: sha512-ReOsO2F66jUa0jmv2nlM/s1MiutJx/srhAe2+TE8dJCMi02ZZOcCTxTCQFr3Yet+uODUtnr4Mewg+tNQ+4V1Ng==}
@@ -18300,7 +18284,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.0
+      follow-redirects: 1.15.0_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -21371,6 +21355,7 @@ packages:
 
   /nan/2.15.0:
     resolution: {integrity: sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==}
+    requiresBuild: true
     optional: true
 
   /nanoid/3.3.4:
@@ -23152,7 +23137,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.4.3
+      ts-pnp: 1.2.0
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -25327,7 +25312,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.6.4
+      ts-pnp: 1.2.0
       typescript: 4.6.4
       url-loader: 4.1.1_7hroj2mdu577asu2zyhaasbvae
       webpack: 4.44.2
@@ -28754,18 +28739,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  /ts-pnp/1.2.0_typescript@4.4.3:
-    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
-    engines: {node: '>=6'}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      typescript: 4.4.3
-    dev: false
 
   /ts-pnp/1.2.0_typescript@4.6.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
