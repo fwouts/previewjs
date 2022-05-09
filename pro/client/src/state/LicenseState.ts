@@ -63,13 +63,6 @@ export class LicenseState {
     return this.decodedLicense?.checked.valid ? "enabled" : "disabled";
   }
 
-  get proTrialRemainingDays() {
-    if (this.decodedLicense?.checked?.valid !== true) {
-      return null;
-    }
-    return this.decodedLicense.checked.trial?.remainingDays ?? null;
-  }
-
   get proInvalidLicenseReason() {
     if (this.decodedLicense?.checked.valid === false) {
       return this.decodedLicense.checked.reason;
