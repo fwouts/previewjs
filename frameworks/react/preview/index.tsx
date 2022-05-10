@@ -45,6 +45,18 @@ export const load: RendererLoader = async ({
         transform: "scale(1, 1)",
       }}
     >
+      <h1
+        style={{
+          fontSize: "1.1rem",
+          fontWeight: "normal",
+          background: "#334155",
+          color: "#FFFFFF",
+          padding: "0.5rem",
+          margin: "0",
+        }}
+      >
+        Title
+      </h1>
       <Wrapper>{children}</Wrapper>
     </div>
   );
