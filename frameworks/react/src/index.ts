@@ -8,6 +8,7 @@ import { reactImportsPlugin } from "./react-imports-plugin";
 import { REACT_SPECIAL_TYPES } from "./special-types";
 import { svgrPlugin } from "./svgr-plugin";
 
+/** @deprecated */
 export const reactFrameworkPlugin: FrameworkPluginFactory<{
   svgr?: {
     componentName?: string;
@@ -80,3 +81,5 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
     };
   },
 };
+
+export default reactFrameworkPlugin;

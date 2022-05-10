@@ -5,6 +5,7 @@ import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { createVueTypeScriptReader } from "./vue-reader";
 
+/** @deprecated */
 export const vue2FrameworkPlugin: FrameworkPluginFactory<{
   vueOptionsModule?: string;
 }> = {
@@ -173,3 +174,5 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
     };
   },
 };
+
+export default vue2FrameworkPlugin;

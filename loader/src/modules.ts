@@ -15,10 +15,10 @@ export function loadModules({
   const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName).default;
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
-    requireModule("@previewjs/plugin-react").reactFrameworkPlugin,
-    requireModule("@previewjs/plugin-solid").solidFrameworkPlugin,
-    requireModule("@previewjs/plugin-vue2").vue2FrameworkPlugin,
-    requireModule("@previewjs/plugin-vue3").vue3FrameworkPlugin,
+    requireModule("@previewjs/plugin-react").default,
+    requireModule("@previewjs/plugin-solid").default,
+    requireModule("@previewjs/plugin-vue2").default,
+    requireModule("@previewjs/plugin-vue3").default,
   ];
 
   function requireModule(name: string) {

@@ -5,6 +5,7 @@ import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { createVueTypeScriptReader } from "./vue-reader";
 
+/** @deprecated */
 export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version = await dependencies["vue"]?.readInstalledVersion();
@@ -175,3 +176,5 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
     };
   },
 };
+
+export default vue3FrameworkPlugin;
