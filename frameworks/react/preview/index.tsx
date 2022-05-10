@@ -1,5 +1,5 @@
 import type { RendererLoader } from "@previewjs/core/controller";
-import React from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 // @ts-ignore Vite is fine with this
 import { version } from "react/package.json";
 
@@ -32,14 +32,74 @@ export const load: RendererLoader = async ({
       props: variant.props,
     };
   });
+  const Decorated = (props) =>
+    decorators.reduce(
+      (component, decorator) => () => decorator(component),
+      () => <Component {...Component.args} {...props} />
+    )();
+  const Box = ({ children }) => (
+    <div
+      style={{
+        flexGrow: "1",
+        // overflow: "auto",
+        transform: "scale(1, 1)",
+      }}
+    >
+      <Wrapper>{children}</Wrapper>
+    </div>
+  );
   const Renderer = (props) => {
+    const count = 4;
+    let [scale, setScale] = useState(1);
+    const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+    const gridRef = useRef<HTMLDivElement>();
+    useEffect(() => {
+      function handleResize() {
+        setViewportHeight(window.innerHeight);
+      }
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    useLayoutEffect(() => {
+      const height = gridRef.current.offsetHeight;
+      if (!height) {
+        return;
+      }
+      const computedScale = Math.min(1, viewportHeight / height);
+      if (computedScale !== scale) {
+        setScale(computedScale);
+      }
+    }, [viewportHeight]);
     return (
-      <Wrapper>
-        {decorators.reduce(
-          (component, decorator) => () => decorator(component),
-          () => <Component {...Component.args} {...props} />
-        )()}
-      </Wrapper>
+      <div
+        style={{
+          transformOrigin: "0% 0%",
+          transform: `scale(${scale})`,
+          height: "100vh",
+        }}
+      >
+        <div
+          ref={gridRef}
+          style={{
+            display: "grid",
+            gridTemplateRows: `repeat(${count}, 1fr)`,
+            width: `${100 / scale}vw`,
+          }}
+        >
+          <Box>
+            <Decorated {...props} />
+          </Box>
+          <Box>
+            <Decorated {...props} />
+          </Box>
+          <Box>
+            <Decorated {...props} />
+          </Box>
+          <Box>
+            <Decorated {...props} />
+          </Box>
+        </div>
+      </div>
     );
   };
   return {
