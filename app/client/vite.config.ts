@@ -17,11 +17,11 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["@previewjs/api"],
+    include: ["@previewjs/api", "@previewjs/type-analyzer"],
   },
   build: {
     commonjsOptions: {
-      include: [/api\/.*/, /node_modules/],
+      include: [/api\/.*/, /type-analyzer\/.*/, /node_modules/],
     },
   },
 });
