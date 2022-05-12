@@ -312,31 +312,26 @@ export class PreviewState {
         filePath: decodedComponentId.component.filePath,
         componentName: name,
       });
-      const details = {
-        filePath: decodedComponentId.component.filePath,
-        componentName: name,
-        defaultProps: sources?.defaultPropsSource || "{}",
-        invocation:
-          this.cachedInvocations[componentId] ||
-          sources?.defaultInvocationSource ||
-          `properties = {
+      const filePath = decodedComponentId.component.filePath;
+      const invocation =
+        this.cachedInvocations[componentId] ||
+        sources?.defaultInvocationSource ||
+        `properties = {
   // foo: "bar"
-}`,
-        typeDeclarations:
-          sources?.typeDeclarationsSource || `declare let properties: any;`,
-      };
+}`;
       runInAction(() => {
         this.component = {
           componentId,
           name,
           variantKey,
           details: {
-            filePath: details.filePath,
+            filePath,
             variants: null,
-            defaultProps: details.defaultProps,
-            defaultInvocation: details.invocation,
-            invocation: details.invocation,
-            typeDeclarations: details.typeDeclarations,
+            defaultProps: sources?.defaultPropsSource || "{}",
+            defaultInvocation: invocation,
+            invocation: invocation,
+            typeDeclarations:
+              sources?.typeDeclarationsSource || `declare let properties: any;`,
           },
         };
       });
