@@ -428,6 +428,9 @@ class TypeResolver {
           // For now, we ignore property names such as "foo.bar".
           continue;
         }
+        if (propertyName?.startsWith("__@")) {
+          continue;
+        }
         const propertyTsType: ts.Type | undefined = (
           this.checker as any
         ).getTypeOfPropertyOfType(type, property.name);
