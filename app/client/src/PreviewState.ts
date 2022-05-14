@@ -13,6 +13,9 @@ import { ActionLogsState } from "./components/ActionLogs";
 import { ConsolePanelState } from "./components/ConsolePanel";
 import { ErrorState } from "./components/Error/ErrorState";
 import { UpdateBannerState } from "./components/UpdateBanner";
+import { generateDefaultProps } from "./generators/generate-default-props";
+import { generateInvocation } from "./generators/generate-invocation";
+import { generateTypeDeclarations } from "./generators/generate-type-declarations";
 import { PersistedStateController } from "./PersistedStateController";
 import "./window";
 
@@ -308,14 +311,30 @@ export class PreviewState {
           details: null,
         };
       });
-      const sources = await this.localApi.request(localEndpoints.ComputeProps, {
-        filePath: decodedComponentId.component.filePath,
-        componentName: name,
-      });
+      const response = await this.localApi.request(
+        localEndpoints.ComputeProps,
+        {
+          filePath: decodedComponentId.component.filePath,
+          componentName: name,
+        }
+      );
       const filePath = decodedComponentId.component.filePath;
+      const typeDeclarations = generateTypeDeclarations(
+        name,
+        response.types.props,
+        new Set(response.args),
+        response.types.all
+      );
+      const { source: defaultProps, propKeys: defaultPropsKeys } =
+        generateDefaultProps(response.types.props, response.types.all);
+      const defaultInvocationSource = generateInvocation(
+        response.types.props,
+        new Set([...defaultPropsKeys, ...response.args]),
+        response.types.all
+      );
       const invocation =
         this.cachedInvocations[componentId] ||
-        sources?.defaultInvocationSource ||
+        defaultInvocationSource ||
         `properties = {
   // foo: "bar"
 }`;
@@ -327,11 +346,10 @@ export class PreviewState {
           details: {
             filePath,
             variants: null,
-            defaultProps: sources?.defaultPropsSource || "{}",
+            defaultProps,
             defaultInvocation: invocation,
             invocation: invocation,
-            typeDeclarations:
-              sources?.typeDeclarationsSource || `declare let properties: any;`,
+            typeDeclarations,
           },
         };
       });

@@ -3,6 +3,7 @@ import {
   CollectedTypes,
   createTypeAnalyzer,
   TypeAnalyzer,
+  UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import { Reader } from "@previewjs/vfs";
 import cookieParser from "cookie-parser";
@@ -104,7 +105,13 @@ export async function createWorkspace({
         ])
       ).find((c) => c.name === componentName);
       if (!component) {
-        return null;
+        return {
+          types: {
+            props: UNKNOWN_TYPE,
+            all: {},
+          },
+          args: [],
+        };
       }
       return computeProps({
         component,
