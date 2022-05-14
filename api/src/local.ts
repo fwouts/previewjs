@@ -1,3 +1,4 @@
+import { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import { Endpoint } from "./endpoint";
 import { PersistedState } from "./persisted-state";
 
@@ -26,13 +27,15 @@ export const ComputeProps: Endpoint<
     filePath: string;
     componentName: string;
   },
-  PreviewSources | null
+  ComputePropsResponse
 > = {
   path: "compute-props",
 };
 
-export interface PreviewSources {
-  typeDeclarationsSource: string;
-  defaultPropsSource: string;
-  defaultInvocationSource: string;
-}
+export type ComputePropsResponse = {
+  types: {
+    props: ValueType;
+    all: CollectedTypes;
+  };
+  args: string[];
+};

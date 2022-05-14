@@ -5,6 +5,7 @@ import {
   ValueType,
 } from "@previewjs/type-analyzer";
 import prettier from "prettier";
+import parserBabel from "prettier/parser-babel";
 import { generateValue } from "./generate-value";
 
 /**
@@ -37,6 +38,8 @@ export function generateInvocation(
   const source = `properties = ${value}`;
   return prettier
     .format(source, {
+      parser: "babel",
+      plugins: [parserBabel],
       filepath: "component.js",
     })
     .trim();

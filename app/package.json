@@ -20,6 +20,7 @@
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client",
+    "test": "vitest client",
     "e2e-test": "ts-node --transpileOnly testing/run-test-suite.ts",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
@@ -65,11 +66,13 @@
     "@previewjs/plugin-solid": "workspace:*",
     "@previewjs/plugin-vue2": "workspace:*",
     "@previewjs/plugin-vue3": "workspace:*",
+    "@previewjs/type-analyzer": "workspace:*",
     "@react-hook/window-size": "3.0.7",
     "@types/express": "4.17.13",
     "@types/fs-extra": "9.0.13",
     "@types/lodash": "4.14.182",
     "@types/node": "17.0.8",
+    "@types/prettier": "2.6.0",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.4",
     "@types/rimraf": "3.0.2",
@@ -93,6 +96,7 @@
     "monaco-editor": "0.33.0",
     "playwright": "1.21.1",
     "postcss": "8.4.13",
+    "prettier": "2.6.2",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "rimraf": "3.0.2",
@@ -101,6 +105,7 @@
     "ts-node-dev": "1.1.8",
     "typescript": "4.6.4",
     "vite": "2.9.9",
-    "vite-plugin-svgr": "2.1.0"
+    "vite-plugin-svgr": "2.1.0",
+    "vitest": "0.12.4"
   }
 }

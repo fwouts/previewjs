@@ -36,8 +36,11 @@ importers:
 
   api:
     specifiers:
+      '@previewjs/type-analyzer': ^2.1.0
       rimraf: 3.0.2
       typescript: 4.6.4
+    dependencies:
+      '@previewjs/type-analyzer': link:../type-analyzer
     devDependencies:
       rimraf: 3.0.2
       typescript: 4.6.4
@@ -58,12 +61,14 @@ importers:
       '@previewjs/plugin-solid': workspace:*
       '@previewjs/plugin-vue2': workspace:*
       '@previewjs/plugin-vue3': workspace:*
+      '@previewjs/type-analyzer': workspace:*
       '@previewjs/vfs': ^1.1.4
       '@react-hook/window-size': 3.0.7
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/lodash': 4.14.182
       '@types/node': 17.0.8
+      '@types/prettier': 2.6.0
       '@types/react': 18.0.9
       '@types/react-dom': 18.0.4
       '@types/rimraf': 3.0.2
@@ -88,6 +93,7 @@ importers:
       monaco-editor: 0.33.0
       playwright: 1.21.1
       postcss: 8.4.13
+      prettier: 2.6.2
       react: 18.1.0
       react-dom: 18.1.0
       rimraf: 3.0.2
@@ -97,6 +103,7 @@ importers:
       typescript: 4.6.4
       vite: 2.9.9
       vite-plugin-svgr: 2.1.0
+      vitest: 0.12.4
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
@@ -115,11 +122,13 @@ importers:
       '@previewjs/plugin-solid': link:../frameworks/solid
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
+      '@previewjs/type-analyzer': link:../type-analyzer
       '@react-hook/window-size': 3.0.7_react@18.1.0
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/lodash': 4.14.182
       '@types/node': 17.0.8
+      '@types/prettier': 2.6.0
       '@types/react': 18.0.9
       '@types/react-dom': 18.0.4
       '@types/rimraf': 3.0.2
@@ -143,6 +152,7 @@ importers:
       monaco-editor: 0.33.0
       playwright: 1.21.1
       postcss: 8.4.13
+      prettier: 2.6.2
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       rimraf: 3.0.2
@@ -152,6 +162,7 @@ importers:
       typescript: 4.6.4
       vite: 2.9.9
       vite-plugin-svgr: 2.1.0_vite@2.9.9
+      vitest: 0.12.4
 
   cli:
     specifiers:
@@ -216,7 +227,6 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/prettier': 2.6.1
       '@types/uuid': 8.3.4
       acorn: ^8.7.0
       assert-never: ^1.2.1
@@ -229,7 +239,6 @@ importers:
       glob: ^8.0.0
       http-terminator: ^3.2.0
       monaco-editor: ^0.33.0
-      prettier: ^2.6.2
       recrawl: ^2.2.1
       rimraf: 3.0.2
       rollup-plugin-friendly-type-imports: ^1.0.3
@@ -241,7 +250,6 @@ importers:
       uuid: ^8.3.2
       vite: ^2.9.9
       vite-tsconfig-paths: ^3.4.1
-      vitest: 0.12.4
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
@@ -258,7 +266,6 @@ importers:
       glob: 8.0.1
       http-terminator: 3.2.0
       monaco-editor: 0.33.0
-      prettier: 2.6.2
       recrawl: 2.2.1
       rollup-plugin-friendly-type-imports: 1.0.3
       sass: 1.51.0
@@ -273,11 +280,9 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/prettier': 2.6.1
       '@types/uuid': 8.3.4
       rimraf: 3.0.2
       shx: 0.3.4
-      vitest: 0.12.4_sass@1.51.0
 
   frameworks/react:
     specifiers:
@@ -8966,10 +8971,6 @@ packages:
 
   /@types/prettier/2.6.0:
     resolution: {integrity: sha512-G/AdOadiZhnJp0jXCaBQU449W2h716OW/EoXeYkCytxKL06X1WCXB4DZpp8TpZ8eyIJVS1cw4lrlkkSYU21cDw==}
-
-  /@types/prettier/2.6.1:
-    resolution: {integrity: sha512-XFjFHmaLVifrAKaZ+EKghFHtHSUonyw8P2Qmy2/+osBnrKbH9UYtlK10zg8/kCt47MFilll/DEDKy3DHfJ0URw==}
-    dev: true
 
   /@types/pretty-hrtime/1.0.1:
     resolution: {integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==}
@@ -28725,6 +28726,7 @@ packages:
       sass: 1.51.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: false
 
   /vitest/0.12.4:
     resolution: {integrity: sha512-EDxdhlAt6vcu6y4VouAI60z78iCAVFnfBL4VlSQVQnGmOk5altOtIKvp3xfZ+cfo4iVHgqq1QNyf5qOFiL4leg==}
@@ -28752,38 +28754,6 @@ packages:
       tinypool: 0.1.3
       tinyspy: 0.3.2
       vite: 2.9.9
-    transitivePeerDependencies:
-      - less
-      - sass
-      - stylus
-    dev: true
-
-  /vitest/0.12.4_sass@1.51.0:
-    resolution: {integrity: sha512-EDxdhlAt6vcu6y4VouAI60z78iCAVFnfBL4VlSQVQnGmOk5altOtIKvp3xfZ+cfo4iVHgqq1QNyf5qOFiL4leg==}
-    engines: {node: '>=v14.16.0'}
-    hasBin: true
-    peerDependencies:
-      '@vitest/ui': '*'
-      c8: '*'
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@vitest/ui':
-        optional: true
-      c8:
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@types/chai': 4.3.1
-      '@types/chai-subset': 1.3.3
-      chai: 4.3.6
-      local-pkg: 0.4.1
-      tinypool: 0.1.3
-      tinyspy: 0.3.2
-      vite: 2.9.9_sass@1.51.0
     transitivePeerDependencies:
       - less
       - sass
