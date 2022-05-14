@@ -333,11 +333,7 @@ export class PreviewState {
         response.types.all
       );
       const invocation =
-        this.cachedInvocations[componentId] ||
-        defaultInvocationSource ||
-        `properties = {
-  // foo: "bar"
-}`;
+        this.cachedInvocations[componentId] || defaultInvocationSource;
       runInAction(() => {
         this.component = {
           componentId,
