@@ -9,13 +9,11 @@ import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "./api/local";
 import { WebApi } from "./api/web";
 import { decodeComponentId } from "./component-id";
+import { ComponentProps } from "./ComponentProps";
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsolePanelState } from "./components/ConsolePanel";
 import { ErrorState } from "./components/Error/ErrorState";
 import { UpdateBannerState } from "./components/UpdateBanner";
-import { generateDefaultProps } from "./generators/generate-default-props";
-import { generateInvocation } from "./generators/generate-invocation";
-import { generateTypeDeclarations } from "./generators/generate-type-declarations";
 import { PersistedStateController } from "./PersistedStateController";
 import "./window";
 
@@ -63,35 +61,7 @@ export class PreviewState {
        */
       filePath: string;
 
-      /**
-       * Source of default props that should be passed to the component.
-       *
-       * Typically this is "{}" (empty object) but when we know more about the component, we may
-       * provide better defaults such as callback implementations, e.g. "{ onClick: fn(...) }".
-       *
-       * Unlike defaultInvocation, defaultProps is not shown to the user.
-       */
-      defaultProps: string;
-
-      /**
-       * Default source of invocation, used to fill the initial content of the props editor (unless
-       * a preconfigured variant is used).
-       *
-       * This is typically `properties = {};` unless we're able to infer information about the
-       * component's props.
-       */
-      defaultInvocation: string;
-
-      /**
-       * Source of invocation used to render the component. This may differ from defaultInvocation,
-       * specifically when the user has edited the props editor.
-       */
-      invocation: string;
-
-      /**
-       * Type declarations used by the props editor to offer better autocomplete and type checking.
-       */
-      typeDeclarations: string;
+      props: ComponentProps;
 
       /**
        * List of preconfigured variants for the component, if any.
@@ -267,7 +237,7 @@ export class PreviewState {
     if (!this.component?.details) {
       return;
     }
-    this.component.details.invocation = source;
+    this.component.details.props.setInvocationSource(source);
     this.cachedInvocations[this.component.componentId] = source;
     this.renderComponent();
   }
@@ -276,8 +246,7 @@ export class PreviewState {
     if (!this.component?.details) {
       return;
     }
-    this.component.details.invocation =
-      this.component.details.defaultInvocation;
+    this.component.details.props.setInvocationSource(null);
     delete this.cachedInvocations[this.component.componentId];
     this.renderComponent();
   }
@@ -319,21 +288,6 @@ export class PreviewState {
         }
       );
       const filePath = decodedComponentId.component.filePath;
-      const typeDeclarations = generateTypeDeclarations(
-        name,
-        response.types.props,
-        new Set(response.args),
-        response.types.all
-      );
-      const { source: defaultProps, propKeys: defaultPropsKeys } =
-        generateDefaultProps(response.types.props, response.types.all);
-      const defaultInvocationSource = generateInvocation(
-        response.types.props,
-        new Set([...defaultPropsKeys, ...response.args]),
-        response.types.all
-      );
-      const invocation =
-        this.cachedInvocations[componentId] || defaultInvocationSource;
       runInAction(() => {
         this.component = {
           componentId,
@@ -342,10 +296,12 @@ export class PreviewState {
           details: {
             filePath,
             variants: null,
-            defaultProps,
-            defaultInvocation: invocation,
-            invocation: invocation,
-            typeDeclarations,
+            props: new ComponentProps(
+              name,
+              response.types,
+              response.args,
+              this.cachedInvocations[componentId] || null
+            ),
           },
         };
       });
@@ -362,8 +318,8 @@ export class PreviewState {
       componentName: this.component.name,
       filePath: this.component.details.filePath,
       variantKey: this.component.variantKey,
-      customVariantPropsSource: this.component.details.invocation,
-      defaultPropsSource: this.component.details.defaultProps,
+      customVariantPropsSource: this.component.details.props.invocationSource,
+      defaultPropsSource: this.component.details.props.defaultPropsSource,
     });
   }
 

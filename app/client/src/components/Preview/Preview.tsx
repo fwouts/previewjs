@@ -138,14 +138,14 @@ export const Preview = observer(
                         onUpdate={state.updateProps.bind(state)}
                         onReset={
                           state.component?.details &&
-                          state.component.details.invocation !==
-                            state.component.details.defaultInvocation
-                            ? state.resetProps.bind(state)
-                            : undefined
+                          state.component.details.props
+                            .isDefaultInvocationSource
+                            ? undefined
+                            : state.resetProps.bind(state)
                         }
-                        source={state.component.details?.invocation}
+                        source={state.component.details?.props.invocationSource}
                         typeDeclarationsSource={
-                          state.component.details?.typeDeclarations
+                          state.component.details?.props.typeDeclarations
                         }
                       />
                     ),

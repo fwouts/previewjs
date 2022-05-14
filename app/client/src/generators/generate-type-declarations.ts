@@ -4,7 +4,7 @@ import assertNever from "assert-never";
 export function generateTypeDeclarations(
   name: string,
   type: ValueType,
-  providedArgs: ReadonlySet<string>,
+  argKeys: string[],
   collected: CollectedTypes
 ) {
   const typeNameMapping: {
@@ -24,9 +24,9 @@ export function generateTypeDeclarations(
   }
   const safePropsTypeName = safeTypeName(propsTypeName, typeNameMapping);
   let output = `declare let properties: { children?: any } & ${
-    providedArgs.size === 0
+    argKeys.length === 0
       ? safePropsTypeName
-      : `__previewjs_Optionalize<${safePropsTypeName}, ${[...providedArgs]
+      : `__previewjs_Optionalize<${safePropsTypeName}, ${argKeys
           .map((prop) => `"${prop.replace(/"/g, '\\"')}"`)
           .join(" | ")}>`
   };
