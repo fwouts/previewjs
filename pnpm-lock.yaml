@@ -252,7 +252,6 @@ importers:
       uuid: ^8.3.2
       vite: ^2.9.9
       vite-tsconfig-paths: ^3.4.1
-      vitest: 0.12.4
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
@@ -288,7 +287,6 @@ importers:
       '@types/uuid': 8.3.4
       rimraf: 3.0.2
       shx: 0.3.4
-      vitest: 0.12.4_sass@1.51.0
 
   frameworks/react:
     specifiers:
@@ -9917,7 +9915,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
       eslint: '>= 1.6.0 < 7.0.0'
     dependencies:
-      '@vue/cli-service': 4.5.17_@vue+compiler-sfc@3.2.33
+      '@vue/cli-service': 4.5.17_ev5jzj74xu2fombjvobqpq452a
       '@vue/cli-shared-utils': 4.5.17
       eslint: 6.8.0
       eslint-loader: 2.2.1_pfvmeq6opgydpezktw7j2dwffi
@@ -9935,7 +9933,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.17_@vue+compiler-sfc@3.2.33
+      '@vue/cli-service': 4.5.17_ev5jzj74xu2fombjvobqpq452a
       '@vue/cli-shared-utils': 4.5.17
     dev: true
 
@@ -9944,7 +9942,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.17_@vue+compiler-sfc@3.2.33
+      '@vue/cli-service': 4.5.17_ev5jzj74xu2fombjvobqpq452a
     dev: true
 
   /@vue/cli-service/4.5.17_@vue+compiler-sfc@3.2.33:
@@ -28736,6 +28734,7 @@ packages:
       sass: 1.51.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: false
 
   /vitest/0.12.4:
     resolution: {integrity: sha512-EDxdhlAt6vcu6y4VouAI60z78iCAVFnfBL4VlSQVQnGmOk5altOtIKvp3xfZ+cfo4iVHgqq1QNyf5qOFiL4leg==}
@@ -28763,38 +28762,6 @@ packages:
       tinypool: 0.1.3
       tinyspy: 0.3.2
       vite: 2.9.9
-    transitivePeerDependencies:
-      - less
-      - sass
-      - stylus
-    dev: true
-
-  /vitest/0.12.4_sass@1.51.0:
-    resolution: {integrity: sha512-EDxdhlAt6vcu6y4VouAI60z78iCAVFnfBL4VlSQVQnGmOk5altOtIKvp3xfZ+cfo4iVHgqq1QNyf5qOFiL4leg==}
-    engines: {node: '>=v14.16.0'}
-    hasBin: true
-    peerDependencies:
-      '@vitest/ui': '*'
-      c8: '*'
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@vitest/ui':
-        optional: true
-      c8:
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@types/chai': 4.3.1
-      '@types/chai-subset': 1.3.3
-      chai: 4.3.6
-      local-pkg: 0.4.1
-      tinypool: 0.1.3
-      tinyspy: 0.3.2
-      vite: 2.9.9_sass@1.51.0
     transitivePeerDependencies:
       - less
       - sass
