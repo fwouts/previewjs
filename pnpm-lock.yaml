@@ -52,7 +52,7 @@ importers:
       '@fortawesome/free-regular-svg-icons': 6.1.1
       '@fortawesome/free-solid-svg-icons': 6.1.1
       '@fortawesome/react-fontawesome': 0.1.18
-      '@monaco-editor/react': 4.4.4
+      '@monaco-editor/react': 4.4.5
       '@previewjs/api': workspace:*
       '@previewjs/config': 1.0.4
       '@previewjs/core': ^3.2.1
@@ -70,7 +70,7 @@ importers:
       '@types/node': 17.0.8
       '@types/prettier': 2.6.0
       '@types/react': 18.0.9
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
       '@types/rimraf': 3.0.2
       '@typescript-eslint/parser': 5.23.0
       '@vitejs/plugin-react': 1.3.2
@@ -101,7 +101,7 @@ importers:
       ts-node: 10.7.0
       ts-node-dev: 1.1.8
       typescript: 4.6.4
-      vite: 2.9.8
+      vite: 2.9.9
       vite-plugin-svgr: 2.1.0
       vitest: 0.12.4
     dependencies:
@@ -114,7 +114,7 @@ importers:
       '@fortawesome/free-regular-svg-icons': 6.1.1
       '@fortawesome/free-solid-svg-icons': 6.1.1
       '@fortawesome/react-fontawesome': 0.1.18_hjfkmtq3pe7bdfmd7inrupgslm
-      '@monaco-editor/react': 4.4.4_d24t5d2y775ybedwi37th2htxm
+      '@monaco-editor/react': 4.4.5_d24t5d2y775ybedwi37th2htxm
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
       '@previewjs/loader': link:../loader
@@ -130,7 +130,7 @@ importers:
       '@types/node': 17.0.8
       '@types/prettier': 2.6.0
       '@types/react': 18.0.9
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
       '@types/rimraf': 3.0.2
       '@typescript-eslint/parser': 5.23.0_e4zyhrvfnqudwdx5bevnvkluy4
       '@vitejs/plugin-react': 1.3.2
@@ -160,8 +160,8 @@ importers:
       ts-node: 10.7.0_yaetf735anpwmnswofxyurq2ji
       ts-node-dev: 1.1.8_typescript@4.6.4
       typescript: 4.6.4
-      vite: 2.9.8
-      vite-plugin-svgr: 2.1.0_vite@2.9.8
+      vite: 2.9.9
+      vite-plugin-svgr: 2.1.0_vite@2.9.9
       vitest: 0.12.4
 
   cli:
@@ -210,12 +210,12 @@ importers:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.6.4
-      vite: 2.9.8
+      vite: 2.9.9
     devDependencies:
       '@types/node': 17.0.8
       rimraf: 3.0.2
       typescript: 4.6.4
-      vite: 2.9.8
+      vite: 2.9.9
 
   core:
     specifiers:
@@ -227,7 +227,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/prettier': 2.6.0
+      '@types/prettier': 2.6.1
       '@types/uuid': 8.3.4
       acorn: ^8.7.0
       assert-never: ^1.2.1
@@ -250,7 +250,7 @@ importers:
       tsconfig-paths: ^4.0.0
       typescript: ^4.6.3
       uuid: ^8.3.2
-      vite: ^2.9.8
+      vite: ^2.9.9
       vite-tsconfig-paths: ^3.4.1
       vitest: 0.12.4
     dependencies:
@@ -277,14 +277,14 @@ importers:
       tsconfig-paths: 4.0.0
       typescript: 4.6.4
       uuid: 8.3.2
-      vite: 2.9.8_sass@1.51.0
-      vite-tsconfig-paths: 3.4.1_vite@2.9.8
+      vite: 2.9.9_sass@1.51.0
+      vite-tsconfig-paths: 3.4.1_vite@2.9.9
     devDependencies:
       '@types/cookie-parser': 1.4.3
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/prettier': 2.6.0
+      '@types/prettier': 2.6.1
       '@types/uuid': 8.3.4
       rimraf: 3.0.2
       shx: 0.3.4
@@ -306,7 +306,7 @@ importers:
       react-dom: 18.1.0
       rimraf: 3.0.2
       typescript: ^4.6.3
-      vite: 2.9.8
+      vite: ^2.9.9
       vitest: 0.12.4
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -314,6 +314,7 @@ importers:
       '@svgr/core': 5.5.0
       fs-extra: 10.1.0
       typescript: 4.6.4
+      vite: 2.9.9
     devDependencies:
       '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
@@ -324,20 +325,19 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       rimraf: 3.0.2
-      vite: 2.9.8
       vitest: 0.12.4
 
   frameworks/react/preview:
     specifiers:
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.9
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
       rimraf: 3.0.2
       shx: 0.3.4
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.9
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
     devDependencies:
       rimraf: 3.0.2
       shx: 0.3.4
@@ -353,7 +353,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.3.17
       typescript: ^4
-      vite: 2.9.8
+      vite: 2.9.9
       vite-plugin-solid: ^2
       vitest: 0.12.4
     dependencies:
@@ -368,7 +368,7 @@ importers:
       lodash: 4.17.21
       rimraf: 3.0.2
       solid-js: 1.3.17
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
 
   frameworks/solid/preview:
@@ -388,7 +388,7 @@ importers:
       fs-extra: ^10.0.0
       rimraf: 3.0.2
       typescript: ^4.6.3
-      vite: 2.9.8
+      vite: 2.9.9
       vite-plugin-vue2: ^2.0.0
       vitest: 0.12.4
       vue: ^2.6.14
@@ -399,7 +399,7 @@ importers:
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.1.0
       typescript: 4.6.4
-      vite-plugin-vue2: 2.0.0_yyotn5jom5aglsh2tbg67tvisi
+      vite-plugin-vue2: 2.0.0_dj3dtukdyynhbiqf2xbv2ocyei
       vue: 2.6.14
       vue-template-compiler: 2.6.14
     devDependencies:
@@ -407,7 +407,7 @@ importers:
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
 
   frameworks/vue2/preview:
@@ -433,13 +433,13 @@ importers:
       acorn: ^8.7.0
       rimraf: 3.0.2
       typescript: ^4.6.3
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
       vue: ^3
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue': 2.3.2_vite@2.9.8+vue@3.2.33
+      '@vitejs/plugin-vue': 2.3.2_vite@2.9.9+vue@3.2.33
       '@vitejs/plugin-vue-jsx': 1.3.10
       '@vue/compiler-sfc': 3.2.33
       acorn: 8.7.1
@@ -449,7 +449,7 @@ importers:
       '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
 
   frameworks/vue3/preview:
@@ -574,7 +574,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
       '@types/react': 18.0.9
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
       '@types/uuid': 8.3.4
       '@vitejs/plugin-react': 1.3.2
       assert-never: 1.2.1
@@ -597,7 +597,7 @@ importers:
       typescript: 4.6.4
       universal-base64: 2.1.0
       uuid: 8.3.2
-      vite: 2.9.8
+      vite: 2.9.9
       vite-plugin-svgr: 2.1.0
     dependencies:
       '@previewjs/core': link:../core
@@ -616,7 +616,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
       '@types/react': 18.0.9
-      '@types/react-dom': 18.0.3
+      '@types/react-dom': 18.0.4
       '@types/uuid': 8.3.4
       '@vitejs/plugin-react': 1.3.2
       assert-never: 1.2.1
@@ -638,8 +638,8 @@ importers:
       typescript: 4.6.4
       universal-base64: 2.1.0
       uuid: 8.3.2
-      vite: 2.9.8
-      vite-plugin-svgr: 2.1.0_vite@2.9.8
+      vite: 2.9.9
+      vite-plugin-svgr: 2.1.0_vite@2.9.9
 
   smoke-test-apps/aliases:
     specifiers:
@@ -1651,7 +1651,7 @@ importers:
       lodash: ^4.17.21
       rimraf: 3.0.2
       typescript: ^4.6.3
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
     dependencies:
       '@previewjs/vfs': link:../vfs
@@ -1661,7 +1661,7 @@ importers:
     devDependencies:
       '@types/lodash': 4.14.182
       rimraf: 3.0.2
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
 
   vfs:
@@ -1674,7 +1674,7 @@ importers:
       lodash: 4.17.21
       rimraf: 3.0.2
       typescript: 4.6.4
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
     dependencies:
       assert-never: 1.2.1
@@ -1686,7 +1686,7 @@ importers:
       lodash: 4.17.21
       rimraf: 3.0.2
       typescript: 4.6.4
-      vite: 2.9.8
+      vite: 2.9.9
       vitest: 0.12.4
 
 packages:
@@ -4178,7 +4178,6 @@ packages:
 
   /@emotion/is-prop-valid/0.8.8:
     resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
-    requiresBuild: true
     dependencies:
       '@emotion/memoize': 0.7.4
     dev: true
@@ -5254,8 +5253,8 @@ packages:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
     dev: true
 
-  /@monaco-editor/loader/1.3.1_monaco-editor@0.33.0:
-    resolution: {integrity: sha512-LfpAO6e54SZQW0nnI1sWKO4XtAlNx3WHXYZixeVy0HhZ4txGPOok4rs2u4dSi2+iRWeL198cZ2FlFQKr8mH+cw==}
+  /@monaco-editor/loader/1.3.2_monaco-editor@0.33.0:
+    resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
     peerDependencies:
       monaco-editor: '>= 0.21.0 < 1'
     dependencies:
@@ -5263,14 +5262,14 @@ packages:
       state-local: 1.0.7
     dev: true
 
-  /@monaco-editor/react/4.4.4_d24t5d2y775ybedwi37th2htxm:
-    resolution: {integrity: sha512-yQsYnVkgP5RC5ZMoRVCXSBn4D4hLUOgoQK+AZJpVY57NDXmEb57OVaaYKh8/RTzxkpuLV278hKNw5DnuzlgQwg==}
+  /@monaco-editor/react/4.4.5_d24t5d2y775ybedwi37th2htxm:
+    resolution: {integrity: sha512-IImtzU7sRc66OOaQVCG+5PFHkSWnnhrUWGBuH6zNmH2h0YgmAhcjHZQc/6MY9JWEbUtVF1WPBMJ9u1XuFbRrVA==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || 18
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || 18
     dependencies:
-      '@monaco-editor/loader': 1.3.1_monaco-editor@0.33.0
+      '@monaco-editor/loader': 1.3.2_monaco-editor@0.33.0
       monaco-editor: 0.33.0
       prop-types: 15.8.1
       react: 18.1.0
@@ -8979,6 +8978,10 @@ packages:
   /@types/prettier/2.6.0:
     resolution: {integrity: sha512-G/AdOadiZhnJp0jXCaBQU449W2h716OW/EoXeYkCytxKL06X1WCXB4DZpp8TpZ8eyIJVS1cw4lrlkkSYU21cDw==}
 
+  /@types/prettier/2.6.1:
+    resolution: {integrity: sha512-XFjFHmaLVifrAKaZ+EKghFHtHSUonyw8P2Qmy2/+osBnrKbH9UYtlK10zg8/kCt47MFilll/DEDKy3DHfJ0URw==}
+    dev: true
+
   /@types/pretty-hrtime/1.0.1:
     resolution: {integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==}
     dev: true
@@ -9014,6 +9017,12 @@ packages:
 
   /@types/react-dom/18.0.3:
     resolution: {integrity: sha512-1RRW9kst+67gveJRYPxGmVy8eVJ05O43hg77G2j5m76/RFJtMbcfAs2viQ2UNsvvDg8F7OfQZx8qQcl6ymygaQ==}
+    dependencies:
+      '@types/react': 18.0.9
+    dev: false
+
+  /@types/react-dom/18.0.4:
+    resolution: {integrity: sha512-FgTtbqPOCI3dzZPZoC2T/sx3L34qxy99ITWn4eoSA95qPyXDMH0ALoAqUp49ITniiJFsXUVBtalh/KffMpg21Q==}
     dependencies:
       '@types/react': 18.0.9
 
@@ -9637,6 +9646,18 @@ packages:
     dependencies:
       vite: 2.9.8
       vue: 3.2.33
+    dev: true
+
+  /@vitejs/plugin-vue/2.3.2_vite@2.9.9+vue@3.2.33:
+    resolution: {integrity: sha512-umyypfSHS4kQLdYAnJHhaASq7FRzNCdvcRoQ3uYGNk1/M4a+hXUd7ysN7BLhCrWH6uBokyCkFeUAaFDzSaaSrQ==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      vite: ^2.5.10
+      vue: ^3.2.25
+    dependencies:
+      vite: 2.9.9
+      vue: 3.2.33
+    dev: false
 
   /@vitejs/plugin-vue/2.3.3_vite@2.9.9+vue@3.2.33:
     resolution: {integrity: sha512-SmQLDyhz+6lGJhPELsBdzXGc+AcaT8stgkbiTFGpXPe8Tl1tJaBw1A6pxDqDuRsVkD8uscrkx3hA7QDOoKYtyw==}
@@ -9896,7 +9917,7 @@ packages:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
       eslint: '>= 1.6.0 < 7.0.0'
     dependencies:
-      '@vue/cli-service': 4.5.17_ev5jzj74xu2fombjvobqpq452a
+      '@vue/cli-service': 4.5.17_@vue+compiler-sfc@3.2.33
       '@vue/cli-shared-utils': 4.5.17
       eslint: 6.8.0
       eslint-loader: 2.2.1_pfvmeq6opgydpezktw7j2dwffi
@@ -9914,7 +9935,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.17_ev5jzj74xu2fombjvobqpq452a
+      '@vue/cli-service': 4.5.17_@vue+compiler-sfc@3.2.33
       '@vue/cli-shared-utils': 4.5.17
     dev: true
 
@@ -9923,7 +9944,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.17_ev5jzj74xu2fombjvobqpq452a
+      '@vue/cli-service': 4.5.17_@vue+compiler-sfc@3.2.33
     dev: true
 
   /@vue/cli-service/4.5.17_@vue+compiler-sfc@3.2.33:
@@ -14321,7 +14342,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-android-arm64/0.14.38:
@@ -14338,7 +14358,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-64/0.14.38:
@@ -14355,7 +14374,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.14.38:
@@ -14372,7 +14390,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.14.38:
@@ -14389,7 +14406,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.14.38:
@@ -14406,7 +14422,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-32/0.14.38:
@@ -14423,7 +14438,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-64/0.14.38:
@@ -14440,7 +14454,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm/0.14.38:
@@ -14457,7 +14470,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.14.38:
@@ -14474,7 +14486,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.14.38:
@@ -14491,7 +14502,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.14.38:
@@ -14508,7 +14518,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-riscv64/0.14.38:
@@ -14525,7 +14534,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-s390x/0.14.38:
@@ -14542,7 +14550,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-netbsd-64/0.14.38:
@@ -14559,7 +14566,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.14.38:
@@ -14576,7 +14582,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-sunos-64/0.14.38:
@@ -14593,7 +14598,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-32/0.14.38:
@@ -14610,7 +14614,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-64/0.14.38:
@@ -14627,7 +14630,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.14.38:
@@ -14644,7 +14646,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild/0.11.23:
@@ -14706,7 +14707,6 @@ packages:
       esbuild-windows-32: 0.14.39
       esbuild-windows-64: 0.14.39
       esbuild-windows-arm64: 0.14.39
-    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -28601,18 +28601,18 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/2.1.0_vite@2.9.8:
+  /vite-plugin-svgr/2.1.0_vite@2.9.9:
     resolution: {integrity: sha512-3J19p8pmGfRt297yvc8Fd36+0AC0sLgA/gZYQDjotNAhv3CmSTQyviXIrDbwiRFVrsZjSlHJH1vca7OGFmjDcA==}
     peerDependencies:
       vite: ^2.6.0
     dependencies:
       '@svgr/core': 6.2.1
-      vite: 2.9.8
+      vite: 2.9.9
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-vue2/2.0.0_yyotn5jom5aglsh2tbg67tvisi:
+  /vite-plugin-vue2/2.0.0_dj3dtukdyynhbiqf2xbv2ocyei:
     resolution: {integrity: sha512-6+CfhsPgQoZnkBbMMb/pxX3gYLD3k10QljjVlUa2lL8160UmVotLuEaN+U2eSyCEnn+uBj7YMSmBPWXqqTEpsw==}
     peerDependencies:
       vite: ^2.0.0
@@ -28646,14 +28646,14 @@ packages:
       rollup: 2.72.1
       slash: 3.0.0
       source-map: 0.7.3
-      vite: 2.9.8
+      vite: 2.9.9
       vue-template-babel-compiler: 1.2.0_ev5jzj74xu2fombjvobqpq452a
       vue-template-compiler: 2.6.14
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /vite-tsconfig-paths/3.4.1_vite@2.9.8:
+  /vite-tsconfig-paths/3.4.1_vite@2.9.9:
     resolution: {integrity: sha512-SgK3/pnTuJ3i+gMSAWLR6VCPSw26bnxawrmXGvCDjJgk8MAQgmbCrFrAzfwbwZBXSqSuvWEuX04Wt73qJKx8fQ==}
     peerDependencies:
       vite: '>2.0.0-0'
@@ -28662,7 +28662,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.2
       tsconfig-paths: 3.14.1
-      vite: 2.9.8_sass@1.51.0
+      vite: 2.9.9_sass@1.51.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -28690,31 +28690,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vite/2.9.8_sass@1.51.0:
-    resolution: {integrity: sha512-zsBGwn5UT3YS0NLSJ7hnR54+vUKfgzMUh/Z9CxF1YKEBVIe213+63jrFLmZphgGI5zXwQCSmqIdbPuE8NJywPw==}
-    engines: {node: '>=12.2.0'}
-    hasBin: true
-    peerDependencies:
-      less: '*'
-      sass: '*'
-      stylus: '*'
-    peerDependenciesMeta:
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-    dependencies:
-      esbuild: 0.14.38
-      postcss: 8.4.13
-      resolve: 1.22.0
-      rollup: 2.72.1
-      sass: 1.51.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: false
-
   /vite/2.9.9:
     resolution: {integrity: sha512-ffaam+NgHfbEmfw/Vuh6BHKKlI/XIAhxE5QSS7gFLIngxg171mg1P3a4LSRME0z2ZU1ScxoKzphkipcYwSD5Ew==}
     engines: {node: '>=12.2.0'}
@@ -28737,7 +28712,6 @@ packages:
       rollup: 2.72.1
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vite/2.9.9_sass@1.51.0:
     resolution: {integrity: sha512-ffaam+NgHfbEmfw/Vuh6BHKKlI/XIAhxE5QSS7gFLIngxg171mg1P3a4LSRME0z2ZU1ScxoKzphkipcYwSD5Ew==}
@@ -28762,7 +28736,6 @@ packages:
       sass: 1.51.0
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vitest/0.12.4:
     resolution: {integrity: sha512-EDxdhlAt6vcu6y4VouAI60z78iCAVFnfBL4VlSQVQnGmOk5altOtIKvp3xfZ+cfo4iVHgqq1QNyf5qOFiL4leg==}
