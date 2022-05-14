@@ -5,8 +5,6 @@ import {
 } from "@previewjs/type-analyzer";
 import { generateValue } from "./generate-value";
 
-const EMPTY_SET = new Set<string>();
-
 /**
  * Generates props that will be set on a component even if no props are specified.
  *
@@ -15,16 +13,10 @@ const EMPTY_SET = new Set<string>();
 export function generateDefaultProps(
   propsType: ValueType,
   types: CollectedTypes
-): {
-  source: string;
-  propKeys: Set<string>;
-} {
+): string {
   propsType = resolveType(propsType);
   if (propsType.kind !== "object") {
-    return {
-      source: "{}",
-      propKeys: EMPTY_SET,
-    };
+    return "{}";
   }
   const propKeys = new Set<string>();
   let text = "";
@@ -47,10 +39,7 @@ export function generateDefaultProps(
     }
   }
   text += "}";
-  return {
-    source: text,
-    propKeys,
-  };
+  return text;
 
   function resolveType(type: ValueType): ValueType {
     if (type.kind === "name") {
