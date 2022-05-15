@@ -7,7 +7,6 @@ import {
   NODE_TYPE,
   NUMBER_TYPE,
   objectType,
-  optionalType,
   STRING_TYPE,
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
@@ -260,7 +259,6 @@ export const A: Component<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -282,7 +280,6 @@ export const A: Component<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: EMPTY_SET,
       types: {},
@@ -308,7 +305,6 @@ A.args = {
       propsType: objectType({
         foo: STRING_TYPE,
         bar: STRING_TYPE,
-        children: optionalType(NODE_TYPE),
       }),
       providedArgs: new Set(["foo"]),
       types: {},
