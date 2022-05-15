@@ -6,7 +6,8 @@ import {
 } from "@previewjs/type-analyzer";
 import prettier from "prettier";
 import parserBabel from "prettier/parser-babel";
-import { generateValue } from "./generate-value";
+import { generateSerializableValue } from "./generate-serializable-value";
+import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 /**
  * Generates an invocation source for a specific component.
@@ -31,11 +32,12 @@ export function generateInvocation(
       )
     );
   }
-  let value = generateValue(propsType, collected, [], [], false);
-  if (value === "undefined") {
-    value = "{}";
+  const value = generateSerializableValue(propsType, collected);
+  let valueSource = serializableValueToJavaScript(value);
+  if (valueSource === "undefined") {
+    valueSource = "{}";
   }
-  const source = `properties = ${value}`;
+  const source = `properties = ${valueSource}`;
   return prettier
     .format(source, {
       parser: "babel",

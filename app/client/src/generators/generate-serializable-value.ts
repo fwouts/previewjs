@@ -1,4 +1,5 @@
 import {
+  ArrayType,
   arrayType,
   CollectedTypes,
   dereferenceType,
@@ -7,17 +8,49 @@ import {
 } from "@previewjs/type-analyzer";
 import { assertNever } from "assert-never";
 import { isValidPropName } from "./prop-name";
+import {
+  array,
+  EMPTY_ARRAY,
+  EMPTY_OBJECT,
+  FALSE,
+  fn,
+  map,
+  NULL,
+  number,
+  object,
+  promise,
+  SerializableArrayValue,
+  SerializableValue,
+  set,
+  string,
+  TRUE,
+  UNDEFINED,
+} from "./serializable-value";
 
 /**
  * Generates a valid value for the given type.
  */
-export function generateValue(
+export function generateSerializableValue(
+  type: ValueType,
+  collected: CollectedTypes,
+  isFunctionReturnValue = false
+): SerializableValue {
+  return _generateSerializableValue(
+    type,
+    collected,
+    [],
+    [],
+    isFunctionReturnValue
+  );
+}
+
+function _generateSerializableValue(
   type: ValueType,
   collected: CollectedTypes,
   path: string[],
   rejectTypeNames: string[],
   isFunctionReturnValue: boolean
-): string {
+): SerializableValue {
   let encounteredAliases: string[];
   [type, encounteredAliases] = dereferenceType(
     type,
@@ -30,98 +63,85 @@ export function generateValue(
     case "unknown":
     case "never":
     case "void":
-      return "undefined";
+      return UNDEFINED;
     case "null":
-      return "null";
+      return NULL;
     case "boolean":
-      return "false";
+      return FALSE;
     case "string":
     case "node":
-      if (path.length === 0) {
-        return '"node"';
-      }
-      return `"${path.join(".").replace(/"/g, '\\"')}"`;
+      return string(path.length === 0 ? "node" : path.join("."));
     case "number":
-      return "100";
+      return number(100);
     case "literal":
       if (typeof type.value === "number") {
-        return type.value.toString(10);
+        return number(type.value);
       } else if (typeof type.value === "string") {
-        return `"${type.value.replace(/"/g, '\\"')}"`;
+        return string(type.value);
       } else {
-        return type.value ? "true" : "false";
+        return type.value ? TRUE : FALSE;
       }
     case "enum":
       const value = Object.values(type.options)[0];
       if (typeof value === "number") {
-        return value.toString(10);
+        return number(value);
       } else {
-        return `"${value!.replace(/"/g, '\\"')}"`;
+        return string(value || "unknown");
       }
-    case "array": {
-      if (isFunctionReturnValue) {
-        // Avoid unnecessarily verbose generated props when they're
-        // unlikely to even be used at all.
-        return "[]";
-      }
-      const itemValue = generateValue(
-        type.items,
+    case "array":
+      return generateArrayValue(
+        type,
         collected,
         path,
         rejectTypeNames,
         isFunctionReturnValue
       );
-      if (itemValue === "undefined" || itemValue === "{}") {
-        return "[]";
-      }
-      return `[${itemValue}]`;
-    }
     case "set": {
-      return `new Set(${generateValue(
-        arrayType(type.items),
-        collected,
-        path,
-        rejectTypeNames,
-        isFunctionReturnValue
-      )})`;
+      return set(
+        generateArrayValue(
+          arrayType(type.items),
+          collected,
+          path,
+          rejectTypeNames,
+          isFunctionReturnValue
+        )
+      );
     }
     case "object": {
-      let text = "";
-      text += "{\n";
+      const entries: Record<string, SerializableValue> = {};
       for (const [propName, propType] of Object.entries(type.fields)) {
-        const propValue = generateValue(
+        const propValue = _generateSerializableValue(
           propType,
           collected,
           [...path, propName],
           rejectTypeNames,
           isFunctionReturnValue
         );
-        if (propValue === "undefined") {
+        if (propValue.kind === "undefined") {
           continue;
         }
         if (!isValidPropName(propName)) {
           continue;
         }
-        text += `${propName}: ${propValue},\n`;
+        entries[propName] = propValue;
       }
-      text += "\n}";
-      return text;
+      return object(entries);
     }
     case "map":
-      return "new Map()";
+      return map(EMPTY_OBJECT);
     case "record":
-      return "{}";
+      return EMPTY_OBJECT;
     case "union":
       if (isValid(type, collected, undefined)) {
-        return "undefined";
+        return UNDEFINED;
       }
       if (isValid(type, collected, null)) {
-        return "null";
+        return NULL;
       }
       if (isValid(type, collected, false)) {
-        return "false";
+        return FALSE;
       }
-      return generateValue(
+      return _generateSerializableValue(
         type.types[0]!,
         collected,
         path,
@@ -130,7 +150,7 @@ export function generateValue(
       );
     case "intersection":
       // Generate a value for the first type and hope for the best.
-      return generateValue(
+      return _generateSerializableValue(
         type.types[0]!,
         collected,
         path,
@@ -139,24 +159,27 @@ export function generateValue(
       );
     case "function":
       const returnValue = isFunctionReturnValue
-        ? "undefined"
-        : generateValue(
+        ? UNDEFINED
+        : _generateSerializableValue(
             type.returnType,
             collected,
             path,
             rejectTypeNames,
             true
           );
-      return `() => ${returnValue === "undefined" ? `{}` : `(${returnValue})`}`;
+      return fn(returnValue);
     case "optional":
-      return "undefined";
+      return UNDEFINED;
     case "promise": {
-      return `Promise.reject()`;
+      return promise({
+        type: "reject",
+        message: null,
+      });
     }
     case "name":
       // This recursion is safe specifically because rejectTypeNames
       // is updated before.
-      return generateValue(
+      return _generateSerializableValue(
         type,
         collected,
         path,
@@ -166,4 +189,32 @@ export function generateValue(
     default:
       throw assertNever(type);
   }
+}
+
+function generateArrayValue(
+  type: ArrayType,
+  collected: CollectedTypes,
+  path: string[],
+  rejectTypeNames: string[],
+  isFunctionReturnValue: boolean
+): SerializableArrayValue {
+  if (isFunctionReturnValue) {
+    // Avoid unnecessarily verbose generated props when they're
+    // unlikely to even be used at all.
+    return EMPTY_ARRAY;
+  }
+  const itemValue = _generateSerializableValue(
+    type.items,
+    collected,
+    path,
+    rejectTypeNames,
+    isFunctionReturnValue
+  );
+  if (
+    itemValue.kind === "undefined" ||
+    (itemValue.kind === "object" && Object.keys(itemValue.entries).length === 0)
+  ) {
+    return EMPTY_ARRAY;
+  }
+  return array([itemValue]);
 }

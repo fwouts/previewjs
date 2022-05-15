@@ -3,7 +3,8 @@ import {
   evaluateType,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { generateValue } from "./generate-value";
+import { generateSerializableValue } from "./generate-serializable-value";
+import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 /**
  * Generates props that will be set on a component even if no props are specified.
@@ -29,12 +30,11 @@ export function generateDefaultProps(
       text += `"${propertyName.replace(
         /"/g,
         '\\"'
-      )}": fn("${propertyName.replace(/"/g, '\\"')}", ${generateValue(
-        returnType,
-        types,
-        [],
-        [],
-        true
+      )}": fn("${propertyName.replace(
+        /"/g,
+        '\\"'
+      )}", ${serializableValueToJavaScript(
+        generateSerializableValue(returnType, types, true)
       )}),`;
     }
   }
