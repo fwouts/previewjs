@@ -1,5 +1,4 @@
 import assertNever from "assert-never";
-import { isValidPropName } from "./prop-name";
 import { SerializableValue } from "./serializable-value";
 
 export function serializableValueToJavaScript(
@@ -32,11 +31,12 @@ export function serializableValueToJavaScript(
       }
       let text = "";
       text += "{\n";
-      for (const [propName, propValue] of Object.entries(value.entries)) {
-        if (!isValidPropName(propName)) {
-          continue;
-        }
-        text += `${propName}: ${serializableValueToJavaScript(propValue)},\n`;
+      for (const entry of value.entries) {
+        text += `${
+          entry.key.kind === "string"
+            ? JSON.stringify(entry.key.value)
+            : `[${serializableValueToJavaScript(entry.key)}]`
+        }: ${serializableValueToJavaScript(entry.value)},\n`;
       }
       text += "\n}";
       return text;

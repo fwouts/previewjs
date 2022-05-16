@@ -20,6 +20,7 @@ import {
   object,
   promise,
   SerializableArrayValue,
+  SerializableObjectValueEntry,
   SerializableValue,
   set,
   string,
@@ -108,7 +109,7 @@ function _generateSerializableValue(
       );
     }
     case "object": {
-      const entries: Record<string, SerializableValue> = {};
+      const entries: SerializableObjectValueEntry[] = [];
       for (const [propName, propType] of Object.entries(type.fields)) {
         const propValue = _generateSerializableValue(
           propType,
@@ -123,7 +124,10 @@ function _generateSerializableValue(
         if (!isValidPropName(propName)) {
           continue;
         }
-        entries[propName] = propValue;
+        entries.push({
+          key: string(propName),
+          value: propValue,
+        });
       }
       return object(entries);
     }

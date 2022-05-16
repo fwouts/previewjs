@@ -84,11 +84,16 @@ export function number(value: number): SerializableNumberValue {
 
 export type SerializableObjectValue = {
   kind: "object";
-  entries: Record<string, SerializableValue>;
+  entries: SerializableObjectValueEntry[];
+};
+
+export type SerializableObjectValueEntry = {
+  key: SerializableValue;
+  value: SerializableValue;
 };
 
 export function object(
-  entries: Record<string, SerializableValue>
+  entries: SerializableObjectValueEntry[]
 ): SerializableObjectValue {
   return {
     kind: "object",
@@ -126,7 +131,7 @@ export function promise(
   };
 }
 
-export const EMPTY_OBJECT = object({});
+export const EMPTY_OBJECT = object([]);
 
 export type SerializableSetValue = {
   kind: "set";

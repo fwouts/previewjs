@@ -36,12 +36,18 @@ describe("generateSerializableValue", () => {
       )
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "foo": {
-            "kind": "string",
-            "value": "foo",
+        "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "foo",
+            },
+            "value": {
+              "kind": "string",
+              "value": "foo",
+            },
           },
-        },
+        ],
         "kind": "object",
       }
     `);
@@ -60,12 +66,18 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "foo": {
-            "kind": "string",
-            "value": "foo",
+        "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "foo",
+            },
+            "value": {
+              "kind": "string",
+              "value": "foo",
+            },
           },
-        },
+        ],
         "kind": "object",
       }
     `);
@@ -90,12 +102,18 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "child": {
-            "entries": {},
-            "kind": "object",
+        "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "child",
+            },
+            "value": {
+              "entries": [],
+              "kind": "object",
+            },
           },
-        },
+        ],
         "kind": "object",
       }
     `);
@@ -119,14 +137,20 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "foo": {
-            "kind": "function",
-            "returnValue": {
-              "kind": "undefined",
+        "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "foo",
+            },
+            "value": {
+              "kind": "function",
+              "returnValue": {
+                "kind": "undefined",
+              },
             },
           },
-        },
+        ],
         "kind": "object",
       }
     `);
@@ -146,15 +170,21 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "friends": {
-            "kind": "function",
-            "returnValue": {
-              "items": [],
-              "kind": "array",
+        "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "friends",
+            },
+            "value": {
+              "kind": "function",
+              "returnValue": {
+                "items": [],
+                "kind": "array",
+              },
             },
           },
-        },
+        ],
         "kind": "object",
       }
     `);
@@ -213,110 +243,230 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "arrayType": {
-            "items": [
-              {
-                "kind": "string",
-                "value": "arrayType",
-              },
-            ],
-            "kind": "array",
-          },
-          "booleanType": {
-            "kind": "boolean",
-            "value": false,
-          },
-          "falseLiteral": {
-            "kind": "boolean",
-            "value": false,
-          },
-          "functionType": {
-            "kind": "function",
-            "returnValue": {
+        "entries": [
+          {
+            "key": {
               "kind": "string",
-              "value": "functionType",
+              "value": "nullType",
             },
-          },
-          "intersectionType": {
-            "kind": "string",
-            "value": "intersectionType",
-          },
-          "namedType": {
-            "entries": {
-              "bar": {
-                "kind": "function",
-                "returnValue": {
-                  "kind": "string",
-                  "value": "namedType.bar",
-                },
-              },
-            },
-            "kind": "object",
-          },
-          "nullType": {
-            "kind": "null",
-          },
-          "numberEnumType": {
-            "kind": "number",
-            "value": 3,
-          },
-          "numberLiteral": {
-            "kind": "number",
-            "value": 123,
-          },
-          "numberType": {
-            "kind": "number",
-            "value": 100,
-          },
-          "promiseType": {
-            "kind": "promise",
             "value": {
-              "message": null,
-              "type": "reject",
+              "kind": "null",
             },
           },
-          "reactNodeType": {
-            "kind": "string",
-            "value": "reactNodeType",
+          {
+            "key": {
+              "kind": "string",
+              "value": "booleanType",
+            },
+            "value": {
+              "kind": "boolean",
+              "value": false,
+            },
           },
-          "recordType": {
-            "entries": {},
-            "kind": "object",
+          {
+            "key": {
+              "kind": "string",
+              "value": "stringType",
+            },
+            "value": {
+              "kind": "string",
+              "value": "stringType",
+            },
           },
-          "setType": {
-            "kind": "set",
-            "values": {
+          {
+            "key": {
+              "kind": "string",
+              "value": "numberType",
+            },
+            "value": {
+              "kind": "number",
+              "value": 100,
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "reactNodeType",
+            },
+            "value": {
+              "kind": "string",
+              "value": "reactNodeType",
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "numberLiteral",
+            },
+            "value": {
+              "kind": "number",
+              "value": 123,
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "stringLiteral",
+            },
+            "value": {
+              "kind": "string",
+              "value": "foo",
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "trueLiteral",
+            },
+            "value": {
+              "kind": "boolean",
+              "value": true,
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "falseLiteral",
+            },
+            "value": {
+              "kind": "boolean",
+              "value": false,
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "stringEnumType",
+            },
+            "value": {
+              "kind": "string",
+              "value": "A",
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "numberEnumType",
+            },
+            "value": {
+              "kind": "number",
+              "value": 3,
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "arrayType",
+            },
+            "value": {
               "items": [
                 {
                   "kind": "string",
-                  "value": "setType",
+                  "value": "arrayType",
                 },
               ],
               "kind": "array",
             },
           },
-          "stringEnumType": {
-            "kind": "string",
-            "value": "A",
+          {
+            "key": {
+              "kind": "string",
+              "value": "setType",
+            },
+            "value": {
+              "kind": "set",
+              "values": {
+                "items": [
+                  {
+                    "kind": "string",
+                    "value": "setType",
+                  },
+                ],
+                "kind": "array",
+              },
+            },
           },
-          "stringLiteral": {
-            "kind": "string",
-            "value": "foo",
+          {
+            "key": {
+              "kind": "string",
+              "value": "recordType",
+            },
+            "value": {
+              "entries": [],
+              "kind": "object",
+            },
           },
-          "stringType": {
-            "kind": "string",
-            "value": "stringType",
+          {
+            "key": {
+              "kind": "string",
+              "value": "unionType",
+            },
+            "value": {
+              "kind": "string",
+              "value": "unionType",
+            },
           },
-          "trueLiteral": {
-            "kind": "boolean",
-            "value": true,
+          {
+            "key": {
+              "kind": "string",
+              "value": "intersectionType",
+            },
+            "value": {
+              "kind": "string",
+              "value": "intersectionType",
+            },
           },
-          "unionType": {
-            "kind": "string",
-            "value": "unionType",
+          {
+            "key": {
+              "kind": "string",
+              "value": "functionType",
+            },
+            "value": {
+              "kind": "function",
+              "returnValue": {
+                "kind": "string",
+                "value": "functionType",
+              },
+            },
           },
-        },
+          {
+            "key": {
+              "kind": "string",
+              "value": "promiseType",
+            },
+            "value": {
+              "kind": "promise",
+              "value": {
+                "message": null,
+                "type": "reject",
+              },
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "namedType",
+            },
+            "value": {
+              "entries": [
+                {
+                  "key": {
+                    "kind": "string",
+                    "value": "bar",
+                  },
+                  "value": {
+                    "kind": "function",
+                    "returnValue": {
+                      "kind": "string",
+                      "value": "namedType.bar",
+                    },
+                  },
+                },
+              ],
+              "kind": "object",
+            },
+          },
+        ],
         "kind": "object",
       }
     `);
@@ -340,16 +490,28 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "a": {
-            "kind": "string",
-            "value": "a",
+        "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "a",
+            },
+            "value": {
+              "kind": "string",
+              "value": "a",
+            },
           },
-          "e": {
-            "kind": "string",
-            "value": "e",
+          {
+            "key": {
+              "kind": "string",
+              "value": "e",
+            },
+            "value": {
+              "kind": "string",
+              "value": "e",
+            },
           },
-        },
+        ],
         "kind": "object",
       }
     `);
@@ -368,7 +530,7 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {},
+        "entries": [],
         "kind": "object",
       }
     `);
@@ -404,16 +566,28 @@ describe("generateSerializableValue", () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "entries": {
-          "s": {
-            "kind": "number",
-            "value": 100,
+        "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "t",
+            },
+            "value": {
+              "kind": "number",
+              "value": 100,
+            },
           },
-          "t": {
-            "kind": "number",
-            "value": 100,
+          {
+            "key": {
+              "kind": "string",
+              "value": "s",
+            },
+            "value": {
+              "kind": "number",
+              "value": 100,
+            },
           },
-        },
+        ],
         "kind": "object",
       }
     `);
