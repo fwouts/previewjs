@@ -74,10 +74,10 @@ export class ComponentProps {
   private get defaultInvocationSource() {
     return generateInvocation(
       this.types.props,
-      new Set([
+      [
         ...extractFunctionKeys(this.types.props, this.types.all),
         ...this.argKeys,
-      ]),
+      ],
       this.types.all
     );
   }

@@ -19,15 +19,16 @@ import { serializableValueToJavaScript } from "./serializable-value-to-js";
  */
 export function generateInvocation(
   propsType: ValueType,
-  providedKeys: ReadonlySet<string>,
+  providedKeys: string[],
   collected: CollectedTypes
 ) {
+  const providedKeySet = new Set(providedKeys);
   [propsType] = dereferenceType(propsType, collected, []);
   if (propsType.kind === "object") {
     propsType = objectType(
       Object.fromEntries(
         Object.entries(propsType.fields).filter(
-          ([fieldName]) => !providedKeys.has(fieldName)
+          ([fieldName]) => !providedKeySet.has(fieldName)
         )
       )
     );
