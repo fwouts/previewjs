@@ -37,6 +37,7 @@ export const load: RendererLoader = async ({
   const decorators = [
     ...storyDecorators,
     ...(componentModule.default?.decorators || []),
+    ...(wrapperModule?.decorators || []),
   ];
   const Decorated = decorators.reduce((component, decorator) => {
     const decorated = decorator();

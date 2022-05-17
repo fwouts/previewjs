@@ -21,6 +21,7 @@ export const load: RendererLoader = async ({
   const decorators = [
     ...(Component.decorators || []),
     ...(componentModule.default?.decorators || []),
+    ...(wrapperModule?.decorators || []),
   ];
   const variants = (Component.__previewjs_variants || []).map((variant) => {
     return {
