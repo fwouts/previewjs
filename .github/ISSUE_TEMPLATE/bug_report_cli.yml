@@ -33,6 +33,14 @@ body:
     validations:
       required: true
   - type: textarea
+    id: framework
+    attributes:
+      label: Framework
+      description: Which framework are you using? Please include version as well.
+      placeholder: React 18.0.0
+    validations:
+      required: true
+  - type: textarea
     id: system-info
     attributes:
       label: System Info

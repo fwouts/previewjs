@@ -33,6 +33,14 @@ body:
     validations:
       required: true
   - type: textarea
+    id: framework
+    attributes:
+      label: Framework
+      description: Which framework are you using? Please include version as well.
+      placeholder: React 18.0.0
+    validations:
+      required: true
+  - type: textarea
     id: system-info
     attributes:
       label: System Info
@@ -57,7 +65,7 @@ body:
       label: Extension logs (useful for crashes)
       description: |
         Run `ctrl/cmd-shift-p`, Search `Show Logs` and choose `Extension Host`. Scroll up in the logs and see if you see any error related to Preview.js, then copy-paste them here.
-        
+
         If you don't see any logs related to Preview.js there, check the `Log (Window)` and `Log (Main)` logs instead.
       render: shell
   - type: textarea
