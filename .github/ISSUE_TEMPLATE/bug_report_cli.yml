@@ -32,7 +32,7 @@ body:
       placeholder: v1.0.0
     validations:
       required: true
-  - type: textarea
+  - type: input
     id: framework
     attributes:
       label: Framework
@@ -68,6 +68,11 @@ body:
     attributes:
       label: Browser logs (useful for rendering errors)
       render: shell
+  - type: textarea
+    attributes:
+      label: Repo link (if available)
+      description: |
+        It can be significantly easier to fix a bug when a repo is available to reproduce it :)
   - type: textarea
     attributes:
       label: Anything else?

@@ -32,7 +32,7 @@ body:
       placeholder: v1.0.0
     validations:
       required: true
-  - type: textarea
+  - type: input
     id: framework
     attributes:
       label: Framework
@@ -74,6 +74,11 @@ body:
       description: |
         Click "Open in browser" and open the console logs in your web browser. Copy-paste any errors you may see here.
       render: shell
+  - type: textarea
+    attributes:
+      label: Repo link (if available)
+      description: |
+        It can be significantly easier to fix a bug when a repo is available to reproduce it :)
   - type: textarea
     attributes:
       label: Anything else?
