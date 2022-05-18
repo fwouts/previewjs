@@ -1,5 +1,5 @@
 import path from "path";
-import { testSuite } from "../../testing";
+import { expect, testSuite } from "../../testing";
 import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const errorHandlingTests = testSuite("react/error handling", (test) => {
@@ -381,7 +381,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
         await expectErrors(controller, [
           "Error: Expected error",
           "Consider adding an error boundary",
-          ...(version === 18 ? ["Error: Expected error"] : []),
+          "Error: Expected error",
         ]);
         await appDir.update(
           "src/App.tsx",
@@ -497,87 +497,80 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
       }
     );
 
-    //     test(
-    //       `${version}/shows error when file is missing before update`,
-    //       `react${version}`,
-    //       async ({ controller }) => {
-    //         await controller.show("src/App-missing.tsx:App");
-    //         await controller.errors.title.waitUntilVisible();
-    //         expect(await controller.errors.title.text()).toStartWith(
-    //           `Failed to resolve import "/src/App-missing.tsx"`
-    //         );
-    //       }
-    //     );
+    test(
+      `${version}/shows error when file is missing before update`,
+      `react${version}`,
+      async ({ controller }) => {
+        await controller.show("src/App-missing.tsx:App");
+        await expectErrors(controller, [
+          `Failed to resolve import "/src/App-missing.tsx"`,
+          "Failed to fetch dynamically imported module",
+        ]);
+      }
+    );
 
-    //     test(
-    //       `${version}/shows error when file is missing after update`,
-    //       `react${version}`,
-    //       async ({ appDir, controller }) => {
-    //         await controller.show("src/App.tsx:App");
-    //         const previewIframe = await controller.previewIframe();
-    //         await previewIframe.waitForSelector(".App-logo");
-    //         await appDir.rename("src/App.tsx", "src/App-renamed.tsx");
-    //         await controller.errors.title.waitUntilVisible();
-    //         expect(await controller.errors.title.text()).toEqual(
-    //           `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`
-    //         );
-    //       }
-    //     );
+    test(
+      `${version}/shows error when file is missing after update`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await controller.show("src/App.tsx:App");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(".App-logo");
+        await appDir.rename("src/App.tsx", "src/App-renamed.tsx");
+        await expectErrors(controller, [
+          `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`,
+        ]);
+      }
+    );
 
-    //     test(
-    //       `${version}/shows error when component is missing before update`,
-    //       `react${version}`,
-    //       async ({ appDir, controller }) => {
-    //         await appDir.update("src/App.tsx", {
-    //           kind: "replace",
-    //           text: `import React from 'react';
+    test(
+      `${version}/shows error when component is missing before update`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await appDir.update("src/App.tsx", {
+          kind: "replace",
+          text: `import React from 'react';
 
-    // export const App2 = () => <div>Hello, World!</div>;`,
-    //         });
-    //         await controller.show("src/App.tsx:App");
-    //         await controller.errors.title.waitUntilVisible();
-    //         expect(await controller.errors.title.text()).toEqual(
-    //           `Error: No component named 'App'`
-    //         );
-    //       }
-    //     );
+    export const App2 = () => <div>Hello, World!</div>;`,
+        });
+        await controller.show("src/App.tsx:App");
+        await expectErrors(controller, [`Error: No component named 'App'`]);
+      }
+    );
 
-    //     test(
-    //       `${version}/shows error when component is missing after update`,
-    //       `react${version}`,
-    //       async ({ appDir, controller }) => {
-    //         await controller.show("src/App.tsx:App");
-    //         const previewIframe = await controller.previewIframe();
-    //         await previewIframe.waitForSelector(".App-logo");
-    //         await appDir.update("src/App.tsx", {
-    //           kind: "replace",
-    //           text: `import React from 'react';
+    test(
+      `${version}/shows error when component is missing after update`,
+      `react${version}`,
+      async ({ appDir, controller }) => {
+        await controller.show("src/App.tsx:App");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(".App-logo");
+        await appDir.update("src/App.tsx", {
+          kind: "replace",
+          text: `import React from 'react';
 
-    // export const App2 = () => <div>Hello, World!</div>;`,
-    //         });
-    //         await controller.errors.title.waitUntilVisible();
-    //         expect(await controller.errors.title.text()).toEqual(
-    //           `Error: No component named 'App'`
-    //         );
-    //       }
-    //     );
+    export const App2 = () => <div>Hello, World!</div>;`,
+        });
+        await expectErrors(controller, [`Error: No component named 'App'`]);
+      }
+    );
 
-    //     test(
-    //       `${version}/notifies the user when server is not reachable`,
-    //       `react${version}`,
-    //       async ({ controller }) => {
-    //         await controller.show("src/App.tsx:App");
-    //         const previewIframe = await controller.previewIframe();
-    //         await previewIframe.waitForSelector(".App-logo");
-    //         await controller.stop();
-    //         await controller.errors.appError.waitUntilVisible();
-    //         expect(await controller.errors.appError.text()).toEqual(
-    //           "Server disconnected. Is Preview.js still running?"
-    //         );
-    //         await controller.start();
-    //         await controller.errors.appError.waitUntilGone();
-    //       }
-    //     );
+    test(
+      `${version}/notifies the user when server is not reachable`,
+      `react${version}`,
+      async ({ controller }) => {
+        await controller.show("src/App.tsx:App");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(".App-logo");
+        await controller.stop();
+        await controller.appError.waitUntilVisible();
+        expect(await controller.appError.text()).toEqual(
+          "Server disconnected. Is Preview.js still running?"
+        );
+        await controller.start();
+        await controller.appError.waitUntilGone();
+      }
+    );
   }
 });
 

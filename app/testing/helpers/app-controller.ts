@@ -100,6 +100,8 @@ export class AppController {
 
   noSelection = this.element("#no-selection");
 
+  appError = this.element("#app-error");
+
   component = {
     label: () => {
       return this.element("#component-label");

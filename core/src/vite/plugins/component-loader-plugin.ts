@@ -43,7 +43,6 @@ import { load } from '/__previewjs_internal__/renderer/index';
 
 let counter = 0;
 export async function refresh() {
-  console.trace("REFRESHING");
   const currentCounter = ++counter;
   let loadingError = null;
   ${
