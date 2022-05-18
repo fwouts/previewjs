@@ -98,8 +98,6 @@ export class PreviewState {
           }
           switch (event.kind) {
             case "bootstrapped":
-              this.consoleLogs.onClear();
-              break;
             case "before-render":
               this.consoleLogs.onClear();
               break;
