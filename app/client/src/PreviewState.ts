@@ -104,8 +104,8 @@ export class PreviewState {
               this.consoleLogs.onClear();
               break;
             case "update":
+              this.consoleLogs.onClear();
               if (event.rendering?.kind === "success") {
-                this.consoleLogs.onClear();
                 this.component.variantKey = event.rendering.variantKey;
                 this.component.details.variants = event.rendering.variants;
               }
