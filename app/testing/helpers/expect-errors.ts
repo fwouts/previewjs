@@ -29,6 +29,15 @@ export async function expectErrors(
       actualErrors.push((await errorLog.text()) || "");
     }
     const availableIndices = new Set(Array(actualCount).keys());
+    if (expectedErrors.length !== actualErrors.length) {
+      throw new Error(
+        `Expected errors:\n${JSON.stringify(
+          expectedErrors,
+          null,
+          2
+        )}\n\nActual errors:\n${JSON.stringify(actualErrors, null, 2)}`
+      );
+    }
     for (let expectedError of expectedErrors) {
       if (!Array.isArray(expectedError)) {
         expectedError = [expectedError];
