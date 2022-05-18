@@ -1294,7 +1294,6 @@ importers:
       '@babel/core': ^7.17.10
       '@storybook/addon-actions': ^6.3.9
       '@storybook/addon-essentials': ^6.3.9
-      '@storybook/addon-knobs': ^6.4.0
       '@storybook/addon-links': ^6.3.9
       '@storybook/node-logger': ^6.3.9
       '@storybook/preset-create-react-app': ^4.0.0
@@ -1316,7 +1315,6 @@ importers:
       '@babel/core': 7.17.10
       '@storybook/addon-actions': 6.4.22_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/addon-essentials': 6.4.22_ummghbgzibrqj3oqf2qbyyc2qu
-      '@storybook/addon-knobs': 6.4.0_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/addon-links': 6.4.22_sfoxds7t5ydpegc3knd667wn6m
       '@storybook/node-logger': 6.4.22
       '@storybook/preset-create-react-app': 4.1.0_oevo4xhpahg4caqtxf2aqb42ri
@@ -7367,38 +7365,6 @@ packages:
       - vue-template-compiler
       - webpack-cli
       - webpack-command
-    dev: true
-
-  /@storybook/addon-knobs/6.4.0_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-DiH1/5e2AFHoHrncl1qLu18ZHPHzRMMPvOLFz8AWvvmc+VCqTdIaE+tdxKr3e8rYylKllibgvDOzrLjfTNjF+Q==}
-    deprecated: deprecating @storybook/addon-knobs in favor of @storybook/addon-controls
-    peerDependencies:
-      '@storybook/addons': ^6.4.0
-      '@storybook/api': ^6.4.0
-      '@storybook/components': ^6.4.0
-      '@storybook/core-events': ^6.4.0
-      '@storybook/theming': ^6.4.0
-      react: ^16.8.0 || ^17.0.0 || 18
-      react-dom: ^16.8.0 || ^17.0.0 || 18
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
-    dependencies:
-      copy-to-clipboard: 3.3.1
-      core-js: 3.22.4
-      escape-html: 1.0.3
-      fast-deep-equal: 3.1.3
-      global: 4.4.0
-      lodash: 4.17.21
-      prop-types: 15.8.1
-      qs: 6.10.3
-      react: 17.0.2
-      react-colorful: 5.5.1_sfoxds7t5ydpegc3knd667wn6m
-      react-dom: 17.0.2_react@17.0.2
-      react-lifecycles-compat: 3.0.4
-      react-select: 3.2.0_sfoxds7t5ydpegc3knd667wn6m
     dev: true
 
   /@storybook/addon-links/6.4.22_sfoxds7t5ydpegc3knd667wn6m:
@@ -13959,6 +13925,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.9
       csstype: 3.0.11
+    dev: false
 
   /dom-serializer/0.2.2:
     resolution: {integrity: sha512-2/xPb3ORsQ42nHYiSunXkDjPLBaEj/xTwUO4B7XCZQTRk7EBtTOPaygh10YAAh2OI1Qrp6NWfpAhzswj0ydt9g==}
@@ -19679,10 +19646,6 @@ packages:
     dependencies:
       fs-monkey: 1.0.3
 
-  /memoize-one/5.2.1:
-    resolution: {integrity: sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==}
-    dev: true
-
   /memoizerific/1.11.3:
     resolution: {integrity: sha1-fIekZGREwy11Q4VwkF8tvRsagFo=}
     dependencies:
@@ -22060,7 +22023,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0
+      ts-pnp: 1.2.0_typescript@4.6.4
     transitivePeerDependencies:
       - typescript
 
@@ -23915,15 +23878,6 @@ packages:
       shallowequal: 1.1.0
     dev: true
 
-  /react-input-autosize/3.0.0_react@17.0.2:
-    resolution: {integrity: sha512-nL9uS7jEs/zu8sqwFE5MAPx6pPkNAriACQ2rGLlqmKr2sPGtN7TXTyDdQt4lbNXVx7Uzadb40x8qotIuru6Rhg==}
-    peerDependencies:
-      react: ^16.3.0 || ^17.0.0 || 18
-    dependencies:
-      prop-types: 15.8.1
-      react: 17.0.2
-    dev: true
-
   /react-inspector/5.1.1_react@17.0.2:
     resolution: {integrity: sha512-GURDaYzoLbW8pMGXwYPDBIv6nqei4kK7LPRZ9q9HCZF54wqXz/dnylBp/kfE9XmekBhHvLDdcYeyIwSrvtOiWg==}
     peerDependencies:
@@ -23943,10 +23897,6 @@ packages:
 
   /react-is/18.1.0:
     resolution: {integrity: sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==}
-    dev: true
-
-  /react-lifecycles-compat/3.0.4:
-    resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: true
 
   /react-native-codegen/0.0.6_@babel+preset-env@7.17.10:
@@ -24213,7 +24163,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0
+      ts-pnp: 1.2.0_typescript@4.6.4
       typescript: 4.6.4
       url-loader: 4.1.1_7hroj2mdu577asu2zyhaasbvae
       webpack: 4.44.2
@@ -24694,24 +24644,6 @@ packages:
       - webpack-plugin-serve
     dev: false
 
-  /react-select/3.2.0_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-B/q3TnCZXEKItO0fFN/I0tWOX3WJvi/X2wtdffmwSQVRwg5BpValScTO1vdic9AxlUgmeSzib2hAZAwIUQUZGQ==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || 18
-      react-dom: ^16.8.0 || ^17.0.0 || 18
-    dependencies:
-      '@babel/runtime': 7.17.9
-      '@emotion/cache': 10.0.29
-      '@emotion/core': 10.3.1_react@17.0.2
-      '@emotion/css': 10.0.27
-      memoize-one: 5.2.1
-      prop-types: 15.8.1
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-input-autosize: 3.0.0_react@17.0.2
-      react-transition-group: 4.4.2_sfoxds7t5ydpegc3knd667wn6m
-    dev: true
-
   /react-sizeme/3.0.2:
     resolution: {integrity: sha512-xOIAOqqSSmKlKFJLO3inBQBdymzDuXx4iuwkNcJmC96jeiOg5ojByvL+g3MW9LPEsojLbC6pf68zOfobK8IPlw==}
     dependencies:
@@ -24760,6 +24692,7 @@ packages:
       prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /react/16.10.0:
     resolution: {integrity: sha512-lc37bD3j6ZWJRso/a1rrFu6CO1qOf30ZadUDBi1c5RHA1lBSWA8x2MGABB6Oikk+RfmgC+kAT+XegL0eD1ecKg==}
