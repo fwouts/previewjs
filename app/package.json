@@ -18,7 +18,7 @@
   "main": "./dist/src/index.js",
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
-    "build": "rimraf dist && pnpm tsc -p client/tsconfig.json && vite build client",
+    "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client",
     "test": "vitest client",
     "e2e-test": "ts-node --transpileOnly testing/run-test-suite.ts",
@@ -94,7 +94,7 @@
     "mobx": "6.5.0",
     "mobx-react-lite": "3.4.0",
     "monaco-editor": "0.33.0",
-    "playwright": "1.22.1",
+    "playwright": "1.21.0",
     "postcss": "8.4.13",
     "prettier": "2.6.2",
     "react": "18.1.0",
