@@ -3,12 +3,12 @@ import { expect } from "./expect";
 
 export async function expectErrors(
   controller: AppController,
-  errors: Array<string | string[]>
+  expectedErrors: Array<string | string[]>
 ) {
   const selectedTab = await controller.bottomPanel.tabs.selected();
   const isConsoleSelected =
     (await selectedTab?.text())?.includes("Console") || false;
-  if (errors.length === 0) {
+  if (expectedErrors.length === 0) {
     await controller.console.notificationCount.waitUntilGone();
     if (!isConsoleSelected) {
       await controller.bottomPanel.tabs.get("Console").click();
@@ -17,21 +17,44 @@ export async function expectErrors(
   } else {
     await controller.console.notificationCount.waitUntilVisible();
     expect(await controller.console.notificationCount.text()).toEqual(
-      errors.length.toString(10)
+      expectedErrors.length.toString(10)
     );
     if (!isConsoleSelected) {
       await controller.bottomPanel.tabs.get("Console").click();
     }
-    expect(await controller.console.items.count()).toEqual(errors.length);
-    for (let i = 0; i < errors.length; i++) {
+    const actualCount = await controller.console.items.count();
+    const actualErrors: string[] = [];
+    for (let i = 0; i < actualCount; i++) {
       const errorLog = await controller.console.items.at(i);
-      await errorLog.waitUntilVisible();
-      let error = errors[i]!;
-      if (!Array.isArray(error)) {
-        error = [error];
+      actualErrors.push((await errorLog.text()) || "");
+    }
+    const availableIndices = new Set(Array(actualCount).keys());
+    for (let expectedError of expectedErrors) {
+      if (!Array.isArray(expectedError)) {
+        expectedError = [expectedError];
       }
-      for (const errorPart of error) {
-        expect(await errorLog.text()).toContain(errorPart);
+      let foundIndex = false;
+      for (const i of availableIndices) {
+        const actualError = actualErrors[i]!;
+        let matches = true;
+        for (const expectedErrorPart of expectedError) {
+          if (!actualError.includes(expectedErrorPart)) {
+            matches = false;
+            break;
+          }
+        }
+        if (matches) {
+          foundIndex = true;
+          availableIndices.delete(i);
+          break;
+        }
+      }
+      if (!foundIndex) {
+        throw new Error(
+          `No match for: ${JSON.stringify(
+            expectedError
+          )}\n\nActual errors:\n${JSON.stringify(actualErrors, null, 2)}`
+        );
       }
     }
   }
