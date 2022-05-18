@@ -226,6 +226,13 @@ export class AppController {
           state: "hidden",
         });
       },
+      className: async () => {
+        const element = await getter();
+        if (!element) {
+          throw new Error(`${selector} not found`);
+        }
+        return element.evaluate((element) => element.className);
+      },
       text: async () => {
         const element = await getter();
         if (!element) {

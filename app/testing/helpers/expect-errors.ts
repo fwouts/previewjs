@@ -22,13 +22,16 @@ export async function expectErrors(
     if (!isConsoleSelected) {
       await controller.bottomPanel.tabs.get("Console").click();
     }
-    const actualCount = await controller.console.items.count();
+    const itemCount = await controller.console.items.count();
     const actualErrors: string[] = [];
-    for (let i = 0; i < actualCount; i++) {
+    for (let i = 0; i < itemCount; i++) {
       const errorLog = await controller.console.items.at(i);
+      if (!(await errorLog.className()).includes("console-item-error")) {
+        continue;
+      }
       actualErrors.push((await errorLog.text()) || "");
     }
-    const availableIndices = new Set(Array(actualCount).keys());
+    const availableIndices = new Set(Array(actualErrors.length).keys());
     if (expectedErrors.length !== actualErrors.length) {
       throw new Error(
         `Expected errors:\n${JSON.stringify(

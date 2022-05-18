@@ -16,6 +16,7 @@ export const Item = (props: {
     <code
       className={clsx([
         "console-item",
+        `console-item-${props.level}`,
         "p-2 text-xs whitespace-pre-wrap",
         (props.level === "log" || props.level === "info") &&
           "bg-blue-50 odd:bg-blue-100 text-blue-400",
