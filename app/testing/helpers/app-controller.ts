@@ -124,6 +124,9 @@ export class AppController {
           `xpath=//button[contains(@class, 'panel-tab')][contains(., '${label}')]`
         );
       },
+      selected: () => {
+        return this.element(".panel-tab-selected");
+      },
     },
   };
 
@@ -138,7 +141,11 @@ export class AppController {
   console = {
     container: this.element("#console-container"),
     clearButton: this.element("#clear-console-button"),
+    notificationCount: this.element(".notification-count"),
     items: {
+      at: async (index: number) => {
+        return this.element(`.console-item:nth-child(${index + 1})`);
+      },
       count: async () => {
         return (await this.page.$$(".console-item")).length;
       },
@@ -192,13 +199,6 @@ export class AppController {
         },
       };
     })(),
-  };
-
-  errors = {
-    appError: this.element("#app-error"),
-    title: this.element("#error-title"),
-    details: this.element("#error-details"),
-    suggestion: this.element("#suggestion"),
   };
 
   element(selector: string) {

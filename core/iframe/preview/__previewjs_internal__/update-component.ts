@@ -78,7 +78,6 @@ export async function updateComponent({
       variantKey: variant.key,
       // Note: we must remove `props` since it may not be serialisable.
       variants: variants.map(({ props, ...rest }) => rest),
-      loadingError,
     });
     await render({
       ...defaultProps,

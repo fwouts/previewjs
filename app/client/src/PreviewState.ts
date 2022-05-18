@@ -12,7 +12,6 @@ import { decodeComponentId } from "./component-id";
 import { ComponentProps } from "./ComponentProps";
 import { ActionLogsState } from "./components/ActionLogs";
 import { ConsolePanelState } from "./components/ConsolePanel";
-import { ErrorState } from "./components/Error/ErrorState";
 import { UpdateBannerState } from "./components/UpdateBanner";
 import { PersistedStateController } from "./PersistedStateController";
 import "./window";
@@ -23,7 +22,6 @@ export class PreviewState {
   readonly iframeController: PreviewIframeController;
   readonly actionLogs = new ActionLogsState();
   readonly consoleLogs = new ConsolePanelState();
-  readonly error = new ErrorState();
   readonly updateBanner: UpdateBannerState;
   reachable = true;
 
@@ -100,17 +98,14 @@ export class PreviewState {
           }
           switch (event.kind) {
             case "bootstrapped":
+              this.consoleLogs.onClear();
+              break;
             case "before-render":
               this.consoleLogs.onClear();
-              this.error.update({
-                kind: "update",
-                rendering: null,
-                viteError: null,
-              });
               break;
             case "update":
-              this.error.update(event);
               if (event.rendering?.kind === "success") {
+                this.consoleLogs.onClear();
                 this.component.variantKey = event.rendering.variantKey;
                 this.component.details.variants = event.rendering.variants;
               }

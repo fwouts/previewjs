@@ -8,7 +8,6 @@ export type PreviewToAppMessage =
   | LogMessage
   | RendererUpdated
   | RenderingError
-  | HmrErrorMessage
   | ViteErrorMessage
   | ViteBeforeUpdateMessage;
 
@@ -26,16 +25,10 @@ export interface RendererUpdated {
   componentName: string;
   variantKey: string;
   variants: Variant[];
-  loadingError: string | null;
 }
 
 export interface RenderingError {
   kind: "rendering-error";
-  message: string;
-}
-
-export interface HmrErrorMessage {
-  kind: "vite-logs-error";
   message: string;
 }
 

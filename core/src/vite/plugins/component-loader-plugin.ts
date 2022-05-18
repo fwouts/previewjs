@@ -43,6 +43,7 @@ import { load } from '/__previewjs_internal__/renderer/index';
 
 let counter = 0;
 export async function refresh() {
+  console.trace("REFRESHING");
   const currentCounter = ++counter;
   let loadingError = null;
   ${
@@ -96,16 +97,20 @@ ${
   wrapper
     ? `
 import.meta.hot.accept(["${wrapper.path}"], ([wrapperModule]) => {
-  import.meta.hot.data.preloadedWrapperModule = wrapperModule;
-  refresh();
+  if (wrapperModule) {
+    import.meta.hot.data.preloadedWrapperModule = wrapperModule;
+    refresh();
+  }
 });
 `
     : ``
 }
 
 import.meta.hot.accept(["${componentModuleId}"], ([componentModule]) => {
-  import.meta.hot.data.preloadedComponentModule = componentModule;
-  refresh();
+  if (componentModule) {
+    import.meta.hot.data.preloadedComponentModule = componentModule;
+    refresh();
+  }
 });
 `;
 }
