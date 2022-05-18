@@ -78,7 +78,7 @@ function Foo() {
           }
         );
         // TODO: Remove this horrible wait.
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         expect(await controller.console.items.count()).toEqual(0);
       }
     }
