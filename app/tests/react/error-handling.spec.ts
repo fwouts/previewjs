@@ -381,7 +381,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
         await expectErrors(controller, [
           "Error: Expected error",
           "Consider adding an error boundary",
-          "Error: Expected error",
+          ...(version === 18 ? ["Error: Expected error"] : []),
         ]);
         await appDir.update(
           "src/App.tsx",

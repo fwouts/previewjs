@@ -16,9 +16,6 @@ export async function expectErrors(
     expect(await controller.console.items.count()).toEqual(0);
   } else {
     await controller.console.notificationCount.waitUntilVisible();
-    expect(await controller.console.notificationCount.text()).toEqual(
-      expectedErrors.length.toString(10)
-    );
     if (!isConsoleSelected) {
       await controller.bottomPanel.tabs.get("Console").click();
     }
@@ -69,5 +66,8 @@ export async function expectErrors(
         );
       }
     }
+    expect(await controller.console.notificationCount.text()).toEqual(
+      expectedErrors.length.toString(10)
+    );
   }
 }
