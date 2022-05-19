@@ -90,7 +90,7 @@ export class AppController {
       );
     });
     // TODO: Remove once we figure out the source of flakiness.
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     const destinationDirPath = path.dirname(destinationPath);
     await fs.mkdirp(destinationDirPath);
     await this.page.screenshot({

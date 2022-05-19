@@ -78,7 +78,6 @@ export function setUpLogInterception() {
   console.warn = makeLogger("warn", console.warn);
   const errorLogger = makeLogger("error", console.error);
   console.error = errorLogger;
-  let lastWindowError: string | null = null;
   window.onerror = (message, source, lineno, colno, error) => {
     if (error.stack && error.message) {
       message = error.stack;
@@ -88,12 +87,7 @@ export function setUpLogInterception() {
     } else {
       message = `${message}`;
     }
-    if (message === lastWindowError) {
-      // Don't spam unnecessarily.
-      return;
-    }
     errorLogger(message);
-    lastWindowError = message;
   };
 }
 
