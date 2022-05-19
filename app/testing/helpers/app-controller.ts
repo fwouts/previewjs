@@ -90,7 +90,7 @@ export class AppController {
       );
     });
     // TODO: Remove once we figure out the source of flakiness.
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     const destinationDirPath = path.dirname(destinationPath);
     await fs.mkdirp(destinationDirPath);
     await this.page.screenshot({
@@ -99,6 +99,8 @@ export class AppController {
   }
 
   noSelection = this.element("#no-selection");
+
+  appError = this.element("#app-error");
 
   component = {
     label: () => {
@@ -124,6 +126,9 @@ export class AppController {
           `xpath=//button[contains(@class, 'panel-tab')][contains(., '${label}')]`
         );
       },
+      selected: () => {
+        return this.element(".panel-tab-selected");
+      },
     },
   };
 
@@ -138,7 +143,11 @@ export class AppController {
   console = {
     container: this.element("#console-container"),
     clearButton: this.element("#clear-console-button"),
+    notificationCount: this.element(".notification-count"),
     items: {
+      at: async (index: number) => {
+        return this.element(`.console-item:nth-child(${index + 1})`);
+      },
       count: async () => {
         return (await this.page.$$(".console-item")).length;
       },
@@ -194,13 +203,6 @@ export class AppController {
     })(),
   };
 
-  errors = {
-    appError: this.element("#app-error"),
-    title: this.element("#error-title"),
-    details: this.element("#error-details"),
-    suggestion: this.element("#suggestion"),
-  };
-
   element(selector: string) {
     const getter = (
       options: { state?: "attached" | "detached" | "visible" | "hidden" } = {}
@@ -223,6 +225,13 @@ export class AppController {
         await getter({
           state: "hidden",
         });
+      },
+      className: async () => {
+        const element = await getter();
+        if (!element) {
+          throw new Error(`${selector} not found`);
+        }
+        return element.evaluate((element) => element.className);
       },
       text: async () => {
         const element = await getter();

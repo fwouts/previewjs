@@ -9,6 +9,17 @@ export class ConsolePanelState {
   }
 
   onConsoleMessage(event: LogMessage) {
+    if (
+      this.logs.find(
+        (log) =>
+          event.level === log.level &&
+          event.message === log.message &&
+          Math.abs(event.timestamp - log.timestamp) < 1000
+      )
+    ) {
+      // Don't show the same log message twice in a row within a second.
+      return;
+    }
     this.logs.push(event);
   }
 

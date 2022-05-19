@@ -1,4 +1,5 @@
 import { expect, testSuite } from "../../testing";
+import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const consoleTests = testSuite("solid/console", (test) => {
   test("shows logs", "solid", async ({ appDir, controller }) => {
@@ -61,6 +62,25 @@ function Foo() {
       expect(await controller.console.items.count()).toEqual(0);
 
       const append = 'const foo = "hi";';
+      const errors = [
+        null,
+        ["c is not defined"],
+        ["co is not defined"],
+        ["con is not defined"],
+        ["cons is not defined"],
+        [`Expected identifier but found "return"`, "Failed to reload"],
+        [`Expected identifier but found "return"`, "Failed to reload"],
+        [`The constant "f" must be initialized`, "Failed to reload"],
+        [`The constant "fo" must be initialized`, "Failed to reload"],
+        [`The constant "foo" must be initialized`, "Failed to reload"],
+        [`The constant "foo" must be initialized`, "Failed to reload"],
+        [`Unexpected "return"`, "Failed to reload"],
+        [`Unexpected "return"`, "Failed to reload"],
+        [`Unterminated string literal`, "Failed to reload"],
+        [`Unterminated string literal`, "Failed to reload"],
+        [`Unterminated string literal`, "Failed to reload"],
+        null,
+      ];
       for (let i = 0; i < append.length; i++) {
         const partialAppend = append.slice(0, i);
         appDir.update(
@@ -77,9 +97,10 @@ function Foo() {
             inMemoryOnly: true,
           }
         );
+        const expectedErrors = errors[i];
         // TODO: Remove this horrible wait.
         await new Promise((resolve) => setTimeout(resolve, 200));
-        expect(await controller.console.items.count()).toEqual(0);
+        await expectErrors(controller, expectedErrors || []);
       }
     }
   );

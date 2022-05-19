@@ -1,4 +1,5 @@
-import { expect, testSuite } from "../../testing";
+import { testSuite } from "../../testing";
+import { expectErrors } from "../../testing/helpers/expect-errors";
 
 const buttonVueSource = `
 <template>
@@ -145,10 +146,7 @@ export const Primary = () => ({
         search: "Primary",
         replace: "Renamed",
       });
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Error: No component named 'Primary'`
-      );
+      await expectErrors(controller, [`Error: No component named 'Primary'`]);
     }
   );
 });

@@ -1,4 +1,5 @@
 import { expect, testSuite } from "../../testing";
+import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const consoleTests = testSuite("vue2/console", (test) => {
   test("shows logs", "vue2", async ({ appDir, controller }) => {
@@ -81,6 +82,25 @@ export default {
     expect(await controller.console.items.count()).toEqual(0);
 
     const append = 'const foo = "hi";';
+    const errors = [
+      null,
+      ["c is not defined", "Failed to reload"],
+      ["co is not defined", "Failed to reload"],
+      ["con is not defined", "Failed to reload"],
+      ["cons is not defined", "Failed to reload"],
+      [`Unexpected token 'const'`, "Failed to reload"],
+      [`Unexpected token 'const'`, "Failed to reload"],
+      [`Missing initializer in const declaration`, "Failed to reload"],
+      [`Missing initializer in const declaration`, "Failed to reload"],
+      [`Missing initializer in const declaration`, "Failed to reload"],
+      [`Missing initializer in const declaration`, "Failed to reload"],
+      [`Unexpected token 'const'`, "Failed to reload"],
+      [`Unexpected token 'const'`, "Failed to reload"],
+      [`Failed to parse source`, "Failed to reload"],
+      [`Failed to parse source`, "Failed to reload"],
+      [`Failed to parse source`, "Failed to reload"],
+      null,
+    ];
     for (let i = 0; i < append.length; i++) {
       const partialAppend = append.slice(0, i);
       appDir.update(
@@ -106,9 +126,10 @@ export default {
           inMemoryOnly: true,
         }
       );
+      const expectedErrors = errors[i];
       // TODO: Remove this horrible wait.
       await new Promise((resolve) => setTimeout(resolve, 200));
-      expect(await controller.console.items.count()).toEqual(0);
+      await expectErrors(controller, expectedErrors || []);
     }
   });
 });

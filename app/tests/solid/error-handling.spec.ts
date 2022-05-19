@@ -1,5 +1,6 @@
 import path from "path";
 import { expect, testSuite } from "../../testing";
+import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const errorHandlingTests = testSuite("solid/error handling", (test) => {
   test(
@@ -14,15 +15,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         search: /<p>/g,
         replace: "<p",
       });
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`
-      );
-      await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toStartWith(
-        `Error in src${path.sep}App.tsx:21:15\n`
-      );
+      await expectErrors(controller, [
+        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`,
+        "Failed to reload /src/App.tsx.",
+      ]);
       // The component should still be shown.
       await previewIframe.waitForSelector(".App-logo");
     }
@@ -45,15 +41,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         search: /<p>/g,
         replace: "<p",
       });
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`
-      );
-      await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toStartWith(
-        `Error in src${path.sep}App.tsx:21:15\n`
-      );
+      await expectErrors(controller, [
+        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`,
+        "Failed to reload /src/App.tsx.",
+      ]);
       // The component should still be shown.
       await previewIframe.waitForSelector(".App-logo");
     }
@@ -79,14 +70,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       );
       await controller.show("src/App.tsx:App");
       const previewIframe = await controller.previewIframe();
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`
-      );
-      expect(await controller.errors.suggestion.text()).toEqual(
-        ` Perhaps you need to install "some-module" or configure aliases?`
-      );
+      await expectErrors(controller, [
+        `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
+        "Failed to fetch dynamically imported module",
+      ]);
       await appDir.update(
         "src/App.tsx",
         {
@@ -101,7 +88,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -127,14 +114,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`
-      );
-      expect(await controller.errors.suggestion.text()).toEqual(
-        ` Perhaps you need to install "some-module" or configure aliases?`
-      );
+      await expectErrors(controller, [
+        `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
+        "Failed to reload /src/App.tsx.",
+      ]);
       await appDir.update(
         "src/App.tsx",
         {
@@ -149,7 +132,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -174,14 +157,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       );
       await controller.show("src/App.tsx:App");
       const previewIframe = await controller.previewIframe();
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
-      );
-      expect(await controller.errors.suggestion.text()).toEqual(
-        " Perhaps you need to install a peer dependency or configure aliases?"
-      );
+      await expectErrors(controller, [
+        `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
+        "Failed to fetch dynamically imported module",
+      ]);
       await appDir.update(
         "src/App.tsx",
         {
@@ -196,7 +175,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -222,14 +201,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`
-      );
-      expect(await controller.errors.suggestion.text()).toEqual(
-        " Perhaps you need to install a peer dependency or configure aliases?"
-      );
+      await expectErrors(controller, [
+        `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
+        "Failed to reload /src/App.tsx.",
+      ]);
       await appDir.update(
         "src/App.tsx",
         {
@@ -244,7 +219,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -260,16 +235,15 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       });
       await controller.show("src/App.tsx:App");
       const previewIframe = await controller.previewIframe();
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toStartWith(
-        `TypeError: Failed to fetch dynamically imported module`
-      );
+      await expectErrors(controller, [
+        "Failed to fetch dynamically imported module",
+      ]);
       await appDir.update("src/App.tsx", {
         kind: "edit",
         search: "App-missing.css",
         replace: "App.css",
       });
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector(".App-logo");
     }
   );
@@ -286,16 +260,13 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         search: "App.css",
         replace: "App-missing.css",
       });
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`
-      );
+      await expectErrors(controller, ["Failed to reload /src/App.tsx."]);
       await appDir.update("src/App.tsx", {
         kind: "edit",
         search: "App-missing.css",
         replace: "App.css",
       });
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector(".App-logo");
     }
   );
@@ -319,15 +290,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `src${path.sep}App.tsx:2:32: ERROR: Unexpected "/"`
-      );
-      await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toStartWith(
-        `Error in src${path.sep}App.tsx:2:32\n`
-      );
+      await expectErrors(controller, [
+        `src${path.sep}App.tsx:2:32: ERROR: Unexpected "/"`,
+        "Failed to reload /src/App.tsx.",
+      ]);
       await appDir.update(
         "src/App.tsx",
         {
@@ -340,7 +306,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -366,30 +332,25 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`
-      );
-      await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toStartWith(
-        `Error in src${path.sep}App.tsx:4:10\n`
-      );
+      await expectErrors(controller, [
+        `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`,
+        "Failed to reload /src/App.tsx.",
+      ]);
       await appDir.update(
         "src/App.tsx",
         {
           kind: "replace",
           text: `export function App() {
-          return <ul>
-            <li id="recovered">Fixed</li>
-          </ul>;
-        }`,
+              return <ul>
+                <li id="recovered">Fixed</li>
+              </ul>;
+            }`,
         },
         {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -416,24 +377,20 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        "Error: Expected error"
-      );
+      await expectErrors(controller, ["Error: Expected error"]);
       await appDir.update(
         "src/App.tsx",
         {
           kind: "replace",
           text: `export function App() {
-          return <div id="recovered">Fixed</div>;
-        }`,
+              return <div id="recovered">Fixed</div>;
+            }`,
         },
         {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -450,7 +407,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         {
           kind: "replace",
           text: `throw new Error("Expected error");
-          
+
           export const Dependency = () => {
             return <div>Hello, World!</div>;
           }`,
@@ -459,26 +416,23 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
           inMemoryOnly: true,
         }
       );
-      await sleep(2);
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual("Expected error");
-      await controller.errors.title.click();
-      expect(await controller.errors.details.text()).toContain(
-        `/preview/src/Dependency.tsx`
-      );
+      await expectErrors(controller, [
+        ["Expected error", "src/Dependency.tsx"],
+        "Failed to reload /src/App.tsx.",
+      ]);
       await appDir.update(
         "src/Dependency.tsx",
         {
           kind: "replace",
           text: `export const Dependency = () => {
-            return <div id="recovered">Hello, World!</div>;
-          }`,
+                return <div id="recovered">Hello, World!</div>;
+              }`,
         },
         {
           inMemoryOnly: true,
         }
       );
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await previewIframe.waitForSelector("#recovered");
     }
   );
@@ -497,13 +451,13 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       });
       await sleep(2);
       // We don't expect to see any errors for pure CSS.
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
       await appDir.update("src/App.css", {
         kind: "edit",
         search: " BROKEN",
         replace: " {",
       });
-      await controller.errors.title.waitUntilGone();
+      await expectErrors(controller, []);
     }
   );
 
@@ -512,10 +466,10 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
     "solid",
     async ({ controller }) => {
       await controller.show("src/App-missing.tsx:App");
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toStartWith(
-        `Failed to resolve import "/src/App-missing.tsx"`
-      );
+      await expectErrors(controller, [
+        `Failed to resolve import "/src/App-missing.tsx"`,
+        "Failed to fetch dynamically imported module",
+      ]);
     }
   );
 
@@ -527,10 +481,9 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
       const previewIframe = await controller.previewIframe();
       await previewIframe.waitForSelector(".App-logo");
       await appDir.rename("src/App.tsx", "src/App-renamed.tsx");
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`
-      );
+      await expectErrors(controller, [
+        `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`,
+      ]);
     }
   );
 
@@ -548,10 +501,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
   // export const App2 = () => <div>Hello, World!</div>;`,
   //       });
   //       await controller.show("src/App.tsx:App");
-  //       await controller.errors.title.waitUntilVisible();
-  //       expect(await controller.errors.title.text()).toEqual(
-  //         `Error: No component named 'App'`
-  //       );
+  //       await expectErrors(controller, [`Error: No component named 'App'`]);
   //     }
   //   );
 
@@ -567,10 +517,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         text: `
 export const App2 = () => <div>Hello, World!</div>;`,
       });
-      await controller.errors.title.waitUntilVisible();
-      expect(await controller.errors.title.text()).toEqual(
-        `Error: No component named 'App'`
-      );
+      await expectErrors(controller, [`Error: No component named 'App'`]);
     }
   );
 
@@ -582,12 +529,12 @@ export const App2 = () => <div>Hello, World!</div>;`,
       const previewIframe = await controller.previewIframe();
       await previewIframe.waitForSelector(".App-logo");
       await controller.stop();
-      await controller.errors.appError.waitUntilVisible();
-      expect(await controller.errors.appError.text()).toEqual(
+      await controller.appError.waitUntilVisible();
+      expect(await controller.appError.text()).toEqual(
         "Server disconnected. Is Preview.js still running?"
       );
       await controller.start();
-      await controller.errors.appError.waitUntilGone();
+      await controller.appError.waitUntilGone();
     }
   );
 });

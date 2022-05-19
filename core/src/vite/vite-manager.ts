@@ -6,7 +6,6 @@ import { Server } from "http";
 import path from "path";
 import { recrawl } from "recrawl";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
-import stripAnsi from "strip-ansi";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
@@ -203,19 +202,7 @@ export class ViteManager {
       customLogger: {
         info: defaultLogger.info,
         warn: defaultLogger.warn,
-        error: (message, options) => {
-          defaultLogger.error(message, options);
-          const errorMessage = options?.error?.stack
-            ? options.error.stack
-            : stripAnsi(message);
-          this.viteServer?.ws.send({
-            type: "error",
-            err: {
-              message: errorMessage,
-              stack: "",
-            },
-          });
-        },
+        error: defaultLogger.error,
         warnOnce: defaultLogger.warnOnce,
         clearScreen: () => {},
         hasWarned: defaultLogger.hasWarned,

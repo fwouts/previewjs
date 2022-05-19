@@ -18,7 +18,6 @@ import { PanelTab, TabbedPanel } from "../../design/TabbedPanel";
 import { PreviewState } from "../../PreviewState";
 import { ActionLogs } from "../ActionLogs";
 import { ConsolePanel } from "../ConsolePanel";
-import { Error } from "../Error";
 import { UpdateBanner } from "../UpdateBanner";
 
 export const Preview = observer(
@@ -118,7 +117,6 @@ export const Preview = observer(
             Please select a component to preview.
           </div>
         )}
-        <Error state={state.error} />
         <TabbedPanel
           defaultTabKey="props"
           tabs={[

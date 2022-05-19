@@ -18,16 +18,18 @@ export function setUpLogInterception() {
         ) {
           if (firstArg.startsWith("[hmr] Failed to reload")) {
             sendMessageFromPreview({
-              kind: "vite-logs-error",
-              message: firstArg.slice(6).replace(" (see errors above)", "."), // remove [hmr] and confusing message
+              kind: "vite-error",
+              payload: {
+                type: "error",
+                err: {
+                  message: firstArg
+                    .slice(6)
+                    .replace(" (see errors above)", "."), // remove [hmr] and confusing message
+                  stack: "",
+                },
+              },
             });
           }
-          // if (firstArg.startsWith("[vite] Internal Server Error")) {
-          //   sendMessageFromPreview({
-          //     kind: "vite-logs-error",
-          //     message: firstArg.slice(39), // remove [vite] Internal Server Error prefix
-          //   });
-          // }
           // Silence.
           return;
         }
@@ -86,10 +88,6 @@ export function setUpLogInterception() {
       message = `${message}`;
     }
     errorLogger(message);
-    sendMessageFromPreview({
-      kind: "rendering-error",
-      message,
-    });
   };
 }
 
@@ -106,5 +104,9 @@ function formatValue(value: any) {
   if (typeof value === "string") {
     return value;
   }
-  return inspect(value);
+  const formatted = inspect(value) as string;
+  if (formatted.at(0) === "[" && formatted.at(-1) === "]") {
+    return formatted.substring(1, formatted.length - 1);
+  }
+  return formatted;
 }

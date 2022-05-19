@@ -30,8 +30,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   private previewBootstrapped = false;
   private waitingForBootstrapped = false;
   private lastMessage: AppToPreviewMessage | null = null;
-  private viteError: ErrorPayload | null = null;
-  private renderingError: string | null = null;
   private expectRenderTimeout?: any;
 
   constructor(
@@ -73,8 +71,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     if (!iframeWindow) {
       return;
     }
-    this.renderingError = null;
-    this.viteError = null;
     iframeWindow.postMessage(message, document.location.href);
     if (message.kind === "render") {
       this.clearExpectRenderTimeout();
@@ -90,7 +86,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   private resetIframe() {
     const iframe = this.options.getIframe();
     this.previewBootstrapped = false;
-    this.renderingError = null;
     if (!iframe) {
       return;
     }
@@ -114,7 +109,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         this.clearExpectRenderTimeout();
         listener({
           kind: "update",
-          viteError: this.viteError,
           rendering: {
             kind: "success",
             variantKey: data.variantKey,
@@ -123,49 +117,25 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         });
         break;
       case "rendering-error":
-        this.renderingError = data.message;
         this.clearExpectRenderTimeout();
         listener({
-          kind: "update",
-          viteError: this.viteError,
-          rendering: {
-            kind: "error",
-            error: this.renderingError,
-          },
+          kind: "log-message",
+          level: "error",
+          timestamp: Date.now(),
+          message: data.message,
         });
         break;
-      case "vite-logs-error":
-        // We listen to HMR errors to learn about reload errors, for
-        // which there is no Vite error. In other cases, we'd rather
-        // prioritise Vite errors.
-        if (!this.viteError) {
-          this.viteError = {
-            type: "error",
-            err: {
-              message: data.message,
-              stack: "",
-            },
-          };
-          listener({
-            kind: "update",
-            viteError: this.viteError,
-            rendering: null,
-          });
-        }
-        break;
       case "vite-error":
-        this.viteError = data.payload;
         listener({
-          kind: "update",
-          viteError: this.viteError,
-          rendering: null,
+          kind: "log-message",
+          level: "error",
+          timestamp: Date.now(),
+          message: generateMessageFromViteError(data.payload.err),
         });
         break;
       case "vite-before-update":
-        this.viteError = null;
         listener({
           kind: "update",
-          viteError: null,
           rendering: null,
         });
         break;
@@ -191,6 +161,39 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   }
 }
 
+function generateMessageFromViteError(err: ErrorPayload["err"]) {
+  let message = err.message + (err.stack ? `\n${err.stack}` : "");
+  // Remove any redundant line breaks (but not spaces,
+  // which could be useful indentation).
+  message = message.replace(/^\n+/g, "\n").trim();
+  const stripPrefix = "Internal server error: ";
+  if (message.startsWith(stripPrefix)) {
+    message = message.substr(stripPrefix.length);
+  }
+  if (/^Transform failed with \d+ errors?:?\n.*/.test(message)) {
+    const lineBreakPosition = message.indexOf("\n");
+    message = message.substring(lineBreakPosition + 1);
+  }
+  const lineBreakPosition = message.indexOf("\n");
+  let title: string;
+  let rest: string;
+  if (lineBreakPosition > -1) {
+    title = message.substr(0, lineBreakPosition).trim();
+    rest = message.substr(lineBreakPosition + 1);
+  } else {
+    title = message;
+    rest = "";
+  }
+  if (title.endsWith(":") || title.endsWith(".")) {
+    title = title.substr(0, title.length - 1).trim();
+  }
+  // Note: this isn't relevant to all browsers.
+  if (rest.startsWith(`Error: ${title}\n`)) {
+    rest = rest.substr(rest.indexOf("\n") + 1);
+  }
+  return `${title}${rest ? `\n\n${rest}` : ""}`;
+}
+
 export type PreviewEvent =
   | PreviewBootstrapped
   | BeforeRender
@@ -208,7 +211,6 @@ export type BeforeRender = {
 
 export type PreviewUpdate = {
   kind: "update";
-  viteError: ErrorPayload | null;
   rendering:
     | {
         kind: "error";
