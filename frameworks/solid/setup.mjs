@@ -1,5 +1,7 @@
 export const setupPreviews =
-  window.process && process.env && process.env.RUNNING_INSIDE_PREVIEWJS
+  typeof process !== "undefined" &&
+  process.env &&
+  process.env.RUNNING_INSIDE_PREVIEWJS
     ? (Component, previewProps) => {
         if (typeof previewProps === "function") {
           previewProps = previewProps();
