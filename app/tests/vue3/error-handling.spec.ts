@@ -137,7 +137,7 @@ export const errorHandlingTests = testSuite("vue3/error handling", (test) => {
       await controller.show("src/AppMissing.vue:AppMissing");
       await expectErrors(controller, [
         `Failed to resolve import "/src/AppMissing.vue"`,
-        "Failed to fetch dynamically imported module: http://localhost:8100/preview/@component-loader.js?p=src%2FAppMissing.vue&c=AppMissing",
+        "Failed to fetch dynamically imported module",
       ]);
     }
   );
