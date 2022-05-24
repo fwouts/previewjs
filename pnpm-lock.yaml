@@ -16,7 +16,7 @@ importers:
       license-checker: 25.0.1
       npm: 8.10.0
       prettier: 2.6.2
-      ts-node: 10.7.0
+      ts-node: 10.8.0
       turbo: 1.2.9
       typescript: 4.6.4
     devDependencies:
@@ -30,7 +30,7 @@ importers:
       license-checker: 25.0.1
       npm: 8.10.0
       prettier: 2.6.2
-      ts-node: 10.7.0_yaetf735anpwmnswofxyurq2ji
+      ts-node: 10.8.0_yaetf735anpwmnswofxyurq2ji
       turbo: 1.2.9
       typescript: 4.6.4
 
@@ -98,7 +98,7 @@ importers:
       react-dom: 18.1.0
       rimraf: 3.0.2
       tailwindcss: 3.0.24
-      ts-node: 10.7.0
+      ts-node: 10.8.0
       ts-node-dev: 1.1.8
       typescript: 4.6.4
       vite: 2.9.9
@@ -156,8 +156,8 @@ importers:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       rimraf: 3.0.2
-      tailwindcss: 3.0.24_ts-node@10.7.0
-      ts-node: 10.7.0_yaetf735anpwmnswofxyurq2ji
+      tailwindcss: 3.0.24_ts-node@10.8.0
+      ts-node: 10.8.0_yaetf735anpwmnswofxyurq2ji
       ts-node-dev: 1.1.8_typescript@4.6.4
       typescript: 4.6.4
       vite: 2.9.9
@@ -4086,6 +4086,13 @@ packages:
       '@cspotcode/source-map-consumer': 0.8.0
     dev: true
 
+  /@cspotcode/source-map-support/0.8.1:
+    resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.9
+    dev: true
+
   /@csstools/convert-colors/1.4.0:
     resolution: {integrity: sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==}
     engines: {node: '>=4.0.0'}
@@ -4998,6 +5005,13 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.0.7
       '@jridgewell/sourcemap-codec': 1.4.13
+
+  /@jridgewell/trace-mapping/0.3.9:
+    resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+    dependencies:
+      '@jridgewell/resolve-uri': 3.0.7
+      '@jridgewell/sourcemap-codec': 1.4.13
+    dev: true
 
   /@koa/router/9.4.0:
     resolution: {integrity: sha512-dOOXgzqaDoHu5qqMEPLKEgLz5CeIA7q8+1W62mCvFVCOqeC71UoTGJ4u1xUSOpIl2J1x2pqrNULkFteUeZW3/A==}
@@ -23892,7 +23906,7 @@ packages:
       cosmiconfig: 5.2.1
       import-cwd: 2.1.0
 
-  /postcss-load-config/3.1.4_4jqnslpwnj4ifyjfqbkuebd4fy:
+  /postcss-load-config/3.1.4_53g5dcxuwkmyt2ehmw7gt7s6ku:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
     engines: {node: '>= 10'}
     peerDependencies:
@@ -23906,7 +23920,7 @@ packages:
     dependencies:
       lilconfig: 2.0.5
       postcss: 8.4.13
-      ts-node: 10.7.0_yaetf735anpwmnswofxyurq2ji
+      ts-node: 10.8.0_yaetf735anpwmnswofxyurq2ji
       yaml: 1.10.2
     dev: true
 
@@ -28517,7 +28531,7 @@ packages:
       - ts-node
     dev: true
 
-  /tailwindcss/3.0.24_ts-node@10.7.0:
+  /tailwindcss/3.0.24_ts-node@10.8.0:
     resolution: {integrity: sha512-H3uMmZNWzG6aqmg9q07ZIRNIawoiEcNFKDfL+YzOPuPsXuDXxJxB9icqzLgdzKNwjG3SAro2h9SYav8ewXNgig==}
     engines: {node: '>=12.13.0'}
     hasBin: true
@@ -28537,7 +28551,7 @@ packages:
       picocolors: 1.0.0
       postcss: 8.4.13
       postcss-js: 4.0.0_postcss@8.4.13
-      postcss-load-config: 3.1.4_4jqnslpwnj4ifyjfqbkuebd4fy
+      postcss-load-config: 3.1.4_53g5dcxuwkmyt2ehmw7gt7s6ku
       postcss-nested: 5.0.6_postcss@8.4.13
       postcss-selector-parser: 6.0.10
       postcss-value-parser: 4.2.0
@@ -29073,8 +29087,8 @@ packages:
       yn: 3.1.1
     dev: true
 
-  /ts-node/10.7.0_yaetf735anpwmnswofxyurq2ji:
-    resolution: {integrity: sha512-TbIGS4xgJoX2i3do417KSaep1uRAW/Lu+WAL2doDHC0D6ummjirVOXU5/7aiZotbQ5p1Zp9tP7U6cYhA0O7M8A==}
+  /ts-node/10.8.0_yaetf735anpwmnswofxyurq2ji:
+    resolution: {integrity: sha512-/fNd5Qh+zTt8Vt1KbYZjRHCE9sI5i7nqfD/dzBBRDeVXZXS6kToW6R7tTU6Nd4XavFs0mAVCg29Q//ML7WsZYA==}
     hasBin: true
     peerDependencies:
       '@swc/core': '>=1.2.50'
@@ -29087,7 +29101,7 @@ packages:
       '@swc/wasm':
         optional: true
     dependencies:
-      '@cspotcode/source-map-support': 0.7.0
+      '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.8
       '@tsconfig/node12': 1.0.9
       '@tsconfig/node14': 1.0.1
