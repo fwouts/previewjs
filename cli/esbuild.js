@@ -2,11 +2,10 @@ const path = require("path");
 const { build } = require("esbuild");
 
 build({
-  entryPoints: ["./src/index.ts"],
+  entryPoints: ["./src/main.ts"],
   minify: false,
   bundle: true,
-  outfile: "./dist/index.js",
-  external: ["vscode"],
+  outfile: "./dist/main.js",
   platform: "node",
   define: {
     "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify(
@@ -14,7 +13,7 @@ build({
     ),
     ...(process.env.PREVIEWJS_DEV === "1" && {
       "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
-        path.join(__dirname, "..", "..", "dev-workspace")
+        path.join(__dirname, "..", "dev-workspace")
       ),
     }),
   },
