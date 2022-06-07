@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import type * as api from "@previewjs/api";
 import { install, isInstalled, load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
@@ -35,7 +36,6 @@ program
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
     const previewjs = await initializePreviewJs();
-    const rootDirPath = path.resolve(dirPath || process.cwd());
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
       logLevel: "info",
@@ -50,7 +50,7 @@ program
         },
         update: async (partialState, req, res) => {
           const existingCookie = req.cookies["state"];
-          let existingState: PersistedState = {};
+          let existingState: api.PersistedState = {};
           if (existingCookie) {
             existingState = JSON.parse(existingCookie);
           }
@@ -65,8 +65,12 @@ program
           return state;
         },
       },
-      onReady: previewEnv.onReady?.bind(previewEnv),
     });
+    if (!workspace) {
+      console.error(chalk.red(`No workspace detected.`));
+      process.exit(1);
+    }
+
     const port = parseInt(options.port);
     await promptComponent();
 
