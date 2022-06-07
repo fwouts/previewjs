@@ -39,10 +39,12 @@ export async function init(
       versionCode,
       logLevel,
       absoluteFilePath,
+      persistedStateManager,
     }: {
       versionCode: string;
       logLevel: LogLevel;
       absoluteFilePath: string;
+      persistedStateManager?: core.PersistedStateManager;
     }) {
       const rootDirPath = coreModule.findWorkspaceRoot(absoluteFilePath);
       if (!rootDirPath) {
@@ -67,7 +69,8 @@ export async function init(
             reader,
             frameworkPlugin,
             middlewares: previewEnv.middlewares || [],
-            persistedStateManager: previewEnv.persistedStateManager,
+            persistedStateManager:
+              persistedStateManager || previewEnv.persistedStateManager,
             onReady: previewEnv.onReady?.bind(previewEnv),
           });
         });

@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
-import { PersistedState } from "@previewjs/api";
-import { readConfig } from "@previewjs/config";
-import * as core from "@previewjs/core";
-import * as vfs from "@previewjs/vfs";
+import type * as api from "@previewjs/api";
+import { install, isInstalled, load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
@@ -37,38 +35,11 @@ program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    const rootDirPath = path.resolve(dirPath || process.cwd());
-    let setupEnvironment: core.SetupPreviewEnvironment;
-    try {
-      // @ts-ignore
-      setupEnvironment = (await import("@previewjs/pro")).default;
-    } catch {
-      console.log(
-        chalk.cyan(
-          `Optional peer dependency @previewjs/pro not detected. Falling back to @previewjs/app instead.\n`
-        )
-      );
-      setupEnvironment = (await import("@previewjs/app")).default;
-    }
-    const previewEnv = await setupEnvironment({ rootDirPath });
-    const frameworkPlugin = await readConfig(rootDirPath).frameworkPlugin;
-    if (!frameworkPlugin) {
-      console.error(
-        `${chalk.red(
-          `No framework plugin found.`
-        )} Please set it up in preview.config.js.\n\n${chalk.green(
-          `See https://previewjs.com/docs/config/framework-plugin for more info.`
-        )}`
-      );
-      process.exit(1);
-    }
-    const workspace = await core.createWorkspace({
+    const previewjs = await initializePreviewJs();
+    const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
       logLevel: "info",
-      rootDirPath,
-      reader: vfs.createFileSystemReader(),
-      frameworkPlugin,
-      middlewares: previewEnv.middlewares || [],
+      absoluteFilePath: dirPath || process.cwd(),
       persistedStateManager: {
         get: async (_, req) => {
           const cookie = req.cookies["state"];
@@ -79,7 +50,7 @@ program
         },
         update: async (partialState, req, res) => {
           const existingCookie = req.cookies["state"];
-          let existingState: PersistedState = {};
+          let existingState: api.PersistedState = {};
           if (existingCookie) {
             existingState = JSON.parse(existingCookie);
           }
@@ -94,8 +65,12 @@ program
           return state;
         },
       },
-      onReady: previewEnv.onReady?.bind(previewEnv),
     });
+    if (!workspace) {
+      console.error(chalk.red(`No workspace detected.`));
+      process.exit(1);
+    }
+
     const port = parseInt(options.port);
     await promptComponent();
 
@@ -144,6 +119,32 @@ program
       await open(`http://localhost:${port}${pathSuffix}`);
     }
   });
+
+async function initializePreviewJs() {
+  const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
+  if (!packageName) {
+    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
+  }
+
+  let requirePath = process.env.PREVIEWJS_MODULES_DIR;
+  if (!requirePath) {
+    requirePath = path.join(__dirname, "..", "dependencies");
+    if (!(await isInstalled({ installDir: requirePath, packageName }))) {
+      await install({
+        installDir: requirePath,
+        packageName,
+        onOutput: (chunk) => {
+          process.stdout.write(chunk);
+        },
+      });
+    }
+  }
+
+  return load({
+    installDir: requirePath,
+    packageName,
+  });
+}
 
 program.parseAsync(process.argv).catch((e) => {
   console.error(e);
