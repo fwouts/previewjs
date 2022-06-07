@@ -74,6 +74,7 @@ export async function activate(context: vscode.ExtensionContext) {
     ReturnType<typeof initializePreviewJs>
   > | null = null;
   let initializationFailed = false;
+  let focusedOutputChannelForError = false;
   const previewjsInitPromise = initializePreviewJs(outputChannel)
     .then((p) => (previewjsInitialized = p))
     .catch(() => {
@@ -101,7 +102,10 @@ export async function activate(context: vscode.ExtensionContext) {
       try {
         return await f(...args);
       } catch (e: unknown) {
-        outputChannel.show();
+        if (!focusedOutputChannelForError) {
+          outputChannel.show();
+          focusedOutputChannelForError = true;
+        }
         outputChannel.appendLine(
           e instanceof Error ? e.stack || e.message : `${e}`
         );
