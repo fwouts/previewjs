@@ -69,7 +69,7 @@ importers:
       '@types/lodash': 4.14.182
       '@types/node': 17.0.8
       '@types/prettier': 2.6.3
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
       '@types/rimraf': 3.0.2
       '@typescript-eslint/parser': 5.27.1
@@ -129,7 +129,7 @@ importers:
       '@types/lodash': 4.14.182
       '@types/node': 17.0.8
       '@types/prettier': 2.6.3
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
       '@types/rimraf': 3.0.2
       '@typescript-eslint/parser': 5.27.1_kix3shd7zvxuvkzdjm72bpp2vy
@@ -293,7 +293,7 @@ importers:
       '@svgr/core': ^5.5.0
       '@types/fs-extra': 9.0.13
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       fs-extra: ^10.0.0
       next: 12.1.6
       react: 18.1.0
@@ -314,7 +314,7 @@ importers:
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       next: 12.1.6_ef5jwxihqo6n7gxfmzogljlgcm
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
@@ -324,13 +324,13 @@ importers:
   frameworks/react/preview:
     specifiers:
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
       rimraf: 3.0.2
       shx: 0.3.4
     dependencies:
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
     devDependencies:
       rimraf: 3.0.2
@@ -567,7 +567,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
       '@types/uuid': 8.3.4
       '@vitejs/plugin-react': 1.3.2
@@ -609,7 +609,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
       '@types/react-dom': 18.0.5
       '@types/uuid': 8.3.4
       '@vitejs/plugin-react': 1.3.2
@@ -9128,7 +9128,7 @@ packages:
   /@types/react-dom/18.0.5:
     resolution: {integrity: sha512-OWPWTUrY/NIrjsAPkAk1wW9LZeIjSvkXRhclsFO8CZcZGCOg2G0YZy4ft+rOyYxy8B7ui5iZzi9OkDebZ7/QSA==}
     dependencies:
-      '@types/react': 18.0.9
+      '@types/react': 18.0.12
 
   /@types/react-is/17.0.3:
     resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}
@@ -9187,6 +9187,13 @@ packages:
 
   /@types/react/17.0.45:
     resolution: {integrity: sha512-YfhQ22Lah2e3CHPsb93tRwIGNiSwkuz1/blk4e6QrWS0jQzCSNbGLtOEYhPg02W0yGTTmpajp7dCTbBAMN3qsg==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.0.11
+
+  /@types/react/18.0.12:
+    resolution: {integrity: sha512-duF1OTASSBQtcigUvhuiTB1Ya3OvSy+xORCiEf20H0P0lzx+/KeVsA99U5UjLXSbyo1DRJDlLKqTeM1ngosqtg==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
@@ -23544,7 +23551,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.4.3
+      ts-pnp: 1.2.0_typescript@4.6.4
     transitivePeerDependencies:
       - typescript
 
@@ -25750,7 +25757,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.4.3
+      ts-pnp: 1.2.0_typescript@4.6.4
       typescript: 4.6.4
       url-loader: 4.1.1_7hroj2mdu577asu2zyhaasbvae
       webpack: 4.44.2
@@ -29197,17 +29204,6 @@ packages:
         optional: true
     dev: true
 
-  /ts-pnp/1.2.0_typescript@4.4.3:
-    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
-    engines: {node: '>=6'}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      typescript: 4.4.3
-
   /ts-pnp/1.2.0_typescript@4.6.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
     engines: {node: '>=6'}
@@ -29533,6 +29529,7 @@ packages:
     resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: true
 
   /typescript/4.6.4:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
