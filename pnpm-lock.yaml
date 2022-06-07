@@ -496,7 +496,7 @@ importers:
       '@types/vscode': 1.43.0
       cross-env: 7.0.3
       esbuild: 0.14.42
-      ovsx: 0.3.0
+      ovsx: 0.5.0
       rimraf: 3.0.2
       typescript: 4.7.3
       vsce: 2.9.1
@@ -504,7 +504,7 @@ importers:
       '@types/vscode': 1.43.0
       cross-env: 7.0.3
       esbuild: 0.14.42
-      ovsx: 0.3.0
+      ovsx: 0.5.0
       rimraf: 3.0.2
       typescript: 4.7.3
       vsce: 2.9.1
@@ -23047,8 +23047,8 @@ packages:
     resolution: {integrity: sha512-gIQfzgGgu1wy80EB4/6DaJGHMEGmizq27xHIESrzXq0Y/J0Ay1P3DWk6tuVmEPIZH15zaBlxeEJOqdJKmowHCQ==}
     dev: true
 
-  /ovsx/0.3.0:
-    resolution: {integrity: sha512-UjZjzLt6Iq7LS/XFvEuBAWyn0zmsZEe8fuy5DsbcsIb0mW7PbVtB5Dhe4HeK7NJM228nyhYXC9WCeyBoMi4M3A==}
+  /ovsx/0.5.0:
+    resolution: {integrity: sha512-eZ+4yaZsjacV1h/y1IaP+DI8AL84vIjUQCWMtNQzV+O2f9bg2FSOKe8/4WXSUS8trgXMqf1ACDllKWTULaUkhQ==}
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
@@ -23544,7 +23544,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.6.4
+      ts-pnp: 1.2.0_typescript@4.4.3
     transitivePeerDependencies:
       - typescript
 
@@ -25750,7 +25750,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.6.4
+      ts-pnp: 1.2.0_typescript@4.4.3
       typescript: 4.6.4
       url-loader: 4.1.1_7hroj2mdu577asu2zyhaasbvae
       webpack: 4.44.2
@@ -29197,6 +29197,17 @@ packages:
         optional: true
     dev: true
 
+  /ts-pnp/1.2.0_typescript@4.4.3:
+    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
+    engines: {node: '>=6'}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.4.3
+
   /ts-pnp/1.2.0_typescript@4.6.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
     engines: {node: '>=6'}
@@ -29522,7 +29533,6 @@ packages:
     resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /typescript/4.6.4:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
