@@ -55,6 +55,17 @@ function isNotifiable(level: LogLevel) {
 }
 
 function generateSuggestion(message: string): Suggestion | undefined {
+  if (message.includes(`Failed to resolve import `)) {
+    const match = message.match(
+      /Failed to resolve import "((@[a-zA-Z0-9\\-]+\/[a-zA-Z0-9\\-]+)|[a-zA-Z0-9\\-]+)"/
+    );
+    return {
+      message: match
+        ? `Perhaps you need to install "${match[1]}" or configure aliases?`
+        : "Perhaps you need to install a peer dependency or configure aliases?",
+      url: "https://previewjs.com/docs/config/aliases",
+    };
+  }
   if (message.includes(".svg?import")) {
     const url = "https://previewjs.com/docs/config/svgr";
     return {
