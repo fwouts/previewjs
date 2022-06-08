@@ -16,7 +16,6 @@ async function main() {
     "@previewjs/app",
     "mobx-react-lite",
     "@fortawesome/react-fontawesome",
-    "@svgr/core",
   ]) {
     if (!allPackages.find(({ name }) => name === packageName)) {
       throw new Error(`Expected to find package: ${packageName}`);
