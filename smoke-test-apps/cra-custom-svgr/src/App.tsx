@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { ReactComponent as Logo } from "./logo.svg";
+import Logo from "./logo.svg";
 
 function App() {
   return (
