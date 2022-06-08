@@ -5,7 +5,7 @@ module.exports = {
   vite: {
     plugins: [
       svgr({
-        exportAs: "default",
+        exportAs: "ReactComponent",
       }),
     ],
   },
