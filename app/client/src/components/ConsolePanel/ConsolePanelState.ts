@@ -1,8 +1,17 @@
 import { LogLevel, LogMessage } from "@previewjs/core/controller";
 import { makeAutoObservable } from "mobx";
 
+export interface LogMessageWithSuggestion extends LogMessage {
+  suggestion?: Suggestion;
+}
+
+type Suggestion = {
+  message: string;
+  url: string;
+};
+
 export class ConsolePanelState {
-  logs: LogMessage[] = [];
+  logs: LogMessageWithSuggestion[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -20,7 +29,10 @@ export class ConsolePanelState {
       // Don't show the same log message twice in a row within a second.
       return;
     }
-    this.logs.push(event);
+    this.logs.push({
+      ...event,
+      suggestion: generateSuggestion(event.message),
+    });
   }
 
   onClear() {
@@ -40,4 +52,26 @@ function isNotifiable(level: LogLevel) {
     default:
       return false;
   }
+}
+
+function generateSuggestion(message: string): Suggestion | undefined {
+  if (message.includes(`Failed to resolve import `)) {
+    const match = message.match(
+      /Failed to resolve import "((@[a-zA-Z0-9\\-]+\/[a-zA-Z0-9\\-]+)|[a-zA-Z0-9\\-]+)"/
+    );
+    return {
+      message: match
+        ? `Perhaps you need to install "${match[1]}" or configure aliases?`
+        : "Perhaps you need to install a peer dependency or configure aliases?",
+      url: "https://previewjs.com/docs/config/aliases",
+    };
+  }
+  if (message.includes(".svg?import")) {
+    const url = "https://previewjs.com/docs/config/svgr";
+    return {
+      message: `Read ${url} to configure SVGR for your project.`,
+      url,
+    };
+  }
+  return undefined;
 }
