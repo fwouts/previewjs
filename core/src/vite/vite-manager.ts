@@ -12,6 +12,7 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 import { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
+import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
@@ -137,6 +138,7 @@ export class ViteManager {
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
+      exportToplevelPlugin(),
       fakeExportedTypesPlugin({
         readFile: (absoluteFilePath) =>
           this.options.reader.read(absoluteFilePath).then((entry) => {

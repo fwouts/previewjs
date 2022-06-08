@@ -1,5 +1,4 @@
 import { Reader } from "@previewjs/vfs";
-import { Node, Parser } from "acorn";
 import fs from "fs-extra";
 import path from "path";
 import * as vite from "vite";
@@ -78,32 +77,19 @@ export function virtualPlugin(options: {
       }
       let source = await entry.read();
       const fileExtension = path.extname(absoluteFilePath);
-      if (!jsExtensions.has(fileExtension)) {
+      // We run an esbuild transform for .js because it may include
+      // JSX. Otherwise, let plugins decide whether to use esbuild or not.
+      if (fileExtension !== ".js") {
         return source;
       }
-      const filePath = path.relative(rootDirPath, absoluteFilePath);
-      const topLevelEntityNames = findTopLevelEntityNames(filePath, source);
-      return {
-        code:
-          // We do use the transform for .js because it may include JSX. Otherwise, let plugins decide whether
-          // to use esbuild or not.
-          (fileExtension === ".js"
-            ? (
-                await transformWithEsbuild(source, absoluteFilePath, {
-                  loader: "tsx",
-                  format: "esm",
-                  sourcefile: filePath,
-                  ...options.esbuildOptions,
-                })
-              ).code
-            : source) +
-          `;
-          export {
-          ${topLevelEntityNames
-            .map((c) => `${c} as __previewjs__${c},`)
-            .join("")}
-        }`,
-      };
+      return (
+        await transformWithEsbuild(source, absoluteFilePath, {
+          loader: "tsx",
+          format: "esm",
+          sourcefile: path.relative(rootDirPath, absoluteFilePath),
+          ...options.esbuildOptions,
+        })
+      ).code;
     },
     handleHotUpdate: async function (context) {
       const moduleGraph = options.moduleGraph();
@@ -144,45 +130,5 @@ export function virtualPlugin(options: {
       }
     }
     return null;
-  }
-}
-
-function findTopLevelEntityNames(filePath: string, source: string): string[] {
-  let parsed: Node;
-  try {
-    parsed = Parser.parse(source, {
-      ecmaVersion: "latest",
-      sourceType: "module",
-    });
-  } catch (e) {
-    throw new Error(`Unable to parse ${filePath} with Acorn: ${e}`);
-  }
-  const topLevelEntityNames: string[] = [];
-  // Note: acorn doesn't provide detailed typings.
-  for (const statement of (parsed as any).body || []) {
-    if (statement.type === "VariableDeclaration") {
-      for (const declaration of statement.declarations) {
-        if (declaration.type === "VariableDeclarator") {
-          addIfIdentifier(topLevelEntityNames, declaration.id);
-        }
-      }
-    }
-    if (statement.type === "FunctionDeclaration") {
-      addIfIdentifier(topLevelEntityNames, statement.id);
-    }
-    if (statement.type === "ClassDeclaration") {
-      addIfIdentifier(topLevelEntityNames, statement.id);
-    }
-  }
-  return topLevelEntityNames;
-}
-
-function addIfIdentifier(array: string[], id?: Node) {
-  if (id && id.type === "Identifier") {
-    const name = (id as any).name;
-    if (name.endsWith("_default")) {
-      return;
-    }
-    array.push(name);
   }
 }
