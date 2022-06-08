@@ -77,19 +77,27 @@ export function virtualPlugin(options: {
       }
       let source = await entry.read();
       const fileExtension = path.extname(absoluteFilePath);
-      // We run an esbuild transform for .js because it may include
-      // JSX. Otherwise, let plugins decide whether to use esbuild or not.
-      if (fileExtension !== ".js") {
+      if (!jsExtensions.has(fileExtension)) {
+        console.error("SKIPPING", id, absoluteFilePath);
         return source;
       }
-      return (
-        await transformWithEsbuild(source, absoluteFilePath, {
-          loader: "tsx",
-          format: "esm",
-          sourcefile: path.relative(rootDirPath, absoluteFilePath),
-          ...options.esbuildOptions,
-        })
-      ).code;
+      const moduleExtension = path.extname(id);
+      return {
+        code:
+          // We run an esbuild transform for .js or no extension
+          // because it may include JSX. Otherwise, let plugins
+          // decide whether to use esbuild or not.
+          moduleExtension === "" || moduleExtension === ".js"
+            ? (
+                await transformWithEsbuild(source, absoluteFilePath, {
+                  loader: "tsx",
+                  format: "esm",
+                  sourcefile: path.relative(rootDirPath, absoluteFilePath),
+                  ...options.esbuildOptions,
+                })
+              ).code
+            : source,
+      };
     },
     handleHotUpdate: async function (context) {
       const moduleGraph = options.moduleGraph();
