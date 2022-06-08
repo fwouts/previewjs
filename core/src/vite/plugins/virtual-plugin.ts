@@ -81,27 +81,21 @@ export function virtualPlugin(options: {
       if (!jsExtensions.has(fileExtension)) {
         return source;
       }
-      // Transform with esbuild so we can find top-level entity names.
-      const transformed = {
-        ...(await transformWithEsbuild(source, absoluteFilePath, {
-          loader: fileExtension === ".ts" ? "ts" : "tsx",
-          format: "esm",
-          sourcefile: path.relative(rootDirPath, absoluteFilePath),
-          ...options.esbuildOptions,
-        })),
-        // Prevent injectSourcesContent() from running on Vite side.
-        // It could fail when the parent directory doesn't exist
-        // (which is the case for __react_internal__ files).
-        map: "{}",
-      };
-      const topLevelEntityNames = findTopLevelEntityNames(source);
-      const moduleExtension = path.extname(id);
+      const filePath = path.relative(rootDirPath, absoluteFilePath);
+      const topLevelEntityNames = findTopLevelEntityNames(filePath, source);
       return {
         code:
           // We do use the transform for .js because it may include JSX. Otherwise, let plugins decide whether
           // to use esbuild or not.
-          (moduleExtension === "" || moduleExtension === ".js"
-            ? transformed.code
+          (fileExtension === ".js"
+            ? (
+                await transformWithEsbuild(source, absoluteFilePath, {
+                  loader: "tsx",
+                  format: "esm",
+                  sourcefile: filePath,
+                  ...options.esbuildOptions,
+                })
+              ).code
             : source) +
           `;
           export {
@@ -153,7 +147,7 @@ export function virtualPlugin(options: {
   }
 }
 
-function findTopLevelEntityNames(source: string): string[] {
+function findTopLevelEntityNames(filePath: string, source: string): string[] {
   let parsed: Node;
   try {
     parsed = Parser.parse(source, {
@@ -161,8 +155,7 @@ function findTopLevelEntityNames(source: string): string[] {
       sourceType: "module",
     });
   } catch (e) {
-    console.warn(e);
-    return [];
+    throw new Error(`Unable to parse ${filePath} with Acorn: ${e}`);
   }
   const topLevelEntityNames: string[] = [];
   // Note: acorn doesn't provide detailed typings.
