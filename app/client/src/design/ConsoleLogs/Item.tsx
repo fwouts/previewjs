@@ -1,5 +1,8 @@
+import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import React from "react";
+import { Link } from "../Link";
 
 const dateFormat = new Intl.DateTimeFormat("default", {
   hour: "numeric",
@@ -11,13 +14,17 @@ export const Item = (props: {
   level: "log" | "info" | "warn" | "error";
   timestamp: number;
   message: string;
+  suggestion?: {
+    message: string;
+    url: string;
+  };
 }) => {
   return (
     <code
       className={clsx([
         "console-item",
         `console-item-${props.level}`,
-        "p-2 text-xs whitespace-pre-wrap",
+        "block p-2 text-xs whitespace-pre-wrap",
         (props.level === "log" || props.level === "info") &&
           "bg-blue-50 odd:bg-blue-100 text-blue-400",
         props.level === "warn" &&
@@ -26,6 +33,15 @@ export const Item = (props: {
       ])}
     >
       [{dateFormat.format(props.timestamp)}] {props.message}
+      {props.suggestion && (
+        <Link
+          className="block mt-2 p-2 bg-white shadow text-blue-800 font-sans"
+          href={props.suggestion.url}
+        >
+          <FontAwesomeIcon icon={faCircleQuestion} className="mr-2" />
+          {props.suggestion.message}
+        </Link>
+      )}
     </code>
   );
 };
