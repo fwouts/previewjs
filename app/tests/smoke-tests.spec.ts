@@ -26,6 +26,7 @@ export const smokeTests = fs
               "src/App.jsx:App",
               "src/App.js:App",
               "src/App.vue:App",
+              "src/SolidApp.jsx:default",
               "pages/index.tsx:App",
               "pages/index.vue:index",
               "app.vue:app",
