@@ -59,11 +59,12 @@ function generateSuggestion(message: string): Suggestion | undefined {
     const match = message.match(
       /Failed to resolve import "((@[a-zA-Z0-9\\-]+\/[a-zA-Z0-9\\-]+)|[a-zA-Z0-9\\-]+)"/
     );
+    const url = "https://previewjs.com/docs/config/aliases";
     return {
       message: match
-        ? `Perhaps you need to install "${match[1]}" or configure aliases?`
-        : "Perhaps you need to install a peer dependency or configure aliases?",
-      url: "https://previewjs.com/docs/config/aliases",
+        ? `Perhaps you need to install "${match[1]}" or configure aliases? See ${url}`
+        : "Perhaps you need to install a peer dependency or configure aliases? See ${url}",
+      url,
     };
   }
   if (message.includes(".svg?import")) {
