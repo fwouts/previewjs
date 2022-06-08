@@ -39,7 +39,7 @@ export default function test() {
 }
     `,
       });
-      await controller.show("src/App.tsx:test");
+      await controller.show("src/App.tsx:default");
       const previewIframe = await controller.previewIframe();
       await previewIframe.waitForSelector(".default-export");
     }

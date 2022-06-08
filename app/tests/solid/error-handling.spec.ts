@@ -16,7 +16,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         replace: "<p",
       });
       await expectErrors(controller, [
-        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`,
+        `src${path.sep}App.tsx: Unexpected token`,
         "Failed to reload /src/App.tsx.",
       ]);
       // The component should still be shown.
@@ -42,7 +42,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         replace: "<p",
       });
       await expectErrors(controller, [
-        `src${path.sep}App.tsx:21:15: ERROR: Expected ">" but found "<"`,
+        `src${path.sep}App.tsx: Unexpected token`,
         "Failed to reload /src/App.tsx.",
       ]);
       // The component should still be shown.
@@ -291,7 +291,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         }
       );
       await expectErrors(controller, [
-        `src${path.sep}App.tsx:2:32: ERROR: Unexpected "/"`,
+        `src${path.sep}App.tsx: Unexpected token`,
         "Failed to reload /src/App.tsx.",
       ]);
       await appDir.update(
@@ -333,7 +333,7 @@ export const errorHandlingTests = testSuite("solid/error handling", (test) => {
         }
       );
       await expectErrors(controller, [
-        `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`,
+        `src${path.sep}App.tsx: Unexpected token, expected "jsxTagEnd"`,
         "Failed to reload /src/App.tsx.",
       ]);
       await appDir.update(
