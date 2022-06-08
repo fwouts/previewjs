@@ -78,7 +78,6 @@ export function virtualPlugin(options: {
       let source = await entry.read();
       const fileExtension = path.extname(absoluteFilePath);
       if (!jsExtensions.has(fileExtension)) {
-        console.error("SKIPPING", id, absoluteFilePath);
         return source;
       }
       const moduleExtension = path.extname(id);
