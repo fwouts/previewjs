@@ -94,7 +94,7 @@ export function virtualPlugin(options: {
         // (which is the case for __react_internal__ files).
         map: "{}",
       };
-      const topLevelEntityNames = findTopLevelEntityNames(transformed.code);
+      const topLevelEntityNames = findTopLevelEntityNames(source);
       const moduleExtension = path.extname(id);
       return {
         code:

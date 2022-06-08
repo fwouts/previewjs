@@ -76,7 +76,7 @@ export function extractSolidComponents(
         if (signature) {
           components.push({
             absoluteFilePath,
-            name: name || "default",
+            name: isDefaultExport || !name ? "default" : name,
             exported,
             offsets: [[statement.getStart(), statement.getEnd()]],
             signature,
