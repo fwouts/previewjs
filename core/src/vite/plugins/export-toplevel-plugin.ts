@@ -57,6 +57,11 @@ function findTopLevelEntityNames(filePath: string, source: string): string[] {
       if (statement.declaration?.id) {
         addIfIdentifier(topLevelEntityNames, statement.declaration.id);
       }
+      if (statement.declaration?.declarations) {
+        for (const declarator of statement.declaration.declarations) {
+          addIfIdentifier(topLevelEntityNames, declarator.id);
+        }
+      }
     }
   }
   return topLevelEntityNames;
