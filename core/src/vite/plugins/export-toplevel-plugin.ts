@@ -53,6 +53,11 @@ function findTopLevelEntityNames(filePath: string, source: string): string[] {
     if (statement.type === "ClassDeclaration") {
       addIfIdentifier(topLevelEntityNames, statement.id);
     }
+    if (statement.type === "ExportDefaultDeclaration") {
+      if (statement.declaration?.id) {
+        addIfIdentifier(topLevelEntityNames, statement.declaration.id);
+      }
+    }
     if (statement.type === "ExportNamedDeclaration") {
       if (statement.declaration?.id) {
         addIfIdentifier(topLevelEntityNames, statement.declaration.id);
