@@ -157,11 +157,10 @@ async function main() {
       if (!workspace) {
         throw new NotFoundError();
       }
-      const preview = await workspace.preview.start();
-      const previewId = uuid.v4();
-      previews[previewId] = preview;
+      const preview =
+        previews[req.workspaceId] || (await workspace.preview.start());
+      previews[req.workspaceId] = preview;
       return {
-        previewId,
         url: preview.url(),
       };
     }
@@ -170,15 +169,14 @@ async function main() {
   endpoint<StopPreviewRequest, StopPreviewResponse>(
     "/previews/stop",
     async (req) => {
-      const previewId = req.previewId;
-      const preview = previews[previewId];
+      const preview = previews[req.workspaceId];
       if (!preview) {
         throw new NotFoundError();
       }
       await preview.stop({
         onceUnused: true,
       });
-      delete previews[previewId];
+      delete previews[req.workspaceId];
       return {};
     }
   );

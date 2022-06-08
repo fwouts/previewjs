@@ -33,12 +33,11 @@ export interface StartPreviewRequest {
 }
 
 export interface StartPreviewResponse {
-  previewId: string;
   url: string;
 }
 
 export interface StopPreviewRequest {
-  previewId: string;
+  workspaceId: string;
 }
 
 export interface StopPreviewResponse {}

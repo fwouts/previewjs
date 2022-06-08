@@ -61,7 +61,7 @@ class ProjectService(private val project: Project) : Disposable {
     private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
-    private var currentPreviewId: String? = null
+    private var currentPreviewWorkspaceId: String? = null
 
     init {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(
@@ -221,12 +221,13 @@ class ProjectService(private val project: Project) : Disposable {
         val app = ApplicationManager.getApplication()
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
-            val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
-            val previousPreviewId = currentPreviewId
-            if (previousPreviewId != null && previousPreviewId != startPreviewResponse.previewId) {
-                api.stopPreview(StopPreviewRequest(previewId = previousPreviewId))
+            currentPreviewWorkspaceId?.let {
+                if (workspaceId != it) {
+                    api.stopPreview(StopPreviewRequest(workspaceId = it))
+                }
             }
-            currentPreviewId = startPreviewResponse.previewId
+            currentPreviewWorkspaceId = workspaceId
+            val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
             val previewUrl = "$previewBaseUrl?p=$componentId"
             app.invokeLater {
@@ -293,12 +294,11 @@ class ProjectService(private val project: Project) : Disposable {
         consoleView = null
         consoleToolWindow = null
         service.enqueueAction(project, { api ->
-            val previewId = currentPreviewId
-            if (previewId != null) {
-                api.stopPreview(StopPreviewRequest(previewId = previewId))
+            currentPreviewWorkspaceId?.let {
+                api.stopPreview(StopPreviewRequest(workspaceId = it))
             }
             service.disposeWorkspaces(project)
-            currentPreviewId = null
+            currentPreviewWorkspaceId = null
         }, {
             "Warning: unable to dispose of workspaces"
         })

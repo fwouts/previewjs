@@ -94,12 +94,11 @@ data class StartPreviewRequest(
 )
 
 data class StartPreviewResponse(
-    val previewId: String,
     val url: String
 )
 
 data class StopPreviewRequest(
-    val previewId: String
+    val workspaceId: String
 )
 
 class StopPreviewResponse
