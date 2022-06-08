@@ -6,15 +6,9 @@ import { extractReactComponents } from "./extract-component";
 import { optimizeReactDepsPlugin } from "./optimize-deps-plugin";
 import { reactImportsPlugin } from "./react-imports-plugin";
 import { REACT_SPECIAL_TYPES } from "./special-types";
-import { svgrPlugin } from "./svgr-plugin";
 
 /** @deprecated */
-export const reactFrameworkPlugin: FrameworkPluginFactory<{
-  svgr?: {
-    componentName?: string;
-    disable?: boolean;
-  };
-}> = {
+export const reactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version = await dependencies["react"]?.readInstalledVersion();
     if (!version) {
@@ -22,7 +16,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
     }
     return parseInt(version) >= 16;
   },
-  async create({ svgr } = {}) {
+  async create() {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -62,17 +56,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
               "react-native": "react-native-web",
             },
           },
-          plugins: [
-            optimizeReactDepsPlugin(),
-            svgr?.disable
-              ? null
-              : svgrPlugin({
-                  exportedComponentName:
-                    svgr?.componentName || "ReactComponent",
-                  alias: config.alias,
-                }),
-            reactImportsPlugin(),
-          ],
+          plugins: [optimizeReactDepsPlugin(), reactImportsPlugin()],
           define: {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
