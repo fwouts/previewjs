@@ -1,6 +1,17 @@
 {
   "extends": ["config:base"],
-  "ignoreDeps": ["@previewjs/*"],
+  "ignoreDeps": [
+    "@previewjs/api",
+    "@previewjs/app",
+    "@previewjs/config",
+    "@previewjs/plugin-react",
+    "@previewjs/plugin-solid",
+    "@previewjs/plugin-vue2",
+    "@previewjs/plugin-vue3",
+    "@previewjs/pro",
+    "@previewjs/type-analyzer",
+    "@previewjs/vfs"
+  ],
   "ignorePaths": ["smoke-test-apps/**", "test-apps/**"],
   "packageRules": [
     {
