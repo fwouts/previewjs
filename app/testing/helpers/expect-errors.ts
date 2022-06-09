@@ -5,6 +5,9 @@ export async function expectErrors(
   controller: AppController,
   expectedErrors: Array<string | string[]>
 ) {
+  // Wait to prevent any flakiness.
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   const selectedTab = await controller.bottomPanel.tabs.selected();
   const isConsoleSelected =
     (await selectedTab?.text())?.includes("Console") || false;
@@ -15,10 +18,6 @@ export async function expectErrors(
     }
     expect(await controller.console.items.count()).toEqual(0);
   } else {
-    await controller.console.notificationCount.waitUntilVisible();
-    expect(await controller.console.notificationCount.text()).toEqual(
-      expectedErrors.length.toString(10)
-    );
     if (!isConsoleSelected) {
       await controller.bottomPanel.tabs.get("Console").click();
     }
@@ -69,5 +68,8 @@ export async function expectErrors(
         );
       }
     }
+    expect(await controller.console.notificationCount.text()).toEqual(
+      expectedErrors.length.toString(10)
+    );
   }
 }
