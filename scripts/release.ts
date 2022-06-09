@@ -437,7 +437,11 @@ class PackageJsonModifier {
   }
 
   async updateDependency(name: string, version: string) {
-    const { dependencies, devDependencies, ...packageInfo } = await this.read();
+    const {
+      dependencies = {},
+      devDependencies = {},
+      ...packageInfo
+    } = await this.read();
     await this.write({
       ...packageInfo,
       dependencies: Object.fromEntries(
