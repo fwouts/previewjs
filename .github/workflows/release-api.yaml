@@ -37,7 +37,7 @@ jobs:
           version: 6.24.4
           run_install: true
       - name: Extract version from package.json
-        uses: sergeysova/jq-action@v2.1.0
+        uses: sergeysova/jq-action@v2.2.0
         id: version
         with:
           cmd: "jq .version api/package.json -r"
