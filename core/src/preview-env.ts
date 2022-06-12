@@ -1,13 +1,7 @@
-import { readConfig } from "@previewjs/config";
 import { RequestHandler } from "express";
 import fs from "fs-extra";
 import path from "path";
-import {
-  FrameworkPlugin,
-  FrameworkPluginFactory,
-  PersistedStateManager,
-  Workspace,
-} from ".";
+import { FrameworkPluginFactory, PersistedStateManager, Workspace } from ".";
 import { PackageDependencies } from "./plugins/dependencies";
 import { ApiRouter } from "./router";
 
@@ -30,24 +24,16 @@ export async function loadPreviewEnv({
   setupEnvironment: SetupPreviewEnvironment;
   frameworkPluginFactories?: FrameworkPluginFactory[];
 }) {
-  const previewEnv = await setupEnvironment({ rootDirPath });
-  let frameworkPlugin: FrameworkPlugin | undefined = await readConfig(
-    rootDirPath
-  ).frameworkPlugin;
-  fallbackToDefault: if (!frameworkPlugin) {
-    const dependencies = await extractPackageDependencies(rootDirPath);
-    for (const candidate of frameworkPluginFactories || []) {
-      if (await candidate.isCompatible(dependencies)) {
-        frameworkPlugin = await candidate.create();
-        break fallbackToDefault;
-      }
+  const dependencies = await extractPackageDependencies(rootDirPath);
+  for (const candidate of frameworkPluginFactories || []) {
+    if (await candidate.isCompatible(dependencies)) {
+      return {
+        previewEnv: await setupEnvironment({ rootDirPath }),
+        frameworkPlugin: await candidate.create(),
+      };
     }
-    return null;
   }
-  return {
-    previewEnv,
-    frameworkPlugin,
-  };
+  return null;
 }
 
 async function extractPackageDependencies(

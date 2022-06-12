@@ -7,6 +7,5 @@ export interface PreviewConfig {
     path: string;
     componentName?: string;
   };
-  frameworkPlugin?: any;
   vite?: UserConfig;
 }
