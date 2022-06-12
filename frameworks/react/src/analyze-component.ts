@@ -6,6 +6,7 @@ import {
   helpers,
   maybeOptionalType,
   objectType,
+  stripUnusedTypes,
   TypeResolver,
   UNKNOWN_TYPE,
   ValueType,
@@ -162,8 +163,9 @@ function computePropsTypeFromPropTypes(
       return UNKNOWN_TYPE;
     })();
   }
+  const resolved = objectType(fields);
   return {
-    type: objectType(fields),
-    collected,
+    type: resolved,
+    collected: stripUnusedTypes(collected, resolved),
   };
 }
