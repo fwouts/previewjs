@@ -164,6 +164,6 @@ function computePropsTypeFromPropTypes(
   }
   return {
     type: objectType(fields),
-    collected: {},
+    collected,
   };
 }

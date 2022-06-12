@@ -28,6 +28,7 @@ import {
   VOID_TYPE,
 } from "./definitions";
 import { computeIntersection } from "./intersection";
+import { stripUnusedTypes } from "./strip-unused-types";
 import { typescriptServiceHost } from "./ts-service-host";
 import { computeUnion } from "./union";
 export type { TypeAnalyzer, TypeResolver };
@@ -114,11 +115,10 @@ class TypeResolver {
   }
 
   resolveType(type: ts.Type) {
-    // TODO: Clean up any unused types.
     const resolved = this.resolveTypeInternal(type);
     return {
       type: resolved,
-      collected: this.collected,
+      collected: stripUnusedTypes(this.collected, resolved),
     };
   }
 
@@ -492,7 +492,6 @@ class TypeResolver {
     types: ValueType[];
     collected: CollectedTypes;
   } {
-    // TODO: Remove unused collected types.
     return {
       types: this.resolveTypeArgumentsInternal(type, genericTypeNames),
       collected: this.collected,

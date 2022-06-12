@@ -249,14 +249,7 @@ type B = {
       objectType({
         name: STRING_TYPE,
       }),
-      {
-        "main.ts:B": {
-          type: objectType({
-            name: STRING_TYPE,
-          }),
-          parameters: {},
-        },
-      },
+      {},
     ]);
   });
 
@@ -465,14 +458,6 @@ interface B {
           }),
           parameters: {},
         },
-        ["main.ts:B"]: {
-          type: objectType({
-            a: STRING_TYPE,
-            b: STRING_TYPE,
-            c: STRING_TYPE,
-          }),
-          parameters: {},
-        },
       },
     ]);
   });
@@ -504,17 +489,6 @@ interface B<T, S = T> {
             }),
           }),
           parameters: {},
-        },
-        ["main.ts:B"]: {
-          type: objectType({
-            a: namedType("T"),
-            b: STRING_TYPE,
-            c: namedType("S"),
-          }),
-          parameters: {
-            T: null,
-            S: namedType("T"),
-          },
         },
       },
     ]);
