@@ -8,12 +8,12 @@ import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "../api/local";
 import { WebApi } from "../api/web";
-import { decodeComponentId } from "../component-id";
-import { ComponentProps } from "../ComponentProps";
 import { ActionLogsState } from "../components/ActionLogs";
 import { ConsolePanelState } from "../components/ConsolePanel";
 import { UpdateBannerState } from "../components/UpdateBanner";
 import "../window";
+import { decodeComponentId } from "./component-id";
+import { ComponentProps } from "./ComponentProps";
 import { PersistedStateController } from "./PersistedStateController";
 
 const REFRESH_PERIOD_MILLIS = 5000;
