@@ -1,9 +1,11 @@
+import { FrameworkPluginFactory } from "@previewjs/core/*";
 import callerCallsite from "caller-callsite";
 import path from "path";
 import { AppController } from "./helpers/app-controller";
 import { AppDir } from "./test-runner";
 
 export interface TestSuite {
+  frameworkPluginFactories: FrameworkPluginFactory[];
   absoluteFilePath: string;
   description: string;
   testCases: TestCase[];
@@ -20,6 +22,7 @@ export interface TestCase {
 }
 
 export async function testSuite(
+  frameworkPluginFactories: FrameworkPluginFactory[],
   description: string,
   testFactory: (test: TestCreator) => void | Promise<void>,
   absoluteFilePath?: string | null
@@ -40,6 +43,7 @@ export async function testSuite(
     });
   });
   return {
+    frameworkPluginFactories,
     absoluteFilePath,
     description,
     testCases,

@@ -1,3 +1,4 @@
+import vue3Plugin from "@previewjs/plugin-vue3";
 import { testSuite } from "../../testing";
 import { expectErrors } from "../../testing/helpers/expect-errors";
 
@@ -24,18 +25,21 @@ export default {
 </script>
 `;
 
-export const storybookTests = testSuite("vue3/storybook", (test) => {
-  test(
-    "renders basic Storybook component",
-    "vue3",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.vue", {
-        kind: "replace",
-        text: buttonVueSource,
-      });
-      await appDir.update("src/Button.stories.js", {
-        kind: "replace",
-        text: `
+export const storybookTests = testSuite(
+  [vue3Plugin],
+  "vue3/storybook",
+  (test) => {
+    test(
+      "renders basic Storybook component",
+      "vue3",
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.vue", {
+          kind: "replace",
+          text: buttonVueSource,
+        });
+        await appDir.update("src/Button.stories.js", {
+          kind: "replace",
+          text: `
 import Button from './Button.vue';
 
 export const Primary = () => ({
@@ -43,26 +47,26 @@ export const Primary = () => ({
   template: '<Button label="Button" />'
 })
       `,
-      });
-      await controller.show("src/Button.stories.js:Primary");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'Button')]"
-      );
-    }
-  );
+        });
+        await controller.show("src/Button.stories.js:Primary");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'Button')]"
+        );
+      }
+    );
 
-  test(
-    "renders templated Storybook component",
-    "vue3",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.vue", {
-        kind: "replace",
-        text: buttonVueSource,
-      });
-      await appDir.update("src/Button.stories.js", {
-        kind: "replace",
-        text: `
+    test(
+      "renders templated Storybook component",
+      "vue3",
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.vue", {
+          kind: "replace",
+          text: buttonVueSource,
+        });
+        await appDir.update("src/Button.stories.js", {
+          kind: "replace",
+          text: `
 import Button from './Button.vue';
 
 const Template = (args) => ({
@@ -78,26 +82,26 @@ Primary.args = {
   label: 'Button',
 };
       `,
-      });
-      await controller.show("src/Button.stories.js:Primary");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'Button')]"
-      );
-    }
-  );
+        });
+        await controller.show("src/Button.stories.js:Primary");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'Button')]"
+        );
+      }
+    );
 
-  test(
-    "shows error when Storybook component no longer available",
-    "vue3",
-    async ({ appDir, controller }) => {
-      await appDir.update("src/Button.vue", {
-        kind: "replace",
-        text: buttonVueSource,
-      });
-      await appDir.update("src/Button.stories.js", {
-        kind: "replace",
-        text: `
+    test(
+      "shows error when Storybook component no longer available",
+      "vue3",
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.vue", {
+          kind: "replace",
+          text: buttonVueSource,
+        });
+        await appDir.update("src/Button.stories.js", {
+          kind: "replace",
+          text: `
 import Button from './Button.vue';
 
 export const Primary = () => ({
@@ -105,18 +109,19 @@ export const Primary = () => ({
   template: '<Button label="Button" />'
 })
       `,
-      });
-      await controller.show("src/Button.stories.js:Primary");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector(
-        "xpath=//button[contains(., 'Button')]"
-      );
-      await appDir.update("src/Button.stories.js", {
-        kind: "edit",
-        search: "Primary",
-        replace: "Renamed",
-      });
-      await expectErrors(controller, [`Error: No component named 'Primary'`]);
-    }
-  );
-});
+        });
+        await controller.show("src/Button.stories.js:Primary");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'Button')]"
+        );
+        await appDir.update("src/Button.stories.js", {
+          kind: "edit",
+          search: "Primary",
+          replace: "Renamed",
+        });
+        await expectErrors(controller, [`Error: No component named 'Primary'`]);
+      }
+    );
+  }
+);

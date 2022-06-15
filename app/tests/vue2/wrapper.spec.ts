@@ -1,3 +1,4 @@
+import vue2Plugin from "@previewjs/plugin-vue2";
 import { testSuite } from "../../testing";
 
 const WRAPPER_SOURCE = `<template>
@@ -7,7 +8,7 @@ const WRAPPER_SOURCE = `<template>
 </template>
 `;
 
-export const wrapperTests = testSuite("vue2/wrapper", (test) => {
+export const wrapperTests = testSuite([vue2Plugin], "vue2/wrapper", (test) => {
   test(
     "refreshes when wrapper is added",
     "vue2",

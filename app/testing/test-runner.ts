@@ -16,7 +16,6 @@ const TEST_CASE_TIMEOUT_MILLIS = 120 * 1000;
 export async function runTests({
   browser,
   setupEnvironment,
-  frameworkPluginFactories,
   testSuites,
   filters,
   outputDirPath,
@@ -24,7 +23,6 @@ export async function runTests({
 }: {
   browser: playwright.Browser;
   setupEnvironment: core.SetupPreviewEnvironment;
-  frameworkPluginFactories: core.FrameworkPluginFactory[];
   testSuites: TestSuite[];
   filters: string[];
   outputDirPath: string;
@@ -52,7 +50,6 @@ export async function runTests({
   const testRunner = new TestRunner(
     browser,
     setupEnvironment,
-    frameworkPluginFactories,
     outputDirPath,
     port
   );
@@ -83,7 +80,6 @@ class TestRunner {
   constructor(
     private readonly browser: playwright.Browser,
     private readonly setupEnvironment: core.SetupPreviewEnvironment,
-    private readonly frameworkPluginFactories: core.FrameworkPluginFactory[],
     private readonly outputDirPath: string,
     private readonly port: number
   ) {}
@@ -115,7 +111,7 @@ class TestRunner {
     const env = await core.loadPreviewEnv({
       rootDirPath,
       setupEnvironment: this.setupEnvironment,
-      frameworkPluginFactories: this.frameworkPluginFactories,
+      frameworkPluginFactories: testSuite.frameworkPluginFactories,
     });
     if (!env) {
       throw new Error(`Unable to load preview environment`);

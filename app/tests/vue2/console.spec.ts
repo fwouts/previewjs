@@ -1,7 +1,8 @@
+import vue2Plugin from "@previewjs/plugin-vue2";
 import { expect, testSuite } from "../../testing";
 import { expectErrors } from "../../testing/helpers/expect-errors";
 
-export const consoleTests = testSuite("vue2/console", (test) => {
+export const consoleTests = testSuite([vue2Plugin], "vue2/console", (test) => {
   test("shows logs", "vue2", async ({ appDir, controller }) => {
     await controller.show("src/App.vue:App");
     const previewIframe = await controller.previewIframe();

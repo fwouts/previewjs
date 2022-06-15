@@ -1,6 +1,7 @@
+import vue2Plugin from "@previewjs/plugin-vue2";
 import { testSuite } from "../../testing";
 
-export const jsxTests = testSuite("vue2/jsx", (test) => {
+export const jsxTests = testSuite([vue2Plugin], "vue2/jsx", (test) => {
   test("renders JSX component", "vue2", async ({ appDir, controller }) => {
     await appDir.update("src/Button.jsx", {
       kind: "replace",

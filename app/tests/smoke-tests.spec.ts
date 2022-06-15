@@ -1,3 +1,7 @@
+import reactPlugin from "@previewjs/plugin-react";
+import solidPlugin from "@previewjs/plugin-solid";
+import vue2Plugin from "@previewjs/plugin-vue2";
+import vue3Plugin from "@previewjs/plugin-vue3";
 import fs from "fs-extra";
 import path from "path";
 import { testSuite } from "../testing";
@@ -12,6 +16,7 @@ export const smokeTests = fs
   )
   .map((appName) =>
     testSuite(
+      [reactPlugin, solidPlugin, vue2Plugin, vue3Plugin],
       `smoke test: ${appName}`,
       async (test) => {
         test(

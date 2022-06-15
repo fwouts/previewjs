@@ -28,12 +28,6 @@ async function main() {
     const { testCasesCount, failedTests } = await runTests({
       browser,
       setupEnvironment,
-      frameworkPluginFactories: [
-        (await import("@previewjs/plugin-react")).default,
-        (await import("@previewjs/plugin-solid")).default,
-        (await import("@previewjs/plugin-vue2")).default,
-        (await import("@previewjs/plugin-vue3")).default,
-      ],
       testSuites: testSuites.filter(
         (_, index) => index % groupCount === groupIndex
       ),
