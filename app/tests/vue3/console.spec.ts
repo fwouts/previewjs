@@ -1,6 +1,5 @@
+import { expect, expectErrors, testSuite } from "@previewjs/e2e-test-runner";
 import vue3Plugin from "@previewjs/plugin-vue3";
-import { expect, testSuite } from "../../testing";
-import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const consoleTests = testSuite([vue3Plugin], "vue3/console", (test) => {
   test("shows logs", "vue3", async ({ appDir, controller }) => {

@@ -1,5 +1,5 @@
+import { testSuite } from "@previewjs/e2e-test-runner";
 import vue2Plugin from "@previewjs/plugin-vue2";
-import { testSuite } from "../../testing";
 
 export const jsxTests = testSuite([vue2Plugin], "vue2/jsx", (test) => {
   test("renders JSX component", "vue2", async ({ appDir, controller }) => {

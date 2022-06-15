@@ -1,7 +1,6 @@
+import { expect, expectErrors, testSuite } from "@previewjs/e2e-test-runner";
 import solidPlugin from "@previewjs/plugin-solid";
 import path from "path";
-import { expect, testSuite } from "../../testing";
-import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const errorHandlingTests = testSuite(
   [solidPlugin],

@@ -1,5 +1,5 @@
+import { expect, testSuite, waitFor } from "@previewjs/e2e-test-runner";
 import solidPlugin from "@previewjs/plugin-solid";
-import { expect, testSuite, waitFor } from "../../testing";
 
 export const refreshingTests = testSuite(
   [solidPlugin],

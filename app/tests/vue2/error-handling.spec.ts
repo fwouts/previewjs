@@ -1,6 +1,5 @@
+import { expectErrors, testSuite } from "@previewjs/e2e-test-runner";
 import vue2Plugin from "@previewjs/plugin-vue2";
-import { testSuite } from "../../testing";
-import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const errorHandlingTests = testSuite(
   [vue2Plugin],

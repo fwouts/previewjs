@@ -55,6 +55,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "e2e-test-runner",
+    dirPath: "e2e-test-runner",
+    tagName: "e2e-test-runner",
+    type: "npm",
+  },
+  {
     name: "plugin-react",
     dirPath: "frameworks/react",
     tagName: "plugins/react",

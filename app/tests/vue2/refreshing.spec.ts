@@ -1,5 +1,5 @@
+import { expect, testSuite, waitFor } from "@previewjs/e2e-test-runner";
 import vue2Plugin from "@previewjs/plugin-vue2";
-import { expect, testSuite, waitFor } from "../../testing";
 
 export const refreshingTests = testSuite(
   [vue2Plugin],

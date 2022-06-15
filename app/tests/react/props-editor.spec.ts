@@ -1,5 +1,5 @@
+import { expect, testSuite } from "@previewjs/e2e-test-runner";
 import reactPlugin from "@previewjs/plugin-react";
-import { expect, testSuite } from "../../testing";
 
 export const propsEditorTests = testSuite(
   [reactPlugin],

@@ -1,5 +1,5 @@
+import { testSuite } from "@previewjs/e2e-test-runner";
 import reactPlugin from "@previewjs/plugin-react";
-import { testSuite } from "../../testing";
 
 export const actionLogsTests = testSuite(
   [reactPlugin],

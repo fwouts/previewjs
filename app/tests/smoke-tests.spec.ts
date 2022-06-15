@@ -1,10 +1,10 @@
+import { testSuite } from "@previewjs/e2e-test-runner";
 import reactPlugin from "@previewjs/plugin-react";
 import solidPlugin from "@previewjs/plugin-solid";
 import vue2Plugin from "@previewjs/plugin-vue2";
 import vue3Plugin from "@previewjs/plugin-vue3";
 import fs from "fs-extra";
 import path from "path";
-import { testSuite } from "../testing";
 
 const smokeTestAppsDir = path.join(__dirname, "..", "..", "smoke-test-apps");
 export const smokeTests = fs

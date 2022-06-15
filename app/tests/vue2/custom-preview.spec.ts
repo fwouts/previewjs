@@ -1,5 +1,5 @@
+import { testSuite } from "@previewjs/e2e-test-runner";
 import vue2Plugin from "@previewjs/plugin-vue2";
-import { testSuite } from "../../testing";
 
 function source(previews: string | null) {
   return `

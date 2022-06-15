@@ -1,5 +1,5 @@
+import { testSuite } from "@previewjs/e2e-test-runner";
 import solidPlugin from "@previewjs/plugin-solid";
-import { testSuite } from "../../testing";
 
 export const defaultExportTests = testSuite(
   [solidPlugin],

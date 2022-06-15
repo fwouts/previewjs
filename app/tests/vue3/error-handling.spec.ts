@@ -1,7 +1,6 @@
+import { expectErrors, testSuite } from "@previewjs/e2e-test-runner";
 import vue3Plugin from "@previewjs/plugin-vue3";
 import path from "path";
-import { testSuite } from "../../testing";
-import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const errorHandlingTests = testSuite(
   [vue3Plugin],

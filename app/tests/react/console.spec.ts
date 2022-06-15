@@ -1,6 +1,5 @@
+import { expect, expectErrors, testSuite } from "@previewjs/e2e-test-runner";
 import reactPlugin from "@previewjs/plugin-react";
-import { expect, testSuite } from "../../testing";
-import { expectErrors } from "../../testing/helpers/expect-errors";
 
 export const consoleTests = testSuite(
   [reactPlugin],

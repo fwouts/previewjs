@@ -42,6 +42,7 @@ export class AppController {
     if (this.page.url().startsWith(previewBaseUrl)) {
       // Soft refresh.
       await this.page.evaluate((componentId: string) => {
+        // @ts-ignore
         window.__previewjs_navigate(componentId);
       }, componentId);
     } else {
