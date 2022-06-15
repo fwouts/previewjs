@@ -21,7 +21,7 @@
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client",
     "test": "vitest client",
-    "e2e-test": "pnpm run -C ../e2e-test-runner dev -s $INIT_CWD -t $INIT_CWD/tests",
+    "e2e-test": "cross-env pnpm run -C ../e2e-test-runner dev -s $INIT_CWD -t $INIT_CWD/tests",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "eslintConfig": {
@@ -80,6 +80,7 @@
     "autoprefixer": "10.4.7",
     "axios": "0.27.2",
     "clsx": "1.1.1",
+    "cross-env": "7.0.3",
     "eslint": "7.32.0",
     "eslint-plugin-react": "7.30.0",
     "eslint-plugin-react-hooks": "4.5.0",
