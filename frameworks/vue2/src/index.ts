@@ -6,9 +6,7 @@ import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 /** @deprecated */
-export const vue2FrameworkPlugin: FrameworkPluginFactory<{
-  vueOptionsModule?: string;
-}> = {
+export const vue2FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version = await dependencies["vue"]?.readInstalledVersion();
     if (!version) {
@@ -16,7 +14,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
     }
     return parseInt(version) === 2;
   },
-  async create({ vueOptionsModule } = {}) {
+  async create() {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { createVuePlugin } = await import("vite-plugin-vue2");
     const { extractVueComponents } = await import("./extract-component");
@@ -63,7 +61,6 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
         return components;
       },
       viteConfig: (config) => {
-        const OPTIONS_MODULE = "@previewjs/plugin-vue2/options";
         let rootDirPath: string;
         return {
           resolve: {
@@ -75,25 +72,6 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
             createVuePlugin({
               jsx: true,
             }),
-            {
-              name: "previewjs:vue-options",
-              async resolveId(source) {
-                if (source === OPTIONS_MODULE) {
-                  if (vueOptionsModule) {
-                    return path.join(rootDirPath, vueOptionsModule);
-                  } else {
-                    return OPTIONS_MODULE;
-                  }
-                }
-                return null;
-              },
-              async load(id) {
-                if (id === OPTIONS_MODULE) {
-                  return `export {}`;
-                }
-                return null;
-              },
-            },
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
