@@ -6,8 +6,8 @@ import { WebApi } from "./api/web";
 import { Preview } from "./components/Preview";
 import { Selection } from "./components/Selection";
 import "./index.css";
-import { PersistedStateController } from "./PersistedStateController";
-import { PreviewState } from "./PreviewState";
+import { PersistedStateController } from "./state/PersistedStateController";
+import { PreviewState } from "./state/PreviewState";
 
 const localApi = new LocalApi("/api/");
 const state = new PreviewState(

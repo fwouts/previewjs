@@ -1,8 +1,8 @@
 import { faCode, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
-import React, {ForwardedRef, forwardRef} from "react";
+import { ForwardedRef, forwardRef } from "react";
 import { Pill } from "../../design/Pill";
-import { PreviewState } from "../../PreviewState";
+import { PreviewState } from "../../state/PreviewState";
 
 export const Selection = observer(
   forwardRef(

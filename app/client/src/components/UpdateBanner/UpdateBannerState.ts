@@ -1,7 +1,7 @@
 import { localEndpoints, ResponseOf, webEndpoints } from "@previewjs/api";
 import { makeAutoObservable, runInAction } from "mobx";
 import { WebApi } from "../../api/web";
-import { PersistedStateController } from "../../PersistedStateController";
+import { PersistedStateController } from "../../state/PersistedStateController";
 import "../../window";
 
 const REFRESH_PERIOD_MILLIS = 5000;

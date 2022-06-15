@@ -15,7 +15,7 @@ import { Link } from "../../design/Link";
 import { PropsEditor } from "../../design/PropsEditor";
 import { SmallLogo } from "../../design/SmallLogo";
 import { PanelTab, TabbedPanel } from "../../design/TabbedPanel";
-import { PreviewState } from "../../PreviewState";
+import { PreviewState } from "../../state/PreviewState";
 import { ActionLogs } from "../ActionLogs";
 import { ConsolePanel } from "../ConsolePanel";
 import { UpdateBanner } from "../UpdateBanner";
