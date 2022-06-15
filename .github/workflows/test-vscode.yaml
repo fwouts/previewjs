@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 6.24.4
+          version: 7.2.1
           run_install: true
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
