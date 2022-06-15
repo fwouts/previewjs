@@ -1,9 +1,4 @@
 import * as core from "@previewjs/core";
-import { init } from "@previewjs/loader";
-import { reactFrameworkPlugin } from "@previewjs/plugin-react";
-import { solidFrameworkPlugin } from "@previewjs/plugin-solid";
-import { vue2FrameworkPlugin } from "@previewjs/plugin-vue2";
-import { vue3FrameworkPlugin } from "@previewjs/plugin-vue3";
 import * as vfs from "@previewjs/vfs";
 import assertNever from "assert-never";
 import chalk from "chalk";
@@ -21,6 +16,7 @@ const TEST_CASE_TIMEOUT_MILLIS = 120 * 1000;
 export async function runTests({
   browser,
   setupEnvironment,
+  frameworkPluginFactories,
   testSuites,
   filters,
   outputDirPath,
@@ -28,6 +24,7 @@ export async function runTests({
 }: {
   browser: playwright.Browser;
   setupEnvironment: core.SetupPreviewEnvironment;
+  frameworkPluginFactories: core.FrameworkPluginFactory[];
   testSuites: TestSuite[];
   filters: string[];
   outputDirPath: string;
@@ -55,6 +52,7 @@ export async function runTests({
   const testRunner = new TestRunner(
     browser,
     setupEnvironment,
+    frameworkPluginFactories,
     outputDirPath,
     port
   );
@@ -85,6 +83,7 @@ class TestRunner {
   constructor(
     private readonly browser: playwright.Browser,
     private readonly setupEnvironment: core.SetupPreviewEnvironment,
+    private readonly frameworkPluginFactories: core.FrameworkPluginFactory[],
     private readonly outputDirPath: string,
     private readonly port: number
   ) {}
@@ -113,20 +112,30 @@ class TestRunner {
   ): Promise<boolean> {
     const rootDirPath = await prepareTestDir();
     const appDir = await prepareAppDir();
-    const api = await init(core, vfs, this.setupEnvironment, [
-      reactFrameworkPlugin,
-      solidFrameworkPlugin,
-      vue2FrameworkPlugin,
-      vue3FrameworkPlugin,
-    ]);
-    const workspace = await api.getWorkspace({
-      versionCode: "test-test",
-      absoluteFilePath: rootDirPath,
-      logLevel: "warn",
+    const env = await core.loadPreviewEnv({
+      rootDirPath,
+      setupEnvironment: this.setupEnvironment,
+      frameworkPluginFactories: this.frameworkPluginFactories,
     });
-    if (!workspace) {
-      throw new Error(`Unable to create workspace: ${rootDirPath}`);
+    if (!env) {
+      throw new Error(`Unable to load preview environment`);
     }
+    const memoryReader = vfs.createMemoryReader();
+    const reader = vfs.createStackedReader([
+      memoryReader,
+      vfs.createFileSystemReader({
+        watch: true,
+      }),
+    ]);
+    const workspace = await core.createWorkspace({
+      versionCode: "test-test",
+      logLevel: "warn",
+      rootDirPath,
+      frameworkPlugin: env.frameworkPlugin,
+      reader,
+      middlewares: [],
+      ...env.previewEnv,
+    });
     const context = await this.browser.newContext();
     const page = await context.newPage();
     let browserLogs: string[] = [];
@@ -223,7 +232,7 @@ class TestRunner {
               throw assertNever(content);
           }
           if (inMemoryOnly === true) {
-            await api.updateFileInMemory(absoluteFilePath, text);
+            await memoryReader.updateFile(absoluteFilePath, text);
           } else {
             const dirPath = path.dirname(absoluteFilePath);
             await fs.mkdirp(dirPath);
