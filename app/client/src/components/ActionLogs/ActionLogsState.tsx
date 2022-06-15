@@ -1,4 +1,4 @@
-import { Action } from "@previewjs/core/controller";
+import { Action } from "@previewjs/iframe";
 import { makeAutoObservable } from "mobx";
 
 export class ActionLogsState {

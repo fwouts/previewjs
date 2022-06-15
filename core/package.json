@@ -17,27 +17,9 @@
   "type": "commonjs",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
-  "exports": {
-    ".": {
-      "default": "./dist/src/index.js"
-    },
-    "./controller": {
-      "import": "./dist/controller/index.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/src/index.d.ts"
-      ],
-      "controller": [
-        "./dist/controller/index.d.ts"
-      ]
-    }
-  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc && tsc -p iframe && shx cp -r node_modules/monaco-editor dist/monaco-editor",
+    "build": "rimraf dist && tsc && shx cp -r node_modules/monaco-editor dist/monaco-editor",
     "build:watch": "tsc --watch"
   },
   "dependencies": {

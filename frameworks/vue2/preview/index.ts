@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/core/controller";
+import type { RendererLoader } from "@previewjs/iframe";
 // @ts-ignore
 import * as vueOptions from "@previewjs/plugin-vue2/options";
 import Vue from "vue";
