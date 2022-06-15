@@ -54,7 +54,7 @@ export async function createWorkspace({
   reader: Reader;
   persistedStateManager?: PersistedStateManager;
   onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
-}): Promise<Workspace | null> {
+}): Promise<Workspace> {
   const expectedPluginApiVersion = 3;
   if (
     !frameworkPlugin.pluginApiVersion ||
