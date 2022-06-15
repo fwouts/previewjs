@@ -1,4 +1,4 @@
-import { FrameworkPluginFactory } from "@previewjs/core/*";
+import { FrameworkPluginFactory } from "@previewjs/core";
 import callerCallsite from "caller-callsite";
 import path from "path";
 import { AppController } from "./helpers/app-controller";

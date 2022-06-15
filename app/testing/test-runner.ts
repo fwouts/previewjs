@@ -1,5 +1,13 @@
-import * as core from "@previewjs/core";
-import * as vfs from "@previewjs/vfs";
+import {
+  createWorkspace,
+  loadPreviewEnv,
+  SetupPreviewEnvironment,
+} from "@previewjs/core";
+import {
+  createFileSystemReader,
+  createMemoryReader,
+  createStackedReader,
+} from "@previewjs/vfs";
 import assertNever from "assert-never";
 import chalk from "chalk";
 import fs from "fs-extra";
@@ -22,7 +30,7 @@ export async function runTests({
   port,
 }: {
   browser: playwright.Browser;
-  setupEnvironment: core.SetupPreviewEnvironment;
+  setupEnvironment: SetupPreviewEnvironment;
   testSuites: TestSuite[];
   filters: string[];
   outputDirPath: string;
@@ -79,7 +87,7 @@ export async function runTests({
 class TestRunner {
   constructor(
     private readonly browser: playwright.Browser,
-    private readonly setupEnvironment: core.SetupPreviewEnvironment,
+    private readonly setupEnvironment: SetupPreviewEnvironment,
     private readonly outputDirPath: string,
     private readonly port: number
   ) {}
@@ -108,7 +116,7 @@ class TestRunner {
   ): Promise<boolean> {
     const rootDirPath = await prepareTestDir();
     const appDir = await prepareAppDir();
-    const env = await core.loadPreviewEnv({
+    const env = await loadPreviewEnv({
       rootDirPath,
       setupEnvironment: this.setupEnvironment,
       frameworkPluginFactories: testSuite.frameworkPluginFactories,
@@ -116,14 +124,14 @@ class TestRunner {
     if (!env) {
       throw new Error(`Unable to load preview environment`);
     }
-    const memoryReader = vfs.createMemoryReader();
-    const reader = vfs.createStackedReader([
+    const memoryReader = createMemoryReader();
+    const reader = createStackedReader([
       memoryReader,
-      vfs.createFileSystemReader({
+      createFileSystemReader({
         watch: true,
       }),
     ]);
-    const workspace = await core.createWorkspace({
+    const workspace = await createWorkspace({
       versionCode: "test-test",
       logLevel: "warn",
       rootDirPath,
