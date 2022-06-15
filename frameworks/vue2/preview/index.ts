@@ -1,6 +1,4 @@
 import type { RendererLoader } from "@previewjs/core/controller";
-// @ts-ignore
-import * as vueOptions from "@previewjs/plugin-vue2/options";
 import Vue from "vue";
 
 export const load: RendererLoader = async ({
@@ -113,7 +111,6 @@ async function render<P>(Renderer: any, props: P) {
     Renderer = Renderer.render;
   }
   app = new Vue({
-    ...vueOptions,
     render: (h) => Renderer(h, props),
   }).$mount();
   while (root.firstChild) {
