@@ -5,6 +5,7 @@ import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
 import { inspect } from "util";
+import { previewjsProVersion } from "../loader/src/version";
 
 type Package = {
   name: string;
@@ -26,13 +27,6 @@ const packages: Package[] = [
     name: "app",
     dirPath: "app",
     tagName: "app",
-    type: "npm",
-    ignoreDeps: ["loader"],
-  },
-  {
-    name: "pro",
-    dirPath: "pro",
-    tagName: "pro",
     type: "npm",
     ignoreDeps: ["loader"],
   },
@@ -101,7 +95,6 @@ const packages: Package[] = [
     dirPath: "loader",
     tagName: "loader",
     type: "loader",
-    additionalChangelogPath: ["pro/package.json"],
   },
   {
     name: "integration-intellij",
@@ -223,8 +216,10 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       version = await updateNodePackage(packageInfo.dirPath);
       break;
     case "loader":
+      console.log(
+        `About to release loader package-lock.json with @previewjs/pro v${previewjsProVersion}.`
+      );
       version = await updateNodePackage(packageInfo.dirPath);
-      const { version: proVersion } = await import("../pro/package.json");
       const { version: reactPluginVersion } = await import(
         "../frameworks/react/package.json"
       );
@@ -247,7 +242,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
               "@previewjs/plugin-solid": solidPluginVersion,
               "@previewjs/plugin-vue2": vue2PluginVersion,
               "@previewjs/plugin-vue3": vue3PluginVersion,
-              "@previewjs/pro": proVersion,
+              "@previewjs/pro": previewjsProVersion,
             },
           },
           null,
