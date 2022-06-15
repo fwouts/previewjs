@@ -9,9 +9,9 @@ import ts from "typescript";
 import vite from "vite";
 import { PackageDependencies } from "./dependencies";
 
-export interface FrameworkPluginFactory<Options = {}> {
+export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
-  create(options?: Options): Promise<FrameworkPlugin>;
+  create(): Promise<FrameworkPlugin>;
 }
 
 export interface FrameworkPlugin {
