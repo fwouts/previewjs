@@ -208,6 +208,7 @@ importers:
     specifiers:
       '@previewjs/api': ^2.1.0
       '@previewjs/config': ^1.0.5
+      '@previewjs/iframe': ^0.0.0
       '@previewjs/type-analyzer': ^2.1.1
       '@previewjs/vfs': ^1.1.5
       '@types/cookie-parser': 1.4.3
@@ -240,6 +241,7 @@ importers:
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
+      '@previewjs/iframe': link:../iframe
       '@previewjs/type-analyzer': link:../type-analyzer
       '@previewjs/vfs': link:../vfs
       acorn: 8.7.1
@@ -17407,6 +17409,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: true
+
+  /follow-redirects/1.15.0_debug@4.3.4:
+    resolution: {integrity: sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4_supports-color@6.1.0
 
   /fontfaceobserver/2.1.0:
     resolution: {integrity: sha512-ReOsO2F66jUa0jmv2nlM/s1MiutJx/srhAe2+TE8dJCMi02ZZOcCTxTCQFr3Yet+uODUtnr4Mewg+tNQ+4V1Ng==}
@@ -18728,7 +18742,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.0
+      follow-redirects: 1.15.0_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
