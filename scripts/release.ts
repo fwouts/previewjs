@@ -130,7 +130,7 @@ async function main() {
   }
 
   const localDependencies: Record<string, Set<string>> = {
-    loader: new Set(["pro"]),
+    loader: new Set(["app"]),
     "integration-intellij": new Set(["loader"]),
     "integration-vscode": new Set(["loader"]),
   };
