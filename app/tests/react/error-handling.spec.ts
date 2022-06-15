@@ -17,7 +17,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
           replace: "<p",
         });
         await expectErrors(controller, [
-          `src${path.sep}App.tsx:24:15: ERROR: Expected ">" but found "<"`,
+          `src/App.tsx:24:15: ERROR: Expected ">" but found "<"`,
           "Failed to reload /src/App.tsx.",
         ]);
         // The component should still be shown.
@@ -43,7 +43,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
           replace: "<p",
         });
         await expectErrors(controller, [
-          `src${path.sep}App.tsx:24:15: ERROR: Expected ">" but found "<"`,
+          `src/App.tsx:24:15: ERROR: Expected ">" but found "<"`,
           "Failed to reload /src/App.tsx.",
         ]);
         // The component should still be shown.
@@ -292,7 +292,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
           }
         );
         await expectErrors(controller, [
-          `src${path.sep}App.tsx:2:32: ERROR: Unexpected "/"`,
+          `src/App.tsx:2:32: ERROR: Unexpected "/"`,
           "Failed to reload /src/App.tsx.",
         ]);
         await appDir.update(
@@ -334,7 +334,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
           }
         );
         await expectErrors(controller, [
-          `src${path.sep}App.tsx:4:10: ERROR: Expected ">" but found "<"`,
+          `src/App.tsx:4:10: ERROR: Expected ">" but found "<"`,
           "Failed to reload /src/App.tsx.",
         ]);
         await appDir.update(
@@ -484,7 +484,7 @@ export const errorHandlingTests = testSuite("react/error handling", (test) => {
             `4 │   text-align: center;
   │                     ^
   ╵
-  src/App.scss 4:21  root stylesheet`,
+  src${path.sep}App.scss 4:21  root stylesheet`,
           ],
           "Failed to reload /src/App.scss.",
         ]);
