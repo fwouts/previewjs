@@ -1,13 +1,13 @@
+import { Preview } from "@previewjs/app-foundations/src/components/Preview";
+import { Selection } from "@previewjs/app-foundations/src/components/Selection";
+import { PersistedStateController } from "@previewjs/app-foundations/src/state/PersistedStateController";
+import { PreviewState } from "@previewjs/app-foundations/src/state/PreviewState";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import { LocalApi } from "./api/local";
-import { WebApi } from "./api/web";
-import { Preview } from "./components/Preview";
-import { Selection } from "./components/Selection";
+import { LocalApi } from "../../../app-foundations/src/api/local";
+import { WebApi } from "../../../app-foundations/src/api/web";
 import "./index.css";
-import { PersistedStateController } from "./state/PersistedStateController";
-import { PreviewState } from "./state/PreviewState";
 
 const localApi = new LocalApi("/api/");
 const state = new PreviewState(
