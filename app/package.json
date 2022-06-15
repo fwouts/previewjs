@@ -21,7 +21,7 @@
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client",
     "test": "vitest client",
-    "e2e-test": "pnpm run -C ../e2e-test-runner dev -s $PWD -t $PWD/tests",
+    "e2e-test": "pnpm run -C ../e2e-test-runner dev -s $INIT_CWD -t $INIT_CWD/tests",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "eslintConfig": {
