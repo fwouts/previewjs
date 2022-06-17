@@ -482,13 +482,7 @@ export const errorHandlingTests = testSuite(
             replace: " BROKEN",
           });
           await expectErrors(controller, [
-            [
-              `expected "{"`,
-              `4 │   text-align: center;
-  │                     ^
-  ╵
-  src${path.sep}App.scss 4:21  root stylesheet`,
-            ],
+            [`src${path.sep}App.scss 4:21  root stylesheet`],
             "Failed to reload /src/App.scss.",
           ]);
           await appDir.update("src/App.scss", {
