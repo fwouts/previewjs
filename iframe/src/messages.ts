@@ -1,5 +1,5 @@
 import { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
-import { Action, LogMessage, Variant } from "../..";
+import { Action, LogMessage, Variant } from "./index";
 
 export type PreviewToAppMessage =
   | Bootstrapped
@@ -56,12 +56,4 @@ export interface RenderMessage {
   variantKey: string | null;
   defaultPropsSource: string;
   customVariantPropsSource: string;
-}
-
-export function sendMessageFromPreview(message: PreviewToAppMessage) {
-  sendParentMessage(message);
-}
-
-export function sendParentMessage(message: any) {
-  window.parent.postMessage(message, "*");
 }

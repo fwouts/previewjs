@@ -3,7 +3,7 @@ import {
   createController,
   PreviewIframeController,
   Variant,
-} from "@previewjs/core/controller";
+} from "@previewjs/iframe";
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
 import { LocalApi } from "../api/local";

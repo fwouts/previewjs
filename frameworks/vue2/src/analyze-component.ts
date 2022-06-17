@@ -1,4 +1,4 @@
-import { ComponentAnalysis } from "@previewjs/core/*";
+import { ComponentAnalysis } from "@previewjs/core";
 import { TypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 

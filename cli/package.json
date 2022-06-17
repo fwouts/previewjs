@@ -20,7 +20,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/cli --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && node esbuild.js",
-    "dev": "cross-env PREVIEWJS_MODULES_DIR=$PWD/../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
+    "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
   },
   "dependencies": {},
   "devDependencies": {

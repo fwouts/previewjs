@@ -20,16 +20,45 @@
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "rimraf dist && pnpm tsc && pnpm tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client",
-    "e2e-test": "pnpm run -C ../e2e-test-runner dev -s $PWD -t $PWD/tests"
+    "e2e-test": "cross-env pnpm run -C ../e2e-test-runner dev -s $INIT_CWD -t $INIT_CWD/tests",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "browser": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "react/prop-types": "off"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
+>>>>>>> main
   },
   "dependencies": {
-    "@previewjs/core": "^3.3.0",
     "@previewjs/vfs": "^1.1.5",
     "express": "^4.18.1"
   },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
+<<<<<<< HEAD
     "@previewjs/app-foundations": "workspace:*",
+=======
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+>>>>>>> main
     "@previewjs/e2e-test-runner": "workspace:*",
     "@previewjs/plugin-react": "workspace:*",
     "@previewjs/plugin-solid": "workspace:*",
@@ -45,6 +74,14 @@
     "autoprefixer": "10.4.7",
     "axios": "0.27.2",
     "clsx": "1.1.1",
+<<<<<<< HEAD
+=======
+    "cross-env": "7.0.3",
+    "eslint": "7.32.0",
+    "eslint-plugin-react": "7.30.0",
+    "eslint-plugin-react-hooks": "4.5.0",
+    "execa": "5.1.1",
+>>>>>>> main
     "framer-motion": "6.3.11",
     "fs-extra": "10.1.0",
     "mobx-react-lite": "3.4.0",
@@ -55,6 +92,11 @@
     "tailwindcss": "3.1.3",
     "typescript": "4.7.3",
     "vite": "2.9.12",
+<<<<<<< HEAD
     "vite-plugin-svgr": "2.1.0"
+=======
+    "vite-plugin-svgr": "2.1.0",
+    "vitest": "0.15.1"
+>>>>>>> main
   }
 }

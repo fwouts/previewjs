@@ -1,8 +1,5 @@
 import type { ErrorPayload } from "vite/types/hmrPayload";
-import type {
-  AppToPreviewMessage,
-  PreviewToAppMessage,
-} from "./preview/__previewjs_internal__/messages";
+import type { AppToPreviewMessage, PreviewToAppMessage } from "./messages";
 
 export function createController(options: {
   getIframe: () => HTMLIFrameElement | null;

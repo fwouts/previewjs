@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/core/controller";
+import type { RendererLoader } from "@previewjs/iframe";
 import React from "react";
 // @ts-ignore Vite is fine with this
 import { version } from "react/package.json";

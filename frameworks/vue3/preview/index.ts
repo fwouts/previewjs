@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/core/controller";
+import type { RendererLoader } from "@previewjs/iframe";
 import { App, createApp, FunctionalComponent } from "vue";
 
 export const load: RendererLoader = async ({
