@@ -49,6 +49,7 @@ importers:
     specifiers:
       '@previewjs/api': workspace:*
       '@previewjs/app-foundations': workspace:*
+      '@previewjs/core': workspace:*
       '@previewjs/e2e-test-runner': workspace:*
       '@previewjs/plugin-react': workspace:*
       '@previewjs/plugin-solid': workspace:*
@@ -83,6 +84,7 @@ importers:
     devDependencies:
       '@previewjs/api': link:../api
       '@previewjs/app-foundations': link:../app-foundations
+      '@previewjs/core': link:../core
       '@previewjs/e2e-test-runner': link:../e2e-test-runner
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-solid': link:../frameworks/solid
@@ -119,7 +121,7 @@ importers:
       '@fortawesome/react-fontawesome': ^0.1.18
       '@monaco-editor/react': ^4.4.5
       '@previewjs/api': ^2.1.0
-      '@previewjs/core': ^3.3.0
+      '@previewjs/iframe': ^0.0.0
       '@previewjs/type-analyzer': 2.1.1
       '@react-hook/window-size': ^3.0.7
       '@types/fs-extra': ^9.0.13
@@ -152,7 +154,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18_hjfkmtq3pe7bdfmd7inrupgslm
       '@monaco-editor/react': 4.4.5_d24t5d2y775ybedwi37th2htxm
       '@previewjs/api': link:../api
-      '@previewjs/core': link:../core
+      '@previewjs/iframe': link:../iframe
       '@previewjs/type-analyzer': link:../type-analyzer
       '@react-hook/window-size': 3.0.7_react@18.1.0
       '@types/fs-extra': 9.0.13
@@ -17330,6 +17332,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.15.0_debug@4.3.4:
+    resolution: {integrity: sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4_supports-color@6.1.0
+
   /fontfaceobserver/2.1.0:
     resolution: {integrity: sha512-ReOsO2F66jUa0jmv2nlM/s1MiutJx/srhAe2+TE8dJCMi02ZZOcCTxTCQFr3Yet+uODUtnr4Mewg+tNQ+4V1Ng==}
     dev: false
@@ -18643,7 +18656,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.0
+      follow-redirects: 1.15.0_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
