@@ -54,9 +54,9 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18
       '@monaco-editor/react': 4.4.5
       '@previewjs/api': workspace:*
-      '@previewjs/config': 1.0.4
-      '@previewjs/core': ^3.3.0
+      '@previewjs/core': workspace:*
       '@previewjs/e2e-test-runner': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/plugin-react': workspace:*
       '@previewjs/plugin-solid': workspace:*
       '@previewjs/plugin-vue2': workspace:*
@@ -98,7 +98,6 @@ importers:
       vite-plugin-svgr: 2.1.0
       vitest: 0.14.2
     dependencies:
-      '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
       express: 4.18.1
     devDependencies:
@@ -109,8 +108,9 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.18_hjfkmtq3pe7bdfmd7inrupgslm
       '@monaco-editor/react': 4.4.5_d24t5d2y775ybedwi37th2htxm
       '@previewjs/api': link:../api
-      '@previewjs/config': 1.0.4
+      '@previewjs/core': link:../core
       '@previewjs/e2e-test-runner': link:../e2e-test-runner
+      '@previewjs/iframe': link:../iframe
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-solid': link:../frameworks/solid
       '@previewjs/plugin-vue2': link:../frameworks/vue2
@@ -208,6 +208,7 @@ importers:
     specifiers:
       '@previewjs/api': ^2.1.0
       '@previewjs/config': ^1.0.5
+      '@previewjs/iframe': ^0.0.0
       '@previewjs/type-analyzer': ^2.1.1
       '@previewjs/vfs': ^1.1.5
       '@types/cookie-parser': 1.4.3
@@ -240,6 +241,7 @@ importers:
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
+      '@previewjs/iframe': link:../iframe
       '@previewjs/type-analyzer': link:../type-analyzer
       '@previewjs/vfs': link:../vfs
       acorn: 8.7.1
@@ -324,8 +326,8 @@ importers:
 
   frameworks/react:
     specifiers:
-      '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/type-analyzer': ^2.1.1
       '@previewjs/vfs': ^1.1.5
       '@types/fs-extra': 9.0.13
@@ -346,8 +348,8 @@ importers:
       typescript: 4.6.4
       vite: 2.9.12
     devDependencies:
-      '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@types/fs-extra': 9.0.13
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.12
@@ -375,6 +377,7 @@ importers:
   frameworks/solid:
     specifiers:
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/type-analyzer': ^2.1.1
       '@previewjs/vfs': ^1.1.5
       '@types/fs-extra': 9.0.13
@@ -394,6 +397,7 @@ importers:
       vite-plugin-solid: 2.2.6
     devDependencies:
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@types/fs-extra': 9.0.13
       lodash: 4.17.21
       rimraf: 3.0.2
@@ -410,8 +414,8 @@ importers:
   frameworks/vue2:
     specifiers:
       '@nuxt/config': ^2.15.8
-      '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/type-analyzer': ^2.1.1
       '@previewjs/vfs': ^1.1.5
       '@types/fs-extra': 9.0.13
@@ -433,8 +437,8 @@ importers:
       vue: 2.6.14
       vue-template-compiler: 2.6.14
     devDependencies:
-      '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 2.9.12
@@ -453,8 +457,8 @@ importers:
 
   frameworks/vue3:
     specifiers:
-      '@previewjs/config': workspace:*
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/type-analyzer': ^2.1.1
       '@previewjs/vfs': ^1.1.5
       '@vitejs/plugin-vue': ^2.3.3
@@ -476,8 +480,8 @@ importers:
       typescript: 4.6.4
       vue: 3.2.33
     devDependencies:
-      '@previewjs/config': link:../../config
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       rimraf: 3.0.2
       vite: 2.9.12
       vitest: 0.14.2
@@ -500,6 +504,17 @@ importers:
     devDependencies:
       rimraf: 3.0.2
       shx: 0.3.4
+
+  iframe:
+    specifiers:
+      rimraf: 3.0.2
+      typescript: 4.6.3
+      vite: ^2.9.12
+    dependencies:
+      vite: 2.9.12
+    devDependencies:
+      rimraf: 3.0.2
+      typescript: 4.6.3
 
   integrations/intellij/controller:
     specifiers:
@@ -1174,7 +1189,7 @@ importers:
     dependencies:
       vue: 3.2.33
     devDependencies:
-      nuxt3: 3.0.0-rc.4-27585508.c9d4b2e_rollup@2.75.6+vite@2.9.12
+      nuxt3: 3.0.0-rc.4-27588249.d7d97cd_rollup@2.75.6+vite@2.9.12
 
   smoke-test-apps/react-native-web-app:
     specifiers:
@@ -6011,11 +6026,11 @@ packages:
       ufo: 0.7.11
     dev: false
 
-  /@nuxt/kit-edge/3.0.0-rc.4-27585508.c9d4b2e_ejd35jgfhiceqmjr7sxcr6lvy4:
-    resolution: {integrity: sha512-xnd3TfKBbjxic0LF7KLEqLDNWN2mjKUoSqbIENFS9EqvkGg42HnN9u85WUKz6RUwfwQbaGpmQZbesBGUzch5Tg==}
+  /@nuxt/kit-edge/3.0.0-rc.4-27588249.d7d97cd_ejd35jgfhiceqmjr7sxcr6lvy4:
+    resolution: {integrity: sha512-7k/6dOR/Ic0h9eUaOFlsgCB+MupmysiytOGTsScmLqi89QZK7FncBgLTTVJ2cxLIJPV99mnHksilTsScefhNqA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.4-27585508.c9d4b2e_ejd35jgfhiceqmjr7sxcr6lvy4
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.4-27588249.d7d97cd_ejd35jgfhiceqmjr7sxcr6lvy4
       c12: 0.2.7
       consola: 2.15.3
       defu: 6.0.0
@@ -6041,11 +6056,11 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-rc.4-27585508.c9d4b2e_rollup@2.75.6+vite@2.9.12:
-    resolution: {integrity: sha512-xnd3TfKBbjxic0LF7KLEqLDNWN2mjKUoSqbIENFS9EqvkGg42HnN9u85WUKz6RUwfwQbaGpmQZbesBGUzch5Tg==}
+  /@nuxt/kit-edge/3.0.0-rc.4-27588249.d7d97cd_rollup@2.75.6+vite@2.9.12:
+    resolution: {integrity: sha512-7k/6dOR/Ic0h9eUaOFlsgCB+MupmysiytOGTsScmLqi89QZK7FncBgLTTVJ2cxLIJPV99mnHksilTsScefhNqA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.4-27585508.c9d4b2e_rollup@2.75.6+vite@2.9.12
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.4-27588249.d7d97cd_rollup@2.75.6+vite@2.9.12
       c12: 0.2.7
       consola: 2.15.3
       defu: 6.0.0
@@ -6140,8 +6155,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-rc.4-27585508.c9d4b2e_ejd35jgfhiceqmjr7sxcr6lvy4:
-    resolution: {integrity: sha512-f3Kd1tLNicJpOaenmb+Gpw3MKr1IfquqqcxcH+1kQMNwa+F1CGmtEglymm4QM9scb2j+bPWWyLM7o+Q0SlXL2w==}
+  /@nuxt/schema-edge/3.0.0-rc.4-27588249.d7d97cd_ejd35jgfhiceqmjr7sxcr6lvy4:
+    resolution: {integrity: sha512-4Pi+IZ8J2izArC2/EfUXkczeIXSde63ie5OyPV4CfHgLZkBW5dsVUc64gGy47fBB+mj6qyW/Ct6cjr0cm4Hh8g==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
       c12: 0.2.7
@@ -6161,8 +6176,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-rc.4-27585508.c9d4b2e_rollup@2.75.6+vite@2.9.12:
-    resolution: {integrity: sha512-f3Kd1tLNicJpOaenmb+Gpw3MKr1IfquqqcxcH+1kQMNwa+F1CGmtEglymm4QM9scb2j+bPWWyLM7o+Q0SlXL2w==}
+  /@nuxt/schema-edge/3.0.0-rc.4-27588249.d7d97cd_rollup@2.75.6+vite@2.9.12:
+    resolution: {integrity: sha512-4Pi+IZ8J2izArC2/EfUXkczeIXSde63ie5OyPV4CfHgLZkBW5dsVUc64gGy47fBB+mj6qyW/Ct6cjr0cm4Hh8g==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
       c12: 0.2.7
@@ -6351,13 +6366,13 @@ packages:
       ufo: 0.7.11
     dev: false
 
-  /@nuxt/vite-builder-edge/3.0.0-rc.4-27585508.c9d4b2e_vue@3.2.37:
-    resolution: {integrity: sha512-jZ3DkCCtEm7kLwlNV2SyCr4oE5vkDtMoRIrIphsW4bCl796UvVlET+2c+SX/28pu/erw+vKZ20oLWrWQSnRPlA==}
+  /@nuxt/vite-builder-edge/3.0.0-rc.4-27588249.d7d97cd_vue@3.2.37:
+    resolution: {integrity: sha512-wGcXnF3prBlaUXKIgUlQ1+QHI+R2wsjWiVLaE5HHoWz2eNivagFL19FgrW5i60Lizit8HLDPi8iPR8NEY5EWtA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     peerDependencies:
       vue: ^3.2.37
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.4-27585508.c9d4b2e_ejd35jgfhiceqmjr7sxcr6lvy4
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.4-27588249.d7d97cd_ejd35jgfhiceqmjr7sxcr6lvy4
       '@rollup/plugin-replace': 4.0.0_rollup@2.75.6
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.12+vue@3.2.37
       '@vitejs/plugin-vue-jsx': 1.3.10
@@ -6384,7 +6399,7 @@ packages:
       ufo: 0.8.4
       unplugin: 0.7.0_ejd35jgfhiceqmjr7sxcr6lvy4
       vite: 2.9.12
-      vite-node: 0.14.2
+      vite-node: 0.15.1
       vite-plugin-checker: 0.4.6_vite@2.9.12
       vue: 3.2.37
     transitivePeerDependencies:
@@ -6688,10 +6703,6 @@ packages:
 
   /@popperjs/core/2.11.5:
     resolution: {integrity: sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==}
-
-  /@previewjs/config/1.0.4:
-    resolution: {integrity: sha512-4YfDrduv6mbU64/YkqTpqWRMihpKx786oEHql7pvcY3U0dAlUg1BPLOSDAH5rTHaCNMIbvWgYSiikpN8NFYvQw==}
-    dev: true
 
   /@react-hook/debounce/3.0.0_react@18.1.0:
     resolution: {integrity: sha512-ir/kPrSfAzY12Gre0sOHkZ2rkEmM4fS5M5zFxCi4BnCeXh2nvx9Ujd+U4IGpKCuPA+EQD0pg1eK2NGLvfWejag==}
@@ -17398,6 +17409,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: true
+
+  /follow-redirects/1.15.0_debug@4.3.4:
+    resolution: {integrity: sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4_supports-color@6.1.0
 
   /fontfaceobserver/2.1.0:
     resolution: {integrity: sha512-ReOsO2F66jUa0jmv2nlM/s1MiutJx/srhAe2+TE8dJCMi02ZZOcCTxTCQFr3Yet+uODUtnr4Mewg+tNQ+4V1Ng==}
@@ -18719,7 +18742,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.0
+      follow-redirects: 1.15.0_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -22066,8 +22089,8 @@ packages:
   /nice-try/1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
 
-  /nitropack/0.4.7_vite@2.9.12:
-    resolution: {integrity: sha512-D4Gsxv8v0fTV5wQlRxhUBHHXckx5ZD2Kn2zBNMQiXyqN5DIVQTbNoiAU4NCZjXoFN9S3gTFDOk+YoY8t+8cEXA==}
+  /nitropack/0.4.8_vite@2.9.12:
+    resolution: {integrity: sha512-vqNfPrk5YCR5+d3+4jWONChmlhlfxOM2J0K/VqogsGdJd6YCcs+2rp/1+348SherX9XZZePb2yAljgwNTfgiNQ==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     hasBin: true
     dependencies:
@@ -22552,8 +22575,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /nuxi-edge/3.0.0-rc.4-27585508.c9d4b2e:
-    resolution: {integrity: sha512-T4iKdRGKzvFQiiDF0Zsdt6p64nqcT8JJKHBtHxmMBVq34AdF1xSLy9jvESYuO4q9IrNvfWNd1L3H6Uv4uZ2UKg==}
+  /nuxi-edge/3.0.0-rc.4-27588249.d7d97cd:
+    resolution: {integrity: sha512-6dwfgAgE1Y1UGotJj7uu0B2kPx219uni0mqOvhjKyfigRzAYX9hkvL6uV636v2xVwbksJYp9MVTSi1irqZaE3A==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     hasBin: true
     optionalDependencies:
@@ -22645,17 +22668,17 @@ packages:
       - whiskers
     dev: false
 
-  /nuxt3/3.0.0-rc.4-27585508.c9d4b2e_rollup@2.75.6+vite@2.9.12:
-    resolution: {integrity: sha512-KzaLpFRp/r0L1l0nUu3RNlRQiKmrCm8Ujosdt7Js+0fRvu/7FscQXbanUSSMqD6UFIWE0yDYaBN+RsLEcXfspQ==}
+  /nuxt3/3.0.0-rc.4-27588249.d7d97cd_rollup@2.75.6+vite@2.9.12:
+    resolution: {integrity: sha512-qUza+PkfQ5dsMJQtKV31PrFPVdQPiVBVZVAROJ2CLi3YMPu1qdcUPJXk54RCrdzLM8ajT/ufM+9ujqGj/9pMMw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     hasBin: true
     dependencies:
       '@nuxt/devalue': 2.0.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.4-27585508.c9d4b2e_rollup@2.75.6+vite@2.9.12
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.4-27585508.c9d4b2e_rollup@2.75.6+vite@2.9.12
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.4-27588249.d7d97cd_rollup@2.75.6+vite@2.9.12
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.4-27588249.d7d97cd_rollup@2.75.6+vite@2.9.12
       '@nuxt/telemetry': 2.1.3_rollup@2.75.6+vite@2.9.12
       '@nuxt/ui-templates': 0.1.1
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-rc.4-27585508.c9d4b2e_vue@3.2.37
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-rc.4-27588249.d7d97cd_vue@3.2.37
       '@vue/reactivity': 3.2.37
       '@vue/shared': 3.2.37
       '@vueuse/head': 0.7.6_vue@3.2.37
@@ -22672,8 +22695,8 @@ packages:
       knitwork: 0.1.2
       magic-string: 0.26.2
       mlly: 0.5.2
-      nitropack: 0.4.7_vite@2.9.12
-      nuxi: /nuxi-edge/3.0.0-rc.4-27585508.c9d4b2e
+      nitropack: 0.4.8_vite@2.9.12
+      nuxi: /nuxi-edge/3.0.0-rc.4-27588249.d7d97cd
       ohash: 0.1.0
       ohmyfetch: 0.4.18
       pathe: 0.3.0
@@ -29600,6 +29623,12 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
+  /typescript/4.6.3:
+    resolution: {integrity: sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
   /typescript/4.6.4:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
     engines: {node: '>=4.2.0'}
@@ -30326,8 +30355,8 @@ packages:
       vfile-message: 2.0.4
     dev: true
 
-  /vite-node/0.14.2:
-    resolution: {integrity: sha512-kftXidc2/l9/G2qKuCS+3ct3gpUrJ9w/XoX3xKcQbZ3TghVtzSz1gE2Ufbwp035nnu5yqpbZ1Gf6eXTyqq6dFA==}
+  /vite-node/0.15.1:
+    resolution: {integrity: sha512-QRoW+wdrNdZWOOAHaSf5pOjyelezVUhmkTQPuGVXzcPs4hoy1aKj6Hclin24asOrPCf0PnNXEc9R5/CURCT/yg==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     dependencies:

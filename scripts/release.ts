@@ -55,6 +55,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "iframe",
+    dirPath: "iframe",
+    tagName: "iframe",
+    type: "npm",
+  },
+  {
     name: "plugin-react",
     dirPath: "frameworks/react",
     tagName: "plugins/react",

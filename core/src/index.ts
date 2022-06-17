@@ -121,7 +121,11 @@ export async function createWorkspace({
   const previewer = new Previewer({
     reader,
     rootDirPath,
-    previewDirPath: path.join(__dirname, "..", "..", "iframe", "preview"),
+    // TODO: Use a cleaner approach.
+    previewDirPath: path.join(
+      path.dirname(path.dirname(require.resolve("@previewjs/iframe"))),
+      "preview"
+    ),
     frameworkPlugin,
     logLevel,
     middlewares: [

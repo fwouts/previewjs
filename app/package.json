@@ -48,7 +48,6 @@
     }
   },
   "dependencies": {
-    "@previewjs/core": "^3.3.0",
     "@previewjs/vfs": "^1.1.5",
     "express": "^4.18.1"
   },
@@ -60,7 +59,8 @@
     "@fortawesome/react-fontawesome": "0.1.18",
     "@monaco-editor/react": "4.4.5",
     "@previewjs/api": "workspace:*",
-    "@previewjs/config": "1.0.4",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
     "@previewjs/e2e-test-runner": "workspace:*",
     "@previewjs/plugin-react": "workspace:*",
     "@previewjs/plugin-solid": "workspace:*",

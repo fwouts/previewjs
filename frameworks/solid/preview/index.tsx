@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/core/controller";
+import type { RendererLoader } from "@previewjs/iframe";
 import { JSX } from "solid-js/jsx-runtime";
 import * as Solid from "solid-js/web";
 
