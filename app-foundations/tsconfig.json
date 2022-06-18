@@ -2,6 +2,7 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable"],
+    "module": "ES2020",
     "moduleResolution": "node",
     "jsx": "react-jsx",
     "outDir": "dist"
