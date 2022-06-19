@@ -46,7 +46,7 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 7.2.1
+          version: 7.3.0
           run_install: true
       - run: pnpm check-licenses
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
