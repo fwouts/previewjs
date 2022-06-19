@@ -385,7 +385,7 @@ importers:
       lodash: 4.17.21
       rimraf: 3.0.2
       solid-js: 1.4.4
-      typescript: ^4
+      typescript: ^4.7.4
       vite: 2.9.12
       vite-plugin-solid: ^2
       vitest: 0.15.1
@@ -393,7 +393,7 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.1.0
-      typescript: 4.6.4
+      typescript: 4.7.4
       vite-plugin-solid: 2.2.6
     devDependencies:
       '@previewjs/core': link:../../core
@@ -23736,7 +23736,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.6.4
+      ts-pnp: 1.2.0_typescript@4.4.3
     transitivePeerDependencies:
       - typescript
 
@@ -29501,6 +29501,17 @@ packages:
         optional: true
     dev: true
 
+  /ts-pnp/1.2.0_typescript@4.4.3:
+    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
+    engines: {node: '>=6'}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.4.3
+
   /ts-pnp/1.2.0_typescript@4.6.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
     engines: {node: '>=6'}
@@ -29848,7 +29859,6 @@ packages:
     resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /typescript/4.6.4:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
