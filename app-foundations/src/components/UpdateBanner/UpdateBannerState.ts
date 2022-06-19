@@ -33,7 +33,7 @@ export class UpdateBannerState {
     }
   }
 
-  get update() {
+  get update(): webEndpoints.UpdateAvailable | null {
     const update = this.checkVersionResponse?.update;
     const persistedState = this.persistedStateController.state;
     if (!update?.available || !persistedState) {
