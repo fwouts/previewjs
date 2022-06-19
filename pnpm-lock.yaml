@@ -544,7 +544,7 @@ importers:
 
   integrations/vscode:
     specifiers:
-      '@types/vscode': 1.43.0
+      '@types/vscode': 1.68.0
       cross-env: 7.0.3
       esbuild: 0.14.45
       ovsx: 0.5.1
@@ -552,7 +552,7 @@ importers:
       typescript: 4.7.3
       vsce: 2.9.1
     devDependencies:
-      '@types/vscode': 1.43.0
+      '@types/vscode': 1.68.0
       cross-env: 7.0.3
       esbuild: 0.14.45
       ovsx: 0.5.1
@@ -9282,8 +9282,8 @@ packages:
     resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
     dev: true
 
-  /@types/vscode/1.43.0:
-    resolution: {integrity: sha512-kIaR9qzd80rJOxePKpCB/mdy00mz8Apt2QA5Y6rdrKFn13QNFNeP3Hzmsf37Bwh/3cS7QjtAeGSK7wSqAU0sYQ==}
+  /@types/vscode/1.68.0:
+    resolution: {integrity: sha512-duBwEK5ta/eBBMJMQ7ECMEsMvlE3XJdRGh3xoS1uOO4jl2Z4LPBl5vx8WvBP10ERAgDRmIt/FaSD4RHyBGbChw==}
     dev: true
 
   /@types/webpack-bundle-analyzer/3.9.3:
@@ -23736,7 +23736,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.6.4
+      ts-pnp: 1.2.0
     transitivePeerDependencies:
       - typescript
 
@@ -25921,7 +25921,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.6.4
+      ts-pnp: 1.2.0
       typescript: 4.6.4
       url-loader: 4.1.1_7hroj2mdu577asu2zyhaasbvae
       webpack: 4.44.2
@@ -29499,7 +29499,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-    dev: true
 
   /ts-pnp/1.2.0_typescript@4.6.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
