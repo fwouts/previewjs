@@ -14,13 +14,19 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "type": "commonjs",
-  "main": "./dist/src/index.js",
-  "types": "./dist/src/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc && shx cp -r node_modules/monaco-editor dist/monaco-editor",
-    "build:watch": "tsc --watch"
+    "build": "unbuild && shx cp -r node_modules/monaco-editor dist/monaco-editor"
   },
   "dependencies": {
     "@previewjs/api": "^2.1.0",
@@ -55,7 +61,7 @@
     "@types/fs-extra": "9.0.13",
     "@types/glob": "7.2.0",
     "@types/uuid": "8.3.4",
-    "rimraf": "3.0.2",
-    "shx": "0.3.4"
+    "shx": "0.3.4",
+    "unbuild": "0.7.4"
   }
 }
