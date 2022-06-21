@@ -125,7 +125,7 @@ importers:
       '@fortawesome/react-fontawesome': ^0.1.18
       '@monaco-editor/react': ^4.4.5
       '@previewjs/api': ^2.1.0
-      '@previewjs/iframe': ^0.0.0
+      '@previewjs/iframe': ^1.0.0
       '@previewjs/type-analyzer': 2.1.1
       '@react-hook/window-size': ^3.0.7
       '@types/fs-extra': 9.0.13
@@ -243,7 +243,7 @@ importers:
     specifiers:
       '@previewjs/api': ^2.1.0
       '@previewjs/config': ^2.0.0
-      '@previewjs/iframe': ^0.0.0
+      '@previewjs/iframe': ^1.0.0
       '@previewjs/type-analyzer': ^2.1.1
       '@previewjs/vfs': ^1.1.5
       '@types/cookie-parser': 1.4.3
@@ -4273,7 +4273,7 @@ packages:
     dependencies:
       '@jridgewell/set-array': 1.1.1
       '@jridgewell/sourcemap-codec': 1.4.13
-      '@jridgewell/trace-mapping': 0.3.10
+      '@jridgewell/trace-mapping': 0.3.13
 
   /@jridgewell/resolve-uri/3.0.7:
     resolution: {integrity: sha512-8cXDaBBHOr2pQ7j77Y6Vp5VDT2sIqWyWQ56TjEq4ih/a4iST3dItRe8Q9fp0rrIl9DoKhWQtUQz/YpOxLkXbNA==}
@@ -4287,7 +4287,7 @@ packages:
     resolution: {integrity: sha512-m7O9o2uR8k2ObDysZYzdfhb08VuEml5oWGiosa1VdaPZ/A6QyPkAJuwN0Q1lhULOf6B7MtQmHENS743hWtCrgw==}
     dependencies:
       '@jridgewell/gen-mapping': 0.3.1
-      '@jridgewell/trace-mapping': 0.3.10
+      '@jridgewell/trace-mapping': 0.3.13
 
   /@jridgewell/sourcemap-codec/1.4.13:
     resolution: {integrity: sha512-GryiOJmNcWbovBxTfZSF71V/mXbgcV3MewDe3kIMCLyIh5e7SKAeUZs+rMnJ8jkMolZ/4/VsdBmMrw3l+VdZ3w==}
@@ -4303,7 +4303,6 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.0.7
       '@jridgewell/sourcemap-codec': 1.4.13
-    dev: true
 
   /@jridgewell/trace-mapping/0.3.9:
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
