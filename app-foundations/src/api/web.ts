@@ -1,7 +1,12 @@
 import { Endpoint, RequestOf, ResponseOf } from "@previewjs/api";
 import axios from "axios";
+import { Api } from "./api";
 
-export class WebApi {
+export function createWebApi(url: string): Api {
+  return new WebApi(url);
+}
+
+class WebApi {
   private readonly url: string;
 
   constructor(url: string) {

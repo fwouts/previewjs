@@ -1,6 +1,6 @@
 import { localEndpoints, ResponseOf, webEndpoints } from "@previewjs/api";
 import { makeAutoObservable, runInAction } from "mobx";
-import { WebApi } from "../../api/web";
+import { Api } from "../../api/api";
 import { PersistedStateController } from "../../state/PersistedStateController";
 import "../../window";
 
@@ -10,7 +10,7 @@ export class UpdateBannerState {
   private checkVersionResponse: webEndpoints.CheckVersionResponse | null = null;
 
   constructor(
-    private readonly webApi: WebApi,
+    private readonly webApi: Api,
     private readonly persistedStateController: PersistedStateController
   ) {
     makeAutoObservable(this);

@@ -5,8 +5,13 @@ import {
   WrappedResponse,
 } from "@previewjs/api";
 import axios from "axios";
+import { Api } from "./api";
 
-export class LocalApi {
+export function createLocalApi(url: string): Api {
+  return new LocalApi(url);
+}
+
+class LocalApi {
   private readonly url: string;
 
   constructor(url: string) {
