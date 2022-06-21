@@ -28,7 +28,12 @@ const packages: Package[] = [
     dirPath: "app",
     tagName: "app",
     type: "npm",
-    ignoreDeps: ["loader"],
+  },
+  {
+    name: "app-foundations",
+    dirPath: "app-foundations",
+    tagName: "app-foundations",
+    type: "npm",
   },
   {
     name: "cli",

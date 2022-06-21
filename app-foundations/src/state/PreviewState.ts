@@ -6,8 +6,7 @@ import {
 } from "@previewjs/iframe";
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
-import { LocalApi } from "../api/local";
-import { WebApi } from "../api/web";
+import { Api } from "../api/api";
 import { ActionLogsState } from "../components/ActionLogs";
 import { ConsolePanelState } from "../components/ConsolePanel";
 import { UpdateBannerState } from "../components/UpdateBanner";
@@ -78,8 +77,8 @@ export class PreviewState {
   private pingInterval: NodeJS.Timer | null = null;
 
   constructor(
-    private readonly localApi: LocalApi,
-    webApi: WebApi,
+    private readonly localApi: Api,
+    webApi: Api,
     private readonly persistedStateController: PersistedStateController,
     private readonly options: {
       onFileChanged?: (filePath: string | null) => Promise<void>;

@@ -1,7 +1,17 @@
-import { Endpoint, RequestOf, ResponseOf } from "@previewjs/api";
+import {
+  Endpoint,
+  RequestOf,
+  ResponseOf,
+  WrappedResponse,
+} from "@previewjs/api";
 import axios from "axios";
+import { Api } from "./api";
 
-export class WebApi {
+export function createLocalApi(url: string): Api {
+  return new LocalApi(url);
+}
+
+class LocalApi {
   private readonly url: string;
 
   constructor(url: string) {
@@ -14,10 +24,13 @@ export class WebApi {
   async request<E extends Endpoint<unknown, unknown>>(
     ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>> {
-    const { data } = await axios.post<ResponseOf<E>>(
+    const { data } = await axios.post<WrappedResponse<ResponseOf<E>>>(
       `${this.url}${endpoint.path}`,
       request
     );
-    return data;
+    if (data.kind === "error") {
+      throw new Error(data.message);
+    }
+    return data.response;
   }
 }

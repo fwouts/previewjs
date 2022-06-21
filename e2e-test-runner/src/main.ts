@@ -1,19 +1,23 @@
 import { program } from "commander";
+import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
 import { runTests } from "./test-runner";
 
 program
   .option("-s, --setup-module <module-path>")
-  .option("-t, --tests-dir <tests-dir>")
+  .option("-t, --tests-path <tests-path>")
   .option("-f, --filter [filters...]")
-  .action(async ({ setupModule, testsDir, filter = [] }) => {
+  .action(async ({ setupModule, testsPath, filter = [] }) => {
     let failed = false;
     const groupCount = parseInt(process.env.GROUP_COUNT || "1");
     const groupIndex = parseInt(process.env.GROUP_INDEX || "0");
     const port = parseInt(process.env.PORT || "8100");
     const setupEnvironmentPath = path.resolve(setupModule);
-    const testsPath = path.resolve(testsDir);
+    const testsResolvedPath = path.resolve(testsPath);
+    const outputDirPath = fs.lstatSync(testsResolvedPath).isDirectory()
+      ? testsResolvedPath
+      : path.dirname(testsResolvedPath);
     const headless = process.env.HEADLESS !== "0";
     const browser = await playwright.chromium.launch({
       headless,
@@ -21,8 +25,17 @@ program
     });
     try {
       const startTimeMillis = Date.now();
-      const setupEnvironment = (await import(setupEnvironmentPath)).default;
-      const testSuitesPromises = (await import(testsPath)).default;
+      let setupEnvironment = (await import(setupEnvironmentPath)).default;
+      let testSuitesPromises = (await import(testsResolvedPath)).default;
+
+      // Workaround for Rollup CJS bug.
+      if (setupEnvironment.default) {
+        setupEnvironment = setupEnvironment.default;
+      }
+      if (testSuitesPromises.default) {
+        testSuitesPromises = testSuitesPromises.default;
+      }
+
       const testSuites = await Promise.all(testSuitesPromises);
       const { testCasesCount, failedTests } = await runTests({
         browser,
@@ -31,7 +44,7 @@ program
           (_, index) => index % groupCount === groupIndex
         ),
         filters: filter,
-        outputDirPath: testsPath,
+        outputDirPath,
         port: port + groupIndex,
       });
       const totalDurationMillis = Date.now() - startTimeMillis;

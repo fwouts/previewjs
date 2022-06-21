@@ -1,4 +1,4 @@
 import { Fragment } from "react";
-import "../client/src/index.css";
+import "../../app/client/src/index.css";
 
 export const Wrapper = Fragment;

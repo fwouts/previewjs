@@ -16,12 +16,4 @@ export default defineConfig({
       },
     },
   },
-  optimizeDeps: {
-    include: ["@previewjs/api", "@previewjs/type-analyzer"],
-  },
-  build: {
-    commonjsOptions: {
-      include: [/api\/.*/, /type-analyzer\/.*/, /node_modules/],
-    },
-  },
 });

@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "tests",
+    "outDir": "dist-tests"
+  },
+  "include": ["tests"]
+}
