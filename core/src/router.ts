@@ -54,14 +54,14 @@ export class ApiRouter {
 }
 
 export type RequestHandlerForEndpoint<E> = E extends Endpoint<
-  infer Request,
-  infer Response
+  infer Req,
+  infer Res
 >
-  ? RequestHandler<Request, Response>
+  ? RequestHandler<Req, Res>
   : never;
 
-export type RequestHandler<Request, Response> = (
-  request: Request,
+export type RequestHandler<Req, Res> = (
+  request: Req,
   expressRequest: ExpressRequest,
   expressResponse: ExpressResponse
-) => Promise<Response>;
+) => Promise<Res>;

@@ -135,7 +135,7 @@ export async function createWorkspace({
         .Router()
         .use(
           "/monaco-editor",
-          express.static(path.join(__dirname, "..", "monaco-editor"))
+          express.static(path.join(__dirname, "monaco-editor"))
         ),
       async (req, res, next) => {
         if (req.path.startsWith("/api/")) {
