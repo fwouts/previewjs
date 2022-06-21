@@ -6,7 +6,7 @@ export async function expectErrors(
   expectedErrors: Array<string | string[]>
 ) {
   // Wait to prevent any flakiness.
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   const selectedTab = await controller.bottomPanel.tabs.selected();
   const isConsoleSelected =
