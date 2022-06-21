@@ -21,8 +21,17 @@ program
     });
     try {
       const startTimeMillis = Date.now();
-      const setupEnvironment = (await import(setupEnvironmentPath)).default;
-      const testSuitesPromises = (await import(testsPath)).default;
+      let setupEnvironment = (await import(setupEnvironmentPath)).default;
+      let testSuitesPromises = (await import(testsPath)).default;
+
+      // Workaround for Rollup CJS bug.
+      if (setupEnvironment.default) {
+        setupEnvironment = setupEnvironment.default;
+      }
+      if (testSuitesPromises.default) {
+        testSuitesPromises = testSuitesPromises.default;
+      }
+
       const testSuites = await Promise.all(testSuitesPromises);
       const { testCasesCount, failedTests } = await runTests({
         browser,

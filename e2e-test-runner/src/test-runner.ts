@@ -140,6 +140,9 @@ class TestRunner {
       middlewares: [],
       ...env.previewEnv,
     });
+    if (!workspace) {
+      throw new Error(`Unable to create workspace`);
+    }
     const context = await this.browser.newContext();
     const page = await context.newPage();
     let browserLogs: string[] = [];

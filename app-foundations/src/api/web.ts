@@ -6,7 +6,7 @@ export function createWebApi(url: string): Api {
   return new WebApi(url);
 }
 
-class WebApi {
+class WebApi implements Api {
   private readonly url: string;
 
   constructor(url: string) {
