@@ -29,31 +29,7 @@
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "unbuild && pnpm tsc -p client/tsconfig.json && vite build client && pnpm tsc -p tsconfig.tests.json",
     "client:dev": "vite client",
-    "e2e-test": "cross-env pnpm run -C ../e2e-test-runner dev -s $INIT_CWD -t $INIT_CWD/tests",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
-  },
-  "eslintConfig": {
-    "env": {
-      "es6": true,
-      "browser": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended"
-    ],
-    "rules": {
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "react/prop-types": "off"
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
-    }
+    "e2e-test": "cross-env pnpm run -C ../e2e-test-runner dev -s $INIT_CWD -t $INIT_CWD/tests"
   },
   "dependencies": {
     "@previewjs/vfs": "^1.1.5",
