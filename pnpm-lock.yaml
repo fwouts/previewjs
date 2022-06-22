@@ -124,7 +124,7 @@ importers:
       '@fortawesome/free-solid-svg-icons': ^6.1.1
       '@fortawesome/react-fontawesome': ^0.1.18
       '@monaco-editor/react': ^4.4.5
-      '@previewjs/api': ^2.1.0
+      '@previewjs/api': ^2.2.0
       '@previewjs/iframe': ^1.0.0
       '@previewjs/type-analyzer': ^2.2.0
       '@react-hook/window-size': ^3.0.7
@@ -241,7 +241,7 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': ^2.1.0
+      '@previewjs/api': ^2.2.0
       '@previewjs/config': ^2.0.0
       '@previewjs/iframe': ^1.0.0
       '@previewjs/type-analyzer': ^2.2.0
@@ -16411,17 +16411,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.15.1_debug@4.3.4:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.4_supports-color@6.1.0
-
   /fontfaceobserver/2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
     dev: false
@@ -17718,7 +17707,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1_debug@4.3.4
+      follow-redirects: 1.15.1
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
