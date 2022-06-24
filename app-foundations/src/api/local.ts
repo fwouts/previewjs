@@ -1,11 +1,11 @@
 import {
+  Api,
   Endpoint,
   RequestOf,
   ResponseOf,
   WrappedResponse,
 } from "@previewjs/api";
 import axios from "axios";
-import { Api } from "./api";
 
 export function createLocalApi(url: string): Api {
   return new LocalApi(url);

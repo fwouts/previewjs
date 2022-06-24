@@ -1,6 +1,5 @@
-import { localEndpoints, ResponseOf, webEndpoints } from "@previewjs/api";
+import { Api, localEndpoints, ResponseOf, webEndpoints } from "@previewjs/api";
 import { makeAutoObservable, runInAction } from "mobx";
-import { Api } from "../../api/api";
 import { PersistedStateController } from "../../state/PersistedStateController";
 import "../../window";
 

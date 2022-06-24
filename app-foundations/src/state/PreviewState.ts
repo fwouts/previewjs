@@ -1,4 +1,4 @@
-import { localEndpoints, ResponseOf } from "@previewjs/api";
+import { Api, localEndpoints, ResponseOf } from "@previewjs/api";
 import {
   createController,
   PreviewIframeController,
@@ -6,7 +6,6 @@ import {
 } from "@previewjs/iframe";
 import assertNever from "assert-never";
 import { makeAutoObservable, observable, runInAction } from "mobx";
-import { Api } from "../api/api";
 import { ActionLogsState } from "../components/ActionLogs";
 import { ConsolePanelState } from "../components/ConsolePanel";
 import { UpdateBannerState } from "../components/UpdateBanner";

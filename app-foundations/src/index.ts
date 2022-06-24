@@ -1,4 +1,3 @@
-export type { Api } from "./api/api";
 export { createLocalApi } from "./api/local";
 export { createWebApi } from "./api/web";
 export { Preview } from "./components/Preview";

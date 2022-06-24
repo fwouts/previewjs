@@ -1,6 +1,5 @@
-import { localEndpoints, PersistedState } from "@previewjs/api";
+import { Api, localEndpoints, PersistedState } from "@previewjs/api";
 import { makeAutoObservable, runInAction } from "mobx";
-import { Api } from "../api/api";
 
 export class PersistedStateController {
   private persistedState: PersistedState | null = null;

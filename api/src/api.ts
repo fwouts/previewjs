@@ -1,4 +1,4 @@
-import { Endpoint, RequestOf, ResponseOf } from "@previewjs/api";
+import { Endpoint, RequestOf, ResponseOf } from "./endpoint";
 
 export interface Api {
   request<E extends Endpoint<unknown, unknown>>(
