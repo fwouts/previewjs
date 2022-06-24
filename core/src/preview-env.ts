@@ -1,18 +1,21 @@
-import { RequestHandler } from "express";
+import * as express from "express";
 import fs from "fs-extra";
 import path from "path";
 import { FrameworkPluginFactory, PersistedStateManager, Workspace } from ".";
 import { PackageDependencies } from "./plugins/dependencies";
-import { ApiRouter } from "./router";
+import { RegisterEndpoint } from "./router";
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;
 }) => Promise<PreviewEnvironment>;
 
 export type PreviewEnvironment = {
-  middlewares?: RequestHandler[];
+  middlewares?: express.RequestHandler[];
   persistedStateManager?: PersistedStateManager;
-  onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
+  onReady?(options: {
+    registerEndpoint: RegisterEndpoint;
+    workspace: Workspace;
+  }): Promise<void>;
 };
 
 export async function loadPreviewEnv({

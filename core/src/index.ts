@@ -20,7 +20,7 @@ import {
 } from "./persisted-state";
 import { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
-import { ApiRouter } from "./router";
+import { ApiRouter, RegisterEndpoint } from "./router";
 export type { ProjectAnalysis } from "./analyze-project";
 export { generateComponentId } from "./component-id";
 export type { PersistedStateManager } from "./persisted-state";
@@ -53,7 +53,10 @@ export async function createWorkspace({
   logLevel: vite.LogLevel;
   reader: Reader;
   persistedStateManager?: PersistedStateManager;
-  onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
+  onReady?(options: {
+    registerEndpoint: RegisterEndpoint;
+    workspace: Workspace;
+  }): Promise<void>;
 }): Promise<Workspace> {
   const expectedPluginApiVersion = 3;
   if (
@@ -80,7 +83,7 @@ export async function createWorkspace({
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
   const router = new ApiRouter();
-  router.onRequest(localEndpoints.GetInfo, async () => {
+  router.registerEndpoint(localEndpoints.GetInfo, async () => {
     const separatorPosition = versionCode.indexOf("-");
     if (separatorPosition === -1) {
       throw new Error(`Unsupported version code format: ${versionCode}`);
@@ -94,9 +97,12 @@ export async function createWorkspace({
       },
     };
   });
-  router.onRequest(localEndpoints.GetState, persistedStateManager.get);
-  router.onRequest(localEndpoints.UpdateState, persistedStateManager.update);
-  router.onRequest(
+  router.registerEndpoint(localEndpoints.GetState, persistedStateManager.get);
+  router.registerEndpoint(
+    localEndpoints.UpdateState,
+    persistedStateManager.update
+  );
+  router.registerEndpoint(
     localEndpoints.ComputeProps,
     async ({ filePath, componentName }) => {
       const component = (
@@ -190,7 +196,8 @@ export async function createWorkspace({
   };
   if (onReady) {
     await onReady({
-      router,
+      registerEndpoint: (endpoint, handler) =>
+        router.registerEndpoint(endpoint, handler),
       workspace,
     });
   }
