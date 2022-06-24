@@ -1,4 +1,9 @@
-import { Endpoint, WrappedResponse } from "@previewjs/api";
+import {
+  Endpoint,
+  RequestOf,
+  ResponseOf,
+  WrappedResponse,
+} from "@previewjs/api";
 import * as express from "express";
 
 export class ApiRouter {
@@ -42,9 +47,9 @@ export class ApiRouter {
   };
 }
 
-export type RegisterEndpoint = <Request, Response>(
-  endpoint: Endpoint<Request, Response>,
-  handler: RequestHandler<Request, Response>
+export type RegisterEndpoint = <E extends Endpoint<any, any>>(
+  endpoint: E,
+  handler: RequestHandler<RequestOf<E>, ResponseOf<E>>
 ) => void;
 
 export type RequestHandler<Req, Res> = (
