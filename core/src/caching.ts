@@ -4,10 +4,7 @@ import path from "path";
 export function getCacheDir(rootDirPath: string) {
   try {
     const { version } = JSON.parse(
-      fs.readFileSync(
-        path.resolve(__dirname, "..", "..", "package.json"),
-        "utf8"
-      )
+      fs.readFileSync(path.resolve(__dirname, "..", "package.json"), "utf8")
     );
     return path.resolve(
       rootDirPath,
