@@ -78,7 +78,7 @@ importers:
       tailwindcss: 3.1.4
       typescript: 4.7.4
       unbuild: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vite-plugin-svgr: 2.2.0
     dependencies:
       '@previewjs/vfs': link:../vfs
@@ -113,8 +113,8 @@ importers:
       tailwindcss: 3.1.4
       typescript: 4.7.4
       unbuild: 0.7.4
-      vite: 2.9.12
-      vite-plugin-svgr: 2.2.0_vite@2.9.12
+      vite: 2.9.13
+      vite-plugin-svgr: 2.2.0_vite@2.9.13
 
   app-foundations:
     specifiers:
@@ -232,12 +232,12 @@ importers:
       '@types/node': 17.0.8
       typescript: 4.7.4
       unbuild: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
     devDependencies:
       '@types/node': 17.0.8
       typescript: 4.7.4
       unbuild: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
 
   core:
     specifiers:
@@ -271,7 +271,7 @@ importers:
       typescript: ^4.7.4
       unbuild: 0.7.4
       uuid: ^8.3.2
-      vite: ^2.9.12
+      vite: ^2.9.13
       vite-tsconfig-paths: ^3.5.0
     dependencies:
       '@previewjs/api': link:../api
@@ -297,8 +297,8 @@ importers:
       tsconfig-paths: 4.0.0
       typescript: 4.7.4
       uuid: 8.3.2
-      vite: 2.9.12_sass@1.53.0
-      vite-tsconfig-paths: 3.5.0_vite@2.9.12
+      vite: 2.9.13_sass@1.53.0
+      vite-tsconfig-paths: 3.5.0_vite@2.9.13
     devDependencies:
       '@types/cookie-parser': 1.4.3
       '@types/express': 4.17.13
@@ -374,14 +374,14 @@ importers:
       react-dom: 18.2.0
       rimraf: 3.0.2
       typescript: ^4.7.4
-      vite: ^2.9.12
+      vite: ^2.9.13
       vitest: 0.16.0
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.1.0
       typescript: 4.7.4
-      vite: 2.9.12
+      vite: 2.9.13
     devDependencies:
       '@previewjs/core': link:../../core
       '@previewjs/iframe': link:../../iframe
@@ -421,7 +421,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.4.5
       typescript: ^4.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vite-plugin-solid: ^2
       vitest: 0.16.0
     dependencies:
@@ -437,7 +437,7 @@ importers:
       lodash: 4.17.21
       rimraf: 3.0.2
       solid-js: 1.4.5
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
 
   frameworks/solid/preview:
@@ -457,7 +457,7 @@ importers:
       fs-extra: ^10.0.0
       rimraf: 3.0.2
       typescript: ^4.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vite-plugin-vue2: ^2.0.1
       vitest: 0.16.0
       vue: ^2.6.14
@@ -468,7 +468,7 @@ importers:
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.1.0
       typescript: 4.7.4
-      vite-plugin-vue2: 2.0.1_jttg6x6i6wypek3x7xn5g4bdeq
+      vite-plugin-vue2: 2.0.1_rjze3w2zsgj4z24tnggj7hdbyq
       vue: 2.6.14
       vue-template-compiler: 2.6.14
     devDependencies:
@@ -476,7 +476,7 @@ importers:
       '@previewjs/iframe': link:../../iframe
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
 
   frameworks/vue2/preview:
@@ -502,13 +502,13 @@ importers:
       acorn: ^8.7.1
       rimraf: 3.0.2
       typescript: ^4.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
       vue: ^3
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue': 2.3.3_vite@2.9.12+vue@3.2.37
+      '@vitejs/plugin-vue': 2.3.3_vite@2.9.13+vue@3.2.37
       '@vitejs/plugin-vue-jsx': 1.3.10
       '@vue/compiler-sfc': 3.2.37
       acorn: 8.7.1
@@ -518,7 +518,7 @@ importers:
       '@previewjs/core': link:../../core
       '@previewjs/iframe': link:../../iframe
       rimraf: 3.0.2
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
 
   frameworks/vue3/preview:
@@ -544,9 +544,9 @@ importers:
     specifiers:
       rimraf: 3.0.2
       typescript: 4.7.4
-      vite: ^2.9.12
+      vite: ^2.9.13
     dependencies:
-      vite: 2.9.12
+      vite: 2.9.13
     devDependencies:
       rimraf: 3.0.2
       typescript: 4.7.4
@@ -1655,7 +1655,7 @@ importers:
       lodash: ^4.17.21
       typescript: ^4.7.4
       unbuild: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
     dependencies:
       '@previewjs/vfs': link:../vfs
@@ -1665,7 +1665,7 @@ importers:
     devDependencies:
       '@types/lodash': 4.14.182
       unbuild: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
 
   vfs:
@@ -1678,7 +1678,7 @@ importers:
       lodash: 4.17.21
       typescript: 4.7.4
       unbuild: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
     dependencies:
       assert-never: 1.2.1
@@ -1690,7 +1690,7 @@ importers:
       lodash: 4.17.21
       typescript: 4.7.4
       unbuild: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vitest: 0.16.0
 
 packages:
@@ -8932,6 +8932,18 @@ packages:
     dependencies:
       vite: 2.9.12
       vue: 3.2.37
+    dev: true
+
+  /@vitejs/plugin-vue/2.3.3_vite@2.9.13+vue@3.2.37:
+    resolution: {integrity: sha512-SmQLDyhz+6lGJhPELsBdzXGc+AcaT8stgkbiTFGpXPe8Tl1tJaBw1A6pxDqDuRsVkD8uscrkx3hA7QDOoKYtyw==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      vite: ^2.5.10
+      vue: ^3.2.25
+    dependencies:
+      vite: 2.9.13
+      vue: 3.2.37
+    dev: false
 
   /@volar/code-gen/0.34.17:
     resolution: {integrity: sha512-rHR7BA71BJ/4S7xUOPMPiB7uk6iU9oTWpEMZxFi5VGC9iJmDncE82WzU5iYpcbOBCVHsOjMh0+5CGMgdO6SaPA==}
@@ -26010,7 +26022,6 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /rsvp/4.8.5:
     resolution: {integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==}
@@ -29305,7 +29316,19 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-vue2/2.0.1_jttg6x6i6wypek3x7xn5g4bdeq:
+  /vite-plugin-svgr/2.2.0_vite@2.9.13:
+    resolution: {integrity: sha512-CRJgz92vf3SQbt3jwF6/BhyQIhbY0pwbXAPqUh1/EMG6a4eHsHCECcDNrKZMhlRBj3LyXQSfHXJLtM2ISP5rfg==}
+    peerDependencies:
+      vite: ^2.6.0 || 3
+    dependencies:
+      '@rollup/pluginutils': 4.2.1
+      '@svgr/core': 6.2.1
+      vite: 2.9.13
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /vite-plugin-vue2/2.0.1_rjze3w2zsgj4z24tnggj7hdbyq:
     resolution: {integrity: sha512-8ixcIDZwk3PSbdaqKrPFYDot044lPLIqpjjuRXUDHdRhml87Kbc6JqLq6uwHERlPovwfI3DpluWRMVgn/Llmag==}
     peerDependencies:
       vite: ^2.0.0
@@ -29339,7 +29362,7 @@ packages:
       rollup: 2.75.6
       slash: 3.0.0
       source-map: 0.7.4
-      vite: 2.9.12
+      vite: 2.9.13
       vue-template-babel-compiler: 1.2.0_ev5jzj74xu2fombjvobqpq452a
       vue-template-compiler: 2.6.14
     transitivePeerDependencies:
@@ -29399,7 +29422,7 @@ packages:
       - whiskers
     dev: false
 
-  /vite-tsconfig-paths/3.5.0_vite@2.9.12:
+  /vite-tsconfig-paths/3.5.0_vite@2.9.13:
     resolution: {integrity: sha512-NKIubr7gXgh/3uniQaOytSg+aKWPrjquP6anAy+zCWEn6h9fB8z2/qdlfQrTgZWaXJ2pHVlllrSdRZltHn9P4g==}
     peerDependencies:
       vite: '>2.0.0-0'
@@ -29408,7 +29431,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.2
       tsconfig-paths: 4.0.0
-      vite: 2.9.12_sass@1.53.0
+      vite: 2.9.13_sass@1.53.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -29436,8 +29459,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vite/2.9.12_sass@1.53.0:
-    resolution: {integrity: sha512-suxC36dQo9Rq1qMB2qiRorNJtJAdxguu5TMvBHOc/F370KvqAe9t48vYp+/TbPKRNrMh/J55tOUmkuIqstZaew==}
+  /vite/2.9.13:
+    resolution: {integrity: sha512-AsOBAaT0AD7Mhe8DuK+/kE4aWYFMx/i0ZNi98hJclxb4e0OhQcZYUrvLjIaQ8e59Ui7txcvKMiJC1yftqpQoDw==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -29455,7 +29478,30 @@ packages:
       esbuild: 0.14.47
       postcss: 8.4.14
       resolve: 1.22.0
-      rollup: 2.75.6
+      rollup: 2.75.7
+    optionalDependencies:
+      fsevents: 2.3.2
+
+  /vite/2.9.13_sass@1.53.0:
+    resolution: {integrity: sha512-AsOBAaT0AD7Mhe8DuK+/kE4aWYFMx/i0ZNi98hJclxb4e0OhQcZYUrvLjIaQ8e59Ui7txcvKMiJC1yftqpQoDw==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.14.47
+      postcss: 8.4.14
+      resolve: 1.22.0
+      rollup: 2.75.7
       sass: 1.53.0
     optionalDependencies:
       fsevents: 2.3.2
@@ -29488,7 +29534,7 @@ packages:
       local-pkg: 0.4.1
       tinypool: 0.2.1
       tinyspy: 0.3.3
-      vite: 2.9.12
+      vite: 2.9.13
     transitivePeerDependencies:
       - less
       - sass
