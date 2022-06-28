@@ -69,7 +69,7 @@ importers:
       clsx: 1.1.1
       cross-env: 7.0.3
       express: ^4.18.1
-      framer-motion: 6.3.13
+      framer-motion: 6.3.16
       fs-extra: 10.1.0
       mobx-react-lite: 3.4.0
       postcss: 8.4.14
@@ -104,7 +104,7 @@ importers:
       axios: 0.27.2
       clsx: 1.1.1
       cross-env: 7.0.3
-      framer-motion: 6.3.13_biqbaboplfbrettd7655fr4n2y
+      framer-motion: 6.3.16_biqbaboplfbrettd7655fr4n2y
       fs-extra: 10.1.0
       mobx-react-lite: 3.4.0_m26jawr67gnusmh4egzqtnhxru
       postcss: 8.4.14
@@ -138,7 +138,7 @@ importers:
       autoprefixer: 10.4.7
       axios: ^0.27.2
       clsx: ^1.1.1
-      framer-motion: ^6.3.13
+      framer-motion: ^6.3.16
       mobx: ^6.6.1
       mobx-react-lite: ^3.4.0
       monaco-editor: ^0.33.0
@@ -164,7 +164,7 @@ importers:
       assert-never: 1.2.1
       axios: 0.27.2
       clsx: 1.1.1
-      framer-motion: 6.3.15_biqbaboplfbrettd7655fr4n2y
+      framer-motion: 6.3.16_biqbaboplfbrettd7655fr4n2y
       mobx: 6.6.1
       mobx-react-lite: 3.4.0_m26jawr67gnusmh4egzqtnhxru
       monaco-editor: 0.33.0
@@ -16631,8 +16631,8 @@ packages:
     dependencies:
       map-cache: 0.2.2
 
-  /framer-motion/6.3.13_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-z6UIxENuqa9bh/xE1fit7IUT+07TKSp81TE+C0DDBe9ly4bdEafpZUbcDZxNiN6UBU5hYdEY7rKhk+X1JlIkhg==}
+  /framer-motion/6.3.16_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-1kuXvOVss/Rzi+XHuYq6RPjwnZGkfnfvtBpCpZm+kYhLGA6ICHwfAJtG1ohz1ruSAFVMz3RSpanTf6TOPG979A==}
     peerDependencies:
       react: '>=16.8 || ^17.0.0 || ^18.0.0 || 18'
       react-dom: '>=16.8 || ^17.0.0 || ^18.0.0 || 18'
@@ -16646,24 +16646,6 @@ packages:
       tslib: 2.4.0
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
-    dev: true
-
-  /framer-motion/6.3.15_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-tqyEaYfr+7p3rnMcMzdVxWoHLsAfpz7bk6xZljndSEfafQ0BfwlZ/CeFZkEETRFr16w/LxfDKBVhinU66ucDYw==}
-    peerDependencies:
-      react: '>=16.8 || ^17.0.0 || ^18.0.0 || 18'
-      react-dom: '>=16.8 || ^17.0.0 || ^18.0.0 || 18'
-    dependencies:
-      framesync: 6.0.1
-      hey-listen: 1.0.8
-      popmotion: 11.0.3
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      style-value-types: 5.0.0
-      tslib: 2.4.0
-    optionalDependencies:
-      '@emotion/is-prop-valid': 0.8.8
-    dev: false
 
   /framesync/6.0.1:
     resolution: {integrity: sha512-fUY88kXvGiIItgNC7wcTOl0SNRCVXMKSWW2Yzfmn7EKNc+MpCzcz9DhdHcdjbrtN3c6R4H5dTY2jiCpPdysEjA==}
@@ -22686,7 +22668,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.7.4
+      ts-pnp: 1.2.0
     transitivePeerDependencies:
       - typescript
 
@@ -25106,7 +25088,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0_typescript@4.4.3
+      ts-pnp: 1.2.0
       typescript: 4.7.4
       url-loader: 4.1.1_7hroj2mdu577asu2zyhaasbvae
       webpack: 4.44.2
@@ -28237,7 +28219,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-    dev: true
 
   /ts-pnp/1.2.0_typescript@4.7.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
