@@ -6,7 +6,13 @@ import vue3Plugin from "@previewjs/plugin-vue3";
 import fs from "fs-extra";
 import path from "path";
 
-const smokeTestAppsDir = path.join(__dirname, "..", "..", "smoke-test-apps");
+const smokeTestAppsDir = path.join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "smoke-test-apps"
+);
 export const smokeTests = fs
   .readdirSync(smokeTestAppsDir)
   .filter(

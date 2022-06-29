@@ -25,8 +25,10 @@ program
     });
     try {
       const startTimeMillis = Date.now();
-      let setupEnvironment = (await import(setupEnvironmentPath)).default;
-      let testSuitesPromises = (await import(testsResolvedPath)).default;
+      let setupEnvironment = (await import(`file://${setupEnvironmentPath}`))
+        .default;
+      let testSuitesPromises = (await import(`file://${testsResolvedPath}`))
+        .default;
 
       // Workaround for Rollup CJS bug.
       if (setupEnvironment.default) {
