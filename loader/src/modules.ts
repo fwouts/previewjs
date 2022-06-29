@@ -13,7 +13,7 @@ export function loadModules({
   const core = requireModule("@previewjs/core");
   const vfs = requireModule("@previewjs/vfs");
   const setupEnvironment: core.SetupPreviewEnvironment =
-    requireModule(packageName).default;
+    requireModule(packageName);
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
     requireModule("@previewjs/plugin-react").default,
     requireModule("@previewjs/plugin-solid").default,
