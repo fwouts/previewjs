@@ -32,7 +32,7 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 7.3.0
+          version: 7.4.0
           run_install: true
       - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies
       - run: yarn --frozen-lockfile
