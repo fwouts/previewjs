@@ -68,6 +68,8 @@ jobs:
         with:
           version: 7.4.0
           run_install: true
+      - run: pnpm turbo run build --scope="@previewjs/e2e-test-runner" --include-dependencies
+      - run: pnpm install # necessary to link e2e-test-runner
       - run: pnpm turbo run e2e-test --scope="@previewjs/app" --include-dependencies
         env:
           GROUP_INDEX: ${{ matrix.group }}
