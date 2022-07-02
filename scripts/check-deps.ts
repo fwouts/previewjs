@@ -9,6 +9,7 @@ const globalIgnores = ["autoprefixer", "postcss", "tailwindcss", "unbuild"];
 const localIgnores: Record<string, string[]> = {
   "/": ["npm", "prettier", "turbo"],
   "/core": ["monaco-editor"],
+  "/frameworks/react": ["@types/prop-types"],
   "/frameworks/react/preview": ["@types/prop-types", "react", "react-dom"],
   "/frameworks/vue2": ["vue"],
   "/frameworks/vue3/preview": [
