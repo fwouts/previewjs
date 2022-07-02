@@ -34,7 +34,6 @@ jobs:
         with:
           run_install: true
       - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies
-      - run: yarn --frozen-lockfile
       - name: Extract version from package.json
         uses: sergeysova/jq-action@v2.2.1
         id: version
@@ -45,10 +44,10 @@ jobs:
       - name: Check that versions match
         run: '[[ "${{ steps.version.outputs.value }}" == "$VERSION" ]] && echo "Versions match"'
       - name: Publish to Visual Studio Code Marketplace
-        run: yarn vsce publish
+        run: pnpm vsce publish
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
       - name: Publish to Open VSX Registry
-        run: yarn ovsx publish -p $OVSX_TOKEN
+        run: pnpm ovsx publish -p $OVSX_TOKEN
         env:
           OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
