@@ -27,7 +27,11 @@ export const load: RendererLoader = async ({
   let storyDecorators = [];
   if (typeof Component === "function") {
     const maybeStory = Component;
-    const maybeStoryComponent = maybeStory(maybeStory.args || {});
+    const maybeStoryArgs = {
+      ...componentModule.default?.args,
+      ...maybeStory.args,
+    };
+    const maybeStoryComponent = maybeStory(maybeStoryArgs);
     if (maybeStoryComponent?.components || maybeStoryComponent?.template) {
       // This looks a lot like a Storybook story. It must be one.
       Component = maybeStoryComponent;

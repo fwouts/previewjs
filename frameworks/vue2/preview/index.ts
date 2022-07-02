@@ -28,7 +28,10 @@ export const load: RendererLoader = async ({
   let storyDecorators = [];
   storybookCheck: if (typeof Component === "function") {
     const maybeStory = Component;
-    const maybeStoryArgs = maybeStory.args || {};
+    const maybeStoryArgs = {
+      ...componentModule.default?.args,
+      ...maybeStory.args,
+    };
     let maybeStoryComponent;
     try {
       maybeStoryComponent = Component(maybeStoryArgs, {
