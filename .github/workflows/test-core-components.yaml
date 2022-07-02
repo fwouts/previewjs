@@ -48,5 +48,6 @@ jobs:
         with:
           run_install: true
       - run: pnpm check-licenses
+      - run: pnpm check-deps
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
       - run: pnpm turbo run test

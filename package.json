@@ -14,6 +14,7 @@
   },
   "homepage": "https://previewjs.com",
   "scripts": {
+    "check-deps": "ts-node scripts/check-deps.ts",
     "check-licenses": "ts-node scripts/check-licenses.ts",
     "release": "ts-node scripts/release.ts"
   },
@@ -23,6 +24,7 @@
     "@types/node": "17.0.8",
     "assert-never": "1.2.1",
     "axios": "0.27.2",
+    "depcheck": "^1.4.3",
     "execa": "5.1.1",
     "inquirer": "8.2.4",
     "license-checker": "25.0.1",
