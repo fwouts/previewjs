@@ -37,7 +37,13 @@ export const load: RendererLoader = async ({
       <Wrapper>
         {decorators.reduce(
           (component, decorator) => () => decorator(component),
-          () => <Component {...Component.args} {...props} />
+          () => (
+            <Component
+              {...componentModule.default?.args}
+              {...Component.args}
+              {...props}
+            />
+          )
         )()}
       </Wrapper>
     );

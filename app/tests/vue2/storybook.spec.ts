@@ -76,14 +76,14 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  label: 'Button',
+  label: "Hello, World!",
 };
       `,
         });
         await controller.show("src/Button.stories.js:Primary");
         const previewIframe = await controller.previewIframe();
         await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Button')]"
+          "xpath=//button[contains(., 'Hello, World!')]"
         );
       }
     );
@@ -108,14 +108,87 @@ const Template = (args, { argTypes }) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  label: 'Button',
+  label: "Hello, World!",
 };
       `,
         });
         await controller.show("src/Button.stories.js:Primary");
         const previewIframe = await controller.previewIframe();
         await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Button')]"
+          "xpath=//button[contains(., 'Hello, World!')]"
+        );
+      }
+    );
+
+    test(
+      "renders Storybook component with default args",
+      "vue2",
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.vue", {
+          kind: "replace",
+          text: buttonVueSource,
+        });
+        await appDir.update("src/Button.stories.js", {
+          kind: "replace",
+          text: `
+import Button from './Button.vue';
+
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Button },
+});
+
+export const Primary = Template.bind({});
+  
+export default {
+  args: {
+    label: "Hello, World!"
+  }
+};
+      `,
+        });
+        await controller.show("src/Button.stories.js:Primary");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'Hello, World!')]"
+        );
+      }
+    );
+
+    test(
+      "renders Storybook component with explicit args over default args",
+      "vue2",
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.vue", {
+          kind: "replace",
+          text: buttonVueSource,
+        });
+        await appDir.update("src/Button.stories.js", {
+          kind: "replace",
+          text: `
+import Button from './Button.vue';
+
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Button },
+});
+
+export const Primary = Template.bind({});
+Primary.args = {
+  label: "explicit"
+};
+
+export default {
+  args: {
+    label: "default"
+  }
+};
+      `,
+        });
+        await controller.show("src/Button.stories.js:Primary");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'explicit')]"
         );
       }
     );
