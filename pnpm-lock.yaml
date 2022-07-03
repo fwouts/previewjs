@@ -66,7 +66,7 @@ importers:
       assert-never: 1.2.1
       autoprefixer: 10.4.7
       axios: 0.27.2
-      clsx: 1.1.1
+      clsx: 1.2.0
       cross-env: 7.0.3
       express: ^4.18.1
       framer-motion: 6.3.16
@@ -102,7 +102,7 @@ importers:
       assert-never: 1.2.1
       autoprefixer: 10.4.7_postcss@8.4.14
       axios: 0.27.2
-      clsx: 1.1.1
+      clsx: 1.2.0
       cross-env: 7.0.3
       framer-motion: 6.3.16_biqbaboplfbrettd7655fr4n2y
       fs-extra: 10.1.0
@@ -137,7 +137,7 @@ importers:
       assert-never: ^1.2.1
       autoprefixer: 10.4.7
       axios: ^0.27.2
-      clsx: ^1.1.1
+      clsx: ^1.2.0
       framer-motion: ^6.3.16
       mobx: ^6.6.1
       mobx-react-lite: ^3.4.0
@@ -163,7 +163,7 @@ importers:
       '@react-hook/window-size': 3.0.7_react@18.2.0
       assert-never: 1.2.1
       axios: 0.27.2
-      clsx: 1.1.1
+      clsx: 1.2.0
       framer-motion: 6.3.16_biqbaboplfbrettd7655fr4n2y
       mobx: 6.6.1
       mobx-react-lite: 3.4.0_m26jawr67gnusmh4egzqtnhxru
@@ -11987,6 +11987,11 @@ packages:
 
   /clsx/1.1.1:
     resolution: {integrity: sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==}
+    engines: {node: '>=6'}
+    dev: false
+
+  /clsx/1.2.0:
+    resolution: {integrity: sha512-EPRP7XJsM1y0iCU3Z7C7jFKdQboXSeHgEfzQUTlz7m5NP3hDrlz48aUsmNGp4pC+JOW9WA3vIRqlYuo/bl4Drw==}
     engines: {node: '>=6'}
 
   /cluster-key-slot/1.1.0:
