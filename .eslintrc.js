@@ -5,8 +5,8 @@ module.exports = {
     node: true,
   },
   extends: [
+    "eslint-config-prettier",
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
   ],
   parser: "@typescript-eslint/parser",
@@ -17,16 +17,5 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
-  rules: {
-    indent: ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"],
-    semi: ["error", "always"],
-  },
-  settings: {
-    react: {
-      version: "18",
-    },
-  },
+  plugins: ["@typescript-eslint"],
 };

@@ -14,6 +14,7 @@ importers:
       assert-never: 1.2.1
       axios: 0.27.2
       eslint: ^8.19.0
+      eslint-config-prettier: ^8.5.0
       eslint-plugin-react: ^7.30.1
       execa: 5.1.1
       inquirer: 8.2.4
@@ -32,6 +33,7 @@ importers:
       assert-never: 1.2.1
       axios: 0.27.2
       eslint: 8.19.0
+      eslint-config-prettier: 8.5.0_eslint@8.19.0
       eslint-plugin-react: 7.30.1_eslint@8.19.0
       execa: 5.1.1
       inquirer: 8.2.4
@@ -15106,6 +15108,15 @@ packages:
       optionator: 0.8.3
     optionalDependencies:
       source-map: 0.6.1
+
+  /eslint-config-prettier/8.5.0_eslint@8.19.0:
+    resolution: {integrity: sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==}
+    hasBin: true
+    peerDependencies:
+      eslint: '>=7.0.0'
+    dependencies:
+      eslint: 8.19.0
+    dev: true
 
   /eslint-config-react-app/6.0.0_vci3ehl3wl6tljhqh3dd77cage:
     resolution: {integrity: sha512-bpoAAC+YRfzq0dsTk+6v9aHm/uqnDwayNAXleMypGl6CpxI9oXXscVHo4fk3eJPIn+rsbtNetB4r/ZIidFIE8A==}
