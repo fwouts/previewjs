@@ -373,7 +373,7 @@ importers:
       '@previewjs/type-analyzer': ^2.2.0
       '@previewjs/vfs': ^1.2.0
       rimraf: 3.0.2
-      solid-js: 1.4.5
+      solid-js: 1.4.6
       typescript: ^4.7.4
       vite: 2.9.13
       vite-plugin-solid: ^2
@@ -386,16 +386,16 @@ importers:
     devDependencies:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
-      solid-js: 1.4.5
+      solid-js: 1.4.6
       vite: 2.9.13
       vitest: 0.16.0
 
   frameworks/solid/preview:
     specifiers:
       '@previewjs/iframe': workspace:*
-      solid-js: 1.4.5
+      solid-js: 1.4.6
     dependencies:
-      solid-js: 1.4.5
+      solid-js: 1.4.6
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
 
@@ -10427,8 +10427,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
     dependencies:
-      browserslist: 4.20.3
-      caniuse-lite: 1.0.30001338
+      browserslist: 4.21.0
+      caniuse-lite: 1.0.30001359
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -26286,8 +26286,8 @@ packages:
   /solid-js/1.4.4:
     resolution: {integrity: sha512-nf/cbRzMuhb5UjbRDNfSJPqHKzUxNb9YgCQwijPUbdA3koQ/hWrz/lj0ter3lvThgxinvGPtXofDGy9bsKrXqA==}
 
-  /solid-js/1.4.5:
-    resolution: {integrity: sha512-32NGpuabEJDTeQ7fjaTR2TLC7R/X5hbqhYdEQ1e+GcIK8r8+/V0Nv17eZQii5Z/97/mtdt8yi63chzg73qnz/A==}
+  /solid-js/1.4.6:
+    resolution: {integrity: sha512-vF0x5qbVCDi8zlEyN92y/i+pS7QNYh3uNvbSyUYDhLifKuYqGcJwGxbH9zzDX5sR8o1ijgzI6BEAXlcR7Mkkjw==}
 
   /solid-refresh/0.4.1_solid-js@1.4.4:
     resolution: {integrity: sha512-v3tD/OXQcUyXLrWjPW1dXZyeWwP7/+GQNs8YTL09GBq+5FguA6IejJWUvJDrLIA4M0ho9/5zK2e9n+uy+4488g==}
@@ -27812,7 +27812,6 @@ packages:
       typescript: 4.7.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: false
 
   /ts-node/10.8.2_mlvggiyta6tj7eanfjcrnlk6sa:
     resolution: {integrity: sha512-LYdGnoGddf1D6v8REPtIH+5iq/gTDuZqv2/UJUU7tKjuEU8xVZorBM+buCGNjj+pGEud+sOoM4CX3/YzINpENA==}
