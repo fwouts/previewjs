@@ -32,15 +32,12 @@
     "e2e-test": "tsc && pnpm previewjs-e2e-test -s ./dist/src/index.js -t ./dist/tests/index.js"
   },
   "dependencies": {
-    "@previewjs/vfs": "^1.2.0",
     "express": "^4.18.1"
   },
   "devDependencies": {
-    "@previewjs/api": "workspace:*",
     "@previewjs/app-foundations": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@previewjs/e2e-test-runner": "workspace:*",
-    "@previewjs/iframe": "workspace:*",
     "@previewjs/plugin-react": "workspace:*",
     "@previewjs/plugin-solid": "workspace:*",
     "@previewjs/plugin-vue2": "workspace:*",
@@ -51,12 +48,7 @@
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
     "@vitejs/plugin-react": "1.3.2",
-    "assert-never": "1.2.1",
     "autoprefixer": "10.4.7",
-    "axios": "0.27.2",
-    "clsx": "1.2.0",
-    "cross-env": "7.0.3",
-    "framer-motion": "6.3.16",
     "fs-extra": "10.1.0",
     "mobx-react-lite": "3.4.0",
     "postcss": "8.4.14",

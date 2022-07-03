@@ -95,6 +95,8 @@
     "dev:cleanup": "rimraf previewjs-1.9.0.vsix"
   },
   "devDependencies": {
+    "@previewjs/core": "workspace:*",
+    "@previewjs/loader": "workspace:*",
     "@types/vscode": "1.68.0",
     "cross-env": "7.0.3",
     "esbuild": "0.14.48",
