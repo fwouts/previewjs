@@ -12,11 +12,11 @@ import assertNever from "assert-never";
 import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
-import playwright from "playwright";
+import type playwright from "playwright";
 import { inspect } from "util";
 import { AppController } from "./helpers/app-controller";
 import { sync } from "./helpers/sync";
-import { TestCase, TestSuite } from "./test-case";
+import type { TestCase, TestSuite } from "./test-case";
 
 const DEFAULT_PAGE_TIMEOUT_MILLIS = 60 * 1000;
 const TEST_CASE_TIMEOUT_MILLIS = 120 * 1000;

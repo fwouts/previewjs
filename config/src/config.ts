@@ -1,4 +1,4 @@
-import { UserConfig } from "vite";
+import type { UserConfig } from "vite";
 
 export interface PreviewConfig {
   alias: Record<string, string>;

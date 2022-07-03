@@ -2,7 +2,7 @@ import { faCode, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { observer } from "mobx-react-lite";
 import { ForwardedRef, forwardRef } from "react";
 import { Pill } from "../../design/Pill";
-import { PreviewState } from "../../state/PreviewState";
+import type { PreviewState } from "../../state/PreviewState";
 
 export const Selection = observer(
   forwardRef(

@@ -1,6 +1,6 @@
 import { Node, Parser } from "acorn";
 import path from "path";
-import * as vite from "vite";
+import type * as vite from "vite";
 
 const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 

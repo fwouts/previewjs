@@ -1,5 +1,5 @@
 import assertNever from "assert-never";
-import { CollectedTypes, ValueType } from "./definitions";
+import type { CollectedTypes, ValueType } from "./definitions";
 
 export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
   const visitedTypeNames = new Set<string>();

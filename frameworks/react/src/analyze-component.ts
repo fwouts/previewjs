@@ -1,4 +1,4 @@
-import { ComponentAnalysis } from "@previewjs/core";
+import type { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
   dereferenceType,

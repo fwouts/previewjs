@@ -1,8 +1,7 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Link } from "../../design/Link";
 import { PopOver } from "../../design/PopOver";
-import { ActionLogsState } from "./ActionLogsState";
+import type { ActionLogsState } from "./ActionLogsState";
 
 export const ActionLogs = observer(({ state }: { state: ActionLogsState }) => {
   return (

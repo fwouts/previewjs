@@ -1,4 +1,4 @@
-import { LogLevel, LogMessage } from "@previewjs/iframe";
+import type { LogLevel, LogMessage } from "@previewjs/iframe";
 import { makeAutoObservable } from "mobx";
 
 export interface LogMessageWithSuggestion extends LogMessage {

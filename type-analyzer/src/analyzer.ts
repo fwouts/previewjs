@@ -1,4 +1,4 @@
-import { Reader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 import {

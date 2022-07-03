@@ -1,5 +1,5 @@
-import { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
-import { Action, LogMessage, Variant } from "./index";
+import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
+import type { Action, LogMessage, Variant } from "./index";
 
 export type PreviewToAppMessage =
   | Bootstrapped

@@ -1,9 +1,13 @@
-import * as express from "express";
+import type * as express from "express";
 import fs from "fs-extra";
 import path from "path";
-import { FrameworkPluginFactory, PersistedStateManager, Workspace } from ".";
-import { PackageDependencies } from "./plugins/dependencies";
-import { RegisterEndpoint } from "./router";
+import type {
+  FrameworkPluginFactory,
+  PersistedStateManager,
+  Workspace,
+} from ".";
+import type { PackageDependencies } from "./plugins/dependencies";
+import type { RegisterEndpoint } from "./router";
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;

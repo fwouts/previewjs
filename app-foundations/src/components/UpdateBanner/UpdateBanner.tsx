@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { LinkBanner } from "../../design/LinkBanner";
-import { UpdateBannerState } from "./UpdateBannerState";
+import type { UpdateBannerState } from "./UpdateBannerState";
 
 export const UpdateBanner = observer(
   ({ state: { update, onUpdateDismissed } }: { state: UpdateBannerState }) => {

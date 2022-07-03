@@ -1,4 +1,4 @@
-import { Component } from "@previewjs/core";
+import type { Component } from "@previewjs/core";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";

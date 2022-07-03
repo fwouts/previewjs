@@ -3,7 +3,7 @@ import { load } from "@previewjs/loader";
 import express from "express";
 import path from "path";
 import * as uuid from "uuid";
-import {
+import type {
   AnalyzeFileRequest,
   AnalyzeFileResponse,
   DisposeWorkspaceRequest,

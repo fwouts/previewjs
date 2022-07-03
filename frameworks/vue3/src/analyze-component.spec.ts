@@ -1,4 +1,4 @@
-import { FrameworkPlugin } from "@previewjs/core";
+import type { FrameworkPlugin } from "@previewjs/core";
 import {
   BOOLEAN_TYPE,
   createTypeAnalyzer,

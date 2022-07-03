@@ -1,8 +1,8 @@
-import { localEndpoints, PersistedState } from "@previewjs/api";
+import type { localEndpoints, PersistedState } from "@previewjs/api";
 import envPaths from "env-paths";
 import fs from "fs-extra";
 import path from "path";
-import { RequestHandlerForEndpoint } from "./router";
+import type { RequestHandlerForEndpoint } from "./router";
 
 export interface PersistedStateManager {
   get: RequestHandlerForEndpoint<typeof localEndpoints.GetState>;

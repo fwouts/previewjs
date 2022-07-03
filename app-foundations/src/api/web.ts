@@ -1,4 +1,4 @@
-import { Api, Endpoint, RequestOf, ResponseOf } from "@previewjs/api";
+import type { Api, Endpoint, RequestOf, ResponseOf } from "@previewjs/api";
 import axios from "axios";
 
 export function createWebApi(url: string): Api {

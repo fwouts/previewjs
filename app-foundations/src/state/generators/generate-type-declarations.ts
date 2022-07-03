@@ -1,4 +1,4 @@
-import { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import assertNever from "assert-never";
 
 export function generateTypeDeclarations(

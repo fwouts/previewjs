@@ -1,10 +1,10 @@
-import {
+import type {
   Endpoint,
   RequestOf,
   ResponseOf,
   WrappedResponse,
 } from "@previewjs/api";
-import * as express from "express";
+import type * as express from "express";
 
 export class ApiRouter {
   private handlers = new Map<string, RequestHandler<any, any>>();
