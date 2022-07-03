@@ -23,7 +23,7 @@ const App = observer(() => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   useEffect(() => {
     state.setIframeRef(iframeRef);
-  }, [state]);
+  }, []);
   return (
     <Preview
       state={state}

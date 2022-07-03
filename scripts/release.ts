@@ -468,7 +468,7 @@ class PackageJsonModifier {
     });
   }
 
-  private async write(info: any) {
+  private async write(info: unknown) {
     await fs.promises.writeFile(
       this.absoluteFilePath,
       JSON.stringify(info, null, 2) + "\n",

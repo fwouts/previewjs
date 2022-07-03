@@ -16,7 +16,7 @@
   "scripts": {
     "check-licenses": "ts-node scripts/check-licenses.ts",
     "release": "ts-node scripts/release.ts",
-    "lint": "eslint **/*.ts **/*.tsx"
+    "lint": "eslint --max-warnings 0 **/*.ts **/*.tsx"
   },
   "devDependencies": {
     "@types/inquirer": "8.2.1",

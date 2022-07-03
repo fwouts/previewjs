@@ -37,6 +37,7 @@ function App(_props: AppProps) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Other() {
   return <div className="OtherSameFile">Hello</div>;
 }
