@@ -1503,6 +1503,7 @@ importers:
 
   test-apps/vue3:
     specifiers:
+      '@previewjs/plugin-vue3': workspace:*
       '@vitejs/plugin-vue': ^2
       vite: ^2.6.4
       vue: ^3.2.16
@@ -1510,6 +1511,7 @@ importers:
     dependencies:
       vue: 3.2.37
     devDependencies:
+      '@previewjs/plugin-vue3': link:../../frameworks/vue3
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.12+vue@3.2.37
       vite: 2.9.12
       vue-tsc: 0.34.17_typescript@4.7.4
@@ -16025,6 +16027,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.15.1_debug@4.3.4:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4_supports-color@6.1.0
+
   /fontfaceobserver/2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
     dev: false
@@ -17286,7 +17299,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
