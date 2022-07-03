@@ -9,15 +9,16 @@ export const LinkBanner = (props: {
   buttonLabel: string;
   onDismiss?(): void;
 }) => {
+  const { onDismiss } = props;
   const dismiss = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
       e.preventDefault();
-      if (props.onDismiss) {
-        props.onDismiss();
+      if (onDismiss) {
+        onDismiss();
       }
     },
-    [props.onDismiss]
+    [onDismiss]
   );
   return (
     <Link
@@ -39,7 +40,7 @@ export const LinkBanner = (props: {
       >
         {props.buttonLabel}
       </button>
-      {props.onDismiss && (
+      {onDismiss && (
         <button className="ml-1 px-2 py-1" onClick={dismiss}>
           Dismiss
         </button>

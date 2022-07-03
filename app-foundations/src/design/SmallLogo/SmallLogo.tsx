@@ -54,9 +54,9 @@ export const SmallLogo = (props: {
         <g
           id="logo"
           stroke="none"
-          stroke-width="1"
+          strokeWidth="1"
           fill="none"
-          fill-rule="evenodd"
+          fillRule="evenodd"
         >
           <g id="Group" transform="translate(17.000000, 17.000000)">
             <rect
@@ -71,11 +71,11 @@ export const SmallLogo = (props: {
             <g id="Oval">
               <use
                 fill="black"
-                fill-opacity="1"
+                fillOpacity="1"
                 filter="url(#filter-2)"
                 xlinkHref="#path-1"
               ></use>
-              <use fill="#FFFFFF" fill-rule="evenodd" xlinkHref="#path-1"></use>
+              <use fill="#FFFFFF" fillRule="evenodd" xlinkHref="#path-1"></use>
             </g>
           </g>
         </g>

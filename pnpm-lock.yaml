@@ -16,6 +16,7 @@ importers:
       eslint: ^8.19.0
       eslint-config-prettier: ^8.5.0
       eslint-plugin-react: ^7.30.1
+      eslint-plugin-react-hooks: ^4.6.0
       execa: 5.1.1
       inquirer: 8.2.4
       license-checker: 25.0.1
@@ -35,6 +36,7 @@ importers:
       eslint: 8.19.0
       eslint-config-prettier: 8.5.0_eslint@8.19.0
       eslint-plugin-react: 7.30.1_eslint@8.19.0
+      eslint-plugin-react-hooks: 4.6.0_eslint@8.19.0
       execa: 5.1.1
       inquirer: 8.2.4
       license-checker: 25.0.1
@@ -15274,6 +15276,15 @@ packages:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
     dependencies:
       eslint: 7.32.0
+
+  /eslint-plugin-react-hooks/4.6.0_eslint@8.19.0:
+    resolution: {integrity: sha512-oFc7Itz9Qxh2x4gNHStv3BqJq54ExXmfC+a1NjAta66IAN87Wu0R/QArgIS9qKzX3dXKPI9H5crl9QchNMY9+g==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+    dependencies:
+      eslint: 8.19.0
+    dev: true
 
   /eslint-plugin-react/7.30.1_eslint@7.32.0:
     resolution: {integrity: sha512-NbEvI9jtqO46yJA3wcRF9Mo0lF9T/jhdHqhCHXiXtD+Zcb98812wvokjWpU7Q4QH5edo6dmqrukxVvWWXHlsUg==}

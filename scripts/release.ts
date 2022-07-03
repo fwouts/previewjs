@@ -226,7 +226,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
     case "npm":
       version = await updateNodePackage(packageInfo.dirPath);
       break;
-    case "loader":
+    case "loader": {
       console.log(
         `About to release loader package-lock.json with @previewjs/pro v${previewjsProVersion}.`
       );
@@ -266,10 +266,11 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         cwd: releaseDirPath,
       });
       break;
+    }
     case "intellij":
       version = await updateIntellijVersion(packageInfo.dirPath);
       break;
-    case "vscode":
+    case "vscode": {
       version = await updateNodePackage(packageInfo.dirPath);
       const packageJsonPath = path.join(packageInfo.dirPath, "package.json");
       await fs.promises.writeFile(
@@ -280,6 +281,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         "utf8"
       );
       break;
+    }
     default:
       throw assertNever(packageInfo.type);
   }
