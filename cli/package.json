@@ -22,6 +22,7 @@
     "build": "rimraf dist && tsc && node esbuild.js",
     "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
   },
+  "dependencies": {},
   "devDependencies": {
     "@previewjs/api": "workspace:*",
     "@previewjs/loader": "workspace:*",
