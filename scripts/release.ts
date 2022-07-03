@@ -1,5 +1,4 @@
 import assertNever from "assert-never";
-import axios from "axios";
 import execa from "execa";
 import fs from "fs";
 import inquirer from "inquirer";
@@ -322,21 +321,6 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
   console.log(`Creating release...`);
   await execa("gh", ["release", "create", tag, "-t", tag, "-n", changelog]);
   console.log(`Done!`);
-
-  if (packageInfo.type === "npm") {
-    console.log("Waiting for NPM package to be published...");
-    while (true) {
-      try {
-        await axios.get(`https://registry.npmjs.org/${packageName}/${version}`);
-        console.log("Success!");
-        break;
-      } catch (e) {
-        console.log("Waiting...");
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-      }
-    }
-  }
-  console.log("");
 }
 
 async function gitChangelog(packageName: string, dirPaths: string[]) {
