@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { LinkBanner } from "../../design/LinkBanner";
 import type { UpdateBannerState } from "./UpdateBannerState";
 

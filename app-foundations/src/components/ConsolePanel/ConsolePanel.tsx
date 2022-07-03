@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { ConsoleLogs } from "../../design/ConsoleLogs";
 import type { ConsolePanelState } from "./ConsolePanelState";
 

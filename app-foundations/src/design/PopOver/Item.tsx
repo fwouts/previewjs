@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type React from "react";
+import React from "react";
 
 export const Item = (props: {
   children: React.ReactNode;
