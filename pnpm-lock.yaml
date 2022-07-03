@@ -120,7 +120,7 @@ importers:
       '@fortawesome/react-fontawesome': ^0.2.0
       '@monaco-editor/react': ^4.4.5
       '@previewjs/api': ^2.3.0
-      '@previewjs/iframe': ^1.0.0
+      '@previewjs/iframe': ^1.1.0
       '@previewjs/type-analyzer': ^2.2.0
       '@react-hook/window-size': ^3.0.7
       '@types/prettier': 2.6.3
@@ -219,7 +219,7 @@ importers:
     specifiers:
       '@previewjs/api': ^2.3.0
       '@previewjs/config': ^2.0.1
-      '@previewjs/iframe': ^1.0.0
+      '@previewjs/iframe': ^1.1.0
       '@previewjs/type-analyzer': ^2.2.0
       '@previewjs/vfs': ^1.2.0
       '@types/cookie-parser': 1.4.3
@@ -16286,6 +16286,17 @@ packages:
       debug:
         optional: true
 
+  /follow-redirects/1.15.1_debug@4.3.4:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4_supports-color@6.1.0
+
   /fontfaceobserver/2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
     dev: false
@@ -17547,7 +17558,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
