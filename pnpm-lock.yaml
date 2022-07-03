@@ -1449,6 +1449,7 @@ importers:
 
   test-apps/react16:
     specifiers:
+      '@previewjs/plugin-react': workspace:*
       '@types/react': ^16
       react: ^16
       react-dom: ^16
@@ -1456,9 +1457,12 @@ importers:
       '@types/react': 16.14.28
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
+    devDependencies:
+      '@previewjs/plugin-react': link:../../frameworks/react
 
   test-apps/react17:
     specifiers:
+      '@previewjs/plugin-react': workspace:*
       '@types/react': ^17
       react: ^17
       react-dom: ^17
@@ -1466,9 +1470,12 @@ importers:
       '@types/react': 17.0.47
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+    devDependencies:
+      '@previewjs/plugin-react': link:../../frameworks/react
 
   test-apps/react18:
     specifiers:
+      '@previewjs/plugin-react': workspace:*
       '@types/react': ^18
       react: ^18
       react-dom: ^18
@@ -1476,15 +1483,19 @@ importers:
       '@types/react': 18.0.14
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    devDependencies:
+      '@previewjs/plugin-react': link:../../frameworks/react
 
   test-apps/solid:
     specifiers:
+      '@previewjs/plugin-solid': workspace:*
       solid-js: ^1.3.13
       vite: ^2.8.6
       vite-plugin-solid: ^2.2.6
     dependencies:
       solid-js: 1.4.4
     devDependencies:
+      '@previewjs/plugin-solid': link:../../frameworks/solid
       vite: 2.9.12
       vite-plugin-solid: 2.2.6
 
