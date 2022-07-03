@@ -3,7 +3,17 @@ import execa from "execa";
 import path from "path";
 import { inspect } from "util";
 
-const globalIgnores = ["autoprefixer", "postcss", "tailwindcss", "unbuild"];
+const globalIgnores = [
+  "@typescript-eslint/eslint-plugin",
+  "@typescript-eslint/parser",
+  "autoprefixer",
+  "eslint-config-prettier",
+  "eslint-plugin-react",
+  "eslint-plugin-react-hooks",
+  "postcss",
+  "tailwindcss",
+  "unbuild",
+];
 
 // TODO: Go through these deps and eliminate the ones that are not needed.
 const localIgnores: Record<string, string[]> = {
@@ -31,6 +41,7 @@ async function main() {
     const { path: workspacePath } = workspace;
     const relativePath = "/" + path.relative(rootDir, workspacePath);
     if (
+      relativePath.startsWith("/test-apps") ||
       relativePath.startsWith("/smoke-test-apps") ||
       relativePath === "/dev-workspace"
     ) {
