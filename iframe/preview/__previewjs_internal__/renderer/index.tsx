@@ -4,6 +4,6 @@ export async function load() {
   console.error("Dummy loader was invoked!");
 }
 
-export async function detach() {}
-{
+export async function detach() {
+  // Same here!
 }

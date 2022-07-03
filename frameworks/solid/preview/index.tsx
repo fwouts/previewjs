@@ -55,7 +55,9 @@ export async function detach() {
 }
 
 const container = document.getElementById("root");
-let detachFn: () => void = () => {};
+let detachFn: () => void = () => {
+  // This function will be replaced by the real one when the component is loaded.
+};
 async function render<P>(Renderer: (props: P) => JSX.Element, props: P) {
   detachFn();
   container.innerHTML = "";

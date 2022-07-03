@@ -15,7 +15,7 @@ interface AppProps {
   };
 }
 
-function App(props: AppProps) {
+function App(_props: AppProps) {
   return (
     <div className="App">
       <header className="App-header">
@@ -37,6 +37,7 @@ function App(props: AppProps) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Other() {
   return <div className="OtherSameFile">Hello</div>;
 }

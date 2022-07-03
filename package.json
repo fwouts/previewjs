@@ -16,15 +16,22 @@
   "scripts": {
     "check-deps": "ts-node scripts/check-deps.ts",
     "check-licenses": "ts-node scripts/check-licenses.ts",
-    "release": "ts-node scripts/release.ts"
+    "release": "ts-node scripts/release.ts",
+    "lint": "eslint --max-warnings 0 **/*.ts **/*.tsx"
   },
   "devDependencies": {
     "@types/inquirer": "8.2.1",
     "@types/license-checker": "25.0.3",
     "@types/node": "17.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.30.3",
+    "@typescript-eslint/parser": "^5.30.3",
     "assert-never": "1.2.1",
     "axios": "0.27.2",
     "depcheck": "^1.4.3",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "execa": "5.1.1",
     "inquirer": "8.2.4",
     "license-checker": "25.0.1",

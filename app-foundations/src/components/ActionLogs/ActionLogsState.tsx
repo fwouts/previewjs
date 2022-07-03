@@ -2,7 +2,7 @@ import { Action } from "@previewjs/iframe";
 import { makeAutoObservable } from "mobx";
 
 export class ActionLogsState {
-  logs: ActionLogsState.Item[] = [];
+  logs: Item[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -16,7 +16,7 @@ export class ActionLogsState {
     if (existingActionLog) {
       existingActionLog.count += 1;
     } else {
-      const item: ActionLogsState.Item = {
+      const item: Item = {
         key,
         action,
         count: 1,
@@ -26,16 +26,14 @@ export class ActionLogsState {
     }
   }
 
-  private removeItem(item: ActionLogsState.Item) {
+  private removeItem(item: Item) {
     this.logs = this.logs.filter((a) => a.key !== item.key);
   }
 }
 
-export namespace ActionLogsState {
-  export type Item = {
-    key: string;
-    action: Action;
-    count: number;
-    remove(): void;
-  };
-}
+export type Item = {
+  key: string;
+  action: Action;
+  count: number;
+  remove(): void;
+};
