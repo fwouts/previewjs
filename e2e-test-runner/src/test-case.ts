@@ -1,8 +1,8 @@
-import { FrameworkPluginFactory } from "@previewjs/core";
+import type { FrameworkPluginFactory } from "@previewjs/core";
 import callerCallsite from "caller-callsite";
 import path from "path";
-import { AppController } from "./helpers/app-controller";
-import { AppDir } from "./test-runner";
+import type { AppController } from "./helpers/app-controller";
+import type { AppDir } from "./test-runner";
 
 export interface TestSuite {
   frameworkPluginFactories: FrameworkPluginFactory[];

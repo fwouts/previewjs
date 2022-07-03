@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import type React from "react";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
 import { Link } from "../../design/Link";
@@ -15,7 +15,7 @@ import { PropsEditor } from "../../design/PropsEditor";
 import { SmallLogo } from "../../design/SmallLogo";
 import { PanelTab, TabbedPanel } from "../../design/TabbedPanel";
 import { decodeComponentId } from "../../state/component-id";
-import { PreviewState } from "../../state/PreviewState";
+import type { PreviewState } from "../../state/PreviewState";
 import { ActionLogs } from "../ActionLogs";
 import { ConsolePanel } from "../ConsolePanel";
 import { UpdateBanner } from "../UpdateBanner";

@@ -1,4 +1,4 @@
-import { CollectedTypes, ValueType } from "./definitions";
+import type { CollectedTypes, ValueType } from "./definitions";
 import { evaluateType } from "./type-parameters";
 
 export function isValid(

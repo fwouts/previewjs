@@ -1,5 +1,5 @@
-import { localEndpoints } from "@previewjs/api";
-import { Component } from "./plugins/framework";
+import type { localEndpoints } from "@previewjs/api";
+import type { Component } from "./plugins/framework";
 
 export async function computeProps({
   component,

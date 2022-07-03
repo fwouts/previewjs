@@ -1,7 +1,7 @@
-import { Reader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
-import * as vite from "vite";
+import type * as vite from "vite";
 import { transformWithEsbuild } from "vite";
 
 const VIRTUAL_PREFIX = `/@previewjs-virtual:`;

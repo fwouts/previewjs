@@ -1,4 +1,4 @@
-import { AppController } from "./app-controller";
+import type { AppController } from "./app-controller";
 import { expect } from "./expect";
 
 export async function expectErrors(

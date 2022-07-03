@@ -10,12 +10,12 @@ import {
   ReaderListenerInfo,
 } from "@previewjs/vfs";
 import assertNever from "assert-never";
-import express from "express";
+import type express from "express";
 import { pathExistsSync } from "fs-extra";
 import path from "path";
-import * as vite from "vite";
+import type * as vite from "vite";
 import { getCacheDir } from "./caching";
-import { FrameworkPlugin } from "./plugins/framework";
+import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
 import { ViteManager } from "./vite/vite-manager";
 

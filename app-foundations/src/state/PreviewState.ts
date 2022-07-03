@@ -12,7 +12,7 @@ import { UpdateBannerState } from "../components/UpdateBanner";
 import "../window";
 import { decodeComponentId } from "./component-id";
 import { ComponentProps } from "./ComponentProps";
-import { PersistedStateController } from "./PersistedStateController";
+import type { PersistedStateController } from "./PersistedStateController";
 
 const REFRESH_PERIOD_MILLIS = 5000;
 

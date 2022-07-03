@@ -1,5 +1,5 @@
 import assertNever from "assert-never";
-import { SerializableValue } from "./serializable-value";
+import type { SerializableValue } from "./serializable-value";
 
 export function serializableValueToJavaScript(
   value: SerializableValue

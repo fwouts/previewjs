@@ -1,7 +1,7 @@
 import type { Preview, Workspace } from "@previewjs/core";
 import fs from "fs-extra";
 import path from "path";
-import playwright from "playwright";
+import type playwright from "playwright";
 
 export class AppController {
   private preview: Preview | null = null;

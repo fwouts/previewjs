@@ -1,6 +1,6 @@
-import { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
-import { Endpoint } from "./endpoint";
-import { PersistedState } from "./persisted-state";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type { Endpoint } from "./endpoint";
+import type { PersistedState } from "./persisted-state";
 
 export const GetInfo: Endpoint<
   void,

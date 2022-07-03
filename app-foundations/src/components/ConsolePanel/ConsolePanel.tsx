@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { ConsoleLogs } from "../../design/ConsoleLogs";
-import { ConsolePanelState } from "./ConsolePanelState";
+import type { ConsolePanelState } from "./ConsolePanelState";
 
 export const ConsolePanel = observer(
   ({ state }: { state: ConsolePanelState }) => {

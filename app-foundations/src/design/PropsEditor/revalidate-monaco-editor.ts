@@ -1,4 +1,4 @@
-import { Monaco } from "@monaco-editor/react";
+import type { Monaco } from "@monaco-editor/react";
 import type monaco from "monaco-editor";
 import { flattenDiagnosticMessageText } from "typescript";
 

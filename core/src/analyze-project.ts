@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import glob from "glob";
 import path from "path";
 import { promisify } from "util";
-import { Workspace } from ".";
+import type { Workspace } from ".";
 import { getCacheDir } from "./caching";
 
 export interface ProjectAnalysis {

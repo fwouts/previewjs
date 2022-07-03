@@ -1,5 +1,5 @@
 import express from "express";
-import http from "http";
+import type http from "http";
 import { createHttpTerminator, HttpTerminator } from "http-terminator";
 
 export class Server {

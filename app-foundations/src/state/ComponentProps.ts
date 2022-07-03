@@ -1,4 +1,4 @@
-import { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import { makeAutoObservable } from "mobx";
 import { extractFunctionKeys } from "./generators/extract-function-keys";
 import { generateDefaultProps } from "./generators/generate-default-props";

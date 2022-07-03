@@ -1,4 +1,4 @@
-import { Endpoint } from "./endpoint";
+import type { Endpoint } from "./endpoint";
 
 export const CheckVersion: Endpoint<CheckVersionRequest, CheckVersionResponse> =
   {

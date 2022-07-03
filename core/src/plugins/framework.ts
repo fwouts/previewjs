@@ -1,13 +1,13 @@
-import { PreviewConfig } from "@previewjs/config";
-import {
+import type { PreviewConfig } from "@previewjs/config";
+import type {
   CollectedTypes,
   TypeAnalyzer,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { Reader } from "@previewjs/vfs";
-import ts from "typescript";
-import vite from "vite";
-import { PackageDependencies } from "./dependencies";
+import type { Reader } from "@previewjs/vfs";
+import type ts from "typescript";
+import type vite from "vite";
+import type { PackageDependencies } from "./dependencies";
 
 export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;

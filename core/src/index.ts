@@ -5,20 +5,20 @@ import {
   TypeAnalyzer,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
-import { Reader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
-import * as vite from "vite";
+import type * as vite from "vite";
 import { analyzeProject, ProjectAnalysis } from "./analyze-project";
 import { computeProps } from "./compute-props";
 import {
   LocalFilePersistedStateManager,
   PersistedStateManager,
 } from "./persisted-state";
-import { FrameworkPlugin } from "./plugins/framework";
+import type { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter, RegisterEndpoint } from "./router";
 export type { ProjectAnalysis } from "./analyze-project";

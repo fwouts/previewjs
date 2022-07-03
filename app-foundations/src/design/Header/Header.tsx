@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react";
+import type React from "react";
 
 const Container: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="text-sm bg-gray-900 filter drop-shadow">{children}</div>
