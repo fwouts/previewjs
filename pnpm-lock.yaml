@@ -1490,12 +1490,14 @@ importers:
 
   test-apps/vue2:
     specifiers:
+      '@vue/cli-plugin-babel': ~4.5.0
       '@vue/cli-service': ~4.5.0
       vue: ^2.6.11
       vue-template-compiler: ^2.6.11
     dependencies:
       vue: 2.6.14
     devDependencies:
+      '@vue/cli-plugin-babel': 4.5.18_3fpzh2ajutiet3g64krcwhe4ay
       '@vue/cli-service': 4.5.18_sbs6or2oam5i4s4vmfp4rzwdnq
       vue-template-compiler: 2.6.14
 
