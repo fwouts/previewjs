@@ -157,6 +157,7 @@ class TestRunner {
     await controller.start();
     try {
       console.log(chalk.gray(`▶️  ${testCase.description}`));
+      const startTime = Date.now();
       const testCasePromise = testCase.run({
         appDir,
         controller,
@@ -176,7 +177,15 @@ class TestRunner {
           )
         ),
       ]);
-      console.log(chalk.green(`✅ ${testCase.description}`));
+      const endTime = Date.now();
+      const durationMillis = endTime - startTime;
+      console.log(
+        chalk.green(
+          `✅ ${testCase.description} (${
+            durationMillis > 15000 ? "⚠️ " : ""
+          }${durationMillis}ms)`
+        )
+      );
       return true;
     } catch (e) {
       console.log(chalk.red(`❌ ${testCase.description}`));
