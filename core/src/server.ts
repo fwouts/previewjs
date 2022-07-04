@@ -25,7 +25,6 @@ export class Server {
   async start(port: number) {
     return new Promise<http.Server>((resolve) => {
       const server = (this.server = this.app.listen(port, () => {
-        console.log(`Preview.js Server running at http://localhost:${port}.`);
         resolve(server);
       }));
       this.serverTerminator = createHttpTerminator({
@@ -45,6 +44,5 @@ export class Server {
       await new Promise((resolve) => server.close(resolve));
       this.server = null;
     }
-    console.log(`Preview.js Server stopped.`);
   }
 }
