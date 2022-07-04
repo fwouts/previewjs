@@ -1,5 +1,5 @@
-import { testSuite } from "@previewjs/e2e-test-runner";
 import vue3Plugin from "@previewjs/plugin-vue3";
+import { describe, it } from "vitest";
 
 const WRAPPER_SOURCE = `<template>
   <div class="wrapped">
@@ -8,65 +8,56 @@ const WRAPPER_SOURCE = `<template>
 </template>
 `;
 
-export const wrapperTests = testSuite([vue3Plugin], "vue3/wrapper", (test) => {
-  test(
-    "refreshes when wrapper is added",
-    "vue3",
-    async ({ appDir, controller }) => {
-      await controller.show("src/App.vue:App");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector(".logo");
-      await previewIframe.waitForSelector(".wrapped", {
-        state: "hidden",
-      });
-      await appDir.update("__previewjs__/Wrapper.vue", {
-        kind: "replace",
-        text: WRAPPER_SOURCE,
-      });
-      await previewIframe.waitForSelector(".wrapped");
-    }
-  );
+describe("vue3/wrapper", () => {
+  it("refreshes when wrapper is added", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await controller.show("src/App.vue:App");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(".logo");
+    await previewIframe.waitForSelector(".wrapped", {
+      state: "hidden",
+    });
+    await appDir.update("__previewjs__/Wrapper.vue", {
+      kind: "replace",
+      text: WRAPPER_SOURCE,
+    });
+    await previewIframe.waitForSelector(".wrapped");
+  });
 
-  test(
-    "refreshes when wrapper is updated",
-    "vue3",
-    async ({ appDir, controller }) => {
-      await controller.show("src/App.vue:App");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector(".logo");
-      await appDir.update("__previewjs__/Wrapper.vue", {
-        kind: "replace",
-        text: WRAPPER_SOURCE,
-      });
-      await previewIframe.waitForSelector(".wrapped");
-      await appDir.update("__previewjs__/Wrapper.vue", {
-        kind: "edit",
-        search: /wrapped/g,
-        replace: "wrapped-modified",
-      });
-      await previewIframe.waitForSelector(".wrapped", {
-        state: "hidden",
-      });
-      await previewIframe.waitForSelector(".wrapped-modified");
-    }
-  );
+  it("refreshes when wrapper is updated", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await controller.show("src/App.vue:App");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(".logo");
+    await appDir.update("__previewjs__/Wrapper.vue", {
+      kind: "replace",
+      text: WRAPPER_SOURCE,
+    });
+    await previewIframe.waitForSelector(".wrapped");
+    await appDir.update("__previewjs__/Wrapper.vue", {
+      kind: "edit",
+      search: /wrapped/g,
+      replace: "wrapped-modified",
+    });
+    await previewIframe.waitForSelector(".wrapped", {
+      state: "hidden",
+    });
+    await previewIframe.waitForSelector(".wrapped-modified");
+  });
 
-  test(
-    "refreshes when wrapper is removed",
-    "vue3",
-    async ({ appDir, controller }) => {
-      await controller.show("src/App.vue:App");
-      const previewIframe = await controller.previewIframe();
-      await previewIframe.waitForSelector(".logo");
-      await appDir.update("__previewjs__/Wrapper.vue", {
-        kind: "replace",
-        text: WRAPPER_SOURCE,
-      });
-      await previewIframe.waitForSelector(".wrapped");
-      await appDir.remove("__previewjs__/Wrapper.vue");
-      await previewIframe.waitForSelector(".wrapped", {
-        state: "hidden",
-      });
-    }
-  );
+  it("refreshes when wrapper is removed", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await controller.show("src/App.vue:App");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(".logo");
+    await appDir.update("__previewjs__/Wrapper.vue", {
+      kind: "replace",
+      text: WRAPPER_SOURCE,
+    });
+    await previewIframe.waitForSelector(".wrapped");
+    await appDir.remove("__previewjs__/Wrapper.vue");
+    await previewIframe.waitForSelector(".wrapped", {
+      state: "hidden",
+    });
+  });
 });

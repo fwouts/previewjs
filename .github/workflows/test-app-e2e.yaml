@@ -31,26 +31,11 @@ jobs:
       matrix:
         node-version: [18.x]
         os: [ubuntu-20.04, macos-11, windows-2022]
-        group: [0, 1, 2]
         include:
           - node-version: 14
             os: ubuntu-latest
-            group: 0
-          - node-version: 14
-            os: ubuntu-latest
-            group: 1
-          - node-version: 14
-            os: ubuntu-latest
-            group: 2
           - node-version: 16
             os: ubuntu-latest
-            group: 0
-          - node-version: 16
-            os: ubuntu-latest
-            group: 1
-          - node-version: 16
-            os: ubuntu-latest
-            group: 2
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -70,14 +55,11 @@ jobs:
       - run: pnpm turbo run build --scope="@previewjs/e2e-test-runner" --include-dependencies
       - run: pnpm install # necessary to link e2e-test-runner
       - run: pnpm turbo run e2e-test --scope="@previewjs/app" --include-dependencies
-        env:
-          GROUP_INDEX: ${{ matrix.group }}
-          GROUP_COUNT: 3
       - name: Archive success screenshots
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
+          name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}
           path: |
             app/tests/__screenshots__
             pro/tests/__screenshots__
@@ -85,7 +67,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
-          name: failure-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
+          name: failure-screenshots-${{ runner.os }}-${{ matrix.node-version }}
           path: |
             app/tests/__failures__
             pro/tests/__failures__
@@ -121,7 +103,6 @@ jobs:
         env:
           MATRIX_NODE_VERSION: ${{ matrix.node-version }}
           MATRIX_OS: ${{ matrix.os }}
-          MATRIX_GROUP: ${{ matrix.group }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -129,7 +110,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `⚠️ Screenshots have changed: group ${process.env.MATRIX_GROUP}, ${process.env.MATRIX_OS} (Node ${process.env.MATRIX_NODE_VERSION})`
+              body: `⚠️ Screenshots have changed: ${process.env.MATRIX_OS} (Node ${process.env.MATRIX_NODE_VERSION})`
             })
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code

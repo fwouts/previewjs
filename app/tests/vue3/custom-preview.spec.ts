@@ -1,5 +1,5 @@
-import { testSuite } from "@previewjs/e2e-test-runner";
 import vue3Plugin from "@previewjs/plugin-vue3";
+import { describe, it } from "vitest";
 
 function sourceClassic(previews: string | null) {
   return `
@@ -53,17 +53,12 @@ definePreviews<Props>(${previews})
 `.trim();
 }
 
-export const customPreviewTests = testSuite(
-  [vue3Plugin],
-  "vue3/custom preview",
-  (test) => {
-    test(
-      "shows variants when already configured with previews property",
-      "vue3",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(`{
+describe("vue3/custom preview", () => {
+  it("shows variants when already configured with previews property", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(`{
           default: {
             label: "default variant",
           },
@@ -72,34 +67,31 @@ export const customPreviewTests = testSuite(
             disabled: true,
           },
         }`),
-        });
-        await controller.show("src/Button.vue:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default variant')]"
-        );
-
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(null),
-        });
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default variant')]",
-          {
-            state: "hidden",
-          }
-        );
-        await previewIframe.waitForSelector("#button");
-      }
+    });
+    await controller.show("src/Button.vue:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default variant')]"
     );
 
-    test(
-      "shows variants when already configured with setup script",
-      "vue3",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceWithSetupScript(`{
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(null),
+    });
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default variant')]",
+      {
+        state: "hidden",
+      }
+    );
+    await previewIframe.waitForSelector("#button");
+  });
+
+  it("shows variants when already configured with setup script", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceWithSetupScript(`{
           default: {
             label: "default variant",
           },
@@ -108,42 +100,39 @@ export const customPreviewTests = testSuite(
             disabled: true,
           },
         }`),
-        });
-        await controller.show("src/Button.vue:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default variant')]"
-        );
-
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(null),
-        });
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default variant')]",
-          {
-            state: "hidden",
-          }
-        );
-        await previewIframe.waitForSelector("#button");
-      }
+    });
+    await controller.show("src/Button.vue:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default variant')]"
     );
 
-    test(
-      "shows variants once preview added and hides once removed",
-      "vue3",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(null),
-        });
-        await controller.show("src/Button.vue:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector("#button");
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(null),
+    });
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default variant')]",
+      {
+        state: "hidden",
+      }
+    );
+    await previewIframe.waitForSelector("#button");
+  });
 
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(`{
+  it("shows variants once preview added and hides once removed", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(null),
+    });
+    await controller.show("src/Button.vue:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector("#button");
+
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(`{
           default: {
             label: "default variant",
           },
@@ -152,65 +141,59 @@ export const customPreviewTests = testSuite(
             disabled: true,
           },
         }`),
-        });
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default variant')]"
-        );
-
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(null),
-        });
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default variant')]",
-          {
-            state: "hidden",
-          }
-        );
-        await previewIframe.waitForSelector("#button");
-      }
+    });
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default variant')]"
     );
 
-    test(
-      "supports variants defined as function",
-      "vue3",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(null),
-        });
-        await controller.show("src/Button.vue:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector("#button");
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(`() => ({
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(null),
+    });
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default variant')]",
+      {
+        state: "hidden",
+      }
+    );
+    await previewIframe.waitForSelector("#button");
+  });
+
+  it("supports variants defined as function", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(null),
+    });
+    await controller.show("src/Button.vue:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector("#button");
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(`() => ({
             default: {
               label: "custom label",
             },
           })`),
-        });
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'custom label')]"
-        );
-      }
+    });
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'custom label')]"
     );
+  });
 
-    test(
-      "updates when preview is updated",
-      "vue3",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(null),
-        });
-        await controller.show("src/Button.vue:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector("#button");
+  it("updates when preview is updated", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(null),
+    });
+    await controller.show("src/Button.vue:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector("#button");
 
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(`{
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(`{
           default: {
             label: "default variant",
           },
@@ -219,14 +202,14 @@ export const customPreviewTests = testSuite(
             disabled: true,
           },
         }`),
-        });
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default variant')]"
-        );
+    });
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default variant')]"
+    );
 
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(`{
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(`{
           default: {
             label: "foo label",
           },
@@ -235,50 +218,43 @@ export const customPreviewTests = testSuite(
             disabled: true,
           },
         }`),
-        });
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'foo label')]"
-        );
-      }
+    });
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'foo label')]"
     );
+  });
 
-    test(
-      "hides props editor for configured variants",
-      "vue3",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(null),
-        });
-        await controller.show("src/Button.vue:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector("#button");
-        await controller.props.editor.isReady();
+  it("hides props editor for configured variants", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(null),
+    });
+    await controller.show("src/Button.vue:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector("#button");
+    await controller.props.editor.isReady();
 
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: sourceClassic(`{
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: sourceClassic(`{
           default: {
             label: "default",
           },
         }`),
-        });
+    });
 
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'default')]"
-        );
-        await controller.props.editor.waitUntilGone();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'default')]"
+    );
+    await controller.props.editor.waitUntilGone();
 
-        await controller.component.label().click();
-        await controller.props.editor.isReady();
+    await controller.component.label().click();
+    await controller.props.editor.isReady();
 
-        await controller.props.editor.replaceText(`properties = {
+    await controller.props.editor.replaceText(`properties = {
         label: "foo"
       }`);
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'foo')]"
-        );
-      }
-    );
-  }
-);
+    await previewIframe.waitForSelector("xpath=//button[contains(., 'foo')]");
+  });
+});

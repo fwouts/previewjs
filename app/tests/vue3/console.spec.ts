@@ -1,8 +1,10 @@
-import { expect, expectErrors, testSuite } from "@previewjs/e2e-test-runner";
+import { expect, expectErrors } from "@previewjs/e2e-test-runner";
 import vue3Plugin from "@previewjs/plugin-vue3";
+import { describe, it } from "vitest";
 
-export const consoleTests = testSuite([vue3Plugin], "vue3/console", (test) => {
-  test("shows logs", "vue3", async ({ appDir, controller }) => {
+describe("vue3/console", () => {
+  it("shows logs", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
     await controller.show("src/App.vue:App");
     const previewIframe = await controller.previewIframe();
     await previewIframe.waitForSelector(".logo");
@@ -57,7 +59,8 @@ export default {
     expect(await controller.console.items.count()).toEqual(1);
   });
 
-  test("hides errors once resolved", "vue3", async ({ appDir, controller }) => {
+  it("hides errors once resolved", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue3", [vue3Plugin]);
     appDir.update("src/App.vue", {
       kind: "replace",
       text: `

@@ -1,38 +1,30 @@
-import { testSuite } from "@previewjs/e2e-test-runner";
 import solidPlugin from "@previewjs/plugin-solid";
+import { describe, it } from "vitest";
 
-export const storybookTests = testSuite(
-  [solidPlugin],
-  "solid/storybook",
-  (test) => {
-    test(
-      "renders component with explicit args",
-      "solid",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.tsx", {
-          kind: "replace",
-          text: `
+describe("solid/storybook", () => {
+  it("renders component with explicit args", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("solid", [solidPlugin]);
+    await appDir.update("src/Button.tsx", {
+      kind: "replace",
+      text: `
   const Button = ({ label }) => <button>{label}</button>;
   Button.args = {
     label: "Hello, World!"
   };
       `,
-        });
-        await controller.show("src/Button.tsx:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
-        );
-      }
+    });
+    await controller.show("src/Button.tsx:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'Hello, World!')]"
     );
+  });
 
-    test(
-      "renders component with default args",
-      "solid",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.tsx", {
-          kind: "replace",
-          text: `
+  it("renders component with default args", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("solid", [solidPlugin]);
+    await appDir.update("src/Button.tsx", {
+      kind: "replace",
+      text: `
   const Button = ({ label }) => <button>{label}</button>;
 
   export default {
@@ -41,22 +33,19 @@ export const storybookTests = testSuite(
     }
   };
       `,
-        });
-        await controller.show("src/Button.tsx:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
-        );
-      }
+    });
+    await controller.show("src/Button.tsx:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'Hello, World!')]"
     );
+  });
 
-    test(
-      "renders component with explicit args over default args",
-      "solid",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.tsx", {
-          kind: "replace",
-          text: `
+  it("renders component with explicit args over default args", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("solid", [solidPlugin]);
+    await appDir.update("src/Button.tsx", {
+      kind: "replace",
+      text: `
   const Button = ({ label }) => <button>{label}</button>;
   Button.args = {
     label: "explicit"
@@ -68,13 +57,11 @@ export const storybookTests = testSuite(
     }
   };
       `,
-        });
-        await controller.show("src/Button.tsx:Button");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'explicit')]"
-        );
-      }
+    });
+    await controller.show("src/Button.tsx:Button");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'explicit')]"
     );
-  }
-);
+  });
+});

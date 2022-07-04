@@ -1,5 +1,6 @@
-import { expectErrors, testSuite } from "@previewjs/e2e-test-runner";
+import { expectErrors } from "@previewjs/e2e-test-runner";
 import vue2Plugin from "@previewjs/plugin-vue2";
+import { describe, it } from "vitest";
 
 const buttonVueSource = `
 <template>
@@ -24,21 +25,16 @@ export default {
 </script>
 `;
 
-export const storybookTests = testSuite(
-  [vue2Plugin],
-  "vue2/storybook",
-  (test) => {
-    test(
-      "renders basic Storybook component",
-      "vue2",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: buttonVueSource,
-        });
-        await appDir.update("src/Button.stories.js", {
-          kind: "replace",
-          text: `
+describe("vue2/storybook", () => {
+  it("renders basic Storybook component", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue2", [vue2Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: buttonVueSource,
+    });
+    await appDir.update("src/Button.stories.js", {
+      kind: "replace",
+      text: `
 import Button from './Button.vue';
 
 export const Primary = () => ({
@@ -46,26 +42,23 @@ export const Primary = () => ({
   template: '<Button label="Button" />'
 })
       `,
-        });
-        await controller.show("src/Button.stories.js:Primary");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Button')]"
-        );
-      }
+    });
+    await controller.show("src/Button.stories.js:Primary");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'Button')]"
     );
+  });
 
-    test(
-      "renders templated Storybook component",
-      "vue2",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: buttonVueSource,
-        });
-        await appDir.update("src/Button.stories.js", {
-          kind: "replace",
-          text: `
+  it("renders templated Storybook component", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue2", [vue2Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: buttonVueSource,
+    });
+    await appDir.update("src/Button.stories.js", {
+      kind: "replace",
+      text: `
 import Button from './Button.vue';
 
 const Template = (args, { argTypes }) => ({
@@ -79,26 +72,23 @@ Primary.args = {
   label: "Hello, World!",
 };
       `,
-        });
-        await controller.show("src/Button.stories.js:Primary");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
-        );
-      }
+    });
+    await controller.show("src/Button.stories.js:Primary");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'Hello, World!')]"
     );
+  });
 
-    test(
-      "renders Storybook component with implicit template",
-      "vue2",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: buttonVueSource,
-        });
-        await appDir.update("src/Button.stories.js", {
-          kind: "replace",
-          text: `
+  it("renders Storybook component with implicit template", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue2", [vue2Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: buttonVueSource,
+    });
+    await appDir.update("src/Button.stories.js", {
+      kind: "replace",
+      text: `
 import Button from './Button.vue';
 
 const Template = (args, { argTypes }) => ({
@@ -111,26 +101,23 @@ Primary.args = {
   label: "Hello, World!",
 };
       `,
-        });
-        await controller.show("src/Button.stories.js:Primary");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
-        );
-      }
+    });
+    await controller.show("src/Button.stories.js:Primary");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'Hello, World!')]"
     );
+  });
 
-    test(
-      "renders Storybook component with default args",
-      "vue2",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: buttonVueSource,
-        });
-        await appDir.update("src/Button.stories.js", {
-          kind: "replace",
-          text: `
+  it("renders Storybook component with default args", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue2", [vue2Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: buttonVueSource,
+    });
+    await appDir.update("src/Button.stories.js", {
+      kind: "replace",
+      text: `
 import Button from './Button.vue';
 
 const Template = (args, { argTypes }) => ({
@@ -146,26 +133,23 @@ export default {
   }
 };
       `,
-        });
-        await controller.show("src/Button.stories.js:Primary");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
-        );
-      }
+    });
+    await controller.show("src/Button.stories.js:Primary");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'Hello, World!')]"
     );
+  });
 
-    test(
-      "renders Storybook component with explicit args over default args",
-      "vue2",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: buttonVueSource,
-        });
-        await appDir.update("src/Button.stories.js", {
-          kind: "replace",
-          text: `
+  it("renders Storybook component with explicit args over default args", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue2", [vue2Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: buttonVueSource,
+    });
+    await appDir.update("src/Button.stories.js", {
+      kind: "replace",
+      text: `
 import Button from './Button.vue';
 
 const Template = (args, { argTypes }) => ({
@@ -184,26 +168,23 @@ export default {
   }
 };
       `,
-        });
-        await controller.show("src/Button.stories.js:Primary");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'explicit')]"
-        );
-      }
+    });
+    await controller.show("src/Button.stories.js:Primary");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'explicit')]"
     );
+  });
 
-    test(
-      "shows error when Storybook component no longer available",
-      "vue2",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: buttonVueSource,
-        });
-        await appDir.update("src/Button.stories.js", {
-          kind: "replace",
-          text: `
+  it("shows error when Storybook component no longer available", async (ctx) => {
+    const { appDir, controller } = await ctx.setupTest("vue2", [vue2Plugin]);
+    await appDir.update("src/Button.vue", {
+      kind: "replace",
+      text: buttonVueSource,
+    });
+    await appDir.update("src/Button.stories.js", {
+      kind: "replace",
+      text: `
 import Button from './Button.vue';
 
 export const Primary = () => ({
@@ -211,19 +192,17 @@ export const Primary = () => ({
   template: '<Button label="Button" />'
 })
       `,
-        });
-        await controller.show("src/Button.stories.js:Primary");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Button')]"
-        );
-        await appDir.update("src/Button.stories.js", {
-          kind: "edit",
-          search: "Primary",
-          replace: "Renamed",
-        });
-        await expectErrors(controller, [`Error: No component named 'Primary'`]);
-      }
+    });
+    await controller.show("src/Button.stories.js:Primary");
+    const previewIframe = await controller.previewIframe();
+    await previewIframe.waitForSelector(
+      "xpath=//button[contains(., 'Button')]"
     );
-  }
-);
+    await appDir.update("src/Button.stories.js", {
+      kind: "edit",
+      search: "Primary",
+      replace: "Renamed",
+    });
+    await expectErrors(controller, [`Error: No component named 'Primary'`]);
+  });
+});

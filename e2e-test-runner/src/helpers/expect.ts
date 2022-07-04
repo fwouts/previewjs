@@ -1,6 +1,7 @@
 import { isEqual } from "lodash";
 import { inspect } from "util";
 
+// TODO: Replace with vitest functions.
 export function expect(value: unknown) {
   return {
     toEqual(expected: unknown) {

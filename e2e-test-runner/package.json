@@ -14,9 +14,6 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "bin": {
-    "previewjs-e2e-test": "dist/main.cjs"
-  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -39,13 +36,13 @@
     "@types/lodash": "^4.14.182",
     "@types/node": "^17.0.8",
     "assert-never": "^1.2.1",
-    "caller-callsite": "^4.1.0",
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
     "playwright": "^1.23.1",
-    "ts-node": "^10.8.2"
+    "ts-node": "^10.8.2",
+    "vitest": "0.17.0"
   },
   "devDependencies": {
     "unbuild": "0.7.4"
