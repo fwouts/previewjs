@@ -15,10 +15,8 @@ const smokeTestAppsDir = path.join(
 );
 export const smokeTests = fs
   .readdirSync(smokeTestAppsDir)
-  .filter(
-    (appName) =>
-      !appName.startsWith("_tmp_") &&
-      fs.pathExistsSync(path.join(smokeTestAppsDir, appName, "package.json"))
+  .filter((appName) =>
+    fs.pathExistsSync(path.join(smokeTestAppsDir, appName, "package.json"))
   )
   .map((appName) =>
     testSuite(
