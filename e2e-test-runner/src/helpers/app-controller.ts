@@ -25,6 +25,7 @@ export class AppController {
 
   async waitForIdle() {
     await this.page.waitForLoadState("networkidle");
+    (await this.previewIframe()).waitForLoadState("networkidle");
   }
 
   previewIframe = async () => {
