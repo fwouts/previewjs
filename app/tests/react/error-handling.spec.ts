@@ -470,31 +470,6 @@ export const errorHandlingTests = testSuite(
       );
 
       test(
-        `${version}/fails correctly when encountering broken SASS`,
-        "react-sass",
-        async ({ appDir, controller }) => {
-          await controller.show("src/App.tsx:App");
-          const previewIframe = await controller.previewIframe();
-          await previewIframe.waitForSelector(".App-logo");
-          await appDir.update("src/App.scss", {
-            kind: "edit",
-            search: " {",
-            replace: " BROKEN",
-          });
-          await expectErrors(controller, [
-            [`src${path.sep}App.scss 4:21  root stylesheet`],
-            "Failed to reload /src/App.scss.",
-          ]);
-          await appDir.update("src/App.scss", {
-            kind: "edit",
-            search: " BROKEN",
-            replace: " {",
-          });
-          await expectErrors(controller, []);
-        }
-      );
-
-      test(
         `${version}/shows error when file is missing before update`,
         `react${version}`,
         async ({ controller }) => {
@@ -569,6 +544,31 @@ export const errorHandlingTests = testSuite(
         }
       );
     }
+
+    test(
+      "fails correctly when encountering broken SASS",
+      "react-sass",
+      async ({ appDir, controller }) => {
+        await controller.show("src/App.tsx:App");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(".App-logo");
+        await appDir.update("src/App.scss", {
+          kind: "edit",
+          search: " {",
+          replace: " BROKEN",
+        });
+        await expectErrors(controller, [
+          [`src${path.sep}App.scss 4:21  root stylesheet`],
+          "Failed to reload /src/App.scss.",
+        ]);
+        await appDir.update("src/App.scss", {
+          kind: "edit",
+          search: " BROKEN",
+          replace: " {",
+        });
+        await expectErrors(controller, []);
+      }
+    );
   }
 );
 
