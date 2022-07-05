@@ -89,6 +89,7 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
+        await controller.waitForExpectedIframeRefresh();
         await appDir.update(
           "src/components/HelloWorld.vue",
           {
