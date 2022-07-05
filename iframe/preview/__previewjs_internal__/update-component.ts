@@ -1,4 +1,4 @@
-import { RendererLoader } from "../..";
+import type { RendererLoader } from "../..";
 import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 
