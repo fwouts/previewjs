@@ -39,11 +39,13 @@ export const errorHandlingTests = testSuite(
       properties = { foo: "bar" };
       `);
         await previewIframe.waitForSelector(".App-logo");
+        await controller.expectFutureRefresh();
         await appDir.update("src/App.tsx", {
           kind: "edit",
           search: /<p>/g,
           replace: "<p",
         });
+        await controller.waitForExpectedRefresh();
         await expectErrors(controller, [
           `src${path.sep}App.tsx: Unexpected token`,
           "Failed to reload /src/App.tsx.",
