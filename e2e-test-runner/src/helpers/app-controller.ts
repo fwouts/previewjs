@@ -1,5 +1,6 @@
+/// <reference types="@previewjs/iframe/preview/window" />
+
 import type { Preview, Workspace } from "@previewjs/core";
-import "@previewjs/iframe/preview/window";
 import fs from "fs-extra";
 import path from "path";
 import type playwright from "playwright";
