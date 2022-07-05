@@ -1,4 +1,5 @@
 import type { Preview, Workspace } from "@previewjs/core";
+import "@previewjs/iframe/preview/window";
 import fs from "fs-extra";
 import path from "path";
 import type playwright from "playwright";
@@ -36,6 +37,20 @@ export class AppController {
     }
     return frame;
   };
+
+  async expectFutureRefresh() {
+    const frame = await this.previewIframe();
+    await frame.$eval("body", () => {
+      return window.__expectFutureRefresh__();
+    });
+  }
+
+  async waitForExpectedRefresh() {
+    const frame = await this.previewIframe();
+    await frame.$eval("body", () => {
+      return window.__waitForExpectedRefresh__();
+    });
+  }
 
   async show(componentId: string) {
     if (!this.preview) {
