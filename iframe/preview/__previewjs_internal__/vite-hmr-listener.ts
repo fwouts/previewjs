@@ -1,4 +1,4 @@
-import { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
+import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 

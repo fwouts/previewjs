@@ -1,11 +1,8 @@
+import type { AppToPreviewMessage, RenderMessage } from "../../src/messages";
 import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
-import {
-  AppToPreviewMessage,
-  RenderMessage,
-  sendMessageFromPreview,
-} from "./messages";
+import { sendMessageFromPreview } from "./messages";
 import { detach } from "./renderer/index";
 import { setState } from "./state";
 

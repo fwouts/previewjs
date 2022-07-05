@@ -14,18 +14,24 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/iframe --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc"
+    "build": "tsc && unbuild"
   },
   "dependencies": {
     "vite": "^2.9.13"
   },
   "devDependencies": {
-    "rimraf": "3.0.2",
-    "typescript": "4.7.4"
+    "unbuild": "0.7.4"
   }
 }

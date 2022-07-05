@@ -1,5 +1,6 @@
-import { LogLevel } from "../..";
+import type { LogLevel } from "../../src";
 import { sendMessageFromPreview } from "./messages";
+// @ts-ignore
 import inspect from "./object-inspect";
 
 export function setUpLogInterception() {
@@ -44,7 +45,7 @@ export function setUpLogInterception() {
           level === "error" &&
           args.length === 1 &&
           firstArg instanceof Error &&
-          new Error().stack.includes("warnFailedFetch")
+          new Error().stack?.includes("warnFailedFetch")
         ) {
           // An example where this will occur is when importing a module
           // that throws an error in its root body.
@@ -56,7 +57,7 @@ export function setUpLogInterception() {
               type: "error",
               err: {
                 message: firstArg.message,
-                stack: firstArg.stack,
+                stack: firstArg.stack || "",
               },
             },
           });
@@ -79,7 +80,7 @@ export function setUpLogInterception() {
   const errorLogger = makeLogger("error", console.error);
   console.error = errorLogger;
   window.onerror = (message, source, lineno, colno, error) => {
-    if (error.stack && error.message) {
+    if (error && error.stack && error.message) {
       message = error.stack;
       if (!message.includes(error.message)) {
         message = error.message + "\n" + message;
