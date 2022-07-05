@@ -6,6 +6,7 @@ export async function expectErrors(
   expectedErrors: Array<string | string[]>
 ) {
   await controller.waitForIdle();
+  await controller.waitForExpectedIframeRefresh();
   const selectedTab = await controller.bottomPanel.tabs.selected();
   const isConsoleSelected =
     (await selectedTab?.text())?.includes("Console") || false;

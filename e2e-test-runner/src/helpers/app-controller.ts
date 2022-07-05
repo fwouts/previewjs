@@ -45,14 +45,24 @@ export class AppController {
     return frame;
   };
 
-  async expectFutureRefresh() {
+  async onBeforeFileUpdated() {
+    try {
+      const iframe = await this.page.$("iframe");
+      if (!iframe) {
+        // No iframe yet, so no need to expect anything to change.
+        return;
+      }
+    } catch (e) {
+      // Ignore, most likely due to whole-page refresh.
+      return;
+    }
     const frame = await this.previewIframe();
     await frame.$eval("body", () => {
       return window.__expectFutureRefresh__();
     });
   }
 
-  async waitForExpectedRefresh() {
+  async waitForExpectedIframeRefresh() {
     const frame = await this.previewIframe();
     await frame.$eval("body", () => {
       return window.__waitForExpectedRefresh__();

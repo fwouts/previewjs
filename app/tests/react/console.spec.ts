@@ -111,7 +111,6 @@ function Foo() {
           ];
           for (let i = 0; i < append.length; i++) {
             const partialAppend = append.slice(0, i);
-            await controller.expectFutureRefresh();
             appDir.update(
               "src/App.tsx",
               {
@@ -126,7 +125,6 @@ function Foo() {
                 inMemoryOnly: true,
               }
             );
-            await controller.waitForExpectedRefresh();
             const expectedErrors = errors[i];
             await expectErrors(controller, expectedErrors || []);
           }

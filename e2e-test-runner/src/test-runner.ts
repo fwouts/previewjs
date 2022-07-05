@@ -115,7 +115,6 @@ class TestRunner {
     port: number
   ): Promise<boolean> {
     const rootDirPath = await prepareTestDir();
-    const appDir = await prepareAppDir();
     const env = await loadPreviewEnv({
       rootDirPath,
       setupEnvironment: this.setupEnvironment,
@@ -155,6 +154,7 @@ class TestRunner {
     await page.setDefaultTimeout(DEFAULT_PAGE_TIMEOUT_MILLIS);
     const controller = new AppController(page, workspace, port);
     await controller.start();
+    const appDir = await prepareAppDir(controller);
     try {
       console.log(chalk.gray(`▶️  ${testCase.description}`));
       const startTime = Date.now();
@@ -216,11 +216,12 @@ class TestRunner {
       // );
     }
 
-    function prepareAppDir(): AppDir {
+    function prepareAppDir(controller: AppController): AppDir {
       let lastDiskWriteMillis = 0;
       const appDir: AppDir = {
         rootPath: rootDirPath,
         update: async (f, content, { inMemoryOnly } = {}) => {
+          await controller.onBeforeFileUpdated();
           if (!inMemoryOnly) {
             // In order to make sure that chokidar doesn't
             // mistakenly merge events, resulting in flaky tests

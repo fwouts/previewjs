@@ -3,7 +3,7 @@ import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 
-const maxWaitBeforeUpdatesDeclaredOverMillis = 100;
+const maxWaitBeforeUpdatesDeclaredOverMillis = 300;
 let expectedUpdatePromise: Promise<void> = Promise.resolve();
 let onUpdate = () => {};
 let callOnUpdateTimeout: any;

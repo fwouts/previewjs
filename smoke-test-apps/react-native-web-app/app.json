@@ -2,7 +2,7 @@
   "expo": {
     "name": "react-native-web-app",
     "slug": "react-native-web-app",
-    "version": "1.0.0",
+    "version": "^1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
