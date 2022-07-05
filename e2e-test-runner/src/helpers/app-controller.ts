@@ -21,6 +21,10 @@ export class AppController {
     this.preview = null;
   }
 
+  async waitForIdle() {
+    await this.page.waitForLoadState("networkidle");
+  }
+
   previewIframe = async () => {
     let iframe: playwright.ElementHandle<Element> | null = null;
     let frame: playwright.Frame | null = null;
@@ -46,9 +50,6 @@ export class AppController {
         window.__previewjs_navigate(componentId);
       }, componentId);
     } else {
-      // TODO: Remove this hack to fix flakiness on Mac.
-      // This only seems to happen when using headless mode.
-      await new Promise((resolve) => setTimeout(resolve, 100));
       // Hard refresh.
       await this.page.goto(url);
     }
@@ -89,10 +90,9 @@ export class AppController {
         })
       );
     });
-    // TODO: Remove once we figure out the source of flakiness.
-    await new Promise((resolve) => setTimeout(resolve, 200));
     const destinationDirPath = path.dirname(destinationPath);
     await fs.mkdirp(destinationDirPath);
+    await this.waitForIdle();
     await this.page.screenshot({
       path: destinationPath,
     });

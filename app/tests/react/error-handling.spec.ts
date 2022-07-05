@@ -457,7 +457,6 @@ export const errorHandlingTests = testSuite(
             search: " {",
             replace: " BROKEN",
           });
-          await sleep(2);
           // We don't expect to see any errors for pure CSS.
           await expectErrors(controller, []);
           await appDir.update("src/App.css", {
@@ -571,7 +570,3 @@ export const errorHandlingTests = testSuite(
     }
   }
 );
-
-function sleep(seconds: number) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-}

@@ -126,8 +126,6 @@ function Foo() {
               }
             );
             const expectedErrors = errors[i];
-            // TODO: Remove this horrible wait.
-            await new Promise((resolve) => setTimeout(resolve, 200));
             await expectErrors(controller, expectedErrors || []);
           }
         }
