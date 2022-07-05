@@ -1,6 +1,6 @@
 {
   "name": "nuxt2-app",
-  "version": "1.0.0",
+  "version": "^1",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -9,18 +9,18 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "core-js": "^3.19.3",
-    "nuxt": "^2.15.8",
-    "vue": "^2.6.14",
-    "vue-server-renderer": "^2.6.14",
-    "vue-template-compiler": "^2.6.14",
-    "webpack": "^4.46.0"
+    "core-js": "^3",
+    "nuxt": "^2",
+    "vue": "^2",
+    "vue-server-renderer": "^2",
+    "vue-template-compiler": "^2",
+    "webpack": "^4"
   },
   "devDependencies": {
-    "@nuxt/types": "^2.15.8",
-    "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/tailwindcss": "^4.2.1",
-    "consola": "^2.15.3",
-    "postcss": "^8.4.4"
+    "@nuxt/types": "^2",
+    "@nuxt/typescript-build": "^2",
+    "@nuxtjs/tailwindcss": "^4",
+    "consola": "^2",
+    "postcss": "^8"
   }
 }
