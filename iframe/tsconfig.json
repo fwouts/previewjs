@@ -5,8 +5,8 @@
     "moduleResolution": "node",
     "lib": ["DOM"],
     "jsx": "react-jsx",
-    "rootDir": "src",
-    "outDir": "dist"
+    "rootDir": ".",
+    "noEmit": true
   },
-  "include": ["src"]
+  "include": ["src", "preview"]
 }

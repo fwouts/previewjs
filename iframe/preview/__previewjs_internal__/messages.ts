@@ -1,4 +1,4 @@
-import { PreviewToAppMessage } from "../../src/messages";
+import type { PreviewToAppMessage } from "../../src/messages";
 
 export function sendMessageFromPreview(message: PreviewToAppMessage) {
   sendParentMessage(message);
