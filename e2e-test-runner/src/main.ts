@@ -8,7 +8,8 @@ program
   .option("-s, --setup-module <module-path>")
   .option("-t, --tests-path <tests-path>")
   .option("-f, --filter [filters...]")
-  .action(async ({ setupModule, testsPath, filter = [] }) => {
+  .option("-r, --repeat <times>")
+  .action(async ({ setupModule, testsPath, filter = [], repeat = 1 }) => {
     let failed = false;
     const groupCount = parseInt(process.env.GROUP_COUNT || "1");
     const groupIndex = parseInt(process.env.GROUP_INDEX || "0");
@@ -39,28 +40,31 @@ program
       }
 
       const testSuites = await Promise.all(testSuitesPromises);
-      const { testCasesCount, failedTests } = await runTests({
-        browser,
-        setupEnvironment,
-        testSuites: testSuites.filter(
-          (_, index) => index % groupCount === groupIndex
-        ),
-        filters: filter,
-        outputDirPath,
-        port: port + groupIndex,
-      });
-      const totalDurationMillis = Date.now() - startTimeMillis;
-      console.log(
-        `Test summary (group ${groupIndex}/${groupCount}):\n${testCasesCount} test cases run, ${
-          failedTests.length
-        } failed.\nTotal time: ${totalDurationMillis / 1000}s.`
-      );
-      if (failedTests.length > 0) {
-        console.error(`The following tests failed:`);
-        for (const name of failedTests) {
-          console.error(`• ${name}`);
+      for (let i = 0; i < repeat; i++) {
+        const { testCasesCount, failedTests } = await runTests({
+          browser,
+          setupEnvironment,
+          testSuites: testSuites.filter(
+            (_, index) => index % groupCount === groupIndex
+          ),
+          filters: filter,
+          outputDirPath,
+          port: port + groupIndex,
+        });
+        const totalDurationMillis = Date.now() - startTimeMillis;
+        console.log(
+          `Test summary (group ${groupIndex}/${groupCount}):\n${testCasesCount} test cases run, ${
+            failedTests.length
+          } failed.\nTotal time: ${totalDurationMillis / 1000}s.`
+        );
+        if (failedTests.length > 0) {
+          console.error(`The following tests failed:`);
+          for (const name of failedTests) {
+            console.error(`• ${name}`);
+          }
+          failed = true;
+          break;
         }
-        failed = true;
       }
     } finally {
       await browser.close();
