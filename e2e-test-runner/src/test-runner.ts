@@ -272,14 +272,18 @@ class TestRunner {
       if (await fs.pathExists(cacheDirPath)) {
         await fs.remove(cacheDirPath);
       }
-      const tempParentDirPath = path.join(testCase.testDir, "..", "_tmp_");
-      await fs.mkdirp(tempParentDirPath);
-      const rootDirPath = await fs.mkdtemp(
-        path.join(tempParentDirPath, "app-")
-      );
-      await fs.mkdirp(rootDirPath);
-      await sync(testCase.testDir, rootDirPath);
-      return rootDirPath;
+      if (!testSuite.cloneTestDir) {
+        return testCase.testDir;
+      } else {
+        const tempParentDirPath = path.join(testCase.testDir, "..", "_tmp_");
+        await fs.mkdirp(tempParentDirPath);
+        const rootDirPath = await fs.mkdtemp(
+          path.join(tempParentDirPath, "app-")
+        );
+        await fs.mkdirp(rootDirPath);
+        await sync(testCase.testDir, rootDirPath);
+        return rootDirPath;
+      }
     }
   }
 }
