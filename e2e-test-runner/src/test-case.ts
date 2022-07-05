@@ -7,6 +7,7 @@ import type { AppDir } from "./test-runner";
 export interface TestSuite {
   frameworkPluginFactories: FrameworkPluginFactory[];
   absoluteFilePath: string;
+  cloneTestDir: boolean;
   description: string;
   testCases: TestCase[];
 }
@@ -25,7 +26,8 @@ export async function testSuite(
   frameworkPluginFactories: FrameworkPluginFactory[],
   description: string,
   testFactory: (test: TestCreator) => void | Promise<void>,
-  absoluteFilePath?: string | null
+  absoluteFilePath?: string | null,
+  cloneTestDir = true
 ): Promise<TestSuite> {
   if (!absoluteFilePath) {
     absoluteFilePath = callerCallsite()?.getFileName();
@@ -45,6 +47,7 @@ export async function testSuite(
   return {
     frameworkPluginFactories,
     absoluteFilePath,
+    cloneTestDir,
     description,
     testCases,
   };

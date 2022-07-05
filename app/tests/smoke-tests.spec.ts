@@ -78,6 +78,7 @@ export const smokeTests = fs
           }
         );
       },
-      path.join(smokeTestAppsDir, appName)
+      path.join(smokeTestAppsDir, appName),
+      false
     )
   );

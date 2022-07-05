@@ -272,7 +272,7 @@ class TestRunner {
       if (await fs.pathExists(cacheDirPath)) {
         await fs.remove(cacheDirPath);
       }
-      if (testSuite.absoluteFilePath) {
+      if (!testSuite.cloneTestDir) {
         return testCase.testDir;
       } else {
         const tempParentDirPath = path.join(testCase.testDir, "..", "_tmp_");
