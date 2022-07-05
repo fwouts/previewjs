@@ -3,8 +3,10 @@ import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 
+const maxWaitBeforeUpdatesDeclaredOverMillis = 100;
 let expectedUpdatePromise: Promise<void> = Promise.resolve();
 let onUpdate = () => {};
+let callOnUpdateTimeout: any;
 window.__expectFutureRefresh__ = function () {
   expectedUpdatePromise = new Promise((resolve) => {
     onUpdate = resolve;
@@ -62,8 +64,11 @@ hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
     kind: "vite-before-update",
     payload,
   });
-  setTimeout(() => {
+  if (callOnUpdateTimeout) {
+    clearTimeout(callOnUpdateTimeout);
+  }
+  callOnUpdateTimeout = setTimeout(() => {
     onUpdate();
     onUpdate = () => {};
-  }, 0);
+  }, maxWaitBeforeUpdatesDeclaredOverMillis);
 });
