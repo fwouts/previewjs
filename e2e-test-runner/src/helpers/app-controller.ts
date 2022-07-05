@@ -26,10 +26,10 @@ export class AppController {
   async waitForIdle() {
     await this.page.waitForLoadState("networkidle");
     try {
-      (await this.previewIframe()).waitForLoadState("networkidle");
+      await (await this.previewIframe()).waitForLoadState("networkidle");
     } catch (e) {
       // It's OK for the iframe to be replace by another one, in which case wait again.
-      (await this.previewIframe()).waitForLoadState("networkidle");
+      await (await this.previewIframe()).waitForLoadState("networkidle");
     }
   }
 
