@@ -1,4 +1,4 @@
-import type { LogLevel } from "../..";
+import type { LogLevel } from "../../src";
 import { sendMessageFromPreview } from "./messages";
 // @ts-ignore
 import inspect from "./object-inspect";
