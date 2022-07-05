@@ -103,6 +103,7 @@ export default {
     ];
     for (let i = 0; i < append.length; i++) {
       const partialAppend = append.slice(0, i);
+      await controller.expectFutureRefresh();
       appDir.update(
         "src/App.vue",
         {
@@ -126,9 +127,8 @@ export default {
           inMemoryOnly: true,
         }
       );
+      await controller.waitForExpectedRefresh();
       const expectedErrors = errors[i];
-      // TODO: Remove this horrible wait.
-      await new Promise((resolve) => setTimeout(resolve, 200));
       await expectErrors(controller, expectedErrors || []);
     }
   });

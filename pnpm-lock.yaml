@@ -293,6 +293,7 @@ importers:
   e2e-test-runner:
     specifiers:
       '@previewjs/core': ^5.0.4
+      '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.1
       '@types/fs-extra': ^9.0.13
       '@types/lodash': ^4.14.182
@@ -321,6 +322,7 @@ importers:
       playwright: 1.23.1
       ts-node: 10.8.2_6bd4jfip3gnofjnkq5lqqdbk4m
     devDependencies:
+      '@previewjs/iframe': link:../iframe
       unbuild: 0.7.4
 
   frameworks/react:

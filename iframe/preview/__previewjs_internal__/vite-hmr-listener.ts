@@ -1,9 +1,22 @@
+/// <reference types="vite/client" />
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 
-// @ts-ignore
-const hmr = import.meta.hot;
+const maxWaitBeforeUpdatesDeclaredOverMillis = 100;
+let expectedUpdatePromise: Promise<void> = Promise.resolve();
+let onUpdate = () => {};
+let callOnUpdateTimeout: any;
+window.__expectFutureRefresh__ = function () {
+  expectedUpdatePromise = new Promise((resolve) => {
+    onUpdate = resolve;
+  });
+};
+window.__waitForExpectedRefresh__ = async function () {
+  await expectedUpdatePromise;
+};
+
+const hmr = import.meta.hot!;
 let error: ErrorPayload | null = null;
 let isFirstUpdate = true;
 hmr.on("vite:error", (payload: ErrorPayload) => {
@@ -51,4 +64,11 @@ hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
     kind: "vite-before-update",
     payload,
   });
+  if (callOnUpdateTimeout) {
+    clearTimeout(callOnUpdateTimeout);
+  }
+  callOnUpdateTimeout = setTimeout(() => {
+    onUpdate();
+    onUpdate = () => {};
+  }, maxWaitBeforeUpdatesDeclaredOverMillis);
 });

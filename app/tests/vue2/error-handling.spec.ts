@@ -18,7 +18,6 @@ export const errorHandlingTests = testSuite(
           search: /<img .*\/>/g,
           replace: "<img",
         });
-        await sleep(2);
         // We don't expect to see any errors.
         await expectErrors(controller, []);
         await previewIframe.waitForSelector("img", { state: "hidden" });
@@ -44,7 +43,6 @@ export const errorHandlingTests = testSuite(
           search: /<img .*\/>/g,
           replace: "<img",
         });
-        await sleep(2);
         // We don't expect to see any errors.
         await expectErrors(controller, []);
         await previewIframe.waitForSelector("img", { state: "hidden" });
@@ -159,7 +157,3 @@ export const errorHandlingTests = testSuite(
     );
   }
 );
-
-function sleep(seconds: number) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-}

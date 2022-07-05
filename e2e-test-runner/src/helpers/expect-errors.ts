@@ -5,9 +5,7 @@ export async function expectErrors(
   controller: AppController,
   expectedErrors: Array<string | string[]>
 ) {
-  // Wait to prevent any flakiness.
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
+  await controller.waitForIdle();
   const selectedTab = await controller.bottomPanel.tabs.selected();
   const isConsoleSelected =
     (await selectedTab?.text())?.includes("Console") || false;

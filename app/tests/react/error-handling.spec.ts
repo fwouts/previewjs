@@ -40,11 +40,13 @@ export const errorHandlingTests = testSuite(
       properties = { foo: "bar" };
       `);
           await previewIframe.waitForSelector(".App-logo");
+          await controller.expectFutureRefresh();
           await appDir.update("src/App.tsx", {
             kind: "edit",
             search: /<p>/g,
             replace: "<p",
           });
+          await controller.waitForExpectedRefresh();
           await expectErrors(controller, [
             `src/App.tsx:24:15: ERROR: Expected ">" but found "<"`,
             "Failed to reload /src/App.tsx.",
@@ -104,6 +106,7 @@ export const errorHandlingTests = testSuite(
           await controller.show("src/App.tsx:App");
           const previewIframe = await controller.previewIframe();
           await previewIframe.waitForSelector(".App-logo");
+          await controller.expectFutureRefresh();
           await appDir.update(
             "src/App.tsx",
             {
@@ -118,10 +121,12 @@ export const errorHandlingTests = testSuite(
               inMemoryOnly: true,
             }
           );
+          await controller.waitForExpectedRefresh();
           await expectErrors(controller, [
             `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
             "Failed to reload /src/App.tsx.",
           ]);
+          await controller.expectFutureRefresh();
           await appDir.update(
             "src/App.tsx",
             {
@@ -136,6 +141,7 @@ export const errorHandlingTests = testSuite(
               inMemoryOnly: true,
             }
           );
+          await controller.waitForExpectedRefresh();
           await expectErrors(controller, []);
           await previewIframe.waitForSelector("#recovered");
         }
