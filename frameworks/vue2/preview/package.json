@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "prepare": "rimraf modules && shx mkdir modules && shx cp -r node_modules/vue modules/vue"
+    "prepare": "rimraf modules && shx mkdir modules && shx cp -r node_modules/vue modules/vue && shx rm -rf modules/vue/packages/compiler-sfc/test"
   },
   "dependencies": {
-    "vue": "2.6.14"
+    "vue": "2.7.3"
   },
   "devDependencies": {
     "@previewjs/iframe": "workspace:*",
