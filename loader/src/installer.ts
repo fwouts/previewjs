@@ -90,7 +90,7 @@ export async function install(options: {
       });
     } catch (e) {
       throw new Error(
-        `npm install succeeded but @previewjs modules could not be loaded.`
+        `npm install succeeded but @previewjs modules could not be loaded.\n\n${e}`
       );
     }
     options.onOutput(
