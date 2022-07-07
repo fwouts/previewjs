@@ -18,7 +18,6 @@ export interface TestCase {
   run: (options: {
     appDir: AppDir;
     controller: AppController;
-    outputDirPath: string;
   }) => Promise<void>;
 }
 
@@ -56,9 +55,5 @@ export async function testSuite(
 export type TestCreator = (
   description: string,
   testAppName: string,
-  run: (options: {
-    appDir: AppDir;
-    controller: AppController;
-    outputDirPath: string;
-  }) => Promise<void>
+  run: (options: { appDir: AppDir; controller: AppController }) => Promise<void>
 ) => void;

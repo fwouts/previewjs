@@ -1,5 +1,4 @@
 import { program } from "commander";
-import fs from "fs-extra";
 import path from "path";
 import playwright from "playwright";
 import { runTests } from "./test-runner";
@@ -16,9 +15,6 @@ program
     const port = parseInt(process.env.PORT || "8100");
     const setupEnvironmentPath = path.resolve(setupModule);
     const testsResolvedPath = path.resolve(testsPath);
-    const outputDirPath = fs.lstatSync(testsResolvedPath).isDirectory()
-      ? testsResolvedPath
-      : path.dirname(testsResolvedPath);
     const headless = process.env.HEADLESS !== "0";
     const browser = await playwright.chromium.launch({
       headless,
@@ -48,7 +44,6 @@ program
             (_, index) => index % groupCount === groupIndex
           ),
           filters: filter,
-          outputDirPath,
           port: port + groupIndex,
         });
         const totalDurationMillis = Date.now() - startTimeMillis;

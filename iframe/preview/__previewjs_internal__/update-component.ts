@@ -56,7 +56,7 @@ export async function updateComponent({
       sendMessageFromPreview({ kind: "action", type: "fn", path });
       return returnValue;
     };
-    const defaultProps = {
+    let defaultProps = {
       // Note: this is only there so `fn` doesn't get optimised
       // away :)
       _: fn("", null),

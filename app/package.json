@@ -29,7 +29,7 @@
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "unbuild && pnpm tsc -p client/tsconfig.json && vite build client && pnpm tsc -p tsconfig.tests.json",
     "client:dev": "vite client",
-    "e2e-test": "tsc && pnpm previewjs-e2e-test -s ./dist/src/index.js -t ./dist/tests/index.js"
+    "e2e-test": "tsc && pnpm previewjs-e2e-test -s ./dist/index.cjs -t ./dist-tests/index.js"
   },
   "dependencies": {
     "express": "^4.18.1"

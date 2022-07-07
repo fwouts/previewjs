@@ -26,14 +26,12 @@ export async function runTests({
   setupEnvironment,
   testSuites,
   filters,
-  outputDirPath,
   port,
 }: {
   browser: playwright.Browser;
   setupEnvironment: SetupPreviewEnvironment;
   testSuites: TestSuite[];
   filters: string[];
-  outputDirPath: string;
   port: number;
 }) {
   const matchesAtLeastOneFilter = (
@@ -55,12 +53,7 @@ export async function runTests({
     }
     return false;
   };
-  const testRunner = new TestRunner(
-    browser,
-    setupEnvironment,
-    outputDirPath,
-    port
-  );
+  const testRunner = new TestRunner(browser, setupEnvironment, port);
   let testCasesCount = 0;
   const failedTests: string[] = [];
   for (const testSuite of await testSuites) {
@@ -88,7 +81,6 @@ class TestRunner {
   constructor(
     private readonly browser: playwright.Browser,
     private readonly setupEnvironment: SetupPreviewEnvironment,
-    private readonly outputDirPath: string,
     private readonly port: number
   ) {}
 
@@ -161,7 +153,6 @@ class TestRunner {
       const testCasePromise = testCase.run({
         appDir,
         controller,
-        outputDirPath: this.outputDirPath,
       });
       await Promise.race([
         testCasePromise,
@@ -193,7 +184,7 @@ class TestRunner {
       console.error(`Browser logs:\n${browserLogs.join("\n")}`);
       await page.screenshot({
         path: path.join(
-          this.outputDirPath,
+          testCase.testDir,
           "__failures__",
           `${testSuite.description.replace(
             ":",
