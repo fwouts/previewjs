@@ -11,7 +11,7 @@ export function extractReactComponents(
   if (!sourceFile) {
     return [];
   }
-  let components: Array<
+  const components: Array<
     Omit<Component, "analyze"> & {
       signature: ts.Signature;
     }

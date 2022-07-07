@@ -113,12 +113,13 @@ export function isValid(
       return value === undefined || isValid(type.type, collected, value);
     case "promise":
       return value && typeof value === "object" && "then" in value;
-    case "name":
+    case "name": {
       const resolvedType = collected[type.name];
       if (!resolvedType) {
         // For now, this is a sign of a type parameter. Just say yes.
         return true;
       }
       return isValid(evaluateType(resolvedType, type.args), collected, value);
+    }
   }
 }

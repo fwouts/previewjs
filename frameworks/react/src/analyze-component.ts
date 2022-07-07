@@ -27,7 +27,7 @@ export function analyzeReactComponent(
     args = helpers.extractArgs(sourceFile)[componentName] || null;
     propTypes = detectPropTypes(sourceFile, componentName);
   }
-  let resolved = computePropsType(typeResolver, signature, propTypes);
+  const resolved = computePropsType(typeResolver, signature, propTypes);
   let providedArgs = new Set<string>();
   if (args) {
     const argsType = typeResolver.checker.getTypeAtLocation(args);

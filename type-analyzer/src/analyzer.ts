@@ -374,7 +374,7 @@ class TypeResolver {
     if (type.isUnionOrIntersection()) {
       const subtypes: ValueType[] = [];
       for (const t of type.types) {
-        let subtype = this.resolveTypeInternal(t, genericTypeNames);
+        const subtype = this.resolveTypeInternal(t, genericTypeNames);
         if (!subtype) {
           console.debug(
             `Unable to resolve ${

@@ -56,22 +56,25 @@ async function main() {
     path: string,
     f: (req: Request) => Promise<Response>
   ) {
-    app.post<{}, Response, Request>(path, async (req, res) => {
-      try {
-        res.json(await f(req.body));
-      } catch (e: any) {
-        if (e instanceof NotFoundError) {
-          console.error(`404 in endpoint ${path}:`);
-          console.error(e);
-          res.status(404).end(e.message || "Not Found");
-        } else {
-          console.error(`500 in endpoint ${path}:`);
-          console.error(e);
-          res.status(500).end(e.message || "Internal Error");
-          throw e;
+    app.post<Record<string, never>, Response, Request>(
+      path,
+      async (req, res) => {
+        try {
+          res.json(await f(req.body));
+        } catch (e: any) {
+          if (e instanceof NotFoundError) {
+            console.error(`404 in endpoint ${path}:`);
+            console.error(e);
+            res.status(404).end(e.message || "Not Found");
+          } else {
+            console.error(`500 in endpoint ${path}:`);
+            console.error(e);
+            res.status(500).end(e.message || "Internal Error");
+            throw e;
+          }
         }
       }
-    });
+    );
   }
 
   class NotFoundError extends Error {}

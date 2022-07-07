@@ -82,13 +82,14 @@ function _generateSerializableValue(
       } else {
         return type.value ? TRUE : FALSE;
       }
-    case "enum":
+    case "enum": {
       const value = Object.values(type.options)[0];
       if (typeof value === "number") {
         return number(value);
       } else {
         return string(value || "unknown");
       }
+    }
     case "array":
       return generateArrayValue(
         type,
@@ -162,16 +163,17 @@ function _generateSerializableValue(
         isFunctionReturnValue
       );
     case "function":
-      const returnValue = isFunctionReturnValue
-        ? UNDEFINED
-        : _generateSerializableValue(
-            type.returnType,
-            collected,
-            path,
-            rejectTypeNames,
-            true
-          );
-      return fn(returnValue);
+      return fn(
+        isFunctionReturnValue
+          ? UNDEFINED
+          : _generateSerializableValue(
+              type.returnType,
+              collected,
+              path,
+              rejectTypeNames,
+              true
+            )
+      );
     case "optional":
       return UNDEFINED;
     case "promise": {

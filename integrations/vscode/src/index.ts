@@ -97,6 +97,8 @@ export async function activate(context: vscode.ExtensionContext) {
     });
   }
 
+  // Note: ESlint warning isn't relevant because we're correctly inferring arguments types.
+  // eslint-disable-next-line @typescript-eslint/ban-types
   function catchErrors<F extends Function>(f: F) {
     return async (...args: F extends (...args: infer A) => any ? A : never) => {
       try {
@@ -266,5 +268,7 @@ export async function deactivate() {
   await closePreviewPanel();
   await ensurePreviewServerStopped();
   await dispose();
-  dispose = async () => {};
+  dispose = async () => {
+    // Do nothing.
+  };
 }

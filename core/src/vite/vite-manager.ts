@@ -91,7 +91,7 @@ export class ViteManager {
         );
       }
     }
-    let tsInferredAlias: Record<string, string> = {};
+    const tsInferredAlias: Record<string, string> = {};
     if (typeScriptConfigFilePaths.includes("tsconfig.json")) {
       // If there is a top-level tsconfig.json, use it to infer aliases.
       // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
@@ -206,7 +206,9 @@ export class ViteManager {
         warn: defaultLogger.warn,
         error: defaultLogger.error,
         warnOnce: defaultLogger.warnOnce,
-        clearScreen: () => {},
+        clearScreen: () => {
+          // Do nothing.
+        },
         hasWarned: defaultLogger.hasWarned,
         hasErrorLogged: defaultLogger.hasErrorLogged,
       },

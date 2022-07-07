@@ -144,7 +144,7 @@ class TestRunner {
     }
     const context = await this.browser.newContext();
     const page = await context.newPage();
-    let browserLogs: string[] = [];
+    const browserLogs: string[] = [];
     page.on("console", (message) =>
       browserLogs.push(
         `${message.type().substr(0, 3).toUpperCase()} ${message.text()}`

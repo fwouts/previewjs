@@ -60,7 +60,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: (config) => {
+      viteConfig: () => {
         let rootDirPath: string;
         return {
           resolve: {
@@ -92,7 +92,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
             {
               name: "previewjs:disable-vue-hmr",
-              async transform(code, id) {
+              async transform(code) {
                 // HMR causes issues such as https://github.com/underfin/vite-plugin-vue2/issues/149.
                 // It also prevents preview props from being refreshed.
                 // For now, we disable it entirely.

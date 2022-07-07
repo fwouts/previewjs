@@ -61,7 +61,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: (config) => {
+      viteConfig: () => {
         return {
           plugins: [
             createVuePlugin(),
@@ -82,7 +82,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             },
             {
               name: "previewjs:process-define-preview",
-              async transform(code, id) {
+              async transform(code) {
                 if (!code.includes("const _sfc_main = ")) {
                   return;
                 }

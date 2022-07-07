@@ -259,7 +259,7 @@ function generateTypeScriptType(
         typeNameMapping,
         usedTypes
       )}>`;
-    case "name":
+    case "name": {
       usedTypes.add(type.name);
       let name = safeTypeName(type.name, typeNameMapping);
       if (type.args.length > 0) {
@@ -279,6 +279,7 @@ function generateTypeScriptType(
         name += ">";
       }
       return name;
+    }
     default:
       throw assertNever(type);
   }

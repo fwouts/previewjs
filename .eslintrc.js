@@ -20,6 +20,8 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
@@ -28,6 +30,9 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
+    "@typescript-eslint/no-var-requires": "off",
     "no-constant-condition": "off",
+    "no-inner-declarations": "off",
+    "prefer-const": "off",
   },
 };

@@ -50,7 +50,7 @@ export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
           visitType(subtype);
         }
         return;
-      case "name":
+      case "name": {
         for (const argType of type.args) {
           visitType(argType);
         }
@@ -67,6 +67,7 @@ export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
           visitType(defaultArgType);
         }
         return;
+      }
       default:
         throw assertNever(type);
     }

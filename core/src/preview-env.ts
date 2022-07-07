@@ -50,7 +50,7 @@ async function extractPackageDependencies(
   if (!(await fs.pathExists(packageJsonPath))) {
     return {};
   }
-  let { dependencies, devDependencies, peerDependencies } = JSON.parse(
+  const { dependencies, devDependencies, peerDependencies } = JSON.parse(
     await fs.readFile(packageJsonPath, "utf8")
   );
   const allDependencies = {

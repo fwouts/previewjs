@@ -56,7 +56,7 @@ export async function updateComponent({
       sendMessageFromPreview({ kind: "action", type: "fn", path });
       return returnValue;
     };
-    let defaultProps = {
+    const defaultProps = {
       // Note: this is only there so `fn` doesn't get optimised
       // away :)
       _: fn("", null),
@@ -77,7 +77,7 @@ export async function updateComponent({
       componentName,
       variantKey: variant.key,
       // Note: we must remove `props` since it may not be serialisable.
-      variants: variants.map(({ props, ...rest }) => rest),
+      variants: variants.map(({ props: _, ...rest }) => rest),
     });
     await render({
       ...defaultProps,

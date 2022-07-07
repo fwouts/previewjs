@@ -5,7 +5,9 @@ import { getState } from "./state";
 
 const maxWaitBeforeUpdatesDeclaredOverMillis = 300;
 let expectedUpdatePromise: Promise<void> = Promise.resolve();
-let onUpdate = () => {};
+let onUpdate = () => {
+  // Do nothing.
+};
 let callOnUpdateTimeout: any;
 window.__expectFutureRefresh__ = function () {
   expectedUpdatePromise = new Promise((resolve) => {
@@ -69,6 +71,8 @@ hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
   }
   callOnUpdateTimeout = setTimeout(() => {
     onUpdate();
-    onUpdate = () => {};
+    onUpdate = () => {
+      // Do nothing.
+    };
   }, maxWaitBeforeUpdatesDeclaredOverMillis);
 });

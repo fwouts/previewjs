@@ -9,7 +9,7 @@ module.exports = {
   ],
   plugins: [...base.plugins, "react"],
   rules: {
-    ...base.settings,
+    ...base.rules,
     "react/display-name": "off",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",

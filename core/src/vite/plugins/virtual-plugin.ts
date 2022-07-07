@@ -75,7 +75,7 @@ export function virtualPlugin(options: {
         console.error(`Unable to read from ${absoluteFilePath}`);
         return null;
       }
-      let source = await entry.read();
+      const source = await entry.read();
       const fileExtension = path.extname(absoluteFilePath);
       if (!jsExtensions.has(fileExtension)) {
         return source;

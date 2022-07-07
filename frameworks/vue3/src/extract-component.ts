@@ -13,7 +13,7 @@ export function extractVueComponents(
   if (!sourceFile) {
     return [];
   }
-  let components: Component[] = [];
+  const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
   // TODO: Handle JSX and Storybook stories.

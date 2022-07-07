@@ -10,7 +10,7 @@ export interface DisposeWorkspaceRequest {
   workspaceId: string;
 }
 
-export interface DisposeWorkspaceResponse {}
+export type DisposeWorkspaceResponse = Record<string, never>;
 
 export interface AnalyzeFileRequest {
   workspaceId: string;
@@ -40,11 +40,11 @@ export interface StopPreviewRequest {
   workspaceId: string;
 }
 
-export interface StopPreviewResponse {}
+export type StopPreviewResponse = Record<string, never>;
 
 export interface UpdatePendingFileRequest {
   absoluteFilePath: string;
   utf8Content: string | null;
 }
 
-export interface UpdatePendingFileResponse {}
+export type UpdatePendingFileResponse = Record<string, never>;

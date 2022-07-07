@@ -11,7 +11,7 @@ export function extractSolidComponents(
   if (!sourceFile) {
     return [];
   }
-  let components: Array<
+  const components: Array<
     Omit<Component, "analyze"> & {
       signature: ts.Signature;
     }

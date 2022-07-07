@@ -13,10 +13,7 @@ export function extractFunctionKeys(
     return [];
   }
   return Object.entries(propsType.fields)
-    .filter(
-      ([propertyName, propertyType]) =>
-        resolveType(propertyType).kind === "function"
-    )
+    .filter(([, propertyType]) => resolveType(propertyType).kind === "function")
     .map(([propertyName]) => propertyName);
 
   function resolveType(type: ValueType): ValueType {

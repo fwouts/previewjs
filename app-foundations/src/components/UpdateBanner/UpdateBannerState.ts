@@ -3,8 +3,6 @@ import { makeAutoObservable, runInAction } from "mobx";
 import type { PersistedStateController } from "../../state/PersistedStateController";
 import "../../window";
 
-const REFRESH_PERIOD_MILLIS = 5000;
-
 export class UpdateBannerState {
   private checkVersionResponse: webEndpoints.CheckVersionResponse | null = null;
 

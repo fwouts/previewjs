@@ -49,7 +49,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: (config) => {
+      viteConfig: () => {
         return {
           resolve: {
             alias: {

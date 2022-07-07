@@ -22,7 +22,7 @@ export function analyzeSolidComponent(
   if (sourceFile) {
     args = helpers.extractArgs(sourceFile)[componentName] || null;
   }
-  let resolved = computePropsType(typeResolver, signature);
+  const resolved = computePropsType(typeResolver, signature);
   let providedArgs = new Set<string>();
   if (args) {
     const argsType = typeResolver.checker.getTypeAtLocation(args);
