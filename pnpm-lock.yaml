@@ -294,7 +294,7 @@ importers:
 
   e2e-test-runner:
     specifiers:
-      '@previewjs/core': ^5.0.5
+      '@previewjs/core': ^5.0.6
       '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.2
       '@types/fs-extra': ^9.0.13
@@ -11351,18 +11351,6 @@ packages:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
 
-  /c12/0.2.7:
-    resolution: {integrity: sha512-ih1nuHbZ6Ltf8Wss96JH6YvKIW5+9+uLAA08LUQAoDrFPGSyvPvQv/QBIRE+dCBWOK4PcwH0ylRkSa9huI1Acw==}
-    dependencies:
-      defu: 6.0.0
-      dotenv: 16.0.1
-      gittar: 0.1.1
-      jiti: 1.14.0
-      mlly: 0.5.4
-      pathe: 0.2.0
-      rc9: 1.2.2
-    dev: true
-
   /c12/0.2.8:
     resolution: {integrity: sha512-JomSyVwGnqndRdVVW6SGnHUeHIfJFQNe/4zPFK6zLKPQm8US+hNr4kZP7xeNnzjn3jnQUsBbPdT85fm8K5Pr4A==}
     dependencies:
@@ -20934,7 +20922,7 @@ packages:
       '@types/jsdom': 16.2.14
       '@vercel/nft': 0.20.1
       archiver: 5.3.1
-      c12: 0.2.7
+      c12: 0.2.8
       chalk: 5.0.1
       chokidar: 3.5.3
       consola: 2.15.3
