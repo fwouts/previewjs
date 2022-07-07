@@ -1,9 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
+    "noEmit": true,
     "jsx": "react"
   },
-  "include": ["client/src/window.ts", "src", "testing", "tests"]
+  "include": ["src"]
 }

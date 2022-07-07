@@ -6,13 +6,7 @@ import vue3Plugin from "@previewjs/plugin-vue3";
 import fs from "fs-extra";
 import path from "path";
 
-const smokeTestAppsDir = path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "smoke-test-apps"
-);
+const smokeTestAppsDir = path.join(__dirname, "..", "..", "smoke-test-apps");
 export const smokeTests = fs
   .readdirSync(smokeTestAppsDir)
   .filter((appName) =>
@@ -26,7 +20,7 @@ export const smokeTests = fs
         test(
           appName,
           `../smoke-test-apps/${appName}`,
-          async ({ outputDirPath, appDir, controller }) => {
+          async ({ appDir, controller }) => {
             const candidates = [
               "App.tsx:App",
               "App.jsx:App",
@@ -69,7 +63,9 @@ export const smokeTests = fs
             await controller.takeScreenshot(
               "#ready",
               path.join(
-                outputDirPath,
+                __dirname,
+                "..",
+                "tests",
                 "__screenshots__",
                 process.platform,
                 `${appName}.png`
