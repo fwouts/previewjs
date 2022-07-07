@@ -1,10 +1,10 @@
 import assertNever from "assert-never";
-import axios from "axios";
 import execa from "execa";
 import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
 import { inspect } from "util";
+import { previewjsProVersion } from "../loader/src/version";
 
 type Package = {
   name: string;
@@ -226,11 +226,6 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       version = await updateNodePackage(packageInfo.dirPath);
       break;
     case "loader": {
-      const {
-        data: { latest: previewjsProVersion },
-      } = await axios.get(
-        "https://registry.npmjs.org/-/package/@previewjs/pro/dist-tags"
-      );
       console.log(
         `About to release loader package-lock.json with @previewjs/pro v${previewjsProVersion}.`
       );
