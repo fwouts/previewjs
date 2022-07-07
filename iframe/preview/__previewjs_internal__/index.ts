@@ -42,6 +42,10 @@ async function load({
 }
 
 const root = document.getElementById("root");
+if (!root) {
+  throw new Error(`Unable to find #root!`);
+}
+const rootLoadingHtml = root.innerHTML;
 let loading = false;
 window.addEventListener(
   "message",
@@ -55,9 +59,7 @@ window.addEventListener(
             if (!loading || !root) {
               return;
             }
-            root.innerHTML = `<div class="previewjs-loader">
-            <img src="../loading.svg" />
-          </div>`;
+            root.innerHTML = rootLoadingHtml;
           })
           .catch(console.error);
         break;
