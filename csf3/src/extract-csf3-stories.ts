@@ -14,8 +14,12 @@ export function extractCsf3Stories(
   let isCsf3Module = false;
   checkCsf3Module: for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
-      if (ts.isObjectLiteralExpression(statement.expression)) {
-        for (const property of statement.expression.properties) {
+      let exportedValue = statement.expression;
+      if (ts.isAsExpression(exportedValue)) {
+        exportedValue = exportedValue.expression;
+      }
+      if (ts.isObjectLiteralExpression(exportedValue)) {
+        for (const property of exportedValue.properties) {
           if (
             property.name &&
             ts.isIdentifier(property.name) &&

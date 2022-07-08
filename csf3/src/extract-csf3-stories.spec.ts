@@ -32,6 +32,35 @@ export function NotStory() {}
     ]);
   });
 
+  it("detects CSF 3 stories when export default uses cast", () => {
+    expect(
+      extract(`
+export default {
+  component: Button
+} as ComponentMeta<typeof Button>;
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+    `)
+    ).toMatchObject([
+      {
+        name: "Example",
+        exported: true,
+      },
+      {
+        name: "NoArgs",
+        exported: true,
+      },
+    ]);
+  });
+
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", () => {
     expect(
       extract(`
