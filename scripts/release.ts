@@ -89,6 +89,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "serializable-values",
+    dirPath: "serializable-values",
+    tagName: "serializable-values",
+    type: "npm",
+  },
+  {
     name: "type-analyzer",
     dirPath: "type-analyzer",
     tagName: "type-analyzer",
