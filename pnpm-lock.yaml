@@ -389,6 +389,7 @@ importers:
   frameworks/solid:
     specifiers:
       '@previewjs/core': workspace:*
+      '@previewjs/csf3': ^0.0.0
       '@previewjs/type-analyzer': ^2.2.2
       '@previewjs/vfs': ^1.2.2
       rimraf: 3.0.2
@@ -398,6 +399,7 @@ importers:
       vite-plugin-solid: ^2
       vitest: 0.17.1
     dependencies:
+      '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.7.4
@@ -422,6 +424,7 @@ importers:
     specifiers:
       '@nuxt/config': ^2.15.8
       '@previewjs/core': workspace:*
+      '@previewjs/csf3': ^0.0.0
       '@previewjs/type-analyzer': ^2.2.2
       '@previewjs/vfs': ^1.2.2
       '@types/fs-extra': 9.0.13
@@ -435,6 +438,7 @@ importers:
       vue-template-compiler: ^2.7.3
     dependencies:
       '@nuxt/config': 2.15.8
+      '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.1.0
@@ -465,6 +469,7 @@ importers:
   frameworks/vue3:
     specifiers:
       '@previewjs/core': workspace:*
+      '@previewjs/csf3': ^0.0.0
       '@previewjs/type-analyzer': ^2.2.2
       '@previewjs/vfs': ^1.2.2
       '@vitejs/plugin-vue': ^2.3.3
@@ -477,6 +482,7 @@ importers:
       vitest: 0.17.1
       vue: ^3
     dependencies:
+      '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.13+vue@3.2.37

@@ -1,4 +1,5 @@
 import { Component } from "@previewjs/core";
+import { extractCsf3Stories } from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component";
@@ -102,7 +103,7 @@ export function extractSolidComponents(
     }
   }
 
-  return components.map(({ signature, ...component }) => ({
+  const solidComponents = components.map(({ signature, ...component }) => ({
     ...component,
     analyze: async () =>
       analyzeSolidComponent(
@@ -112,6 +113,10 @@ export function extractSolidComponents(
         signature
       ),
   }));
+  return [
+    ...solidComponents,
+    ...extractCsf3Stories(absoluteFilePath, sourceFile),
+  ];
 }
 
 function extractSolidComponent(

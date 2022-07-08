@@ -1,4 +1,5 @@
 import type { Component, ComponentAnalysis } from "@previewjs/core";
+import { extractCsf3Stories } from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -80,7 +81,7 @@ export function extractVueComponents(
     }
   }
 
-  return components;
+  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
 }
 
 function extractVueComponent(
