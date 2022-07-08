@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app-foundations --no-deps --include-dependencies",
     "build": "unbuild",
-    "test": "vitest"
+    "test": "vitest --no-threads"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",

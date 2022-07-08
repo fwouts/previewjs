@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/serializable-values --no-deps --include-dependencies",
     "build": "unbuild",
-    "test": "vitest"
+    "test": "vitest --no-threads"
   },
   "dependencies": {
     "@previewjs/type-analyzer": "^2.2.2",

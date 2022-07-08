@@ -31,7 +31,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-solid --no-deps --include-dependencies",
     "build": "rimraf dist && tsc",
-    "test": "vitest"
+    "test": "vitest --no-threads"
   },
   "dependencies": {
     "@previewjs/type-analyzer": "^2.2.2",
