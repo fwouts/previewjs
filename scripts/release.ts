@@ -95,15 +95,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
-<<<<<<< HEAD
     name: "story-parser",
     dirPath: "story-parser",
     tagName: "story-parser",
     type: "npm",
   },
   {
-=======
->>>>>>> main
     name: "type-analyzer",
     dirPath: "type-analyzer",
     tagName: "type-analyzer",
