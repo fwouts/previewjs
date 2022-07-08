@@ -1,0 +1,40 @@
+{
+  "name": "@previewjs/serializable-values",
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/serializable-values --no-deps --include-dependencies",
+    "build": "unbuild",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@previewjs/type-analyzer": "^2.2.2",
+    "assert-never": "^1.2.1"
+  },
+  "devDependencies": {
+    "unbuild": "0.7.4",
+    "vitest": "0.17.1"
+  }
+}

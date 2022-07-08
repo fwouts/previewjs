@@ -1,4 +1,8 @@
 import {
+  generateSerializableValue,
+  serializableValueToJavaScript,
+} from "@previewjs/serializable-values";
+import {
   CollectedTypes,
   dereferenceType,
   objectType,
@@ -6,8 +10,6 @@ import {
 } from "@previewjs/type-analyzer";
 import prettier from "prettier";
 import parserBabel from "prettier/parser-babel";
-import { generateSerializableValue } from "./generate-serializable-value";
-import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 /**
  * Generates an invocation source for a specific component.

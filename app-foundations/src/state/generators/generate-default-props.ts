@@ -1,10 +1,12 @@
 import {
+  generateSerializableValue,
+  serializableValueToJavaScript,
+} from "@previewjs/serializable-values";
+import {
   CollectedTypes,
   evaluateType,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { generateSerializableValue } from "./generate-serializable-value";
-import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 /**
  * Generates props that will be set on a component even if no props are specified.
