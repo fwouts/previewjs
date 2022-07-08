@@ -375,7 +375,7 @@ importers:
       '@previewjs/type-analyzer': ^2.2.2
       '@previewjs/vfs': ^1.2.2
       rimraf: 3.0.2
-      solid-js: 1.4.6
+      solid-js: 1.4.7
       typescript: ^4.7.4
       vite: 2.9.13
       vite-plugin-solid: ^2
@@ -388,16 +388,16 @@ importers:
     devDependencies:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
-      solid-js: 1.4.6
+      solid-js: 1.4.7
       vite: 2.9.13
       vitest: 0.17.1
 
   frameworks/solid/preview:
     specifiers:
       '@previewjs/iframe': workspace:*
-      solid-js: 1.4.6
+      solid-js: 1.4.7
     dependencies:
-      solid-js: 1.4.6
+      solid-js: 1.4.7
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
 
@@ -26076,6 +26076,10 @@ packages:
 
   /solid-js/1.4.6:
     resolution: {integrity: sha512-vF0x5qbVCDi8zlEyN92y/i+pS7QNYh3uNvbSyUYDhLifKuYqGcJwGxbH9zzDX5sR8o1ijgzI6BEAXlcR7Mkkjw==}
+    dev: false
+
+  /solid-js/1.4.7:
+    resolution: {integrity: sha512-u3hoe5w3xseAc/8zLwYaQVGanWXknMMQkzryNz7lOPy2ygW6DhCtfMseun4kLflRNRzrUUpTV3W5p7j2SGcHCQ==}
 
   /solid-refresh/0.4.1_solid-js@1.4.4:
     resolution: {integrity: sha512-v3tD/OXQcUyXLrWjPW1dXZyeWwP7/+GQNs8YTL09GBq+5FguA6IejJWUvJDrLIA4M0ho9/5zK2e9n+uy+4488g==}
