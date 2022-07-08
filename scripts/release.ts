@@ -95,6 +95,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "story-parser",
+    dirPath: "story-parser",
+    tagName: "story-parser",
+    type: "npm",
+  },
+  {
     name: "type-analyzer",
     dirPath: "type-analyzer",
     tagName: "type-analyzer",

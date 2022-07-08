@@ -1,0 +1,41 @@
+{
+  "name": "@previewjs/story-parser",
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/story-parser --no-deps --include-dependencies",
+    "build": "unbuild",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@previewjs/serializable-values": "^0.0.0",
+    "assert-never": "^1.2.1",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "unbuild": "0.7.4",
+    "vitest": "0.17.1"
+  }
+}
