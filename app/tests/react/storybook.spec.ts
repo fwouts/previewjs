@@ -77,6 +77,38 @@ export const storybookTests = testSuite(
           );
         }
       );
+
+      test(
+        `${version}/renders CSF3 story`,
+        `react${version}`,
+        async ({ appDir, controller }) => {
+          await appDir.update("src/Button.tsx", {
+            kind: "replace",
+            text: `
+  const Button = ({ label }) => <button>{label}</button>;
+            `,
+          });
+          await appDir.update("src/Button.stories.tsx", {
+            kind: "replace",
+            text: `
+  export default {
+    component: Button
+  }
+
+  export const Example = {
+    args: {
+      label: "Hello, World!"
+    }
+  }
+            `,
+          });
+          await controller.show("src/Button.stories.tsx:Example");
+          const previewIframe = await controller.previewIframe();
+          await previewIframe.waitForSelector(
+            "xpath=//button[contains(., 'Hello, World!')]"
+          );
+        }
+      );
     }
   }
 );
