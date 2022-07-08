@@ -1,4 +1,5 @@
 import type { Component } from "@previewjs/core";
+import { extractCsf3Stories } from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
@@ -102,7 +103,7 @@ export function extractReactComponents(
     }
   }
 
-  return components.map(({ signature, ...component }) => ({
+  const reactComponents = components.map(({ signature, ...component }) => ({
     ...component,
     analyze: async () =>
       analyzeReactComponent(
@@ -112,6 +113,10 @@ export function extractReactComponents(
         signature
       ),
   }));
+  return [
+    ...reactComponents,
+    ...extractCsf3Stories(absoluteFilePath, sourceFile),
+  ];
 }
 
 function extractReactComponent(

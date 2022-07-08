@@ -274,6 +274,21 @@ importers:
       shx: 0.3.4
       unbuild: 0.7.4
 
+  csf3:
+    specifiers:
+      '@previewjs/core': ^5.0.6
+      '@previewjs/type-analyzer': ^2.2.2
+      typescript: ^4.7.4
+      unbuild: 0.7.4
+      vitest: 0.17.1
+    dependencies:
+      '@previewjs/core': link:../core
+      '@previewjs/type-analyzer': link:../type-analyzer
+      typescript: 4.7.4
+    devDependencies:
+      unbuild: 0.7.4
+      vitest: 0.17.1
+
   dev-workspace:
     specifiers:
       '@previewjs/app': workspace:*
@@ -330,6 +345,7 @@ importers:
   frameworks/react:
     specifiers:
       '@previewjs/core': workspace:*
+      '@previewjs/csf3': ^0.0.0
       '@previewjs/type-analyzer': ^2.2.2
       '@previewjs/vfs': ^1.2.2
       '@types/prop-types': 15.7.5
@@ -340,6 +356,7 @@ importers:
       vite: ^2.9.13
       vitest: 0.17.1
     dependencies:
+      '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.7.4
@@ -6118,7 +6135,7 @@ packages:
       glob: 7.2.0
       is-reference: 1.2.1
       magic-string: 0.25.9
-      resolve: 1.22.0
+      resolve: 1.22.1
       rollup: 2.75.7
     dev: true
 
@@ -6134,7 +6151,7 @@ packages:
       glob: 7.2.0
       is-reference: 1.2.1
       magic-string: 0.25.9
-      resolve: 1.22.0
+      resolve: 1.22.1
       rollup: 2.75.7
     dev: true
 
@@ -6169,7 +6186,7 @@ packages:
       deepmerge: 4.2.2
       is-builtin-module: 3.1.0
       is-module: 1.0.0
-      resolve: 1.22.0
+      resolve: 1.22.1
       rollup: 2.75.7
     dev: true
 
@@ -9082,7 +9099,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.18_2yymnzrok6eda47acnj2yjm3ae
+      '@vue/cli-service': 4.5.18_sbs6or2oam5i4s4vmfp4rzwdnq
       '@vue/cli-shared-utils': 4.5.18
     dev: true
 
@@ -9091,7 +9108,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.18_2yymnzrok6eda47acnj2yjm3ae
+      '@vue/cli-service': 4.5.18_sbs6or2oam5i4s4vmfp4rzwdnq
     dev: true
 
   /@vue/cli-service/4.5.18_2yymnzrok6eda47acnj2yjm3ae:
@@ -14367,7 +14384,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-android-arm64/0.13.15:
@@ -14392,7 +14408,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-64/0.13.15:
@@ -14417,7 +14432,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.13.15:
@@ -14442,7 +14456,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.13.15:
@@ -14467,7 +14480,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.13.15:
@@ -14492,7 +14504,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-32/0.13.15:
@@ -14517,7 +14528,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-64/0.13.15:
@@ -14542,7 +14552,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm/0.13.15:
@@ -14567,7 +14576,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.13.15:
@@ -14592,7 +14600,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.13.15:
@@ -14617,7 +14624,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.13.15:
@@ -14642,7 +14648,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-riscv64/0.14.47:
@@ -14659,7 +14664,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-s390x/0.14.47:
@@ -14676,7 +14680,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-netbsd-64/0.13.15:
@@ -14701,7 +14704,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.13.15:
@@ -14726,7 +14728,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-sunos-64/0.13.15:
@@ -14751,7 +14752,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-32/0.13.15:
@@ -14776,7 +14776,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-64/0.13.15:
@@ -14801,7 +14800,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.13.15:
@@ -14826,7 +14824,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild/0.11.23:
@@ -14912,7 +14909,6 @@ packages:
       esbuild-windows-32: 0.14.48
       esbuild-windows-64: 0.14.48
       esbuild-windows-arm64: 0.14.48
-    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -22690,7 +22686,7 @@ packages:
       postcss: 8.4.14
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
-      resolve: 1.22.0
+      resolve: 1.22.1
     dev: true
 
   /postcss-initial/3.0.4:
@@ -25228,7 +25224,6 @@ packages:
       is-core-module: 2.9.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
-    dev: true
 
   /resolve/2.0.0-next.4:
     resolution: {integrity: sha512-iMDbmAWtfU+MHpxt/I5iWI7cY6YVEZUQ3MBgPQ++XD1PELuJHIl82xBmObyP2KyQmkNB2dsqF7seoQQiAn5yDQ==}
@@ -28983,9 +28978,9 @@ packages:
       stylus:
         optional: true
     dependencies:
-      esbuild: 0.14.47
+      esbuild: 0.14.48
       postcss: 8.4.14
-      resolve: 1.22.0
+      resolve: 1.22.1
       rollup: 2.75.7
     optionalDependencies:
       fsevents: 2.3.2

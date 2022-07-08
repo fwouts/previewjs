@@ -85,6 +85,10 @@ export const NotComponent = () => {
 export const NotComponentEither = () => {
   return "Hello";
 };
+
+export const AlsoNotAStory = {
+  args: {}
+};
 `)
     ).toMatchObject([
       {

@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "outDir": "dist",
+    "esModuleInterop": true
+  }
+}
