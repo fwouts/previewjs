@@ -32,7 +32,7 @@ export const load: RendererLoader = async ({
       props: variant.props,
     };
   });
-  const RenderComponent = ComponentOrStory.component || componentModule.default?.component || ComponentOrStory
+  const RenderComponent = ComponentOrStory.render || ComponentOrStory.component || componentModule.default?.render || componentModule.default?.component || ComponentOrStory
   const Renderer = (props) => {
     return (
       <Wrapper>
