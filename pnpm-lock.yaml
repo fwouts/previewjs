@@ -139,7 +139,7 @@ importers:
       tailwindcss: 3.1.5
       typescript: 4.7.4
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.1
       '@fortawesome/free-brands-svg-icons': 6.1.1
@@ -169,7 +169,7 @@ importers:
       tailwindcss: 3.1.5
       typescript: 4.7.4
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
 
   cli:
     specifiers:
@@ -338,7 +338,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.7.4
       vite: ^2.9.14
-      vitest: 0.17.1
+      vitest: 0.18.0
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -350,7 +350,7 @@ importers:
       '@types/react': 18.0.15
       react: 18.2.0
       rimraf: 3.0.2
-      vitest: 0.17.1
+      vitest: 0.18.0
 
   frameworks/react/preview:
     specifiers:
@@ -379,7 +379,7 @@ importers:
       typescript: ^4.7.4
       vite: 2.9.14
       vite-plugin-solid: ^2
-      vitest: 0.17.1
+      vitest: 0.18.0
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -390,7 +390,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.4.7
       vite: 2.9.14
-      vitest: 0.17.1
+      vitest: 0.18.0
 
   frameworks/solid/preview:
     specifiers:
@@ -413,7 +413,7 @@ importers:
       typescript: ^4.7.4
       vite: 2.9.14
       vite-plugin-vue2: ^2.0.1
-      vitest: 0.17.1
+      vitest: 0.18.0
       vue: ^2.7.4
       vue-template-compiler: ^2.7.4
     dependencies:
@@ -430,7 +430,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 2.9.14
-      vitest: 0.17.1
+      vitest: 0.18.0
 
   frameworks/vue2/preview:
     specifiers:
@@ -457,7 +457,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.7.4
       vite: 2.9.14
-      vitest: 0.17.1
+      vitest: 0.18.0
       vue: ^3
     dependencies:
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -472,7 +472,7 @@ importers:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
       vite: 2.9.14
-      vitest: 0.17.1
+      vitest: 0.18.0
 
   frameworks/vue3/preview:
     specifiers:
@@ -574,13 +574,13 @@ importers:
       '@previewjs/type-analyzer': ^2.2.2
       assert-never: ^1.2.1
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
       assert-never: 1.2.1
     devDependencies:
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
 
   smoke-test-apps/aliases:
     specifiers:
@@ -1557,7 +1557,7 @@ importers:
       lodash: ^4.17.21
       typescript: ^4.7.4
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1566,7 +1566,7 @@ importers:
     devDependencies:
       '@types/lodash': 4.14.182
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
 
   vfs:
     specifiers:
@@ -1575,7 +1575,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1583,7 +1583,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.7.4
-      vitest: 0.17.1
+      vitest: 0.18.0
 
 packages:
 
@@ -22527,7 +22527,7 @@ packages:
     resolution: {integrity: sha512-2Rb3vm+EXble/sMXNSu6eoBx8e79gKqhNq9F5ZWW6ERNCTE/Q0wQNne5541tE5vKjfM8hpNCYL+LGc1YTfI0dg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0
+      ts-pnp: 1.2.0_typescript@4.7.4
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -27871,16 +27871,6 @@ packages:
       yn: 3.1.1
     dev: true
 
-  /ts-pnp/1.2.0:
-    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
-    engines: {node: '>=6'}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dev: true
-
   /ts-pnp/1.2.0_typescript@4.7.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
     engines: {node: '>=6'}
@@ -29213,8 +29203,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest/0.17.1:
-    resolution: {integrity: sha512-d6NsFC6FPmZ5XdiSYfW5rwJ/b8060wqe2steNNlVbhO69HWma6CucIm5g7PXlCSkmKvrdEbUsZHPAarlH83VGw==}
+  /vitest/0.18.0:
+    resolution: {integrity: sha512-ryAtlh5Gvg3+aLNuOQ8YOHxgQCCu46jx40X5MBL0K0/ejB9i5zsr8fV8LTGXbXex80UMHlzceI9F+ouGaiR+mQ==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -29243,7 +29233,7 @@ packages:
       local-pkg: 0.4.1
       tinypool: 0.2.1
       tinyspy: 0.3.3
-      vite: 2.9.13
+      vite: 2.9.14
     transitivePeerDependencies:
       - less
       - sass
