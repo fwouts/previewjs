@@ -28,7 +28,7 @@ export const load: RendererLoader = async ({
     ...componentModule.default?.args,
     ...ComponentOrStory.args,
   };
-  let storyDecorators = [];
+  let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
   if (ComponentOrStory.functional) {
     // JSX component. Nothing to do.
@@ -43,7 +43,7 @@ export const load: RendererLoader = async ({
         throw new Error("Encountered invalid CSF2 story");
       }
       // This looks a lot like a CSF2 story. It must be one.
-      storyDecorators = csf2StoryComponent.decorators || [];
+      storyDecorators.push(...(csf2StoryComponent.decorators || []));
       if (csf2StoryComponent.template) {
         RenderComponent = csf2StoryComponent;
       } else {
@@ -55,7 +55,6 @@ export const load: RendererLoader = async ({
     } else {
       // CSF3 story.
       const csf3Story = ComponentOrStory;
-      storyDecorators = csf3Story.decorators || [];
       RenderComponent =
         csf3Story.component || componentModule.default?.component;
       if (!RenderComponent) {
