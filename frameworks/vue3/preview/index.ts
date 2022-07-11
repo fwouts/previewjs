@@ -30,7 +30,9 @@ export const load: RendererLoader = async ({
   };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
-  if (!ComponentOrStory._isVue) {
+  if (ComponentOrStory.render) {
+    // Vue or JSX component. Nothing to do.
+  } else {
     if (typeof ComponentOrStory === "function") {
       // JSX or CSF2.
       const maybeCsf2StoryComponent = ComponentOrStory(defaultProps);
