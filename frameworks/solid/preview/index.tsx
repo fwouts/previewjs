@@ -22,14 +22,21 @@ export const load: RendererLoader = async ({
     ...(ComponentOrStory.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
-  const variants = (ComponentOrStory.__previewjs_variants || []).map((variant) => {
-    return {
-      key: variant.key,
-      label: variant.label,
-      props: variant.props,
-    };
-  });
-  const RenderComponent = ComponentOrStory.render || ComponentOrStory.component || componentModule.default?.render || componentModule.default?.component || ComponentOrStory
+  const variants = (ComponentOrStory.__previewjs_variants || []).map(
+    (variant) => {
+      return {
+        key: variant.key,
+        label: variant.label,
+        props: variant.props,
+      };
+    }
+  );
+  const RenderComponent =
+    ComponentOrStory.render ||
+    ComponentOrStory.component ||
+    componentModule.default?.render ||
+    componentModule.default?.component ||
+    ComponentOrStory;
   const Renderer = (props) => {
     const effectiveProps = {
       ...componentModule.default?.args,
