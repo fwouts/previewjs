@@ -148,7 +148,9 @@ class TestRunner {
     await controller.start();
     const appDir = await prepareAppDir(controller);
     try {
-      console.log(chalk.gray(`▶️  ${testCase.description}`));
+      console.log(
+        chalk.gray(`▶️ ${testSuite.description}: ${testCase.description}`)
+      );
       const startTime = Date.now();
       const testCasePromise = testCase.run({
         appDir,
@@ -172,14 +174,16 @@ class TestRunner {
       const durationMillis = endTime - startTime;
       console.log(
         chalk.green(
-          `✅ ${testCase.description} (${
+          `✅ ${testSuite.description}: ${testCase.description} (${
             durationMillis > 15000 ? "⚠️ " : ""
           }${durationMillis}ms)`
         )
       );
       return true;
     } catch (e) {
-      console.log(chalk.red(`❌ ${testCase.description}`));
+      console.log(
+        chalk.red(`❌ ${testSuite.description}: ${testCase.description}`)
+      );
       console.error(e);
       console.error(`Browser logs:\n${browserLogs.join("\n")}`);
       await page.screenshot({
