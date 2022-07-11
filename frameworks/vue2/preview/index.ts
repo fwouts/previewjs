@@ -30,9 +30,9 @@ export const load: RendererLoader = async ({
   };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
-  if (ComponentOrStory.functional) {
-    // JSX component. Nothing to do.
-  } else if (!ComponentOrStory._isVue) {
+  if (ComponentOrStory.render) {
+    // Vue or JSX component. Nothing to do.
+  } else {
     // Storybook story, either CSF2 or CSF3.
     if (typeof ComponentOrStory === "function") {
       // CSF2 story.
