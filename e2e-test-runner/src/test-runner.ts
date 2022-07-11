@@ -67,7 +67,7 @@ export async function runTests({
     testCasesCount += count;
     if (failedTestCases.length > 0) {
       failedTests.push(
-        ...failedTestCases.map((name) => `${testSuite.description} - ${name}`)
+        ...failedTestCases.map((name) => `${testSuite.description}: ${name}`)
       );
     }
   }
