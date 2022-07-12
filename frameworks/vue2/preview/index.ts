@@ -34,22 +34,38 @@ export const load: RendererLoader = async ({
     // Vue or JSX component. Nothing to do.
   } else {
     // Storybook story, either CSF2 or CSF3.
-    if (typeof ComponentOrStory === "function") {
+    storybookCheck: if (typeof ComponentOrStory === "function") {
       // CSF2 story.
-      const csf2StoryComponent = ComponentOrStory(defaultProps, {
-        argTypes: defaultProps,
-      });
-      if (!csf2StoryComponent) {
-        throw new Error("Encountered invalid CSF2 story");
+      let maybeCsf2StoryComponent;
+      try {
+        maybeCsf2StoryComponent = ComponentOrStory(defaultProps, {
+          argTypes: defaultProps,
+        });
+      } catch (e) {
+        // Not a CSF2 story. Nothing to do.
+        break storybookCheck;
       }
-      // This looks a lot like a CSF2 story. It must be one.
-      storyDecorators.push(...(csf2StoryComponent.decorators || []));
-      if (csf2StoryComponent.template) {
-        RenderComponent = csf2StoryComponent;
+      if (
+        !maybeCsf2StoryComponent ||
+        (!maybeCsf2StoryComponent?.components &&
+          !maybeCsf2StoryComponent?.template)
+      ) {
+        // Vue or JSX component. Nothing to do.
       } else {
-        RenderComponent = Object.values(csf2StoryComponent.components || {})[0];
-        if (!RenderComponent) {
-          throw new Error("Encountered a story with no template or components");
+        // This looks a lot like a CSF2 story. It must be one.
+        const csf2StoryComponent = maybeCsf2StoryComponent;
+        storyDecorators.push(...(csf2StoryComponent.decorators || []));
+        if (csf2StoryComponent.template) {
+          RenderComponent = csf2StoryComponent;
+        } else {
+          RenderComponent = Object.values(
+            csf2StoryComponent.components || {}
+          )[0];
+          if (!RenderComponent) {
+            throw new Error(
+              "Encountered a story with no template or components"
+            );
+          }
         }
       }
     } else {

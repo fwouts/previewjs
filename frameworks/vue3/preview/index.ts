@@ -40,7 +40,7 @@ export const load: RendererLoader = async ({
         !maybeCsf2StoryComponent?.components &&
         !maybeCsf2StoryComponent?.template
       ) {
-        // JSX. Nothing to do.
+        // Vue or JSX component. Nothing to do.
       } else {
         // CSF2 story.
         const csf2StoryComponent = ComponentOrStory(defaultProps);
