@@ -33,12 +33,19 @@ export const load: RendererLoader = async ({
   if (ComponentOrStory.render) {
     // Vue or JSX component. Nothing to do.
   } else {
-    if (typeof ComponentOrStory === "function") {
+    storybookCheck: if (typeof ComponentOrStory === "function") {
       // JSX or CSF2.
-      const maybeCsf2StoryComponent = ComponentOrStory(defaultProps);
+      let maybeCsf2StoryComponent;
+      try {
+        maybeCsf2StoryComponent = ComponentOrStory(defaultProps);
+      } catch (e) {
+        // Vue or JSX component. Nothing to do.
+        break storybookCheck;
+      }
       if (
-        !maybeCsf2StoryComponent?.components &&
-        !maybeCsf2StoryComponent?.template
+        !maybeCsf2StoryComponent ||
+        (!maybeCsf2StoryComponent?.components &&
+          !maybeCsf2StoryComponent?.template)
       ) {
         // Vue or JSX component. Nothing to do.
       } else {
