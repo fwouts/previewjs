@@ -11,35 +11,43 @@ export const load: RendererLoader = async ({
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     (({ children }) => <>{children}</>);
-  const Component =
+  const ComponentOrStory =
     componentModule[
       componentName === "default" ? "default" : `__previewjs__${componentName}`
     ];
-  if (!Component) {
+  if (!ComponentOrStory) {
     throw new Error(`No component named '${componentName}'`);
   }
   const decorators = [
-    ...(Component.decorators || []),
+    ...(ComponentOrStory.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
-  const variants = (Component.__previewjs_variants || []).map((variant) => {
-    return {
-      key: variant.key,
-      label: variant.label,
-      props: variant.props,
-    };
-  });
+  const variants = (ComponentOrStory.__previewjs_variants || []).map(
+    (variant) => {
+      return {
+        key: variant.key,
+        label: variant.label,
+        props: variant.props,
+      };
+    }
+  );
+  const RenderComponent =
+    ComponentOrStory.render ||
+    ComponentOrStory.component ||
+    componentModule.default?.render ||
+    componentModule.default?.component ||
+    ComponentOrStory;
   const Renderer = (props) => {
     const effectiveProps = {
       ...componentModule.default?.args,
-      ...Component.args,
+      ...ComponentOrStory.args,
       ...props,
     };
     return (
       <Wrapper>
         {decorators.reduce(
           (component, decorator) => () => decorator(component),
-          () => <Component {...effectiveProps} />
+          () => <RenderComponent {...effectiveProps} />
         )()}
       </Wrapper>
     );

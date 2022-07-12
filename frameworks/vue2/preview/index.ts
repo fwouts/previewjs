@@ -10,53 +10,71 @@ export const load: RendererLoader = async ({
 }) => {
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
-  let Component: any;
+  let ComponentOrStory: any;
   if (componentFilePath.endsWith(".vue")) {
-    Component = componentModule.default;
-    if (!Component) {
+    ComponentOrStory = componentModule.default;
+    if (!ComponentOrStory) {
       throw new Error(
         `No default component could be found in ${componentFilePath}`
       );
     }
   } else {
-    Component = componentModule[`__previewjs__${componentName}`];
-    if (!Component) {
+    ComponentOrStory = componentModule[`__previewjs__${componentName}`];
+    if (!ComponentOrStory) {
       throw new Error(`No component named '${componentName}'`);
     }
   }
-  let defaultProps = {};
-  let storyDecorators = [];
-  storybookCheck: if (typeof Component === "function") {
-    const maybeStory = Component;
-    const maybeStoryArgs = {
-      ...componentModule.default?.args,
-      ...maybeStory.args,
-    };
-    let maybeStoryComponent;
-    try {
-      maybeStoryComponent = Component(maybeStoryArgs, {
-        argTypes: maybeStoryArgs,
-      });
-    } catch (e) {
-      // It must not be a story component.
-      break storybookCheck;
-    }
-    if (
-      maybeStoryComponent?.components ||
-      maybeStoryComponent?.template ||
-      maybeStoryComponent?.render
-    ) {
-      // This looks a lot like a Storybook story. It must be one.
-      Component = maybeStoryComponent;
-      defaultProps = maybeStoryArgs;
-      storyDecorators = maybeStory.decorators || [];
-      if (!Component.template && !Component.render) {
-        Component = Object.values(Component.components)[0];
-        if (!Component) {
-          throw new Error(
-            "Encountered a story with no template, render or components"
-          );
+  let defaultProps = {
+    ...componentModule.default?.args,
+    ...ComponentOrStory.args,
+  };
+  let storyDecorators = ComponentOrStory.decorators || [];
+  let RenderComponent = ComponentOrStory;
+  if (ComponentOrStory.render) {
+    // Vue or JSX component. Nothing to do.
+  } else {
+    // Storybook story, either CSF2 or CSF3.
+    storybookCheck: if (typeof ComponentOrStory === "function") {
+      // CSF2 story.
+      let maybeCsf2StoryComponent;
+      try {
+        maybeCsf2StoryComponent = ComponentOrStory(defaultProps, {
+          argTypes: defaultProps,
+        });
+      } catch (e) {
+        // Not a CSF2 story. Nothing to do.
+        break storybookCheck;
+      }
+      if (
+        !maybeCsf2StoryComponent ||
+        (!maybeCsf2StoryComponent?.components &&
+          !maybeCsf2StoryComponent?.template)
+      ) {
+        // Vue or JSX component. Nothing to do.
+      } else {
+        // This looks a lot like a CSF2 story. It must be one.
+        const csf2StoryComponent = maybeCsf2StoryComponent;
+        storyDecorators.push(...(csf2StoryComponent.decorators || []));
+        if (csf2StoryComponent.template) {
+          RenderComponent = csf2StoryComponent;
+        } else {
+          RenderComponent = Object.values(
+            csf2StoryComponent.components || {}
+          )[0];
+          if (!RenderComponent) {
+            throw new Error(
+              "Encountered a story with no template or components"
+            );
+          }
         }
+      }
+    } else {
+      // CSF3 story.
+      const csf3Story = ComponentOrStory;
+      RenderComponent =
+        csf3Story.component || componentModule.default?.component;
+      if (!RenderComponent) {
+        throw new Error("Encountered a story with no component");
       }
     }
   }
@@ -70,11 +88,11 @@ export const load: RendererLoader = async ({
       ...decorated,
       components: { ...decorated.components, story: component },
     };
-  }, Component);
+  }, RenderComponent);
   const previews =
-    typeof Component.previews === "function"
-      ? Component.previews()
-      : Component.previews || {};
+    typeof RenderComponent.previews === "function"
+      ? RenderComponent.previews()
+      : RenderComponent.previews || {};
   const variants = Object.entries(previews).map(([key, props]) => {
     return {
       key,

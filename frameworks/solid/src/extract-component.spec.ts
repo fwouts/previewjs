@@ -53,6 +53,10 @@ function Component3() {
   return <div>Hello, World!</div>;
 };
 
+export const NotAStory = {
+  args: {}
+};
+
 export default Component1;
       
 `)
@@ -89,6 +93,32 @@ const ConstantFunction = () => <div>Hello, World!</div>;
       {
         name: "ConstantFunction",
         exported: false,
+      },
+    ]);
+  });
+
+  it("detects CSF3 stories", async () => {
+    expect(
+      extract(`
+export default {
+  component: Button
+}
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+export const NoArgs = {}
+export function NotStory() {}
+`)
+    ).toMatchObject([
+      {
+        name: "Example",
+        exported: true,
+      },
+      {
+        name: "NoArgs",
+        exported: true,
       },
     ]);
   });

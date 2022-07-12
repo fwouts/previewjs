@@ -85,6 +85,10 @@ export const NotComponent = () => {
 export const NotComponentEither = () => {
   return "Hello";
 };
+
+export const AlsoNotAStory = {
+  args: {}
+};
 `)
     ).toMatchObject([
       {
@@ -223,6 +227,35 @@ export default () => {
 }
 `)
     ).toMatchObject([]);
+  });
+
+  it("detects CSF3 stories", async () => {
+    expect(
+      extract(`
+export default {
+  component: Button
+}
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+`)
+    ).toMatchObject([
+      {
+        name: "Example",
+        exported: true,
+      },
+      {
+        name: "NoArgs",
+        exported: true,
+      },
+    ]);
   });
 
   function extract(source: string) {

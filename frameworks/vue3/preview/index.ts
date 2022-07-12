@@ -10,32 +10,72 @@ export const load: RendererLoader = async ({
 }) => {
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
-  let Component: any;
+  let ComponentOrStory: any;
   if (componentFilePath.endsWith(".vue")) {
-    Component = componentModule.default;
-    if (!Component) {
+    ComponentOrStory = componentModule.default;
+    if (!ComponentOrStory) {
       throw new Error(
         `No default component could be found in ${componentFilePath}`
       );
     }
   } else {
-    Component = componentModule[`__previewjs__${componentName}`];
-    if (!Component) {
+    ComponentOrStory = componentModule[`__previewjs__${componentName}`];
+    if (!ComponentOrStory) {
       throw new Error(`No component named '${componentName}'`);
     }
   }
-  let storyDecorators = [];
-  if (typeof Component === "function") {
-    const maybeStory = Component;
-    const maybeStoryArgs = {
-      ...componentModule.default?.args,
-      ...maybeStory.args,
-    };
-    const maybeStoryComponent = maybeStory(maybeStoryArgs);
-    if (maybeStoryComponent?.components || maybeStoryComponent?.template) {
-      // This looks a lot like a Storybook story. It must be one.
-      Component = maybeStoryComponent;
-      storyDecorators = maybeStory.decorators || [];
+  let defaultProps = {
+    ...componentModule.default?.args,
+    ...ComponentOrStory.args,
+  };
+  let storyDecorators = ComponentOrStory.decorators || [];
+  let RenderComponent = ComponentOrStory;
+  if (ComponentOrStory.render) {
+    // Vue or JSX component. Nothing to do.
+  } else {
+    storybookCheck: if (typeof ComponentOrStory === "function") {
+      // JSX or CSF2.
+      let maybeCsf2StoryComponent;
+      try {
+        maybeCsf2StoryComponent = ComponentOrStory(defaultProps);
+      } catch (e) {
+        // Vue or JSX component. Nothing to do.
+        break storybookCheck;
+      }
+      if (
+        !maybeCsf2StoryComponent ||
+        (!maybeCsf2StoryComponent?.components &&
+          !maybeCsf2StoryComponent?.template)
+      ) {
+        // Vue or JSX component. Nothing to do.
+      } else {
+        // CSF2 story.
+        const csf2StoryComponent = ComponentOrStory(defaultProps);
+        if (!csf2StoryComponent) {
+          throw new Error("Encountered invalid CSF2 story");
+        }
+        storyDecorators.push(...(csf2StoryComponent.decorators || []));
+        if (csf2StoryComponent.template) {
+          RenderComponent = csf2StoryComponent;
+        } else {
+          RenderComponent = Object.values(
+            csf2StoryComponent.components || {}
+          )[0];
+          if (!RenderComponent) {
+            throw new Error(
+              "Encountered a story with no template or components"
+            );
+          }
+        }
+      }
+    } else {
+      // CSF3 story.
+      const csf3Story = ComponentOrStory;
+      RenderComponent =
+        csf3Story.component || componentModule.default?.component;
+      if (!RenderComponent) {
+        throw new Error("Encountered a story with no component");
+      }
     }
   }
   const decorators = [
@@ -48,11 +88,11 @@ export const load: RendererLoader = async ({
       ...decorated,
       components: { ...decorated.components, story: component },
     };
-  }, Component);
+  }, RenderComponent);
   const previews =
-    typeof Component.previews === "function"
-      ? Component.previews()
-      : Component.previews || {};
+    typeof RenderComponent.previews === "function"
+      ? RenderComponent.previews()
+      : RenderComponent.previews || {};
   const variants = Object.entries(previews).map(([key, props]) => {
     return {
       key,
@@ -70,7 +110,10 @@ export const load: RendererLoader = async ({
               h(Wrapper, null, () => h(Decorated, props))
             : // @ts-ignore
               h(Decorated, props),
-        props
+        {
+          ...defaultProps,
+          ...props,
+        }
       );
     },
   };

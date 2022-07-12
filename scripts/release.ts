@@ -53,6 +53,12 @@ const packages: Package[] = [
     type: "npm",
   },
   {
+    name: "csf3",
+    dirPath: "csf3",
+    tagName: "csf3",
+    type: "npm",
+  },
+  {
     name: "e2e-test-runner",
     dirPath: "e2e-test-runner",
     tagName: "e2e-test-runner",
