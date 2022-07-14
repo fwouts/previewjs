@@ -34,12 +34,13 @@ import {
 export function generateSerializableValue(
   type: ValueType,
   collected: CollectedTypes,
-  isFunctionReturnValue = false
+  isFunctionReturnValue = false,
+  path: string[] = []
 ): SerializableValue {
   return _generateSerializableValue(
     type,
     collected,
-    [],
+    path,
     [],
     isFunctionReturnValue
   );

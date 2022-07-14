@@ -5,9 +5,11 @@ import {
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { UNKNOWN } from "@previewjs/serializable-values";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import { useWindowSize } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { Fragment } from "react";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
 import { Link } from "../../design/Link";
@@ -28,6 +30,7 @@ export const Preview = observer(
     subheader,
     footer,
     panelTabs,
+    PropsPanel = DefaultPropsPanel,
     viewport,
   }: {
     state: PreviewState;
@@ -36,6 +39,13 @@ export const Preview = observer(
     subheader?: React.ReactNode;
     footer?: React.ReactNode;
     panelTabs?: PanelTab[];
+    PropsPanel?: React.ComponentType<{
+      propsType: ValueType;
+      types: CollectedTypes;
+      source: string;
+      onChange: (source: string) => void;
+      codeEditor: React.ReactNode;
+    }>;
     viewport: React.ReactNode;
   }) => {
     const [width, height] = useWindowSize();
@@ -129,21 +139,39 @@ export const Preview = observer(
                     icon: faCode,
                     notificationCount: 0,
                     panel: (
-                      <PropsEditor
-                        documentId={state.component.componentId}
-                        height={height}
-                        width={width}
-                        onUpdate={state.updateProps.bind(state)}
-                        onReset={
-                          state.component?.details &&
-                          state.component.details.props
-                            .isDefaultInvocationSource
-                            ? undefined
-                            : state.resetProps.bind(state)
+                      <PropsPanel
+                        propsType={
+                          state.component.details?.props.types.props || UNKNOWN
                         }
-                        source={state.component.details?.props.invocationSource}
-                        typeDeclarationsSource={
-                          state.component.details?.props.typeDeclarations
+                        types={state.component.details?.props.types.all || {}}
+                        source={
+                          state.component.details?.props.invocationSource || ""
+                        }
+                        onChange={(source) => {
+                          state.component?.details?.props.setInvocationSource(
+                            source
+                          );
+                        }}
+                        codeEditor={
+                          <PropsEditor
+                            documentId={state.component.componentId}
+                            height={height}
+                            width={width}
+                            onUpdate={state.updateProps.bind(state)}
+                            onReset={
+                              state.component?.details &&
+                              state.component.details.props
+                                .isDefaultInvocationSource
+                                ? undefined
+                                : state.resetProps.bind(state)
+                            }
+                            source={
+                              state.component.details?.props.invocationSource
+                            }
+                            typeDeclarationsSource={
+                              state.component.details?.props.typeDeclarations
+                            }
+                          />
                         }
                       />
                     ),
@@ -170,3 +198,9 @@ export const Preview = observer(
     );
   }
 );
+
+const DefaultPropsPanel: React.FunctionComponent<{
+  codeEditor: React.ReactNode;
+}> = ({ codeEditor }) => {
+  return <Fragment>{codeEditor}</Fragment>;
+};

@@ -10,7 +10,7 @@ export class ComponentProps {
 
   constructor(
     private readonly name: string,
-    private readonly types: {
+    readonly types: {
       props: ValueType;
       all: CollectedTypes;
     },
