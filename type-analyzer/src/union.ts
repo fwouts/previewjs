@@ -1,4 +1,4 @@
-import isEqual from "lodash/isEqual";
+import { isEqual } from "lodash";
 import { BOOLEAN_TYPE } from ".";
 import {
   functionType,
