@@ -20,7 +20,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.4
       license-checker: 25.0.1
-      npm: 8.13.2
+      npm: 8.14.0
       prettier: 2.7.1
       ts-node: 10.8.2
       turbo: 1.3.1
@@ -40,7 +40,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.4
       license-checker: 25.0.1
-      npm: 8.13.2
+      npm: 8.14.0
       prettier: 2.7.1
       ts-node: 10.8.2_mlvggiyta6tj7eanfjcrnlk6sa
       turbo: 1.3.1
@@ -21526,8 +21526,8 @@ packages:
     dependencies:
       path-key: 3.1.1
 
-  /npm/8.13.2:
-    resolution: {integrity: sha512-aS6q/QKxkw9mTX8gR7Ft38BcRkW1i+h3sI1yAFmfQ30Yl1a1G4ZX3oNGDzaLCilU5ThFZQBS1F4ZSZsrVxJ7HA==}
+  /npm/8.14.0:
+    resolution: {integrity: sha512-wjDSM1GBwFUyqryw0jrWzFCFRlaiCZ9omNcnV3fLERqEYR4UsdRwR/SQCJNmri24yVvD+A/Ozr5p0V2WZVt6BQ==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16}
     hasBin: true
     dev: true
@@ -21584,6 +21584,7 @@ packages:
       - npm-user-validate
       - npmlog
       - opener
+      - p-map
       - pacote
       - parse-conflict-json
       - proc-log
