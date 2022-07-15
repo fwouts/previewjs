@@ -161,6 +161,16 @@ export const UNDEFINED = { kind: "undefined" } as const;
 
 export type SerializableUndefinedValue = typeof UNDEFINED;
 
-export const UNKNOWN = { kind: "unknown" } as const;
+export type SerializableUnknownValue = {
+  kind: "unknown";
+  source?: string;
+};
 
-export type SerializableUnknownValue = typeof UNKNOWN;
+export function unknown(source?: string): SerializableUnknownValue {
+  return {
+    kind: "unknown",
+    source,
+  };
+}
+
+export const UNKNOWN = unknown();
