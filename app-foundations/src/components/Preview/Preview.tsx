@@ -3,11 +3,13 @@ import {
   faCode,
   faExternalLink,
   faTerminal,
+  faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UNKNOWN } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
-import { useWindowSize } from "@react-hook/window-size";
+import { useWindowHeight } from "@react-hook/window-size";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
 import { FilePath } from "../../design/FilePath";
@@ -39,17 +41,10 @@ export const Preview = observer(
     subheader?: React.ReactNode;
     footer?: React.ReactNode;
     panelTabs?: PanelTab[];
-    PropsPanel?: React.ComponentType<{
-      propsType: ValueType;
-      types: CollectedTypes;
-      source: string;
-      onChange: (source: string) => void;
-      codeEditor: React.ReactNode;
-    }>;
+    PropsPanel?: React.ComponentType<PropsPanelProps>;
     viewport: React.ReactNode;
   }) => {
-    const [width, height] = useWindowSize();
-    const panelHeight = height * 0.3;
+    const panelHeight = useWindowHeight() * 0.3;
 
     if (!state.reachable) {
       return (
@@ -147,30 +142,32 @@ export const Preview = observer(
                         source={
                           state.component.details?.props.invocationSource || ""
                         }
-                        onChange={(source) => {
-                          state.updateProps(source);
-                        }}
-                        codeEditor={
-                          <PropsEditor
-                            documentId={state.component.componentId}
-                            height={height}
-                            width={width}
-                            onUpdate={state.updateProps.bind(state)}
-                            onReset={
-                              state.component?.details &&
-                              state.component.details.props
-                                .isDefaultInvocationSource
-                                ? undefined
-                                : state.resetProps.bind(state)
-                            }
-                            source={
-                              state.component.details?.props.invocationSource
-                            }
-                            typeDeclarationsSource={
-                              state.component.details?.props.typeDeclarations
-                            }
-                          />
+                        onChange={state.updateProps.bind(state)}
+                        onReset={
+                          state.component?.details &&
+                          state.component.details.props
+                            .isDefaultInvocationSource
+                            ? undefined
+                            : state.resetProps.bind(state)
                         }
+                        CodeEditor={(
+                          (component) =>
+                          ({ width, height }) =>
+                            (
+                              <PropsEditor
+                                documentId={component.componentId}
+                                height={height}
+                                width={width}
+                                onUpdate={state.updateProps.bind(state)}
+                                source={
+                                  component.details?.props.invocationSource
+                                }
+                                typeDeclarationsSource={
+                                  component.details?.props.typeDeclarations
+                                }
+                              />
+                            )
+                        )(state.component)}
                       />
                     ),
                   },
@@ -197,8 +194,39 @@ export const Preview = observer(
   }
 );
 
-const DefaultPropsPanel: React.FunctionComponent<{
-  codeEditor: React.ReactNode;
-}> = ({ codeEditor }) => {
-  return <Fragment>{codeEditor}</Fragment>;
+type PropsPanelProps = {
+  propsType: ValueType;
+  types: CollectedTypes;
+  source: string;
+  onChange: (source: string) => void;
+  onReset?: () => void;
+  CodeEditor: React.ComponentType<{
+    width: string | number;
+    height: string | number;
+  }>;
+};
+
+const DefaultPropsPanel: React.FunctionComponent<PropsPanelProps> = ({
+  CodeEditor,
+  onReset,
+}) => {
+  return (
+    <Fragment>
+      <button
+        id="editor-refresh-button"
+        className={clsx([
+          "absolute right-0 m-2 p-2 bg-gray-500 rounded-md z-50",
+          onReset
+            ? "bg-opacity-40 text-white cursor-pointer hover:bg-gray-400"
+            : "bg-opacity-25 text-gray-500",
+        ])}
+        title="Reset properties"
+        disabled={!onReset}
+        onClick={onReset}
+      >
+        <FontAwesomeIcon icon={faUndo} />
+      </button>
+      <CodeEditor width="100%" height="100%" />
+    </Fragment>
+  );
 };
