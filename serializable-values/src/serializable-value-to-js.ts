@@ -18,9 +18,11 @@ export function serializableValueToJavaScript(
           : `(${serializableValueToJavaScript(value.returnValue)})`
       }`;
     case "map":
-      return `new Map(Object.entries(${serializableValueToJavaScript(
-        value.values
-      )}))`;
+      return `new Map(${
+        value.values.entries.length > 0
+          ? `Object.entries(${serializableValueToJavaScript(value.values)})`
+          : ""
+      })`;
     case "null":
       return "null";
     case "number":
@@ -46,7 +48,7 @@ export function serializableValueToJavaScript(
         return `Promise.reject(${
           value.value.message === null
             ? ""
-            : JSON.stringify(value.value.message)
+            : `new Error(${JSON.stringify(value.value.message)})`
         })`;
       } else {
         return `Promise.resolve(${serializableValueToJavaScript(
@@ -54,13 +56,17 @@ export function serializableValueToJavaScript(
         )})`;
       }
     case "set":
-      return `new Set(${serializableValueToJavaScript(value.values)})`;
+      return `new Set(${
+        value.values.items.length > 0
+          ? serializableValueToJavaScript(value.values)
+          : ""
+      })`;
     case "string":
       return JSON.stringify(value.value);
     case "undefined":
       return "undefined";
     case "unknown":
-      return "{}";
+      return value.source || "{}";
     default:
       throw assertNever(value);
   }
