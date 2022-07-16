@@ -5,7 +5,7 @@ import {
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useWindowSize } from "@react-hook/window-size";
+import { useWindowHeight } from "@react-hook/window-size";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { FilePath } from "../../design/FilePath";
@@ -38,8 +38,7 @@ export const Preview = observer(
     panelTabs?: PanelTab[];
     viewport: React.ReactNode;
   }) => {
-    const [width, height] = useWindowSize();
-    const panelHeight = height * 0.3;
+    const panelHeight = useWindowHeight() * 0.3;
 
     if (!state.reachable) {
       return (
@@ -131,8 +130,6 @@ export const Preview = observer(
                     panel: (
                       <PropsEditor
                         documentId={state.component.componentId}
-                        height={height}
-                        width={width}
                         onUpdate={state.updateProps.bind(state)}
                         onReset={
                           state.component?.details &&

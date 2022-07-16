@@ -22,16 +22,12 @@ export const PropsEditor = ({
   documentId,
   source,
   typeDeclarationsSource,
-  width,
-  height,
   onUpdate,
   onReset,
 }: {
   documentId: string;
   source?: string;
   typeDeclarationsSource?: string;
-  width: number;
-  height: number;
   onUpdate(source: string): void;
   onReset?(): void;
 }) => {
@@ -132,8 +128,6 @@ export const PropsEditor = ({
         <FontAwesomeIcon icon={faUndo} />
       </button>
       <Editor
-        width={width}
-        height={height}
         theme="vs-dark"
         defaultLanguage="typescript"
         onChange={onChange}
