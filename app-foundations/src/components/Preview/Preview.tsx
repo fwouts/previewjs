@@ -148,9 +148,7 @@ export const Preview = observer(
                           state.component.details?.props.invocationSource || ""
                         }
                         onChange={(source) => {
-                          state.component?.details?.props.setInvocationSource(
-                            source
-                          );
+                          state.updateProps(source);
                         }}
                         codeEditor={
                           <PropsEditor
