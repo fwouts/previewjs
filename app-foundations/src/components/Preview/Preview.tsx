@@ -150,24 +150,18 @@ export const Preview = observer(
                             ? undefined
                             : state.resetProps.bind(state)
                         }
-                        CodeEditor={(
-                          (component) =>
-                          ({ width, height }) =>
-                            (
-                              <PropsEditor
-                                documentId={component.componentId}
-                                height={height}
-                                width={width}
-                                onUpdate={state.updateProps.bind(state)}
-                                source={
-                                  component.details?.props.invocationSource
-                                }
-                                typeDeclarationsSource={
-                                  component.details?.props.typeDeclarations
-                                }
-                              />
-                            )
-                        )(state.component)}
+                        codeEditor={
+                          <PropsEditor
+                            documentId={state.component.componentId}
+                            onUpdate={state.updateProps.bind(state)}
+                            source={
+                              state.component.details?.props.invocationSource
+                            }
+                            typeDeclarationsSource={
+                              state.component.details?.props.typeDeclarations
+                            }
+                          />
+                        }
                       />
                     ),
                   },
@@ -200,14 +194,11 @@ type PropsPanelProps = {
   source: string;
   onChange: (source: string) => void;
   onReset?: () => void;
-  CodeEditor: React.ComponentType<{
-    width: string | number;
-    height: string | number;
-  }>;
+  codeEditor: React.ReactNode;
 };
 
 const DefaultPropsPanel: React.FunctionComponent<PropsPanelProps> = ({
-  CodeEditor,
+  codeEditor,
   onReset,
 }) => {
   return (
@@ -226,7 +217,7 @@ const DefaultPropsPanel: React.FunctionComponent<PropsPanelProps> = ({
       >
         <FontAwesomeIcon icon={faUndo} />
       </button>
-      <CodeEditor width="100%" height="100%" />
+      {codeEditor}
     </Fragment>
   );
 };

@@ -19,15 +19,11 @@ export const PropsEditor = ({
   documentId,
   source,
   typeDeclarationsSource,
-  width,
-  height,
   onUpdate,
 }: {
   documentId: string;
   source?: string;
   typeDeclarationsSource?: string;
-  width: string | number;
-  height: string | number;
   onUpdate(source: string): void;
 }) => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -113,8 +109,6 @@ export const PropsEditor = ({
   return (
     <>
       <Editor
-        width={width}
-        height={height}
         theme="vs-dark"
         defaultLanguage="typescript"
         onChange={onChange}
