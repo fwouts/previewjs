@@ -119,7 +119,7 @@ importers:
       '@monaco-editor/react': ^4.4.5
       '@previewjs/api': ^2.3.2
       '@previewjs/iframe': ^1.1.2
-      '@previewjs/serializable-values': ^0.3.2
+      '@previewjs/serializable-values': ^0.4.0
       '@previewjs/type-analyzer': ^2.2.4
       '@react-hook/window-size': ^3.0.7
       '@types/react': 18.0.15
@@ -1201,7 +1201,7 @@ importers:
     dependencies:
       vue: 3.2.37
     devDependencies:
-      nuxt3: 3.0.0-rc.5-27634566.ffd40d1_rollup@2.77.0+vite@2.9.14
+      nuxt3: 3.0.0-rc.6-27635653.88f4525_rollup@2.77.0+vite@2.9.14
 
   smoke-test-apps/react-native-web-app:
     specifiers:
@@ -5152,11 +5152,11 @@ packages:
       ufo: 0.7.11
     dev: false
 
-  /@nuxt/kit-edge/3.0.0-rc.5-27634566.ffd40d1_34lyoy2px4mwvanejqhdojvpg4:
-    resolution: {integrity: sha512-Oyd1GJ7W0GEdn1f48F7XJAewfX+B9sXyTlRrZJq4RHuONCIMu5Yv/bpK9+NE12KMkNBHLN+g3vvwsezcH7U8AA==}
+  /@nuxt/kit-edge/3.0.0-rc.6-27635653.88f4525_34lyoy2px4mwvanejqhdojvpg4:
+    resolution: {integrity: sha512-FKolQGk5YfjAw1WOExBjdVESW5n2mvO5cxuN8S5Ivx/7XMauuqdmE20Lk8fwWLOr83ziJviDyCIUGl4mDVq32A==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.5-27634566.ffd40d1_34lyoy2px4mwvanejqhdojvpg4
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.6-27635653.88f4525_34lyoy2px4mwvanejqhdojvpg4
       c12: 0.2.8
       consola: 2.15.3
       defu: 6.0.0
@@ -5182,11 +5182,11 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-rc.5-27634566.ffd40d1_rollup@2.77.0+vite@2.9.14:
-    resolution: {integrity: sha512-Oyd1GJ7W0GEdn1f48F7XJAewfX+B9sXyTlRrZJq4RHuONCIMu5Yv/bpK9+NE12KMkNBHLN+g3vvwsezcH7U8AA==}
+  /@nuxt/kit-edge/3.0.0-rc.6-27635653.88f4525_rollup@2.77.0+vite@2.9.14:
+    resolution: {integrity: sha512-FKolQGk5YfjAw1WOExBjdVESW5n2mvO5cxuN8S5Ivx/7XMauuqdmE20Lk8fwWLOr83ziJviDyCIUGl4mDVq32A==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.5-27634566.ffd40d1_rollup@2.77.0+vite@2.9.14
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.6-27635653.88f4525_rollup@2.77.0+vite@2.9.14
       c12: 0.2.8
       consola: 2.15.3
       defu: 6.0.0
@@ -5281,8 +5281,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-rc.5-27634566.ffd40d1_34lyoy2px4mwvanejqhdojvpg4:
-    resolution: {integrity: sha512-L9+R8Gvy3suqp7TCksFPqR6BarQ+ffG7HFGr9VnqlklAENaUuGqYFgXcCOaL2VTigbVVbfZGoNRGiVC9NIqTqw==}
+  /@nuxt/schema-edge/3.0.0-rc.6-27635653.88f4525_34lyoy2px4mwvanejqhdojvpg4:
+    resolution: {integrity: sha512-gKInepH+Nhg0p2Cxlc1CWrYv/qM3UoYOQUgXGnTgkkh4RtLEHNGP3op+LbkZ1847Z+p368vb6J9PMPghnP5a4A==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
       c12: 0.2.8
@@ -5302,8 +5302,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-rc.5-27634566.ffd40d1_rollup@2.77.0+vite@2.9.14:
-    resolution: {integrity: sha512-L9+R8Gvy3suqp7TCksFPqR6BarQ+ffG7HFGr9VnqlklAENaUuGqYFgXcCOaL2VTigbVVbfZGoNRGiVC9NIqTqw==}
+  /@nuxt/schema-edge/3.0.0-rc.6-27635653.88f4525_rollup@2.77.0+vite@2.9.14:
+    resolution: {integrity: sha512-gKInepH+Nhg0p2Cxlc1CWrYv/qM3UoYOQUgXGnTgkkh4RtLEHNGP3op+LbkZ1847Z+p368vb6J9PMPghnP5a4A==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
       c12: 0.2.8
@@ -5492,13 +5492,13 @@ packages:
       ufo: 0.7.11
     dev: false
 
-  /@nuxt/vite-builder-edge/3.0.0-rc.5-27634566.ffd40d1_vue@3.2.37:
-    resolution: {integrity: sha512-RxKxECedcbDE6bbndgm7a7Eiou7UACnfHYD3Sp45J2B9jH2x/F88H2O66Nf1pAENEYvmtL+0Linu0ucv/pNVJg==}
+  /@nuxt/vite-builder-edge/3.0.0-rc.6-27635653.88f4525_vue@3.2.37:
+    resolution: {integrity: sha512-CybHunUZzO1SQfiRMW1E4l9tiIMgC/5zIVcK9A4aKpCQwwNMpemdbAZOzOt819hblI6MjPF6Luk6I1pIs2I28w==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     peerDependencies:
       vue: ^3.2.37
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.5-27634566.ffd40d1_34lyoy2px4mwvanejqhdojvpg4
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.6-27635653.88f4525_34lyoy2px4mwvanejqhdojvpg4
       '@rollup/plugin-replace': 4.0.0_rollup@2.77.0
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.14+vue@3.2.37
       '@vitejs/plugin-vue-jsx': 1.3.10
@@ -21630,8 +21630,8 @@ packages:
   /num2fraction/1.2.2:
     resolution: {integrity: sha512-Y1wZESM7VUThYY+4W+X4ySH2maqcA+p7UR+w8VWNWVAd6lwuXXWz/w/Cz43J/dI2I+PS6wD5N+bJUF+gjWvIqg==}
 
-  /nuxi-edge/3.0.0-rc.5-27634566.ffd40d1:
-    resolution: {integrity: sha512-onvLermTm0YKM55EyVSjkeCq+neYUt7Hs0+DJoHC8FaJ2+Tt4NpwL8J24SGNk1Q53rEoR/O3TlDeuBavOXpfjg==}
+  /nuxi-edge/3.0.0-rc.6-27635653.88f4525:
+    resolution: {integrity: sha512-j2zwm6vebrGG7VbhFb0/cetA1t0vl9ZkQ6AXSWozypFK/y9G31slJSVhqEP/tTGCEEWpeq0dMXLQUw3Ae34Xjg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     hasBin: true
     optionalDependencies:
@@ -21723,17 +21723,17 @@ packages:
       - whiskers
     dev: false
 
-  /nuxt3/3.0.0-rc.5-27634566.ffd40d1_rollup@2.77.0+vite@2.9.14:
-    resolution: {integrity: sha512-ho+PkHTHBH7Gie6YPZuQYjTpWtLGeKoxk2M+Jg+QeXPvOYDtMPQbiu0JW/Ho2dV22K4OIRvmPNXXla/TQ/Uo7g==}
+  /nuxt3/3.0.0-rc.6-27635653.88f4525_rollup@2.77.0+vite@2.9.14:
+    resolution: {integrity: sha512-QfcQO+xthP25O7xDH/DgItY2a5wzoRnFKeCd55KkvhBP72hPtob84PTNr88+nq0X2VDGtHEWi9npMaroDRjQYA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     hasBin: true
     dependencies:
       '@nuxt/devalue': 2.0.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.5-27634566.ffd40d1_rollup@2.77.0+vite@2.9.14
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.5-27634566.ffd40d1_rollup@2.77.0+vite@2.9.14
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.6-27635653.88f4525_rollup@2.77.0+vite@2.9.14
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.6-27635653.88f4525_rollup@2.77.0+vite@2.9.14
       '@nuxt/telemetry': 2.1.3_rollup@2.77.0+vite@2.9.14
       '@nuxt/ui-templates': 0.2.1
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-rc.5-27634566.ffd40d1_vue@3.2.37
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-rc.6-27635653.88f4525_vue@3.2.37
       '@vue/reactivity': 3.2.37
       '@vue/shared': 3.2.37
       '@vueuse/head': 0.7.6_vue@3.2.37
@@ -21751,7 +21751,7 @@ packages:
       magic-string: 0.26.2
       mlly: 0.5.4
       nitropack: 0.4.12_vite@2.9.14
-      nuxi: /nuxi-edge/3.0.0-rc.5-27634566.ffd40d1
+      nuxi: /nuxi-edge/3.0.0-rc.6-27635653.88f4525
       ohash: 0.1.4
       ohmyfetch: 0.4.18
       pathe: 0.3.2
