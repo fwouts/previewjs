@@ -42,7 +42,7 @@ describe("serializableValueToJavaScript", () => {
       '"() => {}"'
     );
     expect(serializableValueToJavaScript(fn(number(0)))).toMatchInlineSnapshot(
-      '"() => (0)"'
+      '"() => 0"'
     );
   });
 
@@ -62,10 +62,11 @@ describe("serializableValueToJavaScript", () => {
         )
       )
     ).toMatchInlineSnapshot(`
-      "new Map(Object.entries({
-      \\"foo\\": 123,
-
-      }))"
+      "new Map(
+        Object.entries({
+          foo: 123,
+        })
+      )"
     `);
   });
 
@@ -100,8 +101,7 @@ describe("serializableValueToJavaScript", () => {
       )
     ).toMatchInlineSnapshot(`
       "{
-      \\"foo\\": 123,
-
+        foo: 123,
       }"
     `);
   });

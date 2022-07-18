@@ -8,8 +8,6 @@ import {
   objectType,
   ValueType,
 } from "@previewjs/type-analyzer";
-import prettier from "prettier";
-import parserBabel from "prettier/parser-babel";
 
 /**
  * Generates an invocation source for a specific component.
@@ -40,12 +38,5 @@ export function generateInvocation(
   if (valueSource === "undefined") {
     valueSource = "{}";
   }
-  const source = `properties = ${valueSource}`;
-  return prettier
-    .format(source, {
-      parser: "babel",
-      plugins: [parserBabel],
-      filepath: "component.js",
-    })
-    .trim();
+  return `properties = ${valueSource};`;
 }
