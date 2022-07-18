@@ -72,7 +72,7 @@ function _generateSerializableValue(
       return FALSE;
     case "string":
     case "node":
-      return string(path.length === 0 ? "node" : path.join("."));
+      return string(path.length === 0 ? "node" : path[path.length - 1]!);
     case "number":
       return number(100);
     case "literal":

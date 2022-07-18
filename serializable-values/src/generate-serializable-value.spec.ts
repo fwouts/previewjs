@@ -458,7 +458,7 @@ describe("generateSerializableValue", () => {
                     "kind": "function",
                     "returnValue": {
                       "kind": "string",
-                      "value": "namedType.bar",
+                      "value": "bar",
                     },
                   },
                 },
