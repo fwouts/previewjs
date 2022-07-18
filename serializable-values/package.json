@@ -31,9 +31,11 @@
   },
   "dependencies": {
     "@previewjs/type-analyzer": "^2.2.4",
-    "assert-never": "^1.2.1"
+    "assert-never": "^1.2.1",
+    "prettier": "^2.7.1"
   },
   "devDependencies": {
+    "@types/prettier": "2.6.3",
     "unbuild": "0.7.4",
     "vitest": "0.18.0"
   }

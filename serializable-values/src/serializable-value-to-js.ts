@@ -1,13 +1,28 @@
 import assertNever from "assert-never";
+import prettier from "prettier";
+import parserBabel from "prettier/parser-babel";
 import type { SerializableValue } from "./serializable-value";
 
 export function serializableValueToJavaScript(
   value: SerializableValue
 ): string {
+  const formattedStatement = prettier
+    .format(`value = ${serializableValueToUnformattedJavaScript(value)}`, {
+      parser: "babel",
+      plugins: [parserBabel],
+      filepath: "component.js",
+    })
+    .trim();
+  return formattedStatement.replace(/^value = ((.|\s)*);$/m, "$1");
+}
+
+function serializableValueToUnformattedJavaScript(
+  value: SerializableValue
+): string {
   switch (value.kind) {
     case "array":
       return `[${value.items
-        .map((item) => serializableValueToJavaScript(item))
+        .map((item) => serializableValueToUnformattedJavaScript(item))
         .join(", ")}]`;
     case "boolean":
       return value.value ? "true" : "false";
@@ -15,12 +30,14 @@ export function serializableValueToJavaScript(
       return `() => ${
         value.returnValue.kind === "undefined"
           ? "{}"
-          : `(${serializableValueToJavaScript(value.returnValue)})`
+          : `(${serializableValueToUnformattedJavaScript(value.returnValue)})`
       }`;
     case "map":
       return `new Map(${
         value.values.entries.length > 0
-          ? `Object.entries(${serializableValueToJavaScript(value.values)})`
+          ? `Object.entries(${serializableValueToUnformattedJavaScript(
+              value.values
+            )})`
           : ""
       })`;
     case "null":
@@ -37,8 +54,8 @@ export function serializableValueToJavaScript(
         text += `${
           entry.key.kind === "string"
             ? JSON.stringify(entry.key.value)
-            : `[${serializableValueToJavaScript(entry.key)}]`
-        }: ${serializableValueToJavaScript(entry.value)},\n`;
+            : `[${serializableValueToUnformattedJavaScript(entry.key)}]`
+        }: ${serializableValueToUnformattedJavaScript(entry.value)},\n`;
       }
       text += "\n}";
       return text;
@@ -51,14 +68,14 @@ export function serializableValueToJavaScript(
             : `new Error(${JSON.stringify(value.value.message)})`
         })`;
       } else {
-        return `Promise.resolve(${serializableValueToJavaScript(
+        return `Promise.resolve(${serializableValueToUnformattedJavaScript(
           value.value.value
         )})`;
       }
     case "set":
       return `new Set(${
         value.values.items.length > 0
-          ? serializableValueToJavaScript(value.values)
+          ? serializableValueToUnformattedJavaScript(value.values)
           : ""
       })`;
     case "string":
