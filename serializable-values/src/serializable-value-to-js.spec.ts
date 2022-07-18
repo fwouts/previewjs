@@ -64,7 +64,7 @@ describe("serializableValueToJavaScript", () => {
     ).toMatchInlineSnapshot(`
       "new Map(
         Object.entries({
-          foo: 123,
+          foo: 123
         })
       )"
     `);
@@ -101,7 +101,7 @@ describe("serializableValueToJavaScript", () => {
       )
     ).toMatchInlineSnapshot(`
       "{
-        foo: 123,
+        foo: 123
       }"
     `);
   });

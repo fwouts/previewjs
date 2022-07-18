@@ -11,6 +11,7 @@ export function serializableValueToJavaScript(
       parser: "babel",
       plugins: [parserBabel],
       filepath: "component.js",
+      trailingComma: "none",
     })
     .trim();
   return formattedStatement.replace(/^value = ((.|\s)*);$/m, "$1");
