@@ -36,11 +36,11 @@ properties = {
 properties = {
   children: "children",
   foo: {
-    bar: "foo.bar",
+    bar: "bar"
   },
   complex: {
-    bar: "hi!",
-  },
+    bar: "hi!"
+  }
 };
 `.trim()
       );

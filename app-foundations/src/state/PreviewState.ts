@@ -143,7 +143,9 @@ export class PreviewState {
     this.iframeController.start();
     await this.onUrlChanged();
     this.pingInterval = setInterval(() => {
-      this.ping().catch(console.error);
+      this.ping()
+        .then(() => this.component?.details?.props.refresh())
+        .catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
     document.addEventListener("keydown", this.keydownListener);
     const { appInfo } = await this.localApi.request(localEndpoints.GetInfo);
@@ -247,9 +249,6 @@ export class PreviewState {
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
     const decodedComponentId = decodeComponentId(componentId);
-    if (this.options.onFileChanged) {
-      await this.options.onFileChanged(decodedComponentId.currentFilePath);
-    }
     if (!decodedComponentId.component) {
       this.component = null;
       return;
@@ -271,14 +270,17 @@ export class PreviewState {
           details: null,
         };
       });
-      const response = await this.localApi.request(
-        localEndpoints.ComputeProps,
-        {
-          filePath: decodedComponentId.component.filePath,
-          componentName: name,
-        }
-      );
+      if (this.options.onFileChanged) {
+        await this.options.onFileChanged(decodedComponentId.currentFilePath);
+      }
       const filePath = decodedComponentId.component.filePath;
+      const props = new ComponentProps(
+        this.localApi,
+        filePath,
+        name,
+        this.cachedInvocations[componentId] || null
+      );
+      await props.refresh();
       runInAction(() => {
         this.component = {
           componentId,
@@ -287,12 +289,7 @@ export class PreviewState {
           details: {
             filePath,
             variants: null,
-            props: new ComponentProps(
-              name,
-              response.types,
-              response.args,
-              this.cachedInvocations[componentId] || null
-            ),
+            props,
           },
         };
       });
