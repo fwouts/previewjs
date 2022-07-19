@@ -135,6 +135,7 @@ export const Preview = observer(
                     notificationCount: 0,
                     panel: (
                       <PropsPanel
+                        componentName={state.component.name}
                         propsType={
                           state.component.details?.props.types.props || UNKNOWN
                         }
@@ -189,6 +190,7 @@ export const Preview = observer(
 );
 
 type PropsPanelProps = {
+  componentName: string;
   propsType: ValueType;
   types: CollectedTypes;
   source: string;
