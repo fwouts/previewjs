@@ -35,7 +35,7 @@ describe("generateInvocation", () => {
       )
     ).toMatchInlineSnapshot(`
       "properties = {
-        foo: \\"foo\\",
+        foo: \\"foo\\"
       };"
     `);
   });
@@ -52,7 +52,7 @@ describe("generateInvocation", () => {
       })
     ).toMatchInlineSnapshot(`
       "properties = {
-        foo: \\"foo\\",
+        foo: \\"foo\\"
       };"
     `);
   });
@@ -72,8 +72,8 @@ describe("generateInvocation", () => {
       "properties = {
         foo: \\"foo\\",
         recursive: {
-          foo: \\"recursive.foo\\",
-        },
+          foo: \\"foo\\"
+        }
       };"
     `);
   });
@@ -150,8 +150,8 @@ describe("generateInvocation", () => {
         functionType: () => \\"functionType\\",
         promiseType: Promise.reject(),
         namedType: {
-          bar: () => \\"namedType.bar\\",
-        },
+          bar: () => \\"bar\\"
+        }
       };"
     `);
   });
@@ -169,7 +169,7 @@ describe("generateInvocation", () => {
       })
     ).toMatchInlineSnapshot(`
       "properties = {
-        bar: \\"bar\\",
+        bar: \\"bar\\"
       };"
     `);
   });
