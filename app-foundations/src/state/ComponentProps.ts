@@ -1,24 +1,46 @@
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
-import { makeAutoObservable } from "mobx";
+import { Api, localEndpoints } from "@previewjs/api";
+import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import { makeAutoObservable, runInAction } from "mobx";
 import { extractFunctionKeys } from "./generators/extract-function-keys";
 import { generateDefaultProps } from "./generators/generate-default-props";
 import { generateInvocation } from "./generators/generate-invocation";
 import { generateTypeDeclarations } from "./generators/generate-type-declarations";
 
 export class ComponentProps {
+  private computePropsResponse: localEndpoints.ComputePropsResponse;
   private _invocationSource: string | null;
 
   constructor(
-    private readonly name: string,
-    private readonly types: {
-      props: ValueType;
-      all: CollectedTypes;
-    },
-    private readonly argKeys: string[],
+    private readonly localApi: Api,
+    private readonly filePath: string,
+    private readonly componentName: string,
     cachedInvocationSource: string | null
   ) {
+    this.computePropsResponse = {
+      args: [],
+      types: {
+        props: UNKNOWN_TYPE,
+        all: {},
+      },
+    };
     this._invocationSource = cachedInvocationSource;
     makeAutoObservable(this);
+  }
+
+  /**
+   * Refreshes props type.
+   *
+   * IMPORTANT: This must be called successfully at least once before
+   * any other method can be used.
+   */
+  async refresh() {
+    const response = await this.localApi.request(localEndpoints.ComputeProps, {
+      filePath: this.filePath,
+      componentName: this.componentName,
+    });
+    runInAction(() => {
+      this.computePropsResponse = response;
+    });
   }
 
   setInvocationSource(source: string | null) {
@@ -34,7 +56,10 @@ export class ComponentProps {
    * Unlike defaultInvocation, defaultProps is not shown to the user.
    */
   get defaultPropsSource() {
-    return generateDefaultProps(this.types.props, this.types.all);
+    return generateDefaultProps(
+      this.computePropsResponse.types.props,
+      this.computePropsResponse.types.all
+    );
   }
 
   /**
@@ -42,10 +67,10 @@ export class ComponentProps {
    */
   get typeDeclarations(): string {
     return generateTypeDeclarations(
-      this.name,
-      this.types.props,
-      this.argKeys,
-      this.types.all
+      this.componentName,
+      this.computePropsResponse.types.props,
+      this.computePropsResponse.args,
+      this.computePropsResponse.types.all
     );
   }
 
@@ -73,12 +98,15 @@ export class ComponentProps {
    */
   private get defaultInvocationSource() {
     return generateInvocation(
-      this.types.props,
+      this.computePropsResponse.types.props,
       [
-        ...extractFunctionKeys(this.types.props, this.types.all),
-        ...this.argKeys,
+        ...extractFunctionKeys(
+          this.computePropsResponse.types.props,
+          this.computePropsResponse.types.all
+        ),
+        ...this.computePropsResponse.args,
       ],
-      this.types.all
+      this.computePropsResponse.types.all
     );
   }
 }
