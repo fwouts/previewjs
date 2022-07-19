@@ -247,9 +247,6 @@ export class PreviewState {
     const componentId = urlParams.get("p") || "";
     const variantKey = urlParams.get("v") || null;
     const decodedComponentId = decodeComponentId(componentId);
-    if (this.options.onFileChanged) {
-      await this.options.onFileChanged(decodedComponentId.currentFilePath);
-    }
     if (!decodedComponentId.component) {
       this.component = null;
       return;
@@ -271,6 +268,9 @@ export class PreviewState {
           details: null,
         };
       });
+      if (this.options.onFileChanged) {
+        await this.options.onFileChanged(decodedComponentId.currentFilePath);
+      }
       const response = await this.localApi.request(
         localEndpoints.ComputeProps,
         {
