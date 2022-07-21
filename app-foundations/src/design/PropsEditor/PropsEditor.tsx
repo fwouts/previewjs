@@ -125,6 +125,7 @@ export const PropsEditor = ({
           scrollbar: {
             vertical: "hidden",
           },
+          scrollBeyondLastLine: false,
           padding: {
             top: 8,
             bottom: 8,
