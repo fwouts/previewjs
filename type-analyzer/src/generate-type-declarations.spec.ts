@@ -61,6 +61,7 @@ describe("generateTypeDeclarations", () => {
         "/foo.tsx:Foo": {
           type: objectType({
             child: optionalType(namedType("/foo.tsx:Foo")),
+            children: arrayType(namedType("/foo.tsx:Foo")),
           }),
           parameters: {},
         },
@@ -68,6 +69,7 @@ describe("generateTypeDeclarations", () => {
     ).toMatchInlineSnapshot(`
       "type Foo = {
         [\\"child\\"]?: Foo | undefined;
+        [\\"children\\"]: Array<Foo>;
       };"
     `);
   });

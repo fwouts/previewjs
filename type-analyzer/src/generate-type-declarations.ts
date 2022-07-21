@@ -131,7 +131,6 @@ function generateTypeScriptType(
     case "object":
       return `{
               ${Object.entries(type.fields)
-                .filter(([propName]) => propName !== "children")
                 .map(([propName, propType]) => {
                   const resolvedPropType =
                     propType.kind === "name"

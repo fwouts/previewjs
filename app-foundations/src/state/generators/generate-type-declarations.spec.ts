@@ -20,7 +20,7 @@ describe("generatePropsTypeDeclarations", () => {
         {}
       )
     ).toMatchInlineSnapshot(`
-      "declare let properties: { children?: any } & MyComponentProps;
+      "declare let properties: MyComponentProps;
 
       declare function fn<T>(name: string, returnValue?: T): () => T;
 
@@ -47,7 +47,7 @@ describe("generatePropsTypeDeclarations", () => {
         }
       )
     ).toMatchInlineSnapshot(`
-      "declare let properties: { children?: any } & Foo;
+      "declare let properties: Foo;
 
       declare function fn<T>(name: string, returnValue?: T): () => T;
 
@@ -74,7 +74,7 @@ describe("generatePropsTypeDeclarations", () => {
         }
       )
     ).toMatchInlineSnapshot(`
-      "declare let properties: { children?: any } & MyComponentProps;
+      "declare let properties: MyComponentProps;
 
       declare function fn<T>(name: string, returnValue?: T): () => T;
 
@@ -100,7 +100,7 @@ describe("generatePropsTypeDeclarations", () => {
         {}
       )
     ).toMatchInlineSnapshot(`
-      "declare let properties: { children?: any } & MyComponentProps;
+      "declare let properties: MyComponentProps;
 
       declare function fn<T>(name: string, returnValue?: T): () => T;
 
@@ -131,7 +131,7 @@ describe("generatePropsTypeDeclarations", () => {
         }
       )
     ).toMatchInlineSnapshot(`
-      "declare let properties: { children?: any } & Foo;
+      "declare let properties: Foo;
 
       declare function fn<T>(name: string, returnValue?: T): () => T;
 
@@ -160,7 +160,7 @@ describe("generatePropsTypeDeclarations", () => {
         }
       )
     ).toMatchInlineSnapshot(`
-      "declare let properties: { children?: any } & Foo;
+      "declare let properties: Foo;
 
       declare function fn<T>(name: string, returnValue?: T): () => T;
 

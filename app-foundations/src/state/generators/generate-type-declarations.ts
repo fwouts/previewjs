@@ -60,9 +60,7 @@ export function generatePropsTypeDeclarations(
     };
   }
 
-  return `declare let properties: { children?: any } & ${
-    rootTypeName.split(":")[1]
-  };
+  return `declare let properties: ${rootTypeName.split(":")[1]};
 
 declare function fn<T>(name: string, returnValue?: T): () => T;
 
