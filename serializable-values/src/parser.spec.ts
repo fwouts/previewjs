@@ -159,6 +159,12 @@ describe("parseSerializableValue", () => {
         value: number(123),
       })
     );
+    expectParsedExpression(`Promise.reject()`).toEqual(
+      promise({
+        type: "reject",
+        message: null,
+      })
+    );
     expectParsedExpression(`Promise.reject(new Error("foo"))`).toEqual(
       promise({
         type: "reject",

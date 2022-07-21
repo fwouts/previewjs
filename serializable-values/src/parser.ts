@@ -163,8 +163,12 @@ export function parseSerializableValue(
       });
     }
     if (expression.expression.name.text === "reject") {
-      if (
-        firstArgument &&
+      if (!firstArgument) {
+        return promise({
+          type: "reject",
+          message: null,
+        });
+      } else if (
         ts.isNewExpression(firstArgument) &&
         (firstArgument.arguments?.length || 0) <= 1
       ) {
