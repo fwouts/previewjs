@@ -48,7 +48,7 @@ importers:
 
   api:
     specifiers:
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       unbuild: 0.7.4
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -120,7 +120,7 @@ importers:
       '@previewjs/api': ^2.3.2
       '@previewjs/iframe': ^1.1.2
       '@previewjs/serializable-values': ^0.6.1
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       '@react-hook/window-size': ^3.0.7
       '@types/react': 18.0.15
       assert-never: ^1.2.1
@@ -216,7 +216,7 @@ importers:
       '@previewjs/api': ^2.3.2
       '@previewjs/config': ^2.0.1
       '@previewjs/iframe': ^1.1.2
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       '@previewjs/vfs': ^1.2.2
       '@types/cookie-parser': 1.4.3
       '@types/express': 4.17.13
@@ -273,7 +273,7 @@ importers:
   csf3:
     specifiers:
       '@previewjs/core': ^5.0.6
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       typescript: ^4.7.4
       unbuild: 0.7.4
       vitest: 0.18.1
@@ -342,7 +342,7 @@ importers:
     specifiers:
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^0.0.0
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       '@previewjs/vfs': ^1.2.2
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.15
@@ -386,7 +386,7 @@ importers:
     specifiers:
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^0.0.0
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       '@previewjs/vfs': ^1.2.2
       rimraf: 3.0.2
       solid-js: 1.4.7
@@ -421,7 +421,7 @@ importers:
       '@nuxt/config': ^2.15.8
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^0.0.0
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       '@previewjs/vfs': ^1.2.2
       '@types/fs-extra': 9.0.13
       fs-extra: ^10.1.0
@@ -466,7 +466,7 @@ importers:
     specifiers:
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^0.0.0
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       '@previewjs/vfs': ^1.2.2
       '@vitejs/plugin-vue': ^2.3.3
       '@vitejs/plugin-vue-jsx': ^1.3.10
@@ -543,7 +543,7 @@ importers:
       esbuild: 0.14.49
       express: 4.18.1
       rimraf: 3.0.2
-      ts-node-dev: 2.0.0_6bd4jfip3gnofjnkq5lqqdbk4m
+      ts-node-dev: 2.0.0_typescript@4.7.4
       typescript: 4.7.4
       uuid: 8.3.2
 
@@ -590,7 +590,7 @@ importers:
 
   serializable-values:
     specifiers:
-      '@previewjs/type-analyzer': ^2.2.4
+      '@previewjs/type-analyzer': ^2.3.0
       '@types/prettier': 2.6.3
       assert-never: ^1.2.1
       prettier: ^2.7.1
@@ -16529,17 +16529,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.15.1_debug@4.3.4:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.4_supports-color@6.1.0
-
   /fontfaceobserver/2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
     dev: false
@@ -17791,7 +17780,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1_debug@4.3.4
+      follow-redirects: 1.15.1
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -27752,34 +27741,6 @@ packages:
       webpack: 4.46.0
     dev: true
 
-  /ts-node-dev/2.0.0_6bd4jfip3gnofjnkq5lqqdbk4m:
-    resolution: {integrity: sha512-ywMrhCfH6M75yftYvrvNarLEY+SUXtUvU8/0Z6llrHQVBx12GiFk5sStF8UdfE/yfzk9IAq7O5EEbTQsxlBI8w==}
-    engines: {node: '>=0.8.0'}
-    hasBin: true
-    peerDependencies:
-      node-notifier: '*'
-      typescript: '*'
-    peerDependenciesMeta:
-      node-notifier:
-        optional: true
-    dependencies:
-      chokidar: 3.5.3
-      dynamic-dedupe: 0.3.0
-      minimist: 1.2.6
-      mkdirp: 1.0.4
-      resolve: 1.22.0
-      rimraf: 2.7.1
-      source-map-support: 0.5.21
-      tree-kill: 1.2.2
-      ts-node: 10.8.1_6bd4jfip3gnofjnkq5lqqdbk4m
-      tsconfig: 7.0.0
-      typescript: 4.7.4
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-    dev: true
-
   /ts-node-dev/2.0.0_mlvggiyta6tj7eanfjcrnlk6sa:
     resolution: {integrity: sha512-ywMrhCfH6M75yftYvrvNarLEY+SUXtUvU8/0Z6llrHQVBx12GiFk5sStF8UdfE/yfzk9IAq7O5EEbTQsxlBI8w==}
     engines: {node: '>=0.8.0'}
@@ -27808,35 +27769,32 @@ packages:
       - '@types/node'
     dev: true
 
-  /ts-node/10.8.1_6bd4jfip3gnofjnkq5lqqdbk4m:
-    resolution: {integrity: sha512-Wwsnao4DQoJsN034wePSg5nZiw4YKXf56mPIAeD6wVmiv+RytNSWqc2f3fKvcUoV+Yn2+yocD71VOfQHbmVX4g==}
+  /ts-node-dev/2.0.0_typescript@4.7.4:
+    resolution: {integrity: sha512-ywMrhCfH6M75yftYvrvNarLEY+SUXtUvU8/0Z6llrHQVBx12GiFk5sStF8UdfE/yfzk9IAq7O5EEbTQsxlBI8w==}
+    engines: {node: '>=0.8.0'}
     hasBin: true
     peerDependencies:
-      '@swc/core': '>=1.2.50'
-      '@swc/wasm': '>=1.2.50'
-      '@types/node': '*'
-      typescript: '>=2.7'
+      node-notifier: '*'
+      typescript: '*'
     peerDependenciesMeta:
-      '@swc/core':
-        optional: true
-      '@swc/wasm':
+      node-notifier:
         optional: true
     dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.9
-      '@tsconfig/node12': 1.0.11
-      '@tsconfig/node14': 1.0.3
-      '@tsconfig/node16': 1.0.3
-      '@types/node': 17.0.31
-      acorn: 8.7.1
-      acorn-walk: 8.2.0
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
+      chokidar: 3.5.3
+      dynamic-dedupe: 0.3.0
+      minimist: 1.2.6
+      mkdirp: 1.0.4
+      resolve: 1.22.0
+      rimraf: 2.7.1
+      source-map-support: 0.5.21
+      tree-kill: 1.2.2
+      ts-node: 10.8.1_typescript@4.7.4
+      tsconfig: 7.0.0
       typescript: 4.7.4
-      v8-compile-cache-lib: 3.0.1
-      yn: 3.1.1
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
     dev: true
 
   /ts-node/10.8.1_mlvggiyta6tj7eanfjcrnlk6sa:
@@ -27859,6 +27817,36 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/node': 17.0.8
+      acorn: 8.7.1
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 4.7.4
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    dev: true
+
+  /ts-node/10.8.1_typescript@4.7.4:
+    resolution: {integrity: sha512-Wwsnao4DQoJsN034wePSg5nZiw4YKXf56mPIAeD6wVmiv+RytNSWqc2f3fKvcUoV+Yn2+yocD71VOfQHbmVX4g==}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.9
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
       acorn: 8.7.1
       acorn-walk: 8.2.0
       arg: 4.1.3
