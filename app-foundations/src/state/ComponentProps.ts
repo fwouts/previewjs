@@ -62,6 +62,10 @@ export class ComponentProps {
     );
   }
 
+  get types() {
+    return this.computePropsResponse.types;
+  }
+
   /**
    * Type declarations used by the props editor to offer better autocomplete and type checking.
    */

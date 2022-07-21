@@ -3,11 +3,15 @@ import {
   faCode,
   faExternalLink,
   faTerminal,
+  faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { UNKNOWN } from "@previewjs/serializable-values";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import { useWindowHeight } from "@react-hook/window-size";
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { Fragment } from "react";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
 import { Link } from "../../design/Link";
@@ -28,6 +32,7 @@ export const Preview = observer(
     subheader,
     footer,
     panelTabs,
+    PropsPanel = DefaultPropsPanel,
     viewport,
   }: {
     state: PreviewState;
@@ -36,6 +41,7 @@ export const Preview = observer(
     subheader?: React.ReactNode;
     footer?: React.ReactNode;
     panelTabs?: PanelTab[];
+    PropsPanel?: React.ComponentType<PropsPanelProps>;
     viewport: React.ReactNode;
   }) => {
     const panelHeight = useWindowHeight() * 0.3;
@@ -128,9 +134,16 @@ export const Preview = observer(
                     icon: faCode,
                     notificationCount: 0,
                     panel: (
-                      <PropsEditor
-                        documentId={state.component.componentId}
-                        onUpdate={state.updateProps.bind(state)}
+                      <PropsPanel
+                        componentName={state.component.name}
+                        propsType={
+                          state.component.details?.props.types.props || UNKNOWN
+                        }
+                        types={state.component.details?.props.types.all || {}}
+                        source={
+                          state.component.details?.props.invocationSource || ""
+                        }
+                        onChange={state.updateProps.bind(state)}
                         onReset={
                           state.component?.details &&
                           state.component.details.props
@@ -138,9 +151,17 @@ export const Preview = observer(
                             ? undefined
                             : state.resetProps.bind(state)
                         }
-                        source={state.component.details?.props.invocationSource}
-                        typeDeclarationsSource={
-                          state.component.details?.props.typeDeclarations
+                        codeEditor={
+                          <PropsEditor
+                            documentId={state.component.componentId}
+                            onUpdate={state.updateProps.bind(state)}
+                            source={
+                              state.component.details?.props.invocationSource
+                            }
+                            typeDeclarationsSource={
+                              state.component.details?.props.typeDeclarations
+                            }
+                          />
                         }
                       />
                     ),
@@ -167,3 +188,38 @@ export const Preview = observer(
     );
   }
 );
+
+type PropsPanelProps = {
+  componentName: string;
+  propsType: ValueType;
+  types: CollectedTypes;
+  source: string;
+  onChange: (source: string) => void;
+  onReset?: () => void;
+  codeEditor: React.ReactNode;
+};
+
+const DefaultPropsPanel: React.FunctionComponent<PropsPanelProps> = ({
+  codeEditor,
+  onReset,
+}) => {
+  return (
+    <Fragment>
+      <button
+        id="editor-refresh-button"
+        className={clsx([
+          "absolute right-0 m-2 p-2 bg-gray-500 rounded-md z-50",
+          onReset
+            ? "bg-opacity-40 text-white cursor-pointer hover:bg-gray-400"
+            : "bg-opacity-25 text-gray-500",
+        ])}
+        title="Reset properties"
+        disabled={!onReset}
+        onClick={onReset}
+      >
+        <FontAwesomeIcon icon={faUndo} />
+      </button>
+      {codeEditor}
+    </Fragment>
+  );
+};
