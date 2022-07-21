@@ -8,20 +8,24 @@ export function serializableValueToJavaScript(
 ): string {
   let expression = serializableValueToUnformattedJavaScript(value);
   try {
-    const formattedStatement = prettier
-      .format(`value = ${expression}`, {
-        parser: "babel",
-        plugins: [parserBabel],
-        filepath: "component.js",
-        trailingComma: "none",
-      })
-      .trim();
-    expression = formattedStatement.replace(/^value = ((.|\s)*);$/m, "$1");
+    expression = formatExpression(expression);
   } catch {
     // This can be expected e.g. when code is in the middle of being typed.
     // Example: Promise.reject(new|)
   }
   return expression;
+}
+
+function formatExpression(expressionSource: string) {
+  const formattedStatement = prettier
+    .format(`value = ${expressionSource}`, {
+      parser: "babel",
+      plugins: [parserBabel],
+      filepath: "component.js",
+      trailingComma: "none",
+    })
+    .trim();
+  return formattedStatement.replace(/^value = ((.|\s)*);$/m, "$1");
 }
 
 function serializableValueToUnformattedJavaScript(
@@ -90,8 +94,16 @@ function serializableValueToUnformattedJavaScript(
       return JSON.stringify(value.value);
     case "undefined":
       return "undefined";
-    case "unknown":
-      return value.source || "{}";
+    case "unknown": {
+      const source = value.source ?? "{}";
+      try {
+        formatExpression(source);
+        // It didn't throw? Cool, that must be good to return.
+        return source;
+      } catch {
+        return "{}";
+      }
+    }
     default:
       throw assertNever(value);
   }
