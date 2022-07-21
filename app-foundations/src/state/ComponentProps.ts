@@ -4,7 +4,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { extractFunctionKeys } from "./generators/extract-function-keys";
 import { generateDefaultProps } from "./generators/generate-default-props";
 import { generateInvocation } from "./generators/generate-invocation";
-import { generateTypeDeclarations } from "./generators/generate-type-declarations";
+import { generatePropsTypeDeclarations } from "./generators/generate-type-declarations";
 
 export class ComponentProps {
   private computePropsResponse: localEndpoints.ComputePropsResponse;
@@ -66,7 +66,7 @@ export class ComponentProps {
    * Type declarations used by the props editor to offer better autocomplete and type checking.
    */
   get typeDeclarations(): string {
-    return generateTypeDeclarations(
+    return generatePropsTypeDeclarations(
       this.componentName,
       this.computePropsResponse.types.props,
       this.computePropsResponse.args,
