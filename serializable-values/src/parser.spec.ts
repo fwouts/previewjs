@@ -117,6 +117,16 @@ describe("parseSerializableValue", () => {
         ])
       )
     );
+    expectParsedExpression(`new Map(Object.entries({ 0: "bar" }))`).toEqual(
+      map(
+        object([
+          {
+            key: string("0"),
+            value: string("bar"),
+          },
+        ])
+      )
+    );
   });
 
   it("parses numbers", () => {
@@ -138,6 +148,14 @@ describe("parseSerializableValue", () => {
       object([
         {
           key: string("foo"),
+          value: string("bar"),
+        },
+      ])
+    );
+    expectParsedExpression(`{ 0: "bar" }`).toEqual(
+      object([
+        {
+          key: string("0"),
           value: string("bar"),
         },
       ])

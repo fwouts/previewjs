@@ -196,7 +196,11 @@ export function parseSerializableValue(
       if (!ts.isPropertyAssignment(property)) {
         return fallbackValue;
       }
-      if (ts.isIdentifier(property.name) || ts.isStringLiteral(property.name)) {
+      if (
+        ts.isIdentifier(property.name) ||
+        ts.isStringLiteral(property.name) ||
+        ts.isNumericLiteral(property.name)
+      ) {
         entries.push({
           key: string(property.name.text),
           value: parseSerializableValue(property.initializer),
