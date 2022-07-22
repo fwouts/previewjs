@@ -89,6 +89,7 @@ describe("generateSerializableValue", () => {
         "/foo.tsx:Foo": {
           type: objectType({
             child: namedType("/foo.tsx:Bar"),
+            union: unionType([BOOLEAN_TYPE, namedType("/foo.tsx:Foo")]),
           }),
           parameters: {},
         },
@@ -111,6 +112,16 @@ describe("generateSerializableValue", () => {
             "value": {
               "entries": [],
               "kind": "object",
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "union",
+            },
+            "value": {
+              "kind": "boolean",
+              "value": false,
             },
           },
         ],
@@ -146,7 +157,8 @@ describe("generateSerializableValue", () => {
             "value": {
               "kind": "function",
               "returnValue": {
-                "kind": "undefined",
+                "entries": [],
+                "kind": "object",
               },
             },
           },
@@ -171,6 +183,16 @@ describe("generateSerializableValue", () => {
     ).toMatchInlineSnapshot(`
       {
         "entries": [
+          {
+            "key": {
+              "kind": "string",
+              "value": "target",
+            },
+            "value": {
+              "entries": [],
+              "kind": "object",
+            },
+          },
           {
             "key": {
               "kind": "string",

@@ -1,6 +1,7 @@
 import assertNever from "assert-never";
 import {
   CollectedTypes,
+  EMPTY_OBJECT_TYPE,
   optionalType,
   UNKNOWN_TYPE,
   ValueType,
@@ -77,7 +78,7 @@ export function dereferenceType(
     }
     case "name": {
       if (rejectTypeNames.includes(type.name)) {
-        return [UNKNOWN_TYPE, []];
+        return [EMPTY_OBJECT_TYPE, []];
       }
       const resolved = collected[type.name];
       if (!resolved) {
