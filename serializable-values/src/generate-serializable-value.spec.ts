@@ -280,7 +280,7 @@ describe("generateSerializableValue", () => {
             },
             "value": {
               "kind": "number",
-              "value": 100,
+              "value": 0,
             },
           },
           {
@@ -574,7 +574,7 @@ describe("generateSerializableValue", () => {
             },
             "value": {
               "kind": "number",
-              "value": 100,
+              "value": 0,
             },
           },
           {
@@ -584,7 +584,7 @@ describe("generateSerializableValue", () => {
             },
             "value": {
               "kind": "number",
-              "value": 100,
+              "value": 0,
             },
           },
         ],
