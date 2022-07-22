@@ -72,7 +72,8 @@ describe("generateInvocation", () => {
       "properties = {
         foo: \\"foo\\",
         recursive: {
-          foo: \\"foo\\"
+          foo: \\"foo\\",
+          recursive: {}
         }
       };"
     `);
@@ -134,7 +135,7 @@ describe("generateInvocation", () => {
         nullType: null,
         booleanType: false,
         stringType: \\"stringType\\",
-        numberType: 100,
+        numberType: 0,
         reactNodeType: \\"reactNodeType\\",
         numberLiteral: 123,
         stringLiteral: \\"foo\\",
