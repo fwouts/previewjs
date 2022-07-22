@@ -74,7 +74,7 @@ function _generateSerializableValue(
     case "node":
       return string(path.length === 0 ? "node" : path[path.length - 1]!);
     case "number":
-      return number(100);
+      return number(0);
     case "literal":
       if (typeof type.value === "number") {
         return number(type.value);
