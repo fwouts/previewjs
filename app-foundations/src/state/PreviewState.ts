@@ -200,6 +200,10 @@ export class PreviewState {
         document.execCommand("paste");
         e.preventDefault();
         break;
+      case "a":
+        document.execCommand("selectAll");
+        e.preventDefault();
+        break;
     }
   };
 

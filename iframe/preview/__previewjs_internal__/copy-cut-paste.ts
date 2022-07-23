@@ -22,6 +22,10 @@ export function overrideCopyCutPaste() {
         document.execCommand("paste");
         e.preventDefault();
         break;
+      case "a":
+        document.execCommand("selectAll");
+        e.preventDefault();
+        break;
     }
   });
 }
