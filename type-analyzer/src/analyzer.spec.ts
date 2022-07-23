@@ -338,45 +338,6 @@ type A = {
     ]);
   });
 
-  test("object with enum field", async () => {
-    expect(
-      resolveType(
-        `
-type A = {
-  foo: string,
-  bar?: B,
-  baz: B
-};
-
-enum B {
-  FOO = "FOO",
-  BAR = "BAR"
-}
-`,
-        "A"
-      )
-    ).toEqual([
-      namedType("main.ts:A"),
-      {
-        ["main.ts:A"]: {
-          type: objectType({
-            foo: STRING_TYPE,
-            bar: optionalType(namedType("main.ts:B")),
-            baz: namedType("main.ts:B"),
-          }),
-          parameters: {},
-        },
-        ["main.ts:B"]: {
-          type: enumType({
-            FOO: "FOO",
-            BAR: "BAR",
-          }),
-          parameters: {},
-        },
-      },
-    ]);
-  });
-
   test("object via interface", async () => {
     expect(
       resolveType(
@@ -1447,7 +1408,7 @@ class A {
     ]);
   });
 
-  test.only("generic interface type", async () => {
+  test("generic interface type", async () => {
     expect(
       resolveType(
         `
@@ -1513,47 +1474,14 @@ type B<T, S = T> = {
         "A"
       )
     ).toEqual([
-      namedType("main.ts:B", [NUMBER_TYPE, NUMBER_TYPE]),
+      namedType("main.ts:A"),
       {
-        ["main.ts:B"]: {
+        ["main.ts:A"]: {
           type: objectType({
-            a: namedType("T"),
-            b: namedType("S"),
+            a: NUMBER_TYPE,
+            b: NUMBER_TYPE,
           }),
-          parameters: {
-            T: null,
-            S: namedType("T"),
-          },
-        },
-      },
-    ]);
-  });
-
-  test("generic interface alias", async () => {
-    expect(
-      resolveType(
-        `
-type A = B<number>;
-
-interface B<T, S = T> {
-  a: T,
-  b: S
-};
-`,
-        "A"
-      )
-    ).toEqual([
-      namedType("main.ts:B", [NUMBER_TYPE, NUMBER_TYPE]),
-      {
-        ["main.ts:B"]: {
-          type: objectType({
-            a: namedType("T"),
-            b: namedType("S"),
-          }),
-          parameters: {
-            T: null,
-            S: namedType("T"),
-          },
+          parameters: {},
         },
       },
     ]);
