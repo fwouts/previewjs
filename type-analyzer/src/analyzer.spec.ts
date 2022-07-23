@@ -338,6 +338,45 @@ type A = {
     ]);
   });
 
+  test("object with enum field", async () => {
+    expect(
+      resolveType(
+        `
+type A = {
+  foo: string,
+  bar?: B,
+  baz: B
+};
+
+enum B {
+  FOO = "FOO",
+  BAR = "BAR"
+}
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        ["main.ts:A"]: {
+          type: objectType({
+            foo: STRING_TYPE,
+            bar: optionalType(namedType("main.ts:B")),
+            baz: namedType("main.ts:B"),
+          }),
+          parameters: {},
+        },
+        ["main.ts:B"]: {
+          type: enumType({
+            FOO: "FOO",
+            BAR: "BAR",
+          }),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
   test("object via interface", async () => {
     expect(
       resolveType(
