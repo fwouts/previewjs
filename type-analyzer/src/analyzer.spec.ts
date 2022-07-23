@@ -253,7 +253,7 @@ type B = {
     ]);
   });
 
-  test.only("promise type", async () => {
+  test("promise type", async () => {
     expect(
       resolveType(
         `
@@ -266,8 +266,12 @@ type B = {
         "A"
       )
     ).toEqual([
-      promiseType(namedType("main.ts:B")),
+      namedType("main.ts:A"),
       {
+        "main.ts:A": {
+          type: promiseType(namedType("main.ts:B")),
+          parameters: {},
+        },
         "main.ts:B": {
           type: objectType({
             name: promiseType(STRING_TYPE),
@@ -1443,7 +1447,7 @@ class A {
     ]);
   });
 
-  test("generic interface type", async () => {
+  test.only("generic interface type", async () => {
     expect(
       resolveType(
         `

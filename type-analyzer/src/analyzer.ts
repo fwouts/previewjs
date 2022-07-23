@@ -146,24 +146,6 @@ class TypeResolver {
       // TODO: Remove?
       const prefix = this.extractFileNameFromSymbol(type.aliasSymbol);
       const typeName = `${prefix}:${type.aliasSymbol.name}`;
-      if ("target" in type) {
-        const typeReference = type as ts.TypeReference;
-        const target = typeReference.target;
-        const targetSymbol = target.aliasSymbol || target.symbol;
-        const prefix = this.extractFileNameFromSymbol(targetSymbol);
-        const targetName = `${prefix}:${targetSymbol.name}`;
-        const mapper: { sources: ts.Type[]; targets: ts.Type[] } =
-          // @ts-ignore
-          typeReference.mapper || { sources: [], targets: [] };
-        return this.namedType(
-          targetName,
-          target,
-          (typeReference.typeArguments || mapper.targets).map((t) =>
-            this.resolveTypeInternal(t, genericTypeNames)
-          ),
-          genericTypeNames
-        );
-      }
       return this.namedType(
         typeName,
         type,
@@ -315,6 +297,27 @@ class TypeResolver {
     }
     if (type.symbol?.name === "Set") {
       return setType(typeArguments[0] || UNKNOWN_TYPE);
+    }
+    target: if ("target" in type) {
+      const typeReference = type as ts.TypeReference;
+      const target = typeReference.target;
+      if (target === type || !target.aliasSymbol) {
+        break target;
+      }
+      const targetSymbol = target.aliasSymbol || target.symbol;
+      const prefix = this.extractFileNameFromSymbol(targetSymbol);
+      const targetName = `${prefix}:${targetSymbol.name}`;
+      const mapper: { sources: ts.Type[]; targets: ts.Type[] } =
+        // @ts-ignore
+        typeReference.mapper || { sources: [], targets: [] };
+      return this.namedType(
+        targetName,
+        target,
+        (typeReference.typeArguments || mapper.targets || []).map((t) =>
+          this.resolveTypeInternal(t, genericTypeNames)
+        ),
+        genericTypeNames
+      );
     }
     const flags = type.getFlags();
     if (flags & ts.TypeFlags.Any) {
