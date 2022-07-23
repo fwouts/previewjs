@@ -253,7 +253,7 @@ type B = {
     ]);
   });
 
-  test("promise type", async () => {
+  test.only("promise type", async () => {
     expect(
       resolveType(
         `
@@ -266,12 +266,8 @@ type B = {
         "A"
       )
     ).toEqual([
-      namedType("main.ts:A"),
+      promiseType(namedType("main.ts:B")),
       {
-        "main.ts:A": {
-          type: promiseType(namedType("main.ts:B")),
-          parameters: {},
-        },
         "main.ts:B": {
           type: objectType({
             name: promiseType(STRING_TYPE),
@@ -331,6 +327,45 @@ type A = {
             foo: STRING_TYPE,
             bar: optionalType(NUMBER_TYPE),
             baz: arrayType(STRING_TYPE),
+          }),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
+  test("object with enum field", async () => {
+    expect(
+      resolveType(
+        `
+type A = {
+  foo: string,
+  bar?: B,
+  baz: B
+};
+
+enum B {
+  FOO = "FOO",
+  BAR = "BAR"
+}
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        ["main.ts:A"]: {
+          type: objectType({
+            foo: STRING_TYPE,
+            bar: optionalType(namedType("main.ts:B")),
+            baz: namedType("main.ts:B"),
+          }),
+          parameters: {},
+        },
+        ["main.ts:B"]: {
+          type: enumType({
+            FOO: "FOO",
+            BAR: "BAR",
           }),
           parameters: {},
         },
@@ -1474,14 +1509,47 @@ type B<T, S = T> = {
         "A"
       )
     ).toEqual([
-      namedType("main.ts:A"),
+      namedType("main.ts:B", [NUMBER_TYPE, NUMBER_TYPE]),
       {
-        ["main.ts:A"]: {
+        ["main.ts:B"]: {
           type: objectType({
-            a: NUMBER_TYPE,
-            b: NUMBER_TYPE,
+            a: namedType("T"),
+            b: namedType("S"),
           }),
-          parameters: {},
+          parameters: {
+            T: null,
+            S: namedType("T"),
+          },
+        },
+      },
+    ]);
+  });
+
+  test("generic interface alias", async () => {
+    expect(
+      resolveType(
+        `
+type A = B<number>;
+
+interface B<T, S = T> {
+  a: T,
+  b: S
+};
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:B", [NUMBER_TYPE, NUMBER_TYPE]),
+      {
+        ["main.ts:B"]: {
+          type: objectType({
+            a: namedType("T"),
+            b: namedType("S"),
+          }),
+          parameters: {
+            T: null,
+            S: namedType("T"),
+          },
         },
       },
     ]);

@@ -126,6 +126,7 @@ class TypeResolver {
     type: ts.Type,
     genericTypeNames: Set<string> = new Set()
   ): ValueType {
+    // TODO: Remove?
     const aliasTypeArguments = (type.aliasTypeArguments || []).map((t) =>
       this.resolveTypeInternal(t, genericTypeNames)
     );
@@ -142,8 +143,27 @@ class TypeResolver {
       !this.isSpecialType(type.aliasSymbol.name) &&
       type === this.checker.getDeclaredTypeOfSymbol(type.aliasSymbol)
     ) {
+      // TODO: Remove?
       const prefix = this.extractFileNameFromSymbol(type.aliasSymbol);
       const typeName = `${prefix}:${type.aliasSymbol.name}`;
+      if ("target" in type) {
+        const typeReference = type as ts.TypeReference;
+        const target = typeReference.target;
+        const targetSymbol = target.aliasSymbol || target.symbol;
+        const prefix = this.extractFileNameFromSymbol(targetSymbol);
+        const targetName = `${prefix}:${targetSymbol.name}`;
+        const mapper: { sources: ts.Type[]; targets: ts.Type[] } =
+          // @ts-ignore
+          typeReference.mapper || { sources: [], targets: [] };
+        return this.namedType(
+          targetName,
+          target,
+          (typeReference.typeArguments || mapper.targets).map((t) =>
+            this.resolveTypeInternal(t, genericTypeNames)
+          ),
+          genericTypeNames
+        );
+      }
       return this.namedType(
         typeName,
         type,
@@ -431,9 +451,23 @@ class TypeResolver {
         if (propertyName?.startsWith("__@")) {
           continue;
         }
-        const propertyTsType: ts.Type | undefined = (
-          this.checker as any
-        ).getTypeOfPropertyOfType(type, property.name);
+        let propertyTsType: ts.Type | undefined;
+        if (
+          property.valueDeclaration &&
+          ts.isPropertySignature(property.valueDeclaration) &&
+          property.valueDeclaration.type
+        ) {
+          propertyTsType = this.checker.getTypeFromTypeNode(
+            property.valueDeclaration.type
+          );
+          // console.error(propertyTsType);
+        }
+        if (!propertyTsType) {
+          propertyTsType = (this.checker as any).getTypeOfPropertyOfType(
+            type,
+            property.name
+          );
+        }
         fields[propertyName!] = maybeOptionalType(
           propertyTsType
             ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
