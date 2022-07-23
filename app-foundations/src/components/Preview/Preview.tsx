@@ -6,8 +6,8 @@ import {
   faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { UNKNOWN } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import { namedType } from "@previewjs/type-analyzer";
 import { useWindowHeight } from "@react-hook/window-size";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
@@ -19,6 +19,7 @@ import { PropsEditor } from "../../design/PropsEditor";
 import { SmallLogo } from "../../design/SmallLogo";
 import { PanelTab, TabbedPanel } from "../../design/TabbedPanel";
 import { decodeComponentId } from "../../state/component-id";
+import { generatePropsTypeDeclarations } from "../../state/generators/generate-type-declarations";
 import type { PreviewState } from "../../state/PreviewState";
 import { ActionLogs } from "../ActionLogs";
 import { ConsolePanel } from "../ConsolePanel";
@@ -125,8 +126,9 @@ export const Preview = observer(
         <TabbedPanel
           defaultTabKey="props"
           tabs={[
-            ...(state.component?.variantKey === null ||
-            state.component?.variantKey === "custom"
+            ...((state.component?.variantKey === null ||
+              state.component?.variantKey === "custom") &&
+            state.component.details
               ? [
                   {
                     label: "Properties",
@@ -136,16 +138,13 @@ export const Preview = observer(
                     panel: (
                       <PropsPanel
                         componentName={state.component.name}
-                        propsType={
-                          state.component.details?.props.types.props || UNKNOWN
-                        }
-                        types={state.component.details?.props.types.all || {}}
-                        source={
-                          state.component.details?.props.invocationSource || ""
-                        }
+                        propsType={namedType(
+                          state.component.details.props.propsType.propsTypeName
+                        )}
+                        types={state.component.details.props.propsType.types}
+                        source={state.component.details.props.invocationSource}
                         onChange={state.updateProps.bind(state)}
                         onReset={
-                          state.component?.details &&
                           state.component.details.props
                             .isDefaultInvocationSource
                             ? undefined
@@ -156,11 +155,13 @@ export const Preview = observer(
                             documentId={state.component.componentId}
                             onUpdate={state.updateProps.bind(state)}
                             source={
-                              state.component.details?.props.invocationSource
+                              state.component.details.props.invocationSource
                             }
-                            typeDeclarationsSource={
-                              state.component.details?.props.typeDeclarations
-                            }
+                            typeDeclarationsSource={generatePropsTypeDeclarations(
+                              state.component.details.props.propsType
+                                .propsTypeName,
+                              state.component.details.props.propsType.types
+                            )}
                           />
                         }
                       />

@@ -1,24 +1,18 @@
-import {
-  functionType,
-  namedType,
-  objectType,
-  optionalType,
-  STRING_TYPE,
-} from "@previewjs/type-analyzer";
+import { namedType, objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import { describe, expect, test } from "vitest";
 import { generatePropsTypeDeclarations } from "./generate-type-declarations";
 
 describe("generatePropsTypeDeclarations", () => {
-  test("simple props with object type", () => {
+  test("type exists", () => {
     expect(
-      generatePropsTypeDeclarations(
-        "MyComponent",
-        objectType({
-          foo: STRING_TYPE,
-        }),
-        [],
-        {}
-      )
+      generatePropsTypeDeclarations(":MyComponentProps", {
+        ":MyComponentProps": {
+          type: objectType({
+            foo: STRING_TYPE,
+          }),
+          parameters: {},
+        },
+      })
     ).toMatchInlineSnapshot(`
       "declare let properties: MyComponentProps;
 
@@ -30,49 +24,22 @@ describe("generatePropsTypeDeclarations", () => {
       "
     `);
   });
-
-  test("simple props with named type", () => {
+  test("conflicting type names", () => {
     expect(
-      generatePropsTypeDeclarations(
-        "MyComponent",
-        namedType("/foo.tsx:Foo"),
-        [],
-        {
-          "/foo.tsx:Foo": {
-            type: objectType({
-              foo: STRING_TYPE,
-            }),
-            parameters: {},
-          },
-        }
-      )
-    ).toMatchInlineSnapshot(`
-      "declare let properties: Foo;
-
-      declare function fn<T>(name: string, returnValue?: T): () => T;
-
-      type Foo = {
-        [\\"foo\\"]: string;
-      };
-      "
-    `);
-  });
-
-  test("conflicting prop types names", () => {
-    expect(
-      generatePropsTypeDeclarations(
-        "MyComponent",
-        objectType({
-          foo: namedType("/foo.tsx:MyComponentProps"),
-        }),
-        [],
-        {
-          "/foo.tsx:MyComponentProps": {
-            type: objectType({}),
-            parameters: {},
-          },
-        }
-      )
+      generatePropsTypeDeclarations(":MyComponentProps", {
+        ":MyComponentProps": {
+          type: objectType({
+            foo: namedType("foo.tsx:MyComponentProps"),
+          }),
+          parameters: {},
+        },
+        "foo.tsx:MyComponentProps": {
+          type: objectType({
+            bar: STRING_TYPE,
+          }),
+          parameters: {},
+        },
+      })
     ).toMatchInlineSnapshot(`
       "declare let properties: MyComponentProps;
 
@@ -82,91 +49,22 @@ describe("generatePropsTypeDeclarations", () => {
         [\\"foo\\"]: MyComponentProps_2;
       };
 
-      type MyComponentProps_2 = {};
-      "
-    `);
-  });
-
-  test("inline type with props that should be made optional", () => {
-    expect(
-      generatePropsTypeDeclarations(
-        "MyComponent",
-        objectType({
-          foo: STRING_TYPE,
-          bar: STRING_TYPE,
-          baz: functionType(STRING_TYPE),
-        }),
-        ["foo"],
-        {}
-      )
-    ).toMatchInlineSnapshot(`
-      "declare let properties: MyComponentProps;
-
-      declare function fn<T>(name: string, returnValue?: T): () => T;
-
-      type MyComponentProps = {
-        [\\"foo\\"]?: string | undefined;
+      type MyComponentProps_2 = {
         [\\"bar\\"]: string;
-        [\\"baz\\"]?: (...params: any[]) => string | undefined;
       };
       "
     `);
   });
 
-  test("named type with props that should be made optional", () => {
+  test("missing type", () => {
     expect(
-      generatePropsTypeDeclarations(
-        "MyComponent",
-        namedType("/foo.tsx:Foo"),
-        ["foo"],
-        {
-          "/foo.tsx:Foo": {
-            type: objectType({
-              foo: STRING_TYPE,
-              bar: STRING_TYPE,
-              baz: functionType(STRING_TYPE),
-            }),
-            parameters: {},
-          },
-        }
-      )
+      generatePropsTypeDeclarations(":Missing", namedType("/foo.tsx:Foo"), {})
     ).toMatchInlineSnapshot(`
-      "declare let properties: Foo;
+      "declare let properties: Missing;
 
       declare function fn<T>(name: string, returnValue?: T): () => T;
 
-      type Foo = {
-        [\\"foo\\"]?: string | undefined;
-        [\\"bar\\"]: string;
-        [\\"baz\\"]?: (...params: any[]) => string | undefined;
-      };
-      "
-    `);
-  });
 
-  test("recursive named type", () => {
-    expect(
-      generatePropsTypeDeclarations(
-        "MyComponent",
-        namedType("/foo.tsx:Foo"),
-        [],
-        {
-          "/foo.tsx:Foo": {
-            type: objectType({
-              child: optionalType(namedType("/foo.tsx:Foo")),
-            }),
-            parameters: {},
-          },
-        }
-      )
-    ).toMatchInlineSnapshot(`
-      "declare let properties: Foo;
-
-      declare function fn<T>(name: string, returnValue?: T): () => T;
-
-      type Foo = {
-        [\\"child\\"]?: Foo | undefined;
-      };
       "
     `);
   });
