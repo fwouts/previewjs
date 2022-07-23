@@ -431,9 +431,31 @@ class TypeResolver {
         if (propertyName?.startsWith("__@")) {
           continue;
         }
-        const propertyTsType: ts.Type | undefined = (
-          this.checker as any
-        ).getTypeOfPropertyOfType(type, property.name);
+        let propertyTsType: ts.Type | undefined;
+        if (
+          property.valueDeclaration &&
+          ts.isPropertySignature(property.valueDeclaration) &&
+          property.valueDeclaration.type
+        ) {
+          const declaredType = this.checker.getTypeFromTypeNode(
+            property.valueDeclaration.type
+          );
+          if (
+            !(declaredType.flags & ts.TypeFlags.TypeParameter) &&
+            !declaredType.aliasTypeArguments?.length &&
+            // @ts-ignore
+            !declaredType.resolvedTypeArguments?.length
+          ) {
+            propertyTsType = declaredType;
+          }
+        }
+        if (!propertyTsType) {
+          // @ts-ignore
+          propertyTsType = this.checker.getTypeOfPropertyOfType(
+            type,
+            property.name
+          );
+        }
         fields[propertyName!] = maybeOptionalType(
           propertyTsType
             ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
