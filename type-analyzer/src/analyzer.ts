@@ -428,10 +428,23 @@ class TypeResolver {
           // For now, we ignore property names such as "foo.bar".
           continue;
         }
-        if (propertyName?.startsWith("__@")) {
+        if (
+          !propertyName ||
+          propertyName.startsWith("__@") ||
+          propertyName.startsWith("#")
+        ) {
           continue;
         }
         let propertyTsType: ts.Type | undefined;
+        if (
+          property.valueDeclaration?.modifiers?.find(
+            (m) =>
+              m.kind === ts.SyntaxKind.PrivateKeyword ||
+              m.kind === ts.SyntaxKind.ProtectedKeyword
+          )
+        ) {
+          continue;
+        }
         if (
           property.valueDeclaration &&
           ts.isPropertySignature(property.valueDeclaration) &&

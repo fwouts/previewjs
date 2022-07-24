@@ -1447,6 +1447,116 @@ class A {
     ]);
   });
 
+  test("class with private and protected fields", async () => {
+    expect(
+      resolveType(
+        `
+class A extends B {
+  #truePrivateField: string;
+  private privateField: string;
+  protected protectedField: string;
+  public publicField: string;
+  defaultField: string;
+
+  private get privateGetter(): string {
+    return "foo";
+  }
+
+  protected get protectedGetter(): string {
+    return "foo";
+  }
+
+  public get publicGetter(): string {
+    return "foo";
+  }
+
+  get defaultGetter(): string {
+    return "foo";
+  }
+
+  private privateMethod(): string {
+    return "foo";
+  }
+
+  protected protectedMethod(): string {
+    return "foo";
+  }
+
+  public publicMethod(): string {
+    return "foo";
+  }
+
+  defaultMethod(): string {
+    return "foo";
+  }
+}
+
+class B {
+  #truePrivateFieldB: string;
+  private privateFieldB: string;
+  protected protectedFieldB: string;
+  public publicFieldB: string;
+  defaultFieldB: string;
+
+  private get privateGetterB(): string {
+    return "foo";
+  }
+
+  protected get protectedGetterB(): string {
+    return "foo";
+  }
+
+  public get publicGetterB(): string {
+    return "foo";
+  }
+
+  get defaultGetterB(): string {
+    return "foo";
+  }
+
+  private privateMethodB(): string {
+    return "foo";
+  }
+
+  protected protectedMethodB(): string {
+    return "foo";
+  }
+
+  public publicMethodB(): string {
+    return "foo";
+  }
+
+  defaultMethodB(): string {
+    return "foo";
+  }
+}
+`,
+        "A"
+      )
+    ).toEqual([
+      namedType("main.ts:A"),
+      {
+        ["main.ts:A"]: {
+          type: objectType({
+            publicField: STRING_TYPE,
+            publicFieldB: STRING_TYPE,
+            defaultField: STRING_TYPE,
+            defaultFieldB: STRING_TYPE,
+            publicGetter: STRING_TYPE,
+            publicGetterB: STRING_TYPE,
+            defaultGetter: STRING_TYPE,
+            defaultGetterB: STRING_TYPE,
+            publicMethod: functionType(STRING_TYPE),
+            publicMethodB: functionType(STRING_TYPE),
+            defaultMethod: functionType(STRING_TYPE),
+            defaultMethodB: functionType(STRING_TYPE),
+          }),
+          parameters: {},
+        },
+      },
+    ]);
+  });
+
   test("generic interface type", async () => {
     expect(
       resolveType(
