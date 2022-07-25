@@ -9,7 +9,7 @@ const Row: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className,
 }) => (
-  <div className={clsx(["flex flex-row items-center p-2", className])}>
+  <div className={clsx(["flex flex-row items-center p-1.5", className])}>
     {children}
   </div>
 );
