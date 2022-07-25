@@ -4,9 +4,12 @@ import type { Plugin } from "vite";
 
 const COMPONENT_LOADER_MODULE = "/@component-loader.js";
 
-export function componentLoaderPlugin(options: {
+type PluginOptions = {
   config: PreviewConfig;
-}): Plugin {
+  detectedGlobalCssFilePaths: string[];
+};
+
+export function componentLoaderPlugin(options: PluginOptions): Plugin {
   return {
     name: "previewjs:component-loader",
     resolveId: async function (id) {
@@ -20,17 +23,14 @@ export function componentLoaderPlugin(options: {
         return null;
       }
       const params = new URLSearchParams(id.split("?")[1] || "");
-      return generateComponentLoaderModule(params, options.config.wrapper);
+      return generateComponentLoaderModule(params, options);
     },
   };
 }
 
 function generateComponentLoaderModule(
   urlParams: URLSearchParams,
-  wrapper?: {
-    path: string;
-    componentName?: string;
-  }
+  { detectedGlobalCssFilePaths, config: { wrapper } }: PluginOptions
 ): string {
   const filePath = urlParams.get("p");
   const componentName = urlParams.get("c");
@@ -61,6 +61,9 @@ export async function refresh() {
   });
   `
       : `
+  ${detectedGlobalCssFilePaths
+    .map((filePath) => `import("${filePath}").catch(console.warn);`)
+    .join("\n")}
   const wrapperModule = null;
   `
   }

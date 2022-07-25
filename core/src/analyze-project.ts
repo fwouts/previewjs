@@ -1,10 +1,8 @@
-import { readConfig } from "@previewjs/config";
 import fs from "fs-extra";
-import glob from "glob";
 import path from "path";
-import { promisify } from "util";
 import type { Workspace } from ".";
 import { getCacheDir } from "./caching";
+import { findFiles } from "./find-files";
 
 export interface ProjectAnalysis {
   components: ProjectComponents;
@@ -76,23 +74,4 @@ async function analyzeProjectCore(
     });
   }
   return components;
-}
-
-export async function findFiles(rootDirPath: string, pattern: string) {
-  const config = (await readConfig(rootDirPath)) as {
-    exclude?: string[];
-  };
-  const files = await promisify(glob)(pattern, {
-    ignore: ["**/node_modules/**", ...(config.exclude || [])],
-    cwd: rootDirPath,
-    nodir: true,
-    absolute: true,
-    follow: false,
-  });
-  // Note: in some cases, presumably because of yarn using link
-  // for faster node_modules, glob may return files in the parent
-  // directory. We filter them out here.
-  return files.filter((f) =>
-    f.startsWith(rootDirPath.replace(/\\/g, "/") + "/")
-  );
 }
