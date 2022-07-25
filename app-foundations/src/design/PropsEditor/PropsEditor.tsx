@@ -130,7 +130,7 @@ export const PropsEditor = ({
             top: 8,
             bottom: 8,
           },
-          fontSize: 14,
+          fontSize: 12,
         }}
         beforeMount={beforeMount}
         onMount={onMount}
