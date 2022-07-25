@@ -40,7 +40,7 @@ export const TabbedPanel = (props: {
             }}
             className={clsx([
               "panel-tab",
-              "px-4 py-3 self-stretch text-sm font-medium flex flex-row items-center",
+              "px-3 py-2 self-stretch text-sm font-medium flex flex-row items-center",
               tab.key === currentTabKey
                 ? "panel-tab-selected bg-gray-200 text-gray-900"
                 : "text-gray-400",
