@@ -25,6 +25,7 @@ export class ViteManager {
       reader: Reader;
       rootDirPath: string;
       shadowHtmlFilePath: string;
+      detectedGlobalCssFilePaths: string[];
       cacheDir: string;
       config: PreviewConfig;
       logLevel: vite.UserConfig["logLevel"];
@@ -149,9 +150,7 @@ export class ViteManager {
           }),
       }),
       cssModulesWithoutSuffixPlugin(),
-      componentLoaderPlugin({
-        config: this.options.config,
-      }),
+      componentLoaderPlugin(this.options),
       ...(frameworkPluginViteConfig.plugins || []),
       ...(this.options.config.vite?.plugins || []),
     ];
