@@ -9,7 +9,7 @@ export async function expectErrors(
   await controller.waitForExpectedIframeRefresh();
   const selectedTab = await controller.bottomPanel.tabs.selected();
   const isConsoleSelected =
-    (await selectedTab?.text())?.includes("Console") || false;
+    (await selectedTab.text())?.includes("Console") || false;
   if (expectedErrors.length === 0) {
     await controller.console.notificationCount.waitUntilGone();
     if (!isConsoleSelected) {
