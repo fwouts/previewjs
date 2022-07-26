@@ -16,8 +16,6 @@ describe("generatePropsTypeDeclarations", () => {
     ).toMatchInlineSnapshot(`
       "declare let properties: MyComponentProps;
 
-      declare function fn<T>(name: string, returnValue?: T): () => T;
-
       type MyComponentProps = {
         [\\"foo\\"]: string;
       };
@@ -43,8 +41,6 @@ describe("generatePropsTypeDeclarations", () => {
     ).toMatchInlineSnapshot(`
       "declare let properties: MyComponentProps;
 
-      declare function fn<T>(name: string, returnValue?: T): () => T;
-
       type MyComponentProps = {
         [\\"foo\\"]: MyComponentProps_2;
       };
@@ -61,8 +57,6 @@ describe("generatePropsTypeDeclarations", () => {
       generatePropsTypeDeclarations(":Missing", namedType("/foo.tsx:Foo"), {})
     ).toMatchInlineSnapshot(`
       "declare let properties: Missing;
-
-      declare function fn<T>(name: string, returnValue?: T): () => T;
 
 
       "

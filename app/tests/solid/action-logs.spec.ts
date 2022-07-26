@@ -6,7 +6,7 @@ export const actionLogsTests = testSuite(
   "solid/action logs",
   (test) => {
     test(
-      "shows action logs with fn() callback",
+      "shows action logs with callback",
       "solid",
       async ({ appDir, controller }) => {
         await appDir.update("src/Button.tsx", {
@@ -26,7 +26,7 @@ export const actionLogsTests = testSuite(
         await controller.show("src/Button.tsx:Button");
         await controller.props.editor.replaceText(`
         properties = {
-          onClick: fn("onClick")
+          onClick: () => {}
         };
         `);
         const previewIframe = await controller.previewIframe();
@@ -94,8 +94,8 @@ export const actionLogsTests = testSuite(
         await controller.show("src/Button.tsx:Button");
         await controller.props.editor.replaceText(`
         properties = {
-          a: fn("a"),
-          b: fn("b")
+          a: () => {},
+          b: () => {}
         };
         `);
         const previewIframe = await controller.previewIframe();

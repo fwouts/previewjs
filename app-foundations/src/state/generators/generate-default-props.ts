@@ -28,16 +28,12 @@ export function generateDefaultProps(
     const resolvedPropertyType = resolveType(propertyType);
     if (resolvedPropertyType.kind === "function") {
       propKeys.add(propertyName);
-      const returnType = resolvedPropertyType.returnType;
       text += `"${propertyName.replace(
         /"/g,
         '\\"'
-      )}": fn("${propertyName.replace(
-        /"/g,
-        '\\"'
-      )}", ${serializableValueToJavaScript(
-        generateSerializableValue(returnType, types, true)
-      )}),`;
+      )}": ${serializableValueToJavaScript(
+        generateSerializableValue(resolvedPropertyType, types)
+      )},`;
     }
   }
   text += "}";
