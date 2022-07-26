@@ -108,6 +108,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           kind: "update",
           rendering: {
             kind: "success",
+            isStory: data.isStory,
             variantKey: data.variantKey,
             variants: data.variants,
           },
@@ -215,6 +216,7 @@ export type PreviewUpdate = {
       }
     | {
         kind: "success";
+        isStory: boolean;
         variantKey: string;
         variants: Variant[];
       }
