@@ -254,7 +254,12 @@ export class PreviewState {
     const variantKey = urlParams.get("v") || null;
     const decodedComponentId = decodeComponentId(componentId);
     if (!decodedComponentId.component) {
-      this.component = null;
+      runInAction(() => {
+        this.component = null;
+      });
+      if (this.options.onFileChanged) {
+        await this.options.onFileChanged(decodedComponentId.currentFilePath);
+      }
       return;
     }
     const name = decodedComponentId.component.name;
