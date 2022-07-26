@@ -9,8 +9,6 @@ export function generatePropsTypeDeclarations(
 ) {
   return `declare let properties: ${typeName.split(":")[1]};
 
-declare function fn<T>(name: string, returnValue?: T): () => T;
-
 ${generateTypeDeclarations([typeName], types)}
 `;
 }

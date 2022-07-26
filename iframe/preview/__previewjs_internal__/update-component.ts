@@ -52,18 +52,8 @@ export async function updateComponent({
     if (!variant) {
       throw new Error(`No variant was found.`);
     }
-    const fn = (path: string, returnValue: any) => () => {
-      sendMessageFromPreview({ kind: "action", type: "fn", path });
-      return returnValue;
-    };
-    let defaultProps = {
-      // Note: this is only there so `fn` doesn't get optimised
-      // away :)
-      _: fn("", null),
-    };
-    eval(`
-      defaultProps = ${currentState.defaultPropsSource};
-      `);
+    let defaultProps = {};
+    eval(`defaultProps = ${currentState.defaultPropsSource};`);
     if (variant.key === "custom") {
       eval(`
         let properties = {};
@@ -79,14 +69,52 @@ export async function updateComponent({
       // Note: we must remove `props` since it may not be serialisable.
       variants: variants.map(({ props: _, ...rest }) => rest),
     });
-    await render({
-      ...defaultProps,
-      ...variant.props,
-    });
+    const props = transformFunctions(
+      {
+        ...defaultProps,
+        ...variant.props,
+      },
+      []
+    );
+    await render(props);
   } catch (error: any) {
     sendMessageFromPreview({
       kind: "rendering-error",
       message: error.stack || error.message,
     });
   }
+}
+
+/**
+ * Ensures that any call to a function within objects and arrays is automatically intercepted
+ * and shown to the user.
+ */
+function transformFunctions(value: unknown, path: string[]): unknown {
+  if (value && typeof value === "object") {
+    if (Array.isArray(value)) {
+      // Array.
+      return value.map((v, i) =>
+        transformFunctions(v, [...path, i.toString(i)])
+      );
+    }
+    if (value.constructor === Object) {
+      // Plain object (i.e. not Set or Map or any class instance).
+      return Object.fromEntries(
+        Object.entries(value).map(([k, v]) => [
+          k,
+          typeof v === "function"
+            ? (...args: unknown[]) => {
+                sendMessageFromPreview({
+                  kind: "action",
+                  type: "fn",
+                  path: [...path, k].join("."),
+                });
+                return v(...args);
+              }
+            : transformFunctions(v, [...path, k]),
+        ])
+      );
+    }
+  }
+  return value;
 }

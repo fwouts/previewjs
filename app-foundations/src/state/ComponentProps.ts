@@ -51,7 +51,7 @@ export class ComponentProps {
    * Source of default props that should be passed to the component.
    *
    * Typically this is "{}" (empty object) but when we know more about the component, we may
-   * provide better defaults such as callback implementations, e.g. "{ onClick: fn(...) }".
+   * provide better defaults such as callback implementations, e.g. "{ onClick: () => {} }".
    *
    * Unlike defaultInvocation, defaultProps is not shown to the user.
    */

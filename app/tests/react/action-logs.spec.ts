@@ -7,7 +7,7 @@ export const actionLogsTests = testSuite(
   (test) => {
     for (const version of [16, 17, 18]) {
       test(
-        `${version}/shows action logs with fn() callback`,
+        `${version}/shows action logs with callback`,
         `react${version}`,
         async ({ appDir, controller }) => {
           await appDir.update("src/Button.tsx", {
@@ -25,7 +25,7 @@ export const actionLogsTests = testSuite(
           await controller.show("src/Button.tsx:Button");
           await controller.props.editor.replaceText(`
       properties = {
-        onClick: fn("onClick")
+        onClick: () => {}
       };
       `);
           const previewIframe = await controller.previewIframe();
@@ -91,8 +91,8 @@ function Button(props: { label: string; a(): void; b(): void; }) {
           await controller.show("src/Button.tsx:Button");
           await controller.props.editor.replaceText(`
       properties = {
-        a: fn("a"),
-        b: fn("b")
+        a: () => {}
+        b: () => {}
       };
       `);
           const previewIframe = await controller.previewIframe();
