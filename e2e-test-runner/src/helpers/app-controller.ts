@@ -236,25 +236,25 @@ export class AppController {
   };
 
   element(selector: string) {
-    const getter = (
-      options: { state?: "attached" | "detached" | "visible" | "hidden" } = {}
-    ) => {
-      return this.page.waitForSelector(selector, options);
+    const getter = () => {
+      return this.page.$(selector);
     };
     const methods = {
       visible: async () => {
         return !!(await this.page.$(selector));
       },
       waitUntilVisible: async () => {
-        await getter();
+        await this.page.waitForSelector(selector, {
+          state: "attached",
+        });
       },
       waitUntilExists: async () => {
-        await getter({
+        await this.page.waitForSelector(selector, {
           state: "attached",
         });
       },
       waitUntilGone: async () => {
-        await getter({
+        await this.page.waitForSelector(selector, {
           state: "hidden",
         });
       },
@@ -268,7 +268,7 @@ export class AppController {
       text: async () => {
         const element = await getter();
         if (!element) {
-          throw new Error(`${selector} not found`);
+          return null;
         }
         return element.evaluate((element) => element.textContent);
       },

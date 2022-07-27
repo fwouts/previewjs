@@ -1,5 +1,5 @@
 import "./App.css";
 
-export function Other() {
-  return <div className="Other">Hello, World!</div>;
+export function Other({ msg }: { msg: string }) {
+  return <div class="Other">{msg}</div>;
 }

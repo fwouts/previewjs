@@ -6,8 +6,12 @@ import {
   faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
-import { namedType } from "@previewjs/type-analyzer";
+import {
+  CollectedTypes,
+  namedType,
+  UNKNOWN_TYPE,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import { useWindowHeight } from "@react-hook/window-size";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
@@ -58,6 +62,69 @@ export const Preview = observer(
           </div>
         </div>
       );
+    }
+
+    const tabs: PanelTab[] = [];
+
+    if (state.component) {
+      if (
+        (state.component.variantKey === null ||
+          state.component.variantKey === "custom") &&
+        state.component.details
+      ) {
+        const { props } = state.component.details;
+        const { propsTypeName, types } = props.propsType;
+        const propsType = types[propsTypeName]?.type || UNKNOWN_TYPE;
+        const isEmptyProps =
+          propsType.kind === "object" &&
+          Object.entries(propsType.fields).length === 0;
+
+        if (!isEmptyProps) {
+          tabs.push({
+            label: "Properties",
+            key: "props",
+            icon: faCode,
+            notificationCount: 0,
+            panel: (
+              <PropsPanel
+                componentName={state.component.name}
+                propsType={namedType(propsTypeName)}
+                types={types}
+                source={props.invocationSource}
+                onChange={state.updateProps.bind(state)}
+                onReset={
+                  props.isDefaultInvocationSource
+                    ? undefined
+                    : state.resetProps.bind(state)
+                }
+                codeEditor={
+                  <PropsEditor
+                    documentId={state.component.componentId}
+                    onUpdate={state.updateProps.bind(state)}
+                    source={props.invocationSource}
+                    typeDeclarationsSource={generatePropsTypeDeclarations(
+                      propsTypeName,
+                      types
+                    )}
+                  />
+                }
+              />
+            ),
+          });
+        }
+      }
+
+      tabs.push({
+        label: "Console",
+        key: "console",
+        icon: faTerminal,
+        notificationCount: state.consoleLogs.unreadCount,
+        panel: <ConsolePanel state={state.consoleLogs} />,
+      });
+    }
+
+    if (panelTabs) {
+      tabs.push(...panelTabs);
     }
 
     return (
@@ -123,67 +190,7 @@ export const Preview = observer(
             Please select a component to preview.
           </div>
         )}
-        <TabbedPanel
-          defaultTabKey="props"
-          tabs={[
-            ...((state.component?.variantKey === null ||
-              state.component?.variantKey === "custom") &&
-            state.component.details
-              ? [
-                  {
-                    label: "Properties",
-                    key: "props",
-                    icon: faCode,
-                    notificationCount: 0,
-                    panel: (
-                      <PropsPanel
-                        componentName={state.component.name}
-                        propsType={namedType(
-                          state.component.details.props.propsType.propsTypeName
-                        )}
-                        types={state.component.details.props.propsType.types}
-                        source={state.component.details.props.invocationSource}
-                        onChange={state.updateProps.bind(state)}
-                        onReset={
-                          state.component.details.props
-                            .isDefaultInvocationSource
-                            ? undefined
-                            : state.resetProps.bind(state)
-                        }
-                        codeEditor={
-                          <PropsEditor
-                            documentId={state.component.componentId}
-                            onUpdate={state.updateProps.bind(state)}
-                            source={
-                              state.component.details.props.invocationSource
-                            }
-                            typeDeclarationsSource={generatePropsTypeDeclarations(
-                              state.component.details.props.propsType
-                                .propsTypeName,
-                              state.component.details.props.propsType.types
-                            )}
-                          />
-                        }
-                      />
-                    ),
-                  },
-                ]
-              : []),
-            ...(state.component
-              ? [
-                  {
-                    label: "Console",
-                    key: "console",
-                    icon: faTerminal,
-                    notificationCount: state.consoleLogs.unreadCount,
-                    panel: <ConsolePanel state={state.consoleLogs} />,
-                  },
-                ]
-              : []),
-            ...(panelTabs || []),
-          ]}
-          height={panelHeight}
-        />
+        <TabbedPanel defaultTabKey="props" tabs={tabs} height={panelHeight} />
         {footer}
       </div>
     );
