@@ -270,7 +270,7 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': ^5.2.0
+      '@previewjs/core': ^5.2.1
       '@previewjs/type-analyzer': ^3.0.3
       typescript: ^4.7.4
       unbuild: 0.7.4
@@ -303,7 +303,7 @@ importers:
 
   e2e-test-runner:
     specifiers:
-      '@previewjs/core': ^5.2.0
+      '@previewjs/core': ^5.2.1
       '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.3
       '@types/fs-extra': ^9.0.13
@@ -10306,7 +10306,6 @@ packages:
     resolution: {integrity: sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-    dev: true
 
   /address/1.1.2:
     resolution: {integrity: sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==}
@@ -27932,7 +27931,7 @@ packages:
     hasBin: true
     dependencies:
       '@jridgewell/source-map': 0.3.2
-      acorn: 8.7.1
+      acorn: 8.8.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
