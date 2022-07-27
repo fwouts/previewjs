@@ -64,14 +64,17 @@ export default Component1;
       {
         name: "Component1",
         exported: true,
+        isStory: false,
       },
       {
         name: "Component2",
         exported: false,
+        isStory: false,
       },
       {
         name: "Component3",
         exported: false,
+        isStory: false,
       },
     ]);
   });
@@ -89,10 +92,12 @@ const ConstantFunction = () => <div>Hello, World!</div>;
       {
         name: "DeclaredFunction",
         exported: true,
+        isStory: false,
       },
       {
         name: "ConstantFunction",
         exported: false,
+        isStory: false,
       },
     ]);
   });
@@ -115,10 +120,12 @@ export function NotStory() {}
       {
         name: "Example",
         exported: true,
+        isStory: true,
       },
       {
         name: "NoArgs",
         exported: true,
+        isStory: true,
       },
     ]);
   });

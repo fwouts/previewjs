@@ -79,7 +79,7 @@ export const Preview = observer(
           propsType.kind === "object" &&
           Object.entries(propsType.fields).length === 0;
 
-        if (!isEmptyProps) {
+        if (!isEmptyProps && !props.isStory) {
           tabs.push({
             label: "Properties",
             key: "props",

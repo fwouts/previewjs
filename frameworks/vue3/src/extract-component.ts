@@ -52,6 +52,7 @@ export function extractVueComponents(
           components.push({
             absoluteFilePath,
             name,
+            isStory: !!args[name],
             exported: !!exportedName,
             offsets: [[statement.getFullStart(), statement.getEnd()]],
             analyze: async () => analysis,
@@ -73,6 +74,7 @@ export function extractVueComponents(
         components.push({
           absoluteFilePath,
           name,
+          isStory: !!args[name],
           exported: !!exportedName,
           offsets: [[statement.getFullStart(), statement.getEnd()]],
           analyze: async () => analysis,

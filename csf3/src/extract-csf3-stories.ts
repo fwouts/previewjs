@@ -70,6 +70,7 @@ export function extractCsf3Stories(
       components.push({
         absoluteFilePath,
         name,
+        isStory: true,
         exported: true,
         offsets: [[statement.getStart(), statement.getEnd()]],
         analyze: async () => {

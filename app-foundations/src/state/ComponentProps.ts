@@ -18,6 +18,7 @@ export class ComponentProps {
   ) {
     this.computePropsResponse = {
       args: [],
+      isStory: false,
       types: {
         props: UNKNOWN_TYPE,
         all: {},
@@ -69,6 +70,10 @@ export class ComponentProps {
       this.computePropsResponse.args,
       this.computePropsResponse.types.all
     );
+  }
+
+  get isStory() {
+    return this.computePropsResponse.isStory;
   }
 
   get invocationSource(): string {
