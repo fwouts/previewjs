@@ -37,7 +37,6 @@ export const load: RendererLoader = async ({
     componentModule.default?.render ||
     componentModule.default?.component ||
     ComponentOrStory;
-  const isStory = !!ComponentOrStory.args;
   const Renderer = (props) => {
     const effectiveProps = {
       ...componentModule.default?.args,
@@ -54,7 +53,6 @@ export const load: RendererLoader = async ({
     );
   };
   return {
-    isStory,
     variants,
     render: (props) => render(Renderer, props),
   };

@@ -34,7 +34,7 @@ export async function updateComponent({
     sendMessageFromPreview({
       kind: "before-render",
     });
-    const { variants, isStory, render } = await load({
+    const { variants, render } = await load({
       wrapperModule,
       wrapperName,
       componentFilePath,
@@ -65,7 +65,6 @@ export async function updateComponent({
       kind: "renderer-updated",
       filePath: componentFilePath,
       componentName,
-      isStory,
       variantKey: variant.key,
       // Note: we must remove `props` since it may not be serialisable.
       variants: variants.map(({ props: _, ...rest }) => rest),

@@ -30,7 +30,6 @@ export const load: RendererLoader = async ({
   };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
-  let isStory = false;
   if (ComponentOrStory.render) {
     // Vue or JSX component. Nothing to do.
   } else {
@@ -51,7 +50,6 @@ export const load: RendererLoader = async ({
         // Vue or JSX component. Nothing to do.
       } else {
         // CSF2 story.
-        isStory = true;
         const csf2StoryComponent = ComponentOrStory(defaultProps);
         if (!csf2StoryComponent) {
           throw new Error("Encountered invalid CSF2 story");
@@ -72,7 +70,6 @@ export const load: RendererLoader = async ({
       }
     } else {
       // CSF3 story.
-      isStory = true;
       const csf3Story = ComponentOrStory;
       RenderComponent =
         csf3Story.component || componentModule.default?.component;
@@ -104,7 +101,6 @@ export const load: RendererLoader = async ({
     };
   });
   return {
-    isStory,
     variants,
     render: async (props) => {
       await render(
