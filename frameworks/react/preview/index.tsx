@@ -40,6 +40,7 @@ export const load: RendererLoader = async ({
     componentModule.default?.render ||
     componentModule.default?.component ||
     ComponentOrStory;
+  const isStory = !!ComponentOrStory.args;
   const Renderer = (props) => {
     return (
       <Wrapper>
@@ -57,6 +58,7 @@ export const load: RendererLoader = async ({
     );
   };
   return {
+    isStory,
     variants,
     render: async (props) => {
       const { render } = await import(/* @vite-ignore */ moduleName);

@@ -251,6 +251,7 @@ export type RendererLoader = (options: {
   componentModule: any;
   componentName?: string;
 }) => Promise<{
+  isStory: boolean;
   variants: Array<
     Variant & {
       props?: any;
