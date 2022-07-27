@@ -24,10 +24,12 @@ export function NotStory() {}
       {
         name: "Example",
         exported: true,
+        isStory: true,
       },
       {
         name: "NoArgs",
         exported: true,
+        isStory: true,
       },
     ]);
   });
@@ -53,10 +55,12 @@ export function NotStory() {}
       {
         name: "Example",
         exported: true,
+        isStory: true,
       },
       {
         name: "NoArgs",
         exported: true,
+        isStory: true,
       },
     ]);
   });

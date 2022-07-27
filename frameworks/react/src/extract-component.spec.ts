@@ -94,10 +94,12 @@ export const AlsoNotAStory = {
       {
         name: "DeclaredFunction",
         exported: false,
+        isStory: false,
       },
       {
         name: "ConstantFunction",
         exported: false,
+        isStory: false,
       },
       // Note: this isn't detected as of October 2021.
       // {
@@ -108,30 +110,37 @@ export const AlsoNotAStory = {
       {
         name: "ClassComponent1",
         exported: false,
+        isStory: false,
       },
       {
         name: "ClassComponent2",
         exported: false,
+        isStory: false,
       },
       {
         name: "ForwardRef",
         exported: false,
+        isStory: false,
       },
       {
         name: "NextComponent",
         exported: false,
+        isStory: false,
       },
       {
         name: "Pure",
         exported: true,
+        isStory: false,
       },
       {
         name: "NotObjectProps",
         exported: true,
+        isStory: false,
       },
       {
         name: "MissingType",
         exported: true,
+        isStory: false,
       },
     ]);
   });
@@ -250,10 +259,12 @@ export function NotStory() {}
       {
         name: "Example",
         exported: true,
+        isStory: true,
       },
       {
         name: "NoArgs",
         exported: true,
+        isStory: true,
       },
     ]);
   });
