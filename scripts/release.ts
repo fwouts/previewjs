@@ -39,6 +39,7 @@ const packages: Package[] = [
     dirPath: "cli",
     tagName: "cli",
     type: "npm",
+    additionalChangelogPath: ["loader/src/release/package.json"],
   },
   {
     name: "core",
