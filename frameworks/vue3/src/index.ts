@@ -48,6 +48,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             components.push({
               absoluteFilePath,
               name,
+              isStory: false,
               exported: true,
               offsets: [[0, Infinity]],
               analyze: async () =>

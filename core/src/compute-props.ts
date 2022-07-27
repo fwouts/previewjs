@@ -12,6 +12,7 @@ export async function computeProps({
       props: result.propsType,
       all: result.types,
     },
+    isStory: component.isStory,
     args: [...result.providedArgs],
   };
 }

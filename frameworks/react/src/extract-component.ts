@@ -12,6 +12,7 @@ export function extractReactComponents(
   if (!sourceFile) {
     return [];
   }
+  const args = helpers.extractArgs(sourceFile);
   const components: Array<
     Omit<Component, "analyze"> & {
       signature: ts.Signature;
@@ -33,6 +34,7 @@ export function extractReactComponents(
         components.push({
           absoluteFilePath,
           name: "default",
+          isStory: false,
           exported: true,
           offsets: [[statement.getStart(), statement.getEnd()]],
           signature,
@@ -56,6 +58,7 @@ export function extractReactComponents(
           components.push({
             absoluteFilePath,
             name,
+            isStory: !!args[name],
             exported: !!exportedName,
             offsets: [[statement.getStart(), statement.getEnd()]],
             signature,
@@ -78,6 +81,7 @@ export function extractReactComponents(
           components.push({
             absoluteFilePath,
             name: name || "default",
+            isStory: name ? !!args[name] : false,
             exported,
             offsets: [[statement.getStart(), statement.getEnd()]],
             signature,
@@ -95,6 +99,7 @@ export function extractReactComponents(
         components.push({
           absoluteFilePath,
           name,
+          isStory: !!args[name],
           exported: !!exportedName,
           offsets: [[statement.getStart(), statement.getEnd()]],
           signature,

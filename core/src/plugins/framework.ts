@@ -31,6 +31,7 @@ export interface FrameworkPlugin {
 export interface Component {
   readonly absoluteFilePath: string;
   readonly name: string;
+  readonly isStory: boolean;
   readonly exported: boolean;
   readonly offsets: Array<[start: number, end: number]>;
   readonly analyze: () => Promise<ComponentAnalysis>;
