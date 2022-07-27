@@ -63,7 +63,7 @@ function generateSuggestion(message: string): Suggestion | undefined {
     return {
       message: match
         ? `Perhaps you need to install "${match[1]}" or configure aliases? See ${url}`
-        : "Perhaps you need to install a peer dependency or configure aliases? See ${url}",
+        : `Perhaps you need to install a peer dependency or configure aliases? See ${url}`,
       url,
     };
   }
