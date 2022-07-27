@@ -48,7 +48,9 @@ properties = {
       await previewIframe.waitForSelector(".Other");
       expect(await controller.props.editor.getText()).toEqual(
         `
-properties = {};
+properties = {
+  msg: "msg"
+};
 `.trim()
       );
     });
