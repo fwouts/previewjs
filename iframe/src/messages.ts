@@ -23,7 +23,6 @@ export interface RendererUpdated {
   kind: "renderer-updated";
   filePath: string;
   componentName: string;
-  isStory: boolean;
   variantKey: string;
   variants: Variant[];
 }
