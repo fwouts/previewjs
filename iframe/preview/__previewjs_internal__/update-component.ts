@@ -94,7 +94,7 @@ function transformFunctions(value: unknown, path: string[]): unknown {
     if (Array.isArray(value)) {
       // Array.
       return value.map((v, i) =>
-        transformFunctions(v, [...path, i.toString(i)])
+        transformFunctions(v, [...path, i.toString(10)])
       );
     }
     if (value.constructor === Object) {
