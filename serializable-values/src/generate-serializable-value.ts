@@ -38,7 +38,7 @@ export function generateSerializableValue(
   options: {
     fieldName?: string;
     random?: boolean;
-  }
+  } = {}
 ): SerializableValue {
   return _generateSerializableValue(
     type,
