@@ -34,22 +34,23 @@ import {
 export function generateSerializableValue(
   type: ValueType,
   collected: CollectedTypes,
-  isFunctionReturnValue = false,
-  path: string[] = []
+  options: {
+    fieldName?: string;
+  } = {}
 ): SerializableValue {
   return _generateSerializableValue(
     type,
     collected,
-    path,
+    options.fieldName || "",
     [],
-    isFunctionReturnValue
+    false
   );
 }
 
 function _generateSerializableValue(
   type: ValueType,
   collected: CollectedTypes,
-  path: string[],
+  fieldName: string,
   rejectTypeNames: string[],
   isFunctionReturnValue: boolean
 ): SerializableValue {
@@ -72,7 +73,7 @@ function _generateSerializableValue(
       return FALSE;
     case "string":
     case "node":
-      return string(path.length === 0 ? "node" : path[path.length - 1]!);
+      return string(fieldName);
     case "number":
       return number(0);
     case "literal":
@@ -95,7 +96,7 @@ function _generateSerializableValue(
       return generateArrayValue(
         type,
         collected,
-        path,
+        fieldName,
         rejectTypeNames,
         isFunctionReturnValue
       );
@@ -104,7 +105,7 @@ function _generateSerializableValue(
         generateArrayValue(
           arrayType(type.items),
           collected,
-          path,
+          fieldName,
           rejectTypeNames,
           isFunctionReturnValue
         )
@@ -116,7 +117,7 @@ function _generateSerializableValue(
         const propValue = _generateSerializableValue(
           propType,
           collected,
-          [...path, propName],
+          propName,
           rejectTypeNames,
           isFunctionReturnValue
         );
@@ -150,7 +151,7 @@ function _generateSerializableValue(
       return _generateSerializableValue(
         type.types[0]!,
         collected,
-        path,
+        fieldName,
         rejectTypeNames,
         isFunctionReturnValue
       );
@@ -159,7 +160,7 @@ function _generateSerializableValue(
       return _generateSerializableValue(
         type.types[0]!,
         collected,
-        path,
+        fieldName,
         rejectTypeNames,
         isFunctionReturnValue
       );
@@ -170,7 +171,7 @@ function _generateSerializableValue(
           : _generateSerializableValue(
               type.returnType,
               collected,
-              path,
+              fieldName,
               rejectTypeNames,
               true
             )
@@ -189,7 +190,7 @@ function _generateSerializableValue(
       return _generateSerializableValue(
         type,
         collected,
-        path,
+        fieldName,
         rejectTypeNames,
         isFunctionReturnValue
       );
@@ -201,7 +202,7 @@ function _generateSerializableValue(
 function generateArrayValue(
   type: ArrayType,
   collected: CollectedTypes,
-  path: string[],
+  fieldName: string,
   rejectTypeNames: string[],
   isFunctionReturnValue: boolean
 ): SerializableArrayValue {
@@ -213,7 +214,7 @@ function generateArrayValue(
   const itemValue = _generateSerializableValue(
     type.items,
     collected,
-    path,
+    fieldName,
     rejectTypeNames,
     isFunctionReturnValue
   );
