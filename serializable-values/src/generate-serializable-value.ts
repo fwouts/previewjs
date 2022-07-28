@@ -12,6 +12,7 @@ import { isValidPropName } from "./prop-name";
 import {
   array,
   EMPTY_ARRAY,
+  EMPTY_OBJECT,
   FALSE,
   fn,
   map,
@@ -295,6 +296,9 @@ function generateRecordValue(
   random: boolean,
   isFunctionReturnValue: boolean
 ): SerializableObjectValue {
+  if (!random) {
+    return EMPTY_OBJECT;
+  }
   const values = generateArrayValue(
     {
       kind: "array",
