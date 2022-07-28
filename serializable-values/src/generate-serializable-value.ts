@@ -36,7 +36,7 @@ export function generateSerializableValue(
   collected: CollectedTypes,
   options: {
     fieldName?: string;
-  }
+  } = {}
 ): SerializableValue {
   return _generateSerializableValue(
     type,
