@@ -4,6 +4,7 @@ import {
   CollectedTypes,
   dereferenceType,
   isValid,
+  RecordType,
   ValueType,
 } from "@previewjs/type-analyzer";
 import { assertNever } from "assert-never";
@@ -20,6 +21,7 @@ import {
   object,
   promise,
   SerializableArrayValue,
+  SerializableObjectValue,
   SerializableObjectValueEntry,
   SerializableValue,
   set,
@@ -36,6 +38,7 @@ export function generateSerializableValue(
   collected: CollectedTypes,
   options: {
     fieldName?: string;
+    random?: boolean;
   } = {}
 ): SerializableValue {
   return _generateSerializableValue(
@@ -43,6 +46,7 @@ export function generateSerializableValue(
     collected,
     options.fieldName || "",
     [],
+    options.random || false,
     false
   );
 }
@@ -52,6 +56,7 @@ function _generateSerializableValue(
   collected: CollectedTypes,
   fieldName: string,
   rejectTypeNames: string[],
+  random: boolean,
   isFunctionReturnValue: boolean
 ): SerializableValue {
   let encounteredAliases: string[];
@@ -70,12 +75,12 @@ function _generateSerializableValue(
     case "null":
       return NULL;
     case "boolean":
-      return FALSE;
+      return random && Math.random() < 0.5 ? TRUE : FALSE;
     case "string":
     case "node":
-      return string(fieldName);
+      return string(random ? generateRandomString() : fieldName);
     case "number":
-      return number(0);
+      return number(random ? generateRandomInteger() : 0);
     case "literal":
       if (typeof type.value === "number") {
         return number(type.value);
@@ -85,7 +90,11 @@ function _generateSerializableValue(
         return type.value ? TRUE : FALSE;
       }
     case "enum": {
-      const value = Object.values(type.options)[0];
+      const optionValues = Object.values(type.options);
+      const value =
+        optionValues[
+          random ? generateRandomInteger(0, optionValues.length) : 0
+        ];
       if (typeof value === "number") {
         return number(value);
       } else {
@@ -98,6 +107,7 @@ function _generateSerializableValue(
         collected,
         fieldName,
         rejectTypeNames,
+        random,
         isFunctionReturnValue
       );
     case "set": {
@@ -107,6 +117,7 @@ function _generateSerializableValue(
           collected,
           fieldName,
           rejectTypeNames,
+          random,
           isFunctionReturnValue
         )
       );
@@ -119,6 +130,7 @@ function _generateSerializableValue(
           collected,
           propName,
           rejectTypeNames,
+          random,
           isFunctionReturnValue
         );
         if (propValue.kind === "undefined") {
@@ -135,24 +147,49 @@ function _generateSerializableValue(
       return object(entries);
     }
     case "map":
-      return map(EMPTY_OBJECT);
+      return map(
+        generateRecordValue(
+          {
+            ...type,
+            kind: "record",
+          },
+          collected,
+          fieldName,
+          rejectTypeNames,
+          random,
+          isFunctionReturnValue
+        )
+      );
     case "record":
-      return EMPTY_OBJECT;
-    case "union":
-      if (isValid(type, collected, undefined)) {
-        return UNDEFINED;
-      }
-      if (isValid(type, collected, null)) {
-        return NULL;
-      }
-      if (isValid(type, collected, false)) {
-        return FALSE;
-      }
-      return _generateSerializableValue(
-        type.types[0]!,
+      return generateRecordValue(
+        {
+          ...type,
+          kind: "record",
+        },
         collected,
         fieldName,
         rejectTypeNames,
+        random,
+        isFunctionReturnValue
+      );
+    case "union":
+      if (!random) {
+        if (isValid(type, collected, undefined)) {
+          return UNDEFINED;
+        }
+        if (isValid(type, collected, null)) {
+          return NULL;
+        }
+        if (isValid(type, collected, false)) {
+          return FALSE;
+        }
+      }
+      return _generateSerializableValue(
+        type.types[random ? generateRandomInteger(0, type.types.length) : 0]!,
+        collected,
+        fieldName,
+        rejectTypeNames,
+        random,
         isFunctionReturnValue
       );
     case "intersection":
@@ -162,6 +199,7 @@ function _generateSerializableValue(
         collected,
         fieldName,
         rejectTypeNames,
+        random,
         isFunctionReturnValue
       );
     case "function":
@@ -173,10 +211,21 @@ function _generateSerializableValue(
               collected,
               fieldName,
               rejectTypeNames,
+              random,
               true
             )
       );
     case "optional":
+      if (random && Math.random() < 0.5) {
+        return _generateSerializableValue(
+          type.type,
+          collected,
+          fieldName,
+          rejectTypeNames,
+          random,
+          isFunctionReturnValue
+        );
+      }
       return UNDEFINED;
     case "promise": {
       return promise({
@@ -192,6 +241,7 @@ function _generateSerializableValue(
         collected,
         fieldName,
         rejectTypeNames,
+        random,
         isFunctionReturnValue
       );
     default:
@@ -204,6 +254,7 @@ function generateArrayValue(
   collected: CollectedTypes,
   fieldName: string,
   rejectTypeNames: string[],
+  random: boolean,
   isFunctionReturnValue: boolean
 ): SerializableArrayValue {
   if (isFunctionReturnValue) {
@@ -211,18 +262,89 @@ function generateArrayValue(
     // unlikely to even be used at all.
     return EMPTY_ARRAY;
   }
-  const itemValue = _generateSerializableValue(
-    type.items,
-    collected,
-    fieldName,
-    rejectTypeNames,
-    isFunctionReturnValue
-  );
+  const itemValues: SerializableValue[] = [];
+  const length = random ? generateRandomInteger(0, 3) : 1;
+  for (let i = 0; i < length; i++) {
+    const itemValue = _generateSerializableValue(
+      type.items,
+      collected,
+      fieldName,
+      rejectTypeNames,
+      random,
+      isFunctionReturnValue
+    );
+    itemValues.push(itemValue);
+  }
   if (
-    itemValue.kind === "undefined" ||
-    (itemValue.kind === "object" && Object.keys(itemValue.entries).length === 0)
+    itemValues.every(
+      (itemValue) =>
+        itemValue.kind === "undefined" ||
+        (itemValue.kind === "object" &&
+          Object.keys(itemValue.entries).length === 0)
+    )
   ) {
     return EMPTY_ARRAY;
   }
-  return array([itemValue]);
+  return array(itemValues);
+}
+
+function generateRecordValue(
+  type: RecordType,
+  collected: CollectedTypes,
+  fieldName: string,
+  rejectTypeNames: string[],
+  random: boolean,
+  isFunctionReturnValue: boolean
+): SerializableObjectValue {
+  if (!random) {
+    return EMPTY_OBJECT;
+  }
+  const values = generateArrayValue(
+    {
+      kind: "array",
+      items: type.values,
+    },
+    collected,
+    fieldName,
+    rejectTypeNames,
+    random,
+    isFunctionReturnValue
+  ).items;
+  const entries: SerializableObjectValueEntry[] = [];
+  for (const value of values) {
+    const key = _generateSerializableValue(
+      type.keys,
+      collected,
+      fieldName,
+      rejectTypeNames,
+      random,
+      isFunctionReturnValue
+    );
+    entries.push({
+      key,
+      value,
+    });
+  }
+  return object(entries);
+}
+
+function generateRandomString() {
+  if (Math.random() < 0.2) {
+    // Slightly higher chance of an empty string.
+    return "";
+  }
+  const length = generateRandomInteger(0, 50);
+  const chars =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !@#$%^&*()-_=+[]{}|;':,.<>/?`'\"~";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars[generateRandomInteger(0, chars.length)];
+  }
+  return result;
+}
+
+function generateRandomInteger(minInclusive = -5000, maxExclusive = +5000) {
+  const range = maxExclusive - minInclusive;
+  const mean = (maxExclusive + minInclusive) / 2;
+  return Math.round(Math.random() * range - mean);
 }
