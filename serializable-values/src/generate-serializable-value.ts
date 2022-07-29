@@ -345,5 +345,5 @@ function generateRandomString() {
 
 function generateRandomInteger(minInclusive = -5000, maxExclusive = +5000) {
   const range = maxExclusive - minInclusive;
-  return Math.round(Math.random() * range + minInclusive);
+  return Math.floor(Math.random() * range + minInclusive);
 }
