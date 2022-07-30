@@ -1,6 +1,5 @@
 {
   "name": "@previewjs/server",
-  "version": "0.0.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -16,9 +15,11 @@
   "homepage": "https://previewjs.com",
   "type": "commonjs",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/index.js"
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
