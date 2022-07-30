@@ -543,6 +543,7 @@ importers:
     specifiers:
       '@previewjs/core': workspace:*
       '@previewjs/loader': workspace:*
+      '@previewjs/server': workspace:*
       '@types/vscode': 1.43.0
       cross-env: 7.0.3
       esbuild: 0.14.49
@@ -553,6 +554,7 @@ importers:
     devDependencies:
       '@previewjs/core': link:../../core
       '@previewjs/loader': link:../../loader
+      '@previewjs/server': link:../../server
       '@types/vscode': 1.43.0
       cross-env: 7.0.3
       esbuild: 0.14.49

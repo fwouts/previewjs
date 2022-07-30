@@ -1,4 +1,5 @@
-import { install, isInstalled, load } from "@previewjs/loader";
+import { install, isInstalled } from "@previewjs/loader";
+import { runServer } from "@previewjs/server";
 import { readFileSync } from "fs";
 import path from "path";
 import vscode, { OutputChannel } from "vscode";
@@ -61,9 +62,13 @@ async function initializePreviewJs(outputChannel: OutputChannel) {
     }
   }
 
-  return load({
-    installDir: requirePath,
+  // TODO: Only run once across all workspaces.
+  return runServer({
+    loaderInstallDir: requirePath,
     packageName,
+    versionCode: `vscode-${version}`,
+    // TODO: Dynamic? Same as IntelliJ? Figure it out.
+    port: 9200,
   });
 }
 

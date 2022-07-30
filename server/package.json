@@ -22,6 +22,13 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "typesVersions": {
+    "*": {
+      "api": [
+        "./dist/api.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/server --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && node esbuild.js",
