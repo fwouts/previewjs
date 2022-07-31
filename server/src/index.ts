@@ -1,8 +1,8 @@
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
+import crypto from "crypto";
 import http from "http";
 import path from "path";
-import * as uuid from "uuid";
 import type {
   AnalyzeFileRequest,
   AnalyzeFileResponse,
@@ -119,7 +119,8 @@ export async function runServer({
       const existingWorkspaceId = Object.entries(workspaces)
         .filter(([, value]) => value === workspace)
         ?.map(([key]) => key)[0];
-      const workspaceId = existingWorkspaceId || uuid.v4();
+      const workspaceId =
+        existingWorkspaceId || crypto.randomBytes(16).toString("base64url");
       workspaces[workspaceId] = workspace;
       return {
         workspaceId,
@@ -229,7 +230,7 @@ export async function runServer({
       });
   });
 
-  console.log(
+  console.error(
     `Preview.js controller API is running on http://localhost:${port}`
   );
 
