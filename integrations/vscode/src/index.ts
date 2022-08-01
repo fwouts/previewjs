@@ -86,6 +86,8 @@ async function startPreviewJsServer(
     console.error("Error starting server", e);
     // TODO: Print out the logs?
   });
+
+  // TODO: Kill the server if wrong version.
   await Promise.race([client.waitForReady(), serverProcess]);
 
   // TODO: Dispose of server when no longer needed?
