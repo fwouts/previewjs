@@ -1,16 +1,13 @@
 import { install, isInstalled } from "@previewjs/loader";
-import { runServer } from "@previewjs/server";
-import { createClient } from "@previewjs/server/client";
-import { readFileSync } from "fs";
+import { Client, createClient } from "@previewjs/server/client";
+import execa from "execa";
+import { openSync } from "fs";
 import path from "path";
 import vscode, { OutputChannel } from "vscode";
+import { getLoaderInstallDir } from "./loader-install-dir";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
 import { ensurePreviewServerStarted } from "./preview-server";
 import { openUsageOnFirstTimeStart } from "./welcome";
-
-const { version } = JSON.parse(
-  readFileSync(`${__dirname}/../package.json`, "utf8")
-);
 
 const codeLensLanguages = [
   "javascript",
@@ -39,7 +36,7 @@ let dispose = async () => {
   // Do nothing.
 };
 
-async function initializePreviewJs(outputChannel: OutputChannel) {
+async function installDependenciesIfNeeded(outputChannel: OutputChannel) {
   const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
   if (!packageName) {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
@@ -47,7 +44,7 @@ async function initializePreviewJs(outputChannel: OutputChannel) {
 
   let requirePath = process.env.PREVIEWJS_MODULES_DIR;
   if (!requirePath) {
-    requirePath = path.join(__dirname, "..", "dependencies");
+    requirePath = getLoaderInstallDir();
     if (!(await isInstalled({ installDir: requirePath, packageName }))) {
       outputChannel.show();
       await install({
@@ -59,34 +56,64 @@ async function initializePreviewJs(outputChannel: OutputChannel) {
       });
     }
   }
-
-  // TODO: Dynamic? Same as IntelliJ? Figure it out.
-  const port = 9200;
-
-  // TODO: Only start server once across all workspaces.
-  // TODO: Dispose of server when no longer needed.
-  // TODO: Start this in a separate Node process, that's the whole point!
-  console.error("Starting server");
-  const _disposeServer = await runServer({
-    loaderInstallDir: requirePath,
-    packageName,
-    versionCode: `vscode-${version}`,
-    port,
-  });
-  console.error("Started server");
-  // TODO: Should it always be localhost?
-  return createClient(`http://localhost:${port}`);
 }
 
+// TODO: Double check port choice.
+const port = 9200;
+
+async function startPreviewJsServer(
+  outputChannel: OutputChannel,
+  client: Client
+) {
+  await installDependenciesIfNeeded(outputChannel);
+
+  // TODO: Check node availability and version.
+
+  console.error("Starting server");
+
+  const out = openSync(path.join(__dirname, "server-out.log"), "a");
+  const err = openSync(path.join(__dirname, "server-err.log"), "a");
+  const serverProcess = execa("node", [`${__dirname}/server.js`], {
+    all: true,
+    detached: true,
+    stdio: ["ignore", out, err], // https://nodejs.org/api/child_process.html#child_process_options_detached
+    env: {
+      ...process.env,
+      PORT: port.toString(10),
+    },
+  });
+  serverProcess.catch((e) => {
+    console.error("Error starting server", e);
+    // TODO: Print out the logs?
+  });
+  await Promise.race([client.waitForReady(), serverProcess]);
+
+  // TODO: Dispose of server when no longer needed?
+  console.error("Started server");
+
+  // TODO: Make sure it doesn't get killed if this workspace is closed (use parent process?).
+}
+
+const PARENT_PID_KEY = "ppid";
+
 export async function activate(context: vscode.ExtensionContext) {
-  const config = vscode.workspace.getConfiguration();
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
-  let previewjsClientInitialized: Awaited<
-    ReturnType<typeof initializePreviewJs>
-  > | null = null;
-  let initializationFailed = false;
-  let focusedOutputChannelForError = false;
-  const previewjsInitPromise = initializePreviewJs(outputChannel)
+  const storedParentProcessId = context.globalState.get<number>(PARENT_PID_KEY);
+
+  const previewjsInitPromise = (async () => {
+    // TODO: Should it always be localhost?
+    // TODO: Make sure port is the same
+    const client = createClient(`http://localhost:${port}`);
+
+    if (storedParentProcessId !== process.ppid) {
+      // This is the first workspace to activate, so we need to start the server.
+      context.globalState.update(PARENT_PID_KEY, process.ppid);
+      await startPreviewJsServer(outputChannel, client);
+    }
+
+    await client.waitForReady();
+    return client;
+  })()
     .then((p) => (previewjsClientInitialized = p))
     .catch((e) => {
       console.error(e);
@@ -94,15 +121,20 @@ export async function activate(context: vscode.ExtensionContext) {
       return null;
     });
 
+  const config = vscode.workspace.getConfiguration();
+  let previewjsClientInitialized: Client | null = null;
+  let initializationFailed = false;
+  let focusedOutputChannelForError = false;
+
   async function getWorkspaceId(absoluteFilePath: string) {
     const previewjsClient = await previewjsInitPromise;
     if (!previewjsClient) {
       return null;
     }
-    const workspace = previewjsClient.getWorkspace({
+    const workspace = await previewjsClient.getWorkspace({
       absoluteFilePath,
     });
-    return (await workspace).workspaceId;
+    return workspace.workspaceId;
   }
 
   // Note: ESlint warning isn't relevant because we're correctly inferring arguments types.

@@ -13,6 +13,7 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
+import { locking } from "./locking";
 export * from "./api";
 
 export function createClient(baseUrl: string): Client {
@@ -20,39 +21,41 @@ export function createClient(baseUrl: string): Client {
     path: `/${string}`,
     request: Req
   ): Promise<Res> {
-    console.error("Request for:", path);
-    return new Promise<Res>((resolve, reject) => {
-      const url = new URL(baseUrl);
-      const postData = JSON.stringify(request);
-      let responseData = "";
-      const req = http.request(
-        {
-          hostname: url.hostname,
-          port: url.port,
-          path,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Content-Length": Buffer.byteLength(postData),
+    return locking<Res>(async () => {
+      console.error("Request for:", path);
+      return new Promise<Res>((resolve, reject) => {
+        const url = new URL(baseUrl);
+        const postData = JSON.stringify(request);
+        let responseData = "";
+        const req = http.request(
+          {
+            hostname: url.hostname,
+            port: url.port,
+            path,
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Content-Length": Buffer.byteLength(postData),
+            },
           },
-        },
-        (res) => {
-          res.on("data", (data) => {
-            responseData += data;
-          });
-          res.on("end", () => {
-            console.error("Received response:", responseData);
-            const response = JSON.parse(responseData);
-            resolve(response);
-          });
-        }
-      );
-      req.on("error", (e) => {
-        reject(e);
+          (res) => {
+            res.on("data", (data) => {
+              responseData += data;
+            });
+            res.on("end", () => {
+              console.error("Received response:", responseData);
+              const response = JSON.parse(responseData);
+              resolve(response);
+            });
+          }
+        );
+        req.on("error", (e) => {
+          reject(e);
+        });
+        req.write(postData);
+        req.end();
+        console.error("Sending request:", postData);
       });
-      req.write(postData);
-      req.end();
-      console.error("Sending request:", postData);
     });
   }
 
@@ -61,6 +64,19 @@ export function createClient(baseUrl: string): Client {
   }
 
   return {
+    waitForReady: async () => {
+      // TODO: Set timeout.
+      loop: while (true) {
+        try {
+          await makeRequest("/health", {});
+          break loop;
+        } catch (e) {
+          // Ignore.
+          console.warn(e);
+          await new Promise<void>((resolve) => setTimeout(resolve, 100));
+        }
+      }
+    },
     getWorkspace: makeEndpoint("/workspaces/get"),
     disposeWorkspace: makeEndpoint("/workspaces/dispose"),
     analyzeFile: makeEndpoint("/analyze/file"),
@@ -71,6 +87,7 @@ export function createClient(baseUrl: string): Client {
 }
 
 export interface Client {
+  waitForReady(): Promise<void>;
   getWorkspace(request: GetWorkspaceRequest): Promise<GetWorkspaceResponse>;
   disposeWorkspace(
     request: DisposeWorkspaceRequest
