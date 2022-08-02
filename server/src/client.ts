@@ -14,6 +14,8 @@ import type {
   StartPreviewResponse,
   StopPreviewRequest,
   StopPreviewResponse,
+  UpdateClientStatusRequest,
+  UpdateClientStatusResponse,
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
@@ -74,6 +76,7 @@ export function createClient(baseUrl: string): Client {
     },
     info: () => makeEndpoint<InfoRequest, InfoResponse>("/previewjs/info")({}),
     kill: () => makeEndpoint<KillRequest, KillResponse>("/previewjs/kill")({}),
+    updateClientStatus: makeEndpoint("/previewjs/clients/status"),
     getWorkspace: makeEndpoint("/workspaces/get"),
     disposeWorkspace: makeEndpoint("/workspaces/dispose"),
     analyzeFile: makeEndpoint("/analyze/file"),
@@ -88,6 +91,9 @@ export interface Client {
   waitForReady(): Promise<void>;
   info(): Promise<InfoResponse>;
   kill(): Promise<KillResponse>;
+  updateClientStatus(
+    request: UpdateClientStatusRequest
+  ): Promise<UpdateClientStatusResponse>;
   getWorkspace(request: GetWorkspaceRequest): Promise<GetWorkspaceResponse>;
   disposeWorkspace(
     request: DisposeWorkspaceRequest

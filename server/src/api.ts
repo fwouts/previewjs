@@ -10,6 +10,13 @@ export type KillRequest = Record<never, never>;
 
 export type KillResponse = Record<never, never>;
 
+export interface UpdateClientStatusRequest {
+  clientId: string;
+  alive: boolean;
+}
+
+export type UpdateClientStatusResponse = Record<never, never>;
+
 export interface GetWorkspaceRequest {
   absoluteFilePath: string;
 }

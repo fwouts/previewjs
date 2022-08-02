@@ -1,5 +1,6 @@
 import { install, isInstalled } from "@previewjs/loader";
 import { Client, createClient } from "@previewjs/server/client";
+import crypto from "crypto";
 import execa from "execa";
 import { openSync } from "fs";
 import path from "path";
@@ -36,6 +37,7 @@ let dispose = async () => {
   // Do nothing.
 };
 
+// TODO: Fix race condition here!
 async function installDependenciesIfNeeded(outputChannel: OutputChannel) {
   const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
   if (!packageName) {
@@ -61,6 +63,8 @@ async function installDependenciesIfNeeded(outputChannel: OutputChannel) {
 // TODO: Double check port choice.
 const port = 9200;
 
+const clientId = crypto.randomBytes(16).toString("base64url");
+
 async function startPreviewJsServer(outputChannel: OutputChannel) {
   await installDependenciesIfNeeded(outputChannel);
 
@@ -68,6 +72,7 @@ async function startPreviewJsServer(outputChannel: OutputChannel) {
 
   const out = openSync(path.join(__dirname, "server-out.log"), "a");
   const err = openSync(path.join(__dirname, "server-err.log"), "a");
+  console.error("STARTING SERVER PROCESS");
   const serverProcess = execa("node", [`${__dirname}/server.js`], {
     all: true,
     detached: true,
@@ -77,12 +82,13 @@ async function startPreviewJsServer(outputChannel: OutputChannel) {
       PORT: port.toString(10),
     },
   });
+  console.error("STARTED SERVER PROCESS", serverProcess.pid);
 
   const client = createClient(`http://localhost:${port}`);
-  return new Promise<Client>((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     const readyListener = (chunk: string) => {
       if (chunk === JSON.stringify({ type: "ready" })) {
-        resolve(client);
+        resolve();
         serverProcess.disconnect();
         serverProcess.unref();
       }
@@ -92,11 +98,16 @@ async function startPreviewJsServer(outputChannel: OutputChannel) {
       console.error("Error starting server", e);
       reject(e);
     });
-    // TODO: Dispose of server when no longer needed?
   });
+  await client.updateClientStatus({
+    clientId,
+    alive: true,
+  });
+  return client;
 }
 
 export async function activate(context: vscode.ExtensionContext) {
+  console.error("PREVIEW.JS: ACTIVATING EXTENSION");
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
 
   const previewjsInitPromise = startPreviewJsServer(outputChannel)
@@ -144,8 +155,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   dispose = async () => {
     outputChannel.dispose();
-    // TODO: Dispose again!
-    // await (await previewjsInitPromise)?.dispose();
+    await previewjsClientInitialized?.updateClientStatus({
+      clientId,
+      alive: false,
+    });
   };
 
   await openUsageOnFirstTimeStart(context);
@@ -265,9 +278,8 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export async function deactivate() {
+  console.error("PREVIEW.JS: DEACTIVATING EXTENSION");
   await closePreviewPanel();
-  // TODO: Remove?
-  // await ensurePreviewServerStopped();
   await dispose();
   dispose = async () => {
     // Do nothing.

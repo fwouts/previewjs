@@ -18,11 +18,15 @@ import type {
   StartPreviewResponse,
   StopPreviewRequest,
   StopPreviewResponse,
+  UpdateClientStatusRequest,
+  UpdateClientStatusResponse,
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
 import { createClient } from "./client";
 import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
+
+const AUTOMATIC_SHUTDOWN_DELAY_MILLIS = 5000;
 
 export interface ServerStartOptions {
   loaderInstallDir: string;
@@ -37,6 +41,7 @@ export async function ensureServerRunning(options: ServerStartOptions) {
     JSON.stringify(
       `Preview.js daemon server is already running on port ${options.port}.`
     );
+    sendParentProcessReadyMessage();
     return;
   }
   await startServer(options);
@@ -103,6 +108,7 @@ async function startServer({
     packageName,
   });
 
+  const clients = new Set<string>();
   const workspaces: Record<string, Workspace> = {};
   const previews: Record<string, Preview> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
@@ -182,6 +188,28 @@ async function startServer({
     }, 0);
     return {};
   });
+
+  let shutdownTimer: NodeJS.Timeout | null = null;
+  endpoint<UpdateClientStatusRequest, UpdateClientStatusResponse>(
+    "/previewjs/clients/status",
+    async (req) => {
+      if (req.alive) {
+        clients.add(req.clientId);
+      } else {
+        clients.delete(req.clientId);
+      }
+      if (shutdownTimer) {
+        clearTimeout(shutdownTimer);
+      }
+      shutdownTimer = setTimeout(() => {
+        if (clients.size === 0) {
+          console.log("Shutting down server because no clients are alive.");
+          process.exit(0);
+        }
+      }, AUTOMATIC_SHUTDOWN_DELAY_MILLIS);
+      return {};
+    }
+  );
 
   endpoint<GetWorkspaceRequest, GetWorkspaceResponse>(
     "/workspaces/get",
@@ -332,6 +360,10 @@ async function startServer({
     );
   }
 
+  sendParentProcessReadyMessage();
+}
+
+function sendParentProcessReadyMessage() {
   if (process.send) {
     process.send(JSON.stringify({ type: "ready" }));
   }
