@@ -213,11 +213,8 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 // TODO: Split into separate file.
-async function startPreviewJsServer(
-  context: vscode.ExtensionContext,
-  outputChannel: OutputChannel
-) {
-  await installDependenciesIfNeeded(context, outputChannel);
+async function startPreviewJsServer(outputChannel: OutputChannel) {
+  await installDependenciesIfNeeded(outputChannel);
 
   const out = openSync(path.join(__dirname, "server-out.log"), "a");
   const err = openSync(path.join(__dirname, "server-err.log"), "a");
@@ -253,12 +250,7 @@ async function startPreviewJsServer(
   return client;
 }
 
-// TODO: Fix race condition here!
-async function installDependenciesIfNeeded(
-  context: vscode.ExtensionContext,
-  outputChannel: OutputChannel
-) {
-  // TODO: Check node availability and version.
+async function installDependenciesIfNeeded(outputChannel: OutputChannel) {
   const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
   if (!packageName) {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
