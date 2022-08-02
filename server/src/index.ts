@@ -32,7 +32,6 @@ export interface ServerStartOptions {
 }
 
 export async function ensureServerRunning(options: ServerStartOptions) {
-  await new Promise((resolve) => setTimeout(resolve, Math.random() * 2000));
   const alreadyRunning = await isServerAlreadyRunning(options);
   if (alreadyRunning) {
     console.log(
