@@ -1,4 +1,4 @@
-import { runServer } from "@previewjs/server";
+import { ensureServerRunning } from "@previewjs/server";
 import { getInstallDir, getPackageNameFromEnvironment } from "./config";
 
 const port = parseInt(process.env.PORT || "9100");
@@ -8,7 +8,7 @@ if (!version) {
   throw new Error(`IntelliJ version was not set`);
 }
 
-runServer({
+ensureServerRunning({
   loaderInstallDir: getInstallDir(),
   packageName: getPackageNameFromEnvironment(),
   versionCode: `intellij-${version}`,
