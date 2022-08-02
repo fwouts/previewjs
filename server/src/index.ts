@@ -34,7 +34,7 @@ export interface ServerStartOptions {
 export async function ensureServerRunning(options: ServerStartOptions) {
   const alreadyRunning = await isServerAlreadyRunning(options);
   if (alreadyRunning) {
-    console.log(
+    JSON.stringify(
       `Preview.js daemon server is already running on port ${options.port}.`
     );
     return;
@@ -108,6 +108,7 @@ async function startServer({
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
 
   const app = http.createServer((req, res) => {
+    console.error(req.headers);
     if (!req.url) {
       throw new Error(`Received request without URL`);
     }
@@ -275,7 +276,6 @@ async function startServer({
       };
     }
   );
-
   endpoint<StopPreviewRequest, StopPreviewResponse>(
     "/previews/stop",
     async (req) => {
@@ -330,5 +330,9 @@ async function startServer({
     console.log(
       `Another Preview.js daemon server spun up concurrently on ${port}. All good.`
     );
+  }
+
+  if (process.send) {
+    process.send(JSON.stringify({ type: "ready" }));
   }
 }

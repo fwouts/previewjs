@@ -61,58 +61,45 @@ async function installDependenciesIfNeeded(outputChannel: OutputChannel) {
 // TODO: Double check port choice.
 const port = 9200;
 
-async function startPreviewJsServer(
-  outputChannel: OutputChannel,
-  client: Client
-) {
+async function startPreviewJsServer(outputChannel: OutputChannel) {
   await installDependenciesIfNeeded(outputChannel);
 
   // TODO: Check node availability and version.
-
-  console.error("Starting server");
 
   const out = openSync(path.join(__dirname, "server-out.log"), "a");
   const err = openSync(path.join(__dirname, "server-err.log"), "a");
   const serverProcess = execa("node", [`${__dirname}/server.js`], {
     all: true,
     detached: true,
-    stdio: ["ignore", out, err], // https://nodejs.org/api/child_process.html#child_process_options_detached
+    stdio: ["ignore", out, err, "ipc"],
     env: {
       ...process.env,
       PORT: port.toString(10),
     },
   });
-  serverProcess.catch((e) => {
-    console.error("Error starting server", e);
-    // TODO: Print out the logs?
+
+  const client = createClient(`http://localhost:${port}`);
+  return new Promise<Client>((resolve, reject) => {
+    const readyListener = (chunk: string) => {
+      if (chunk === JSON.stringify({ type: "ready" })) {
+        resolve(client);
+        serverProcess.disconnect();
+        serverProcess.unref();
+      }
+    };
+    serverProcess.on("message", readyListener);
+    serverProcess.catch((e) => {
+      console.error("Error starting server", e);
+      reject(e);
+    });
+    // TODO: Dispose of server when no longer needed?
   });
-
-  await Promise.race([client.waitForReady(), serverProcess]);
-
-  // TODO: Dispose of server when no longer needed?
-  console.error("Started server");
 }
-
-const PARENT_PID_KEY = "ppid";
 
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
-  const storedParentProcessId = context.globalState.get<number>(PARENT_PID_KEY);
 
-  const previewjsInitPromise = (async () => {
-    // TODO: Should it always be localhost?
-    // TODO: Make sure port is the same
-    const client = createClient(`http://localhost:${port}`);
-
-    if (storedParentProcessId !== process.ppid) {
-      // This is the first workspace to activate, so we need to start the server.
-      context.globalState.update(PARENT_PID_KEY, process.ppid);
-      await startPreviewJsServer(outputChannel, client);
-    }
-
-    await client.waitForReady();
-    return client;
-  })()
+  const previewjsInitPromise = startPreviewJsServer(outputChannel)
     .then((p) => (previewjsClientInitialized = p))
     .catch((e) => {
       console.error(e);
