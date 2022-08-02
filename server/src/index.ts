@@ -114,7 +114,6 @@ async function startServer({
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
 
   const app = http.createServer((req, res) => {
-    console.error(req.headers);
     if (!req.url) {
       throw new Error(`Received request without URL`);
     }
@@ -184,6 +183,7 @@ async function startServer({
 
   endpoint<InfoRequest, KillResponse>("/previewjs/kill", async () => {
     setTimeout(() => {
+      console.log("Shutting down server because seppuku was requested.");
       process.exit(0);
     }, 0);
     return {};

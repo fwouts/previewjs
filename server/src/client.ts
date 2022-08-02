@@ -29,7 +29,6 @@ export function createClient(baseUrl: string): Client {
     request: Req
   ): Promise<Res> {
     return locking<Res>(async () => {
-      console.error("Request for:", path);
       return new Promise<Res>((resolve, reject) => {
         const url = new URL(baseUrl);
         const postData = JSON.stringify(request);
@@ -50,7 +49,6 @@ export function createClient(baseUrl: string): Client {
               responseData += data;
             });
             res.on("end", () => {
-              console.error("Received response:", responseData);
               const response = JSON.parse(responseData);
               resolve(response);
             });
@@ -61,7 +59,6 @@ export function createClient(baseUrl: string): Client {
         });
         req.write(postData);
         req.end();
-        console.error("Sending request:", postData);
       });
     });
   }

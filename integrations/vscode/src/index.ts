@@ -72,7 +72,6 @@ async function startPreviewJsServer(outputChannel: OutputChannel) {
 
   const out = openSync(path.join(__dirname, "server-out.log"), "a");
   const err = openSync(path.join(__dirname, "server-err.log"), "a");
-  console.error("STARTING SERVER PROCESS");
   const serverProcess = execa("node", [`${__dirname}/server.js`], {
     all: true,
     detached: true,
@@ -82,7 +81,6 @@ async function startPreviewJsServer(outputChannel: OutputChannel) {
       PORT: port.toString(10),
     },
   });
-  console.error("STARTED SERVER PROCESS", serverProcess.pid);
 
   const client = createClient(`http://localhost:${port}`);
   await new Promise<void>((resolve, reject) => {
@@ -107,7 +105,6 @@ async function startPreviewJsServer(outputChannel: OutputChannel) {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  console.error("PREVIEW.JS: ACTIVATING EXTENSION");
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
 
   const previewjsInitPromise = startPreviewJsServer(outputChannel)
@@ -278,7 +275,6 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export async function deactivate() {
-  console.error("PREVIEW.JS: DEACTIVATING EXTENSION");
   await closePreviewPanel();
   await dispose();
   dispose = async () => {
