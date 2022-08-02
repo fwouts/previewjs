@@ -1,4 +1,4 @@
-import { runServer } from "@previewjs/server";
+import { ensureServerRunning } from "@previewjs/server";
 import { readFileSync } from "fs";
 import { getLoaderInstallDir } from "./loader-install-dir";
 
@@ -13,7 +13,7 @@ if (!packageName) {
   throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
 }
 
-runServer({
+ensureServerRunning({
   loaderInstallDir: getLoaderInstallDir(),
   packageName,
   versionCode: `vscode-${version}`,

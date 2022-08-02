@@ -87,13 +87,10 @@ async function startPreviewJsServer(
     // TODO: Print out the logs?
   });
 
-  // TODO: Kill the server if wrong version.
   await Promise.race([client.waitForReady(), serverProcess]);
 
   // TODO: Dispose of server when no longer needed?
   console.error("Started server");
-
-  // TODO: Make sure it doesn't get killed if this workspace is closed (use parent process?).
 }
 
 const PARENT_PID_KEY = "ppid";
