@@ -1,5 +1,5 @@
 import execa from "execa";
-import { mkdir, writeFile } from "fs-extra";
+import { mkdir, pathExists, writeFile } from "fs-extra";
 import path from "path";
 import lockfile from "proper-lockfile";
 import { loadModules } from "./modules";
@@ -13,6 +13,9 @@ export async function isInstalled({
   installDir: string;
   packageName: string;
 }) {
+  if (!(await pathExists(installDir))) {
+    return false;
+  }
   try {
     loadModules({
       installDir,
@@ -30,30 +33,27 @@ export async function install(options: {
   packageName: string;
   onOutput: (chunk: string) => void;
 }) {
+  await mkdir(options.installDir, { recursive: true });
   // Prevent several processes from trying to install concurrently.
   const raceConditionLock = __dirname;
+  const lockOptions: lockfile.CheckOptions = {
+    lockfilePath: path.join(options.installDir, "dir.lock"),
+  };
   try {
-    await lockfile.lock(raceConditionLock);
+    await lockfile.lock(raceConditionLock, lockOptions);
   } catch {
-    while (await lockfile.check(raceConditionLock)) {
+    while (await lockfile.check(raceConditionLock, lockOptions)) {
       // Wait a second before checking again.
       await new Promise<void>((resolve) => setTimeout(resolve, 1000));
     }
+    // At this point it either succeeded or failed in the other workspace.
+    // Note: For some reason, isInstalled() fails here at least in VS Code. Not sure why!
     return;
-    // TODO: Figure out why isInstalled crashes.
-    //
-    // if (await isInstalled(options)) {
-    //   // Well, there's nothing to do, likely because another process beat us to it.
-    //   return;
-    // }
-    // // Another install didn't work, so we'll try again.
-    // await lockfile.lock(raceConditionLock);
   }
   try {
     options.onOutput(
       "Please wait while Preview.js installs dependencies. This could take a minute.\n\n"
     );
-    await mkdir(options.installDir, { recursive: true });
     await writeFile(
       path.join(options.installDir, "package.json"),
       JSON.stringify(packageJson),
@@ -142,6 +142,6 @@ export async function install(options: {
       throw e;
     }
   } finally {
-    await lockfile.unlock(raceConditionLock);
+    await lockfile.unlock(raceConditionLock, lockOptions);
   }
 }

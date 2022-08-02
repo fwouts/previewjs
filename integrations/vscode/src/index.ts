@@ -260,12 +260,15 @@ async function installDependenciesIfNeeded(outputChannel: OutputChannel) {
   if (!requirePath) {
     requirePath = getLoaderInstallDir();
     if (!(await isInstalled({ installDir: requirePath, packageName }))) {
-      // context
-      outputChannel.show();
+      let showing = false;
       await install({
         installDir: requirePath,
         packageName,
         onOutput: (chunk) => {
+          if (!showing) {
+            outputChannel.show();
+            showing = true;
+          }
           outputChannel.append(chunk);
         },
       });
