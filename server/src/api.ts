@@ -1,3 +1,15 @@
+export type InfoRequest = Record<never, never>;
+
+export interface InfoResponse {
+  loaderInstallDir: string;
+  packageName: string;
+  versionCode: string;
+}
+
+export type KillRequest = Record<never, never>;
+
+export type KillResponse = Record<never, never>;
+
 export interface GetWorkspaceRequest {
   absoluteFilePath: string;
 }

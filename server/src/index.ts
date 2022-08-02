@@ -2,6 +2,7 @@ import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
 import http from "http";
+import net from "net";
 import path from "path";
 import type {
   AnalyzeFileRequest,
@@ -10,6 +11,9 @@ import type {
   DisposeWorkspaceResponse,
   GetWorkspaceRequest,
   GetWorkspaceResponse,
+  InfoRequest,
+  InfoResponse,
+  KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
   StopPreviewRequest,
@@ -17,18 +21,84 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
+import { createClient } from "./client";
+import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
 
-export async function runServer({
-  loaderInstallDir,
-  packageName,
-  versionCode,
-  port,
-}: {
+export interface ServerStartOptions {
   loaderInstallDir: string;
   packageName: string;
   versionCode: string;
   port: number;
-}) {
+}
+
+export async function ensureServerRunning(options: ServerStartOptions) {
+  await new Promise((resolve) => setTimeout(resolve, Math.random() * 2000));
+  const alreadyRunning = await isServerAlreadyRunning(options);
+  if (alreadyRunning) {
+    console.log(
+      `Preview.js daemon server is already running on port ${options.port}.`
+    );
+    return;
+  }
+  await startServer(options);
+}
+
+async function isServerAlreadyRunning({
+  loaderInstallDir,
+  packageName,
+  versionCode,
+  port,
+}: ServerStartOptions): Promise<boolean> {
+  const client = createClient(`http://localhost:${port}`);
+  let alreadyRunningInfo: InfoResponse | null = null;
+  try {
+    alreadyRunningInfo = await client.info();
+  } catch (e) {
+    // This is fine, it just means the server isn't running.
+  }
+  if (alreadyRunningInfo) {
+    if (
+      alreadyRunningInfo.loaderInstallDir === loaderInstallDir &&
+      alreadyRunningInfo.packageName === packageName &&
+      alreadyRunningInfo.versionCode === versionCode
+    ) {
+      // The server is already running with the same config.
+      return true;
+    }
+    console.warn(
+      "Server is already running with different config. Killing it."
+    );
+    await client.kill();
+    await waitForSuccessfulPromise(() => isPortAvailable(port));
+  }
+  return false;
+}
+
+function isPortAvailable(port: number) {
+  return new Promise<void>((resolve, reject) => {
+    const server = net.createServer();
+    server.unref();
+    server.on("error", reject);
+
+    server.listen(
+      {
+        port,
+      },
+      () => {
+        server.close(() => {
+          resolve();
+        });
+      }
+    );
+  });
+}
+
+async function startServer({
+  loaderInstallDir,
+  packageName,
+  versionCode,
+  port,
+}: ServerStartOptions) {
   const previewjs = await load({
     installDir: loaderInstallDir,
     packageName,
@@ -41,9 +111,6 @@ export async function runServer({
   const app = http.createServer((req, res) => {
     if (!req.url) {
       throw new Error(`Received request without URL`);
-    }
-    if (req.url === "/health") {
-      return sendJsonResponse(res, { ready: true });
     }
     if (req.method !== "POST") {
       return sendPlainTextError(res, 400, `Unsupported method: ${req.method}`);
@@ -102,6 +169,19 @@ export async function runServer({
   }
 
   class NotFoundError extends Error {}
+
+  endpoint<InfoRequest, InfoResponse>("/previewjs/info", async () => ({
+    loaderInstallDir,
+    packageName,
+    versionCode,
+  }));
+
+  endpoint<InfoRequest, KillResponse>("/previewjs/kill", async () => {
+    setTimeout(() => {
+      process.exit(0);
+    }, 0);
+    return {};
+  });
 
   endpoint<GetWorkspaceRequest, GetWorkspaceResponse>(
     "/workspaces/get",
@@ -220,28 +300,36 @@ export async function runServer({
     }
   );
 
-  const server = await new Promise<http.Server>((resolve, reject) => {
+  const server = await new Promise<http.Server | null>((resolve, reject) => {
     const server = app
       .listen(port, () => {
         resolve(server);
       })
-      .on("error", (e) => {
+      .on("error", async (e: any) => {
+        if (e.code === "EADDRINUSE") {
+          if (
+            await isServerAlreadyRunning({
+              loaderInstallDir,
+              packageName,
+              versionCode,
+              port,
+            })
+          ) {
+            resolve(null);
+            return;
+          }
+        }
         reject(e);
       });
   });
 
-  console.error(
-    `Preview.js controller API is running on http://localhost:${port}`
-  );
-
-  return () =>
-    new Promise<void>((resolve, reject) =>
-      server.close((err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      })
+  if (server) {
+    console.log(
+      `Preview.js daemon server is now running on http://localhost:${port}`
     );
+  } else {
+    console.log(
+      `Another Preview.js daemon server spun up concurrently on ${port}. All good.`
+    );
+  }
 }

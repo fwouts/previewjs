@@ -6,6 +6,10 @@ import type {
   DisposeWorkspaceResponse,
   GetWorkspaceRequest,
   GetWorkspaceResponse,
+  InfoRequest,
+  InfoResponse,
+  KillRequest,
+  KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
   StopPreviewRequest,
@@ -14,6 +18,7 @@ import type {
   UpdatePendingFileResponse,
 } from "./api";
 import { locking } from "./locking";
+import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
 export * from "./api";
 
 export function createClient(baseUrl: string): Client {
@@ -63,20 +68,12 @@ export function createClient(baseUrl: string): Client {
     return (request: Req): Promise<Res> => makeRequest(path, request);
   }
 
-  return {
+  const client: Client = {
     waitForReady: async () => {
-      // TODO: Set timeout.
-      loop: while (true) {
-        try {
-          await makeRequest("/health", {});
-          break loop;
-        } catch (e) {
-          // Ignore.
-          console.warn(e);
-          await new Promise<void>((resolve) => setTimeout(resolve, 100));
-        }
-      }
+      await waitForSuccessfulPromise(() => client.info());
     },
+    info: () => makeEndpoint<InfoRequest, InfoResponse>("/previewjs/info")({}),
+    kill: () => makeEndpoint<KillRequest, KillResponse>("/previewjs/kill")({}),
     getWorkspace: makeEndpoint("/workspaces/get"),
     disposeWorkspace: makeEndpoint("/workspaces/dispose"),
     analyzeFile: makeEndpoint("/analyze/file"),
@@ -84,10 +81,13 @@ export function createClient(baseUrl: string): Client {
     stopPreview: makeEndpoint("/previews/stop"),
     updatePendingFile: makeEndpoint("/pending-files/update"),
   };
+  return client;
 }
 
 export interface Client {
   waitForReady(): Promise<void>;
+  info(): Promise<InfoResponse>;
+  kill(): Promise<KillResponse>;
   getWorkspace(request: GetWorkspaceRequest): Promise<GetWorkspaceResponse>;
   disposeWorkspace(
     request: DisposeWorkspaceRequest

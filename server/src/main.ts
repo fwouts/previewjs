@@ -1,4 +1,4 @@
-import { runServer } from ".";
+import { ensureServerRunning } from ".";
 
 const port = parseInt(process.env.PORT || "9100");
 
@@ -14,7 +14,7 @@ if (!versionCode) {
   throw new Error(`Missing environment variable: PREVIEWJS_VERSION_CODE`);
 }
 
-runServer({
+ensureServerRunning({
   loaderInstallDir,
   packageName,
   versionCode,
