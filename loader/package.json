@@ -16,9 +16,14 @@
   "homepage": "https://previewjs.com",
   "type": "commonjs",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/index.js"
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./runner": {
+      "default": "./dist/runner.js"
     }
   },
   "scripts": {
@@ -29,10 +34,12 @@
     "@previewjs/core": "^5.2.1",
     "@previewjs/vfs": "^1.2.3",
     "execa": "^5.1.1",
-    "fs-extra": "^10.1.0"
+    "fs-extra": "^10.1.0",
+    "proper-lockfile": "^4.1.2"
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
+    "@types/proper-lockfile": "^4.1.2",
     "rimraf": "3.0.2",
     "typescript": "4.7.4"
   }

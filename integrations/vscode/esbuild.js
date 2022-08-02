@@ -2,10 +2,10 @@ const path = require("path");
 const { build } = require("esbuild");
 
 build({
-  entryPoints: ["./src/index.ts"],
+  entryPoints: ["./src/index.ts", "./src/server.ts"],
   minify: false,
   bundle: true,
-  outfile: "./dist/index.js",
+  outdir: "./dist",
   external: ["vscode"],
   platform: "node",
   define: {
