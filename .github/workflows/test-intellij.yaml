@@ -45,8 +45,7 @@ jobs:
       - uses: pnpm/action-setup@v2.2.2
         with:
           run_install: true
-      - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
-      - run: cd integrations/intellij/controller && pnpm build
+      - run: pnpm turbo run build --scope=@previewjs/intellij-controller --include-dependencies
       - run: cd integrations/intellij && ./gradlew ktlintCheck
       - run: cd integrations/intellij && ./gradlew runPluginVerifier
       - run: cd integrations/intellij && ./gradlew buildPlugin
