@@ -1,3 +1,4 @@
+import { exclusivePromiseRunner } from "exclusive-promises";
 import http from "http";
 import type {
   AnalyzeFileRequest,
@@ -19,11 +20,12 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
-import { locking } from "./locking";
 import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
 export * from "./api";
 
 export function createClient(baseUrl: string): Client {
+  const locking = exclusivePromiseRunner();
+
   async function makeRequest<Req, Res>(
     path: `/${string}`,
     request: Req

@@ -41,6 +41,9 @@
     "build": "unbuild",
     "dev": "ts-node-dev --respawn src/main.ts"
   },
+  "dependencies": {
+    "exclusive-promises": "^1.0.0"
+  },
   "devDependencies": {
     "@previewjs/core": "workspace:*",
     "@previewjs/loader": "workspace:*",
