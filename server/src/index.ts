@@ -21,7 +21,7 @@ import type {
   UpdateClientStatusRequest,
   UpdateClientStatusResponse,
   UpdatePendingFileRequest,
-  UpdatePendingFileResponse
+  UpdatePendingFileResponse,
 } from "./api";
 import { createClient } from "./client";
 import { waitForSuccessfulPromise } from "./wait-for-successful-promise";

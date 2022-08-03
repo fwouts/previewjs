@@ -18,7 +18,7 @@ import type {
   UpdateClientStatusRequest,
   UpdateClientStatusResponse,
   UpdatePendingFileRequest,
-  UpdatePendingFileResponse
+  UpdatePendingFileResponse,
 } from "./api";
 import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
 export * from "./api";
