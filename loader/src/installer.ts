@@ -44,7 +44,7 @@ export async function install(options: {
     throw e;
   }
   // Prevent several processes from trying to install concurrently.
-  const raceConditionLock = __dirname;
+  const raceConditionLock = options.installDir;
   const lockOptions: lockfile.CheckOptions = {
     lockfilePath: path.join(options.installDir, "dir.lock"),
   };
