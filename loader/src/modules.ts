@@ -1,5 +1,4 @@
 import type * as core from "@previewjs/core";
-import path from "path";
 
 export function loadModules({
   installDir,
@@ -24,7 +23,7 @@ export function loadModules({
   function requireModule(name: string) {
     try {
       return require(require.resolve(name, {
-        paths: [installDir, path.join(installDir, "node_modules", packageName)],
+        paths: [installDir],
       }));
     } catch (e) {
       if (logError) {
