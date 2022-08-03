@@ -2,8 +2,11 @@ import { ensureServerRunning } from "@previewjs/server";
 import { readFileSync } from "fs";
 import { getLoaderInstallDir } from "./loader-install-dir";
 
-// TODO: Dynamic? Same as IntelliJ? Figure it out.
-const port = parseInt(process.env.PORT || "9200");
+const port = parseInt(process.env.PORT || "0");
+if (!port) {
+  throw new Error(`Missing environment variable: PORT`);
+}
+
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
 );

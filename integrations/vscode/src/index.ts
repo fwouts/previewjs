@@ -34,8 +34,7 @@ let dispose = async () => {
   // Do nothing.
 };
 
-// TODO: Double check port choice.
-export const port = 9200;
+export const port = 9312;
 
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
