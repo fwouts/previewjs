@@ -1,5 +1,5 @@
 import type { Client } from "@previewjs/server/client";
-import { locking } from "./locking";
+import { exclusivePromiseRunner } from "exclusive-promises";
 
 let currentPreview:
   | {
@@ -8,6 +8,7 @@ let currentPreview:
     }
   | undefined = undefined;
 
+const locking = exclusivePromiseRunner();
 export async function ensurePreviewServerStarted(
   client: Client,
   workspaceId: string

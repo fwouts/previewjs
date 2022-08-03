@@ -21,7 +21,7 @@ import type {
   UpdateClientStatusRequest,
   UpdateClientStatusResponse,
   UpdatePendingFileRequest,
-  UpdatePendingFileResponse,
+  UpdatePendingFileResponse
 } from "./api";
 import { createClient } from "./client";
 import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
@@ -116,6 +116,11 @@ async function startServer({
   const app = http.createServer((req, res) => {
     if (!req.url) {
       throw new Error(`Received request without URL`);
+    }
+    if (req.url === "/health") {
+      return sendJsonResponse(res, {
+        ready: true,
+      });
     }
     if (req.method !== "POST") {
       return sendPlainTextError(res, 400, `Unsupported method: ${req.method}`);

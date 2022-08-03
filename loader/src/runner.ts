@@ -1,8 +1,10 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
+import { exclusivePromiseRunner } from "exclusive-promises";
 import type { LogLevel } from ".";
-import { locking } from "./locking";
 import { loadModules } from "./modules";
+
+const locking = exclusivePromiseRunner();
 
 export async function load(options: {
   installDir: string;
