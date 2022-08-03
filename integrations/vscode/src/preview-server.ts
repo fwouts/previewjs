@@ -1,5 +1,5 @@
 import type { Preview, Workspace } from "@previewjs/core";
-import { locking } from "./locking";
+import { exclusivePromiseRunner } from "exclusive-promises";
 
 let currentPreview:
   | {
@@ -8,6 +8,7 @@ let currentPreview:
     }
   | undefined = undefined;
 
+const locking = exclusivePromiseRunner();
 export async function ensurePreviewServerStarted(workspace: Workspace) {
   return locking(async () => {
     if (currentPreview?.workspace !== workspace) {
