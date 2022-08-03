@@ -18,7 +18,7 @@
 
 Preview.js lets you preview React, Solid and Vue components instantly in your IDE.
 
-![Demo](assets/previewjs-overview.gif)
+[![Demo](assets/previewjs-overview.gif)](https://previewjs.com)
 
 ## Get started
 
