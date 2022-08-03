@@ -1,6 +1,8 @@
 import execa from "execa";
 import { mkdir, writeFile } from "fs-extra";
 import path from "path";
+import { checkNodeVersion } from "./checkNodeVersion";
+import { checkNpmVersion } from "./checkNpmVersion";
 import { loadModules } from "./modules";
 import packageLockJson from "./release/package-lock.json";
 import packageJson from "./release/package.json";
@@ -44,26 +46,8 @@ export async function install(options: {
     "utf8"
   );
   try {
-    const npmVersionProcess = await execa("npm", ["-v"], {
-      cwd: options.installDir,
-      reject: false,
-    });
-    if (npmVersionProcess.failed) {
-      throw new Error(
-        `Preview.js was unable to run npm.\n\nYou can manually run "npm install" in ${options.installDir}\n\nYou will need to restart your IDE after doing so.`
-      );
-    }
-    if (npmVersionProcess.exitCode !== 0) {
-      throw new Error(
-        `Preview.js was unable to run npm (exit code ${npmVersionProcess.exitCode}):\n\n${npmVersionProcess.stderr}\n\nYou can manually run "npm install" in ${options.installDir}\n\nYou will need to restart your IDE after doing so.`
-      );
-    }
-    const version = npmVersionProcess.stdout;
-    if (parseInt(version) < 6) {
-      throw new Error(
-        `Preview.js needs npm 6+ to run, but current version is: ${version}\n\nPlease upgrade then restart your IDE.`
-      );
-    }
+    await checkNodeVersion(options.installDir);
+    await checkNpmVersion(options.installDir);
   } catch (e) {
     options.onOutput(`${e}`);
     throw e;
