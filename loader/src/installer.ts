@@ -35,6 +35,7 @@ export async function install(options: {
   packageName: string;
   onOutput: (chunk: string) => void;
 }) {
+  await mkdir(options.installDir, { recursive: true });
   try {
     await checkNodeVersion(options.installDir);
     await checkNpmVersion(options.installDir);
@@ -42,7 +43,6 @@ export async function install(options: {
     options.onOutput(`${e}`);
     throw e;
   }
-  await mkdir(options.installDir, { recursive: true });
   // Prevent several processes from trying to install concurrently.
   const raceConditionLock = __dirname;
   const lockOptions: lockfile.CheckOptions = {
