@@ -16,9 +16,20 @@
   "homepage": "https://previewjs.com",
   "type": "commonjs",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "default": "./dist/index.js"
+    },
+    "./runner": {
+      "default": "./dist/runner.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "runner": [
+        "./dist/runner.d.ts"
+      ]
     }
   },
   "scripts": {
