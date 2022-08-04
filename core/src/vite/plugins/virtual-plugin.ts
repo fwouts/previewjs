@@ -113,14 +113,7 @@ export function virtualPlugin(options: {
       const virtualModuleId =
         VIRTUAL_PREFIX + absoluteFilePath.replace(/\\/g, "/");
       const node = moduleGraph.getModuleById(virtualModuleId);
-      if (!node) {
-        context.server.ws.send({
-          type: "full-reload",
-        });
-        return;
-      } else {
-        return [node];
-      }
+      return node && [node];
     },
   };
 
