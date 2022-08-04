@@ -54,6 +54,50 @@ export const errorHandlingTests = testSuite(
         }
       );
 
+      // TODO: Enable once https://github.com/vitejs/vite/issues/9534 is fixed.
+      test.skip(
+        `${version}/fails correctly when encountering broken module imports before update`,
+        `react${version}`,
+        async ({ appDir, controller }) => {
+          await appDir.update(
+            "src/App.tsx",
+            {
+              kind: "replace",
+              text: `import logo from "some-module";
+
+        export function App() {
+          return <div>{logo}</div>;
+        }`,
+            },
+            {
+              inMemoryOnly: true,
+            }
+          );
+          await controller.show("src/App.tsx:App");
+          const previewIframe = await controller.previewIframe();
+          await expectErrors(controller, [
+            `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
+            "Failed to fetch dynamically imported module",
+          ]);
+          await appDir.update(
+            "src/App.tsx",
+            {
+              kind: "replace",
+              text: `import logo from "./logo.svg";
+
+          export function App() {
+            return <div id="recovered">{logo}</div>;
+          }`,
+            },
+            {
+              inMemoryOnly: true,
+            }
+          );
+          await expectErrors(controller, []);
+          await previewIframe.waitForSelector("#recovered");
+        }
+      );
+
       test(
         `${version}/fails correctly when encountering broken module imports after update`,
         `react${version}`,
@@ -78,6 +122,50 @@ export const errorHandlingTests = testSuite(
           await expectErrors(controller, [
             `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
             "Failed to reload /src/App.tsx.",
+          ]);
+          await appDir.update(
+            "src/App.tsx",
+            {
+              kind: "replace",
+              text: `import logo from "./logo.svg";
+
+          export function App() {
+            return <div id="recovered">{logo}</div>;
+          }`,
+            },
+            {
+              inMemoryOnly: true,
+            }
+          );
+          await expectErrors(controller, []);
+          await previewIframe.waitForSelector("#recovered");
+        }
+      );
+
+      // TODO: Enable once https://github.com/vitejs/vite/issues/9534 is fixed.
+      test.skip(
+        `${version}/fails correctly when encountering broken local imports before update`,
+        `react${version}`,
+        async ({ appDir, controller }) => {
+          await appDir.update(
+            "src/App.tsx",
+            {
+              kind: "replace",
+              text: `import logo from "./missing.svg";
+
+        export function App() {
+          return <div>{logo}</div>;
+        }`,
+            },
+            {
+              inMemoryOnly: true,
+            }
+          );
+          await controller.show("src/App.tsx:App");
+          const previewIframe = await controller.previewIframe();
+          await expectErrors(controller, [
+            `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
+            "Failed to fetch dynamically imported module",
           ]);
           await appDir.update(
             "src/App.tsx",
