@@ -132,7 +132,7 @@ export function virtualPlugin(options: {
     ]) {
       const absoluteFilePath = `${baseFilePath}${suffix}`;
       const entry = await reader.read(absoluteFilePath);
-      if (entry !== null) {
+      if (entry?.kind === "file") {
         return [absoluteFilePath, entry] as const;
       }
     }
