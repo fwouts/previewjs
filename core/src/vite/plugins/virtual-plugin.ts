@@ -72,7 +72,7 @@ export function virtualPlugin(options: {
       }
       const [absoluteFilePath, entry] = resolved;
       if (entry.kind !== "file") {
-        console.error(`Unable to read from ${absoluteFilePath}`);
+        console.error(`Unable to read file from ${absoluteFilePath}`);
         return null;
       }
       const source = await entry.read();
@@ -113,7 +113,14 @@ export function virtualPlugin(options: {
       const virtualModuleId =
         VIRTUAL_PREFIX + absoluteFilePath.replace(/\\/g, "/");
       const node = moduleGraph.getModuleById(virtualModuleId);
-      return node && [node];
+      if (!node) {
+        context.server.ws.send({
+          type: "full-reload",
+        });
+        return;
+      } else {
+        return [node];
+      }
     },
   };
 
