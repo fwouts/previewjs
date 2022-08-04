@@ -1,9 +1,11 @@
+import type { Client } from "@previewjs/server/client";
 import vscode, { Uri, WebviewPanel } from "vscode";
 import { ensurePreviewServerStopped } from "./preview-server";
 
 let previewPanel: WebviewPanel | null = null;
 
 export function updatePreviewPanel(
+  client: Client,
   previewBaseUrl: string,
   componentId: string
 ) {
@@ -24,7 +26,7 @@ export function updatePreviewPanel(
     });
     previewPanel.onDidDispose(() => {
       previewPanel = null;
-      ensurePreviewServerStopped().catch(console.error);
+      ensurePreviewServerStopped(client).catch(console.error);
     });
     previewPanel.webview.html = `<!DOCTYPE html>
   <html>

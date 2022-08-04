@@ -95,12 +95,13 @@
     "dev:cleanup": "rimraf previewjs-1.10.0.vsix"
   },
   "devDependencies": {
-    "@previewjs/core": "workspace:*",
     "@previewjs/loader": "workspace:*",
+    "@previewjs/server": "workspace:*",
     "@types/vscode": "1.43.0",
     "cross-env": "7.0.3",
     "esbuild": "0.14.49",
     "exclusive-promises": "^1.0.3",
+    "execa": "5.1.1",
     "ovsx": "0.5.1",
     "rimraf": "3.0.2",
     "typescript": "4.7.4",
