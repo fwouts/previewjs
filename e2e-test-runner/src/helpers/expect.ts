@@ -2,6 +2,9 @@ import { isEqual } from "lodash";
 import { inspect } from "util";
 
 export function expect(value: unknown) {
+  if (typeof value === "string") {
+    value = value.replace(/\r/g, "");
+  }
   return {
     toEqual(expected: unknown) {
       if (!isEqual(value, expected)) {
