@@ -17,6 +17,7 @@ import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
   readonly middleware: express.RequestHandler;
+  private viteStartupPromise: Promise<void> | undefined;
   private viteServer?: vite.ViteDevServer;
   private lastPingTimestamp = 0;
 
@@ -34,6 +35,7 @@ export class ViteManager {
   ) {
     const router = express.Router();
     router.get("/preview/", async (req, res) => {
+      await this.viteStartupPromise;
       const template = await fs.readFile(
         this.options.shadowHtmlFilePath,
         "utf-8"
@@ -159,30 +161,33 @@ export class ViteManager {
     // default, HmrContext has a read() method that reads directly from
     // the file system. We want it to read from our reader, which could
     // be using an in-memory version instead.
-    const plugins = vitePlugins.flat().map((plugin) => {
-      if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
-        return plugin;
-      }
-      const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
-      return {
-        ...plugin,
-        handleHotUpdate: async (ctx: vite.HmrContext) => {
-          return handleHotUpdate({
-            ...ctx,
-            read: async () => {
-              const entry = await this.options.reader.read(ctx.file);
-              if (entry?.kind !== "file") {
-                // Fall back to default behaviour.
-                return ctx.read();
-              }
-              return entry.read();
-            },
-          });
-        },
-      };
-    });
+    const plugins = await Promise.all(
+      vitePlugins.flat().map(async (pluginOrPromise) => {
+        const plugin = await pluginOrPromise;
+        if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
+          return plugin;
+        }
+        const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
+        return {
+          ...plugin,
+          handleHotUpdate: async (ctx: vite.HmrContext) => {
+            return handleHotUpdate({
+              ...ctx,
+              read: async () => {
+                const entry = await this.options.reader.read(ctx.file);
+                if (entry?.kind !== "file") {
+                  // Fall back to default behaviour.
+                  return ctx.read();
+                }
+                return entry.read();
+              },
+            });
+          },
+        };
+      })
+    );
 
-    this.viteServer = await vite.createServer({
+    const viteServerPromise = vite.createServer({
       ...frameworkPluginViteConfig,
       ...this.options.config.vite,
       configFile: false,
@@ -232,6 +237,13 @@ export class ViteManager {
         },
       },
     });
+    this.viteStartupPromise = new Promise<void>((resolve) => {
+      viteServerPromise.finally(() => {
+        resolve();
+        delete this.viteStartupPromise;
+      });
+    });
+    this.viteServer = await viteServerPromise;
   }
 
   async stop() {
@@ -259,6 +271,7 @@ export class ViteManager {
   }
 
   async renderIndexHtml(originalUrl: string) {
+    await this.viteStartupPromise;
     if (!this.viteServer) {
       throw new Error(`Vite server is not running.`);
     }
