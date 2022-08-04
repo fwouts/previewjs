@@ -1,11 +1,7 @@
 import { ensureServerRunning } from "@previewjs/server";
 import { readFileSync } from "fs";
 import { getLoaderInstallDir } from "./loader-install-dir";
-
-const port = parseInt(process.env.PORT || "0");
-if (!port) {
-  throw new Error(`Missing environment variable: PORT`);
-}
+import { SERVER_PORT } from "./port";
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -20,7 +16,7 @@ ensureServerRunning({
   loaderInstallDir: getLoaderInstallDir(),
   packageName,
   versionCode: `vscode-${version}`,
-  port,
+  port: SERVER_PORT,
 }).catch((e) => {
   console.error(e);
   process.exit(1);

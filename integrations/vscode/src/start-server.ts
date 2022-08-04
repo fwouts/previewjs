@@ -4,8 +4,8 @@ import { openSync } from "fs";
 import path from "path";
 import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
-import { port } from "./index";
 import { installDependenciesIfNeeded } from "./install-dependencies";
+import { SERVER_PORT } from "./port";
 
 export async function startPreviewJsServer(outputChannel: OutputChannel) {
   await installDependenciesIfNeeded(outputChannel);
@@ -18,11 +18,10 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
     stdio: ["ignore", out, err, "ipc"],
     env: {
       ...process.env,
-      PORT: port.toString(10),
     },
   });
 
-  const client = createClient(`http://localhost:${port}`);
+  const client = createClient(`http://localhost:${SERVER_PORT}`);
   await new Promise<void>((resolve, reject) => {
     const readyListener = (chunk: string) => {
       if (chunk === JSON.stringify({ type: "ready" })) {
