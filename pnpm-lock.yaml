@@ -172,7 +172,7 @@ importers:
       '@previewjs/api': workspace:*
       '@previewjs/loader': workspace:*
       '@types/inquirer': 8.2.2
-      '@types/inquirer-autocomplete-prompt': 1.3.4
+      '@types/inquirer-autocomplete-prompt': 1.3.5
       '@types/node': 17.0.8
       chalk: ^4.1.2
       commander: ^9.4.0
@@ -188,7 +188,7 @@ importers:
       '@previewjs/api': link:../api
       '@previewjs/loader': link:../loader
       '@types/inquirer': 8.2.2
-      '@types/inquirer-autocomplete-prompt': 1.3.4
+      '@types/inquirer-autocomplete-prompt': 1.3.5
       '@types/node': 17.0.8
       chalk: 4.1.2
       commander: 9.4.0
@@ -2226,7 +2226,7 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
-      '@babel/types': 7.18.4
+      '@babel/types': 7.18.10
 
   /@babel/parser/7.18.11:
     resolution: {integrity: sha512-9JKn5vN+hDt0Hdqn1PiJ2guflwP+B6Ga8qbDuoF0PzzVhrzsKIJo8yGqVk6CmMHiMei9w1C1Bp9IMJSIK+HPIQ==}
@@ -8566,8 +8566,8 @@ packages:
       '@types/node': 17.0.31
     dev: true
 
-  /@types/inquirer-autocomplete-prompt/1.3.4:
-    resolution: {integrity: sha512-HavFfMuxGHRzUe+/ad9o5qk857LpbYYqSG9lY8gWONM9PH2JjNYci5G3DSmF5FYURIpKysrYqEuLZ8iNkRfc3g==}
+  /@types/inquirer-autocomplete-prompt/1.3.5:
+    resolution: {integrity: sha512-xsydZ63gZt/2vqlqdSJQgxhbZd2NpRO6TawrDu1/IR6VbL3HfS709y6Yu7LwrkCcy4Lr05PeBInPizErcXSokw==}
     dependencies:
       '@types/inquirer': 8.2.2
     dev: true
@@ -12042,7 +12042,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.11
@@ -23349,7 +23349,7 @@ packages:
     resolution: {integrity: sha512-2Rb3vm+EXble/sMXNSu6eoBx8e79gKqhNq9F5ZWW6ERNCTE/Q0wQNne5541tE5vKjfM8hpNCYL+LGc1YTfI0dg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.7.4
+      ts-pnp: 1.2.0
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -24632,6 +24632,14 @@ packages:
   /progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
+
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
 
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
@@ -28695,6 +28703,16 @@ packages:
       typescript: 4.7.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    dev: true
+
+  /ts-pnp/1.2.0:
+    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
+    engines: {node: '>=6'}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dev: true
 
   /ts-pnp/1.2.0_typescript@4.7.4:
