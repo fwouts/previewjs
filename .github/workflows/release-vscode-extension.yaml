@@ -33,7 +33,7 @@ jobs:
       - uses: pnpm/action-setup@v2.2.2
         with:
           run_install: true
-      - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies
+      - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --include-dependencies
       - name: Extract version from package.json
         uses: sergeysova/jq-action@v2.2.1
         id: version
