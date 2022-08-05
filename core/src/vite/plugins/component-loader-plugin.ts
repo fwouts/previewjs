@@ -62,7 +62,10 @@ export async function refresh() {
   `
       : `
   ${detectedGlobalCssFilePaths
-    .map((filePath) => `import("${filePath}").catch(console.warn);`)
+    .map(
+      (filePath) =>
+        `import("/${filePath.replace(/\\/g, "/")}").catch(console.warn);`
+    )
     .join("\n")}
   const wrapperModule = null;
   `
