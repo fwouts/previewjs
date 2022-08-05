@@ -72,7 +72,7 @@ export function virtualPlugin(options: {
       }
       const [absoluteFilePath, entry] = resolved;
       if (entry.kind !== "file") {
-        console.error(`Unable to read from ${absoluteFilePath}`);
+        console.error(`Unable to read file from ${absoluteFilePath}`);
         return null;
       }
       const source = await entry.read();
@@ -132,7 +132,7 @@ export function virtualPlugin(options: {
     ]) {
       const absoluteFilePath = `${baseFilePath}${suffix}`;
       const entry = await reader.read(absoluteFilePath);
-      if (entry !== null) {
+      if (entry?.kind === "file") {
         return [absoluteFilePath, entry] as const;
       }
     }
