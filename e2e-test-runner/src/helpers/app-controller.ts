@@ -224,7 +224,7 @@ export class AppController {
           }
           for (let i = 0; i < text.length; i++) {
             await this.page.type(".monaco-editor", text.charAt(i));
-            if ((await getText()).length > i + 1) {
+            if ((await getText()).replace(/\r/g, "").length > i + 1) {
               // Erase any automatically inserted brackets, etc.
               await this.page.keyboard.press("ArrowRight");
               await this.page.keyboard.press("Backspace");
