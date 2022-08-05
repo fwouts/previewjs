@@ -251,9 +251,17 @@ class TestRunner {
             await fs.writeFile(absoluteFilePath, text, "utf8");
           }
         },
-        rename: (from, to) =>
-          fs.rename(path.join(rootDirPath, from), path.join(rootDirPath, to)),
-        remove: (f) => fs.unlink(path.join(rootDirPath, f)),
+        rename: async (from, to) => {
+          await controller.onBeforeFileUpdated();
+          await fs.rename(
+            path.join(rootDirPath, from),
+            path.join(rootDirPath, to)
+          );
+        },
+        remove: async (f) => {
+          await controller.onBeforeFileUpdated();
+          await fs.unlink(path.join(rootDirPath, f));
+        },
       };
       return appDir;
     }
