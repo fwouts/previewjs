@@ -543,7 +543,7 @@ importers:
     specifiers:
       '@previewjs/loader': workspace:*
       '@previewjs/server': workspace:*
-      '@types/vscode': 1.43.0
+      '@types/vscode': 1.69.1
       cross-env: 7.0.3
       esbuild: 0.14.53
       exclusive-promises: ^1.0.3
@@ -555,7 +555,7 @@ importers:
     devDependencies:
       '@previewjs/loader': link:../../loader
       '@previewjs/server': link:../../server
-      '@types/vscode': 1.43.0
+      '@types/vscode': 1.69.1
       cross-env: 7.0.3
       esbuild: 0.14.53
       exclusive-promises: 1.0.3
@@ -9088,8 +9088,8 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: true
 
-  /@types/vscode/1.43.0:
-    resolution: {integrity: sha512-kIaR9qzd80rJOxePKpCB/mdy00mz8Apt2QA5Y6rdrKFn13QNFNeP3Hzmsf37Bwh/3cS7QjtAeGSK7wSqAU0sYQ==}
+  /@types/vscode/1.69.1:
+    resolution: {integrity: sha512-YZ77g3u9S9Xw3dwAgRgNAwnKNS3nPlhSu3XKOIYQzCcItUrZovfJUlf/29wjON2VZvHGuYQnhKuJUP15ccpVIQ==}
     dev: true
 
   /@types/webpack-bundle-analyzer/3.9.3:
@@ -28782,7 +28782,6 @@ packages:
       typescript: 4.7.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: false
 
   /ts-node/10.9.1_mlvggiyta6tj7eanfjcrnlk6sa:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
