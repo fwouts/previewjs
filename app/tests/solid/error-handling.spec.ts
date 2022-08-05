@@ -53,7 +53,8 @@ export const errorHandlingTests = testSuite(
       }
     );
 
-    test(
+    // TODO: Enable once https://github.com/vitejs/vite/issues/9534 is fixed.
+    test.skip(
       "fails correctly when encountering broken module imports before update",
       "solid",
       async ({ appDir, controller }) => {
@@ -140,7 +141,8 @@ export const errorHandlingTests = testSuite(
       }
     );
 
-    test(
+    // TODO: Enable once https://github.com/vitejs/vite/issues/9534 is fixed.
+    test.skip(
       "fails correctly when encountering broken local imports before update",
       "solid",
       async ({ appDir, controller }) => {
