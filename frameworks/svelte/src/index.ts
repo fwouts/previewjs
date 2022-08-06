@@ -13,10 +13,6 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
   },
   async create() {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
-    // https://github.com/microsoft/TypeScript/issues/43329
-    const { sveltekit } = await Function(
-      'return import("@sveltejs/kit/vite")'
-    )();
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-svelte",
@@ -45,9 +41,17 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => ({
-        plugins: [sveltekit()],
-      }),
+      viteConfig: async () => {
+        // https://github.com/microsoft/TypeScript/issues/43329
+        const { sveltekit } = await Function(
+          'return import("@sveltejs/kit/vite")'
+        )();
+        // Note: it's important that the import above occurs as late as possible because it calls
+        // process.cwd() on initialisation, and that must be the root dir.
+        return {
+          plugins: [sveltekit()],
+        };
+      },
     };
   },
 };

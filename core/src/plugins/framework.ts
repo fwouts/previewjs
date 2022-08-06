@@ -22,7 +22,9 @@ export interface FrameworkPlugin {
   readonly transformReader?: (reader: Reader, rootDirPath: string) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
   readonly specialTypes?: Record<string, ValueType>;
-  readonly viteConfig: (config: PreviewConfig) => vite.UserConfig;
+  readonly viteConfig: (
+    config: PreviewConfig
+  ) => vite.UserConfig | Promise<vite.UserConfig>;
   readonly detectComponents: (
     typeAnalyzer: TypeAnalyzer,
     absoluteFilePaths: string[]
