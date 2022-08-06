@@ -4,7 +4,7 @@ import path from "path";
 import { analyzeSvelteComponent } from "./analyze-component";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
 
-export const svelteFrameworkPlugin: FrameworkPluginFactory = {
+const svelteFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version = await dependencies["svelte"]?.readInstalledVersion();
     if (!version) {
@@ -48,3 +48,5 @@ export const svelteFrameworkPlugin: FrameworkPluginFactory = {
     };
   },
 };
+
+export default svelteFrameworkPlugin;
