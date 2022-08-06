@@ -137,7 +137,7 @@ importers:
       tailwindcss: 3.1.7
       typescript: 4.7.4
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.2
       '@fortawesome/free-brands-svg-icons': 6.1.2
@@ -165,7 +165,7 @@ importers:
       tailwindcss: 3.1.7
       typescript: 4.7.4
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   cli:
     specifiers:
@@ -274,14 +274,14 @@ importers:
       '@previewjs/type-analyzer': ^3.0.3
       typescript: ^4.7.4
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
       typescript: 4.7.4
     devDependencies:
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   dev-workspace:
     specifiers:
@@ -348,7 +348,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.7.4
       vite: ^3
-      vitest: 0.18.1
+      vitest: 0.21.0
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -361,7 +361,7 @@ importers:
       '@types/react': 18.0.15
       react: 18.2.0
       rimraf: 3.0.2
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   frameworks/react/preview:
     specifiers:
@@ -391,7 +391,7 @@ importers:
       typescript: ^4.7.4
       vite: 3.0.4
       vite-plugin-solid: ^2.3.0
-      vitest: 0.18.1
+      vitest: 0.21.0
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -403,7 +403,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.4.8
       vite: 3.0.4
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   frameworks/solid/preview:
     specifiers:
@@ -427,7 +427,7 @@ importers:
       typescript: ^4.7.4
       vite: 3.0.4
       vite-plugin-vue2: ^2.0.2
-      vitest: 0.18.1
+      vitest: 0.21.0
       vue: ^2.7.8
       vue-template-compiler: ^2.7.8
     dependencies:
@@ -445,7 +445,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.0.4
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   frameworks/vue2/preview:
     specifiers:
@@ -473,7 +473,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.7.4
       vite: 3.0.4
-      vitest: 0.18.1
+      vitest: 0.21.0
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -489,7 +489,7 @@ importers:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
       vite: 3.0.4
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   frameworks/vue3/preview:
     specifiers:
@@ -597,7 +597,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.7.4
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
       assert-never: 1.2.1
@@ -606,7 +606,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.0
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   server:
     specifiers:
@@ -1224,7 +1224,7 @@ importers:
     dependencies:
       vue: 3.2.37
     devDependencies:
-      nuxt3: 3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i
+      nuxt3: 3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i
 
   smoke-test-apps/react-native-web-app:
     specifiers:
@@ -1605,7 +1605,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.7.4
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1616,7 +1616,7 @@ importers:
       '@types/prettier': 2.7.0
       lodash: 4.17.21
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
 
   vfs:
     specifiers:
@@ -1625,7 +1625,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1633,7 +1633,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.7.6
-      vitest: 0.18.1
+      vitest: 0.21.0
 
 packages:
 
@@ -5773,11 +5773,11 @@ packages:
       ufo: 0.7.11
     dev: false
 
-  /@nuxt/kit-edge/3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i:
-    resolution: {integrity: sha512-R7sxZ56F4Ch/mwke//EZOQP4e2KgmoYxf6bv1uKlwgBuuPiseDSXBUCpd85Hk4DE4wDbPNeTpVs1NXult5srxA==}
+  /@nuxt/kit-edge/3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i:
+    resolution: {integrity: sha512-pKoBM8d62K3IVs9SB/Q0j72m+hRtaOtIKkZYMxoGZbGFiIhamm8XEFtrc1OtTA+0CVoMuQTcKbRcXc/F3o2+Hg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i
       c12: 0.2.9
       consola: 2.15.3
       defu: 6.0.0
@@ -5873,8 +5873,8 @@ packages:
       - webpack
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i:
-    resolution: {integrity: sha512-rZKYpzszqJjw5UqlK8blNZpzKLhCbLJKPzcghu6/ycLwu5xgcI0VJEjDcbDeA4kAIbMLAN+3rwAFqB+1OSMvNQ==}
+  /@nuxt/schema-edge/3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i:
+    resolution: {integrity: sha512-Odpw9uF8tf69iazIxPK0gy3RqB1R1utfwX2DcPCuxQpe5Z68i/V/JUevzDvvMddiG52UHgkJBcFAHGVfZqCNvA==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     dependencies:
       c12: 0.2.9
@@ -6063,13 +6063,13 @@ packages:
       ufo: 0.7.11
     dev: false
 
-  /@nuxt/vite-builder-edge/3.0.0-rc.6-27661627.07fa104_vue@3.2.37:
-    resolution: {integrity: sha512-dkuOFtmnFyaCHCGsV8be4KcHnxQCG7ZpjQCzX/Qyk5ldlIX1RLwZaqzxjG8i/bwuPuYPZ6Kb1Ghe+3Vy/459Gw==}
+  /@nuxt/vite-builder-edge/3.0.0-rc.6-27661960.60656df_vue@3.2.37:
+    resolution: {integrity: sha512-qjVgwgXTdJ+Yklk/zumF80UlvkSXUu0KAA3Ol87+SYPBrVgcRNDo8BnY0zECTRgqaqEWM+B+fDOrYYHH7ljhOg==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     peerDependencies:
       vue: ^3.2.37
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i
       '@rollup/plugin-replace': 4.0.0_rollup@2.77.2
       '@vitejs/plugin-vue': 3.0.1_vite@3.0.4+vue@3.2.37
       '@vitejs/plugin-vue-jsx': 2.0.0_vite@3.0.4+vue@3.2.37
@@ -22474,8 +22474,8 @@ packages:
   /num2fraction/1.2.2:
     resolution: {integrity: sha512-Y1wZESM7VUThYY+4W+X4ySH2maqcA+p7UR+w8VWNWVAd6lwuXXWz/w/Cz43J/dI2I+PS6wD5N+bJUF+gjWvIqg==}
 
-  /nuxi-edge/3.0.0-rc.6-27661627.07fa104:
-    resolution: {integrity: sha512-0lY56hhWlG2BR1Hd1EifBDH04W6ViuwLfi8lYZldPoJi5ePoobVl0brhAHn3gjHIFzZq5mXlhwM/T0U7cXCLyg==}
+  /nuxi-edge/3.0.0-rc.6-27661960.60656df:
+    resolution: {integrity: sha512-hy7O5IiVf1fGZko2pRFgULuwLCiC0Y/pLR2r7PJVW1k9Te+bdy2XhicdUqpu1LVnp99N8G4vfJhfY9FFh1I9aw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     hasBin: true
     optionalDependencies:
@@ -22567,17 +22567,17 @@ packages:
       - whiskers
     dev: false
 
-  /nuxt3/3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i:
-    resolution: {integrity: sha512-omXyPQnM9fzqZiCKmKAsDR9lbQuu4O6TXKqo0vvotTxliAiUFkoF77EDFXTE2DjnKT6FAhMr683c8Nf96e0Ejg==}
+  /nuxt3/3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i:
+    resolution: {integrity: sha512-QSXhWox09tCaKbCg7RHtYn8Y3SNTiKEnrzruwtqcBIk206uITn3STVRWQx2TA4bw8GvNjTqN9CoWwKbB7lMrVw==}
     engines: {node: ^14.16.0 || ^16.11.0 || ^17.0.0 || ^18.0.0}
     hasBin: true
     dependencies:
       '@nuxt/devalue': 2.0.0
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.6-27661627.07fa104_ihdfoeqoutndy4vgf3nblh7e4i
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.6-27661960.60656df_ihdfoeqoutndy4vgf3nblh7e4i
       '@nuxt/telemetry': 2.1.3_ihdfoeqoutndy4vgf3nblh7e4i
       '@nuxt/ui-templates': 0.3.0
-      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-rc.6-27661627.07fa104_vue@3.2.37
+      '@nuxt/vite-builder': /@nuxt/vite-builder-edge/3.0.0-rc.6-27661960.60656df_vue@3.2.37
       '@vue/reactivity': 3.2.37
       '@vue/shared': 3.2.37
       '@vueuse/head': 0.7.9_vue@3.2.37
@@ -22595,7 +22595,7 @@ packages:
       magic-string: 0.26.2
       mlly: 0.5.7
       nitropack: 0.4.12_vite@3.0.4
-      nuxi: /nuxi-edge/3.0.0-rc.6-27661627.07fa104
+      nuxi: /nuxi-edge/3.0.0-rc.6-27661960.60656df
       ohash: 0.1.5
       ohmyfetch: 0.4.18
       pathe: 0.3.3
@@ -28782,7 +28782,6 @@ packages:
       typescript: 4.7.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: false
 
   /ts-node/10.9.1_mlvggiyta6tj7eanfjcrnlk6sa:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
@@ -30189,18 +30188,21 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest/0.18.1:
-    resolution: {integrity: sha512-4F/1K/Vn4AvJwe7i2YblR02PT5vMKcw9KN4unDq2KD0YcSxX0B/6D6Qu9PJaXwVuxXMFTQ5ovd4+CQaW3bwofA==}
+  /vitest/0.21.0:
+    resolution: {integrity: sha512-+BQB2swk4wQdw5loOoL8esIYh/1ifAliuwj2HWHNE2F8SAl/jF7/aoCJBoXGSf/Ws19k3pH4NrWeVtcSwM0j2w==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
+      '@vitest/browser': '*'
       '@vitest/ui': '*'
       c8: '*'
       happy-dom: '*'
       jsdom: '*'
     peerDependenciesMeta:
       '@edge-runtime/vm':
+        optional: true
+      '@vitest/browser':
         optional: true
       '@vitest/ui':
         optional: true
@@ -30213,18 +30215,19 @@ packages:
     dependencies:
       '@types/chai': 4.3.1
       '@types/chai-subset': 1.3.3
-      '@types/node': 17.0.31
+      '@types/node': 18.6.2
       chai: 4.3.6
       debug: 4.3.4
       local-pkg: 0.4.2
       tinypool: 0.2.4
       tinyspy: 1.0.0
-      vite: 2.9.14
+      vite: 3.0.4
     transitivePeerDependencies:
       - less
       - sass
       - stylus
       - supports-color
+      - terser
     dev: true
 
   /vlq/1.0.1:
