@@ -28,7 +28,7 @@ export async function loadModules({
       if (esm) {
         // TODO: Don't hardcode the full path to the module.
         return import(
-          path.join(installDir, "node_modules", name, "dist", "index.js")
+          path.join(installDir, "node_modules", name, "dist", "index.mjs")
         );
       } else {
         return require(require.resolve(name, {

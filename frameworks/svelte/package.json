@@ -16,15 +16,15 @@
   "homepage": "https://previewjs.com",
   "sideEffects": false,
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "exports": {
     ".": {
-      "default": "./dist/index.js"
+      "default": "./dist/index.mjs"
     }
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-svelte --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
+    "build": "unbuild",
     "test": "vitest --no-threads"
   },
   "dependencies": {
@@ -38,6 +38,7 @@
   "devDependencies": {
     "@previewjs/core": "workspace:*",
     "rimraf": "3.0.2",
+    "unbuild": "0.7.6",
     "vite": "3.0.4",
     "vitest": "0.18.1"
   }
