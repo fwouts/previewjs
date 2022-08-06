@@ -11,7 +11,7 @@ export async function load(options: {
   packageName: string;
 }) {
   const { core, vfs, setupEnvironment, frameworkPluginFactories } =
-    await loadModules(options);
+    loadModules(options);
   return init(core, vfs, setupEnvironment, frameworkPluginFactories);
 }
 
