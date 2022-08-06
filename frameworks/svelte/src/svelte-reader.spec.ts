@@ -8,7 +8,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { createSvelteTypeScriptReader } from "./svelte-reader";
+import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 describe("createSvelteTypeScriptReader", () => {
   let memoryReader: Reader & Writer;

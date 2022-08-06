@@ -1,8 +1,9 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
+// @ts-ignore
+import { sveltekit } from "@sveltejs/kit/vite";
 import path from "path";
-import { analyzeSvelteComponent } from "./analyze-component";
-import { createSvelteTypeScriptReader } from "./svelte-reader";
+import { analyzeSvelteComponent } from "./analyze-component.js";
+import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -43,7 +44,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         return components;
       },
       viteConfig: () => ({
-        plugins: [svelte()],
+        plugins: [sveltekit()],
       }),
     };
   },
