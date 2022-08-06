@@ -126,11 +126,10 @@ export class ViteManager {
       ...this.options.config.vite?.resolve?.alias,
     };
     const defaultLogger = vite.createLogger(this.options.logLevel);
-    const frameworkPluginViteConfig =
-      await this.options.frameworkPlugin.viteConfig({
-        ...this.options.config,
-        alias,
-      });
+    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig({
+      ...this.options.config,
+      alias,
+    });
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,

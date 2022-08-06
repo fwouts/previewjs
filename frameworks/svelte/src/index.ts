@@ -1,4 +1,5 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 import path from "path";
 import { analyzeSvelteComponent } from "./analyze-component";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
@@ -41,17 +42,9 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: async () => {
-        // https://github.com/microsoft/TypeScript/issues/43329
-        const { sveltekit } = await Function(
-          'return import("@sveltejs/kit/vite")'
-        )();
-        // Note: it's important that the import above occurs as late as possible because it calls
-        // process.cwd() on initialisation, and that must be the root dir.
-        return {
-          plugins: [sveltekit()],
-        };
-      },
+      viteConfig: () => ({
+        plugins: [svelte()],
+      }),
     };
   },
 };
