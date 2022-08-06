@@ -19,7 +19,7 @@ export async function isInstalled({
     return false;
   }
   try {
-    await loadModules({
+    loadModules({
       installDir,
       packageName,
       logError: false,
@@ -89,7 +89,7 @@ export async function install(options: {
         throw new Error(`Preview.js could not install dependencies`);
       }
       try {
-        await loadModules({
+        loadModules({
           ...options,
           logError: true,
         });
