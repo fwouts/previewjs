@@ -31,7 +31,6 @@ export function render(
   try {
     root.innerHTML = "";
     const { Component, props: topLevelProps } = Renderer(props);
-    console.error(Component, props);
     new Component({
       target: root,
       props: topLevelProps,
