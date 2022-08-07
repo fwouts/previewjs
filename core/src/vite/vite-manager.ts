@@ -203,6 +203,10 @@ export class ViteManager {
             ? this.options.config.vite?.server?.hmr
             : {}),
         },
+        fs: {
+          strict: false,
+          ...(this.options.config.vite?.server?.fs || {}),
+        },
         ...this.options.config.vite?.server,
       },
       customLogger: {

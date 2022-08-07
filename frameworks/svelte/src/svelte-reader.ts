@@ -1,6 +1,8 @@
 import {
   Directory,
   DirectorySync,
+  Entry,
+  EntrySync,
   File,
   FileSync,
   Reader,
@@ -45,10 +47,26 @@ class SvelteTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    return this.reader.read(filePath);
+    const entry = await this.reader.read(filePath);
+    if (entry?.kind === "directory") {
+      return {
+        ...entry,
+        entries: async () => {
+          const realEntries = await entry.entries();
+          return Promise.all([
+            ...realEntries.map((e) => this.read(path.join(filePath, e.name))),
+            ...realEntries
+              .filter((e) => e.name.endsWith(".svelte"))
+              .map((e) => this.read(path.join(filePath, e.name + ".ts"))),
+          ]).then((entries) => entries.filter(Boolean)) as Promise<Entry[]>;
+        },
+      };
+    }
+    return entry;
   }
 
   readSync(filePath: string): FileSync | DirectorySync | null {
+    console.error("readSync", filePath);
     if (filePath.endsWith(".svelte.ts")) {
       const source = this.reader.readSync(
         filePath.substr(0, filePath.length - 3)
@@ -65,7 +83,24 @@ class SvelteTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    return this.reader.readSync(filePath);
+    const entry = this.reader.readSync(filePath);
+    if (entry?.kind === "directory") {
+      return {
+        ...entry,
+        entries: () => {
+          const realEntries = entry.entries();
+          return [
+            ...realEntries.map((e) =>
+              this.readSync(path.join(filePath, e.name))
+            ),
+            ...realEntries
+              .filter((e) => e.name.endsWith(".svelte"))
+              .map((e) => this.readSync(path.join(filePath, e.name + ".ts"))),
+          ].filter(Boolean) as EntrySync[];
+        },
+      };
+    }
+    return entry;
   }
 }
 

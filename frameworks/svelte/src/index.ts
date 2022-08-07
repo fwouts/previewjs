@@ -43,6 +43,14 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         return components;
       },
       viteConfig: () => ({
+        define: {
+          __SVELTEKIT_DEV__: "false",
+        },
+        resolve: {
+          alias: {
+            $app: ".svelte-kit/runtime/app",
+          },
+        },
         plugins: [svelte()],
       }),
     };
