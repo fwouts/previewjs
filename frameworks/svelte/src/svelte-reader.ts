@@ -66,7 +66,6 @@ class SvelteTypeScriptReader implements Reader {
   }
 
   readSync(filePath: string): FileSync | DirectorySync | null {
-    console.error("readSync", filePath);
     if (filePath.endsWith(".svelte.ts")) {
       const source = this.reader.readSync(
         filePath.substr(0, filePath.length - 3)
