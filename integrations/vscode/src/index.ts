@@ -28,6 +28,7 @@ const watchedExtensions = new Set([
   ".less",
   ".styl",
   ".stylus",
+  ".svelte",
   ".svg",
 ]);
 
