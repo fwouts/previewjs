@@ -1,9 +1,9 @@
-import execa from "execa";
 import { mkdir, pathExists, writeFile } from "fs-extra";
 import path from "path";
 import lockfile from "proper-lockfile";
 import { checkNodeVersion } from "./checkNodeVersion";
 import { checkNpmVersion } from "./checkNpmVersion";
+import { execCommand } from "./exec";
 import { loadModules } from "./modules";
 import packageLockJson from "./release/package-lock.json";
 import packageJson from "./release/package.json";
@@ -36,9 +36,15 @@ export async function install(options: {
   onOutput: (chunk: string) => void;
 }) {
   await mkdir(options.installDir, { recursive: true });
+  let wsl = false;
   try {
-    await checkNodeVersion(options.installDir);
-    await checkNpmVersion(options.installDir);
+    const { wsl: nodeWsl } = await checkNodeVersion(options.installDir);
+    const { wsl: npmWsl } = await checkNpmVersion(options.installDir);
+    if (nodeWsl || npmWsl) {
+      wsl = true;
+      await checkNodeVersion(options.installDir, true);
+      await checkNpmVersion(options.installDir, true);
+    }
   } catch (e) {
     options.onOutput(`${e}`);
     throw e;
@@ -75,7 +81,8 @@ export async function install(options: {
     );
     options.onOutput(`$ npm install\n\n`);
     try {
-      const installProcess = execa("npm", ["install"], {
+      const installProcess = execCommand("npm", ["install"], {
+        wsl,
         cwd: options.installDir,
         all: true,
       });

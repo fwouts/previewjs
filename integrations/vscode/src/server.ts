@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { ensureServerRunning } from "@previewjs/server";
 import { readFileSync } from "fs";
 import { getLoaderInstallDir } from "./loader-install-dir";
