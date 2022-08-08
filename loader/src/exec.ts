@@ -44,20 +44,21 @@ export function execCommand(
 ) {
   return execa(
     wsl ? "wsl" : command,
-    wsl ? wslCommandArgs(command, commandArgs) : commandArgs,
+    wsl ? wslCommandArgs(command, commandArgs, options.detached) : commandArgs,
     {
       ...options,
     }
   );
 }
 
-// TODO: Rename since it's specifically nohup.
-function wslCommandArgs(command: string, commandArgs: string[]) {
+function wslCommandArgs(
+  command: string,
+  commandArgs: string[],
+  detached = false
+) {
   return [
-    "-e",
-    "nohup",
     "bash",
     "-lic",
-    [command, ...commandArgs, "&"].join(" "),
+    [command, ...commandArgs, ...(detached ? ["&"] : [])].join(" "),
   ];
 }

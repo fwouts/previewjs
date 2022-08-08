@@ -17,8 +17,9 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
     all: true,
     // IMPORTANT: SETTING THIS TO TRUE WITH WSL BREAKS EVERYTHING.
     detached: true,
-    // stdio: ["ignore", out, err, "ipc"],
-    stdio: ["pipe", "pipe", "pipe"],
+    shell: true,
+    stdio: ["ignore", out, err, "ipc"],
+    // stdio: ["pipe", "pipe", "pipe"],
     cwd: __dirname,
     env: {
       ...process.env,
@@ -30,7 +31,11 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
   });
 
   const client = createClient(`http://localhost:${SERVER_PORT}`);
-  await client.waitForReady();
+  try {
+    await client.waitForReady();
+  } catch {
+    await serverProcess;
+  }
   // await new Promise<void>((resolve, reject) => {
   //   const readyListener = (chunk: string) => {
   //     if (chunk === JSON.stringify({ type: "ready" })) {
