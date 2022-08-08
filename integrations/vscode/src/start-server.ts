@@ -15,20 +15,22 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
   const err = openSync(path.join(__dirname, "server-err.log"), "a");
   const serverProcess = execCommand("./server.js", [], {
     all: true,
+    // IMPORTANT: SETTING THIS TO TRUE WITH WSL BREAKS EVERYTHING.
     detached: true,
-    stdio: ["ignore", out, err /* "ipc" */],
+    // stdio: ["ignore", out, err, "ipc"],
+    stdio: ["pipe", "pipe", "pipe"],
     cwd: __dirname,
     env: {
       ...process.env,
     },
     wsl,
   });
+  serverProcess.all?.on("data", (data) => {
+    outputChannel.appendLine(`[Preview.js Server] ${data}`);
+  });
 
   const client = createClient(`http://localhost:${SERVER_PORT}`);
-  // TODO: This doesn't handle failure!
-  outputChannel.appendLine("Waiting for Preview.js server to start...");
   await client.waitForReady();
-  outputChannel.appendLine("Preview.js server started!");
   // await new Promise<void>((resolve, reject) => {
   //   const readyListener = (chunk: string) => {
   //     if (chunk === JSON.stringify({ type: "ready" })) {

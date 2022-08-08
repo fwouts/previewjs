@@ -51,6 +51,13 @@ export function execCommand(
   );
 }
 
+// TODO: Rename since it's specifically nohup.
 function wslCommandArgs(command: string, commandArgs: string[]) {
-  return ["-e", "bash", "-lic", [command, ...commandArgs].join(" ")];
+  return [
+    "-e",
+    "nohup",
+    "bash",
+    "-lic",
+    [command, ...commandArgs, "&"].join(" "),
+  ];
 }

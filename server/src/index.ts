@@ -2,6 +2,7 @@ import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
 import http from "http";
+import isWsl from "is-wsl";
 import net from "net";
 import path from "path";
 import type {
@@ -222,8 +223,13 @@ async function startServer({
       const workspace = await previewjs.getWorkspace({
         versionCode,
         logLevel: "info",
-        absoluteFilePath: req.absoluteFilePath,
+        absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
+      console.error(
+        "Workspace:",
+        transformAbsoluteFilePath(req.absoluteFilePath),
+        workspace?.rootDirPath
+      );
       if (!workspace) {
         return {
           workspaceId: null,
@@ -262,10 +268,14 @@ async function startServer({
       if (!workspace) {
         throw new NotFoundError();
       }
+      console.error(
+        "Analyze file:",
+        transformAbsoluteFilePath(absoluteFilePath)
+      );
       const components = (
         await workspace.frameworkPlugin.detectComponents(
           workspace.typeAnalyzer,
-          [absoluteFilePath]
+          [transformAbsoluteFilePath(absoluteFilePath)]
         )
       )
         .map((c) => {
@@ -290,6 +300,7 @@ async function startServer({
             }));
         })
         .flat();
+      console.error("Components:", components);
       return { components };
     }
   );
@@ -327,7 +338,10 @@ async function startServer({
   endpoint<UpdatePendingFileRequest, UpdatePendingFileResponse>(
     "/pending-files/update",
     async (req) => {
-      await previewjs.updateFileInMemory(req.absoluteFilePath, req.utf8Content);
+      await previewjs.updateFileInMemory(
+        transformAbsoluteFilePath(req.absoluteFilePath),
+        req.utf8Content
+      );
       return {};
     }
   );
@@ -366,6 +380,20 @@ async function startServer({
   }
 
   sendParentProcessReadyMessage();
+}
+
+function transformAbsoluteFilePath(absoluteFilePath: string) {
+  if (!isWsl) {
+    return absoluteFilePath;
+  }
+  if (absoluteFilePath.match(/^[a-z]:.*$/i)) {
+    // This is a Windows path, which needs to be converted to Linux format inside WSL.
+    return `/mnt/${absoluteFilePath
+      .substring(0, 1)
+      .toLowerCase()}/${absoluteFilePath.substring(3).replace(/\\/g, "/")}`;
+  }
+  // This is already a Linux path.
+  return absoluteFilePath;
 }
 
 function sendParentProcessReadyMessage() {
