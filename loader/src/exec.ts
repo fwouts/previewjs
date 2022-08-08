@@ -40,11 +40,15 @@ export async function execCommandPossiblyWsl(
 export function execCommand(
   command: string,
   commandArgs: string[],
-  { wsl, ...options }: execa.Options & { wsl: boolean }
+  {
+    wsl,
+    longRunning,
+    ...options
+  }: execa.Options & { wsl: boolean; longRunning?: boolean }
 ) {
   return execa(
     wsl ? "wsl" : command,
-    wsl ? wslCommandArgs(command, commandArgs, options.detached) : commandArgs,
+    wsl ? wslCommandArgs(command, commandArgs, longRunning) : commandArgs,
     {
       ...options,
     }
@@ -54,11 +58,12 @@ export function execCommand(
 function wslCommandArgs(
   command: string,
   commandArgs: string[],
-  detached = false
+  longRunning = false
 ) {
   return [
+    ...(longRunning ? ["nohup"] : []),
     "bash",
     "-lic",
-    [command, ...commandArgs, ...(detached ? ["&"] : [])].join(" "),
+    [command, ...commandArgs, ...(longRunning ? ["&"] : [])].join(" "),
   ];
 }

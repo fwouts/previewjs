@@ -39,10 +39,9 @@ export interface ServerStartOptions {
 export async function ensureServerRunning(options: ServerStartOptions) {
   const alreadyRunning = await isServerAlreadyRunning(options);
   if (alreadyRunning) {
-    JSON.stringify(
+    console.log(
       `Preview.js daemon server is already running on port ${options.port}.`
     );
-    sendParentProcessReadyMessage();
     return;
   }
   await startServer(options);
@@ -225,11 +224,6 @@ async function startServer({
         logLevel: "info",
         absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
-      console.error(
-        "Workspace:",
-        transformAbsoluteFilePath(req.absoluteFilePath),
-        workspace?.rootDirPath
-      );
       if (!workspace) {
         return {
           workspaceId: null,
@@ -268,10 +262,6 @@ async function startServer({
       if (!workspace) {
         throw new NotFoundError();
       }
-      console.error(
-        "Analyze file:",
-        transformAbsoluteFilePath(absoluteFilePath)
-      );
       const components = (
         await workspace.frameworkPlugin.detectComponents(
           workspace.typeAnalyzer,
@@ -300,7 +290,6 @@ async function startServer({
             }));
         })
         .flat();
-      console.error("Components:", components);
       return { components };
     }
   );
@@ -378,8 +367,6 @@ async function startServer({
       `Another Preview.js daemon server spun up concurrently on ${port}. All good.`
     );
   }
-
-  sendParentProcessReadyMessage();
 }
 
 function transformAbsoluteFilePath(absoluteFilePath: string) {
@@ -394,10 +381,4 @@ function transformAbsoluteFilePath(absoluteFilePath: string) {
   }
   // This is already a Linux path.
   return absoluteFilePath;
-}
-
-function sendParentProcessReadyMessage() {
-  if (process.send) {
-    process.send(JSON.stringify({ type: "ready" }));
-  }
 }

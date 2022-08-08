@@ -15,11 +15,8 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
   const err = openSync(path.join(__dirname, "server-err.log"), "a");
   const serverProcess = execCommand("./server.js", [], {
     all: true,
-    // IMPORTANT: SETTING THIS TO TRUE WITH WSL BREAKS EVERYTHING.
-    detached: true,
-    shell: true,
+    longRunning: true,
     stdio: ["ignore", out, err, "ipc"],
-    // stdio: ["pipe", "pipe", "pipe"],
     cwd: __dirname,
     env: {
       ...process.env,
@@ -33,23 +30,10 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
   const client = createClient(`http://localhost:${SERVER_PORT}`);
   try {
     await client.waitForReady();
-  } catch {
+  } catch (e) {
     await serverProcess;
+    throw e;
   }
-  // await new Promise<void>((resolve, reject) => {
-  //   const readyListener = (chunk: string) => {
-  //     if (chunk === JSON.stringify({ type: "ready" })) {
-  //       resolve();
-  //       serverProcess.disconnect();
-  //       serverProcess.unref();
-  //     }
-  //   };
-  //   serverProcess.on("message", readyListener);
-  //   serverProcess.catch((e) => {
-  //     console.error("Error starting server", e);
-  //     reject(e);
-  //   });
-  // });
   await client.updateClientStatus({
     clientId,
     alive: true,
