@@ -67,7 +67,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/node': 17.0.8
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@vitejs/plugin-react': 2.0.0
       autoprefixer: 10.4.8
@@ -95,7 +95,7 @@ importers:
       '@types/express': 4.17.13
       '@types/fs-extra': 9.0.13
       '@types/node': 17.0.8
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       '@vitejs/plugin-react': 2.0.0_vite@3.0.4
       autoprefixer: 10.4.8_postcss@8.4.16
@@ -122,7 +122,7 @@ importers:
       '@previewjs/serializable-values': ^2.0.2
       '@previewjs/type-analyzer': ^3.0.3
       '@react-hook/window-size': ^3.0.7
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       assert-never: ^1.2.1
       autoprefixer: 10.4.8
       axios: ^0.27.2
@@ -159,7 +159,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       autoprefixer: 10.4.8_postcss@8.4.16
       postcss: 8.4.16
       tailwindcss: 3.1.8
@@ -343,7 +343,7 @@ importers:
       '@previewjs/type-analyzer': ^3.0.3
       '@previewjs/vfs': ^1.2.3
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       react: 18.2.0
       rimraf: 3.0.2
       typescript: ^4.7.4
@@ -358,7 +358,7 @@ importers:
     devDependencies:
       '@previewjs/core': link:../../core
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       react: 18.2.0
       rimraf: 3.0.2
       vitest: 0.21.0
@@ -367,13 +367,13 @@ importers:
     specifiers:
       '@previewjs/iframe': workspace:*
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       rimraf: 3.0.2
       shx: 0.3.4
     dependencies:
       '@types/prop-types': 15.7.5
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
@@ -8965,7 +8965,7 @@ packages:
   /@types/react-dom/18.0.6:
     resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
     dependencies:
-      '@types/react': 18.0.15
+      '@types/react': 18.0.17
 
   /@types/react-is/17.0.3:
     resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}
@@ -9028,8 +9028,8 @@ packages:
       '@types/scheduler': 0.16.2
       csstype: 3.1.0
 
-  /@types/react/18.0.15:
-    resolution: {integrity: sha512-iz3BtLuIYH1uWdsv6wXYdhozhqj20oD4/Hk2DNXIn1kFsmp9x8d9QB6FnPhfkbhd2PgEONt9Q1x/ebkwjfFLow==}
+  /@types/react/18.0.17:
+    resolution: {integrity: sha512-38ETy4tL+rn4uQQi7mB81G7V1g0u2ryquNmsVIOKUAEIDK+3CUjZ6rSRpdvS99dNBnkLFL83qfmtLacGOTIhwQ==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
