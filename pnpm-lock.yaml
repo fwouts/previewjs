@@ -234,7 +234,7 @@ importers:
       recrawl: ^2.2.1
       rollup-plugin-friendly-type-imports: ^1.0.3
       shx: 0.3.4
-      tsconfig-paths: ^4.0.0
+      tsconfig-paths: ^4.1.0
       typescript: ^4.7.4
       unbuild: 0.7.6
       vite: ^3
@@ -256,7 +256,7 @@ importers:
       http-terminator: 3.2.0
       recrawl: 2.2.1
       rollup-plugin-friendly-type-imports: 1.0.3
-      tsconfig-paths: 4.0.0
+      tsconfig-paths: 4.1.0
       typescript: 4.7.4
       vite: 3.0.4
       vite-tsconfig-paths: 3.5.0_vite@3.0.4
@@ -29052,8 +29052,9 @@ packages:
       minimist: 1.2.6
       strip-bom: 3.0.0
 
-  /tsconfig-paths/4.0.0:
-    resolution: {integrity: sha512-SLBg2GBKlR6bVtMgJJlud/o3waplKtL7skmLkExomIiaAtLGtVsoXIqP3SYdjbcH9lq/KVv7pMZeCBpLYOit6Q==}
+  /tsconfig-paths/4.1.0:
+    resolution: {integrity: sha512-AHx4Euop/dXFC+Vx589alFba8QItjF+8hf8LtmuiCwHyI4rHXQtOOENaM8kvYf5fR0dRChy3wzWIZ9WbB7FWow==}
+    engines: {node: '>=6'}
     dependencies:
       json5: 2.2.1
       minimist: 1.2.6
@@ -30257,7 +30258,7 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       recrawl-sync: 2.2.2
-      tsconfig-paths: 4.0.0
+      tsconfig-paths: 4.1.0
       vite: 3.0.4
     transitivePeerDependencies:
       - supports-color
