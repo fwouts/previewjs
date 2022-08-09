@@ -8,7 +8,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
-import { parseComponent } from "vue-template-compiler";
+import { parse } from "vue/compiler-sfc";
 
 /**
  * Returns a reader that returns a virtual TypeScript file
@@ -75,7 +75,9 @@ class VueTypeScriptReader implements Reader {
 }
 
 function convertToTypeScript(vueTemplateSource: string, name: string) {
-  const parsed = parseComponent(vueTemplateSource);
+  const parsed = parse({
+    source: vueTemplateSource,
+  });
   const scriptContent = parsed.script?.content;
   if (!scriptContent) {
     return "";
