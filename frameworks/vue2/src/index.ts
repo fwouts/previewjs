@@ -8,7 +8,9 @@ import { createVueTypeScriptReader } from "./vue-reader";
 /** @deprecated */
 export const vue2FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    const version = await dependencies["vue"]?.readInstalledVersion();
+    const version =
+      (await dependencies["vue"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt"]?.readInstalledVersion());
     if (!version) {
       return false;
     }
