@@ -18,7 +18,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
   },
   async create() {
     const { loadNuxtConfig } = await import("@nuxt/config");
-    const { createVuePlugin } = await import("vite-plugin-vue2");
+    const { default: vuePlugin } = await import("@vitejs/plugin-vue2");
     const { extractVueComponents } = await import("./extract-component");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
@@ -72,9 +72,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           },
           plugins: [
-            createVuePlugin({
-              jsx: true,
-            }),
+            vuePlugin(),
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
