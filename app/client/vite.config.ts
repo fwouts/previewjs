@@ -16,4 +16,10 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    disabled: false,
+  },
+  build: {
+    commonjsOptions: { include: [] },
+  },
 });
