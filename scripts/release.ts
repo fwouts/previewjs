@@ -263,6 +263,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         JSON.stringify(
           {
             dependencies: {
+              // TODO: Add esbuild deps too.
               "@previewjs/core": coreVersion,
               "@previewjs/plugin-react": reactPluginVersion,
               "@previewjs/plugin-solid": solidPluginVersion,

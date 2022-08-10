@@ -37,7 +37,7 @@ let dispose = async () => {
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
 
-  const previewjsInitPromise = startPreviewJsServer(outputChannel)
+  const previewjsInitPromise = startPreviewJsServer()
     .then((p) => (previewjsClientInitialized = p))
     .catch((e) => {
       console.error(e);
