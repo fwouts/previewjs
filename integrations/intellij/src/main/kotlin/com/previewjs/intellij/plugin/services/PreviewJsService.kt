@@ -149,7 +149,23 @@ Include the content of the Preview.js logs panel for easier debugging.
         } catch (e: IOException) {
             throw Error("No port is not available to run Preview.js controller")
         }
-        val builder = processBuilder("node dist/main.js")
+        val nodeVersionProcess = processBuilder("node --version").directory(nodeDirPath.toFile()).start()
+        var useWsl = false
+        if (nodeVersionProcess.waitFor() === 0) {
+            checkNodeVersion(nodeVersionProcess)
+        } else {
+            // Unable to start Node. Check WSL if we're on Windows.
+            if (System.getProperty("os.name").lowercase().contains("win")) {
+                val nodeVersionProcessWsl = processBuilder("wsl bash -lic node --version").directory(nodeDirPath.toFile()).start()
+                if (nodeVersionProcess.waitFor() === 0) {
+                    checkNodeVersion(nodeVersionProcessWsl)
+                    useWsl = true
+                } else {
+                    // If WSL failed, just ignore it.
+                }
+            }
+        }
+        val builder = processBuilder(if (useWsl) "wsl bash -lic node dist/server.js" else "node dist/main.js")
             .redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
         builder.environment()["PORT"] = "$port"
@@ -189,6 +205,11 @@ Include the content of the Preview.js logs panel for easier debugging.
             }
         }
         return api
+    }
+
+    private fun checkNodeVersion(process: Process) {
+        val output = readInputStream(process.inputStream)
+
     }
 
     private fun processBuilder(command: String): ProcessBuilder {
