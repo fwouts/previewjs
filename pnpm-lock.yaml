@@ -80,7 +80,7 @@ importers:
       tailwindcss: 3.1.8
       typescript: 4.7.4
       unbuild: 0.8.7
-      vite: 3.0.4
+      vite: 3.0.5
       vite-plugin-svgr: 2.2.1
     dependencies:
       express: 4.18.1
@@ -97,7 +97,7 @@ importers:
       '@types/node': 17.0.8
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
-      '@vitejs/plugin-react': 2.0.0_vite@3.0.4
+      '@vitejs/plugin-react': 2.0.0_vite@3.0.5
       autoprefixer: 10.4.8_postcss@8.4.16
       fs-extra: 10.1.0
       mobx-react-lite: 3.4.0_m26jawr67gnusmh4egzqtnhxru
@@ -107,8 +107,8 @@ importers:
       tailwindcss: 3.1.8
       typescript: 4.7.4
       unbuild: 0.8.7
-      vite: 3.0.4
-      vite-plugin-svgr: 2.2.1_vite@3.0.4
+      vite: 3.0.5
+      vite-plugin-svgr: 2.2.1_vite@3.0.5
 
   app-foundations:
     specifiers:
@@ -205,11 +205,11 @@ importers:
     specifiers:
       '@types/node': 17.0.8
       unbuild: 0.8.7
-      vite: 3.0.4
+      vite: 3.0.5
     devDependencies:
       '@types/node': 17.0.8
       unbuild: 0.8.7
-      vite: 3.0.4
+      vite: 3.0.5
 
   core:
     specifiers:
@@ -237,7 +237,7 @@ importers:
       tsconfig-paths: ^4.1.0
       typescript: ^4.7.4
       unbuild: 0.8.7
-      vite: ^3.0.4
+      vite: ^3.0.5
       vite-tsconfig-paths: ^3.5.0
     dependencies:
       '@previewjs/api': link:../api
@@ -347,20 +347,20 @@ importers:
       react: 18.2.0
       rimraf: 3.0.2
       typescript: ^4.7.4
-      vite: ^3.0.4
+      vite: 3.0.5
       vitest: 0.21.0
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.7.4
-      vite: 3.0.5
     devDependencies:
       '@previewjs/core': link:../../core
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.17
       react: 18.2.0
       rimraf: 3.0.2
+      vite: 3.0.5
       vitest: 0.21.0
 
   frameworks/react/preview:
@@ -389,7 +389,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.4.8
       typescript: ^4.7.4
-      vite: 3.0.4
+      vite: 3.0.5
       vite-plugin-solid: ^2.3.0
       vitest: 0.21.0
     dependencies:
@@ -397,12 +397,12 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.7.4
-      vite-plugin-solid: 2.3.0_solid-js@1.4.8+vite@3.0.4
+      vite-plugin-solid: 2.3.0_solid-js@1.4.8+vite@3.0.5
     devDependencies:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
       solid-js: 1.4.8
-      vite: 3.0.4
+      vite: 3.0.5
       vitest: 0.21.0
 
   frameworks/solid/preview:
@@ -425,7 +425,7 @@ importers:
       fs-extra: ^10.1.0
       rimraf: 3.0.2
       typescript: ^4.7.4
-      vite: 3.0.4
+      vite: 3.0.5
       vite-plugin-vue2: ^2.0.2
       vitest: 0.21.0
       vue: ^2.7.8
@@ -437,14 +437,14 @@ importers:
       '@previewjs/vfs': link:../../vfs
       fs-extra: 10.1.0
       typescript: 4.7.4
-      vite-plugin-vue2: 2.0.2_fbkq3tzqapfnj7jfirrxplz7ue
+      vite-plugin-vue2: 2.0.2_opc47naxkehsoondzp4ieqfm54
       vue: 2.7.8
       vue-template-compiler: 2.7.8
     devDependencies:
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
-      vite: 3.0.4
+      vite: 3.0.5
       vitest: 0.21.0
 
   frameworks/vue2/preview:
@@ -472,15 +472,15 @@ importers:
       acorn: ^8.8.0
       rimraf: 3.0.2
       typescript: ^4.7.4
-      vite: 3.0.4
+      vite: 3.0.5
       vitest: 0.21.0
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue': 3.0.1_vite@3.0.4+vue@3.2.37
-      '@vitejs/plugin-vue-jsx': 2.0.0_vite@3.0.4+vue@3.2.37
+      '@vitejs/plugin-vue': 3.0.1_vite@3.0.5+vue@3.2.37
+      '@vitejs/plugin-vue-jsx': 2.0.0_vite@3.0.5+vue@3.2.37
       '@vue/compiler-sfc': 3.2.37
       acorn: 8.8.0
       typescript: 4.7.4
@@ -488,7 +488,7 @@ importers:
     devDependencies:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
-      vite: 3.0.4
+      vite: 3.0.5
       vitest: 0.21.0
 
   frameworks/vue3/preview:
@@ -515,11 +515,10 @@ importers:
   iframe:
     specifiers:
       unbuild: 0.8.7
-      vite: ^3.0.4
-    dependencies:
-      vite: 3.0.4
+      vite: 3.0.5
     devDependencies:
       unbuild: 0.8.7
+      vite: 3.0.5
 
   integrations/intellij/controller:
     specifiers:
@@ -4158,6 +4157,7 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-loong64/0.14.54:
@@ -9636,7 +9636,7 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-react/2.0.0_vite@3.0.4:
+  /@vitejs/plugin-react/2.0.0_vite@3.0.5:
     resolution: {integrity: sha512-zHkRR+X4zqEPNBbKV2FvWSxK7Q6crjMBVIAYroSU8Nbb4M3E5x4qOiLoqJBHtXgr27kfednXjkwr3lr8jS6Wrw==}
     engines: {node: '>=14.18.0'}
     peerDependencies:
@@ -9649,27 +9649,10 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.18.6_@babel+core@7.18.10
       magic-string: 0.26.2
       react-refresh: 0.14.0
-      vite: 3.0.4
+      vite: 3.0.5
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /@vitejs/plugin-vue-jsx/2.0.0_vite@3.0.4+vue@3.2.37:
-    resolution: {integrity: sha512-WF9ApZ/ivyyW3volQfu0Td0KNPhcccYEaRNzNY1NxRLVJQLSX0nFqquv3e2g7MF74p1XZK4bGtDL2y5i5O5+1A==}
-    engines: {node: '>=14.18.0'}
-    peerDependencies:
-      vite: ^3.0.0
-      vue: ^3.0.0
-    dependencies:
-      '@babel/core': 7.18.9
-      '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.18.9
-      '@babel/plugin-transform-typescript': 7.18.8_@babel+core@7.18.9
-      '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.18.9
-      vite: 3.0.4
-      vue: 3.2.37
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@vitejs/plugin-vue-jsx/2.0.0_vite@3.0.5+vue@3.2.37:
     resolution: {integrity: sha512-WF9ApZ/ivyyW3volQfu0Td0KNPhcccYEaRNzNY1NxRLVJQLSX0nFqquv3e2g7MF74p1XZK4bGtDL2y5i5O5+1A==}
@@ -9686,7 +9669,6 @@ packages:
       vue: 3.2.37
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@vitejs/plugin-vue/2.3.3_vite@2.9.12+vue@3.2.37:
     resolution: {integrity: sha512-SmQLDyhz+6lGJhPELsBdzXGc+AcaT8stgkbiTFGpXPe8Tl1tJaBw1A6pxDqDuRsVkD8uscrkx3hA7QDOoKYtyw==}
@@ -9699,17 +9681,6 @@ packages:
       vue: 3.2.37
     dev: true
 
-  /@vitejs/plugin-vue/3.0.1_vite@3.0.4+vue@3.2.37:
-    resolution: {integrity: sha512-Ll9JgxG7ONIz/XZv3dssfoMUDu9qAnlJ+km+pBA0teYSXzwPCIzS/e1bmwNYl5dcQGs677D21amgfYAnzMl17A==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    peerDependencies:
-      vite: ^3.0.0
-      vue: ^3.2.25
-    dependencies:
-      vite: 3.0.4
-      vue: 3.2.37
-    dev: false
-
   /@vitejs/plugin-vue/3.0.1_vite@3.0.5+vue@3.2.37:
     resolution: {integrity: sha512-Ll9JgxG7ONIz/XZv3dssfoMUDu9qAnlJ+km+pBA0teYSXzwPCIzS/e1bmwNYl5dcQGs677D21amgfYAnzMl17A==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -9719,7 +9690,6 @@ packages:
     dependencies:
       vite: 3.0.5
       vue: 3.2.37
-    dev: true
 
   /@volar/code-gen/0.34.17:
     resolution: {integrity: sha512-rHR7BA71BJ/4S7xUOPMPiB7uk6iU9oTWpEMZxFi5VGC9iJmDncE82WzU5iYpcbOBCVHsOjMh0+5CGMgdO6SaPA==}
@@ -15470,6 +15440,7 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-android-64/0.14.54:
@@ -15513,6 +15484,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-android-arm64/0.14.54:
@@ -15556,6 +15528,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-darwin-64/0.14.54:
@@ -15599,6 +15572,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.14.54:
@@ -15642,6 +15616,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.14.54:
@@ -15685,6 +15660,7 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.14.54:
@@ -15728,6 +15704,7 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-32/0.14.54:
@@ -15771,6 +15748,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-64/0.14.54:
@@ -15814,6 +15792,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-arm/0.14.54:
@@ -15857,6 +15836,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.14.54:
@@ -15900,6 +15880,7 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.14.54:
@@ -15943,6 +15924,7 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.14.54:
@@ -15986,6 +15968,7 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-riscv64/0.14.54:
@@ -16029,6 +16012,7 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-s390x/0.14.54:
@@ -16072,6 +16056,7 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-netbsd-64/0.14.54:
@@ -16115,6 +16100,7 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.14.54:
@@ -16158,6 +16144,7 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-sunos-64/0.14.54:
@@ -16201,6 +16188,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-32/0.14.54:
@@ -16244,6 +16232,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-64/0.14.54:
@@ -16287,6 +16276,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.14.54:
@@ -16395,6 +16385,7 @@ packages:
       esbuild-windows-32: 0.14.53
       esbuild-windows-64: 0.14.53
       esbuild-windows-arm64: 0.14.53
+    dev: true
 
   /esbuild/0.14.54:
     resolution: {integrity: sha512-Cy9llcy8DvET5uznocPyqL3BFRrFXSVqbgpMJ9Wz8oVjZlh/zUSNbPRbov0VX7VxN2JH1Oa0uNxZ7eLRb62pJA==}
@@ -30774,7 +30765,7 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-solid/2.3.0_solid-js@1.4.8+vite@3.0.4:
+  /vite-plugin-solid/2.3.0_solid-js@1.4.8+vite@3.0.5:
     resolution: {integrity: sha512-N2sa54C3UZC2nN5vpj5o6YP+XdIAZW6n6xv8OasxNAcAJPFeZT7EOVvumL0V4c8hBz1yuYniMWdESY8807fVSg==}
     peerDependencies:
       solid-js: ^1.3.17
@@ -30786,7 +30777,7 @@ packages:
       merge-anything: 5.0.2
       solid-js: 1.4.8
       solid-refresh: 0.4.1_solid-js@1.4.8
-      vite: 3.0.4
+      vite: 3.0.5
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -30803,19 +30794,19 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr/2.2.1_vite@3.0.4:
+  /vite-plugin-svgr/2.2.1_vite@3.0.5:
     resolution: {integrity: sha512-+EqwahbwjETJH/ssA/66dNYyKN1cO0AStq96MuXmq5maU7AePBMf2lDKfQna49tJZAjtRz+R899BWCsUUP45Fg==}
     peerDependencies:
       vite: ^2.6.0 || 3
     dependencies:
       '@rollup/pluginutils': 4.2.1
       '@svgr/core': 6.3.1
-      vite: 3.0.4
+      vite: 3.0.5
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-vue2/2.0.2_fbkq3tzqapfnj7jfirrxplz7ue:
+  /vite-plugin-vue2/2.0.2_opc47naxkehsoondzp4ieqfm54:
     resolution: {integrity: sha512-Oo1iwc5Zo376s3MYXqS7j+KXs26EjiyWV8/dmI23SoorO3zaAgnBefR45Zme+QtM407tJ2MVq0mqfI10qA5+LQ==}
     peerDependencies:
       vite: ^2.0.0 || ^3.0.0
@@ -30849,7 +30840,7 @@ packages:
       rollup: 2.77.2
       slash: 3.0.0
       source-map: 0.7.4
-      vite: 3.0.4
+      vite: 3.0.5
       vue-template-babel-compiler: 1.2.0_umybpmuleabyh4tggr5kqjha64
       vue-template-compiler: 2.7.8
     transitivePeerDependencies:
@@ -30996,6 +30987,7 @@ packages:
       rollup: 2.77.2
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
   /vite/3.0.5:
     resolution: {integrity: sha512-bRvrt9Tw8EGW4jj64aYFTnVg134E8hgDxyl/eEHnxiGqYk7/pTPss6CWlurqPOUzqvEoZkZ58Ws+Iu8MB87iMA==}
