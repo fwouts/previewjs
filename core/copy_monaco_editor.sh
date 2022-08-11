@@ -5,7 +5,6 @@ set -e
 mkdir -p dist/monaco-editor/min/vs/editor
 mkdir -p dist/monaco-editor/min/vs/basic-languages/typescript
 mkdir -p dist/monaco-editor/min/vs/language
-mkdir -p dist/monaco-editor/min/vs/base/worker
 mkdir -p dist/monaco-editor/min/vs/language/typescript
 
 pnpm shx cp node_modules/monaco-editor/LICENSE dist/monaco-editor/LICENSE
