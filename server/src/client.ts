@@ -20,6 +20,7 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
+import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
 export * from "./api";
 
 export function createClient(baseUrl: string): Client {
@@ -70,6 +71,9 @@ export function createClient(baseUrl: string): Client {
   }
 
   const client: Client = {
+    waitForReady: async () => {
+      await waitForSuccessfulPromise(() => client.info());
+    },
     info: () => makeEndpoint<InfoRequest, InfoResponse>("/previewjs/info")({}),
     kill: () => makeEndpoint<KillRequest, KillResponse>("/previewjs/kill")({}),
     updateClientStatus: makeEndpoint("/previewjs/clients/status"),
@@ -84,6 +88,7 @@ export function createClient(baseUrl: string): Client {
 }
 
 export interface Client {
+  waitForReady(): Promise<void>;
   info(): Promise<InfoResponse>;
   kill(): Promise<KillResponse>;
   updateClientStatus(
