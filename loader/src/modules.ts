@@ -1,4 +1,6 @@
 import type * as core from "@previewjs/core";
+import { chmodSync, constants, existsSync, lstatSync, readdirSync } from "fs";
+import path from "path";
 
 export function loadModules({
   installDir,
@@ -30,6 +32,18 @@ export function loadModules({
         console.error(`Unable to load ${name} from ${installDir}`, e);
       }
       throw e;
+    }
+  }
+
+  for (const f of readdirSync(path.join(installDir, "node_modules"))) {
+    if (f.startsWith("esbuild-")) {
+      const binPath = path.join(__dirname, "node_modules", f, "bin", "esbuild");
+      if (
+        existsSync(binPath) &&
+        !(lstatSync(binPath).mode & constants.S_IXUSR)
+      ) {
+        chmodSync(binPath, "555");
+      }
     }
   }
 

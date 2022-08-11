@@ -265,6 +265,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
         "esbuild-darwin-arm64",
         "esbuild-linux-64",
         "esbuild-linux-arm64",
+        "esbuild-windows-32",
         "esbuild-windows-64",
         "esbuild-windows-arm64",
       ];
