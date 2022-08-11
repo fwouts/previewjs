@@ -28,10 +28,8 @@
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/iframe --no-deps --include-dependencies",
     "build": "tsc && unbuild"
   },
-  "dependencies": {
-    "vite": "^3.0.4"
-  },
   "devDependencies": {
-    "unbuild": "0.8.7"
+    "unbuild": "0.8.7",
+    "vite": "3.0.5"
   }
 }
