@@ -26,7 +26,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
-    "build": "unbuild && shx cp -r node_modules/monaco-editor dist/monaco-editor"
+    "build": "unbuild && ./copy_monaco_editor.sh"
   },
   "dependencies": {
     "@previewjs/api": "^2.4.0",
