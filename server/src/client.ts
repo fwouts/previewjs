@@ -45,6 +45,7 @@ export function createClient(baseUrl: string): Client {
               "Content-Type": "application/json",
               "Content-Length": Buffer.byteLength(postData),
             },
+            timeout: 5000,
           },
           (res) => {
             res.on("data", (data) => {
@@ -71,7 +72,7 @@ export function createClient(baseUrl: string): Client {
 
   const client: Client = {
     waitForReady: async () => {
-      await waitForSuccessfulPromise(() => client.info());
+      await waitForSuccessfulPromise(() => client.info(), 30000);
     },
     info: () => makeEndpoint<InfoRequest, InfoResponse>("/previewjs/info")({}),
     kill: () => makeEndpoint<KillRequest, KillResponse>("/previewjs/kill")({}),

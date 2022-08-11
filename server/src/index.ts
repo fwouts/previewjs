@@ -2,6 +2,7 @@ import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
 import http from "http";
+import isWsl from "is-wsl";
 import net from "net";
 import path from "path";
 import type {
@@ -41,7 +42,6 @@ export async function ensureServerRunning(options: ServerStartOptions) {
     console.log(
       `Preview.js daemon server is already running on port ${options.port}.`
     );
-    sendParentProcessReadyMessage();
     return;
   }
   await startServer(options);
@@ -222,7 +222,7 @@ async function startServer({
       const workspace = await previewjs.getWorkspace({
         versionCode,
         logLevel: "info",
-        absoluteFilePath: req.absoluteFilePath,
+        absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
       if (!workspace) {
         return {
@@ -265,7 +265,7 @@ async function startServer({
       const components = (
         await workspace.frameworkPlugin.detectComponents(
           workspace.typeAnalyzer,
-          [absoluteFilePath]
+          [transformAbsoluteFilePath(absoluteFilePath)]
         )
       )
         .map((c) => {
@@ -327,7 +327,10 @@ async function startServer({
   endpoint<UpdatePendingFileRequest, UpdatePendingFileResponse>(
     "/pending-files/update",
     async (req) => {
-      await previewjs.updateFileInMemory(req.absoluteFilePath, req.utf8Content);
+      await previewjs.updateFileInMemory(
+        transformAbsoluteFilePath(req.absoluteFilePath),
+        req.utf8Content
+      );
       return {};
     }
   );
@@ -364,12 +367,18 @@ async function startServer({
       `Another Preview.js daemon server spun up concurrently on ${port}. All good.`
     );
   }
-
-  sendParentProcessReadyMessage();
 }
 
-function sendParentProcessReadyMessage() {
-  if (process.send) {
-    process.send(JSON.stringify({ type: "ready" }));
+function transformAbsoluteFilePath(absoluteFilePath: string) {
+  if (!isWsl) {
+    return absoluteFilePath;
   }
+  if (absoluteFilePath.match(/^[a-z]:.*$/i)) {
+    // This is a Windows path, which needs to be converted to Linux format inside WSL.
+    return `/mnt/${absoluteFilePath
+      .substring(0, 1)
+      .toLowerCase()}/${absoluteFilePath.substring(3).replace(/\\/g, "/")}`;
+  }
+  // This is already a Linux path.
+  return absoluteFilePath;
 }
