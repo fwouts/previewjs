@@ -1,13 +1,12 @@
 import { createClient } from "@previewjs/server/client";
 import execa from "execa";
-import { openSync } from "fs";
+import { openSync, readFileSync } from "fs";
 import path from "path";
+import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
 import { SERVER_PORT } from "./port";
 
-export async function startPreviewJsServer() {
-  const out = openSync(path.join(__dirname, "server-out.log"), "a");
-  const err = openSync(path.join(__dirname, "server-err.log"), "a");
+export async function startPreviewJsServer(outputChannel: OutputChannel) {
   const nodeVersion = await execa("node", ["--version"], {
     reject: false,
   });
@@ -33,31 +32,54 @@ export async function startPreviewJsServer() {
       throw e;
     }
   }
+  const logsPath = path.join(__dirname, "server.log");
+  const logs = openSync(logsPath, "w");
+  outputChannel.appendLine(`Starting Preview.js server...`);
+  outputChannel.appendLine(`Streaming logs to: ${logsPath}`);
   const serverProcess = execLongRunningCommand(
     "node",
     [`${__dirname}/server.js`],
     {
       wsl: useWsl,
-      all: true,
-      stdio: ["ignore", out, err, "ipc"],
+      stdio: ["ignore", logs, logs],
     }
   );
 
   const client = createClient(`http://localhost:${SERVER_PORT}`);
-  await new Promise<void>((resolve, reject) => {
-    const readyListener = (chunk: string) => {
-      if (chunk === JSON.stringify({ type: "ready" })) {
-        resolve();
-        serverProcess.disconnect();
-        serverProcess.unref();
+  try {
+    const startTime = Date.now();
+    const timeoutMillis = 30000;
+    loop: while (true) {
+      try {
+        await client.info();
+        break loop;
+      } catch (e) {
+        if (serverProcess.exitCode !== null) {
+          outputChannel.append(readFileSync(logsPath, "utf8"));
+          throw new Error(
+            `Preview.js server exited with code ${serverProcess.exitCode}`
+          );
+        }
+        if (Date.now() - startTime > timeoutMillis) {
+          throw new Error(
+            `Connection timed out after ${timeoutMillis}ms: ${e}`
+          );
+        }
+        // Ignore the error and retry after a short delay.
+        await new Promise<void>((resolve) => setTimeout(resolve, 100));
       }
-    };
-    serverProcess.on("message", readyListener);
-    serverProcess.catch((e) => {
-      console.error("Error starting server", e);
-      reject(e);
-    });
-  });
+    }
+    client.info();
+    await client.waitForReady();
+    outputChannel.appendLine(`Preview.js server ready.`);
+    serverProcess.unref();
+  } catch (e) {
+    outputChannel.appendLine(
+      `Preview.js server failed to start. Please check logs above and report the issue: https://github.com/fwouts/previewjs/issues`
+    );
+    await serverProcess;
+    throw e;
+  }
   await client.updateClientStatus({
     clientId,
     alive: true,
