@@ -37,10 +37,11 @@ let dispose = async () => {
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
 
-  const previewjsInitPromise = startPreviewJsServer()
+  const previewjsInitPromise = startPreviewJsServer(outputChannel)
     .then((p) => (previewjsClientInitialized = p))
     .catch((e) => {
       console.error(e);
+      outputChannel.show();
       initializationFailed = true;
       return null;
     });
@@ -81,11 +82,11 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   dispose = async () => {
-    outputChannel.dispose();
     await previewjsClientInitialized?.updateClientStatus({
       clientId,
       alive: false,
     });
+    outputChannel.dispose();
   };
 
   await openUsageOnFirstTimeStart(context);
@@ -205,8 +206,8 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export async function deactivate() {
-  await closePreviewPanel();
   await dispose();
+  await closePreviewPanel();
   dispose = async () => {
     // Do nothing.
   };
