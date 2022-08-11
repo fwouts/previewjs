@@ -94,6 +94,7 @@ function execLongRunningCommand(
     wsl ? wslCommandArgs(command, commandArgs, true) : commandArgs,
     {
       ...options,
+      ...(!wsl && { detached: true }),
     }
   );
 }
