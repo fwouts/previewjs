@@ -8,6 +8,7 @@ import { SERVER_PORT } from "./port";
 
 export async function startPreviewJsServer(outputChannel: OutputChannel) {
   const nodeVersion = await execa("node", ["--version"], {
+    cwd: __dirname,
     reject: false,
   });
   let useWsl = false;
@@ -21,6 +22,7 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
       "wsl",
       wslCommandArgs("node", ["--version"]),
       {
+        cwd: __dirname,
         reject: false,
       }
     );
@@ -35,15 +37,15 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
   const logsPath = path.join(__dirname, "server.log");
   const logs = openSync(logsPath, "w");
   outputChannel.appendLine(`Starting Preview.js server...`);
+  if (useWsl) {
+    outputChannel.appendLine(`Using NodeJS from WSL.`);
+  }
   outputChannel.appendLine(`Streaming logs to: ${logsPath}`);
-  const serverProcess = execLongRunningCommand(
-    "node",
-    [`${__dirname}/server.js`],
-    {
-      wsl: useWsl,
-      stdio: ["ignore", logs, logs],
-    }
-  );
+  const serverProcess = execLongRunningCommand("node", ["server.js"], {
+    cwd: __dirname,
+    wsl: useWsl,
+    stdio: ["ignore", logs, logs],
+  });
 
   const client = createClient(`http://localhost:${SERVER_PORT}`);
   try {
@@ -54,7 +56,10 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
         await client.info();
         break loop;
       } catch (e) {
-        if (serverProcess.exitCode !== null) {
+        if (serverProcess.exitCode) {
+          // Important: an exit code of 0 may be correct, especially if:
+          // 1. Another server is already running.
+          // 2. WSL is used, so the process exits immediately because it spans another one.
           outputChannel.append(readFileSync(logsPath, "utf8"));
           throw new Error(
             `Preview.js server exited with code ${serverProcess.exitCode}`
