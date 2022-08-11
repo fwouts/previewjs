@@ -82,11 +82,11 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   dispose = async () => {
-    outputChannel.dispose();
     await previewjsClientInitialized?.updateClientStatus({
       clientId,
       alive: false,
     });
+    outputChannel.dispose();
   };
 
   await openUsageOnFirstTimeStart(context);
@@ -206,8 +206,8 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export async function deactivate() {
-  await closePreviewPanel();
   await dispose();
+  await closePreviewPanel();
   dispose = async () => {
     // Do nothing.
   };
