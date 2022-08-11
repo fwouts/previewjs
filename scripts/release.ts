@@ -257,6 +257,28 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
       const { version: vue3PluginVersion } = await import(
         "../frameworks/vue3/package.json"
       );
+      const { optionalDependencies: esbuildOptionalDependencies } =
+        // @ts-ignore
+        await import("../core/node_modules/vite/../esbuild/package.json");
+      const esbuildBinaryPackages = [
+        "esbuild-darwin-64",
+        "esbuild-darwin-arm64",
+        "esbuild-linux-64",
+        "esbuild-linux-arm64",
+        "esbuild-windows-32",
+        "esbuild-windows-64",
+        "esbuild-windows-arm64",
+      ];
+      const esbuildBinaryDependencies: Record<string, string> = {};
+      for (const binaryPackage of esbuildBinaryPackages) {
+        const version = esbuildOptionalDependencies[binaryPackage];
+        if (!version) {
+          throw new Error(
+            `Missing esbuild binary dependency: ${binaryPackage}. Perhaps the release script needs to be updated.`
+          );
+        }
+        esbuildBinaryDependencies[binaryPackage] = version;
+      }
       const releaseDirPath = path.join(packageInfo.dirPath, "src", "release");
       await fs.promises.writeFile(
         path.join(releaseDirPath, "package.json"),
@@ -270,6 +292,7 @@ async function releasePackage(packageInfo: Package, dependents: string[]) {
               "@previewjs/plugin-vue3": vue3PluginVersion,
               "@previewjs/pro": previewjsProVersion,
               "@previewjs/vfs": vfsVersion,
+              ...esbuildBinaryDependencies,
             },
           },
           null,

@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
 import type * as api from "@previewjs/api";
-import { install, isInstalled, load } from "@previewjs/loader";
+import { load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
 import { prompt, registerPrompt } from "inquirer";
 import autocompletePrompt from "inquirer-autocomplete-prompt";
 import open from "open";
-import path from "path";
 
 registerPrompt("autocomplete", autocompletePrompt);
 
@@ -126,22 +125,8 @@ async function initializePreviewJs() {
     throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
   }
 
-  let requirePath = process.env.PREVIEWJS_MODULES_DIR;
-  if (!requirePath) {
-    requirePath = path.join(__dirname, "..", "dependencies");
-    if (!(await isInstalled({ installDir: requirePath, packageName }))) {
-      await install({
-        installDir: requirePath,
-        packageName,
-        onOutput: (chunk) => {
-          process.stdout.write(chunk);
-        },
-      });
-    }
-  }
-
   return load({
-    installDir: requirePath,
+    installDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
     packageName,
   });
 }

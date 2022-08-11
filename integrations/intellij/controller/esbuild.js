@@ -1,15 +1,10 @@
-const path = require("path");
 const { build } = require("esbuild");
 
 build({
-  entryPoints: [
-    "./src/install.ts",
-    "./src/is-installed.ts",
-    "./src/run-server.ts",
-  ],
+  entryPoints: ["./src/main.ts"],
   minify: false,
   bundle: true,
-  outdir: "./dist",
+  outfile: "./dist/main.js",
   platform: "node",
 }).catch((err) => {
   process.stderr.write(err.stderr);

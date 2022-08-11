@@ -1,7 +1,7 @@
 {
   "name": "@previewjs/cli",
   "version": "1.11.0",
-  "license": "AGPL-3.0",
+  "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
     "email": "f@zenc.io"
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/cli --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc && node esbuild.js",
+    "build": "rimraf dist && tsc && node esbuild.js && cp -r ../loader/src/release/node_modules dist/node_modules",
     "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
   },
   "dependencies": {},

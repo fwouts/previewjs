@@ -2,14 +2,10 @@ import { createClient } from "@previewjs/server/client";
 import execa from "execa";
 import { openSync } from "fs";
 import path from "path";
-import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
-import { installDependenciesIfNeeded } from "./install-dependencies";
 import { SERVER_PORT } from "./port";
 
-export async function startPreviewJsServer(outputChannel: OutputChannel) {
-  await installDependenciesIfNeeded(outputChannel);
-
+export async function startPreviewJsServer() {
   const out = openSync(path.join(__dirname, "server-out.log"), "a");
   const err = openSync(path.join(__dirname, "server-err.log"), "a");
   const serverProcess = execa("node", [`${__dirname}/server.js`], {

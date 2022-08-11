@@ -62,17 +62,10 @@ class PreviewJsSharedService : Disposable {
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
-        var installChecked = false
         var errorCount = 0
         val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
         for (msg in channel) {
             try {
-                if (!installChecked) {
-                    if (!isInstalled()) {
-                        install(msg.project)
-                    }
-                    installChecked = true
-                }
                 if (serverProcess == null) {
                     api = runServer(msg.project)
                 }
@@ -128,22 +121,6 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
-    private fun isInstalled(): Boolean {
-        val builder = processBuilder("node dist/is-installed.js")
-            .directory(nodeDirPath.toFile())
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
-        val process = builder.start()
-        if (process.waitFor() != 0) {
-            throw Error(readInputStream(process.errorStream))
-        }
-        val output = readInputStream(process.inputStream)
-        return when (val result = output.split("\n").last { x -> x.isNotEmpty() }.split(" ").last()) {
-            "installed" -> true
-            "missing" -> false
-            else -> throw Error("Unexpected output: $result")
-        }
-    }
-
     private fun readInputStream(inputStream: InputStream): String {
         val reader = BufferedReader(InputStreamReader(inputStream))
         val builder = StringBuilder()
@@ -163,23 +140,6 @@ Include the content of the Preview.js logs panel for easier debugging.
         return str.split("\u0007").last()
     }
 
-    private fun install(project: Project) {
-        val builder = processBuilder("node dist/install.js")
-            .directory(nodeDirPath.toFile())
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
-        val process = builder.start()
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val projectService = project.service<ProjectService>()
-        projectService.showConsole()
-        var line: String?
-        while (reader.readLine().also { line = it } != null) {
-            projectService.printToConsole(ignoreBellPrefix(line + "\n"))
-        }
-        if (process.waitFor() != 0) {
-            throw Error(readInputStream(process.errorStream))
-        }
-    }
-
     private suspend fun runServer(project: Project): PreviewJsApi {
         val port: Int
         try {
@@ -189,7 +149,7 @@ Include the content of the Preview.js logs panel for easier debugging.
         } catch (e: IOException) {
             throw Error("No port is not available to run Preview.js controller")
         }
-        val builder = processBuilder("node dist/run-server.js")
+        val builder = processBuilder("node dist/main.js")
             .redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
         builder.environment()["PORT"] = "$port"
