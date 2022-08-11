@@ -14,7 +14,7 @@
   },
   "homepage": "https://previewjs.com",
   "scripts": {
-    "build": "rimraf dist && tsc && node esbuild.js",
+    "build": "rimraf dist && tsc && node esbuild.js && cp -r ../../../loader/src/release/node_modules dist/node_modules",
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
