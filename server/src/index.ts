@@ -38,7 +38,7 @@ export interface ServerStartOptions {
 export async function ensureServerRunning(options: ServerStartOptions) {
   const alreadyRunning = await isServerAlreadyRunning(options);
   if (alreadyRunning) {
-    JSON.stringify(
+    console.log(
       `Preview.js daemon server is already running on port ${options.port}.`
     );
     sendParentProcessReadyMessage();
