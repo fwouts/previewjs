@@ -5,16 +5,24 @@
     "@previewjs/app",
     "@previewjs/app-foundations",
     "@previewjs/config",
+    "@previewjs/core",
+    "@previewjs/csf3",
+    "@previewjs/e2e-test-runner",
     "@previewjs/iframe",
     "@previewjs/plugin-react",
     "@previewjs/plugin-solid",
     "@previewjs/plugin-vue2",
     "@previewjs/plugin-vue3",
+    "@previewjs/pro",
     "@previewjs/serializable-values",
     "@previewjs/type-analyzer",
     "@previewjs/vfs"
   ],
-  "ignorePaths": ["smoke-test-apps/**", "test-apps/**"],
+  "ignorePaths": [
+    "loader/src/release/**",
+    "smoke-test-apps/**",
+    "test-apps/**"
+  ],
   "packageRules": [
     {
       "matchPackagePatterns": ["*"],
