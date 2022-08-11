@@ -49,11 +49,11 @@ importers:
   api:
     specifiers:
       '@previewjs/type-analyzer': ^3.0.3
-      unbuild: 0.7.6
+      unbuild: 0.8.7
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
     devDependencies:
-      unbuild: 0.7.6
+      unbuild: 0.8.7
 
   app:
     specifiers:
@@ -79,7 +79,7 @@ importers:
       react-dom: 18.2.0
       tailwindcss: 3.1.8
       typescript: 4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vite: 3.0.4
       vite-plugin-svgr: 2.2.1
     dependencies:
@@ -106,7 +106,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       tailwindcss: 3.1.8
       typescript: 4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vite: 3.0.4
       vite-plugin-svgr: 2.2.1_vite@3.0.4
 
@@ -136,7 +136,7 @@ importers:
       react-dom: ^18.2.0
       tailwindcss: 3.1.8
       typescript: 4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.1.2
@@ -164,7 +164,7 @@ importers:
       postcss: 8.4.16
       tailwindcss: 3.1.8
       typescript: 4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
 
   cli:
@@ -204,11 +204,11 @@ importers:
   config:
     specifiers:
       '@types/node': 17.0.8
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vite: 3.0.4
     devDependencies:
       '@types/node': 17.0.8
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vite: 3.0.4
 
   core:
@@ -236,7 +236,7 @@ importers:
       shx: 0.3.4
       tsconfig-paths: ^4.1.0
       typescript: ^4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vite: ^3
       vite-tsconfig-paths: ^3.5.0
     dependencies:
@@ -266,21 +266,21 @@ importers:
       '@types/fs-extra': 9.0.13
       monaco-editor: 0.34.0
       shx: 0.3.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
 
   csf3:
     specifiers:
       '@previewjs/core': ^6.0.0
       '@previewjs/type-analyzer': ^3.0.3
       typescript: ^4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
       typescript: 4.7.4
     devDependencies:
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
 
   dev-workspace:
@@ -317,7 +317,7 @@ importers:
       lodash: ^4.17.21
       playwright: ^1.24.2
       ts-node: ^10.9.1
-      unbuild: 0.7.6
+      unbuild: 0.8.7
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
@@ -334,7 +334,7 @@ importers:
       ts-node: 10.9.1_6bd4jfip3gnofjnkq5lqqdbk4m
     devDependencies:
       '@previewjs/iframe': link:../iframe
-      unbuild: 0.7.6
+      unbuild: 0.8.7
 
   frameworks/react:
     specifiers:
@@ -514,12 +514,12 @@ importers:
 
   iframe:
     specifiers:
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vite: ^3.0.4
     dependencies:
       vite: 3.0.4
     devDependencies:
-      unbuild: 0.7.6
+      unbuild: 0.8.7
 
   integrations/intellij/controller:
     specifiers:
@@ -596,7 +596,7 @@ importers:
       assert-never: ^1.2.1
       prettier: ^2.7.1
       typescript: ^4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -605,7 +605,7 @@ importers:
       typescript: 4.7.4
     devDependencies:
       '@types/prettier': 2.7.0
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
 
   server:
@@ -617,7 +617,7 @@ importers:
       rimraf: 3.0.2
       ts-node-dev: 2.0.0
       typescript: 4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
     devDependencies:
       '@previewjs/core': link:../core
       '@previewjs/loader': link:../loader
@@ -626,7 +626,7 @@ importers:
       rimraf: 3.0.2
       ts-node-dev: 2.0.0_cyi3jronpmwutj7hw2n2p72xty
       typescript: 4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
 
   smoke-test-apps/aliases:
     specifiers:
@@ -1604,7 +1604,7 @@ importers:
       lodash: ^4.17.21
       prettier: ^2.7.1
       typescript: ^4.7.4
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
     dependencies:
       '@previewjs/vfs': link:../vfs
@@ -1615,7 +1615,7 @@ importers:
       '@types/lodash': 4.14.182
       '@types/prettier': 2.7.0
       lodash: 4.17.21
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
 
   vfs:
@@ -1624,7 +1624,7 @@ importers:
       assert-never: ^1.2.1
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
     dependencies:
       assert-never: 1.2.1
@@ -1632,7 +1632,7 @@ importers:
       fs-extra: 10.1.0
     devDependencies:
       '@types/fs-extra': 9.0.13
-      unbuild: 0.7.6
+      unbuild: 0.8.7
       vitest: 0.21.0
 
 packages:
@@ -6823,22 +6823,6 @@ packages:
     dependencies:
       rollup: 2.77.2
       slash: 3.0.0
-    dev: true
-
-  /@rollup/plugin-commonjs/22.0.1_rollup@2.77.2:
-    resolution: {integrity: sha512-dGfEZvdjDHObBiP5IvwTKMVeq/tBZGMBHZFMdIV1ClMM/YoWS34xrHFGfag9SN2ZtMgNZRFruqvxZQEa70O6nQ==}
-    engines: {node: '>= 12.0.0'}
-    peerDependencies:
-      rollup: ^2.68.0
-    dependencies:
-      '@rollup/pluginutils': 3.1.0_rollup@2.77.2
-      commondir: 1.0.1
-      estree-walker: 2.0.2
-      glob: 7.2.0
-      is-reference: 1.2.1
-      magic-string: 0.25.9
-      resolve: 1.22.1
-      rollup: 2.77.2
     dev: true
 
   /@rollup/plugin-commonjs/22.0.2_rollup@2.77.2:
@@ -22190,21 +22174,13 @@ packages:
         optional: true
     dependencies:
       defu: 6.0.0
-      esbuild: 0.14.53
+      esbuild: 0.14.54
       fs-extra: 10.1.0
       globby: 11.1.0
       jiti: 1.14.0
       mri: 1.2.0
       pathe: 0.2.0
       typescript: 4.7.4
-    dev: true
-
-  /mlly/0.5.7:
-    resolution: {integrity: sha512-rz+n2i9862ymLH+UDlHpsuTVyCIAs+9WejS2De2VUlAKdpq8OJ9x/C2M7nNUMLEW1H+D6n0uZlpz8+tMGxCmyQ==}
-    dependencies:
-      acorn: 8.8.0
-      pathe: 0.3.3
-      pkg-types: 0.3.3
     dev: true
 
   /mlly/0.5.9:
@@ -24033,7 +24009,7 @@ packages:
     resolution: {integrity: sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0
+      ts-pnp: 1.2.0_typescript@4.7.4
     transitivePeerDependencies:
       - typescript
 
@@ -26398,7 +26374,7 @@ packages:
       semver: 7.3.2
       style-loader: 1.3.0_webpack@4.44.2
       terser-webpack-plugin: 4.2.3_webpack@4.44.2
-      ts-pnp: 1.2.0
+      ts-pnp: 1.2.0_typescript@4.7.4
       typescript: 4.7.4
       url-loader: 4.1.1_7hroj2mdu577asu2zyhaasbvae
       webpack: 4.44.2
@@ -27131,7 +27107,7 @@ packages:
       '@babel/code-frame': 7.18.6
     dev: true
 
-  /rollup-plugin-esbuild/4.9.1_eqz4txfukrxgk4uaulv43wixku:
+  /rollup-plugin-esbuild/4.9.1_iqbcpcj4ibf7kfl5wz2zv6tlvq:
     resolution: {integrity: sha512-qn/x7Wz9p3Xnva99qcb+nopH0d2VJwVnsxJTGEg+Sh2Z3tqQl33MhOwzekVo1YTKgv+yAmosjcBRJygMfGrtLw==}
     engines: {node: '>=12'}
     peerDependencies:
@@ -27141,7 +27117,7 @@ packages:
       '@rollup/pluginutils': 4.2.1
       debug: 4.3.4
       es-module-lexer: 0.9.3
-      esbuild: 0.14.53
+      esbuild: 0.15.0
       joycon: 3.1.1
       jsonc-parser: 3.0.0
       rollup: 2.77.2
@@ -29578,6 +29554,7 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+    dev: true
 
   /ts-pnp/1.2.0_typescript@4.7.4:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
@@ -29941,12 +29918,12 @@ packages:
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
 
-  /unbuild/0.7.6:
-    resolution: {integrity: sha512-W6pFPS6/ewlEV5uWbNgfo0i2LbVBsue5GKlOkCo6ozIrInOBEgq4s3HCUB5eZSw6Ty2iwF8dKM65pZX7QGZJ0g==}
+  /unbuild/0.8.7:
+    resolution: {integrity: sha512-zfmMCqaDW3IekoiqDxrMjNkaiU1kC89jX3nZki2l5jr5xWaptF0FGxswKINcuM4YRd3oNTNRkAHPuIBabJPCcw==}
     hasBin: true
     dependencies:
       '@rollup/plugin-alias': 3.1.9_rollup@2.77.2
-      '@rollup/plugin-commonjs': 22.0.1_rollup@2.77.2
+      '@rollup/plugin-commonjs': 22.0.2_rollup@2.77.2
       '@rollup/plugin-json': 4.1.0_rollup@2.77.2
       '@rollup/plugin-node-resolve': 13.3.0_rollup@2.77.2
       '@rollup/plugin-replace': 4.0.0_rollup@2.77.2
@@ -29954,13 +29931,14 @@ packages:
       chalk: 5.0.1
       consola: 2.15.3
       defu: 6.0.0
-      esbuild: 0.14.53
+      esbuild: 0.15.0
+      globby: 13.1.2
       hookable: 5.1.1
       jiti: 1.14.0
       magic-string: 0.26.2
       mkdirp: 1.0.4
       mkdist: 0.3.13_typescript@4.7.4
-      mlly: 0.5.7
+      mlly: 0.5.9
       mri: 1.2.0
       pathe: 0.3.3
       pkg-types: 0.3.3
@@ -29968,8 +29946,8 @@ packages:
       rimraf: 3.0.2
       rollup: 2.77.2
       rollup-plugin-dts: 4.2.2_oo3i3f3qmqiztdz5qgxrrjmd5e
-      rollup-plugin-esbuild: 4.9.1_eqz4txfukrxgk4uaulv43wixku
-      scule: 0.2.1
+      rollup-plugin-esbuild: 4.9.1_iqbcpcj4ibf7kfl5wz2zv6tlvq
+      scule: 0.3.2
       typescript: 4.7.4
       untyped: 0.4.5
     transitivePeerDependencies:
