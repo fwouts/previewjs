@@ -31,6 +31,7 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
         await checkNodeVersionResult(nodeVersionWsl);
         useWsl = true;
       } catch {
+        // TODO: If Node is installed but the wrong version and not installed on Windows, show the error still.
         // Throw the original error.
         throw e;
       }

@@ -151,9 +151,12 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
         val nodeVersionProcess = processBuilder("node --version").directory(nodeDirPath.toFile()).start()
         var useWsl = false
-        if (nodeVersionProcess.waitFor() === 0) {
+        try {
+            if (nodeVersionProcess.waitFor() !== 0) {
+                throw Error("Preview.js was unable to run node.\\n\\nIs it installed? You may need to restart your IDE.")
+            }
             checkNodeVersion(nodeVersionProcess)
-        } else {
+        } catch (e: Error) {
             // Unable to start Node. Check WSL if we're on Windows.
             if (System.getProperty("os.name").lowercase().contains("win")) {
                 val nodeVersionProcessWsl = processBuilder("wsl bash -lic node --version").directory(nodeDirPath.toFile()).start()
@@ -162,6 +165,7 @@ Include the content of the Preview.js logs panel for easier debugging.
                     useWsl = true
                 } else {
                     // If WSL failed, just ignore it.
+                    throw e
                 }
             }
         }
@@ -208,8 +212,14 @@ Include the content of the Preview.js logs panel for easier debugging.
     }
 
     private fun checkNodeVersion(process: Process) {
-        val output = readInputStream(process.inputStream)
-
+        val nodeVersion = readInputStream(process.inputStream)
+        val matchResult = Regex.fromLiteral("^v(\\d+).*\$").find(nodeVersion)
+        matchResult?.let {
+            val majorVersion = matchResult.groups[1]?.value?.toInt()
+            if (majorVersion != null && majorVersion < 14) {
+                throw Error("Preview.js needs NodeJS 14+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
+            }
+        }
     }
 
     private fun processBuilder(command: String): ProcessBuilder {
