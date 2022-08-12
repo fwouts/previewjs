@@ -34,6 +34,7 @@ export function dereferenceType(
     case "enum":
     case "array":
     case "set":
+    case "tuple":
     case "object":
     case "map":
     case "record":

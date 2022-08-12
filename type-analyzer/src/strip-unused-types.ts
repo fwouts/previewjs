@@ -27,6 +27,11 @@ export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
       case "set":
         visitType(type.items);
         return;
+      case "tuple":
+        for (const subtype of type.items) {
+          visitType(subtype);
+        }
+        return;
       case "object":
         for (const fieldType of Object.values(type.fields)) {
           visitType(fieldType);

@@ -18,6 +18,7 @@ import {
   recordType,
   setType,
   STRING_TYPE,
+  tupleType,
   unionType,
   UNKNOWN_TYPE,
   VOID_TYPE,
@@ -127,6 +128,7 @@ describe("generateTypeDeclarations", () => {
             }),
             arrayType: arrayType(STRING_TYPE),
             setType: setType(STRING_TYPE),
+            tupleType: tupleType([STRING_TYPE, NUMBER_TYPE]),
             recordType: recordType(STRING_TYPE, NUMBER_TYPE),
             unionType: unionType([STRING_TYPE, NUMBER_TYPE]),
             intersectionType: intersectionType([STRING_TYPE, NUMBER_TYPE]),
@@ -162,6 +164,7 @@ describe("generateTypeDeclarations", () => {
         [\\"numberEnumType\\"]: 3 | 2 | 1;
         [\\"arrayType\\"]: Array<string>;
         [\\"setType\\"]: Set<string>;
+        [\\"tupleType\\"]: [string, number];
         [\\"recordType\\"]: Record<string, number>;
         [\\"unionType\\"]: string | number;
         [\\"intersectionType\\"]: string & number;
