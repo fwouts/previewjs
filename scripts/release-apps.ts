@@ -4,6 +4,7 @@ import { readFile, realpath } from "fs/promises";
 import inquirer from "inquirer";
 import path from "path";
 import { previewjsProVersion } from "../loader/src/version";
+import { assertCleanGit } from "./clean-git";
 import { gitChangelog } from "./git-changelog";
 import { incrementVersion } from "./increment-version";
 import { getPackageJson } from "./package-json";
@@ -106,7 +107,7 @@ async function main() {
 }
 
 async function releaseIntellijPlugin() {
-  const intellijPath = path.join(__dirname, "integrations", "intellij");
+  const intellijPath = path.join(__dirname, "..", "integrations", "intellij");
   const gradlePropertiesPath = `${intellijPath}/gradle.properties`;
   const gradlePropertiesContent = await fs.promises.readFile(
     gradlePropertiesPath,
@@ -136,7 +137,7 @@ async function releaseIntellijPlugin() {
 }
 
 async function releaseVscodeExtension() {
-  const vscodePath = path.join(__dirname, "integrations", "vscode");
+  const vscodePath = path.join(__dirname, "..", "integrations", "vscode");
   const packageJson = getPackageJson(`${vscodePath}/package.json`);
   const { version: currentVersion } = await packageJson.read();
   const version = await incrementVersion(currentVersion);
@@ -152,7 +153,7 @@ async function releaseVscodeExtension() {
 }
 
 async function releaseCliApp() {
-  const cliPath = path.join(__dirname, "cli");
+  const cliPath = path.join(__dirname, "..", "cli");
   const packageJson = getPackageJson(`${cliPath}/package.json`);
   const { version: currentVersion } = await packageJson.read();
   const version = await incrementVersion(currentVersion);
