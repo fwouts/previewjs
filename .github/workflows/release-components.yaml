@@ -45,12 +45,6 @@ jobs:
           diff-search: true
           file-name: ./app/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
-      - id: checkCliVersion
-        uses: EndBug/version-check@v2.1.0
-        with:
-          diff-search: true
-          file-name: ./cli/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkConfigVersion
         uses: EndBug/version-check@v2.1.0
         with:
@@ -131,8 +125,6 @@ jobs:
         run: cd app-foundations && pnpm publish --no-git-checks --access public
       - if: steps.checkAppVersion.outputs.changed == 'true'
         run: cd app && pnpm publish --no-git-checks --access public
-      - if: steps.checkCliVersion.outputs.changed == 'true'
-        run: cd cli && pnpm publish --no-git-checks --access public
       - if: steps.checkConfigVersion.outputs.changed == 'true'
         run: cd config && pnpm publish --no-git-checks --access public
       - if: steps.checkCoreVersion.outputs.changed == 'true'
