@@ -165,8 +165,7 @@ Include the content of the Preview.js logs panel for easier debugging.
                     useWsl = true
                 } else {
                     // If WSL failed, just ignore it.
-                    throw Error("Preview.js was unable to run node even with WSL.")
-//                    throw e
+                    throw e
                 }
             }
         }
