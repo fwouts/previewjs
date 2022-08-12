@@ -31,7 +31,7 @@ export function computeIntersection(types: ValueType[]): ValueType {
   }
   const defaultIntersection = intersectionType(types);
   switch (evolvingType.kind) {
-    case "function":
+    case "function": {
       const returnTypes = [evolvingType.returnType];
       for (let i = 1; i < types.length; i++) {
         const type = types[i]!;
@@ -41,6 +41,7 @@ export function computeIntersection(types: ValueType[]): ValueType {
         returnTypes.push(type.returnType);
       }
       return functionType(computeIntersection(returnTypes));
+    }
     case "object":
       for (let i = 1; i < types.length; i++) {
         const intersectWith = types[i]!;

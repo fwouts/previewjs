@@ -1,5 +1,5 @@
 import path from "path";
-import * as vite from "vite";
+import type * as vite from "vite";
 
 const extensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 const importRegexp =

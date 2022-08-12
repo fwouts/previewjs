@@ -7,6 +7,7 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { reactFrameworkPlugin } from ".";
 import { extractReactComponents } from "./extract-component";
 
@@ -84,15 +85,21 @@ export const NotComponent = () => {
 export const NotComponentEither = () => {
   return "Hello";
 };
+
+export const AlsoNotAStory = {
+  args: {}
+};
 `)
     ).toMatchObject([
       {
         name: "DeclaredFunction",
         exported: false,
+        isStory: false,
       },
       {
         name: "ConstantFunction",
         exported: false,
+        isStory: false,
       },
       // Note: this isn't detected as of October 2021.
       // {
@@ -103,30 +110,37 @@ export const NotComponentEither = () => {
       {
         name: "ClassComponent1",
         exported: false,
+        isStory: false,
       },
       {
         name: "ClassComponent2",
         exported: false,
+        isStory: false,
       },
       {
         name: "ForwardRef",
         exported: false,
+        isStory: false,
       },
       {
         name: "NextComponent",
         exported: false,
+        isStory: false,
       },
       {
         name: "Pure",
         exported: true,
+        isStory: false,
       },
       {
         name: "NotObjectProps",
         exported: true,
+        isStory: false,
       },
       {
         name: "MissingType",
         exported: true,
+        isStory: false,
       },
     ]);
   });
@@ -222,6 +236,37 @@ export default () => {
 }
 `)
     ).toMatchObject([]);
+  });
+
+  it("detects CSF3 stories", async () => {
+    expect(
+      extract(`
+export default {
+  component: Button
+}
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+`)
+    ).toMatchObject([
+      {
+        name: "Example",
+        exported: true,
+        isStory: true,
+      },
+      {
+        name: "NoArgs",
+        exported: true,
+        isStory: true,
+      },
+    ]);
   });
 
   function extract(source: string) {

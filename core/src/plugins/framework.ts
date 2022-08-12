@@ -1,17 +1,17 @@
-import { PreviewConfig } from "@previewjs/config";
-import {
+import type { PreviewConfig } from "@previewjs/config";
+import type {
   CollectedTypes,
   TypeAnalyzer,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { Reader } from "@previewjs/vfs";
-import ts from "typescript";
-import vite from "vite";
-import { PackageDependencies } from "./dependencies";
+import type { Reader } from "@previewjs/vfs";
+import type ts from "typescript";
+import type vite from "vite";
+import type { PackageDependencies } from "./dependencies";
 
-export interface FrameworkPluginFactory<Options = {}> {
+export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
-  create(options?: Options): Promise<FrameworkPlugin>;
+  create(): Promise<FrameworkPlugin>;
 }
 
 export interface FrameworkPlugin {
@@ -31,6 +31,7 @@ export interface FrameworkPlugin {
 export interface Component {
   readonly absoluteFilePath: string;
   readonly name: string;
+  readonly isStory: boolean;
   readonly exported: boolean;
   readonly offsets: Array<[start: number, end: number]>;
   readonly analyze: () => Promise<ComponentAnalysis>;

@@ -1,0 +1,62 @@
+{
+  "name": "@previewjs/app-foundations",
+  "version": "4.0.2",
+  "license": "AGPL-3.0",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app-foundations --no-deps --include-dependencies",
+    "build": "unbuild",
+    "test": "vitest --no-threads"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.2",
+    "@fortawesome/free-brands-svg-icons": "^6.1.2",
+    "@fortawesome/free-solid-svg-icons": "^6.1.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@monaco-editor/react": "^4.4.5",
+    "@previewjs/api": "^2.4.1",
+    "@previewjs/iframe": "^1.1.5",
+    "@previewjs/serializable-values": "^3.0.0",
+    "@previewjs/type-analyzer": "^4.0.0",
+    "@react-hook/window-size": "^3.0.7",
+    "assert-never": "^1.2.1",
+    "axios": "^0.27.2",
+    "clsx": "^1.2.1",
+    "framer-motion": "^7.1.0",
+    "mobx": "^6.6.1",
+    "mobx-react-lite": "^3.4.0",
+    "monaco-editor": "^0.34.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.0.17",
+    "autoprefixer": "10.4.8",
+    "postcss": "8.4.16",
+    "tailwindcss": "3.1.8",
+    "typescript": "4.7.4",
+    "unbuild": "0.8.8",
+    "vitest": "0.21.1"
+  }
+}

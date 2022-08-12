@@ -1,4 +1,4 @@
-export type Endpoint<Request, Response> = {
+export type Endpoint<_Request, _Response> = {
   path: string;
 };
 

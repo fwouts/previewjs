@@ -1,4 +1,4 @@
-import { CollectedTypes, ValueType } from "./definitions";
+import type { CollectedTypes, ValueType } from "./definitions";
 import { evaluateType } from "./type-parameters";
 
 export function isValid(
@@ -48,6 +48,19 @@ export function isValid(
       }
       for (const itemValue of value) {
         if (!isValid(type.items, collected, itemValue)) {
+          return false;
+        }
+      }
+      return true;
+    case "tuple":
+      if (!(value instanceof Array)) {
+        return false;
+      }
+      if (value.length !== type.items.length) {
+        return false;
+      }
+      for (let i = 0; i < type.items.length; i++) {
+        if (!isValid(type.items[i]!, collected, value[i])) {
           return false;
         }
       }
@@ -113,12 +126,13 @@ export function isValid(
       return value === undefined || isValid(type.type, collected, value);
     case "promise":
       return value && typeof value === "object" && "then" in value;
-    case "name":
+    case "name": {
       const resolvedType = collected[type.name];
       if (!resolvedType) {
         // For now, this is a sign of a type parameter. Just say yes.
         return true;
       }
       return isValid(evaluateType(resolvedType, type.args), collected, value);
+    }
   }
 }

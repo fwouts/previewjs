@@ -12,7 +12,7 @@ interface AppProps {
   };
 }
 
-function App(props: AppProps) {
+function App(_props: AppProps) {
   return (
     <div className="App">
       <header className="App-header">

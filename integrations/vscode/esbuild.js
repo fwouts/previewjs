@@ -1,19 +1,11 @@
-const fs = require("fs");
 const path = require("path");
 const { build } = require("esbuild");
 
-const { version } = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "package.json"), "utf8")
-);
-if (!version) {
-  throw new Error("Unable to detect version from package.json");
-}
-
 build({
-  entryPoints: ["./src/index.ts"],
+  entryPoints: ["./src/index.ts", "./src/server.ts"],
   minify: false,
   bundle: true,
-  outfile: "./dist/index.js",
+  outdir: "./dist",
   external: ["vscode"],
   platform: "node",
   define: {
@@ -22,7 +14,7 @@ build({
     ),
     ...(process.env.PREVIEWJS_DEV === "1" && {
       "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
-        path.join(__dirname, "dev")
+        path.join(__dirname, "..", "..", "dev-workspace")
       ),
     }),
   },

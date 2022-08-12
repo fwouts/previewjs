@@ -29,26 +29,26 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [16]
+        node-version: [18.x]
         os: [ubuntu-20.04, macos-11, windows-2022]
         group: [0, 1, 2]
         include:
-          - node-version: 12
+          - node-version: 14
             os: ubuntu-latest
             group: 0
-          - node-version: 12
+          - node-version: 14
             os: ubuntu-latest
             group: 1
-          - node-version: 12
+          - node-version: 14
             os: ubuntu-latest
             group: 2
-          - node-version: 14
+          - node-version: 16
             os: ubuntu-latest
             group: 0
-          - node-version: 14
+          - node-version: 16
             os: ubuntu-latest
             group: 1
-          - node-version: 14
+          - node-version: 16
             os: ubuntu-latest
             group: 2
     steps:
@@ -64,10 +64,11 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2.2.1
+      - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 6.24.4
           run_install: true
+      - run: pnpm turbo run build --scope="@previewjs/e2e-test-runner" --include-dependencies
+      - run: pnpm install # necessary to link e2e-test-runner
       - run: pnpm turbo run e2e-test --scope="@previewjs/app" --include-dependencies
         env:
           GROUP_INDEX: ${{ matrix.group }}
@@ -77,17 +78,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
-          path: |
-            app/tests/__screenshots__
-            pro/tests/__screenshots__
-      - name: Archive failure screenshots
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: failure-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
-          path: |
-            app/tests/__failures__
-            pro/tests/__failures__
+          path: app/tests/__screenshots__
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
@@ -96,7 +87,7 @@ jobs:
             git status
             export SCREENSHOTS_CHANGED=1
             echo "::set-env name=SCREENSHOTS_CHANGED::$SCREENSHOTS_CHANGED"
-            git add app/tests/__screenshots__ pro/tests/__screenshots__
+            git add app/tests/__screenshots__ 
             git stash
             git config --global user.name 'CI bot'
             git config --global user.email 'fwouts@users.noreply.github.com'

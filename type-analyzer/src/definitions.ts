@@ -12,6 +12,7 @@ export type ValueType =
   | EnumType
   | ArrayType
   | SetType
+  | TupleType
   | ObjectType
   | MapType
   | RecordType
@@ -146,10 +147,14 @@ export function setType(items: ValueType): SetType {
   };
 }
 
-export function tupleType(items: ValueType[]): ObjectType {
+export interface TupleType {
+  kind: "tuple";
+  items: ValueType[];
+}
+export function tupleType(items: ValueType[]): TupleType {
   return {
-    kind: "object",
-    fields: Object.fromEntries(items.map((item, i) => [i.toString(), item])),
+    kind: "tuple",
+    items,
   };
 }
 
@@ -177,9 +182,6 @@ export interface IntersectionType {
 export function intersectionType(types: ValueType[]): ValueType {
   if (types.length === 0) {
     return ANY_TYPE;
-  }
-  if (types.length === 0) {
-    throw new Error(`Intersection of no types is invalid.`);
   }
   if (types.length === 1) {
     return types[0]!;

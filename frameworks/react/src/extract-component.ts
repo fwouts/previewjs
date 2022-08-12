@@ -1,4 +1,5 @@
-import { Component } from "@previewjs/core";
+import type { Component } from "@previewjs/core";
+import { extractCsf3Stories } from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
@@ -11,7 +12,8 @@ export function extractReactComponents(
   if (!sourceFile) {
     return [];
   }
-  let components: Array<
+  const args = helpers.extractArgs(sourceFile);
+  const components: Array<
     Omit<Component, "analyze"> & {
       signature: ts.Signature;
     }
@@ -32,6 +34,7 @@ export function extractReactComponents(
         components.push({
           absoluteFilePath,
           name: "default",
+          isStory: false,
           exported: true,
           offsets: [[statement.getStart(), statement.getEnd()]],
           signature,
@@ -55,6 +58,7 @@ export function extractReactComponents(
           components.push({
             absoluteFilePath,
             name,
+            isStory: !!args[name],
             exported: !!exportedName,
             offsets: [[statement.getStart(), statement.getEnd()]],
             signature,
@@ -77,6 +81,7 @@ export function extractReactComponents(
           components.push({
             absoluteFilePath,
             name: name || "default",
+            isStory: name ? !!args[name] : false,
             exported,
             offsets: [[statement.getStart(), statement.getEnd()]],
             signature,
@@ -94,6 +99,7 @@ export function extractReactComponents(
         components.push({
           absoluteFilePath,
           name,
+          isStory: !!args[name],
           exported: !!exportedName,
           offsets: [[statement.getStart(), statement.getEnd()]],
           signature,
@@ -102,7 +108,7 @@ export function extractReactComponents(
     }
   }
 
-  return components.map(({ signature, ...component }) => ({
+  const reactComponents = components.map(({ signature, ...component }) => ({
     ...component,
     analyze: async () =>
       analyzeReactComponent(
@@ -112,6 +118,10 @@ export function extractReactComponents(
         signature
       ),
   }));
+  return [
+    ...reactComponents,
+    ...extractCsf3Stories(absoluteFilePath, sourceFile),
+  ];
 }
 
 function extractReactComponent(

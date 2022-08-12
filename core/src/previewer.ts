@@ -10,15 +10,28 @@ import {
   ReaderListenerInfo,
 } from "@previewjs/vfs";
 import assertNever from "assert-never";
-import express from "express";
+import type express from "express";
 import { pathExistsSync } from "fs-extra";
 import path from "path";
-import * as vite from "vite";
-import { FrameworkPlugin } from "./plugins/framework";
+import type * as vite from "vite";
+import { getCacheDir } from "./caching";
+import { findFiles } from "./find-files";
+import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
 import { ViteManager } from "./vite/vite-manager";
 
 const POSTCSS_CONFIG_FILE = ["postcss.config.js", ".postcssrc.js"];
+const GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT = [
+  "index",
+  "global",
+  "globals",
+  "style",
+  "styles",
+];
+const GLOBAL_CSS_EXTS = ["css", "sass", "scss", "less", "styl", "stylus"];
+const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
+  GLOBAL_CSS_EXTS.map((ext) => `${fileName}.${ext}`)
+);
 
 const FILES_REQUIRING_RESTART = new Set([
   PREVIEW_CONFIG_NAME,
@@ -29,6 +42,7 @@ const FILES_REQUIRING_RESTART = new Set([
   "pnpm-lock.yaml",
   "yarn.lock",
   ...POSTCSS_CONFIG_FILE,
+  ...GLOBAL_CSS_FILE,
 ]);
 
 const SHUTDOWN_CHECK_INTERVAL = 3000;
@@ -48,7 +62,6 @@ export class Previewer {
       reader: Reader;
       previewDirPath: string;
       rootDirPath: string;
-      cacheDirPath: string;
       logLevel: vite.UserConfig["logLevel"];
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
@@ -132,6 +145,12 @@ export class Previewer {
         // on the `import-cwd` package to resolve plugins.
         process.chdir(this.options.rootDirPath);
         this.config = await readConfig(this.options.rootDirPath);
+        const globalCssAbsoluteFilePaths = await findFiles(
+          this.options.rootDirPath,
+          `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
+            "|"
+          )}).@(${GLOBAL_CSS_EXTS.join("|")})`
+        );
         this.appServer = new Server({
           middlewares: [
             ...(this.options.middlewares || []),
@@ -152,8 +171,12 @@ export class Previewer {
             this.options.previewDirPath,
             "index.html"
           ),
+          detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
+            (absoluteFilePath) =>
+              path.relative(this.options.rootDirPath, absoluteFilePath)
+          ),
           reader: this.transformingReader,
-          cacheDir: path.join(this.options.cacheDirPath, "vite"),
+          cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
           config: this.configWithWrapper(this.config),
           logLevel: this.options.logLevel,
           frameworkPlugin: this.options.frameworkPlugin,

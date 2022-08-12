@@ -10,20 +10,20 @@ on:
       - main
     paths:
       - "integrations/vscode/**"
-      - ".github/workflows/tests-vscode.yaml"
+      - ".github/workflows/test-vscode.yaml"
   pull_request:
     branches:
       - "*"
     paths:
       - "integrations/vscode/**"
-      - ".github/workflows/tests-vscode.yaml"
+      - ".github/workflows/test-vscode.yaml"
 
 jobs:
   vscode-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.x]
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
@@ -38,18 +38,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2.2.1
+      - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 6.24.4
           run_install: true
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies --no-deps
-      - run: cd integrations/vscode && yarn --frozen-lockfile && yarn build
+      - run: pnpm turbo run build --scope="@previewjs/loader" --include-dependencies
+      - run: cd integrations/vscode && pnpm build

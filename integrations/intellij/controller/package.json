@@ -14,20 +14,13 @@
   },
   "homepage": "https://previewjs.com",
   "scripts": {
-    "build": "rimraf dist && tsc && node esbuild.js",
-    "dev": "ts-node-dev --respawn src/main.ts"
+    "build": "rimraf dist && tsc && node esbuild.js && cp -r ../../../loader/src/release/node_modules dist/node_modules"
   },
   "devDependencies": {
-    "@previewjs/core": "workspace:*",
-    "@previewjs/loader": "workspace:*",
-    "@types/express": "4.17.13",
-    "@types/uuid": "8.3.4",
-    "cross-env": "7.0.3",
-    "esbuild": "0.14.32",
-    "express": "4.17.3",
+    "@previewjs/server": "workspace:*",
+    "esbuild": "0.15.1",
     "rimraf": "3.0.2",
-    "ts-node-dev": "1.1.8",
-    "typescript": "4.6.3",
-    "uuid": "8.3.2"
+    "ts-node-dev": "2.0.0",
+    "typescript": "4.7.4"
   }
 }

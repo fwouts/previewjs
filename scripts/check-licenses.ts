@@ -6,7 +6,6 @@ const starts = [
   path.join(__dirname, "..", "app"),
   path.join(__dirname, "..", "integrations", "intellij", "controller"),
   path.join(__dirname, "..", "integrations", "vscode"),
-  path.join(__dirname, "..", "pro"),
 ];
 
 async function main() {
@@ -16,7 +15,6 @@ async function main() {
     "@previewjs/app",
     "mobx-react-lite",
     "@fortawesome/react-fontawesome",
-    "@svgr/core",
   ]) {
     if (!allPackages.find(({ name }) => name === packageName)) {
       throw new Error(`Expected to find package: ${packageName}`);

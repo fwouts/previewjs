@@ -5,9 +5,16 @@ import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { createVueTypeScriptReader } from "./vue-reader";
 
+/** @deprecated */
 export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    return dependencies["vue"]?.majorVersion === 3 || !!dependencies["nuxt3"];
+    const version =
+      (await dependencies["vue"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt"]?.readInstalledVersion());
+    if (!version) {
+      return false;
+    }
+    return parseInt(version) === 3;
   },
   async create() {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
@@ -43,6 +50,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             components.push({
               absoluteFilePath,
               name,
+              isStory: false,
               exported: true,
               offsets: [[0, Infinity]],
               analyze: async () =>
@@ -56,7 +64,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: (config) => {
+      viteConfig: () => {
         return {
           plugins: [
             createVuePlugin(),
@@ -77,7 +85,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             },
             {
               name: "previewjs:process-define-preview",
-              async transform(code, id) {
+              async transform(code) {
                 if (!code.includes("const _sfc_main = ")) {
                   return;
                 }
@@ -171,3 +179,5 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
     };
   },
 };
+
+export default vue3FrameworkPlugin;

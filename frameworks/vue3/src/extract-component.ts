@@ -1,4 +1,5 @@
-import { Component, ComponentAnalysis } from "@previewjs/core";
+import type { Component, ComponentAnalysis } from "@previewjs/core";
+import { extractCsf3Stories } from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -13,7 +14,7 @@ export function extractVueComponents(
   if (!sourceFile) {
     return [];
   }
-  let components: Component[] = [];
+  const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
   // TODO: Handle JSX and Storybook stories.
@@ -51,6 +52,7 @@ export function extractVueComponents(
           components.push({
             absoluteFilePath,
             name,
+            isStory: !!args[name],
             exported: !!exportedName,
             offsets: [[statement.getFullStart(), statement.getEnd()]],
             analyze: async () => analysis,
@@ -72,6 +74,7 @@ export function extractVueComponents(
         components.push({
           absoluteFilePath,
           name,
+          isStory: !!args[name],
           exported: !!exportedName,
           offsets: [[statement.getFullStart(), statement.getEnd()]],
           analyze: async () => analysis,
@@ -80,7 +83,7 @@ export function extractVueComponents(
     }
   }
 
-  return components;
+  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
 }
 
 function extractVueComponent(

@@ -29,7 +29,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [16]
+        node-version: [18.x]
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
@@ -44,10 +44,11 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2.2.1
+      - uses: pnpm/action-setup@v2.2.2
         with:
-          version: 6.24.4
           run_install: true
+      - run: pnpm lint
       - run: pnpm check-licenses
+      - run: pnpm check-deps
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
       - run: pnpm turbo run test

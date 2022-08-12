@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/core/controller";
+import type { RendererLoader } from "@previewjs/iframe";
 import React from "react";
 
 export const load: RendererLoader = async ({
@@ -10,30 +10,44 @@ export const load: RendererLoader = async ({
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     React.Fragment;
-  const Component =
+  const ComponentOrStory =
     componentModule[
       componentName === "default" ? "default" : `__previewjs__${componentName}`
     ];
-  if (!Component) {
+  if (!ComponentOrStory) {
     throw new Error(`No component named '${componentName}'`);
   }
   const decorators = [
-    ...(Component.decorators || []),
+    ...(ComponentOrStory.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
-  const variants = (Component.__previewjs_variants || []).map((variant) => {
-    return {
-      key: variant.key,
-      label: variant.label,
-      props: variant.props,
-    };
-  });
+  const variants = (ComponentOrStory.__previewjs_variants || []).map(
+    (variant) => {
+      return {
+        key: variant.key,
+        label: variant.label,
+        props: variant.props,
+      };
+    }
+  );
+  const RenderComponent =
+    ComponentOrStory.render ||
+    ComponentOrStory.component ||
+    componentModule.default?.render ||
+    componentModule.default?.component ||
+    ComponentOrStory;
   const Renderer = (props) => {
     return (
       <Wrapper>
         {decorators.reduce(
           (component, decorator) => () => decorator(component),
-          () => <Component {...Component.args} {...props} />
+          () => (
+            <RenderComponent
+              {...componentModule.default?.args}
+              {...ComponentOrStory.args}
+              {...props}
+            />
+          )
         )()}
       </Wrapper>
     );

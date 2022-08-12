@@ -1,10 +1,12 @@
-const { reactFrameworkPlugin } = require("@previewjs/plugin-react");
+const { svgr } = require("vite-plugin-react-svgr");
 
 /** @type {import("@previewjs/config").PreviewConfig} */
 module.exports = {
-  frameworkPlugin: reactFrameworkPlugin.create({
-    svgr: {
-      componentName: "default",
-    },
-  }),
+  vite: {
+    plugins: [
+      svgr({
+        exportAs: "default",
+      }),
+    ],
+  },
 };

@@ -1,39 +1,25 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
-import path from "path";
-import { LogLevel } from ".";
-import { locking } from "./locking";
+import { exclusivePromiseRunner } from "exclusive-promises";
+import type { LogLevel } from ".";
+import { loadModules } from "./modules";
 
-export async function load({
-  installDir,
-  packageName,
-}: {
+const locking = exclusivePromiseRunner();
+
+export async function load(options: {
   installDir: string;
   packageName: string;
 }) {
-  const core = requireModule("@previewjs/core");
-  const vfs = requireModule("@previewjs/vfs");
-  const setupEnvironment: core.SetupPreviewEnvironment =
-    requireModule(packageName).default;
-
-  function requireModule(name: string) {
-    try {
-      return require(require.resolve(name, {
-        paths: [installDir, path.join(installDir, "node_modules", packageName)],
-      }));
-    } catch (e) {
-      console.error(`Unable to load ${name} from ${installDir}`);
-      throw e;
-    }
-  }
-
-  return init(core, vfs, setupEnvironment);
+  const { core, vfs, setupEnvironment, frameworkPluginFactories } =
+    loadModules(options);
+  return init(core, vfs, setupEnvironment, frameworkPluginFactories);
 }
 
 export async function init(
   coreModule: typeof core,
   vfsModule: typeof vfs,
-  setupEnvironment: core.SetupPreviewEnvironment
+  setupEnvironment: core.SetupPreviewEnvironment,
+  frameworkPluginFactories?: core.FrameworkPluginFactory[]
 ) {
   const memoryReader = vfsModule.createMemoryReader();
   const reader = vfsModule.createStackedReader([
@@ -55,10 +41,12 @@ export async function init(
       versionCode,
       logLevel,
       absoluteFilePath,
+      persistedStateManager,
     }: {
       versionCode: string;
       logLevel: LogLevel;
       absoluteFilePath: string;
+      persistedStateManager?: core.PersistedStateManager;
     }) {
       const rootDirPath = coreModule.findWorkspaceRoot(absoluteFilePath);
       if (!rootDirPath) {
@@ -70,6 +58,7 @@ export async function init(
           const loaded = await coreModule.loadPreviewEnv({
             rootDirPath,
             setupEnvironment,
+            frameworkPluginFactories,
           });
           if (!loaded) {
             return null;
@@ -82,7 +71,8 @@ export async function init(
             reader,
             frameworkPlugin,
             middlewares: previewEnv.middlewares || [],
-            persistedStateManager: previewEnv.persistedStateManager,
+            persistedStateManager:
+              persistedStateManager || previewEnv.persistedStateManager,
             onReady: previewEnv.onReady?.bind(previewEnv),
           });
         });

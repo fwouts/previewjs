@@ -1,13 +1,32 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:base"],
   "ignoreDeps": [
-    "@fortawesome/fontawesome-svg-core",
-    "@fortawesome/react-fontawesome"
+    "@previewjs/api",
+    "@previewjs/app",
+    "@previewjs/app-foundations",
+    "@previewjs/config",
+    "@previewjs/core",
+    "@previewjs/csf3",
+    "@previewjs/e2e-test-runner",
+    "@previewjs/iframe",
+    "@previewjs/plugin-react",
+    "@previewjs/plugin-solid",
+    "@previewjs/plugin-vue2",
+    "@previewjs/plugin-vue3",
+    "@previewjs/pro",
+    "@previewjs/serializable-values",
+    "@previewjs/type-analyzer",
+    "@previewjs/vfs"
   ],
   "ignorePaths": [
+    "loader/src/release/**",
     "smoke-test-apps/**",
     "test-apps/**"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "rangeStrategy": "bump"
+    }
   ]
 }

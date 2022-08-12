@@ -21,7 +21,7 @@ export function computeUnion(types: ValueType[]): ValueType {
 }
 
 function computeUnionWithoutVoid(types: ValueType[]): ValueType {
-  let evolvingType = types[0];
+  const evolvingType = types[0];
   if (!evolvingType) {
     return VOID_TYPE;
   }
@@ -50,7 +50,7 @@ function computeUnionWithoutVoid(types: ValueType[]): ValueType {
   }
   const defaultUnion = unionType(types);
   switch (evolvingType.kind) {
-    case "function":
+    case "function": {
       const returnTypes = [evolvingType.returnType];
       for (let i = 1; i < types.length; i++) {
         const type = types[i]!;
@@ -60,6 +60,7 @@ function computeUnionWithoutVoid(types: ValueType[]): ValueType {
         returnTypes.push(type.returnType);
       }
       return functionType(computeUnion(returnTypes));
+    }
     default:
       return defaultUnion;
   }

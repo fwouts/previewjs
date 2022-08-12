@@ -4,9 +4,12 @@ import type { Plugin } from "vite";
 
 const COMPONENT_LOADER_MODULE = "/@component-loader.js";
 
-export function componentLoaderPlugin(options: {
+type PluginOptions = {
   config: PreviewConfig;
-}): Plugin {
+  detectedGlobalCssFilePaths: string[];
+};
+
+export function componentLoaderPlugin(options: PluginOptions): Plugin {
   return {
     name: "previewjs:component-loader",
     resolveId: async function (id) {
@@ -20,17 +23,14 @@ export function componentLoaderPlugin(options: {
         return null;
       }
       const params = new URLSearchParams(id.split("?")[1] || "");
-      return generateComponentLoaderModule(params, options.config.wrapper);
+      return generateComponentLoaderModule(params, options);
     },
   };
 }
 
 function generateComponentLoaderModule(
   urlParams: URLSearchParams,
-  wrapper?: {
-    path: string;
-    componentName?: string;
-  }
+  { detectedGlobalCssFilePaths, config: { wrapper } }: PluginOptions
 ): string {
   const filePath = urlParams.get("p");
   const componentName = urlParams.get("c");
@@ -41,7 +41,9 @@ function generateComponentLoaderModule(
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
 
+let counter = 0;
 export async function refresh() {
+  const currentCounter = ++counter;
   let loadingError = null;
   ${
     wrapper
@@ -59,6 +61,12 @@ export async function refresh() {
   });
   `
       : `
+  ${detectedGlobalCssFilePaths
+    .map(
+      (filePath) =>
+        `import("/${filePath.replace(/\\/g, "/")}").catch(console.warn);`
+    )
+    .join("\n")}
   const wrapperModule = null;
   `
   }
@@ -73,6 +81,10 @@ export async function refresh() {
     loadingError = e.stack || e.message || null;
     return null;
   });
+  if (currentCounter !== counter) {
+    // Abort to avoid double rendering.
+    return;
+  }
   await updateComponent({
     wrapperModule,
     wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
@@ -90,16 +102,20 @@ ${
   wrapper
     ? `
 import.meta.hot.accept(["${wrapper.path}"], ([wrapperModule]) => {
-  import.meta.hot.data.preloadedWrapperModule = wrapperModule;
-  refresh();
+  if (wrapperModule) {
+    import.meta.hot.data.preloadedWrapperModule = wrapperModule;
+    refresh();
+  }
 });
 `
     : ``
 }
 
 import.meta.hot.accept(["${componentModuleId}"], ([componentModule]) => {
-  import.meta.hot.data.preloadedComponentModule = componentModule;
-  refresh();
+  if (componentModule) {
+    import.meta.hot.data.preloadedComponentModule = componentModule;
+    refresh();
+  }
 });
 `;
 }

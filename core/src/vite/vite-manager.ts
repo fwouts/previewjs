@@ -1,22 +1,23 @@
-import { PreviewConfig } from "@previewjs/config";
-import { Reader } from "@previewjs/vfs";
+import type { PreviewConfig } from "@previewjs/config";
+import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
-import { Server } from "http";
+import type { Server } from "http";
 import path from "path";
 import { recrawl } from "recrawl";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
-import stripAnsi from "strip-ansi";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
-import { FrameworkPlugin } from "../plugins/framework";
+import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
+import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
   readonly middleware: express.RequestHandler;
+  private viteStartupPromise: Promise<void> | undefined;
   private viteServer?: vite.ViteDevServer;
   private lastPingTimestamp = 0;
 
@@ -25,6 +26,7 @@ export class ViteManager {
       reader: Reader;
       rootDirPath: string;
       shadowHtmlFilePath: string;
+      detectedGlobalCssFilePaths: string[];
       cacheDir: string;
       config: PreviewConfig;
       logLevel: vite.UserConfig["logLevel"];
@@ -33,6 +35,7 @@ export class ViteManager {
   ) {
     const router = express.Router();
     router.get("/preview/", async (req, res) => {
+      await this.viteStartupPromise;
       const template = await fs.readFile(
         this.options.shadowHtmlFilePath,
         "utf-8"
@@ -74,7 +77,7 @@ export class ViteManager {
 
   async start(server: Server, port: number) {
     const defaultLogger = vite.createLogger(this.options.logLevel);
-    this.viteServer = await vite.createServer({
+    const viteServerPromise = vite.createServer({
       ...(await this.viteConfig()),
       server: {
         middlewareMode: true,
@@ -82,31 +85,31 @@ export class ViteManager {
           overlay: false,
           server,
           clientPort: port,
+          ...(typeof this.options.config.vite?.server?.hmr === "object"
+            ? this.options.config.vite?.server?.hmr
+            : {}),
         },
+        ...this.options.config.vite?.server,
       },
       customLogger: {
         info: defaultLogger.info,
         warn: defaultLogger.warn,
-        error: (message, options) => {
-          defaultLogger.error(message, options);
-          const errorMessage = options?.error?.stack
-            ? options.error.stack
-            : stripAnsi(message);
-          this.viteServer?.ws.send({
-            type: "error",
-            err: {
-              message: errorMessage,
-              stack: "",
-            },
-          });
-        },
+        error: defaultLogger.error,
         warnOnce: defaultLogger.warnOnce,
-        clearScreen: () => {},
+        clearScreen: () => {
+          // Do nothing.
+        },
         hasWarned: defaultLogger.hasWarned,
         hasErrorLogged: defaultLogger.hasErrorLogged,
       },
-      clearScreen: false,
     });
+    this.viteStartupPromise = new Promise<void>((resolve) => {
+      viteServerPromise.finally(() => {
+        resolve();
+        delete this.viteStartupPromise;
+      });
+    });
+    this.viteServer = await viteServerPromise;
   }
 
   async viteConfig(): Promise<vite.InlineConfig> {
@@ -128,7 +131,7 @@ export class ViteManager {
         );
       }
     }
-    let tsInferredAlias: Record<string, string> = {};
+    const tsInferredAlias: Record<string, string> = {};
     if (typeScriptConfigFilePaths.includes("tsconfig.json")) {
       // If there is a top-level tsconfig.json, use it to infer aliases.
       // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
@@ -174,6 +177,7 @@ export class ViteManager {
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
+      exportToplevelPlugin(),
       fakeExportedTypesPlugin({
         readFile: (absoluteFilePath) =>
           this.options.reader.read(absoluteFilePath).then((entry) => {
@@ -184,9 +188,7 @@ export class ViteManager {
           }),
       }),
       cssModulesWithoutSuffixPlugin(),
-      componentLoaderPlugin({
-        config: this.options.config,
-      }),
+      componentLoaderPlugin(this.options),
       ...(frameworkPluginViteConfig.plugins || []),
       ...(this.options.config.vite?.plugins || []),
     ];
@@ -195,34 +197,39 @@ export class ViteManager {
     // default, HmrContext has a read() method that reads directly from
     // the file system. We want it to read from our reader, which could
     // be using an in-memory version instead.
-    const plugins = vitePlugins.flat().map((plugin) => {
-      if (!plugin || !plugin.handleHotUpdate) {
-        return plugin;
-      }
-      const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
-      return {
-        ...plugin,
-        handleHotUpdate: async (ctx: vite.HmrContext) => {
-          return handleHotUpdate({
-            ...ctx,
-            read: async () => {
-              const entry = await this.options.reader.read(ctx.file);
-              if (entry?.kind !== "file") {
-                // Fall back to default behaviour.
-                return ctx.read();
-              }
-              return entry.read();
-            },
-          });
-        },
-      };
-    });
+    const plugins = await Promise.all(
+      vitePlugins.flat().map(async (pluginOrPromise) => {
+        const plugin = await pluginOrPromise;
+        if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
+          return plugin;
+        }
+        const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
+        return {
+          ...plugin,
+          handleHotUpdate: async (ctx: vite.HmrContext) => {
+            return handleHotUpdate({
+              ...ctx,
+              read: async () => {
+                const entry = await this.options.reader.read(ctx.file);
+                if (entry?.kind !== "file") {
+                  // Fall back to default behaviour.
+                  return ctx.read();
+                }
+                return entry.read();
+              },
+            });
+          },
+        };
+      })
+    );
+
     return {
       ...frameworkPluginViteConfig,
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
       base: "/preview/",
+      clearScreen: false,
       cacheDir: this.options.config.vite?.cacheDir || this.options.cacheDir,
       publicDir:
         this.options.config.vite?.publicDir || this.options.config.publicDir,
@@ -271,6 +278,7 @@ export class ViteManager {
   }
 
   async renderIndexHtml(originalUrl: string) {
+    await this.viteStartupPromise;
     if (!this.viteServer) {
       throw new Error(`Vite server is not running.`);
     }

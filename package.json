@@ -14,22 +14,47 @@
   },
   "homepage": "https://previewjs.com",
   "scripts": {
+    "check-deps": "ts-node scripts/check-deps.ts",
     "check-licenses": "ts-node scripts/check-licenses.ts",
-    "release": "ts-node scripts/release.ts"
+    "release-apps": "ts-node scripts/release-apps.ts",
+    "release-components": "ts-node scripts/release-components.ts",
+    "lint": "eslint --max-warnings 0 '**/*.ts' '**/*.tsx'"
   },
   "devDependencies": {
-    "@types/inquirer": "8.2.1",
+    "@types/inquirer": "8.2.2",
     "@types/license-checker": "25.0.3",
     "@types/node": "17.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "assert-never": "1.2.1",
-    "axios": "0.26.1",
+    "depcheck": "^1.4.3",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "execa": "5.1.1",
-    "inquirer": "8.2.2",
+    "inquirer": "8.2.4",
     "license-checker": "25.0.1",
-    "prettier": "2.6.2",
-    "ts-node": "10.7.0",
-    "turbo": "1.1.10",
-    "typescript": "4.6.3"
+    "npm": "8.17.0",
+    "prettier": "2.7.1",
+    "ts-node": "10.9.1",
+    "turbo": "1.4.3",
+    "typescript": "4.7.4"
   },
-  "packageManager": "pnpm@6.32.4"
+  "packageManager": "pnpm@7.9.0",
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "18",
+        "react-dom": "18"
+      }
+    },
+    "packageExtensions": {
+      "create-react-class": {
+        "peerDependencies": {
+          "react": "*"
+        }
+      }
+    }
+  }
 }

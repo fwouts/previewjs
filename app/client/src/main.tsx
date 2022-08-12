@@ -1,18 +1,20 @@
+import {
+  createLocalApi,
+  createWebApi,
+  PersistedStateController,
+  Preview,
+  PreviewState,
+  Selection,
+} from "@previewjs/app-foundations";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import { LocalApi } from "./api/local";
-import { WebApi } from "./api/web";
-import { Preview } from "./components/Preview";
-import { Selection } from "./components/Selection";
 import "./index.css";
-import { PersistedStateController } from "./PersistedStateController";
-import { PreviewState } from "./PreviewState";
 
-const localApi = new LocalApi("/api/");
+const localApi = createLocalApi("/api/");
 const state = new PreviewState(
   localApi,
-  new WebApi("https://previewjs.com/api/"),
+  createWebApi("https://previewjs.com/api/"),
   new PersistedStateController(localApi)
 );
 state.start().catch(console.error);
@@ -21,7 +23,7 @@ const App = observer(() => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   useEffect(() => {
     state.setIframeRef(iframeRef);
-  }, [state]);
+  }, []);
   return (
     <Preview
       state={state}
@@ -29,12 +31,16 @@ const App = observer(() => {
         <iframe className="flex-grow" ref={iframeRef} src="/preview/" />
       }
       appLabel="Preview.js"
-      subheader={<Selection state={state} />}
+      subheader={(state.component && <Selection state={state} />) || null}
     />
   );
 });
 
-const root = createRoot(document.getElementById("root")!);
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("No root element found");
+}
+const root = createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <App />

@@ -6,21 +6,17 @@ import { extractReactComponents } from "./extract-component";
 import { optimizeReactDepsPlugin } from "./optimize-deps-plugin";
 import { reactImportsPlugin } from "./react-imports-plugin";
 import { REACT_SPECIAL_TYPES } from "./special-types";
-import { svgrPlugin } from "./svgr-plugin";
 
-export const reactFrameworkPlugin: FrameworkPluginFactory<{
-  svgr?: {
-    componentName?: string;
-  };
-}> = {
+/** @deprecated */
+export const reactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    const react = dependencies["react"];
-    if (!react) {
+    const version = await dependencies["react"]?.readInstalledVersion();
+    if (!version) {
       return false;
     }
-    return react.majorVersion >= 16;
+    return parseInt(version) >= 16;
   },
-  async create({ svgr } = {}) {
+  async create() {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -53,18 +49,21 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
         }
         return components;
       },
-      viteConfig: (config) => {
+      viteConfig: () => {
         return {
-          plugins: [
-            optimizeReactDepsPlugin(),
-            svgrPlugin({
-              exportedComponentName: svgr?.componentName || "ReactComponent",
-              alias: config.alias,
-            }),
-            reactImportsPlugin(),
-          ],
+          resolve: {
+            alias: {
+              "react-native": "react-native-web",
+            },
+          },
+          plugins: [optimizeReactDepsPlugin(), reactImportsPlugin()],
+          define: {
+            "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
+          },
         };
       },
     };
   },
 };
+
+export default reactFrameworkPlugin;
