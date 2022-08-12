@@ -80,6 +80,14 @@ async function main() {
     cwd: releaseDirPath,
   });
   const prompt = inquirer.createPromptModule();
+  const { releaseCli } = await prompt({
+    name: "releaseCli",
+    type: "confirm",
+    message: "Release CLI?",
+  });
+  if (releaseCli) {
+    await releaseCliApp();
+  }
   const { releaseIntellij } = await prompt({
     name: "releaseIntellij",
     type: "confirm",
@@ -95,14 +103,6 @@ async function main() {
   });
   if (releaseVscode) {
     await releaseVscodeExtension();
-  }
-  const { releaseCli } = await prompt({
-    name: "releaseCli",
-    type: "confirm",
-    message: "Release CLI?",
-  });
-  if (releaseCli) {
-    await releaseCliApp();
   }
 }
 
