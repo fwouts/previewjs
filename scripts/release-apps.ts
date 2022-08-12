@@ -1,6 +1,5 @@
 import execa from "execa";
 import fs from "fs";
-import { readFile, realpath } from "fs/promises";
 import inquirer from "inquirer";
 import path from "path";
 import { previewjsProVersion } from "../loader/src/version";
@@ -29,12 +28,38 @@ async function main() {
   const { version: vue3PluginVersion } = await import(
     "../frameworks/vue3/package.json"
   );
-  const esbuildPackageJsonPath = await realpath(
-    `${__dirname}/../core/node_modules/vite/../esbuild/package.json`
+  const releaseDirPath = path.join(__dirname, "..", "loader", "src", "release");
+  await fs.promises.writeFile(
+    path.join(releaseDirPath, "package.json"),
+    JSON.stringify(
+      {
+        dependencies: {
+          "@previewjs/core": coreVersion,
+          "@previewjs/plugin-react": reactPluginVersion,
+          "@previewjs/plugin-solid": solidPluginVersion,
+          "@previewjs/plugin-vue2": vue2PluginVersion,
+          "@previewjs/plugin-vue3": vue3PluginVersion,
+          "@previewjs/pro": previewjsProVersion,
+          "@previewjs/vfs": vfsVersion,
+        },
+      },
+      null,
+      2
+    ),
+    "utf8"
   );
-  const esbuildPackageJson = await readFile(esbuildPackageJsonPath, "utf8");
-  const { optionalDependencies: esbuildOptionalDependencies } =
-    JSON.parse(esbuildPackageJson);
+  console.log(`Running npm install (without esbuild optional deps)...`);
+  await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
+    cwd: releaseDirPath,
+  });
+  const packageLock = JSON.parse(
+    await fs.promises.readFile(
+      path.join(releaseDirPath, "package-lock.json"),
+      "utf8"
+    )
+  );
+  const esbuildOptionalDependencies =
+    packageLock["packages"]["node_modules/esbuild"]["optionalDependencies"];
   const esbuildBinaryPackages = [
     "esbuild-darwin-64",
     "esbuild-darwin-arm64",
@@ -54,7 +79,6 @@ async function main() {
     }
     esbuildBinaryDependencies[binaryPackage] = version;
   }
-  const releaseDirPath = path.join(__dirname, "..", "loader", "src", "release");
   await fs.promises.writeFile(
     path.join(releaseDirPath, "package.json"),
     JSON.stringify(
@@ -75,7 +99,7 @@ async function main() {
     ),
     "utf8"
   );
-  console.log(`Running npm install to fetch bundle and update lockfile...`);
+  console.log(`Running npm install with esbuild optional deps...`);
   await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
     cwd: releaseDirPath,
   });
