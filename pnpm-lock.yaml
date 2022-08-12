@@ -127,7 +127,7 @@ importers:
       autoprefixer: 10.4.8
       axios: ^0.27.2
       clsx: ^1.2.1
-      framer-motion: ^7.0.1
+      framer-motion: ^7.1.0
       mobx: ^6.6.1
       mobx-react-lite: ^3.4.0
       monaco-editor: ^0.34.0
@@ -152,7 +152,7 @@ importers:
       assert-never: 1.2.1
       axios: 0.27.2
       clsx: 1.2.1
-      framer-motion: 7.0.1_biqbaboplfbrettd7655fr4n2y
+      framer-motion: 7.1.0_biqbaboplfbrettd7655fr4n2y
       mobx: 6.6.1
       mobx-react-lite: 3.4.0_m26jawr67gnusmh4egzqtnhxru
       monaco-editor: 0.34.0
@@ -17808,26 +17808,26 @@ packages:
     dependencies:
       map-cache: 0.2.2
 
-  /framer-motion/7.0.1_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-bqOq3wQokfo5s4AbI2bhZ3ZxWeJ+DV68ydy0hSCU34n1dInpleIZpoiMmxrSz7zWqWqN62QRQjclcbEL1IiKsQ==}
+  /framer-motion/7.1.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-It0LIsooAr83kGwT55sRRo5pQ/chbvPKGeGmHCl1ARVeWGaeFFfNWSoSF1UgsjWtni/lsUxNsf2BCg1Hy7W3Ag==}
     peerDependencies:
       react: ^18.0.0 || 18
       react-dom: ^18.0.0 || 18
     dependencies:
       '@motionone/dom': 10.13.1
-      framesync: 6.0.1
+      framesync: 6.1.1
       hey-listen: 1.0.8
-      popmotion: 11.0.3
+      popmotion: 11.0.4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      style-value-types: 5.1.0
+      style-value-types: 5.1.1
       tslib: 2.4.0
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
     dev: false
 
-  /framesync/6.0.1:
-    resolution: {integrity: sha512-fUY88kXvGiIItgNC7wcTOl0SNRCVXMKSWW2Yzfmn7EKNc+MpCzcz9DhdHcdjbrtN3c6R4H5dTY2jiCpPdysEjA==}
+  /framesync/6.1.1:
+    resolution: {integrity: sha512-ApprAm7ey4LSp7BPucYz/JPMdRvL1VnBmQ64e61dkns/WPM4aCU8oSKiMRF/p4NtVEG9sZeVyHOBoVaA9+p3sA==}
     dependencies:
       tslib: 2.4.0
     dev: false
@@ -23802,12 +23802,12 @@ packages:
       '@babel/runtime': 7.18.3
     dev: true
 
-  /popmotion/11.0.3:
-    resolution: {integrity: sha512-Y55FLdj3UxkR7Vl3s7Qr4e9m0onSnP8W7d/xQLsoJM40vs6UKHFdygs6SWryasTZYqugMjm3BepCF4CWXDiHgA==}
+  /popmotion/11.0.4:
+    resolution: {integrity: sha512-gY9zNSzpEaToyS5Nm+PpE9x6Vu5HhuRVbVER+haML+1OkO8B3yCp0rD5UKZUrt5fClX2r2DY7RtDjkp5bcwyPg==}
     dependencies:
-      framesync: 6.0.1
+      framesync: 6.1.1
       hey-listen: 1.0.8
-      style-value-types: 5.0.0
+      style-value-types: 5.1.1
       tslib: 2.4.0
     dev: false
 
@@ -28211,15 +28211,8 @@ packages:
       inline-style-parser: 0.1.1
     dev: true
 
-  /style-value-types/5.0.0:
-    resolution: {integrity: sha512-08yq36Ikn4kx4YU6RD7jWEv27v4V+PUsOGa4n/as8Et3CuODMJQ00ENeAVXAeydX4Z2j1XHZF1K2sX4mGl18fA==}
-    dependencies:
-      hey-listen: 1.0.8
-      tslib: 2.4.0
-    dev: false
-
-  /style-value-types/5.1.0:
-    resolution: {integrity: sha512-DRIfBtjxQ4ztBZpexkFcI+UR7pODC5qLMf2Syt+bH98PAHHRH2tQnzxBuDQlqcAoYar6GzWnj8iAfqfwnEzCiQ==}
+  /style-value-types/5.1.1:
+    resolution: {integrity: sha512-s1p02MYD7E2f1b8lr6CjW8n6CEt+6PdK6QMuUfuTA3yqA6jYktZ1MOWpk7ZpaADl5WAkktBcJAOlDgYIg4yEsQ==}
     dependencies:
       hey-listen: 1.0.8
       tslib: 2.4.0
