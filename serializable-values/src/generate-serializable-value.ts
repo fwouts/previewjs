@@ -110,7 +110,7 @@ function _generateSerializableValue(
         random,
         isFunctionReturnValue
       );
-    case "set": {
+    case "set":
       return set(
         generateArrayValue(
           arrayType(type.items),
@@ -121,7 +121,19 @@ function _generateSerializableValue(
           isFunctionReturnValue
         )
       );
-    }
+    case "tuple":
+      return array(
+        type.items.map((item) =>
+          _generateSerializableValue(
+            item,
+            collected,
+            fieldName,
+            rejectTypeNames,
+            random,
+            isFunctionReturnValue
+          )
+        )
+      );
     case "object": {
       const entries: SerializableObjectValueEntry[] = [];
       for (const [propName, propType] of Object.entries(type.fields)) {

@@ -52,6 +52,19 @@ export function isValid(
         }
       }
       return true;
+    case "tuple":
+      if (!(value instanceof Array)) {
+        return false;
+      }
+      if (value.length !== type.items.length) {
+        return false;
+      }
+      for (let i = 0; i < type.items.length; i++) {
+        if (!isValid(type.items[i]!, collected, value[i])) {
+          return false;
+        }
+      }
+      return true;
     case "object":
       // Functions can be objects too, i.e. you can add fields onto them.
       if (

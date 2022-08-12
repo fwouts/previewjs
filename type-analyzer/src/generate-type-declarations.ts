@@ -128,6 +128,12 @@ function generateTypeScriptType(
         typeNameMapping,
         usedTypes
       )}>`;
+    case "tuple":
+      return `[${type.items
+        .map((item) =>
+          generateTypeScriptType(item, collected, typeNameMapping, usedTypes)
+        )
+        .join(", ")}]`;
     case "object":
       return `{
               ${Object.entries(type.fields)
