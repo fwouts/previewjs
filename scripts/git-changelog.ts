@@ -10,7 +10,10 @@ export async function gitChangelog(packageName: string, dirPaths: string[]) {
   let commitMessages = stdout.split("\n");
   const lastReleaseIndex = commitMessages.findIndex((message) =>
     message.match(
-      `^\\w+ release: ${packageName.replace(/\//g, "\\/")}@\\d+\\.\\d+\\.\\d+$`
+      `^\\w+ release: .*${packageName.replace(
+        /\//g,
+        "\\/"
+      )}@v?\\d+\\.\\d+\\.\\d+.*$`
     )
   );
   if (lastReleaseIndex !== -1) {
