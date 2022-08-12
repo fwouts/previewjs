@@ -100,14 +100,9 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
 }
 
 function checkNodeVersionResult(result: execa.ExecaReturnValue<string>) {
-  if (result.failed) {
+  if (result.failed || result.exitCode !== 0) {
     throw new Error(
-      `Preview.js was unable to run node.\n\nIs it installed? You may need to restart your IDE.`
-    );
-  }
-  if (result.exitCode !== 0) {
-    throw new Error(
-      `Preview.js was unable to run node (exit code ${result.exitCode}):\n\n${result.stderr}`
+      `Preview.js needs NodeJS 14+ but running \`node\` failed.\n\nIs it installed? You may need to restart your IDE.`
     );
   }
   const nodeVersion = result.stdout;
