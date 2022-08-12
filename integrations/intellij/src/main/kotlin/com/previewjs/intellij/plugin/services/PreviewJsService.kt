@@ -149,7 +149,7 @@ Include the content of the Preview.js logs panel for easier debugging.
         } catch (e: IOException) {
             throw Error("No port is not available to run Preview.js controller")
         }
-        val nodeVersionProcess = processBuilder("node --version").directory(nodeDirPath.toFile()).start()
+        val nodeVersionProcess = processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
         var useWsl = false
         try {
             if (nodeVersionProcess.waitFor() !== 0) {
@@ -158,23 +158,21 @@ Include the content of the Preview.js logs panel for easier debugging.
             checkNodeVersion(nodeVersionProcess)
         } catch (e: Error) {
             // Unable to start Node. Check WSL if we're on Windows.
-            if (System.getProperty("os.name").lowercase().contains("win")) {
-                val nodeVersionProcessWsl = processBuilder("wsl bash -lic node --version").directory(nodeDirPath.toFile()).start()
-                if (nodeVersionProcess.waitFor() === 0) {
+            if (isWindows()) {
+                val nodeVersionProcessWsl = processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
+                if (nodeVersionProcessWsl.waitFor() === 0) {
                     checkNodeVersion(nodeVersionProcessWsl)
                     useWsl = true
                 } else {
                     // If WSL failed, just ignore it.
-                    throw e
+                    throw Error("Preview.js was unable to run node even with WSL.")
+//                    throw e
                 }
             }
         }
-        val builder = processBuilder(if (useWsl) "wsl bash -lic node dist/server.js" else "node dist/main.js")
+        val builder = processBuilder("node dist/main.js $port", useWsl)
             .redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
-        builder.environment()["PORT"] = "$port"
-        builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.version
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
         val process = builder.start()
         serverProcess = process
         val serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
@@ -222,13 +220,22 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
-    private fun processBuilder(command: String): ProcessBuilder {
-        return if (System.getProperty("os.name").lowercase().contains("win")) {
-            ProcessBuilder(
-                "cmd.exe",
-                "/C",
-                command
-            )
+    private fun processBuilder(command: String, useWsl: Boolean): ProcessBuilder {
+        return if (isWindows()) {
+            if (useWsl) {
+                ProcessBuilder(
+                    "wsl",
+                    "bash",
+                    "-lic",
+                    command
+                )
+            } else {
+                ProcessBuilder(
+                    "cmd.exe",
+                    "/C",
+                    command
+                )
+            }
         } else {
             // Note: in production builds of IntelliJ / WebStorm, PATH is not initialised
             // from the shell. This means that /usr/local/bin or nvm paths may not be
@@ -271,4 +278,6 @@ Include the content of the Preview.js logs panel for easier debugging.
         serverProcess?.destroy()
         disposed = true
     }
+
+    private fun isWindows() = System.getProperty("os.name").lowercase().contains("win")
 }

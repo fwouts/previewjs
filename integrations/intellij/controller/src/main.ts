@@ -1,16 +1,23 @@
 import { ensureServerRunning } from "@previewjs/server";
-import { getPackageNameFromEnvironment } from "./config";
 
-const port = parseInt(process.env.PORT || "9100");
+const port = parseInt(process.argv[2] || "0", 10);
+if (!port) {
+  throw new Error(`No port specified`);
+}
+
+const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
+if (!packageName) {
+  throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
+}
+
 const version = process.env.PREVIEWJS_INTELLIJ_VERSION;
-
 if (!version) {
-  throw new Error(`IntelliJ version was not set`);
+  throw new Error(`Missing environment variable: PREVIEWJS_INTELLIJ_VERSION`);
 }
 
 ensureServerRunning({
   loaderInstallDir: __dirname,
-  packageName: getPackageNameFromEnvironment(),
+  packageName,
   versionCode: `intellij-${version}`,
   port,
 }).catch((e) => {
