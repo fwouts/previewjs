@@ -1,0 +1,159 @@
+name: Release Components
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          run_install: true
+      - id: checkApiVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./api/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkAppFoundationsVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./app-foundations/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkAppVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./app/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkCliVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./cli/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkConfigVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./config/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkCoreVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./core/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkCsf3Version
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./csf3/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkE2ETestRunnerVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./e2e-test-runner/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkIframeVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./iframe/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkPluginReactVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./plugin-react/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkPluginSolidVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./plugin-solid/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkPluginVue2Version
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./plugin-vue2/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkPluginVue3Version
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./plugin-vue3/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkSerializableValuesVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./serializable-values/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkTypeAnalyzerVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./type-analyzer/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkVfsVersion
+        uses: EndBug/version-check@v2.1.0
+        with:
+          diff-search: true
+          file-name: ./vfs/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update NPM token
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - if: steps.checkApiVersion.outputs.changed == 'true'
+        run: cd api && pnpm publish --no-git-checks --access public
+      - if: steps.checkAppFoundationsVersion.outputs.changed == 'true'
+        run: cd app-foundations && pnpm publish --no-git-checks --access public
+      - if: steps.checkAppVersion.outputs.changed == 'true'
+        run: cd app && pnpm publish --no-git-checks --access public
+      - if: steps.checkCliVersion.outputs.changed == 'true'
+        run: cd cli && pnpm publish --no-git-checks --access public
+      - if: steps.checkConfigVersion.outputs.changed == 'true'
+        run: cd config && pnpm publish --no-git-checks --access public
+      - if: steps.checkCoreVersion.outputs.changed == 'true'
+        run: cd core && pnpm publish --no-git-checks --access public
+      - if: steps.checkCsf3Version.outputs.changed == 'true'
+        run: cd csf3 && pnpm publish --no-git-checks --access public
+      - if: steps.checkE2ETestRunnerVersion.outputs.changed == 'true'
+        run: cd e2e-test-runner && pnpm publish --no-git-checks --access public
+      - if: steps.checkIframeVersion.outputs.changed == 'true'
+        run: cd iframe && pnpm publish --no-git-checks --access public
+      - if: steps.checkPluginReactVersion.outputs.changed == 'true'
+        run: cd plugin-react && pnpm publish --no-git-checks --access public
+      - if: steps.checkPluginSolidVersion.outputs.changed == 'true'
+        run: cd plugin-solid && pnpm publish --no-git-checks --access public
+      - if: steps.checkPluginVue2Version.outputs.changed == 'true'
+        run: cd plugin-vue2 && pnpm publish --no-git-checks --access public
+      - if: steps.checkPluginVue3Version.outputs.changed == 'true'
+        run: cd plugin-vue3 && pnpm publish --no-git-checks --access public
+      - if: steps.checkSerializableValuesVersion.outputs.changed == 'true'
+        run: cd serializable-values && pnpm publish --no-git-checks --access public
+      - if: steps.checkTypeAnalyzerVersion.outputs.changed == 'true'
+        run: cd type-analyzer && pnpm publish --no-git-checks --access public
+      - if: steps.checkVfsVersion.outputs.changed == 'true'
+        run: cd vfs && pnpm publish --no-git-checks --access public

@@ -17,8 +17,6 @@
     "build": "rimraf dist && tsc && node esbuild.js && cp -r ../../../loader/src/release/node_modules dist/node_modules"
   },
   "devDependencies": {
-    "@previewjs/core": "workspace:*",
-    "@previewjs/loader": "workspace:*",
     "@previewjs/server": "workspace:*",
     "esbuild": "0.15.1",
     "rimraf": "3.0.2",
