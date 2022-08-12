@@ -1,4 +1,4 @@
-import { RendererLoader } from "../../..";
+import type { RendererLoader } from "../../..";
 
 export const load: RendererLoader = async () => {
   // This is a dummy function that is replaced by
