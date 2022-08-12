@@ -155,6 +155,7 @@ async function main() {
   }
 
   if (releasedPackages.length > 0) {
+    console.log(`Running pnpm install...`);
     await execa("pnpm", ["install"]);
     await execa("git", ["add", "."]);
     await execa("git", [
@@ -162,6 +163,7 @@ async function main() {
       "-m",
       `release: ${releasedPackages.join(", ")}`,
     ]);
+    console.log(`Pushing commit...`);
     await execa("git", ["push", "origin", "main"]);
   }
 }

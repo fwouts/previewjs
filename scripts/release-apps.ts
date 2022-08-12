@@ -165,8 +165,6 @@ async function release(packageName: string, version: string) {
   const changelog = await gitChangelog(packageName, ["."]);
   const tag = `${packageName}/v${version}`;
   console.log(`The following tag will be created: ${tag}\n`);
-  console.log(`Running pnpm install...`);
-  await execa("pnpm", ["install"]);
   await execa("git", ["add", "."]);
   await execa("git", ["commit", "-m", `release: ${packageName}@${version}`]);
   await execa("git", ["tag", "-a", tag, "-m", ""]);
