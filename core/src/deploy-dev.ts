@@ -6,7 +6,7 @@ import { ViteManager } from "./vite/vite-manager";
 
 async function main() {
   const rootDirPath = "/Users/fwouts/dev/hungry";
-  const previewDirPath = path.join(__dirname, "..", "iframe", "preview");
+  const previewDirPath = path.join(__dirname, "..", "..", "iframe", "preview");
   const frameworkPlugin = await reactFrameworkPlugin.create();
   const transformingReader = createStackedReader([
     createFileSystemReader(),
@@ -40,6 +40,7 @@ async function main() {
       alias: {},
       publicDir: "public",
     },
+    detectedGlobalCssFilePaths: ["/Users/fwouts/dev/hungry/styles/globals.css"],
     logLevel: "info",
     frameworkPlugin,
   });

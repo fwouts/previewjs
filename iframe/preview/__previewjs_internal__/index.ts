@@ -12,27 +12,29 @@ overrideCopyCutPaste();
 
 // TODO: Remove, just for testing.
 async function test() {
+  // TODO: Load conditionally.
+  // TODO: Load global detected CSS otherwise.
   const wrapperModule = await import(
     // @ts-ignore
     "../__previewjs__/Wrapper.tsx"
   );
   const componentModule = await import(
     // @ts-ignore
-    "../design/HeroHeader/HeroHeader.tsx"
+    "../design/RestaurantHeader/RestaurantHeader.stories.tsx"
   );
   setState({
-    filePath: "design/HeroHeader/HeroHeader.tsx",
-    componentName: "HeroHeader",
+    filePath: "design/RestaurantHeader/RestaurantHeader.stories.tsx",
+    componentName: "Example",
     defaultPropsSource: "{}",
     customVariantPropsSource: "properties = {}",
-    variantKey: "example",
+    variantKey: null,
   });
   await updateComponent({
-    wrapperModule,
+    wrapperModule: wrapperModule,
     wrapperName: "Wrapper",
     componentModule,
-    componentFilePath: "design/HeroHeader/HeroHeader.tsx",
-    componentName: "HeroHeader",
+    componentFilePath: "design/RestaurantHeader/RestaurantHeader.stories.tsx",
+    componentName: "Example",
     loadingError: null,
     load: rendererLoad,
   });
