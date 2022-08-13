@@ -4,8 +4,6 @@ import path from "path";
 import type * as vite from "vite";
 import { transformWithEsbuild } from "vite";
 
-const VIRTUAL_PREFIX = `/@previewjs-virtual:`;
-
 const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 
 export function virtualPlugin(options: {
@@ -18,12 +16,8 @@ export function virtualPlugin(options: {
   return {
     name: "previewjs:virtual-fs",
     resolveId: async function (id, importer) {
-      const virtualImporter = importer?.startsWith(VIRTUAL_PREFIX) || false;
       if (id.indexOf(`/node_modules/`) !== -1) {
         return null;
-      }
-      if (id.startsWith(VIRTUAL_PREFIX)) {
-        id = id.slice(VIRTUAL_PREFIX.length);
       }
       const extension = path.extname(id);
       let absoluteId;
@@ -32,9 +26,6 @@ export function virtualPlugin(options: {
       } else {
         if (!importer || importer.indexOf(`/node_modules/`) !== -1) {
           return null;
-        }
-        if (virtualImporter) {
-          importer = importer.slice(VIRTUAL_PREFIX.length);
         }
         if (extension && !jsExtensions.has(extension) && extension !== ".svg") {
           // Virtual files mess with CSS processors like postcss.
@@ -45,15 +36,14 @@ export function virtualPlugin(options: {
       const resolved = await resolveAbsoluteModuleId(absoluteId);
       if (resolved) {
         const [absoluteFilePath] = resolved;
-        if ((await fs.pathExists(absoluteFilePath)) && !virtualImporter) {
+        if (await fs.pathExists(absoluteFilePath)) {
           // This file doesn't need to be virtual.
           return null;
         }
         if (!absoluteId.endsWith(extension)) {
           absoluteId += extension;
         }
-        const resolvedId =
-          VIRTUAL_PREFIX + absoluteFilePath.replace(/\\/g, "/");
+        const resolvedId = absoluteFilePath.replace(/\\/g, "/");
         return resolvedId;
       }
       return null;
@@ -61,9 +51,6 @@ export function virtualPlugin(options: {
     load: async function (id) {
       if (id.indexOf(`/node_modules/`) !== -1) {
         return null;
-      }
-      if (id.startsWith(VIRTUAL_PREFIX)) {
-        id = id.slice(VIRTUAL_PREFIX.length);
       }
       const resolved = await resolveAbsoluteModuleId(id);
       if (!resolved) {
@@ -110,8 +97,7 @@ export function virtualPlugin(options: {
         return;
       }
       // Note: backslash handling is Windows-specific.
-      const virtualModuleId =
-        VIRTUAL_PREFIX + absoluteFilePath.replace(/\\/g, "/");
+      const virtualModuleId = absoluteFilePath.replace(/\\/g, "/");
       const node = moduleGraph.getModuleById(virtualModuleId);
       return node && [node];
     },
