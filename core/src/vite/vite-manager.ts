@@ -269,16 +269,4 @@ export class ViteManager {
       onChange(absoluteFilePath);
     }
   }
-
-  async renderIndexHtml(originalUrl: string) {
-    await this.viteStartupPromise;
-    if (!this.viteServer) {
-      throw new Error(`Vite server is not running.`);
-    }
-    const template = await fs.readFile(
-      this.options.shadowHtmlFilePath,
-      "utf-8"
-    );
-    return await this.viteServer.transformIndexHtml(originalUrl, template);
-  }
 }
