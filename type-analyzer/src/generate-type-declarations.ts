@@ -1,6 +1,6 @@
 import assertNever from "assert-never";
 import prettier from "prettier";
-import parserTypescript from "prettier/parser-typescript";
+import parserTypescript from "prettier/parser-typescript.js";
 import type { CollectedTypes, ValueType } from "./definitions";
 
 export function generateTypeDeclarations(
