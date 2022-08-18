@@ -233,7 +233,7 @@ async function startServer({
         .filter(([, value]) => value === workspace)
         ?.map(([key]) => key)[0];
       const workspaceId =
-        existingWorkspaceId || crypto.randomBytes(16).toString("base64url");
+        existingWorkspaceId || crypto.randomBytes(16).toString("hex");
       workspaces[workspaceId] = workspace;
       return {
         workspaceId,
