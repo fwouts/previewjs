@@ -33,13 +33,13 @@ jobs:
         os: [ubuntu-20.04, macos-11, windows-2022]
         group: [0, 1, 2]
         include:
-          - node-version: 14.6.0
+          - node-version: 14.10.0
             os: ubuntu-latest
             group: 0
-          - node-version: 14.6.0
+          - node-version: 14.10.0
             os: ubuntu-latest
             group: 1
-          - node-version: 14.6.0
+          - node-version: 14.10.0
             os: ubuntu-latest
             group: 2
           - node-version: 16.0.0
