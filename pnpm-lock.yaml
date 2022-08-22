@@ -307,7 +307,7 @@ importers:
       '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.5
       '@types/fs-extra': ^9.0.13
-      '@types/lodash': ^4.14.182
+      '@types/lodash': ^4.14.184
       '@types/node': ^17.0.8
       assert-never: ^1.2.1
       caller-callsite: ^4.1.0
@@ -322,7 +322,7 @@ importers:
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
       '@types/fs-extra': 9.0.13
-      '@types/lodash': 4.14.182
+      '@types/lodash': 4.14.184
       '@types/node': 17.0.31
       assert-never: 1.2.1
       caller-callsite: 4.1.0
@@ -1593,7 +1593,7 @@ importers:
   type-analyzer:
     specifiers:
       '@previewjs/vfs': ^1.2.5
-      '@types/lodash': 4.14.182
+      '@types/lodash': 4.14.184
       '@types/prettier': 2.7.0
       assert-never: ^1.2.1
       lodash: ^4.17.21
@@ -1607,7 +1607,7 @@ importers:
       prettier: 2.7.1
       typescript: 4.7.4
     devDependencies:
-      '@types/lodash': 4.14.182
+      '@types/lodash': 4.14.184
       '@types/prettier': 2.7.0
       lodash: 4.17.21
       unbuild: 0.8.9
@@ -8873,6 +8873,10 @@ packages:
 
   /@types/lodash/4.14.182:
     resolution: {integrity: sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==}
+    dev: true
+
+  /@types/lodash/4.14.184:
+    resolution: {integrity: sha512-RoZphVtHbxPZizt4IcILciSWiC6dcn+eZ8oX9IWEYfDMcocdd42f7NPI6fQj+6zI8y4E0L7gu2pcZKLGTRaV9Q==}
 
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
@@ -21860,6 +21864,15 @@ packages:
       ufo: 0.8.5
     dev: true
 
+  /mlly/0.5.13:
+    resolution: {integrity: sha512-0SK2fqoan+PMjADs4I2egAtrtNtpjqRez6PDTCeAdGjUQNJCvO5o9v2NEq52WA1jFmMU97qBr/JgdvCquehDbA==}
+    dependencies:
+      acorn: 8.8.0
+      pathe: 0.3.5
+      pkg-types: 0.3.4
+      ufo: 0.8.5
+    dev: true
+
   /mobx-react-lite/3.4.0_m26jawr67gnusmh4egzqtnhxru:
     resolution: {integrity: sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==}
     peerDependencies:
@@ -23532,6 +23545,10 @@ packages:
     resolution: {integrity: sha512-grU/QeYP0ChuE5kjU2/k8VtAeODzbernHlue0gTa27+ayGIu3wqYBIPGfP9r5xSqgCgDd4nWrjKXEfxMillByg==}
     dev: true
 
+  /pathe/0.3.5:
+    resolution: {integrity: sha512-grU/QeYP0ChuE5kjU2/k8VtAeODzbernHlue0gTa27+ayGIu3wqYBIPGfP9r5xSqgCgDd4nWrjKXEfxMillByg==}
+    dev: true
+
   /pathval/1.1.1:
     resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
     dev: true
@@ -23621,6 +23638,14 @@ packages:
     resolution: {integrity: sha512-6AJcCMnjUQPQv/Wk960w0TOmjhdjbeaQJoSKWRQv9N3rgkessCu6J0Ydsog/nw1MbpnxHuPzYbfOn2KmlZO1FA==}
     dependencies:
       jsonc-parser: 3.0.0
+      mlly: 0.5.13
+      pathe: 0.3.5
+    dev: true
+
+  /pkg-types/0.3.4:
+    resolution: {integrity: sha512-s214f/xkRpwlwVBToWq9Mu0XlU3HhZMYCnr2var8+jjbavBHh/VCh4pBLsJW29rJ//B1jb4HlpMIaNIMH+W2/w==}
+    dependencies:
+      jsonc-parser: 3.1.0
       mlly: 0.5.13
       pathe: 0.3.5
     dev: true
