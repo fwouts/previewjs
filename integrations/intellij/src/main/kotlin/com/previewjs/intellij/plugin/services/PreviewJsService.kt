@@ -292,4 +292,4 @@ Include the content of the Preview.js logs panel for easier debugging.
     private fun isWindows() = System.getProperty("os.name").lowercase().contains("win")
 }
 
-class NodeVersionError(override val message: String): Exception(message) {}
+class NodeVersionError(override val message: String) : Exception(message)
