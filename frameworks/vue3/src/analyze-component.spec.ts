@@ -76,7 +76,6 @@ defineProps<{ foo: string }>();
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -103,7 +102,6 @@ withDefaults(defineProps<{ foo: string, bar: string }>(), {
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -127,7 +125,6 @@ const props = defineProps<{ foo: string }>();
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -154,7 +151,6 @@ const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -179,7 +175,6 @@ props = defineProps<{ foo: string }>();
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -207,7 +202,6 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -236,7 +230,6 @@ export default defineComponent({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: expect.anything(),
     });
   });
@@ -305,7 +298,6 @@ export default defineComponent({
         size: optionalType(STRING_TYPE),
         backgroundColor: optionalType(STRING_TYPE),
       }),
-      providedArgs: EMPTY_SET,
       types: expect.anything(),
     });
   });

@@ -65,7 +65,6 @@ export { A }
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -84,7 +83,6 @@ export { A as B }
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -103,7 +101,6 @@ export default A
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -120,7 +117,6 @@ export function A() {
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -139,7 +135,6 @@ export function A() {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -161,7 +156,6 @@ export function A() {
       )
     ).toEqual({
       propsType: objectType({ foo: STRING_TYPE }),
-      providedArgs: EMPTY_SET,
       types: {
         "App.tsx:SomeProps": {
           type: objectType({ foo: STRING_TYPE }),
@@ -183,7 +177,6 @@ export const A = () => {
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -202,7 +195,6 @@ export const A = (props: { foo: string }) => {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -229,7 +221,6 @@ interface PanelTab {
         currentTab: namedType("App.tsx:PanelTab"),
         tabs: arrayType(namedType("App.tsx:PanelTab")),
       }),
-      providedArgs: EMPTY_SET,
       types: {
         ["App.tsx:PanelTab"]: {
           type: objectType({
@@ -260,7 +251,6 @@ export const A: Component<{ foo: string }> = (props) => {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -281,7 +271,6 @@ export const A: Component<{ foo: string }> = (props) => {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -306,7 +295,6 @@ A.args = {
         foo: STRING_TYPE,
         bar: STRING_TYPE,
       }),
-      providedArgs: new Set(["foo"]),
       types: {},
     });
   });

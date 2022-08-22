@@ -14,7 +14,7 @@ export function preparePropsType(
   types: CollectedTypes;
 } {
   // We need to find the object type and make each of its function properties optional,
-  // as well as each property that belongs in argKeys (since it already has a value).
+  // as we provide a default value for it.
   const types = { ...collected };
   let rootTypeName: string;
   if (type.kind === "name") {

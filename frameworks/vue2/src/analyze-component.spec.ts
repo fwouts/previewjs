@@ -76,7 +76,6 @@ export default {
       )
     ).toEqual({
       propsType: objectType({}),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -118,7 +117,6 @@ export default {
         h: unionType([STRING_TYPE, NUMBER_TYPE]),
         i: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -144,7 +142,6 @@ export default {
         b: UNKNOWN_TYPE,
         c: UNKNOWN_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -182,7 +179,6 @@ export default class App extends Vue {
           ])
         ),
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
