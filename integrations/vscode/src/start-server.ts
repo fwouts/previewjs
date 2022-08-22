@@ -106,12 +106,14 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>) {
     );
   }
   const nodeVersion = result.stdout;
-  const match = nodeVersion.match(/^v(\d+).*$/);
+  const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
   if (match) {
     const majorVersion = parseInt(match[1]!, 10);
-    if (majorVersion < 14) {
+    const minorVersion = parseInt(match[2]!, 10);
+    // Minimum version: 14.18.0.
+    if (majorVersion < 14 || (majorVersion === 14 && minorVersion < 18)) {
       throw new Error(
-        `Preview.js needs NodeJS 14+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.`
+        `Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.`
       );
     }
   }

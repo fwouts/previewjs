@@ -210,11 +210,13 @@ Include the content of the Preview.js logs panel for easier debugging.
 
     private fun checkNodeVersion(process: Process) {
         val nodeVersion = readInputStream(process.inputStream)
-        val matchResult = Regex.fromLiteral("^v(\\d+).*\$").find(nodeVersion)
+        val matchResult = Regex.fromLiteral("^v(\\d+)\.(\\d+).*\$").find(nodeVersion)
         matchResult?.let {
-            val majorVersion = matchResult.groups[1]?.value?.toInt()
-            if (majorVersion != null && majorVersion < 14) {
-                throw Error("Preview.js needs NodeJS 14+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
+            val majorVersion = matchResult.groups[1]!!.value.toInt()
+            val minorVersion = matchResult.groups[2]!!.value.toInt()
+            // Minimum version: 14.18.0.
+            if (majorVersion != null && minorVersion != null && (majorVersion < 14 || majorVersion === 14 && minorVersion < 18)) {
+                throw Error("Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
             }
         }
     }
