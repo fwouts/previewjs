@@ -545,7 +545,7 @@ importers:
       ovsx: 0.5.1
       rimraf: 3.0.2
       typescript: 4.7.4
-      vsce: 2.10.0
+      vsce: 2.10.2
     devDependencies:
       '@previewjs/server': link:../../server
       '@types/vscode': 1.43.0
@@ -556,7 +556,7 @@ importers:
       ovsx: 0.5.1
       rimraf: 3.0.2
       typescript: 4.7.4
-      vsce: 2.10.0
+      vsce: 2.10.2
 
   loader:
     specifiers:
@@ -21873,6 +21873,15 @@ packages:
       ufo: 0.8.5
     dev: true
 
+  /mlly/0.5.13:
+    resolution: {integrity: sha512-0SK2fqoan+PMjADs4I2egAtrtNtpjqRez6PDTCeAdGjUQNJCvO5o9v2NEq52WA1jFmMU97qBr/JgdvCquehDbA==}
+    dependencies:
+      acorn: 8.8.0
+      pathe: 0.3.5
+      pkg-types: 0.3.4
+      ufo: 0.8.5
+    dev: true
+
   /mobx-react-lite/3.4.0_m26jawr67gnusmh4egzqtnhxru:
     resolution: {integrity: sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==}
     peerDependencies:
@@ -23154,7 +23163,7 @@ packages:
       is-ci: 2.0.0
       leven: 3.1.0
       tmp: 0.2.1
-      vsce: 2.10.0
+      vsce: 2.10.2
     transitivePeerDependencies:
       - debug
     dev: true
@@ -23549,6 +23558,10 @@ packages:
     resolution: {integrity: sha512-grU/QeYP0ChuE5kjU2/k8VtAeODzbernHlue0gTa27+ayGIu3wqYBIPGfP9r5xSqgCgDd4nWrjKXEfxMillByg==}
     dev: true
 
+  /pathe/0.3.5:
+    resolution: {integrity: sha512-grU/QeYP0ChuE5kjU2/k8VtAeODzbernHlue0gTa27+ayGIu3wqYBIPGfP9r5xSqgCgDd4nWrjKXEfxMillByg==}
+    dev: true
+
   /pathval/1.1.1:
     resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
     dev: true
@@ -23638,6 +23651,14 @@ packages:
     resolution: {integrity: sha512-6AJcCMnjUQPQv/Wk960w0TOmjhdjbeaQJoSKWRQv9N3rgkessCu6J0Ydsog/nw1MbpnxHuPzYbfOn2KmlZO1FA==}
     dependencies:
       jsonc-parser: 3.0.0
+      mlly: 0.5.13
+      pathe: 0.3.5
+    dev: true
+
+  /pkg-types/0.3.4:
+    resolution: {integrity: sha512-s214f/xkRpwlwVBToWq9Mu0XlU3HhZMYCnr2var8+jjbavBHh/VCh4pBLsJW29rJ//B1jb4HlpMIaNIMH+W2/w==}
+    dependencies:
+      jsonc-parser: 3.1.0
       mlly: 0.5.13
       pathe: 0.3.5
     dev: true
@@ -30723,8 +30744,8 @@ packages:
   /vm-browserify/1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
 
-  /vsce/2.10.0:
-    resolution: {integrity: sha512-b+wB3XMapEi368g64klSM6uylllZdNutseqbNY+tUoHYSy6g2NwnlWuAGKDQTYc0IqfDUjUFRQBpPgA89Q+Fyw==}
+  /vsce/2.10.2:
+    resolution: {integrity: sha512-DZdD3B7rfANNefBpyzE7g1IQkEWuJ/0KoCrimMreOYW6XKfoZSMouFNBh26Cpk9kNZsjZqxTc1/ckLouDZIw/Q==}
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
