@@ -210,7 +210,7 @@ Include the content of the Preview.js logs panel for easier debugging.
 
     private fun checkNodeVersion(process: Process) {
         val nodeVersion = readInputStream(process.inputStream)
-        val matchResult = Regex.fromLiteral("^v(\\d+)\.(\\d+).*\$").find(nodeVersion)
+        val matchResult = Regex.fromLiteral("^v(\\d+)\\.(\\d+).*\$").find(nodeVersion)
         matchResult?.let {
             val majorVersion = matchResult.groups[1]!!.value.toInt()
             val minorVersion = matchResult.groups[2]!!.value.toInt()
