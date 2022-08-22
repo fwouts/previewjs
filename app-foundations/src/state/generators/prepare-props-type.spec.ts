@@ -16,7 +16,6 @@ describe("preparePropsType", () => {
         objectType({
           foo: STRING_TYPE,
         }),
-        [],
         {}
       )
     ).toMatchInlineSnapshot(`
@@ -41,7 +40,7 @@ describe("preparePropsType", () => {
 
   test("simple props with named type", () => {
     expect(
-      preparePropsType("MyComponent", namedType("/foo.tsx:Foo"), [], {
+      preparePropsType("MyComponent", namedType("/foo.tsx:Foo"), {
         "/foo.tsx:Foo": {
           type: objectType({
             foo: STRING_TYPE,
@@ -76,7 +75,6 @@ describe("preparePropsType", () => {
         objectType({
           foo: namedType("/foo.tsx:MyComponentProps"),
         }),
-        [],
         {
           "/foo.tsx:MyComponentProps": {
             type: objectType({}),
@@ -122,7 +120,6 @@ describe("preparePropsType", () => {
           bar: STRING_TYPE,
           baz: functionType(STRING_TYPE),
         }),
-        ["foo"],
         {}
       )
     ).toMatchInlineSnapshot(`
@@ -146,10 +143,7 @@ describe("preparePropsType", () => {
                   },
                 },
                 "foo": {
-                  "kind": "optional",
-                  "type": {
-                    "kind": "string",
-                  },
+                  "kind": "string",
                 },
               },
               "kind": "object",
@@ -162,7 +156,7 @@ describe("preparePropsType", () => {
 
   test("named type with props that should be made optional", () => {
     expect(
-      preparePropsType("MyComponent", namedType("/foo.tsx:Foo"), ["foo"], {
+      preparePropsType("MyComponent", namedType("/foo.tsx:Foo"), {
         "/foo.tsx:Foo": {
           type: objectType({
             foo: STRING_TYPE,
@@ -193,10 +187,7 @@ describe("preparePropsType", () => {
                   },
                 },
                 "foo": {
-                  "kind": "optional",
-                  "type": {
-                    "kind": "string",
-                  },
+                  "kind": "string",
                 },
               },
               "kind": "object",
@@ -209,7 +200,7 @@ describe("preparePropsType", () => {
 
   test("recursive named type", () => {
     expect(
-      preparePropsType("MyComponent", namedType("/foo.tsx:Foo"), [], {
+      preparePropsType("MyComponent", namedType("/foo.tsx:Foo"), {
         "/foo.tsx:Foo": {
           type: objectType({
             child: optionalType(namedType("/foo.tsx:Foo")),
