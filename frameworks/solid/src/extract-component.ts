@@ -110,13 +110,7 @@ export function extractSolidComponents(
 
   const solidComponents = components.map(({ signature, ...component }) => ({
     ...component,
-    analyze: async () =>
-      analyzeSolidComponent(
-        resolver,
-        component.absoluteFilePath,
-        component.name,
-        signature
-      ),
+    analyze: async () => analyzeSolidComponent(resolver, signature),
   }));
   return [
     ...solidComponents,

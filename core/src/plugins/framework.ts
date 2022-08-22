@@ -40,5 +40,4 @@ export interface Component {
 export interface ComponentAnalysis {
   propsType: ValueType;
   types: CollectedTypes;
-  providedArgs: ReadonlySet<string>;
 }

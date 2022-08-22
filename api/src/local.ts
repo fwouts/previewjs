@@ -37,6 +37,4 @@ export type ComputePropsResponse = {
     props: ValueType;
     all: CollectedTypes;
   };
-  isStory: boolean;
-  args: string[];
 };

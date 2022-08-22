@@ -23,7 +23,6 @@ export function analyzeVueComponentFromTemplate(
     if (definedProps) {
       return {
         propsType: definedProps.type,
-        providedArgs: new Set(),
         types: definedProps.collected,
       };
     }
@@ -35,14 +34,12 @@ export function analyzeVueComponentFromTemplate(
       const defineComponentProps = resolver.resolveType(type);
       return {
         propsType: defineComponentProps.type,
-        providedArgs: new Set(),
         types: defineComponentProps.collected,
       };
     }
   }
   return {
     propsType: UNKNOWN_TYPE,
-    providedArgs: new Set(),
     types: {},
   };
 }

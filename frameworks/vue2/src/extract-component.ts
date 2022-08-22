@@ -20,7 +20,6 @@ export function extractVueComponents(
   // TODO: Handle JSX and Storybook stories.
   const analysis: ComponentAnalysis = {
     propsType: UNKNOWN_TYPE,
-    providedArgs: new Set(),
     types: {},
   };
 

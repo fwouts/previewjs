@@ -17,8 +17,6 @@ export class ComponentProps {
     cachedInvocationSource: string | null
   ) {
     this.computePropsResponse = {
-      args: [],
-      isStory: false,
       types: {
         props: UNKNOWN_TYPE,
         all: {},
@@ -67,13 +65,8 @@ export class ComponentProps {
     return preparePropsType(
       this.componentName,
       this.computePropsResponse.types.props,
-      this.computePropsResponse.args,
       this.computePropsResponse.types.all
     );
-  }
-
-  get isStory() {
-    return this.computePropsResponse.isStory;
   }
 
   get invocationSource(): string {
@@ -106,7 +99,6 @@ export class ComponentProps {
           this.computePropsResponse.types.props,
           this.computePropsResponse.types.all
         ),
-        ...this.computePropsResponse.args,
       ],
       this.computePropsResponse.types.all
     );
