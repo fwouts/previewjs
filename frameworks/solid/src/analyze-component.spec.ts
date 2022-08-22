@@ -24,7 +24,6 @@ import { SOLID_SPECIAL_TYPES } from "./special-types";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
-const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyzeSolidComponent", () => {
   let memoryReader: Reader & Writer;
