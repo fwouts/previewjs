@@ -8,16 +8,13 @@ import {
 export function preparePropsType(
   name: string,
   type: ValueType,
-  argKeys: string[],
   collected: CollectedTypes
 ): {
   propsTypeName: string;
   types: CollectedTypes;
 } {
-  const args = new Set(argKeys);
-
   // We need to find the object type and make each of its function properties optional,
-  // as well as each property that belongs in argKeys (since it already has a value).
+  // as we provide a default value for it.
   const types = { ...collected };
   let rootTypeName: string;
   if (type.kind === "name") {
@@ -50,7 +47,7 @@ export function preparePropsType(
         Object.fromEntries(
           Object.entries(propsType.type.fields).map(
             ([fieldName, fieldType]) => {
-              if (fieldType.kind === "function" || args.has(fieldName)) {
+              if (fieldType.kind === "function") {
                 fieldType = optionalType(fieldType);
               }
               return [fieldName, fieldType];

@@ -59,12 +59,10 @@ export function extractCsf3Stories(
         continue;
       }
       const name = declaration.name.text;
-      const argKeys = new Set<string>();
       for (const property of declaration.initializer.properties) {
         if (!property.name || !ts.isIdentifier(property.name)) {
           continue;
         }
-        argKeys.add(property.name.text);
       }
 
       components.push({
@@ -76,7 +74,6 @@ export function extractCsf3Stories(
         analyze: async () => {
           return {
             propsType: EMPTY_OBJECT_TYPE,
-            providedArgs: argKeys,
             types: {},
           };
         },

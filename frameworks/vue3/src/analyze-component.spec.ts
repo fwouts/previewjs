@@ -22,7 +22,6 @@ import { createVueTypeScriptReader } from "./vue-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
-const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyze Vue 3 component", () => {
   let memoryReader: Reader & Writer;
@@ -76,7 +75,6 @@ defineProps<{ foo: string }>();
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -103,7 +101,6 @@ withDefaults(defineProps<{ foo: string, bar: string }>(), {
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -127,7 +124,6 @@ const props = defineProps<{ foo: string }>();
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -154,7 +150,6 @@ const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -179,7 +174,6 @@ props = defineProps<{ foo: string }>();
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -207,7 +201,6 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -236,7 +229,6 @@ export default defineComponent({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: expect.anything(),
     });
   });
@@ -305,7 +297,6 @@ export default defineComponent({
         size: optionalType(STRING_TYPE),
         backgroundColor: optionalType(STRING_TYPE),
       }),
-      providedArgs: EMPTY_SET,
       types: expect.anything(),
     });
   });

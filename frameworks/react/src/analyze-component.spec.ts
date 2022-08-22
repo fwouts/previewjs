@@ -29,7 +29,6 @@ import { REACT_SPECIAL_TYPES } from "./special-types";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
-const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
@@ -70,7 +69,6 @@ export { A }
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -89,7 +87,6 @@ export { A as B }
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -108,7 +105,6 @@ export default A
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -125,7 +121,6 @@ export function A() {
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -144,7 +139,6 @@ export function A() {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -166,7 +160,6 @@ export function A() {
       )
     ).toEqual({
       propsType: objectType({ foo: STRING_TYPE }),
-      providedArgs: EMPTY_SET,
       types: {
         "App.tsx:SomeProps": {
           type: objectType({ foo: STRING_TYPE }),
@@ -188,7 +181,6 @@ export const A = () => {
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -207,7 +199,6 @@ export const A = (props: { foo: string }) => {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -234,7 +225,6 @@ interface PanelTab {
         currentTab: namedType("App.tsx:PanelTab"),
         tabs: arrayType(namedType("App.tsx:PanelTab")),
       }),
-      providedArgs: EMPTY_SET,
       types: {
         ["App.tsx:PanelTab"]: {
           type: objectType({
@@ -265,7 +255,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -286,7 +275,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -305,7 +293,6 @@ export const A: React.FC<{ foo: string }> = () => {
       )
     ).toEqual({
       propsType: objectType({}),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -326,7 +313,6 @@ export const A: React.FC<{ foo: string }> = (props) => {
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -356,7 +342,6 @@ type Props = {
         c: STRING_TYPE,
         d: optionalType(STRING_TYPE),
       }),
-      providedArgs: EMPTY_SET,
       types: {
         "App.tsx:Props": {
           type: objectType({
@@ -395,7 +380,6 @@ type Props = {
         b: STRING_TYPE,
         c: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {
         "App.tsx:Props": {
           type: objectType({
@@ -421,7 +405,6 @@ export class A extends PureComponent {}
       )
     ).toEqual({
       propsType: EMPTY_OBJECT_TYPE,
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -440,7 +423,6 @@ export class A extends PureComponent<{foo: string}> {}
       propsType: objectType({
         foo: STRING_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -465,7 +447,6 @@ A.args = {
         foo: STRING_TYPE,
         bar: STRING_TYPE,
       }),
-      providedArgs: new Set(["foo"]),
       types: {},
     });
   });
@@ -508,7 +489,6 @@ A.propTypes = {
         onLogin: functionType(ANY_TYPE),
         onLogout: optionalType(functionType(ANY_TYPE)),
       }),
-      providedArgs: EMPTY_SET,
       types: expect.anything(),
     });
   });

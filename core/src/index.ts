@@ -116,8 +116,6 @@ export async function createWorkspace({
             props: UNKNOWN_TYPE,
             all: {},
           },
-          isStory: false,
-          args: [],
         };
       }
       return computeProps({
