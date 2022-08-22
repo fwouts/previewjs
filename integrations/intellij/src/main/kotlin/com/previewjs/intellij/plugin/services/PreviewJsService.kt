@@ -70,6 +70,14 @@ class PreviewJsSharedService : Disposable {
                     api = runServer(msg.project)
                 }
                 openDocsForFirstUsage()
+            } catch (e: NodeVersionError) {
+                notificationGroup.createNotification(
+                    "Incompatible Node.js version",
+                    e.message,
+                    NotificationType.ERROR
+                )
+                    .notify(msg.project)
+                return@actor
             } catch (e: Throwable) {
                 notificationGroup.createNotification(
                     "Preview.js crashed",
@@ -158,15 +166,16 @@ Include the content of the Preview.js logs panel for easier debugging.
             checkNodeVersion(nodeVersionProcess)
         } catch (e: Error) {
             // Unable to start Node. Check WSL if we're on Windows.
-            if (isWindows()) {
-                val nodeVersionProcessWsl = processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
-                if (nodeVersionProcessWsl.waitFor() === 0) {
-                    checkNodeVersion(nodeVersionProcessWsl)
-                    useWsl = true
-                } else {
-                    // If WSL failed, just ignore it.
-                    throw e
-                }
+            if (!isWindows()) {
+                throw e
+            }
+            val nodeVersionProcessWsl = processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
+            if (nodeVersionProcessWsl.waitFor() === 0) {
+                checkNodeVersion(nodeVersionProcessWsl)
+                useWsl = true
+            } else {
+                // If WSL failed, just ignore it.
+                throw e
             }
         }
         val builder = processBuilder("node dist/main.js $port", useWsl)
@@ -210,11 +219,13 @@ Include the content of the Preview.js logs panel for easier debugging.
 
     private fun checkNodeVersion(process: Process) {
         val nodeVersion = readInputStream(process.inputStream)
-        val matchResult = Regex.fromLiteral("^v(\\d+).*\$").find(nodeVersion)
+        val matchResult = "v(\\d+)\\.(\\d+)".toRegex().find(nodeVersion)
         matchResult?.let {
-            val majorVersion = matchResult.groups[1]?.value?.toInt()
-            if (majorVersion != null && majorVersion < 14) {
-                throw Error("Preview.js needs NodeJS 14+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
+            val majorVersion = matchResult.groups[1]!!.value.toInt()
+            val minorVersion = matchResult.groups[2]!!.value.toInt()
+            // Minimum version: 14.18.0.
+            if (majorVersion < 14 || majorVersion === 14 && minorVersion < 18) {
+                throw NodeVersionError("Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
             }
         }
     }
@@ -280,3 +291,5 @@ Include the content of the Preview.js logs panel for easier debugging.
 
     private fun isWindows() = System.getProperty("os.name").lowercase().contains("win")
 }
+
+class NodeVersionError(override val message: String) : Exception(message)

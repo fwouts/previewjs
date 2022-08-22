@@ -33,22 +33,25 @@ jobs:
         os: [ubuntu-20.04, macos-11, windows-2022]
         group: [0, 1, 2]
         include:
-          - node-version: 14
+          # Important: Node 14 version must match minimum checked
+          # for CLI package.json, as well as IntelliJ and VS Code
+          # node --version checks.
+          - node-version: 14.18.0
             os: ubuntu-latest
             group: 0
-          - node-version: 14
+          - node-version: 14.18.0
             os: ubuntu-latest
             group: 1
-          - node-version: 14
+          - node-version: 14.18.0
             os: ubuntu-latest
             group: 2
-          - node-version: 16
+          - node-version: 16.0.0
             os: ubuntu-latest
             group: 0
-          - node-version: 16
+          - node-version: 16.0.0
             os: ubuntu-latest
             group: 1
-          - node-version: 16
+          - node-version: 16.0.0
             os: ubuntu-latest
             group: 2
     steps:
