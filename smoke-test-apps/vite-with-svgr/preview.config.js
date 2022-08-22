@@ -1,4 +1,4 @@
-const svgr = require("vite-plugin-svgr").default;
+const svgr = require("vite-plugin-svgr");
 
 module.exports = {
   vite: {
