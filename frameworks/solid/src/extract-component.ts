@@ -42,7 +42,11 @@ export function extractSolidComponents(
         );
       const name = statement.name?.text;
       if (isDefaultExport || name) {
-        functions.push([name || "default", statement, statement]);
+        functions.push([
+          isDefaultExport || !name ? "default" : name,
+          statement,
+          statement,
+        ]);
       }
     }
   }

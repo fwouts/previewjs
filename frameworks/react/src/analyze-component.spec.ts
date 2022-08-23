@@ -169,6 +169,24 @@ export function A() {
     });
   });
 
+  test("default exported function with no parameter", async () => {
+    expect(
+      await analyze(
+        `
+import { Component } from 'solid-js';
+
+export default function A() {
+  return <div>Hello, World!</div>;
+};
+`,
+        "A"
+      )
+    ).toEqual({
+      propsType: objectType({}),
+      types: {},
+    });
+  });
+
   test("constant function with empty props", async () => {
     expect(
       await analyze(

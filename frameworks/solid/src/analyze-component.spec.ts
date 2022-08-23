@@ -274,6 +274,24 @@ export const A: Component<{ foo: string }> = (props) => {
     });
   });
 
+  test("default exported function with no parameter", async () => {
+    expect(
+      await analyze(
+        `
+import { Component } from 'solid-js';
+
+export default function A() {
+  return <div>Hello, World!</div>;
+};
+`,
+        "default"
+      )
+    ).toEqual({
+      propsType: objectType({}),
+      types: {},
+    });
+  });
+
   test("Storybook args support", async () => {
     expect(
       await analyze(
