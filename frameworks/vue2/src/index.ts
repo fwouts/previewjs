@@ -72,9 +72,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           },
           plugins: [
-            createVuePlugin({
-              jsx: true,
-            }),
+            createVuePlugin(),
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
@@ -148,9 +146,6 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           ],
         };
-      },
-      esbuild: {
-        jsxFactory: "h",
       },
     };
   },

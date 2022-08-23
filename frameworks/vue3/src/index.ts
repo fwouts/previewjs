@@ -18,7 +18,6 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   },
   async create() {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
-    const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
     const { extractVueComponents } = await import("./extract-component");
     const { Parser } = await import("acorn");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
@@ -68,7 +67,6 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         return {
           plugins: [
             createVuePlugin(),
-            vueJsxPlugin(),
             {
               name: "previewjs:disable-vue-hmr",
               async transform(code, id) {
@@ -165,10 +163,6 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
               }),
             },
           ],
-          esbuild: {
-            banner: `import { h } from 'vue';`,
-            jsxFactory: "h",
-          },
           resolve: {
             alias: {
               vue: "vue/dist/vue.esm-bundler.js",

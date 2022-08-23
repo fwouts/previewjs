@@ -93,28 +93,12 @@ function extractVueComponent(
   const type = checker.getTypeAtLocation(node);
   for (const callSignature of type.getCallSignatures()) {
     const returnType = callSignature.getReturnType();
-    if (isJsxElement(returnType)) {
-      // JSX component.
-      return callSignature;
-    }
     if (returnType.getProperty("template") || hasArgs) {
       // This is a story.
       return callSignature;
     }
   }
   return null;
-}
-
-const jsxElementTypes = new Set(["Element"]);
-function isJsxElement(type: ts.Type): boolean {
-  if (type.isUnion()) {
-    for (const subtype of type.types) {
-      if (isJsxElement(subtype)) {
-        return true;
-      }
-    }
-  }
-  return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
 }
 
 function isValidVueComponentName(name: string) {
