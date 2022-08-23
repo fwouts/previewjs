@@ -88,23 +88,6 @@ export function extractSolidComponents(
           });
         }
       }
-    } else if (ts.isClassDeclaration(statement) && statement.name) {
-      const name = statement.name.text;
-      const exportedName = nameToExportedName[name];
-      if (!isValidSolidComponentName(name)) {
-        continue;
-      }
-      const signature = extractSolidComponent(resolver.checker, statement);
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name,
-          isStory: !!args[name],
-          exported: !!exportedName,
-          offsets: [[statement.getStart(), statement.getEnd()]],
-          signature,
-        });
-      }
     }
   }
 
@@ -123,21 +106,9 @@ function extractSolidComponent(
   node: ts.Node
 ): ts.Signature | null {
   const type = checker.getTypeAtLocation(node);
-
-  // Function component.
   for (const callSignature of type.getCallSignatures()) {
     if (isValidComponentReturnType(callSignature.getReturnType())) {
       return callSignature;
-    }
-  }
-  // Class component.
-  if (type.symbol) {
-    const classType = checker.getTypeOfSymbolAtLocation(type.symbol, node);
-    for (const constructSignature of classType.getConstructSignatures()) {
-      const returnType = constructSignature.getReturnType();
-      if (returnType.getProperty("render")) {
-        return constructSignature;
-      }
     }
   }
   return null;
