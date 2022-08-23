@@ -1,5 +1,5 @@
 import type { Component } from "@previewjs/core";
-import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
+import { extractCsf3Stories } from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
@@ -12,17 +12,6 @@ export function extractReactComponents(
   if (!sourceFile) {
     return [];
   }
-  const storiesDefaultComponent = extractDefaultComponent(
-    resolver.checker,
-    sourceFile
-  );
-  const args = helpers.extractArgs(sourceFile);
-  const components: Array<
-    Omit<Component, "analyze"> & {
-      signature: ts.Signature;
-    }
-  > = [];
-  const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
   const functions: Array<[string, ts.Statement, ts.Node]> = [];
   for (const statement of sourceFile.statements) {
@@ -37,11 +26,11 @@ export function extractReactComponents(
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
           continue;
         }
-        const name = declaration.name.text;
-        if (!isValidReactComponentName(name)) {
-          continue;
-        }
-        functions.push([name, statement, declaration.initializer]);
+        functions.push([
+          declaration.name.text,
+          statement,
+          declaration.initializer,
+        ]);
       }
     } else if (ts.isFunctionDeclaration(statement)) {
       const isDefaultExport =
@@ -52,54 +41,34 @@ export function extractReactComponents(
           (m) => m.kind === ts.SyntaxKind.DefaultKeyword
         );
       const name = statement.name?.text;
-      const exported = (name && !!nameToExportedName[name]) || isDefaultExport;
-      if (isDefaultExport || (name && isValidReactComponentName(name))) {
-        const signature = extractReactComponent(resolver.checker, statement);
-        if (signature) {
-          components.push({
-            absoluteFilePath,
-            name: name || "default",
-            isStory: name ? !!args[name] : false,
-            exported,
-            offsets: [[statement.getStart(), statement.getEnd()]],
-            signature,
-          });
-        }
+      if (isDefaultExport || name) {
+        functions.push([name || "default", statement, statement]);
       }
     } else if (ts.isClassDeclaration(statement) && statement.name) {
-      const name = statement.name.text;
-      const exportedName = nameToExportedName[name];
-      if (!isValidReactComponentName(name)) {
-        continue;
-      }
-      const signature = extractReactComponent(resolver.checker, statement);
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name,
-          isStory: !!args[name],
-          exported: !!exportedName,
-          offsets: [[statement.getStart(), statement.getEnd()]],
-          signature,
-        });
-      }
+      functions.push([statement.name.text, statement, statement]);
     }
   }
 
-  const reactComponents = components.map(({ signature, ...component }) => ({
-    ...component,
-    analyze: async () =>
-      analyzeReactComponent(
-        resolver,
-        component.absoluteFilePath,
-        component.name,
-        signature
-      ),
-  }));
-  return [
-    ...reactComponents,
-    ...extractCsf3Stories(absoluteFilePath, sourceFile),
-  ];
+  const components: Component[] = [];
+  const args = helpers.extractArgs(sourceFile);
+  const nameToExportedName = helpers.extractExportedNames(sourceFile);
+  for (const [name, statement, node] of functions) {
+    const hasArgs = !!args[name];
+    const isExported = name === "default" || !!nameToExportedName[name];
+    const signature = extractReactComponent(resolver.checker, node);
+    if (signature) {
+      components.push({
+        absoluteFilePath,
+        name,
+        isStory: hasArgs,
+        exported: isExported,
+        offsets: [[statement.getStart(), statement.getEnd()]],
+        analyze: async () =>
+          analyzeReactComponent(resolver, absoluteFilePath, name, signature),
+      });
+    }
+  }
+  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
 }
 
 function extractReactComponent(
@@ -144,8 +113,4 @@ function isJsxElement(type: ts.Type): boolean {
     }
   }
   return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
-}
-
-function isValidReactComponentName(name: string) {
-  return name.length > 0 && name[0]! >= "A" && name[0]! <= "Z";
 }

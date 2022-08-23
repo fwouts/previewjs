@@ -1,5 +1,5 @@
-import type { Component } from "@previewjs/core";
-import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
+import type { Component, ComponentAnalysis } from "@previewjs/core";
+import { extractCsf3Stories } from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -14,10 +14,6 @@ export function extractVueComponents(
   if (!sourceFile) {
     return [];
   }
-  const storiesDefaultComponent = extractDefaultComponent(
-    resolver.checker,
-    sourceFile
-  );
 
   const functions: Array<[string, ts.Statement, ts.Node]> = [];
   for (const statement of sourceFile.statements) {
@@ -45,41 +41,31 @@ export function extractVueComponents(
     }
   }
 
+  const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
-  const components: Component[] = [];
+  // TODO: Handle JSX and Storybook stories.
+  const analysis: ComponentAnalysis = {
+    propsType: UNKNOWN_TYPE,
+    types: {},
+  };
   for (const [name, statement, node] of functions) {
-    const exported = !!nameToExportedName[name];
     const hasArgs = !!args[name];
+    const isExported = !!nameToExportedName[name];
     const signature = extractVueComponent(resolver.checker, node, hasArgs);
     if (signature) {
       components.push({
         absoluteFilePath,
         name,
+        isStory: hasArgs,
+        exported: isExported,
         offsets: [[statement.getFullStart(), statement.getEnd()]],
-        info:
-          storiesDefaultComponent && hasArgs && exported
-            ? {
-                kind: "story",
-                associatedComponent: storiesDefaultComponent,
-              }
-            : {
-                kind: "component",
-                exported,
-                // TODO: Handle JSX components.
-                analyze: async () => ({
-                  propsType: UNKNOWN_TYPE,
-                  types: {},
-                }),
-              },
+        analyze: async () => analysis,
       });
     }
   }
 
-  return [
-    ...components,
-    ...extractCsf3Stories(resolver.checker, absoluteFilePath, sourceFile),
-  ];
+  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
 }
 
 function extractVueComponent(

@@ -102,6 +102,51 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     ]);
   });
 
+  it("detects default export component (arrow function)", async () => {
+    expect(
+      extract(`
+export default () => {
+  return <div>Hello, World!</div>;
+}
+`)
+    ).toMatchObject([
+      {
+        name: "default",
+        exported: true,
+      },
+    ]);
+  });
+
+  it("detects default export component (named function)", async () => {
+    expect(
+      extract(`
+export default function test(){
+  return <div>Hello, World!</div>;
+}
+`)
+    ).toMatchObject([
+      {
+        name: "default",
+        exported: true,
+      },
+    ]);
+  });
+
+  it("detects default export component (anonymous function)", async () => {
+    expect(
+      extract(`
+export default function(){
+  return <div>Hello, World!</div>;
+}
+`)
+    ).toMatchObject([
+      {
+        name: "default",
+        exported: true,
+      },
+    ]);
+  });
+
   it("detects CSF3 stories", async () => {
     expect(
       extract(`
