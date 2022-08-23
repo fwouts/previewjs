@@ -12,58 +12,25 @@ export function extractReactComponents(
   if (!sourceFile) {
     return [];
   }
-  const args = helpers.extractArgs(sourceFile);
-  const components: Array<
-    Omit<Component, "analyze"> & {
-      signature: ts.Signature;
-    }
-  > = [];
-  const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
+  const functions: Array<[string, ts.Statement, ts.Node]> = [];
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
       if (ts.isIdentifier(statement.expression)) {
         // Avoid duplicates.
         continue;
       }
-      const signature = extractReactComponent(
-        resolver.checker,
-        statement.expression
-      );
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name: "default",
-          isStory: false,
-          exported: true,
-          offsets: [[statement.getStart(), statement.getEnd()]],
-          signature,
-        });
-      }
+      functions.push(["default", statement, statement.expression]);
     } else if (ts.isVariableStatement(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
           continue;
         }
-        const name = declaration.name.text;
-        const exportedName = nameToExportedName[name];
-        if (!isValidReactComponentName(name)) {
-          continue;
-        }
-        const signature = extractReactComponent(
-          resolver.checker,
-          declaration.initializer
-        );
-        if (signature) {
-          components.push({
-            absoluteFilePath,
-            name,
-            isStory: !!args[name],
-            exported: !!exportedName,
-            offsets: [[statement.getStart(), statement.getEnd()]],
-            signature,
-          });
-        }
+        functions.push([
+          declaration.name.text,
+          statement,
+          declaration.initializer,
+        ]);
       }
     } else if (ts.isFunctionDeclaration(statement)) {
       const isDefaultExport =
@@ -74,54 +41,34 @@ export function extractReactComponents(
           (m) => m.kind === ts.SyntaxKind.DefaultKeyword
         );
       const name = statement.name?.text;
-      const exported = (name && !!nameToExportedName[name]) || isDefaultExport;
-      if (isDefaultExport || (name && isValidReactComponentName(name))) {
-        const signature = extractReactComponent(resolver.checker, statement);
-        if (signature) {
-          components.push({
-            absoluteFilePath,
-            name: name || "default",
-            isStory: name ? !!args[name] : false,
-            exported,
-            offsets: [[statement.getStart(), statement.getEnd()]],
-            signature,
-          });
-        }
+      if (isDefaultExport || name) {
+        functions.push([name || "default", statement, statement]);
       }
     } else if (ts.isClassDeclaration(statement) && statement.name) {
-      const name = statement.name.text;
-      const exportedName = nameToExportedName[name];
-      if (!isValidReactComponentName(name)) {
-        continue;
-      }
-      const signature = extractReactComponent(resolver.checker, statement);
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name,
-          isStory: !!args[name],
-          exported: !!exportedName,
-          offsets: [[statement.getStart(), statement.getEnd()]],
-          signature,
-        });
-      }
+      functions.push([statement.name.text, statement, statement]);
     }
   }
 
-  const reactComponents = components.map(({ signature, ...component }) => ({
-    ...component,
-    analyze: async () =>
-      analyzeReactComponent(
-        resolver,
-        component.absoluteFilePath,
-        component.name,
-        signature
-      ),
-  }));
-  return [
-    ...reactComponents,
-    ...extractCsf3Stories(absoluteFilePath, sourceFile),
-  ];
+  const components: Component[] = [];
+  const args = helpers.extractArgs(sourceFile);
+  const nameToExportedName = helpers.extractExportedNames(sourceFile);
+  for (const [name, statement, node] of functions) {
+    const hasArgs = !!args[name];
+    const isExported = name === "default" || !!nameToExportedName[name];
+    const signature = extractReactComponent(resolver.checker, node);
+    if (signature) {
+      components.push({
+        absoluteFilePath,
+        name,
+        isStory: hasArgs,
+        exported: isExported,
+        offsets: [[statement.getStart(), statement.getEnd()]],
+        analyze: async () =>
+          analyzeReactComponent(resolver, absoluteFilePath, name, signature),
+      });
+    }
+  }
+  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
 }
 
 function extractReactComponent(
@@ -166,8 +113,4 @@ function isJsxElement(type: ts.Type): boolean {
     }
   }
   return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
-}
-
-function isValidReactComponentName(name: string) {
-  return name.length > 0 && name[0]! >= "A" && name[0]! <= "Z";
 }
