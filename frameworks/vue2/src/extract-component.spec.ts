@@ -8,18 +8,18 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { solidFrameworkPlugin } from ".";
-import { extractSolidComponents } from "./extract-component";
+import { vue2FrameworkPlugin } from ".";
+import { extractVueComponents } from "./extract-component";
 
 const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
 
-describe("extractSolidComponents", () => {
+describe("extractVueComponents", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    const frameworkPlugin = await solidFrameworkPlugin.create();
+    const frameworkPlugin = await vue2FrameworkPlugin.create();
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: path.join(__dirname, "virtual"),
       reader: createStackedReader([
@@ -36,20 +36,14 @@ describe("extractSolidComponents", () => {
     typeAnalyzer.dispose();
   });
 
-  it("detects expected components", async () => {
+  it.only("detects expected components", async () => {
     expect(
       extract(`
-import type { Component } from 'solid-js';
-
-const Component1: Component = () => {
+const Component1 = () => {
   return <div>Hello, World!</div>;
 };
 
-const Component2 = () => {
-  return <div>Hello, World!</div>;
-};
-
-function Component3() {
+function Component2() {
   return <div>Hello, World!</div>;
 };
 
@@ -71,15 +65,10 @@ export default Component1;
         exported: false,
         isStory: false,
       },
-      {
-        name: "Component3",
-        exported: false,
-        isStory: false,
-      },
     ]);
   });
 
-  it("detects components without any Solid import", async () => {
+  it("detects components without any Vue import", async () => {
     expect(
       extract(`
 export function DeclaredFunction() {
@@ -178,6 +167,6 @@ export function NotStory() {}
   function extract(source: string) {
     const rootDirPath = path.join(__dirname, "virtual");
     memoryReader.updateFile(path.join(rootDirPath, "App.tsx"), source);
-    return extractSolidComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
+    return extractVueComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
   }
 });
