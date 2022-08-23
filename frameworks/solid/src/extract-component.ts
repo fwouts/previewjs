@@ -44,8 +44,6 @@ export function extractSolidComponents(
       if (isDefaultExport || name) {
         functions.push([name || "default", statement, statement]);
       }
-    } else if (ts.isClassDeclaration(statement) && statement.name) {
-      functions.push([statement.name.text, statement, statement]);
     }
   }
 
@@ -75,21 +73,9 @@ function extractSolidComponent(
   node: ts.Node
 ): ts.Signature | null {
   const type = checker.getTypeAtLocation(node);
-
-  // Function component.
   for (const callSignature of type.getCallSignatures()) {
     if (isValidComponentReturnType(callSignature.getReturnType())) {
       return callSignature;
-    }
-  }
-  // Class component.
-  if (type.symbol) {
-    const classType = checker.getTypeOfSymbolAtLocation(type.symbol, node);
-    for (const constructSignature of classType.getConstructSignatures()) {
-      const returnType = constructSignature.getReturnType();
-      if (returnType.getProperty("render")) {
-        return constructSignature;
-      }
     }
   }
   return null;
