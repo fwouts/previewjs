@@ -9,13 +9,7 @@ export interface ProjectAnalysis {
   cached: boolean;
 }
 
-export type ProjectComponents = Record<
-  string,
-  Array<{
-    componentName: string;
-    exported: boolean;
-  }>
->;
+export type ProjectComponents = Record<string, string[]>;
 
 export async function analyzeProject(
   workspace: Workspace,
@@ -51,13 +45,7 @@ async function analyzeProjectCore(
     workspace.rootDirPath,
     "**/*.@(js|jsx|ts|tsx|svelte|vue)"
   );
-  const components: Record<
-    string,
-    Array<{
-      componentName: string;
-      exported: boolean;
-    }>
-  > = {};
+  const components: Record<string, string[]> = {};
   const found = await workspace.frameworkPlugin.detectComponents(
     workspace.typeAnalyzer,
     absoluteFilePaths
@@ -67,11 +55,11 @@ async function analyzeProjectCore(
       workspace.rootDirPath,
       component.absoluteFilePath
     );
+    if (component.info.kind === "component" && !component.info.exported) {
+      continue;
+    }
     const fileComponents = (components[filePath] ||= []);
-    fileComponents.push({
-      componentName: component.name,
-      exported: component.exported,
-    });
+    fileComponents.push(component.name);
   }
   return components;
 }

@@ -1,5 +1,5 @@
 import type { Component } from "@previewjs/core";
-import { extractCsf3Stories } from "@previewjs/csf3";
+import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
@@ -12,6 +12,10 @@ export function extractReactComponents(
   if (!sourceFile) {
     return [];
   }
+  const storiesDefaultComponent = extractDefaultComponent(
+    resolver.checker,
+    sourceFile
+  );
   const args = helpers.extractArgs(sourceFile);
   const components: Array<
     Omit<Component, "analyze"> & {
@@ -20,50 +24,24 @@ export function extractReactComponents(
   > = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
+  const functions: Array<[string, ts.Statement, ts.Node]> = [];
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
       if (ts.isIdentifier(statement.expression)) {
         // Avoid duplicates.
         continue;
       }
-      const signature = extractReactComponent(
-        resolver.checker,
-        statement.expression
-      );
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name: "default",
-          isStory: false,
-          exported: true,
-          offsets: [[statement.getStart(), statement.getEnd()]],
-          signature,
-        });
-      }
+      functions.push(["default", statement, statement.expression]);
     } else if (ts.isVariableStatement(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
           continue;
         }
         const name = declaration.name.text;
-        const exportedName = nameToExportedName[name];
         if (!isValidReactComponentName(name)) {
           continue;
         }
-        const signature = extractReactComponent(
-          resolver.checker,
-          declaration.initializer
-        );
-        if (signature) {
-          components.push({
-            absoluteFilePath,
-            name,
-            isStory: !!args[name],
-            exported: !!exportedName,
-            offsets: [[statement.getStart(), statement.getEnd()]],
-            signature,
-          });
-        }
+        functions.push([name, statement, declaration.initializer]);
       }
     } else if (ts.isFunctionDeclaration(statement)) {
       const isDefaultExport =

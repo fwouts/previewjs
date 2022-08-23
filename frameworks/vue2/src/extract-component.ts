@@ -1,5 +1,5 @@
-import type { Component, ComponentAnalysis } from "@previewjs/core";
-import { extractCsf3Stories } from "@previewjs/csf3";
+import type { Component } from "@previewjs/core";
+import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -14,15 +14,12 @@ export function extractVueComponents(
   if (!sourceFile) {
     return [];
   }
-  const components: Component[] = [];
-  const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  const args = helpers.extractArgs(sourceFile);
-  // TODO: Handle JSX and Storybook stories.
-  const analysis: ComponentAnalysis = {
-    propsType: UNKNOWN_TYPE,
-    types: {},
-  };
+  const storiesDefaultComponent = extractDefaultComponent(
+    resolver.checker,
+    sourceFile
+  );
 
+  const functions: Array<[string, ts.Statement, ts.Node]> = [];
   for (const statement of sourceFile.statements) {
     if (options.offset !== undefined) {
       if (
@@ -37,52 +34,52 @@ export function extractVueComponents(
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
           continue;
         }
-        const name = declaration.name.text;
-        const exportedName = nameToExportedName[name];
-        if (!isValidVueComponentName(name)) {
-          continue;
-        }
-        const signature = extractVueComponent(
-          resolver.checker,
+        functions.push([
+          declaration.name.text,
+          statement,
           declaration.initializer,
-          !!args[name]
-        );
-        if (signature) {
-          components.push({
-            absoluteFilePath,
-            name,
-            isStory: !!args[name],
-            exported: !!exportedName,
-            offsets: [[statement.getFullStart(), statement.getEnd()]],
-            analyze: async () => analysis,
-          });
-        }
+        ]);
       }
     } else if (ts.isFunctionDeclaration(statement) && statement.name) {
-      const name = statement.name.text;
-      const exportedName = nameToExportedName[name];
-      if (!isValidVueComponentName(name)) {
-        continue;
-      }
-      const signature = extractVueComponent(
-        resolver.checker,
-        statement,
-        !!args[name]
-      );
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name,
-          isStory: !!args[name],
-          exported: !!exportedName,
-          offsets: [[statement.getFullStart(), statement.getEnd()]],
-          analyze: async () => analysis,
-        });
-      }
+      functions.push([statement.name.text, statement, statement]);
     }
   }
 
-  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
+  const nameToExportedName = helpers.extractExportedNames(sourceFile);
+  const args = helpers.extractArgs(sourceFile);
+  const components: Component[] = [];
+  for (const [name, statement, node] of functions) {
+    const exported = !!nameToExportedName[name];
+    const hasArgs = !!args[name];
+    const signature = extractVueComponent(resolver.checker, node, hasArgs);
+    if (signature) {
+      components.push({
+        absoluteFilePath,
+        name,
+        offsets: [[statement.getFullStart(), statement.getEnd()]],
+        info:
+          storiesDefaultComponent && hasArgs && exported
+            ? {
+                kind: "story",
+                associatedComponent: storiesDefaultComponent,
+              }
+            : {
+                kind: "component",
+                exported,
+                // TODO: Handle JSX components.
+                analyze: async () => ({
+                  propsType: UNKNOWN_TYPE,
+                  types: {},
+                }),
+              },
+      });
+    }
+  }
+
+  return [
+    ...components,
+    ...extractCsf3Stories(resolver.checker, absoluteFilePath, sourceFile),
+  ];
 }
 
 function extractVueComponent(
@@ -115,8 +112,4 @@ function isJsxElement(type: ts.Type): boolean {
     }
   }
   return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
-}
-
-function isValidVueComponentName(name: string) {
-  return name.length > 0 && name[0]! >= "A" && name[0]! <= "Z";
 }

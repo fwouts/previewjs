@@ -1,5 +1,5 @@
 import { Component } from "@previewjs/core";
-import { extractCsf3Stories } from "@previewjs/csf3";
+import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component";
@@ -12,6 +12,10 @@ export function extractSolidComponents(
   if (!sourceFile) {
     return [];
   }
+  const storiesDefaultComponent = extractDefaultComponent(
+    resolver.checker,
+    sourceFile
+  );
   const args = helpers.extractArgs(sourceFile);
   const components: Array<
     Omit<Component, "analyze"> & {
@@ -114,7 +118,7 @@ export function extractSolidComponents(
   }));
   return [
     ...solidComponents,
-    ...extractCsf3Stories(absoluteFilePath, sourceFile),
+    ...extractCsf3Stories(resolver.checker, absoluteFilePath, sourceFile),
   ];
 }
 

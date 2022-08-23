@@ -83,10 +83,9 @@ program
       }
       const allComponents = Object.entries(components)
         .map(([filePath, fileComponents]) =>
-          fileComponents.map(({ componentName, exported }) => ({
+          fileComponents.map((componentName) => ({
             filePath,
             componentName,
-            exported,
           }))
         )
         .flat();

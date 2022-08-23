@@ -1,1 +1,2 @@
-export * from "./extract-csf3-stories";
+export { extractCsf3Stories } from "./extract-csf3-stories";
+export { extractDefaultComponent } from "./extract-default-component";
