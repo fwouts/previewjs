@@ -46,7 +46,7 @@ describe("extractVueComponents", () => {
     typeAnalyzer.dispose();
   });
 
-  it.only("detects expected components", async () => {
+  it("detects expected components", async () => {
     expect(
       extract(`
 const Component1 = () => {
@@ -125,7 +125,7 @@ export default function test(){
 `)
     ).toMatchObject([
       {
-        name: "default",
+        name: "test",
         exported: true,
       },
     ]);

@@ -32,7 +32,27 @@ export function extractVueComponents(
         continue;
       }
     }
-    if (ts.isVariableStatement(statement)) {
+    if (ts.isExportAssignment(statement)) {
+      if (ts.isIdentifier(statement.expression)) {
+        // Avoid duplicates.
+        continue;
+      }
+      const signature = extractVueComponent(
+        resolver.checker,
+        statement.expression,
+        false
+      );
+      if (signature) {
+        components.push({
+          absoluteFilePath,
+          name: "default",
+          isStory: false,
+          exported: true,
+          offsets: [[statement.getFullStart(), statement.getEnd()]],
+          analyze: async () => analysis,
+        });
+      }
+    } else if (ts.isVariableStatement(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
           continue;
@@ -58,26 +78,32 @@ export function extractVueComponents(
           });
         }
       }
-    } else if (ts.isFunctionDeclaration(statement) && statement.name) {
-      const name = statement.name.text;
-      const exportedName = nameToExportedName[name];
-      if (!isValidVueComponentName(name)) {
-        continue;
-      }
-      const signature = extractVueComponent(
-        resolver.checker,
-        statement,
-        !!args[name]
-      );
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name,
-          isStory: !!args[name],
-          exported: !!exportedName,
-          offsets: [[statement.getFullStart(), statement.getEnd()]],
-          analyze: async () => analysis,
-        });
+    } else if (ts.isFunctionDeclaration(statement)) {
+      const isDefaultExport =
+        !!statement.modifiers?.find(
+          (m) => m.kind === ts.SyntaxKind.ExportKeyword
+        ) &&
+        !!statement.modifiers?.find(
+          (m) => m.kind === ts.SyntaxKind.DefaultKeyword
+        );
+      const name = statement.name?.text;
+      const exported = (name && !!nameToExportedName[name]) || isDefaultExport;
+      if (isDefaultExport || (name && isValidVueComponentName(name))) {
+        const signature = extractVueComponent(
+          resolver.checker,
+          statement,
+          name ? !!args[name] : false
+        );
+        if (signature) {
+          components.push({
+            absoluteFilePath,
+            name: name || "default",
+            isStory: name ? !!args[name] : false,
+            exported,
+            offsets: [[statement.getFullStart(), statement.getEnd()]],
+            analyze: async () => analysis,
+          });
+        }
       }
     }
   }
