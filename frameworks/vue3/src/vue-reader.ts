@@ -49,7 +49,23 @@ class VueTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    return this.reader.read(absoluteFilePath);
+    const entry = await this.reader.read(absoluteFilePath);
+    if (
+      entry?.kind === "file" &&
+      (entry.name.endsWith(".jsx") || entry.name.endsWith(".tsx"))
+    ) {
+      return {
+        ...entry,
+        read: () =>
+          entry
+            .read()
+            .then(
+              (content) =>
+                `/// <reference types="@vue/runtime-dom" />\n${content}`
+            ),
+      };
+    }
+    return entry;
   }
 
   readSync(absoluteFilePath: string): FileSync | DirectorySync | null {
@@ -70,7 +86,18 @@ class VueTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    return this.reader.readSync(absoluteFilePath);
+    const entry = this.reader.readSync(absoluteFilePath);
+    if (
+      entry?.kind === "file" &&
+      (entry.name.endsWith(".jsx") || entry.name.endsWith(".tsx"))
+    ) {
+      return {
+        ...entry,
+        read: () =>
+          `/// <reference types="@vue/runtime-dom" />\n${entry.read()}`,
+      };
+    }
+    return entry;
   }
 }
 
