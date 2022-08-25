@@ -69,9 +69,27 @@ export class AppController {
     });
   }
 
-  async show(componentId: string) {
+  async show(componentId: string, options: { expectMissing?: boolean } = {}) {
     if (!this.preview) {
       throw new Error(`Preview server is not started.`);
+    }
+    const filePath = componentId.split(":")[0]!;
+    const detectedComponents =
+      await this.workspace.frameworkPlugin.detectComponents(
+        this.workspace.typeAnalyzer,
+        [path.join(this.workspace.rootDirPath, filePath)]
+      );
+    const matchingDetectedComponent = detectedComponents.find(
+      (c) =>
+        componentId ===
+        `${path.relative(this.workspace.rootDirPath, c.absoluteFilePath)}:${
+          c.name
+        }`
+    );
+    if (!matchingDetectedComponent && !options.expectMissing) {
+      throw new Error(
+        `Component may be previewable but was not detected by framework plugin: ${componentId}`
+      );
     }
     const previewBaseUrl = this.preview.url();
     const url = `${previewBaseUrl}?p=${componentId}`;

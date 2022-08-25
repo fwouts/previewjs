@@ -469,7 +469,9 @@ export const errorHandlingTests = testSuite(
       "shows error when file is missing before update",
       "solid",
       async ({ controller }) => {
-        await controller.show("src/App-missing.tsx:App");
+        await controller.show("src/App-missing.tsx:App", {
+          expectMissing: true,
+        });
         await expectErrors(controller, [
           `Failed to resolve import "/src/App-missing.tsx"`,
           "Failed to fetch dynamically imported module",
@@ -504,7 +506,9 @@ export const errorHandlingTests = testSuite(
     //         text: `
     // export const App2 = () => <div>Hello, World!</div>;`,
     //       });
-    //       await controller.show("src/App.tsx:App");
+    //       await controller.show("src/App.tsx:App", {
+    //         expectMissing: true,
+    //       });
     //       await expectErrors(controller, [`Error: No component named 'App'`]);
     //     }
     //   );
