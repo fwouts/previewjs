@@ -67,7 +67,7 @@ export function extractVueComponents(
   };
   for (const [name, statement, node] of functions) {
     const hasArgs = !!args[name];
-    const isExported = !!nameToExportedName[name];
+    const isExported = name === "default" || !!nameToExportedName[name];
     const signature = extractVueComponent(resolver.checker, node, hasArgs);
     if (signature) {
       components.push({
