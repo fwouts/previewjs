@@ -69,7 +69,7 @@ export class AppController {
     });
   }
 
-  async show(componentId: string) {
+  async show(componentId: string, options: { expectMissing?: boolean } = {}) {
     if (!this.preview) {
       throw new Error(`Preview server is not started.`);
     }
@@ -86,7 +86,7 @@ export class AppController {
           c.name
         }`
     );
-    if (!matchingDetectedComponent) {
+    if (!matchingDetectedComponent && !options.expectMissing) {
       throw new Error(
         `Component may be previewable but was not detected by framework plugin: ${componentId}`
       );
