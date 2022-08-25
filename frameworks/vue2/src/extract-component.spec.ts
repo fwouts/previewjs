@@ -8,26 +8,36 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { solidFrameworkPlugin } from ".";
-import { extractSolidComponents } from "./extract-component";
+import { vue2FrameworkPlugin } from ".";
+import { extractVueComponents } from "./extract-component";
+import { createVueTypeScriptReader } from "./vue-reader";
 
 const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
 
-describe("extractSolidComponents", () => {
+describe("extractVueComponents", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    const frameworkPlugin = await solidFrameworkPlugin.create();
+    const frameworkPlugin = await vue2FrameworkPlugin.create();
+    const rootDirPath = path.join(__dirname, "virtual");
+    const reader = createStackedReader([
+      createVueTypeScriptReader(memoryReader),
+      createFileSystemReader({
+        mapping: {
+          from: path.join(__dirname, "..", "preview", "modules"),
+          to: path.join(rootDirPath, "node_modules"),
+        },
+        watch: false,
+      }),
+      createFileSystemReader({
+        watch: false,
+      }), // required for TypeScript libs, e.g. Promise
+    ]);
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: path.join(__dirname, "virtual"),
-      reader: createStackedReader([
-        memoryReader,
-        createFileSystemReader({
-          watch: false,
-        }), // required for TypeScript libs, e.g. Promise
-      ]),
+      rootDirPath,
+      reader,
       tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
     });
   });
@@ -39,17 +49,11 @@ describe("extractSolidComponents", () => {
   it("detects expected components", async () => {
     expect(
       extract(`
-import type { Component } from 'solid-js';
-
-const Component1: Component = () => {
+const Component1 = () => {
   return <div>Hello, World!</div>;
 };
 
-const Component2 = () => {
-  return <div>Hello, World!</div>;
-};
-
-function Component3() {
+function Component2() {
   return <div>Hello, World!</div>;
 };
 
@@ -71,15 +75,10 @@ export default Component1;
         exported: false,
         isStory: false,
       },
-      {
-        name: "Component3",
-        exported: false,
-        isStory: false,
-      },
     ]);
   });
 
-  it("detects components without any Solid import", async () => {
+  it("detects components without any Vue import", async () => {
     expect(
       extract(`
 export function DeclaredFunction() {
@@ -102,29 +101,93 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     ]);
   });
 
-  it("detects CSF2 stories", async () => {
+  it("detects default export component (arrow function)", async () => {
     expect(
       extract(`
-import Button from "./Button";
+export default () => {
+  return <div>Hello, World!</div>;
+}
+`)
+    ).toMatchObject([
+      {
+        name: "default",
+        exported: true,
+      },
+    ]);
+  });
 
+  it("detects default export component (named function)", async () => {
+    expect(
+      extract(`
+export default function test(){
+  return <div>Hello, World!</div>;
+}
+`)
+    ).toMatchObject([
+      {
+        name: "test",
+        exported: true,
+      },
+    ]);
+  });
+
+  it("detects default export component (anonymous function)", async () => {
+    expect(
+      extract(`
+export default function(){
+  return <div>Hello, World!</div>;
+}
+`)
+    ).toMatchObject([
+      {
+        name: "default",
+        exported: true,
+      },
+    ]);
+  });
+
+  it("detects CSF1 stories", async () => {
+    expect(
+      extract(`
 export default {
   component: Button
 }
 
-const Template = (args) => <Button {...args} />;
-
-export const Primary = Template.bind({});
-Primary.args = {
-   primary: true,
-   label: 'Button',
-};
+export const Primary = () => ({
+  components: { Button },
+  template: '<Button primary label="Button" />',
+});
 `)
     ).toMatchObject([
       {
-        name: "Template",
-        exported: false,
+        name: "Primary",
+        exported: true,
+        // TODO: this should be true.
         isStory: false,
       },
+    ]);
+  });
+
+  it("detects CSF2 stories", async () => {
+    expect(
+      extract(`
+export default {
+  component: Button
+}
+
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Button },
+});
+
+export const Primary = Template.bind({});
+
+Primary.args = {
+  primary: true,
+  label: 'Button',
+};
+`)
+    ).toMatchObject([
       {
         name: "Primary",
         exported: true,
@@ -136,9 +199,12 @@ Primary.args = {
   it("detects CSF3 stories", async () => {
     expect(
       extract(`
+import Button from './Button.vue';
+
 export default {
   component: Button
 }
+
 export const Example = {
   args: {
     label: "Hello, World!"
@@ -164,6 +230,6 @@ export function NotStory() {}
   function extract(source: string) {
     const rootDirPath = path.join(__dirname, "virtual");
     memoryReader.updateFile(path.join(rootDirPath, "App.tsx"), source);
-    return extractSolidComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
+    return extractVueComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
   }
 });
