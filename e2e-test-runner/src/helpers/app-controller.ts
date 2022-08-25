@@ -73,6 +73,20 @@ export class AppController {
     if (!this.preview) {
       throw new Error(`Preview server is not started.`);
     }
+    const filePath = componentId.split(":")[0]!;
+    const detectedComponents =
+      await this.workspace.frameworkPlugin.detectComponents(
+        this.workspace.typeAnalyzer,
+        [path.join(this.workspace.rootDirPath, filePath)]
+      );
+    const matchingDetectedComponent = detectedComponents.find(
+      (c) => componentId === `${c.absoluteFilePath}:${c.name}`
+    );
+    if (!matchingDetectedComponent) {
+      throw new Error(
+        `Component may be previewable but was not detected by framework plugin: ${componentId}`
+      );
+    }
     const previewBaseUrl = this.preview.url();
     const url = `${previewBaseUrl}?p=${componentId}`;
     if (this.page.url().startsWith(previewBaseUrl)) {
