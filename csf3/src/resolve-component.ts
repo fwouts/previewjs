@@ -2,15 +2,26 @@ import ts from "typescript";
 
 export function resolveComponent(
   checker: ts.TypeChecker,
-  symbol: ts.Symbol
+  symbol: ts.Symbol,
+  isDefault = false
 ): {
   absoluteFilePath: string;
   name: string;
 } {
   const declarations = symbol.getDeclarations() || [];
+  const importClause = declarations.find(ts.isImportClause);
+  if (importClause) {
+    // Default import.
+    const imported = checker.getSymbolAtLocation(
+      importClause.parent.moduleSpecifier
+    );
+    if (imported) {
+      return resolveComponent(checker, imported, true);
+    }
+  }
   const importSpecifier = declarations.find(ts.isImportSpecifier);
   if (importSpecifier) {
-    // TODO: Alternative importSpecifier.parent.parent.parent.moduleSpecifier to get module path?
+    // Named import.
     const imported = importSpecifier.propertyName
       ? checker.getSymbolAtLocation(importSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
@@ -20,6 +31,7 @@ export function resolveComponent(
   }
   const exportSpecifier = declarations.find(ts.isExportSpecifier);
   if (exportSpecifier) {
+    // Re-exported name.
     const exported = exportSpecifier.propertyName
       ? checker.getSymbolAtLocation(exportSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
@@ -34,6 +46,6 @@ export function resolveComponent(
   const sourceFile = firstDeclaration.getSourceFile();
   return {
     absoluteFilePath: sourceFile.fileName,
-    name: symbol.getName(),
+    name: isDefault ? "default" : symbol.getName(),
   };
 }

@@ -130,6 +130,158 @@ export function NotStory() {}
     ]);
   });
 
+  it("follows default imported component definition", () => {
+    memoryReader.updateFile(MAIN_FILE, `export default "foo";`);
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./App";
+
+export default {
+  component: Button
+} as ComponentMeta<typeof Button>;
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
+      {
+        absoluteFilePath: STORIES_FILE,
+        name: "Example",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+      {
+        absoluteFilePath: STORIES_FILE,
+        name: "NoArgs",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+    ]);
+  });
+
+  it("follows wildcard re-exported component definition", () => {
+    memoryReader.updateFile(MAIN_FILE, "export const Button = 123;");
+    memoryReader.updateFile(
+      path.join(ROOT_DIR, "reexport.ts"),
+      `export * from "./App";`
+    );
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import { Button } from "./reexport";
+
+export default {
+  component: Button
+} as ComponentMeta<typeof Button>;
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
+      {
+        absoluteFilePath: STORIES_FILE,
+        name: "Example",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
+      },
+      {
+        absoluteFilePath: STORIES_FILE,
+        name: "NoArgs",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
+      },
+    ]);
+  });
+
+  it("follows named re-exported component definition", () => {
+    memoryReader.updateFile(MAIN_FILE, "export const Button = 123;");
+    memoryReader.updateFile(
+      path.join(ROOT_DIR, "reexport.ts"),
+      `export { Button as ReexportedButton } from "./App";`
+    );
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import { ReexportedButton } from "./reexport";
+
+export default {
+  component: ReexportedButton
+} as ComponentMeta<typeof ReexportedButton>;
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
+      {
+        absoluteFilePath: STORIES_FILE,
+        name: "Example",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
+      },
+      {
+        absoluteFilePath: STORIES_FILE,
+        name: "NoArgs",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
+      },
+    ]);
+  });
+
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", () => {
     memoryReader.updateFile(
       STORIES_FILE,

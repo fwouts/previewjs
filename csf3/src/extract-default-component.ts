@@ -11,7 +11,7 @@ export function extractDefaultComponent(
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
       let exportedValue = statement.expression;
-      if (ts.isAsExpression(exportedValue)) {
+      while (ts.isAsExpression(exportedValue)) {
         exportedValue = exportedValue.expression;
       }
       if (ts.isObjectLiteralExpression(exportedValue)) {
@@ -26,7 +26,7 @@ export function extractDefaultComponent(
             if (defaultComponent) {
               return resolveComponent(checker, defaultComponent);
             } else {
-              throw new Error(`Could not resolve default component`);
+              return null;
             }
           }
         }
