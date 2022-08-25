@@ -169,12 +169,26 @@ export function A() {
     });
   });
 
+  test("default exported function with no name", async () => {
+    expect(
+      await analyze(
+        `
+export default function() {
+  return <div>Hello, World!</div>;
+};
+`,
+        "default"
+      )
+    ).toEqual({
+      propsType: objectType({}),
+      types: {},
+    });
+  });
+
   test("default exported function with no parameter", async () => {
     expect(
       await analyze(
         `
-import { Component } from 'solid-js';
-
 export default function A() {
   return <div>Hello, World!</div>;
 };
@@ -183,6 +197,24 @@ export default function A() {
       )
     ).toEqual({
       propsType: objectType({}),
+      types: {},
+    });
+  });
+
+  test("default exported function with props", async () => {
+    expect(
+      await analyze(
+        `
+export default function A(props: { name: string }) {
+  return <div>Hello, {name}!</div>;
+};
+`,
+        "A"
+      )
+    ).toEqual({
+      propsType: objectType({
+        name: STRING_TYPE,
+      }),
       types: {},
     });
   });

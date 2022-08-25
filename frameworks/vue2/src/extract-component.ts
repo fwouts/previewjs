@@ -25,7 +25,13 @@ export function extractVueComponents(
         continue;
       }
     }
-    if (ts.isVariableStatement(statement)) {
+    if (ts.isExportAssignment(statement)) {
+      if (ts.isIdentifier(statement.expression)) {
+        // Avoid duplicates.
+        continue;
+      }
+      functions.push(["default", statement, statement.expression]);
+    } else if (ts.isVariableStatement(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
           continue;
@@ -36,8 +42,18 @@ export function extractVueComponents(
           declaration.initializer,
         ]);
       }
-    } else if (ts.isFunctionDeclaration(statement) && statement.name) {
-      functions.push([statement.name.text, statement, statement]);
+    } else if (ts.isFunctionDeclaration(statement)) {
+      const isDefaultExport =
+        !!statement.modifiers?.find(
+          (m) => m.kind === ts.SyntaxKind.ExportKeyword
+        ) &&
+        !!statement.modifiers?.find(
+          (m) => m.kind === ts.SyntaxKind.DefaultKeyword
+        );
+      const name = statement.name?.text;
+      if (isDefaultExport || name) {
+        functions.push([name || "default", statement, statement]);
+      }
     }
   }
 

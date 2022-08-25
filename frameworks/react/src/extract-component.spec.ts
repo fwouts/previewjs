@@ -238,9 +238,42 @@ export default () => {
     ).toMatchObject([]);
   });
 
+  it("detects CSF2 stories", async () => {
+    expect(
+      extract(`
+import Button from "./Button";
+
+export default {
+  component: Button
+}
+
+const Template = (args) => <Button {...args} />;
+
+export const Primary = Template.bind({});
+Primary.args = {
+   primary: true,
+   label: 'Button',
+};
+`)
+    ).toMatchObject([
+      {
+        name: "Template",
+        exported: false,
+        isStory: false,
+      },
+      {
+        name: "Primary",
+        exported: true,
+        isStory: true,
+      },
+    ]);
+  });
+
   it("detects CSF3 stories", async () => {
     expect(
       extract(`
+import Button from "./Button";
+
 export default {
   component: Button
 }

@@ -138,7 +138,9 @@ export const errorHandlingTests = testSuite(
       "shows error when file is missing before update",
       "vue3",
       async ({ controller }) => {
-        await controller.show("src/AppMissing.vue:AppMissing");
+        await controller.show("src/AppMissing.vue:AppMissing", {
+          expectMissing: true,
+        });
         await expectErrors(controller, [
           `Failed to resolve import "/src/AppMissing.vue"`,
           "Failed to fetch dynamically imported module",
