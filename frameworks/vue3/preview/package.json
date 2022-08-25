@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "prepare": "rimraf modules && shx mkdir modules && shx cp -r node_modules/vue modules/vue && shx cp -r node_modules/@vue modules/@vue"
+    "prepare": "rimraf modules && shx mkdir modules && shx cp -rL node_modules/vue modules/vue && shx cp -rL node_modules/@vue modules/@vue"
   },
   "dependencies": {
     "@vue/shared": "3.2.37",
