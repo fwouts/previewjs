@@ -1,5 +1,5 @@
 import type { Component, ComponentAnalysis } from "@previewjs/core";
-import { extractCsf3Stories } from "@previewjs/csf3";
+import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -57,6 +57,10 @@ export function extractVueComponents(
     }
   }
 
+  const storiesAssociatedComponent = extractDefaultComponent(
+    resolver.checker,
+    sourceFile
+  );
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
@@ -73,15 +77,23 @@ export function extractVueComponents(
       components.push({
         absoluteFilePath,
         name,
-        isStory: hasArgs,
-        exported: isExported,
         offsets: [[statement.getFullStart(), statement.getEnd()]],
-        analyze: async () => analysis,
+        info:
+          storiesAssociatedComponent && hasArgs && isExported
+            ? {
+                kind: "story",
+                associatedComponent: storiesAssociatedComponent,
+              }
+            : {
+                kind: "component",
+                exported: isExported,
+                analyze: async () => analysis,
+              },
       });
     }
   }
 
-  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
+  return [...components, ...extractCsf3Stories(resolver, sourceFile)];
 }
 
 function extractVueComponent(
