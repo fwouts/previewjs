@@ -146,12 +146,65 @@ export default function(){
     ]);
   });
 
-  it("detects CSF3 stories", async () => {
+  it("detects CSF1 stories", async () => {
     expect(
       extract(`
 export default {
   component: Button
 }
+
+export const Primary = () => ({
+  components: { Button },
+  template: '<Button primary label="Button" />',
+});
+`)
+    ).toMatchObject([
+      {
+        name: "Primary",
+        exported: true,
+        // TODO: this should be true.
+        isStory: false,
+      },
+    ]);
+  });
+
+  it("detects CSF2 stories", async () => {
+    expect(
+      extract(`
+export default {
+  component: Button
+}
+
+const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Button },
+});
+
+export const Primary = Template.bind({});
+
+Primary.args = {
+  primary: true,
+  label: 'Button',
+};
+`)
+    ).toMatchObject([
+      {
+        name: "Primary",
+        exported: true,
+        isStory: true,
+      },
+    ]);
+  });
+
+  it("detects CSF3 stories", async () => {
+    expect(
+      extract(`
+import Button from './Button.vue';
+
+export default {
+  component: Button
+}
+
 export const Example = {
   args: {
     label: "Hello, World!"
