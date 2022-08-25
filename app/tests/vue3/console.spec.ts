@@ -74,7 +74,9 @@ export default {
 </script>
 `,
     });
-    await controller.show("src/App.vue:Foo");
+    await controller.show("src/App.vue:Foo", {
+      expectMissing: true,
+    });
     const previewIframe = await controller.previewIframe();
     await previewIframe.waitForSelector(".init");
     await controller.bottomPanel.tabs.get("Console").click();
