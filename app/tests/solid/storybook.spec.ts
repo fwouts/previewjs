@@ -12,7 +12,7 @@ export const storybookTests = testSuite(
         await appDir.update("src/Button.tsx", {
           kind: "replace",
           text: `
-  const Button = ({ label }) => <button>{label}</button>;
+  export const Button = ({ label }) => <button>{label}</button>;
   Button.args = {
     label: "Hello, World!"
   };
