@@ -248,6 +248,10 @@ Primary.args = {
         name: "Primary",
         info: {
           kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "default",
+          },
         },
       },
     ]);
@@ -257,7 +261,7 @@ Primary.args = {
     memoryReader.updateFile(
       STORIES_FILE,
       `
-import Button from './Button.vue';
+import Button from './App.vue';
 
 export default {
   component: Button
@@ -277,12 +281,20 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "default",
+          },
         },
       },
       {
         name: "NoArgs",
         info: {
           kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "default",
+          },
         },
       },
     ]);
