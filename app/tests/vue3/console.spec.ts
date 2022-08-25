@@ -10,7 +10,7 @@ export const consoleTests = testSuite([vue3Plugin], "vue3/console", (test) => {
     expect(await controller.console.container.visible()).toEqual(true);
     expect(await controller.console.items.count()).toEqual(0);
 
-    appDir.update("src/App.vue", {
+    await appDir.update("src/App.vue", {
       kind: "replace",
       text: `
 <template>
@@ -33,7 +33,7 @@ export default {
     await controller.console.items.withText("Render 1").waitUntilVisible();
     expect(await controller.console.items.count()).toEqual(1);
 
-    appDir.update("src/App.vue", {
+    await appDir.update("src/App.vue", {
       kind: "replace",
       text: `
 <template>
@@ -58,7 +58,7 @@ export default {
   });
 
   test("hides errors once resolved", "vue3", async ({ appDir, controller }) => {
-    appDir.update("src/App.vue", {
+    await appDir.update("src/App.vue", {
       kind: "replace",
       text: `
 <template>
@@ -105,7 +105,7 @@ export default {
     ];
     for (let i = 0; i < append.length; i++) {
       const partialAppend = append.slice(0, i);
-      appDir.update(
+      await appDir.update(
         "src/App.vue",
         {
           kind: "replace",
