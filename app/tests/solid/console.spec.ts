@@ -53,7 +53,7 @@ function App() {
         await appDir.update("src/App.tsx", {
           kind: "replace",
           text: `
-function Foo() {
+export function Foo() {
   return <p className="init">Foo</p>
 }`,
         });
