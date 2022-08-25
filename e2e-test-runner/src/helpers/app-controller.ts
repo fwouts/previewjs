@@ -82,9 +82,9 @@ export class AppController {
     const matchingDetectedComponent = detectedComponents.find(
       (c) =>
         componentId ===
-        `${path.relative(this.workspace.rootDirPath, c.absoluteFilePath)}:${
-          c.name
-        }`
+        `${path
+          .relative(this.workspace.rootDirPath, c.absoluteFilePath)
+          .replace(/\\/g, "/")}:${c.name}`
     );
     if (!matchingDetectedComponent && !options.expectMissing) {
       throw new Error(
