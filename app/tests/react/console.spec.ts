@@ -17,7 +17,7 @@ export const consoleTests = testSuite(
           expect(await controller.console.container.visible()).toEqual(true);
           expect(await controller.console.items.count()).toEqual(0);
 
-          appDir.update("src/App.tsx", {
+          await appDir.update("src/App.tsx", {
             kind: "replace",
             text: `
 function App() {
@@ -35,7 +35,7 @@ function App() {
             .waitUntilVisible();
           expect(await controller.console.items.count()).toEqual(1);
 
-          appDir.update("src/App.tsx", {
+          await appDir.update("src/App.tsx", {
             kind: "replace",
             text: `
 function App() {
@@ -59,7 +59,7 @@ function App() {
         `${version}/hides errors once resolved`,
         `react${version}`,
         async ({ appDir, controller }) => {
-          appDir.update("src/App.tsx", {
+          await appDir.update("src/App.tsx", {
             kind: "replace",
             text: `
 function Foo() {
@@ -111,7 +111,7 @@ function Foo() {
           ];
           for (let i = 0; i < append.length; i++) {
             const partialAppend = append.slice(0, i);
-            appDir.update(
+            await appDir.update(
               "src/App.tsx",
               {
                 kind: "replace",

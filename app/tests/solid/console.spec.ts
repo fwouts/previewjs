@@ -13,7 +13,7 @@ export const consoleTests = testSuite(
       expect(await controller.console.container.visible()).toEqual(true);
       expect(await controller.console.items.count()).toEqual(0);
 
-      appDir.update("src/App.tsx", {
+      await appDir.update("src/App.tsx", {
         kind: "replace",
         text: `
 function App() {
@@ -29,7 +29,7 @@ function App() {
       await controller.console.items.withText("Render 1").waitUntilVisible();
       expect(await controller.console.items.count()).toEqual(1);
 
-      appDir.update("src/App.tsx", {
+      await appDir.update("src/App.tsx", {
         kind: "replace",
         text: `
 function App() {
@@ -50,7 +50,7 @@ function App() {
       "hides errors once resolved",
       "solid",
       async ({ appDir, controller }) => {
-        appDir.update("src/App.tsx", {
+        await appDir.update("src/App.tsx", {
           kind: "replace",
           text: `
 function Foo() {
@@ -86,7 +86,7 @@ function Foo() {
         ];
         for (let i = 0; i < append.length; i++) {
           const partialAppend = append.slice(0, i);
-          appDir.update(
+          await appDir.update(
             "src/App.tsx",
             {
               kind: "replace",
