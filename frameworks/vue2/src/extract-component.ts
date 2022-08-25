@@ -93,25 +93,23 @@ export function extractVueComponents(
     }
   }
 
-  const allComponents = [
-    ...components,
-    ...extractCsf3Stories(resolver, sourceFile),
-  ];
-  return allComponents.map((c) => ({
-    ...c,
-    info:
-      c.info.kind === "story"
-        ? {
-            kind: "story",
-            associatedComponent: {
-              ...c.info.associatedComponent,
-              absoluteFilePath: stripTsSuffixFromVueFilePath(
-                c.info.associatedComponent.absoluteFilePath
-              ),
-            },
-          }
-        : c.info,
-  }));
+  return [...components, ...extractCsf3Stories(resolver, sourceFile)].map(
+    (c) => ({
+      ...c,
+      info:
+        c.info.kind === "story"
+          ? {
+              kind: "story",
+              associatedComponent: {
+                ...c.info.associatedComponent,
+                absoluteFilePath: stripTsSuffixFromVueFilePath(
+                  c.info.associatedComponent.absoluteFilePath
+                ),
+              },
+            }
+          : c.info,
+    })
+  );
 }
 
 function stripTsSuffixFromVueFilePath(absoluteFilePath: string): string {

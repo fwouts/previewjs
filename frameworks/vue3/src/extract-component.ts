@@ -93,7 +93,30 @@ export function extractVueComponents(
     }
   }
 
-  return [...components, ...extractCsf3Stories(resolver, sourceFile)];
+  return [...components, ...extractCsf3Stories(resolver, sourceFile)].map(
+    (c) => ({
+      ...c,
+      info:
+        c.info.kind === "story"
+          ? {
+              kind: "story",
+              associatedComponent: {
+                ...c.info.associatedComponent,
+                absoluteFilePath: stripTsSuffixFromVueFilePath(
+                  c.info.associatedComponent.absoluteFilePath
+                ),
+              },
+            }
+          : c.info,
+    })
+  );
+}
+
+function stripTsSuffixFromVueFilePath(absoluteFilePath: string): string {
+  if (!absoluteFilePath.endsWith(".vue.ts")) {
+    return absoluteFilePath;
+  }
+  return absoluteFilePath.substring(0, absoluteFilePath.length - 3);
 }
 
 function extractVueComponent(
