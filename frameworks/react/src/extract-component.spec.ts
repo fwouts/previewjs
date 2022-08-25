@@ -327,7 +327,7 @@ Primary.args = {
           kind: "story",
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            name: "default",
           },
         },
       },
@@ -362,7 +362,7 @@ export function NotStory() {}
           kind: "story",
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            name: "default",
           },
         },
       },
@@ -372,7 +372,7 @@ export function NotStory() {}
           kind: "story",
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            name: "default",
           },
         },
       },
