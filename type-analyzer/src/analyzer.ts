@@ -104,13 +104,6 @@ class TypeResolver {
     private readonly program: ts.Program
   ) {
     this.checker = program.getTypeChecker();
-    const jsxProblems = program
-      .getSemanticDiagnostics()
-      .filter((m) => m.messageText.toString().includes("JSX"));
-    // console.error(program.getSemanticDiagnostics());
-    console.error(
-      jsxProblems.length > 0 ? "YES JSX PROBLEMS" : "NO JSX PROBLEMS"
-    );
   }
 
   sourceFile(absoluteFilePath: string) {
