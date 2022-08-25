@@ -160,44 +160,6 @@ export default {
     );
 
     test(
-      "renders CSF2 story with default args",
-      "vue3",
-      async ({ appDir, controller }) => {
-        await appDir.update("src/Button.vue", {
-          kind: "replace",
-          text: buttonVueSource,
-        });
-        await appDir.update("src/Button.stories.js", {
-          kind: "replace",
-          text: `
-import Button from './Button.vue';
-
-const Template = (args) => ({
-  components: { Button },
-  setup() {
-    return { args };
-  },
-  template: '<Button v-bind="args" />',
-});
-
-export const Primary = Template.bind({});
-
-export default {
-  args: {
-    label: "Hello, World!"
-  }
-};
-      `,
-        });
-        await controller.show("src/Button.stories.js:Primary");
-        const previewIframe = await controller.previewIframe();
-        await previewIframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
-        );
-      }
-    );
-
-    test(
       "renders CSF2 story with explicit args over default args",
       "vue3",
       async ({ appDir, controller }) => {
