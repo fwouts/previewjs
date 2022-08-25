@@ -14,7 +14,7 @@ import { createVueTypeScriptReader } from "./vue-reader";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
 const MAIN_FILE_TSX = path.join(ROOT_DIR, "App.tsx");
-const MAIN_FILE_VUE = path.join(ROOT_DIR, "App.vue");
+const MAIN_FILE_VUE = path.join(ROOT_DIR, "MyComponent.vue");
 const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe("extractVueComponents", () => {
@@ -196,7 +196,7 @@ export default function(){
     memoryReader.updateFile(
       STORIES_FILE,
       `
-import Button from "./App.vue";
+import Button from "./MyComponent.vue";
 
 export default {
   component: Button
@@ -224,7 +224,7 @@ export const Primary = () => ({
     memoryReader.updateFile(
       STORIES_FILE,
       `
-import Button from "./App.vue";
+import Button from "./MyComponent.vue";
 
 export default {
   component: Button
@@ -250,7 +250,7 @@ Primary.args = {
           kind: "story",
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
-            name: "default",
+            name: "MyComponent",
           },
         },
       },
@@ -261,7 +261,7 @@ Primary.args = {
     memoryReader.updateFile(
       STORIES_FILE,
       `
-import Button from './App.vue';
+import Button from './MyComponent.vue';
 
 export default {
   component: Button
@@ -283,7 +283,7 @@ export function NotStory() {}
           kind: "story",
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
-            name: "default",
+            name: "MyComponent",
           },
         },
       },
@@ -293,7 +293,7 @@ export function NotStory() {}
           kind: "story",
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
-            name: "default",
+            name: "MyComponent",
           },
         },
       },

@@ -2,6 +2,7 @@ import type { Component, ComponentAnalysis } from "@previewjs/core";
 import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
+import { inferComponentNameFromVuePath } from "./infer-component-name";
 
 export function extractVueComponents(
   resolver: TypeResolver,
@@ -100,23 +101,30 @@ export function extractVueComponents(
         c.info.kind === "story"
           ? {
               kind: "story",
-              associatedComponent: {
-                ...c.info.associatedComponent,
-                absoluteFilePath: stripTsSuffixFromVueFilePath(
-                  c.info.associatedComponent.absoluteFilePath
-                ),
-              },
+              associatedComponent: transformVirtualTsVueFile(
+                c.info.associatedComponent
+              ),
             }
           : c.info,
     })
   );
 }
 
-function stripTsSuffixFromVueFilePath(absoluteFilePath: string): string {
-  if (!absoluteFilePath.endsWith(".vue.ts")) {
-    return absoluteFilePath;
+function transformVirtualTsVueFile({
+  absoluteFilePath,
+  name,
+}: {
+  absoluteFilePath: string;
+  name: string;
+}) {
+  if (absoluteFilePath.endsWith(".vue.ts")) {
+    absoluteFilePath = absoluteFilePath.substring(
+      0,
+      absoluteFilePath.length - 3
+    );
+    name = inferComponentNameFromVuePath(absoluteFilePath);
   }
-  return absoluteFilePath.substring(0, absoluteFilePath.length - 3);
+  return { absoluteFilePath, name };
 }
 
 function extractVueComponent(
