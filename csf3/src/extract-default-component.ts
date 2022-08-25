@@ -25,6 +25,8 @@ export function extractDefaultComponent(
               checker.getSymbolAtLocation(property.initializer) || null;
             if (defaultComponent) {
               return resolveComponent(checker, defaultComponent);
+            } else {
+              throw new Error(`Could not resolve default component`);
             }
           }
         }

@@ -11,7 +11,8 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { solidFrameworkPlugin } from ".";
 import { extractSolidComponents } from "./extract-component";
 
-const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
+const ROOT_DIR = path.join(__dirname, "virtual");
+const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
 
 describe("extractSolidComponents", () => {
   let memoryReader: Reader & Writer;
@@ -21,7 +22,7 @@ describe("extractSolidComponents", () => {
     memoryReader = createMemoryReader();
     const frameworkPlugin = await solidFrameworkPlugin.create();
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: path.join(__dirname, "virtual"),
+      rootDirPath: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
@@ -162,8 +163,7 @@ export function NotStory() {}
   });
 
   function extract(source: string) {
-    const rootDirPath = path.join(__dirname, "virtual");
-    memoryReader.updateFile(path.join(rootDirPath, "App.tsx"), source);
+    memoryReader.updateFile(MAIN_FILE, source);
     return extractSolidComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
   }
 });
