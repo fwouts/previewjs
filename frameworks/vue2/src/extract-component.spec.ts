@@ -10,6 +10,7 @@ import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { vue2FrameworkPlugin } from ".";
 import { extractVueComponents } from "./extract-component";
+import { createVueTypeScriptReader } from "./vue-reader";
 
 const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
 
@@ -20,14 +21,23 @@ describe("extractVueComponents", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     const frameworkPlugin = await vue2FrameworkPlugin.create();
+    const rootDirPath = path.join(__dirname, "virtual");
+    const reader = createStackedReader([
+      createVueTypeScriptReader(memoryReader),
+      createFileSystemReader({
+        mapping: {
+          from: path.join(__dirname, "..", "preview", "modules"),
+          to: path.join(rootDirPath, "node_modules"),
+        },
+        watch: false,
+      }),
+      createFileSystemReader({
+        watch: false,
+      }), // required for TypeScript libs, e.g. Promise
+    ]);
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: path.join(__dirname, "virtual"),
-      reader: createStackedReader([
-        memoryReader,
-        createFileSystemReader({
-          watch: false,
-        }), // required for TypeScript libs, e.g. Promise
-      ]),
+      rootDirPath,
+      reader,
       tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
     });
   });
@@ -36,7 +46,7 @@ describe("extractVueComponents", () => {
     typeAnalyzer.dispose();
   });
 
-  it.only("detects expected components", async () => {
+  it("detects expected components", async () => {
     expect(
       extract(`
 const Component1 = () => {
@@ -115,7 +125,7 @@ export default function test(){
 `)
     ).toMatchObject([
       {
-        name: "default",
+        name: "test",
         exported: true,
       },
     ]);

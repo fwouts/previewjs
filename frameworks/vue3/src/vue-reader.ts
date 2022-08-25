@@ -49,23 +49,7 @@ class VueTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    const entry = await this.reader.read(absoluteFilePath);
-    if (
-      entry?.kind === "file" &&
-      (entry.name.endsWith(".jsx") || entry.name.endsWith(".tsx"))
-    ) {
-      return {
-        ...entry,
-        read: () =>
-          entry
-            .read()
-            .then(
-              (content) =>
-                `/// <reference types="@vue/runtime-dom" />\n${content}`
-            ),
-      };
-    }
-    return entry;
+    return this.reader.read(absoluteFilePath);
   }
 
   readSync(absoluteFilePath: string): FileSync | DirectorySync | null {
