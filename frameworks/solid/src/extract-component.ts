@@ -81,10 +81,7 @@ export function extractSolidComponents(
       });
     }
   }
-  return [
-    ...components,
-    ...extractCsf3Stories(resolver.checker, absoluteFilePath, sourceFile),
-  ];
+  return [...components, ...extractCsf3Stories(resolver, sourceFile)];
 }
 
 function extractSolidComponent(

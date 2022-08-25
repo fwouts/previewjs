@@ -130,7 +130,7 @@ export function Button() {
     memoryReader.updateFile(
       STORIES_FILE,
       `
-import Button from "./Button";
+import { Button } from "./App";
 
 export default {
   component: Button
@@ -157,6 +157,10 @@ Primary.args = {
         name: "Primary",
         info: {
           kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
         },
       },
     ]);
@@ -174,7 +178,7 @@ export function Button() {
     memoryReader.updateFile(
       STORIES_FILE,
       `
-import Button from "./Button";
+import { Button } from "./App";
 
 export default {
   component: Button
@@ -193,12 +197,20 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
         },
       },
       {
         name: "NoArgs",
         info: {
           kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
         },
       },
     ]);

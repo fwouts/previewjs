@@ -11,7 +11,8 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { extractCsf3Stories } from "./extract-csf3-stories";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
-const MAIN_FILE = path.join(ROOT_DIR, "App.stories.jsx");
+const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
+const STORIES_FILE = path.join(ROOT_DIR, "App.stories.jsx");
 
 describe("extractCsf3Stories", () => {
   let memoryReader: Reader & Writer;
@@ -19,6 +20,7 @@ describe("extractCsf3Stories", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
+    memoryReader.updateFile(MAIN_FILE, "export const Button = 123;");
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR,
       reader: createStackedReader([
@@ -35,9 +37,10 @@ describe("extractCsf3Stories", () => {
   });
 
   it("detects CSF 3 stories", () => {
-    expect(
-      extract(`
-const Button = "foo";
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import { Button } from "./App";
 
 export default {
   component: Button
@@ -52,9 +55,11 @@ export const Example = {
 export const NoArgs = {}
 
 export function NotStory() {}
-    `)
-    ).toMatchObject([
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
       {
+        absoluteFilePath: STORIES_FILE,
         name: "Example",
         info: {
           kind: "story",
@@ -65,6 +70,7 @@ export function NotStory() {}
         },
       },
       {
+        absoluteFilePath: STORIES_FILE,
         name: "NoArgs",
         info: {
           kind: "story",
@@ -78,9 +84,10 @@ export function NotStory() {}
   });
 
   it("detects CSF 3 stories when export default uses cast", () => {
-    expect(
-      extract(`
-const Button = "foo";
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import { Button } from "./App";
 
 export default {
   component: Button
@@ -95,9 +102,11 @@ export const Example = {
 export const NoArgs = {}
 
 export function NotStory() {}
-    `)
-    ).toMatchObject([
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
       {
+        absoluteFilePath: STORIES_FILE,
         name: "Example",
         info: {
           kind: "story",
@@ -108,6 +117,7 @@ export function NotStory() {}
         },
       },
       {
+        absoluteFilePath: STORIES_FILE,
         name: "NoArgs",
         info: {
           kind: "story",
@@ -121,8 +131,9 @@ export function NotStory() {}
   });
 
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
 export default {
   foo: "bar"
 }
@@ -134,13 +145,15 @@ export const Example = {
 }
 
 export const NoArgs = {}
-    `)
-    ).toMatchObject([]);
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([]);
   });
 
   it("ignores objects that look like CSF 3 stories when no default export", () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
 export const Example = {
   args: {
     label: "Hello, World!"
@@ -148,14 +161,13 @@ export const Example = {
 }
 
 export const NoArgs = {}
-    `)
-    ).toMatchObject([]);
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([]);
   });
 
-  function extract(sourceCode: string) {
-    memoryReader.updateFile(MAIN_FILE, sourceCode);
-    const resolver = typeAnalyzer.analyze([MAIN_FILE]);
-    const sourceFile = resolver.sourceFile(MAIN_FILE)!;
-    return extractCsf3Stories(resolver.checker, MAIN_FILE, sourceFile);
+  function extract(absoluteFilePath: string) {
+    const resolver = typeAnalyzer.analyze([absoluteFilePath]);
+    return extractCsf3Stories(resolver, resolver.sourceFile(absoluteFilePath)!);
   }
 });

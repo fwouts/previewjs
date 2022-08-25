@@ -551,6 +551,9 @@ A.propTypes = {
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    return component.analyze();
+    if (component.info.kind === "story") {
+      throw new Error(`Component ${componentName} is a story`);
+    }
+    return component.info.analyze();
   }
 });

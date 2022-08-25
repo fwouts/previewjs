@@ -1,16 +1,19 @@
 import type { Component } from "@previewjs/core";
+import type { TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { extractDefaultComponent } from "./extract-default-component";
 import { resolveComponent } from "./resolve-component";
 
 export function extractCsf3Stories(
-  checker: ts.TypeChecker,
-  absoluteFilePath: string,
+  resolver: TypeResolver,
   sourceFile: ts.SourceFile
 ): Component[] {
   // Detect if we're dealing with a CSF3 module.
   // In particular, does it have a default export with a "component" property?
-  const defaultComponent = extractDefaultComponent(checker, sourceFile);
+  const defaultComponent = extractDefaultComponent(
+    resolver.checker,
+    sourceFile
+  );
   if (!defaultComponent) {
     return [];
   }
@@ -46,19 +49,21 @@ export function extractCsf3Stories(
           property.name.text === "component"
         ) {
           // Yes it is CSF3!
-          storyComponent = checker.getSymbolAtLocation(property.initializer);
+          storyComponent = resolver.checker.getSymbolAtLocation(
+            property.initializer
+          );
           break;
         }
       }
 
       components.push({
-        absoluteFilePath,
+        absoluteFilePath: sourceFile.fileName,
         name,
         offsets: [[statement.getStart(), statement.getEnd()]],
         info: {
           kind: "story",
           associatedComponent: storyComponent
-            ? resolveComponent(checker, storyComponent)
+            ? resolveComponent(resolver.checker, storyComponent)
             : defaultComponent,
         },
       });
