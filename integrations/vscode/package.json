@@ -87,7 +87,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "vscode:prepublish": "pnpm build",
-    "build": "rimraf dist previewjs-1.12.2.vsix && tsc && node esbuild.js && cp -r ../../loader/src/release/node_modules dist/node_modules",
+    "build": "rimraf dist previewjs-1.12.2.vsix && tsc && node esbuild.js && cp -rL ../../loader/src/release/node_modules dist/node_modules",
     "prod": "cross-env PREVIEWJS_DEV=0 pnpm vsce package --no-dependencies && pnpm dev:install",
     "dev": "cross-env PREVIEWJS_DEV=1 pnpm vsce package --no-dependencies && pnpm dev:install",
     "dev:community": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm dev",

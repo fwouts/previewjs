@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "prepare": "rimraf types && shx mkdir types && shx cp -r node_modules/@types/react types/react && shx cp -r node_modules/@types/prop-types types/prop-types"
+    "prepare": "rimraf types && shx mkdir types && shx cp -rL node_modules/@types/react types/react && shx cp -rL node_modules/@types/prop-types types/prop-types"
   },
   "dependencies": {
     "@types/prop-types": "15.7.5",
