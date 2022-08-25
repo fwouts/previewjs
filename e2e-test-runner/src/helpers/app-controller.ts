@@ -80,7 +80,11 @@ export class AppController {
         [path.join(this.workspace.rootDirPath, filePath)]
       );
     const matchingDetectedComponent = detectedComponents.find(
-      (c) => componentId === `${c.absoluteFilePath}:${c.name}`
+      (c) =>
+        componentId ===
+        `${path.relative(this.workspace.rootDirPath, c.absoluteFilePath)}:${
+          c.name
+        }`
     );
     if (!matchingDetectedComponent) {
       throw new Error(
