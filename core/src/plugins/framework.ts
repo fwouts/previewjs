@@ -44,7 +44,7 @@ export interface Component {
         readonly associatedComponent: {
           readonly absoluteFilePath: string;
           readonly name: string;
-        };
+        } | null;
       };
 }
 

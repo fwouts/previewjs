@@ -10,10 +10,7 @@ export function extractCsf3Stories(
 ): Component[] {
   // Detect if we're dealing with a CSF3 module.
   // In particular, does it have a default export with a "component" property?
-  const defaultComponent = extractDefaultComponent(
-    resolver.checker,
-    sourceFile
-  );
+  const defaultComponent = extractDefaultComponent(sourceFile);
   if (!defaultComponent) {
     return [];
   }
@@ -41,7 +38,7 @@ export function extractCsf3Stories(
         continue;
       }
       const name = declaration.name.text;
-      let storyComponent: ts.Symbol | undefined;
+      let storyComponent: ts.Expression | undefined;
       for (const property of declaration.initializer.properties) {
         if (
           ts.isPropertyAssignment(property) &&
@@ -49,9 +46,7 @@ export function extractCsf3Stories(
           property.name.text === "component"
         ) {
           // Yes it is CSF3!
-          storyComponent = resolver.checker.getSymbolAtLocation(
-            property.initializer
-          );
+          storyComponent = property.initializer;
           break;
         }
       }
@@ -62,9 +57,10 @@ export function extractCsf3Stories(
         offsets: [[statement.getStart(), statement.getEnd()]],
         info: {
           kind: "story",
-          associatedComponent: storyComponent
-            ? resolveComponent(resolver.checker, storyComponent)
-            : defaultComponent,
+          associatedComponent: resolveComponent(
+            resolver.checker,
+            storyComponent || defaultComponent
+          ),
         },
       });
     }

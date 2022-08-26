@@ -58,10 +58,10 @@ export function extractVueComponents(
     }
   }
 
-  const storiesAssociatedComponent = extractDefaultComponent(
-    resolver.checker,
-    sourceFile
-  );
+  const storiesDefaultComponent = extractDefaultComponent(sourceFile);
+  const resolvedStoriesComponent = storiesDefaultComponent
+    ? resolveComponent(resolver.checker, storiesDefaultComponent)
+    : null;
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
@@ -80,10 +80,10 @@ export function extractVueComponents(
         name,
         offsets: [[statement.getFullStart(), statement.getEnd()]],
         info:
-          storiesAssociatedComponent && hasArgs && isExported
+          storiesDefaultComponent && hasArgs && isExported
             ? {
                 kind: "story",
-                associatedComponent: storiesAssociatedComponent,
+                associatedComponent: resolvedStoriesComponent,
               }
             : {
                 kind: "component",
@@ -101,9 +101,9 @@ export function extractVueComponents(
         c.info.kind === "story"
           ? {
               kind: "story",
-              associatedComponent: transformVirtualTsVueFile(
-                c.info.associatedComponent
-              ),
+              associatedComponent: c.info.associatedComponent
+                ? transformVirtualTsVueFile(c.info.associatedComponent)
+                : null,
             }
           : c.info,
     })

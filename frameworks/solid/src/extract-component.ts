@@ -1,5 +1,9 @@
 import type { Component } from "@previewjs/core";
-import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
+import {
+  extractCsf3Stories,
+  extractDefaultComponent,
+  resolveComponent,
+} from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component";
@@ -51,10 +55,10 @@ export function extractSolidComponents(
     }
   }
 
-  const storiesAssociatedComponent = extractDefaultComponent(
-    resolver.checker,
-    sourceFile
-  );
+  const storiesDefaultComponent = extractDefaultComponent(sourceFile);
+  const resolvedStoriesComponent = storiesDefaultComponent
+    ? resolveComponent(resolver.checker, storiesDefaultComponent)
+    : null;
   const components: Component[] = [];
   const args = helpers.extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
@@ -68,10 +72,10 @@ export function extractSolidComponents(
         name,
         offsets: [[statement.getStart(), statement.getEnd()]],
         info:
-          storiesAssociatedComponent && hasArgs && isExported
+          storiesDefaultComponent && hasArgs && isExported
             ? {
                 kind: "story",
-                associatedComponent: storiesAssociatedComponent,
+                associatedComponent: resolvedStoriesComponent,
               }
             : {
                 kind: "component",

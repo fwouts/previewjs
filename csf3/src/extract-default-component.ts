@@ -1,13 +1,8 @@
 import ts from "typescript";
-import { resolveComponent } from "./resolve-component";
 
 export function extractDefaultComponent(
-  checker: ts.TypeChecker,
   sourceFile: ts.SourceFile
-): {
-  absoluteFilePath: string;
-  name: string;
-} | null {
+): ts.Expression | null {
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
       let exportedValue = statement.expression;
@@ -21,13 +16,7 @@ export function extractDefaultComponent(
             ts.isIdentifier(property.name) &&
             property.name.text === "component"
           ) {
-            const defaultComponent =
-              checker.getSymbolAtLocation(property.initializer) || null;
-            if (defaultComponent) {
-              return resolveComponent(checker, defaultComponent);
-            } else {
-              return null;
-            }
+            return property.initializer;
           }
         }
       }
