@@ -11,7 +11,9 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { solidFrameworkPlugin } from ".";
 import { extractSolidComponents } from "./extract-component";
 
-const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
+const ROOT_DIR = path.join(__dirname, "virtual");
+const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
+const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe("extractSolidComponents", () => {
   let memoryReader: Reader & Writer;
@@ -21,7 +23,7 @@ describe("extractSolidComponents", () => {
     memoryReader = createMemoryReader();
     const frameworkPlugin = await solidFrameworkPlugin.create();
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: path.join(__dirname, "virtual"),
+      rootDirPath: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
@@ -37,8 +39,9 @@ describe("extractSolidComponents", () => {
   });
 
   it("detects expected components", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 import type { Component } from 'solid-js';
 
 const Component1: Component = () => {
@@ -59,53 +62,75 @@ export const NotAStory = {
 
 export default Component1;
       
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "Component1",
-        exported: true,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
       {
         name: "Component2",
-        exported: false,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "Component3",
-        exported: false,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
     ]);
   });
 
   it("detects components without any Solid import", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 export function DeclaredFunction() {
   return <div>Hello, World!</div>;
 }
 
 const ConstantFunction = () => <div>Hello, World!</div>;
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "DeclaredFunction",
-        exported: true,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
       {
         name: "ConstantFunction",
-        exported: false,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
     ]);
   });
 
   it("detects CSF2 stories", async () => {
-    expect(
-      extract(`
-import Button from "./Button";
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
+export function Button() {
+  return <div>Hello, World!</div>;
+}
+`
+    );
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import { Button } from "./App";
 
 export default {
   component: Button
@@ -118,24 +143,43 @@ Primary.args = {
    primary: true,
    label: 'Button',
 };
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
       {
         name: "Template",
-        exported: false,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "Primary",
-        exported: true,
-        isStory: true,
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
       },
     ]);
   });
 
   it("detects CSF3 stories", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
+export function Button() {
+  return <div>Hello, World!</div>;
+}
+`
+    );
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import { Button } from "./App";
+
 export default {
   component: Button
 }
@@ -146,24 +190,36 @@ export const Example = {
 }
 export const NoArgs = {}
 export function NotStory() {}
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
       {
         name: "Example",
-        exported: true,
-        isStory: true,
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
       },
       {
         name: "NoArgs",
-        exported: true,
-        isStory: true,
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
       },
     ]);
   });
 
-  function extract(source: string) {
-    const rootDirPath = path.join(__dirname, "virtual");
-    memoryReader.updateFile(path.join(rootDirPath, "App.tsx"), source);
-    return extractSolidComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
+  function extract(absoluteFilePath: string) {
+    return extractSolidComponents(
+      typeAnalyzer.analyze([absoluteFilePath]),
+      absoluteFilePath
+    );
   }
 });

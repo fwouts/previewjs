@@ -1,42 +1,21 @@
 import type { Component } from "@previewjs/core";
-import { EMPTY_OBJECT_TYPE } from "@previewjs/type-analyzer";
+import type { TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
+import { extractDefaultComponent } from "./extract-default-component";
+import { resolveComponent } from "./resolve-component";
 
 export function extractCsf3Stories(
-  absoluteFilePath: string,
+  resolver: TypeResolver,
   sourceFile: ts.SourceFile
 ): Component[] {
-  const components: Component[] = [];
-
   // Detect if we're dealing with a CSF3 module.
   // In particular, does it have a default export with a "component" property?
-
-  let isCsf3Module = false;
-  checkCsf3Module: for (const statement of sourceFile.statements) {
-    if (ts.isExportAssignment(statement)) {
-      let exportedValue = statement.expression;
-      if (ts.isAsExpression(exportedValue)) {
-        exportedValue = exportedValue.expression;
-      }
-      if (ts.isObjectLiteralExpression(exportedValue)) {
-        for (const property of exportedValue.properties) {
-          if (
-            property.name &&
-            ts.isIdentifier(property.name) &&
-            property.name.text === "component"
-          ) {
-            // Yes it is!
-            isCsf3Module = true;
-            break checkCsf3Module;
-          }
-        }
-      }
-    }
-  }
-  if (!isCsf3Module) {
+  const defaultComponent = extractDefaultComponent(sourceFile);
+  if (!defaultComponent) {
     return [];
   }
 
+  const components: Component[] = [];
   for (const statement of sourceFile.statements) {
     if (!ts.isVariableStatement(statement)) {
       continue;
@@ -59,23 +38,29 @@ export function extractCsf3Stories(
         continue;
       }
       const name = declaration.name.text;
+      let storyComponent: ts.Expression | undefined;
       for (const property of declaration.initializer.properties) {
-        if (!property.name || !ts.isIdentifier(property.name)) {
-          continue;
+        if (
+          ts.isPropertyAssignment(property) &&
+          ts.isIdentifier(property.name) &&
+          property.name.text === "component"
+        ) {
+          // Yes it is CSF3!
+          storyComponent = property.initializer;
+          break;
         }
       }
 
       components.push({
-        absoluteFilePath,
+        absoluteFilePath: sourceFile.fileName,
         name,
-        isStory: true,
-        exported: true,
         offsets: [[statement.getStart(), statement.getEnd()]],
-        analyze: async () => {
-          return {
-            propsType: EMPTY_OBJECT_TYPE,
-            types: {},
-          };
+        info: {
+          kind: "story",
+          associatedComponent: resolveComponent(
+            resolver.checker,
+            storyComponent || defaultComponent
+          ),
         },
       });
     }

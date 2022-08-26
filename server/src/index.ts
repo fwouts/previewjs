@@ -278,7 +278,6 @@ async function startServer({
             })
             .map(([start]) => ({
               componentName: c.name,
-              exported: c.exported,
               offset: start,
               componentId: previewjs.core.generateComponentId({
                 currentFilePath: path.relative(

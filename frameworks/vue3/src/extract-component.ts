@@ -1,7 +1,12 @@
 import type { Component, ComponentAnalysis } from "@previewjs/core";
-import { extractCsf3Stories } from "@previewjs/csf3";
+import {
+  extractCsf3Stories,
+  extractDefaultComponent,
+  resolveComponent,
+} from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
+import { inferComponentNameFromVuePath } from "./infer-component-name";
 
 export function extractVueComponents(
   resolver: TypeResolver,
@@ -57,6 +62,10 @@ export function extractVueComponents(
     }
   }
 
+  const storiesDefaultComponent = extractDefaultComponent(sourceFile);
+  const resolvedStoriesComponent = storiesDefaultComponent
+    ? resolveComponent(resolver.checker, storiesDefaultComponent)
+    : null;
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
@@ -73,15 +82,53 @@ export function extractVueComponents(
       components.push({
         absoluteFilePath,
         name,
-        isStory: hasArgs,
-        exported: isExported,
         offsets: [[statement.getFullStart(), statement.getEnd()]],
-        analyze: async () => analysis,
+        info:
+          storiesDefaultComponent && hasArgs && isExported
+            ? {
+                kind: "story",
+                associatedComponent: resolvedStoriesComponent,
+              }
+            : {
+                kind: "component",
+                exported: isExported,
+                analyze: async () => analysis,
+              },
       });
     }
   }
 
-  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
+  return [...components, ...extractCsf3Stories(resolver, sourceFile)].map(
+    (c) => ({
+      ...c,
+      info:
+        c.info.kind === "story"
+          ? {
+              kind: "story",
+              associatedComponent: c.info.associatedComponent
+                ? transformVirtualTsVueFile(c.info.associatedComponent)
+                : null,
+            }
+          : c.info,
+    })
+  );
+}
+
+function transformVirtualTsVueFile({
+  absoluteFilePath,
+  name,
+}: {
+  absoluteFilePath: string;
+  name: string;
+}) {
+  if (absoluteFilePath.endsWith(".vue.ts")) {
+    absoluteFilePath = absoluteFilePath.substring(
+      0,
+      absoluteFilePath.length - 3
+    );
+    name = inferComponentNameFromVuePath(absoluteFilePath);
+  }
+  return { absoluteFilePath, name };
 }
 
 function extractVueComponent(

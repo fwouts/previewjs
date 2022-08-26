@@ -1,5 +1,9 @@
 import type { Component } from "@previewjs/core";
-import { extractCsf3Stories } from "@previewjs/csf3";
+import {
+  extractCsf3Stories,
+  extractDefaultComponent,
+  resolveComponent,
+} from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
@@ -49,6 +53,10 @@ export function extractReactComponents(
     }
   }
 
+  const storiesDefaultComponent = extractDefaultComponent(sourceFile);
+  const resolvedStoriesComponent = storiesDefaultComponent
+    ? resolveComponent(resolver.checker, storiesDefaultComponent)
+    : null;
   const components: Component[] = [];
   const args = helpers.extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
@@ -60,15 +68,28 @@ export function extractReactComponents(
       components.push({
         absoluteFilePath,
         name,
-        isStory: hasArgs,
-        exported: isExported,
         offsets: [[statement.getStart(), statement.getEnd()]],
-        analyze: async () =>
-          analyzeReactComponent(resolver, absoluteFilePath, name, signature),
+        info:
+          storiesDefaultComponent && hasArgs && isExported
+            ? {
+                kind: "story",
+                associatedComponent: resolvedStoriesComponent,
+              }
+            : {
+                kind: "component",
+                exported: isExported,
+                analyze: async () =>
+                  analyzeReactComponent(
+                    resolver,
+                    absoluteFilePath,
+                    name,
+                    signature
+                  ),
+              },
       });
     }
   }
-  return [...components, ...extractCsf3Stories(absoluteFilePath, sourceFile)];
+  return [...components, ...extractCsf3Stories(resolver, sourceFile)];
 }
 
 function extractReactComponent(

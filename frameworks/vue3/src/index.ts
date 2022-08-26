@@ -3,6 +3,7 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import type { Node } from "acorn";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 /** @deprecated */
@@ -43,18 +44,19 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           if (absoluteFilePath.endsWith(".vue")) {
-            const name = path.basename(
-              absoluteFilePath,
-              path.extname(absoluteFilePath)
-            );
             components.push({
               absoluteFilePath,
-              name,
-              isStory: false,
-              exported: true,
+              name: inferComponentNameFromVuePath(absoluteFilePath),
               offsets: [[0, Infinity]],
-              analyze: async () =>
-                analyzeVueComponentFromTemplate(typeAnalyzer, absoluteFilePath),
+              info: {
+                kind: "component",
+                exported: true,
+                analyze: async () =>
+                  analyzeVueComponentFromTemplate(
+                    typeAnalyzer,
+                    absoluteFilePath
+                  ),
+              },
             });
           } else {
             components.push(

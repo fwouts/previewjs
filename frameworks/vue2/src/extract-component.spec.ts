@@ -12,7 +12,10 @@ import { vue2FrameworkPlugin } from ".";
 import { extractVueComponents } from "./extract-component";
 import { createVueTypeScriptReader } from "./vue-reader";
 
-const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
+const ROOT_DIR = path.join(__dirname, "virtual");
+const MAIN_FILE_TSX = path.join(ROOT_DIR, "App.tsx");
+const MAIN_FILE_VUE = path.join(ROOT_DIR, "MyComponent.vue");
+const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe("extractVueComponents", () => {
   let memoryReader: Reader & Writer;
@@ -20,6 +23,22 @@ describe("extractVueComponents", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
+    memoryReader.updateFile(
+      MAIN_FILE_VUE,
+      `
+<template>
+  <div>
+    Hello, World!
+  </div>
+</template>
+
+<script>
+export default {
+  name: "App",
+};
+</script>
+`
+    );
     const frameworkPlugin = await vue2FrameworkPlugin.create();
     const rootDirPath = path.join(__dirname, "virtual");
     const reader = createStackedReader([
@@ -47,8 +66,9 @@ describe("extractVueComponents", () => {
   });
 
   it("detects expected components", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE_TSX,
+      `
 const Component1 = () => {
   return <div>Hello, World!</div>;
 };
@@ -63,92 +83,121 @@ export const NotAStory = {
 
 export default Component1;
       
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE_TSX)).toMatchObject([
       {
         name: "Component1",
-        exported: true,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
       {
         name: "Component2",
-        exported: false,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
     ]);
   });
 
   it("detects components without any Vue import", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE_TSX,
+      `
 export function DeclaredFunction() {
   return <div>Hello, World!</div>;
 }
 
 const ConstantFunction = () => <div>Hello, World!</div>;
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE_TSX)).toMatchObject([
       {
         name: "DeclaredFunction",
-        exported: true,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
       {
         name: "ConstantFunction",
-        exported: false,
-        isStory: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
     ]);
   });
 
   it("detects default export component (arrow function)", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE_TSX,
+      `
 export default () => {
   return <div>Hello, World!</div>;
 }
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE_TSX)).toMatchObject([
       {
         name: "default",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects default export component (named function)", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE_TSX,
+      `
 export default function test(){
   return <div>Hello, World!</div>;
 }
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE_TSX)).toMatchObject([
       {
         name: "test",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects default export component (anonymous function)", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE_TSX,
+      `
 export default function(){
   return <div>Hello, World!</div>;
 }
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE_TSX)).toMatchObject([
       {
         name: "default",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects CSF1 stories", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./MyComponent.vue";
+
 export default {
   component: Button
 }
@@ -157,20 +206,26 @@ export const Primary = () => ({
   components: { Button },
   template: '<Button primary label="Button" />',
 });
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
       {
         name: "Primary",
-        exported: true,
-        // TODO: this should be true.
-        isStory: false,
+        info: {
+          // TODO: this should be "story".
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects CSF2 stories", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./MyComponent.vue";
+
 export default {
   component: Button
 }
@@ -186,20 +241,27 @@ Primary.args = {
   primary: true,
   label: 'Button',
 };
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
       {
         name: "Primary",
-        exported: true,
-        isStory: true,
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "MyComponent",
+          },
+        },
       },
     ]);
   });
 
   it("detects CSF3 stories", async () => {
-    expect(
-      extract(`
-import Button from './Button.vue';
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from './MyComponent.vue';
 
 export default {
   component: Button
@@ -212,24 +274,36 @@ export const Example = {
 }
 export const NoArgs = {}
 export function NotStory() {}
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
       {
         name: "Example",
-        exported: true,
-        isStory: true,
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "MyComponent",
+          },
+        },
       },
       {
         name: "NoArgs",
-        exported: true,
-        isStory: true,
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "MyComponent",
+          },
+        },
       },
     ]);
   });
 
-  function extract(source: string) {
-    const rootDirPath = path.join(__dirname, "virtual");
-    memoryReader.updateFile(path.join(rootDirPath, "App.tsx"), source);
-    return extractVueComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
+  function extract(absoluteFilePath: string) {
+    return extractVueComponents(
+      typeAnalyzer.analyze([absoluteFilePath]),
+      absoluteFilePath
+    );
   }
 });

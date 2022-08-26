@@ -28,13 +28,24 @@ export interface FrameworkPlugin {
     absoluteFilePaths: string[]
   ) => Promise<Component[]>;
 }
+
 export interface Component {
   readonly absoluteFilePath: string;
   readonly name: string;
-  readonly isStory: boolean;
-  readonly exported: boolean;
   readonly offsets: Array<[start: number, end: number]>;
-  readonly analyze: () => Promise<ComponentAnalysis>;
+  readonly info:
+    | {
+        kind: "component";
+        readonly exported: boolean;
+        readonly analyze: () => Promise<ComponentAnalysis>;
+      }
+    | {
+        kind: "story";
+        readonly associatedComponent: {
+          readonly absoluteFilePath: string;
+          readonly name: string;
+        } | null;
+      };
 }
 
 export interface ComponentAnalysis {
