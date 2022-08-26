@@ -27,7 +27,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
-    "build": "unbuild && pnpm tsc -p client/tsconfig.json && vite build client && pnpm tsc -p tsconfig.tests.json",
+    "build": "tsc && unbuild && pnpm tsc -p client/tsconfig.json && vite build client && pnpm tsc -p tsconfig.tests.json",
     "client:dev": "vite client",
     "e2e-test": "tsc -p tsconfig.tests.json && pnpm previewjs-e2e-test -s ./dist/index.cjs -t ./dist-tests/index.js"
   },

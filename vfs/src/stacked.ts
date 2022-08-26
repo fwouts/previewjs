@@ -1,5 +1,5 @@
-import { ReaderListener } from ".";
-import { Directory, DirectorySync, Entry, EntrySync, Reader } from "./api";
+import type { ReaderListener } from ".";
+import type { Directory, DirectorySync, Entry, EntrySync, Reader } from "./api";
 import { ReaderListeners } from "./listeners";
 
 export class StackedReader implements Reader {
