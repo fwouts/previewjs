@@ -173,7 +173,7 @@ export const storybookTests = testSuite(
   const Button = ({ label }) => <button>{label}</button>;
 
   export default {
-    component: Button
+    component: () => <div>foo</div>
   }
 
   export const Example = {
