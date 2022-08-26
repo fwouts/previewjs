@@ -7,7 +7,7 @@ export async function computeProps({
 }: {
   component: Component;
 }): Promise<localEndpoints.ComputePropsResponse> {
-  if (component.isStory) {
+  if (component.info.kind === "story") {
     return {
       types: {
         props: EMPTY_OBJECT_TYPE,
@@ -15,7 +15,7 @@ export async function computeProps({
       },
     };
   }
-  const result = await component.analyze();
+  const result = await component.info.analyze();
   return {
     types: {
       props: result.propsType,
