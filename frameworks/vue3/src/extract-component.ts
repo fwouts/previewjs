@@ -1,5 +1,9 @@
 import type { Component, ComponentAnalysis } from "@previewjs/core";
-import { extractCsf3Stories, extractDefaultComponent } from "@previewjs/csf3";
+import {
+  extractCsf3Stories,
+  extractDefaultComponent,
+  resolveComponent,
+} from "@previewjs/csf3";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
