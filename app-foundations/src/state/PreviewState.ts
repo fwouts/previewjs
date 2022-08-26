@@ -130,12 +130,8 @@ export class PreviewState {
   }
 
   async start() {
-    window.__previewjs_navigate = (componentId, variantKey) => {
-      history.pushState(
-        null,
-        "",
-        `/?p=${componentId}${variantKey ? `&v=${variantKey}` : ""}`
-      );
+    window.__previewjs_navigate = (componentId) => {
+      history.pushState(null, "", `/?p=${componentId}`);
       this.onUrlChanged().catch(console.error);
     };
     window.addEventListener("message", this.messageListener);
@@ -224,10 +220,17 @@ export class PreviewState {
   }
 
   setVariant(variantKey: string) {
-    if (!this.component) {
+    const component = this.component;
+    if (!component) {
       return;
     }
-    window.__previewjs_navigate(this.component.componentId, variantKey);
+    runInAction(() => {
+      this.component = {
+        ...component,
+        variantKey,
+      };
+    });
+    this.renderComponent();
   }
 
   updateProps(source: string) {
@@ -251,7 +254,6 @@ export class PreviewState {
   private async onUrlChanged() {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
-    const variantKey = urlParams.get("v") || null;
     const decodedComponentId = decodeComponentId(componentId);
     if (!decodedComponentId.component) {
       runInAction(() => {
@@ -263,46 +265,38 @@ export class PreviewState {
       return;
     }
     const name = decodedComponentId.component.name;
-    if (this.component?.componentId === componentId) {
-      runInAction(() => {
-        if (this.component) {
-          this.component.variantKey = variantKey;
-        }
-      });
-    } else {
-      this.iframeController.showLoading();
-      runInAction(() => {
-        this.component = {
-          componentId,
-          name,
-          variantKey,
-          details: null,
-        };
-      });
-      if (this.options.onFileChanged) {
-        await this.options.onFileChanged(decodedComponentId.currentFilePath);
-      }
-      const filePath = decodedComponentId.component.filePath;
-      const props = new ComponentProps(
-        this.localApi,
-        filePath,
+    this.iframeController.showLoading();
+    runInAction(() => {
+      this.component = {
+        componentId,
         name,
-        this.cachedInvocations[componentId] || null
-      );
-      await props.refresh();
-      runInAction(() => {
-        this.component = {
-          componentId,
-          name,
-          variantKey,
-          details: {
-            filePath,
-            variants: null,
-            props,
-          },
-        };
-      });
+        variantKey: null,
+        details: null,
+      };
+    });
+    if (this.options.onFileChanged) {
+      await this.options.onFileChanged(decodedComponentId.currentFilePath);
     }
+    const filePath = decodedComponentId.component.filePath;
+    const props = new ComponentProps(
+      this.localApi,
+      filePath,
+      name,
+      this.cachedInvocations[componentId] || null
+    );
+    await props.refresh();
+    runInAction(() => {
+      this.component = {
+        componentId,
+        name,
+        variantKey: null,
+        details: {
+          filePath,
+          variants: null,
+          props,
+        },
+      };
+    });
     this.renderComponent();
   }
 
