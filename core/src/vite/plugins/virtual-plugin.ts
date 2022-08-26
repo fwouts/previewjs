@@ -11,6 +11,7 @@ const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 export function virtualPlugin(options: {
   reader: Reader;
   rootDirPath: string;
+  allowedAbsolutePaths: string[];
   moduleGraph: () => vite.ModuleGraph | null;
   esbuildOptions: vite.ESBuildOptions;
 }): vite.Plugin {
@@ -71,6 +72,28 @@ export function virtualPlugin(options: {
         return null;
       }
       const [absoluteFilePath, entry] = resolved;
+      let isAllowed = false;
+      for (const allowedAbsolutePath of options.allowedAbsolutePaths) {
+        const relativePath = path.relative(
+          allowedAbsolutePath,
+          absoluteFilePath
+        );
+        if (
+          relativePath &&
+          !relativePath.startsWith("..") &&
+          !path.isAbsolute(relativePath)
+        ) {
+          // The path is a descendant of an allowed path, so we're OK.
+          isAllowed = true;
+          break;
+        }
+      }
+      if (!isAllowed) {
+        console.error(
+          `Attempted access to ${absoluteFilePath} which is outside of allowed directories. See https://previewjs.com/docs/config and https://vitejs.dev/config/server-options.html#server-fs-allow for more information.`
+        );
+        return null;
+      }
       if (entry.kind !== "file") {
         console.error(`Unable to read file from ${absoluteFilePath}`);
         return null;
