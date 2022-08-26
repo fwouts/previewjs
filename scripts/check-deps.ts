@@ -12,7 +12,7 @@ const globalIgnores = [
   "eslint-plugin-react-hooks",
   "postcss",
   "tailwindcss",
-  "unbuild",
+  "tsc && unbuild",
 ];
 
 // TODO: Go through these deps and eliminate the ones that are not needed.

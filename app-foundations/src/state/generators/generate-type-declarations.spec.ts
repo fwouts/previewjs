@@ -53,9 +53,8 @@ describe("generatePropsTypeDeclarations", () => {
   });
 
   test("missing type", () => {
-    expect(
-      generatePropsTypeDeclarations(":Missing", namedType("/foo.tsx:Foo"), {})
-    ).toMatchInlineSnapshot(`
+    expect(generatePropsTypeDeclarations(":Missing", {}))
+      .toMatchInlineSnapshot(`
       "declare let properties: Missing;
 
 

@@ -8,6 +8,7 @@ import { recrawl } from "recrawl";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
+import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
@@ -138,6 +139,9 @@ export class ViteManager {
       virtualPlugin({
         reader: this.options.reader,
         rootDirPath: this.options.rootDirPath,
+        allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow || [
+          searchForWorkspaceRoot(this.options.rootDirPath),
+        ],
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),

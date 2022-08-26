@@ -26,7 +26,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/type-analyzer --no-deps --include-dependencies",
-    "build": "unbuild",
+    "build": "tsc && unbuild",
     "test": "vitest --no-threads"
   },
   "dependencies": {

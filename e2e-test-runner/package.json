@@ -29,7 +29,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/e2e-test-runner --no-deps --include-dependencies",
-    "build": "unbuild",
+    "build": "tsc && unbuild",
     "dev": "ts-node --transpileOnly src/main.ts"
   },
   "dependencies": {

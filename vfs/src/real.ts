@@ -1,7 +1,7 @@
 import chokidar from "chokidar";
 import fs from "fs-extra";
 import path from "path";
-import {
+import type {
   Directory,
   DirectorySync,
   Entry,

@@ -27,7 +27,7 @@
   "sideEffects": false,
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
-    "build": "unbuild"
+    "build": "tsc && unbuild"
   },
   "devDependencies": {
     "@types/node": "17.0.8",
