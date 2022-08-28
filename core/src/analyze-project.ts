@@ -9,7 +9,25 @@ export interface ProjectAnalysis {
   cached: boolean;
 }
 
-export type ProjectComponents = Record<string, string[]>;
+export type ProjectComponents = {
+  [filePath: string]: Array<SimplifiedComponent>;
+};
+
+export type SimplifiedComponent = {
+  name: string;
+  info:
+    | {
+        kind: "component";
+        exported: boolean;
+      }
+    | {
+        kind: "story";
+        associatedComponent: {
+          filePath: string;
+          name: string;
+        } | null;
+      };
+};
 
 export async function analyzeProject(
   workspace: Workspace,
@@ -21,45 +39,80 @@ export async function analyzeProject(
     getCacheDir(workspace.rootDirPath),
     "components.json"
   );
-  useCache: if (!options.forceRefresh && (await fs.pathExists(cacheFilePath))) {
-    const stat = await fs.stat(cacheFilePath);
-    if (stat.mtimeMs < Date.now() - 24 * 3600 * 1000) {
-      // We want to force refresh once a day at least.
-      break useCache;
-    }
-    return {
-      components: JSON.parse(await fs.readFile(cacheFilePath, "utf8")),
-      cached: true,
-    };
-  }
-  const components = await analyzeProjectCore(workspace);
+  const absoluteFilePaths = await findFiles(
+    workspace.rootDirPath,
+    "**/*.@(js|jsx|ts|tsx|svelte|vue)"
+  );
+  const filePathsSet = new Set(
+    absoluteFilePaths.map((absoluteFilePath) =>
+      path.relative(workspace.rootDirPath, absoluteFilePath)
+    )
+  );
+  const existingCacheLastModified =
+    !options.forceRefresh && fs.existsSync(cacheFilePath)
+      ? fs.statSync(cacheFilePath).mtimeMs
+      : 0;
+  const existingCache: ProjectComponents = existingCacheLastModified
+    ? JSON.parse(fs.readFileSync(cacheFilePath, "utf8"))
+    : {};
+  const changedAbsoluteFilePaths = absoluteFilePaths.filter(
+    (absoluteFilePath) =>
+      fs.statSync(absoluteFilePath).mtimeMs > existingCacheLastModified
+  );
+  const recycledComponents = Object.fromEntries(
+    Object.entries(existingCache).filter(([filePath]) =>
+      filePathsSet.has(filePath)
+    )
+  );
+  const refreshedComponents = await analyzeProjectCore(
+    workspace,
+    changedAbsoluteFilePaths
+  );
+  const components = {
+    ...recycledComponents,
+    ...refreshedComponents,
+  };
   await fs.mkdirp(path.dirname(cacheFilePath));
   await fs.writeFile(cacheFilePath, JSON.stringify(components));
   return { components, cached: false };
 }
 
 async function analyzeProjectCore(
-  workspace: Workspace
+  workspace: Workspace,
+  changedAbsoluteFilePaths: string[]
 ): Promise<ProjectComponents> {
-  const absoluteFilePaths = await findFiles(
-    workspace.rootDirPath,
-    "**/*.@(js|jsx|ts|tsx|svelte|vue)"
-  );
-  const components: Record<string, string[]> = {};
+  const components: ProjectComponents = {};
   const found = await workspace.frameworkPlugin.detectComponents(
     workspace.typeAnalyzer,
-    absoluteFilePaths
+    changedAbsoluteFilePaths
   );
   for (const component of found) {
     const filePath = path.relative(
       workspace.rootDirPath,
       component.absoluteFilePath
     );
-    if (component.info.kind === "component" && !component.info.exported) {
-      continue;
-    }
     const fileComponents = (components[filePath] ||= []);
-    fileComponents.push(component.name);
+    fileComponents.push({
+      name: component.name,
+      info:
+        component.info.kind === "component"
+          ? {
+              kind: "component",
+              exported: component.info.exported,
+            }
+          : {
+              kind: "story",
+              associatedComponent: component.info.associatedComponent
+                ? {
+                    filePath: path.relative(
+                      workspace.rootDirPath,
+                      component.info.associatedComponent.absoluteFilePath
+                    ),
+                    name: component.info.associatedComponent.name,
+                  }
+                : null,
+            },
+    });
   }
   return components;
 }

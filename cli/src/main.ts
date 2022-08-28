@@ -83,12 +83,16 @@ program
       }
       const allComponents = Object.entries(components)
         .map(([filePath, fileComponents]) =>
-          fileComponents.map((componentName) => ({
+          fileComponents.map((component) => ({
             filePath,
-            componentName,
+            component,
           }))
         )
-        .flat();
+        .flat()
+        .filter(
+          ({ component }) =>
+            component.info.kind === "story" || component.info.exported
+        );
       const { componentId } = await prompt([
         {
           type: "autocomplete",
@@ -98,12 +102,12 @@ program
             ...(!input ? [noComponentOption, forceRefreshOption] : []),
             ...allComponents
               .filter(
-                ({ filePath, componentName }) =>
+                ({ filePath, component }) =>
                   filePath.toLowerCase().includes(input.toLowerCase()) ||
-                  componentName.toLowerCase().includes(input.toLowerCase())
+                  component.name.toLowerCase().includes(input.toLowerCase())
               )
               .map(
-                ({ filePath, componentName }) => `${filePath}:${componentName}`
+                ({ filePath, component }) => `${filePath}:${component.name}`
               ),
           ],
         },
