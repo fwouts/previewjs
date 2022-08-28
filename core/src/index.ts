@@ -2,6 +2,7 @@ import { localEndpoints } from "@previewjs/api";
 import {
   CollectedTypes,
   createTypeAnalyzer,
+  EMPTY_OBJECT_TYPE,
   TypeAnalyzer,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
@@ -13,7 +14,6 @@ import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
 import { analyzeProject, ProjectAnalysis } from "./analyze-project";
-import { computeProps } from "./compute-props";
 import {
   LocalFilePersistedStateManager,
   PersistedStateManager,
@@ -118,9 +118,21 @@ export async function createWorkspace({
           },
         };
       }
-      return computeProps({
-        component,
-      });
+      if (component.info.kind === "story") {
+        return {
+          types: {
+            props: EMPTY_OBJECT_TYPE,
+            all: {},
+          },
+        };
+      }
+      const result = await component.info.analyze();
+      return {
+        types: {
+          props: result.propsType,
+          all: result.types,
+        },
+      };
     }
   );
   const previewer = new Previewer({
