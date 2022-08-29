@@ -6,7 +6,6 @@ import { findFiles } from "./find-files";
 
 export interface ProjectAnalysis {
   components: ProjectComponents;
-  cached: boolean;
 }
 
 export type ProjectComponents = {
@@ -74,7 +73,7 @@ export async function analyzeProject(
   };
   await fs.mkdirp(path.dirname(cacheFilePath));
   await fs.writeFile(cacheFilePath, JSON.stringify(components));
-  return { components, cached: false };
+  return { components };
 }
 
 async function analyzeProjectCore(

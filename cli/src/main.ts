@@ -75,12 +75,9 @@ program
 
     async function promptComponent(forceRefresh = false): Promise<void> {
       console.log(`Analyzing project for components...`);
-      const { components, cached } = await workspace!.components.list({
+      const { components } = await workspace!.components.list({
         forceRefresh,
       });
-      if (cached) {
-        console.log(`Using cached component list from previous run.`);
-      }
       const allComponents = Object.entries(components)
         .map(([filePath, fileComponents]) =>
           fileComponents.map((component) => ({
