@@ -156,7 +156,9 @@ function convertToTypeScript(vueTemplateSource: string, name: string) {
               const extractedProps: ts.PropertyAssignment[] = [];
               for (const member of node.members) {
                 if (ts.isPropertyDeclaration(member)) {
-                  const [decorator] = member.decorators || [];
+                  const [decorator] = ts.canHaveDecorators(member)
+                    ? ts.getDecorators(member) || []
+                    : [];
                   if (
                     decorator &&
                     ts.isCallExpression(decorator.expression) &&
