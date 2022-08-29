@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/core",
-  "version": "6.0.2",
+  "version": "7.0.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -29,11 +29,11 @@
     "build": "tsc && unbuild && bash copy_monaco_editor.sh"
   },
   "dependencies": {
-    "@previewjs/api": "^2.4.2",
-    "@previewjs/config": "^3.0.2",
-    "@previewjs/iframe": "^1.1.6",
-    "@previewjs/type-analyzer": "^4.0.2",
-    "@previewjs/vfs": "^1.2.5",
+    "@previewjs/api": "^3.0.0",
+    "@previewjs/config": "^3.0.3",
+    "@previewjs/iframe": "^1.1.7",
+    "@previewjs/type-analyzer": "^4.0.3",
+    "@previewjs/vfs": "^1.2.6",
     "acorn": "^8.8.0",
     "assert-never": "^1.2.1",
     "cookie-parser": "^1.4.6",
