@@ -79,7 +79,7 @@ export class ComponentProps {
 
   get isDefaultInvocationSource(): boolean {
     return (
-      !this.invocationSource ||
+      this._invocationSource === null ||
       this.invocationSource === this.defaultInvocationSource
     );
   }
