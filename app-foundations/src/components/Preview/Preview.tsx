@@ -1,9 +1,9 @@
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import {
+  faCircleXmark,
   faCode,
   faExternalLink,
   faTerminal,
-  faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -225,7 +225,7 @@ const DefaultPropsPanel: React.FunctionComponent<PropsPanelProps> = ({
         disabled={!onReset}
         onClick={onReset}
       >
-        <FontAwesomeIcon icon={faUndo} />
+        <FontAwesomeIcon icon={faCircleXmark} />
       </button>
       {codeEditor}
     </Fragment>
