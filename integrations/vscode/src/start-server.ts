@@ -8,6 +8,7 @@ import { SERVER_PORT } from "./port";
 
 export async function startPreviewJsServer(outputChannel: OutputChannel) {
   const nodeVersion = await execa("node", ["--version"], {
+    shell: process.env.SHELL || true,
     cwd: __dirname,
     reject: false,
   });
@@ -129,7 +130,10 @@ function execLongRunningCommand(
     wsl ? wslCommandArgs(command, commandArgs, true) : commandArgs,
     {
       ...options,
-      ...(!wsl && { detached: true }),
+      ...(!wsl && {
+        shell: process.env.SHELL || true,
+        detached: true,
+      }),
     }
   );
 }
