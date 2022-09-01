@@ -144,7 +144,6 @@ function wslCommandArgs(
   longRunning = false
 ) {
   return [
-    ...(longRunning ? ["nohup"] : []),
     "bash",
     "-lic",
     [command, ...commandArgs, ...(longRunning ? ["&"] : [])].join(" "),
