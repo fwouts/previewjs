@@ -1,5 +1,6 @@
 package com.previewjs.intellij.plugin.services
 
+import com.intellij.execution.process.OSProcessUtil
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.ide.util.PropertiesComponent
@@ -285,7 +286,9 @@ Include the content of the Preview.js logs panel for easier debugging.
     }
 
     override fun dispose() {
-        serverProcess?.destroy()
+        serverProcess?.let {
+            OSProcessUtil.killProcessTree(it)
+        }
         disposed = true
     }
 
