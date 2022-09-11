@@ -4,6 +4,8 @@ import {
   faCode,
   faExternalLink,
   faSpinner,
+  faSquare,
+  faSquareCheck,
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +18,7 @@ import {
 import { useWindowHeight } from "@react-hook/window-size";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
 import { Link } from "../../design/Link";
@@ -51,6 +53,7 @@ export const Preview = observer(
     viewport: React.ReactNode;
   }) => {
     const panelHeight = useWindowHeight() * 0.3;
+    const [showComponents, setShowComponents] = useState(false);
 
     if (!state.reachable) {
       return (
@@ -132,56 +135,74 @@ export const Preview = observer(
       <div className="flex flex-row flex-grow min-h-0">
         <div className="w-1/4 bg-gray-600 flex flex-col h-screen overflow-auto">
           {state.project ? (
-            (() => {
-              let currentFilePath: string[] = [];
-              return Object.entries(state.project.components).map(
-                ([filePath, components]) => {
-                  const newFilePath = filePath.split("/");
-                  let i = 0;
-                  while (
-                    i < currentFilePath.length &&
-                    i < newFilePath.length &&
-                    currentFilePath[i] === newFilePath[i]
-                  ) {
-                    i++;
-                  }
-                  const display: [string, number][] = [];
-                  for (let j = i; j < newFilePath.length; j++) {
-                    display.push([
-                      newFilePath[j] +
-                        (j === newFilePath.length - 1 ? "" : "/"),
-                      j,
-                    ]);
-                  }
-                  currentFilePath = newFilePath;
-                  return (
-                    <div key={filePath}>
-                      {display.map(([segment, indent], i) => (
+            <>
+              <button
+                className="sticky top-2 flex flex-row items-center gap-2 bg-gray-900 hover:bg-gray-800 text-gray-100 rounded-md m-2 p-2 select-none"
+                onClick={() => setShowComponents(!showComponents)}
+              >
+                <FontAwesomeIcon
+                  className="text-lg text-white"
+                  icon={showComponents ? faSquareCheck : faSquare}
+                  fixedWidth
+                />
+                <div>
+                  {showComponents ? "Only show stories" : "Show components"}
+                </div>
+              </button>
+              {(() => {
+                let currentFilePath: string[] = [];
+                return Object.entries(state.project.components).map(
+                  ([filePath, components]) => {
+                    const filteredComponents = components.filter(
+                      (c) =>
+                        c.info.kind === "story" ||
+                        (showComponents && c.info.exported)
+                    );
+                    if (filteredComponents.length === 0) {
+                      return null;
+                    }
+                    const newFilePath = filePath.split("/");
+                    let i = 0;
+                    while (
+                      i < currentFilePath.length &&
+                      i < newFilePath.length &&
+                      currentFilePath[i] === newFilePath[i]
+                    ) {
+                      i++;
+                    }
+                    const display: [string, number][] = [];
+                    for (let j = i; j < newFilePath.length; j++) {
+                      display.push([
+                        newFilePath[j] +
+                          (j === newFilePath.length - 1 ? "" : "/"),
+                        j,
+                      ]);
+                    }
+                    currentFilePath = newFilePath;
+                    return (
+                      <div key={filePath}>
+                        {display.map(([segment, indent], i) => (
+                          <div
+                            key={filePath + "-" + segment}
+                            className={clsx(
+                              "px-2 py-1 whitespace-pre truncate",
+                              i === display.length - 1
+                                ? "font-medium bg-gray-100"
+                                : "font-normal bg-gray-400"
+                            )}
+                            style={{ paddingLeft: indent + 0.5 + "rem" }}
+                            title={segment}
+                          >
+                            {segment}
+                          </div>
+                        ))}
                         <div
-                          key={filePath + "-" + segment}
-                          className={clsx(
-                            "px-2 py-1 whitespace-pre truncate",
-                            i === display.length - 1
-                              ? "font-medium bg-gray-100"
-                              : "font-normal bg-gray-400"
-                          )}
-                          style={{ paddingLeft: indent + 0.5 + "rem" }}
-                          title={segment}
+                          className="flex flex-row flex-wrap gap-2 px-2 py-2 bg-gray-200"
+                          style={{
+                            paddingLeft: currentFilePath.length + 0.5 + "rem",
+                          }}
                         >
-                          {segment}
-                        </div>
-                      ))}
-                      <div
-                        className="flex flex-row flex-wrap gap-2 px-2 py-2 bg-gray-200"
-                        style={{
-                          paddingLeft: currentFilePath.length + 0.5 + "rem",
-                        }}
-                      >
-                        {components
-                          .filter(
-                            (c) => c.info.kind === "story" || c.info.exported
-                          )
-                          .map((c) => (
+                          {filteredComponents.map((c) => (
                             <button
                               key={c.name}
                               className={clsx(
@@ -197,12 +218,13 @@ export const Preview = observer(
                               {c.name}
                             </button>
                           ))}
+                        </div>
                       </div>
-                    </div>
-                  );
-                }
-              );
-            })()
+                    );
+                  }
+                );
+              })()}
+            </>
           ) : (
             <div className="self-center flex-grow flex flex-col justify-center">
               <FontAwesomeIcon
