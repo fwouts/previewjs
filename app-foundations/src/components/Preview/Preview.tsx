@@ -3,6 +3,7 @@ import {
   faCircleXmark,
   faCode,
   faExternalLink,
+  faSpinner,
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -128,70 +129,154 @@ export const Preview = observer(
     }
 
     return (
-      <div className="flex flex-col h-screen overflow-hidden bg-white">
-        <ActionLogs state={state.actionLogs} />
-        <Header>
-          <Header.Row>
-            {headerAddon}
-            {state.component?.componentId && (
-              <>
-                <FilePath
-                  key="file"
-                  filePath={
-                    decodeComponentId(state.component.componentId)
-                      .currentFilePath
+      <div className="flex flex-row flex-grow min-h-0">
+        <div className="w-1/4 bg-gray-600 flex flex-col h-screen overflow-auto">
+          {state.project ? (
+            (() => {
+              let currentFilePath: string[] = [];
+              return Object.entries(state.project.components).map(
+                ([filePath, components]) => {
+                  const newFilePath = filePath.split("/");
+                  let i = 0;
+                  while (
+                    i < currentFilePath.length &&
+                    i < newFilePath.length &&
+                    currentFilePath[i] === newFilePath[i]
+                  ) {
+                    i++;
                   }
-                />
-                <Link
-                  href={document.location.href}
-                  target="_blank"
-                  title="Open in new tab"
-                  className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
-                >
-                  <FontAwesomeIcon icon={faExternalLink} fixedWidth />
-                </Link>
-              </>
-            )}
-            <div className="flex-grow"></div>
-            <SmallLogo
-              href="https://previewjs.com/docs"
-              label={appLabel}
-              title={state.appInfo?.version && `v${state.appInfo.version}`}
-            />
-            <Link
-              className="ml-2 text-xl text-[#1DA1F2] hover:text-white"
-              href="https://twitter.com/previewjs"
-              target="_blank"
-              title="Follow Preview.js on Twitter"
-            >
-              <FontAwesomeIcon icon={faTwitter} fixedWidth />
-            </Link>
-            <Link
-              className="ml-2 text-xl bg-[#333] text-white rounded-md hover:bg-white hover:text-[#333]"
-              href="https://github.com/fwouts/previewjs"
-              target="_blank"
-              title="Star Preview.js on GitHub"
-            >
-              <FontAwesomeIcon icon={faGithub} fixedWidth />
-            </Link>
-          </Header.Row>
-          {subheader && (
-            <Header.Row className="bg-gray-100">{subheader}</Header.Row>
+                  const display: [string, number][] = [];
+                  for (let j = i; j < newFilePath.length; j++) {
+                    display.push([
+                      newFilePath[j] +
+                        (j === newFilePath.length - 1 ? "" : "/"),
+                      j,
+                    ]);
+                  }
+                  currentFilePath = newFilePath;
+                  return (
+                    <div key={filePath}>
+                      {display.map(([segment, indent], i) => (
+                        <div
+                          key={filePath + "-" + segment}
+                          className={clsx(
+                            "px-2 py-1 whitespace-pre truncate",
+                            i === display.length - 1
+                              ? "font-medium bg-gray-100"
+                              : "font-normal bg-gray-400"
+                          )}
+                          style={{ paddingLeft: indent + 0.5 + "rem" }}
+                          title={segment}
+                        >
+                          {segment}
+                        </div>
+                      ))}
+                      <div
+                        className="flex flex-row flex-wrap gap-2 px-2 py-2 bg-gray-200"
+                        style={{
+                          paddingLeft: currentFilePath.length + 0.5 + "rem",
+                        }}
+                      >
+                        {components
+                          .filter(
+                            (c) => c.info.kind === "story" || c.info.exported
+                          )
+                          .map((c) => (
+                            <button
+                              key={c.name}
+                              className={clsx(
+                                "rounded-full py-1 px-4",
+                                c.info.kind === "component"
+                                  ? "bg-blue-300 text-blue-900 hover:bg-blue-500 hover:text-white"
+                                  : "bg-pink-300 text-pink-900 hover:bg-pink-500 hover:text-white"
+                              )}
+                              onClick={() =>
+                                state.setComponent(`${filePath}:${c.name}`)
+                              }
+                            >
+                              {c.name}
+                            </button>
+                          ))}
+                      </div>
+                    </div>
+                  );
+                }
+              );
+            })()
+          ) : (
+            <div className="self-center flex-grow flex flex-col justify-center">
+              <FontAwesomeIcon
+                icon={faSpinner}
+                className="text-6xl animate-spin text-gray-800"
+              />
+            </div>
           )}
-        </Header>
-        <UpdateBanner state={state.updateBanner} />
-        {state.component ? (
-          viewport
-        ) : (
-          <div
-            id="no-selection"
-            className="flex-grow bg-gray-700 text-gray-100 p-2 grid place-items-center text-lg"
-          >
-            Please select a component to preview.
-          </div>
-        )}
-        <TabbedPanel defaultTabKey="props" tabs={tabs} height={panelHeight} />
-        {footer}
+        </div>
+        <div className="flex flex-col flex-grow h-screen overflow-hidden bg-white">
+          <ActionLogs state={state.actionLogs} />
+          <Header>
+            <Header.Row>
+              {headerAddon}
+              {state.component?.componentId && (
+                <>
+                  <FilePath
+                    key="file"
+                    filePath={
+                      decodeComponentId(state.component.componentId)
+                        .currentFilePath
+                    }
+                  />
+                  <Link
+                    href={document.location.href}
+                    target="_blank"
+                    title="Open in new tab"
+                    className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
+                  >
+                    <FontAwesomeIcon icon={faExternalLink} fixedWidth />
+                  </Link>
+                </>
+              )}
+              <div className="flex-grow"></div>
+              <SmallLogo
+                href="https://previewjs.com/docs"
+                label={appLabel}
+                title={state.appInfo?.version && `v${state.appInfo.version}`}
+              />
+              <Link
+                className="ml-2 text-xl text-[#1DA1F2] hover:text-white"
+                href="https://twitter.com/previewjs"
+                target="_blank"
+                title="Follow Preview.js on Twitter"
+              >
+                <FontAwesomeIcon icon={faTwitter} fixedWidth />
+              </Link>
+              <Link
+                className="ml-2 text-xl bg-[#333] text-white rounded-md hover:bg-white hover:text-[#333]"
+                href="https://github.com/fwouts/previewjs"
+                target="_blank"
+                title="Star Preview.js on GitHub"
+              >
+                <FontAwesomeIcon icon={faGithub} fixedWidth />
+              </Link>
+            </Header.Row>
+            {subheader && (
+              <Header.Row className="bg-gray-100">{subheader}</Header.Row>
+            )}
+          </Header>
+          <UpdateBanner state={state.updateBanner} />
+          {state.component ? (
+            viewport
+          ) : (
+            <div
+              id="no-selection"
+              className="flex-grow bg-gray-700 text-gray-100 p-2 grid place-items-center text-lg"
+            >
+              Please select a component to preview.
+            </div>
+          )}
+          <TabbedPanel defaultTabKey="props" tabs={tabs} height={panelHeight} />
+          {footer}
+        </div>
       </div>
     );
   }
