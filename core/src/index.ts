@@ -198,12 +198,6 @@ export async function createWorkspace({
         };
       },
     },
-    // TODO: Remove, replace with direct access to router's endpoint.
-    components: {
-      list: (options) => {
-        return analyzeProject(workspace, options);
-      },
-    },
     dispose: async () => {
       typeAnalyzer.dispose();
     },
@@ -239,11 +233,6 @@ export interface Workspace {
   frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
-  };
-  components: {
-    list(options?: {
-      forceRefresh?: boolean;
-    }): Promise<localEndpoints.AnalyzeProjectResponse>;
   };
   dispose(): Promise<void>;
 }
