@@ -1,39 +1,18 @@
+import type { localEndpoints } from "@previewjs/api";
 import fs from "fs-extra";
 import path from "path";
 import type { Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
 
-export interface ProjectAnalysis {
-  components: ProjectComponents;
-}
-
-export type ProjectComponents = {
-  [filePath: string]: Array<SimplifiedComponent>;
-};
-
-export type SimplifiedComponent = {
-  name: string;
-  info:
-    | {
-        kind: "component";
-        exported: boolean;
-      }
-    | {
-        kind: "story";
-        associatedComponent: {
-          filePath: string;
-          name: string;
-        } | null;
-      };
-};
+type ProjectComponents = localEndpoints.AnalyzeProjectResponse["components"];
 
 export async function analyzeProject(
   workspace: Workspace,
   options: {
     forceRefresh?: boolean;
   } = {}
-): Promise<ProjectAnalysis> {
+): Promise<localEndpoints.AnalyzeProjectResponse> {
   const cacheFilePath = path.join(
     getCacheDir(workspace.rootDirPath),
     "components.json"
