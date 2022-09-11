@@ -71,6 +71,7 @@ program
     }
 
     const port = parseInt(options.port);
+    await workspace!.preview.start(async () => port);
     await promptComponent();
 
     async function promptComponent(forceRefresh = false): Promise<void> {
@@ -112,7 +113,6 @@ program
       if (componentId === forceRefreshOption) {
         return promptComponent(true);
       }
-      await workspace!.preview.start(async () => port);
       const pathSuffix =
         componentId === noComponentOption ? "" : `/?p=${componentId}`;
       await open(`http://localhost:${port}${pathSuffix}`);
