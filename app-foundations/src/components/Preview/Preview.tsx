@@ -145,9 +145,7 @@ export const Preview = observer(
                   icon={showComponents ? faSquareCheck : faSquare}
                   fixedWidth
                 />
-                <div>
-                  {showComponents ? "Only show stories" : "Show components"}
-                </div>
+                <div>Show components</div>
               </button>
               {(() => {
                 let currentFilePath: string[] = [];
