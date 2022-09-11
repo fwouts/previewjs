@@ -136,17 +136,19 @@ export const Preview = observer(
         <div className="w-1/4 bg-gray-600 flex flex-col h-screen overflow-auto">
           {state.project ? (
             <>
-              <button
-                className="sticky top-2 flex flex-row items-center gap-2 bg-gray-900 hover:bg-gray-800 text-gray-100 rounded-md m-2 p-2 select-none"
-                onClick={() => setShowComponents(!showComponents)}
-              >
-                <FontAwesomeIcon
-                  className="text-lg text-white"
-                  icon={showComponents ? faSquareCheck : faSquare}
-                  fixedWidth
-                />
-                <div>Show components</div>
-              </button>
+              <div className="sticky top-0 bg-gray-600 bg-opacity-40 filter backdrop-blur">
+                <button
+                  className="flex flex-row items-center gap-2 bg-gray-900 hover:bg-gray-800 text-gray-100 rounded-md m-2 p-2 select-none"
+                  onClick={() => setShowComponents(!showComponents)}
+                >
+                  <FontAwesomeIcon
+                    className="text-lg text-white"
+                    icon={showComponents ? faSquareCheck : faSquare}
+                    fixedWidth
+                  />
+                  <div>Show components</div>
+                </button>
+              </div>
               {(() => {
                 let currentFilePath: string[] = [];
                 return Object.entries(state.project.components).map(
@@ -205,7 +207,10 @@ export const Preview = observer(
                               key={c.name}
                               className={clsx(
                                 "rounded-full py-1 px-4",
-                                c.info.kind === "component"
+                                `${filePath}:${c.name}` ===
+                                  state.component?.componentId
+                                  ? "bg-gray-800 text-white"
+                                  : c.info.kind === "component"
                                   ? "bg-blue-300 text-blue-900 hover:bg-blue-500 hover:text-white"
                                   : "bg-pink-300 text-pink-900 hover:bg-pink-500 hover:text-white"
                               )}
