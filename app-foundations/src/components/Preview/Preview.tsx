@@ -196,17 +196,12 @@ export const Preview = observer(
                             {segment}
                           </div>
                         ))}
-                        <div
-                          className="flex flex-row flex-wrap gap-2 px-2 py-2 bg-gray-200"
-                          style={{
-                            paddingLeft: currentFilePath.length + 0.5 + "rem",
-                          }}
-                        >
+                        <div className="flex flex-row flex-wrap gap-2 px-1 py-2 bg-gray-200">
                           {filteredComponents.map((c) => (
                             <button
                               key={c.name}
                               className={clsx(
-                                "rounded-full py-1 px-4",
+                                "rounded-full py-1 px-2 text-sm",
                                 `${filePath}:${c.name}` ===
                                   state.component?.componentId
                                   ? "bg-gray-800 text-white"
