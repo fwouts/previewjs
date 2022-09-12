@@ -46,10 +46,16 @@ export async function analyzeProject(
     workspace,
     changedAbsoluteFilePaths
   );
-  const components = {
+  const allComponents = {
     ...recycledComponents,
     ...refreshedComponents,
   };
+  const components = Object.keys(allComponents)
+    .sort()
+    .reduce<ProjectComponents>((ordered, key) => {
+      ordered[key] = allComponents[key]!;
+      return ordered;
+    }, {});
   await fs.mkdirp(path.dirname(cacheFilePath));
   await fs.writeFile(cacheFilePath, JSON.stringify(components));
   return { components };
