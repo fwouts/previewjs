@@ -539,7 +539,7 @@ importers:
   integrations/vscode:
     specifiers:
       '@previewjs/server': workspace:*
-      '@types/vscode': 1.69.0
+      '@types/vscode': 1.71.0
       cross-env: 7.0.3
       esbuild: 0.15.5
       exclusive-promises: ^1.0.3
@@ -550,7 +550,7 @@ importers:
       vsce: 2.11.0
     devDependencies:
       '@previewjs/server': link:../../server
-      '@types/vscode': 1.69.0
+      '@types/vscode': 1.71.0
       cross-env: 7.0.3
       esbuild: 0.15.5
       exclusive-promises: 1.0.3
@@ -9443,8 +9443,8 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: true
 
-  /@types/vscode/1.69.0:
-    resolution: {integrity: sha512-RlzDAnGqUoo9wS6d4tthNyAdZLxOIddLiX3djMoWk29jFfSA1yJbIwr0epBYqqYarWB6s2Z+4VaZCQ80Jaa3kA==}
+  /@types/vscode/1.71.0:
+    resolution: {integrity: sha512-nB50bBC9H/x2CpwW9FzRRRDrTZ7G0/POttJojvN/LiVfzTGfLyQIje1L1QRMdFXK9G41k5UJN/1B9S4of7CSzA==}
     dev: true
 
   /@types/webpack-bundle-analyzer/3.9.3:
