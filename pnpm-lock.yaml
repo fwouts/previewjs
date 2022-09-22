@@ -539,7 +539,7 @@ importers:
   integrations/vscode:
     specifiers:
       '@previewjs/server': workspace:*
-      '@types/vscode': 1.69.0
+      '@types/vscode': 1.71.0
       cross-env: 7.0.3
       esbuild: 0.15.5
       exclusive-promises: ^1.0.3
@@ -550,7 +550,7 @@ importers:
       vsce: 2.11.0
     devDependencies:
       '@previewjs/server': link:../../server
-      '@types/vscode': 1.69.0
+      '@types/vscode': 1.71.0
       cross-env: 7.0.3
       esbuild: 0.15.5
       exclusive-promises: 1.0.3
@@ -4232,8 +4232,8 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/parser': 7.18.13
-      '@babel/types': 7.18.13
+      '@babel/parser': 7.19.1
+      '@babel/types': 7.19.0
 
   /@babel/traverse/7.18.11:
     resolution: {integrity: sha512-TG9PiM2R/cWCAy6BPJKeHzNbu4lPzOSZpeMfeNErskGpTJx6trEvFaVCbDvpcxwy49BKWmEPwiW8mrysNiDvIQ==}
@@ -6516,7 +6516,7 @@ packages:
       git-url-parse: 13.1.0
       inquirer: 9.1.2
       is-docker: 3.0.0
-      jiti: 1.14.0
+      jiti: 1.16.0
       mri: 1.2.0
       nanoid: 4.0.0
       node-fetch: 3.2.10
@@ -9446,8 +9446,8 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: true
 
-  /@types/vscode/1.69.0:
-    resolution: {integrity: sha512-RlzDAnGqUoo9wS6d4tthNyAdZLxOIddLiX3djMoWk29jFfSA1yJbIwr0epBYqqYarWB6s2Z+4VaZCQ80Jaa3kA==}
+  /@types/vscode/1.71.0:
+    resolution: {integrity: sha512-nB50bBC9H/x2CpwW9FzRRRDrTZ7G0/POttJojvN/LiVfzTGfLyQIje1L1QRMdFXK9G41k5UJN/1B9S4of7CSzA==}
     dev: true
 
   /@types/webpack-bundle-analyzer/3.9.3:
@@ -22668,10 +22668,6 @@ packages:
       lodash: 4.17.21
     dev: true
 
-  /node-fetch-native/0.1.4:
-    resolution: {integrity: sha512-10EKpOCQPXwZVFh3U1ptOMWBgKTbsN7Vvo6WVKt5pw4hp8zbv6ZVBZPlXw+5M6Tyi1oc1iD4/sNPd71KYA16tQ==}
-    dev: true
-
   /node-fetch-native/0.1.7:
     resolution: {integrity: sha512-hps7dFJM0IEF056JftDSSjWDAwW9v2clwHoUJiHyYgl+ojoqjKyWybljMlpTmlC1O+864qovNlRLyAIjRxu9Ag==}
     dev: true
@@ -29835,7 +29831,7 @@ packages:
     dependencies:
       defu: 6.1.0
       mime: 3.0.0
-      node-fetch-native: 0.1.4
+      node-fetch-native: 0.1.7
       pathe: 0.3.8
     dev: true
 
