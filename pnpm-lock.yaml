@@ -1213,6 +1213,12 @@ importers:
       consola: 2.15.3
       postcss: 8.4.16
 
+  smoke-test-apps/nuxt3-app:
+    specifiers:
+      nuxt3: latest
+    devDependencies:
+      nuxt3: 3.0.0-rc.12-27729267.0640a6c_rollup@2.79.0+vite@3.1.3
+
   smoke-test-apps/react-native-web-app:
     specifiers:
       "@babel/core": ^7
