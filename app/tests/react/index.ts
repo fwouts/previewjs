@@ -3,6 +3,7 @@ import { consoleTests } from "./console.spec";
 import { customPreviewTests } from "./custom-preview.spec";
 import { defaultExportTests } from "./default-export.spec";
 import { errorHandlingTests } from "./error-handling.spec";
+import { forwardedRefTests } from "./forwarded-ref.spec";
 import { propsEditorTests } from "./props-editor.spec";
 import { refreshingTests } from "./refreshing.spec";
 import { storybookTests } from "./storybook.spec";
@@ -14,6 +15,7 @@ export default [
   customPreviewTests,
   defaultExportTests,
   errorHandlingTests,
+  forwardedRefTests,
   propsEditorTests,
   refreshingTests,
   storybookTests,
