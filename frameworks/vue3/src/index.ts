@@ -11,7 +11,8 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version =
       (await dependencies["vue"]?.readInstalledVersion()) ||
-      (await dependencies["nuxt"]?.readInstalledVersion());
+      (await dependencies["nuxt"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt3"]?.readInstalledVersion());
     if (!version) {
       return false;
     }
