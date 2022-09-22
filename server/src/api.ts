@@ -34,15 +34,13 @@ export type DisposeWorkspaceResponse = Record<string, never>;
 export interface AnalyzeFileRequest {
   workspaceId: string;
   absoluteFilePath: string;
-  options?: {
-    offset?: number;
-  };
 }
 
 export interface AnalyzeFileResponse {
   components: Array<{
     componentName: string;
-    offset: number;
+    start: number;
+    end: number;
     componentId: string;
   }>;
 }

@@ -72,11 +72,6 @@ class DisposeWorkspaceResponse
 data class AnalyzeFileRequest(
     val workspaceId: String,
     val absoluteFilePath: String,
-    val options: AnalyzeFileOptions? = null
-)
-
-data class AnalyzeFileOptions(
-    val offset: Int?
 )
 
 data class AnalyzeFileResponse(
@@ -85,7 +80,8 @@ data class AnalyzeFileResponse(
 
 data class AnalyzedFileComponent(
     val componentName: String,
-    val offset: Int,
+    val start: Int,
+    val end: Int,
     val componentId: String,
 )
 

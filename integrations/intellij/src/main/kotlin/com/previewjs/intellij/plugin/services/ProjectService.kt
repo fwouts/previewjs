@@ -179,7 +179,7 @@ class ProjectService(private val project: Project) : Disposable {
                     val presentationFactory = PresentationFactory(editor)
                     val offsets = HashSet<Int>()
                     for (component in components) {
-                        offsets.add(component.offset)
+                        offsets.add(component.start)
                     }
                     val existingBlockByOffset = HashMap<Int, Inlay<*>>()
                     for (block in editor.inlayModel.getBlockElementsInRange(0, Int.MAX_VALUE)) {
@@ -190,10 +190,10 @@ class ProjectService(private val project: Project) : Disposable {
                         }
                     }
                     for (component in components) {
-                        val existingBlock = existingBlockByOffset[component.offset]
+                        val existingBlock = existingBlockByOffset[component.start]
                         if (existingBlock == null) {
                             editor.inlayModel.addBlockElement(
-                                component.offset,
+                                component.start,
                                 false,
                                 true,
                                 INLAY_PRIORITY,

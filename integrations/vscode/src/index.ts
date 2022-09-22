@@ -104,7 +104,7 @@ export async function activate(context: vscode.ExtensionContext) {
           absoluteFilePath: document.fileName,
         });
         return components.map((c) => {
-          const start = document.positionAt(c.offset + 2);
+          const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
           lens.command = {
             command: "previewjs.open",
@@ -182,11 +182,10 @@ export async function activate(context: vscode.ExtensionContext) {
           const { components } = await previewjsClient.analyzeFile({
             workspaceId,
             absoluteFilePath: document.fileName,
-            options: {
-              offset,
-            },
           });
-          const component = components[0];
+          const component =
+            components.find((c) => offset >= c.start && offset <= c.end) ||
+            components[0];
           if (!component) {
             vscode.window.showErrorMessage(
               `No component was found at offset ${offset}`

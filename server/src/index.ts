@@ -257,7 +257,7 @@ async function startServer({
 
   endpoint<AnalyzeFileRequest, AnalyzeFileResponse>(
     "/analyze/file",
-    async ({ workspaceId, absoluteFilePath, options }) => {
+    async ({ workspaceId, absoluteFilePath }) => {
       const workspace = workspaces[workspaceId];
       if (!workspace) {
         throw new NotFoundError();
@@ -269,24 +269,18 @@ async function startServer({
         )
       )
         .map((c) => {
-          return c.offsets
-            .filter(([start, end]) => {
-              if (options?.offset === undefined) {
-                return true;
-              }
-              return options.offset >= start && options.offset <= end;
-            })
-            .map(([start]) => ({
-              componentName: c.name,
-              offset: start,
-              componentId: previewjs.core.generateComponentId({
-                currentFilePath: path.relative(
-                  workspace.rootDirPath,
-                  c.absoluteFilePath
-                ),
-                name: c.name,
-              }),
-            }));
+          return c.offsets.map(([start, end]) => ({
+            componentName: c.name,
+            start,
+            end,
+            componentId: previewjs.core.generateComponentId({
+              currentFilePath: path.relative(
+                workspace.rootDirPath,
+                c.absoluteFilePath
+              ),
+              name: c.name,
+            }),
+          }));
         })
         .flat();
       return { components };
