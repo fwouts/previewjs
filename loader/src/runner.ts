@@ -76,6 +76,8 @@ export async function init(
             onReady: previewEnv.onReady?.bind(previewEnv),
           });
         });
+        // TODO: This is caching the absence of workspace.
+        // It's fine but we need to invalidate sometimes!
         workspace = workspaces[rootDirPath] = created
           ? {
               ...created,

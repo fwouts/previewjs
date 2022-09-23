@@ -224,6 +224,7 @@ async function startServer({
         logLevel: "info",
         absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
+      // TODO: Add logs. I want logs everywhere!
       if (!workspace) {
         return {
           workspaceId: null,

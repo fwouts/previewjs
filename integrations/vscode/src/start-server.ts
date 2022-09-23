@@ -1,4 +1,4 @@
-import { createClient } from "@previewjs/server/client";
+import { Client, createClient } from "@previewjs/server/client";
 import execa from "execa";
 import { openSync, readFileSync } from "fs";
 import path from "path";
@@ -6,20 +6,30 @@ import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
 import { SERVER_PORT } from "./port";
 
-export async function startPreviewJsServer(outputChannel: OutputChannel) {
+export async function startPreviewJsServer(
+  outputChannel: OutputChannel
+): Promise<Client | null> {
+  let useWsl = false;
+  outputChannel.appendLine(`$ node --version`);
   const nodeVersion = await execa("node", ["--version"], {
     shell: process.env.SHELL || true,
     cwd: __dirname,
     reject: false,
   });
-  let useWsl = false;
-  try {
-    try {
-      await checkNodeVersionResult(nodeVersion);
-    } catch (e) {
-      if (process.platform !== "win32") {
-        throw e;
-      }
+  if (nodeVersion.stderr) {
+    outputChannel.appendLine(nodeVersion.stderr);
+  }
+  if (nodeVersion.stdout) {
+    outputChannel.appendLine(nodeVersion.stdout);
+  }
+  const checkNodeVersion = checkNodeVersionResult(nodeVersion);
+  if (checkNodeVersion.kind === "valid") {
+    outputChannel.appendLine(`✅ Detected compatible NodeJS version`);
+  }
+  invalidNode: if (checkNodeVersion.kind === "invalid") {
+    // On Windows, try WSL as well.
+    if (process.platform === "win32") {
+      outputChannel.appendLine(`Attempting again with WSL...`);
       const nodeVersionWsl = await execa(
         "wsl",
         wslCommandArgs("node", ["--version"]),
@@ -28,27 +38,28 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
           reject: false,
         }
       );
-      try {
-        await checkNodeVersionResult(nodeVersionWsl);
+      if (checkNodeVersionResult(nodeVersionWsl).kind === "valid") {
+        outputChannel.appendLine(
+          `✅ Detected compatible NodeJS version in WSL`
+        );
+        // The right version of Node is available through WSL. No need to crash, perfect.
         useWsl = true;
-      } catch {
-        // Throw the original error.
-        throw e;
+        break invalidNode;
       }
+      // Show the original error.
+      outputChannel.appendLine(checkNodeVersion.message);
+      return null;
     }
-  } catch (e: any) {
-    if (e.message) {
-      outputChannel.appendLine(e.message);
-    }
-    throw e;
   }
   const logsPath = path.join(__dirname, "server.log");
   const logs = openSync(logsPath, "w");
-  outputChannel.appendLine(`Starting Preview.js server...`);
-  if (useWsl) {
-    outputChannel.appendLine(`Using NodeJS from WSL.`);
-  }
-  outputChannel.appendLine(`Streaming logs to: ${logsPath}`);
+  outputChannel.appendLine(
+    `🚀 Starting Preview.js server${useWsl ? " from WSL" : ""}...`
+  );
+  outputChannel.appendLine(`Streaming server logs to: ${logsPath}`);
+  outputChannel.appendLine(
+    `If you experience any issues, please include this log file in bug reports.`
+  );
   const serverProcess = execLongRunningCommand("node", ["server.js"], {
     cwd: __dirname,
     wsl: useWsl,
@@ -84,11 +95,14 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
     }
     client.info();
     await client.waitForReady();
-    outputChannel.appendLine(`Preview.js server ready.`);
+    outputChannel.appendLine(`✅ Preview.js server ready.`);
     serverProcess.unref();
-  } catch (e) {
+  } catch (e: any) {
+    if (e.stack) {
+      outputChannel.appendLine(e.stack);
+    }
     outputChannel.appendLine(
-      `Preview.js server failed to start. Please check logs above and report the issue: https://github.com/fwouts/previewjs/issues`
+      `❌ Preview.js server failed to start. Please check logs above and report the issue: https://github.com/fwouts/previewjs/issues`
     );
     await serverProcess;
     throw e;
@@ -100,24 +114,39 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
   return client;
 }
 
-function checkNodeVersionResult(result: execa.ExecaReturnValue<string>) {
+function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
+  | {
+      kind: "valid";
+    }
+  | {
+      kind: "invalid";
+      message: string;
+    } {
   if (result.failed || result.exitCode !== 0) {
-    throw new Error(
-      `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed.\n\nIs it installed? You may need to restart your IDE.`
-    );
+    return {
+      kind: "invalid",
+      message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed.\n\nIs it installed? You may need to restart your IDE.`,
+    };
   }
   const nodeVersion = result.stdout;
   const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
-  if (match) {
-    const majorVersion = parseInt(match[1]!, 10);
-    const minorVersion = parseInt(match[2]!, 10);
-    // Minimum version: 14.18.0.
-    if (majorVersion < 14 || (majorVersion === 14 && minorVersion < 18)) {
-      throw new Error(
-        `Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.`
-      );
-    }
+  const invalidVersion = {
+    kind: "invalid",
+    message: `Preview.js needs NodeJS 14.18.0+ to run.\n\nPlease upgrade then restart your IDE.`,
+  } as const;
+  if (!match) {
+    return invalidVersion;
   }
+  const majorVersion = parseInt(match[1]!, 10);
+  const minorVersion = parseInt(match[2]!, 10);
+  // Minimum version: 14.18.0.
+  if (majorVersion < 14 || (majorVersion === 14 && minorVersion < 18)) {
+    return invalidVersion;
+  }
+
+  return {
+    kind: "valid",
+  };
 }
 
 function execLongRunningCommand(

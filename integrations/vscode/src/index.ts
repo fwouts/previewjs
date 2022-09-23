@@ -38,12 +38,18 @@ export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
 
   const previewjsInitPromise = startPreviewJsServer(outputChannel)
-    .then((p) => (previewjsClientInitialized = p))
     .catch((e) => {
-      console.error(e);
-      outputChannel.show();
-      initializationFailed = true;
+      outputChannel.appendLine(e.stack);
       return null;
+    })
+    .then((p) => {
+      if (!p) {
+        outputChannel.appendLine("Preview.js server could not be started.");
+        outputChannel.show();
+        initializationFailed = true;
+        return null;
+      }
+      return (previewjsClientInitialized = p);
     });
 
   const config = vscode.workspace.getConfiguration();
@@ -82,6 +88,7 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   dispose = async () => {
+    // TODO: Ensure process killed if VS Code existing?
     await previewjsClientInitialized?.updateClientStatus({
       clientId,
       alive: false,
@@ -168,14 +175,23 @@ export async function activate(context: vscode.ExtensionContext) {
           document = editor?.document;
         }
         if (!document?.fileName) {
+          vscode.window.showErrorMessage(
+            "Unable to detect current document file name."
+          );
           return;
         }
         const workspaceId = await getWorkspaceId(document.fileName);
         if (!workspaceId) {
+          vscode.window.showErrorMessage(
+            `No compatible workspace detected from ${document.fileName}`
+          );
           return;
         }
         if (componentId === undefined) {
           if (!editor) {
+            vscode.window.showErrorMessage(
+              "Please position text cursor where a component is defined."
+            );
             return;
           }
           const offset = document.offsetAt(editor.selection.active);
