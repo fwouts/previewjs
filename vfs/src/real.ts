@@ -42,7 +42,7 @@ export class FsReader implements Reader {
 
   async read(absoluteFilePath: string): Promise<Entry | null> {
     const realPath = this.realPath(absoluteFilePath);
-    if (!(await fs.pathExists(realPath))) {
+    if (!realPath || !(await fs.pathExists(realPath))) {
       return null;
     }
     return this.readExisting(realPath);
@@ -50,7 +50,7 @@ export class FsReader implements Reader {
 
   readSync(absoluteFilePath: string): EntrySync | null {
     const realPath = this.realPath(absoluteFilePath);
-    if (!fs.pathExistsSync(realPath)) {
+    if (!realPath || !fs.pathExistsSync(realPath)) {
       return null;
     }
     return this.readExistingSync(realPath);
@@ -249,10 +249,15 @@ export class FsReader implements Reader {
   }
 
   private realPath(absoluteFilePath: string) {
-    return path.join(
-      this.options.mapping.from,
-      path.relative(this.options.mapping.to, absoluteFilePath)
+    const relativePath = path.relative(
+      this.options.mapping.to,
+      absoluteFilePath
     );
+    if (relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
+      // Disallow access outside of mapping.from.
+      return null;
+    }
+    return path.join(this.options.mapping.from, relativePath);
   }
 
   private mappedPath(absoluteFilePath: string) {
