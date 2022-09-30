@@ -201,13 +201,9 @@ export async function activate(context: vscode.ExtensionContext) {
           return;
         }
         if (componentId === undefined) {
-          if (!editor) {
-            vscode.window.showErrorMessage(
-              "Please position text cursor where a component is defined."
-            );
-            return;
-          }
-          const offset = document.offsetAt(editor.selection.active);
+          const offset = editor?.selection.active
+            ? document.offsetAt(editor.selection.active)
+            : 0;
           const { components } = await previewjsClient.analyzeFile({
             workspaceId,
             absoluteFilePath: document.fileName,
