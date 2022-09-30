@@ -186,11 +186,12 @@ export async function activate(context: vscode.ExtensionContext) {
         }
         const editor = vscode.window.activeTextEditor;
         if (!document) {
-          if (!editor?.document) {
+          if (editor?.document) {
+            document = editor.document;
+          } else {
             vscode.window.showErrorMessage("No document selected.");
             return;
           }
-          document = editor.document;
         }
         const workspaceId = await getWorkspaceId(previewjsClient, document);
         if (!workspaceId) {
