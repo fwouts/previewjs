@@ -114,6 +114,7 @@ export function virtualPlugin(options: {
                 await transformWithEsbuild(source, absoluteFilePath, {
                   loader: "tsx",
                   format: "esm",
+                  target: "es2020",
                   sourcefile: path.relative(rootDirPath, absoluteFilePath),
                   ...options.esbuildOptions,
                 })
