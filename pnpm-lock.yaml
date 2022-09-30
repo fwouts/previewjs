@@ -317,7 +317,7 @@ importers:
       commander: ^9.4.0
       fs-extra: ^10.1.0
       lodash: ^4.17.21
-      playwright: ^1.25.1
+      playwright: ^1.26.1
       ts-node: ^10.9.1
       unbuild: 0.8.11
     dependencies:
@@ -332,7 +332,7 @@ importers:
       commander: 9.4.0
       fs-extra: 10.1.0
       lodash: 4.17.21
-      playwright: 1.25.1
+      playwright: 1.26.1
       ts-node: 10.9.1_vxrnv5tlr43u5xabofdb6zoswy
     devDependencies:
       '@previewjs/iframe': link:../iframe
@@ -24290,19 +24290,19 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core/1.25.1:
-    resolution: {integrity: sha512-lSvPCmA2n7LawD2Hw7gSCLScZ+vYRkhU8xH0AapMyzwN+ojoDqhkH/KIEUxwNu2PjPoE/fcE0wLAksdOhJ2O5g==}
+  /playwright-core/1.26.1:
+    resolution: {integrity: sha512-hzFchhhxnEiPc4qVPs9q2ZR+5eKNifY2hQDHtg1HnTTUuphYCBP8ZRb2si+B1TR7BHirgXaPi48LIye5SgrLAA==}
     engines: {node: '>=14'}
     hasBin: true
     dev: false
 
-  /playwright/1.25.1:
-    resolution: {integrity: sha512-kOlW7mllnQ70ALTwAor73q/FhdH9EEXLUqjdzqioYLcSVC4n4NBfDqeCikGuayFZrLECLkU6Hcbziy/szqTXSA==}
+  /playwright/1.26.1:
+    resolution: {integrity: sha512-WQmEdCgYYe8jOEkhkW9QLcK0PB+w1RZztBLYIT10MEEsENYg251cU0IzebDINreQsUt+HCwwRhtdz4weH9ICcQ==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.25.1
+      playwright-core: 1.26.1
     dev: false
 
   /please-upgrade-node/3.2.0:
