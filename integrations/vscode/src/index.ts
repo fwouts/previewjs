@@ -53,6 +53,29 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const config = vscode.workspace.getConfiguration();
   let focusedOutputChannelForError = false;
+  const workspaceIds = new Set<string>();
+
+  async function getWorkspaceId(
+    previewjsClient: Client,
+    document: vscode.TextDocument
+  ) {
+    if (!path.isAbsolute(document.fileName)) {
+      return null;
+    }
+    const workspace = await previewjsClient.getWorkspace({
+      absoluteFilePath: document.fileName,
+    });
+    if (!workspace.workspaceId) {
+      return null;
+    }
+    if (!workspaceIds.has(workspace.workspaceId)) {
+      outputChannel.appendLine(
+        `✨ Created Preview.js workspace for: ${workspace.rootDirPath}`
+      );
+      workspaceIds.add(workspace.workspaceId);
+    }
+    return workspace.workspaceId;
+  }
 
   // Note: ESlint warning isn't relevant because we're correctly inferring arguments types.
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -84,29 +107,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   await openUsageOnFirstTimeStart(context);
 
-  const workspaceIds = new Set<string>();
-  async function getWorkspace(
-    previewjsClient: Client,
-    document: vscode.TextDocument
-  ) {
-    if (!path.isAbsolute(document.fileName)) {
-      return null;
-    }
-    const workspace = await previewjsClient.getWorkspace({
-      absoluteFilePath: document.fileName,
-    });
-    if (!workspace.workspaceId) {
-      return null;
-    }
-    if (!workspaceIds.has(workspace.workspaceId)) {
-      outputChannel.appendLine(
-        `✨ Created Preview.js workspace for: ${workspace.rootDirPath}`
-      );
-      workspaceIds.add(workspace.workspaceId);
-    }
-    return workspace.workspaceId;
-  }
-
   if (config.get("previewjs.codelens", true)) {
     vscode.languages.registerCodeLensProvider(codeLensLanguages, {
       provideCodeLenses: catchErrors(async (document: vscode.TextDocument) => {
@@ -114,7 +114,7 @@ export async function activate(context: vscode.ExtensionContext) {
         if (!previewjsClient) {
           return [];
         }
-        const workspaceId = await getWorkspace(previewjsClient, document);
+        const workspaceId = await getWorkspaceId(previewjsClient, document);
         if (!workspaceId) {
           return [];
         }
@@ -192,7 +192,7 @@ export async function activate(context: vscode.ExtensionContext) {
           }
           document = editor.document;
         }
-        const workspaceId = await getWorkspace(previewjsClient, document);
+        const workspaceId = await getWorkspaceId(previewjsClient, document);
         if (!workspaceId) {
           vscode.window.showErrorMessage(
             `No compatible workspace detected from ${document.fileName}`
