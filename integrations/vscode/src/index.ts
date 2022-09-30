@@ -38,27 +38,42 @@ export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
 
   const previewjsInitPromise = startPreviewJsServer(outputChannel)
-    .then((p) => (previewjsClientInitialized = p))
     .catch((e) => {
-      console.error(e);
-      outputChannel.show();
-      initializationFailed = true;
+      outputChannel.appendLine(e.stack);
       return null;
+    })
+    .then((p) => {
+      if (!p) {
+        outputChannel.appendLine("Preview.js server could not be started.");
+        outputChannel.show();
+        return null;
+      }
+      return p;
     });
 
   const config = vscode.workspace.getConfiguration();
-  let previewjsClientInitialized: Client | null = null;
-  let initializationFailed = false;
   let focusedOutputChannelForError = false;
+  const workspaceIds = new Set<string>();
 
-  async function getWorkspaceId(absoluteFilePath: string) {
-    const previewjsClient = await previewjsInitPromise;
-    if (!previewjsClient) {
+  async function getWorkspaceId(
+    previewjsClient: Client,
+    document: vscode.TextDocument
+  ) {
+    if (!path.isAbsolute(document.fileName)) {
       return null;
     }
     const workspace = await previewjsClient.getWorkspace({
-      absoluteFilePath,
+      absoluteFilePath: document.fileName,
     });
+    if (!workspace.workspaceId) {
+      return null;
+    }
+    if (!workspaceIds.has(workspace.workspaceId)) {
+      outputChannel.appendLine(
+        `✨ Created Preview.js workspace for: ${workspace.rootDirPath}`
+      );
+      workspaceIds.add(workspace.workspaceId);
+    }
     return workspace.workspaceId;
   }
 
@@ -82,7 +97,8 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   dispose = async () => {
-    await previewjsClientInitialized?.updateClientStatus({
+    const previewjsClient = await previewjsInitPromise;
+    await previewjsClient?.updateClientStatus({
       clientId,
       alive: false,
     });
@@ -94,11 +110,14 @@ export async function activate(context: vscode.ExtensionContext) {
   if (config.get("previewjs.codelens", true)) {
     vscode.languages.registerCodeLensProvider(codeLensLanguages, {
       provideCodeLenses: catchErrors(async (document: vscode.TextDocument) => {
-        const workspaceId = await getWorkspaceId(document.fileName);
-        if (!workspaceId || !previewjsClientInitialized) {
+        const previewjsClient = await previewjsInitPromise;
+        if (!previewjsClient) {
           return [];
         }
-        const previewjsClient = previewjsClientInitialized;
+        const workspaceId = await getWorkspaceId(previewjsClient, document);
+        if (!workspaceId) {
+          return [];
+        }
         const { components } = await previewjsClient.analyzeFile({
           workspaceId,
           absoluteFilePath: document.fileName,
@@ -118,28 +137,32 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   if (config.get("previewjs.livePreview", true)) {
-    vscode.workspace.onDidChangeTextDocument((e) => {
-      updateDocument(e.document);
+    vscode.workspace.onDidChangeTextDocument(async (e) => {
+      await updateDocument(e.document);
     });
-    vscode.workspace.onDidSaveTextDocument((e) => {
-      updateDocument(e, true);
+    vscode.workspace.onDidSaveTextDocument(async (e) => {
+      await updateDocument(e, true);
     });
-    vscode.window.onDidChangeActiveTextEditor((e) => {
+    vscode.window.onDidChangeActiveTextEditor(async (e) => {
       if (!e) {
         // Do nothing.
         return;
       }
-      updateDocument(e.document);
+      await updateDocument(e.document);
     });
-    function updateDocument(document: vscode.TextDocument, saved = false) {
+    async function updateDocument(
+      document: vscode.TextDocument,
+      saved = false
+    ) {
+      const previewjsClient = await previewjsInitPromise;
       if (
-        !previewjsClientInitialized ||
+        !previewjsClient ||
         !path.isAbsolute(document.fileName) ||
         !watchedExtensions.has(path.extname(document.fileName))
       ) {
         return;
       }
-      previewjsClientInitialized.updatePendingFile({
+      previewjsClient.updatePendingFile({
         absoluteFilePath: document.fileName,
         utf8Content: saved ? null : document.getText(),
       });
@@ -150,35 +173,37 @@ export async function activate(context: vscode.ExtensionContext) {
     "previewjs.open",
     catchErrors(
       async (document?: vscode.TextDocument, componentId?: string) => {
-        if (!previewjsClientInitialized) {
+        const previewjsClient = await previewjsInitPromise;
+        if (!previewjsClient) {
           vscode.window.showErrorMessage(
-            initializationFailed
-              ? "Preview.js was unable to start successfully. Please check Preview.js output panel or file a bug at https://github.com/fwouts/previewjs/issues."
-              : "Preview.js is not ready yet. Please check Preview.js output panel or file a bug at https://github.com/fwouts/previewjs/issues."
+            "Preview.js was unable to start successfully. Please check Preview.js output panel and consider filing a bug at https://github.com/fwouts/previewjs/issues."
           );
           return;
         }
-        const previewjsClient = previewjsClientInitialized;
         if (typeof componentId !== "string") {
           // If invoked from clicking the button, the value may be { groupId: 0 }.
           componentId = undefined;
         }
         const editor = vscode.window.activeTextEditor;
-        if (!document?.fileName) {
-          document = editor?.document;
+        if (!document) {
+          if (editor?.document) {
+            document = editor.document;
+          } else {
+            vscode.window.showErrorMessage("No document selected.");
+            return;
+          }
         }
-        if (!document?.fileName) {
-          return;
-        }
-        const workspaceId = await getWorkspaceId(document.fileName);
+        const workspaceId = await getWorkspaceId(previewjsClient, document);
         if (!workspaceId) {
+          vscode.window.showErrorMessage(
+            `No compatible workspace detected from ${document.fileName}`
+          );
           return;
         }
         if (componentId === undefined) {
-          if (!editor) {
-            return;
-          }
-          const offset = document.offsetAt(editor.selection.active);
+          const offset = editor?.selection.active
+            ? document.offsetAt(editor.selection.active)
+            : 0;
           const { components } = await previewjsClient.analyzeFile({
             workspaceId,
             absoluteFilePath: document.fileName,

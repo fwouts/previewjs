@@ -221,7 +221,10 @@ export async function createWorkspace({
 export function findWorkspaceRoot(absoluteFilePath: string): string | null {
   let dirPath = path.resolve(absoluteFilePath);
   while (dirPath !== path.dirname(dirPath)) {
-    if (fs.existsSync(path.join(dirPath, "package.json"))) {
+    if (
+      fs.existsSync(path.join(dirPath, "package.json")) &&
+      fs.existsSync(path.join(dirPath, "node_modules"))
+    ) {
       return dirPath;
     }
     dirPath = path.dirname(dirPath);
