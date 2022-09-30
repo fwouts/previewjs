@@ -21,9 +21,14 @@ export interface GetWorkspaceRequest {
   absoluteFilePath: string;
 }
 
-export interface GetWorkspaceResponse {
-  workspaceId: string | null;
-}
+export type GetWorkspaceResponse =
+  | {
+      workspaceId: null;
+    }
+  | {
+      workspaceId: string;
+      rootDirPath: string;
+    };
 
 export interface DisposeWorkspaceRequest {
   workspaceId: string;

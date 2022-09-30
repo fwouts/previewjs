@@ -29,8 +29,7 @@ async function load({
       variantKey,
     });
     const { refresh } = await import(
-      /* @vite-ignore */
-      `/preview${componentLoaderModuleId}`
+      /* @vite-ignore */ `/preview${componentLoaderModuleId}`
     );
     await refresh();
   } catch (error: any) {

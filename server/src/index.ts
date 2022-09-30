@@ -221,7 +221,6 @@ async function startServer({
     async (req) => {
       const workspace = await previewjs.getWorkspace({
         versionCode,
-        logLevel: "info",
         absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
       // TODO: Add logs. I want logs everywhere!
@@ -238,6 +237,7 @@ async function startServer({
       workspaces[workspaceId] = workspace;
       return {
         workspaceId,
+        rootDirPath: workspace.rootDirPath,
       };
     }
   );
