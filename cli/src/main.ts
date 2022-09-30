@@ -34,10 +34,16 @@ program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    const previewjs = await initializePreviewJs();
+    const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
+    if (!packageName) {
+      throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
+    }
+    const previewjs = await load({
+      installDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
+      packageName,
+    });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
-      logLevel: "info",
       absoluteFilePath: dirPath || process.cwd(),
       persistedStateManager: {
         get: async (_, req) => {
@@ -118,18 +124,6 @@ program
       await open(`http://localhost:${port}${pathSuffix}`);
     }
   });
-
-async function initializePreviewJs() {
-  const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
-  if (!packageName) {
-    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
-  }
-
-  return load({
-    installDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
-    packageName,
-  });
-}
 
 program.parseAsync(process.argv).catch((e) => {
   console.error(e);

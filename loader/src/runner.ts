@@ -1,7 +1,5 @@
 import type * as core from "@previewjs/core";
-import type * as vfs from "@previewjs/vfs";
 import { exclusivePromiseRunner } from "exclusive-promises";
-import type { LogLevel } from ".";
 import { loadModules } from "./modules";
 
 const locking = exclusivePromiseRunner();
@@ -12,19 +10,10 @@ export async function load(options: {
 }) {
   const { core, vfs, setupEnvironment, frameworkPluginFactories } =
     loadModules(options);
-  return init(core, vfs, setupEnvironment, frameworkPluginFactories);
-}
-
-export async function init(
-  coreModule: typeof core,
-  vfsModule: typeof vfs,
-  setupEnvironment: core.SetupPreviewEnvironment,
-  frameworkPluginFactories?: core.FrameworkPluginFactory[]
-) {
-  const memoryReader = vfsModule.createMemoryReader();
-  const reader = vfsModule.createStackedReader([
+  const memoryReader = vfs.createMemoryReader();
+  const reader = vfs.createStackedReader([
     memoryReader,
-    vfsModule.createFileSystemReader({
+    vfs.createFileSystemReader({
       watch: true,
     }),
   ]);
@@ -33,60 +22,69 @@ export async function init(
   } = {};
 
   return {
-    core: coreModule,
+    core,
     updateFileInMemory(absoluteFilePath: string, text: string | null) {
       memoryReader.updateFile(absoluteFilePath, text);
     },
     async getWorkspace({
       versionCode,
-      logLevel,
       absoluteFilePath,
       persistedStateManager,
     }: {
       versionCode: string;
-      logLevel: LogLevel;
       absoluteFilePath: string;
       persistedStateManager?: core.PersistedStateManager;
     }) {
-      const rootDirPath = coreModule.findWorkspaceRoot(absoluteFilePath);
+      const rootDirPath = core.findWorkspaceRoot(absoluteFilePath);
       if (!rootDirPath) {
+        console.warn(`No workspace root detected from ${absoluteFilePath}`);
         return null;
       }
-      let workspace = workspaces[rootDirPath];
-      if (workspace === undefined) {
-        const created = await locking(async () => {
-          const loaded = await coreModule.loadPreviewEnv({
-            rootDirPath,
-            setupEnvironment,
-            frameworkPluginFactories,
-          });
-          if (!loaded) {
-            return null;
-          }
-          const { previewEnv, frameworkPlugin } = loaded;
-          return await coreModule.createWorkspace({
-            versionCode,
-            logLevel,
-            rootDirPath,
-            reader,
-            frameworkPlugin,
-            middlewares: previewEnv.middlewares || [],
-            persistedStateManager:
-              persistedStateManager || previewEnv.persistedStateManager,
-            onReady: previewEnv.onReady?.bind(previewEnv),
-          });
-        });
-        workspace = workspaces[rootDirPath] = created
-          ? {
-              ...created,
-              dispose: async () => {
-                delete workspaces[rootDirPath];
-                await created.dispose();
-              },
-            }
-          : null;
+      const existingWorkspace = workspaces[rootDirPath];
+      if (existingWorkspace !== undefined) {
+        return existingWorkspace;
       }
-      return workspace;
+      const created = await locking(async () => {
+        const loaded = await core.loadPreviewEnv({
+          rootDirPath,
+          setupEnvironment,
+          frameworkPluginFactories,
+        });
+        if (!loaded) {
+          console.warn(
+            `No compatible Preview.js plugin for workspace: ${rootDirPath}`
+          );
+          return null;
+        }
+        const { previewEnv, frameworkPlugin } = loaded;
+        console.log(
+          `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDirPath}`
+        );
+        return await core.createWorkspace({
+          versionCode,
+          logLevel: "info",
+          rootDirPath,
+          reader,
+          frameworkPlugin,
+          middlewares: previewEnv.middlewares || [],
+          persistedStateManager:
+            persistedStateManager || previewEnv.persistedStateManager,
+          onReady: previewEnv.onReady?.bind(previewEnv),
+        });
+      });
+      // Note: This caches the incompatibility of a workspace (i.e. caching null), which
+      // would be problematic especially when package.json is updated to a compatible
+      // package version.
+      // TODO: Find a smarter approach, perhaps checking last-modified time of package.json and node_modules.
+      return (workspaces[rootDirPath] = created
+        ? {
+            ...created,
+            dispose: async () => {
+              delete workspaces[rootDirPath];
+              await created.dispose();
+            },
+          }
+        : null);
     },
     async dispose() {
       const promises: Array<Promise<void>> = [];
