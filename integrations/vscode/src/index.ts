@@ -176,7 +176,7 @@ export async function activate(context: vscode.ExtensionContext) {
         const previewjsClient = await previewjsInitPromise;
         if (!previewjsClient) {
           vscode.window.showErrorMessage(
-            "Preview.js was unable to start successfully. Please check Preview.js output panel or file a bug at https://github.com/fwouts/previewjs/issues."
+            "Preview.js was unable to start successfully. Please check Preview.js output panel and consider filing a bug at https://github.com/fwouts/previewjs/issues."
           );
           return;
         }
