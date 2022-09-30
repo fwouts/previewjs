@@ -171,7 +171,12 @@ export class ViteManager {
         if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
           return plugin;
         }
-        const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
+        // Note: this gets rid of the "pre" / "post" handler. It's probably fine.
+        // If not, it's easily fixed. PR welcome!
+        const handleHotUpdate =
+          typeof plugin.handleHotUpdate === "function"
+            ? plugin.handleHotUpdate
+            : plugin.handleHotUpdate.handler;
         return {
           ...plugin,
           handleHotUpdate: async (ctx: vite.HmrContext) => {
