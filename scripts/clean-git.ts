@@ -9,11 +9,20 @@ export async function assertCleanGit() {
   if (gitBranch !== "main") {
     throw new Error(`You are trying to release the wrong branch: ${gitBranch}`);
   }
+  const gitPorcelain = await gitPorcelainStatus();
+  if (gitPorcelain) {
+    throw new Error(`Git status is not clean:\n${gitPorcelain}`);
+  }
+}
+
+export async function isGitClean() {
+  return !(await gitPorcelainStatus());
+}
+
+async function gitPorcelainStatus() {
   const { stdout: gitPorcelain } = await execa("git", [
     "status",
     "--porcelain",
   ]);
-  if (gitPorcelain) {
-    throw new Error(`Git status is not clean:\n${gitPorcelain}`);
-  }
+  return gitPorcelain;
 }
