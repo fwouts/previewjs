@@ -37,27 +37,28 @@ export async function startPreviewJsServer(
     outputChannel.appendLine(`✅ Detected compatible NodeJS version`);
   }
   invalidNode: if (checkNodeVersion.kind === "invalid") {
+    outputChannel.appendLine(checkNodeVersion.message);
     if (!isWindows) {
       return null;
     }
     // On Windows, try WSL as well.
     outputChannel.appendLine(`Attempting again with WSL...`);
-    const nodeVersionWsl = await execa(
-      "wsl",
-      wslCommandArgs("node --version"),
-      {
-        cwd: __dirname,
-        reject: false,
-      }
+    const wslArgs = wslCommandArgs("node --version");
+    outputChannel.appendLine(
+      `$ wsl ${wslArgs.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")}`
     );
-    if (checkNodeVersionResult(nodeVersionWsl).kind === "valid") {
+    const nodeVersionWsl = await execa("wsl", wslArgs, {
+      cwd: __dirname,
+      reject: false,
+    });
+    const checkNodeVersionWsl = checkNodeVersionResult(nodeVersionWsl);
+    if (checkNodeVersionWsl.kind === "valid") {
       outputChannel.appendLine(`✅ Detected compatible NodeJS version in WSL`);
       // The right version of Node is available through WSL. No need to crash, perfect.
       useWsl = true;
       break invalidNode;
     }
-    // Show the original error.
-    outputChannel.appendLine(checkNodeVersion.message);
+    outputChannel.appendLine(checkNodeVersionWsl.message);
     return null;
   }
   const logsPath = path.join(__dirname, "server.log");
@@ -147,12 +148,14 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
       message: string;
     } {
   if (result.failed || result.exitCode !== 0) {
+    const withExitCode =
+      result.exitCode !== 0 ? ` with exit code ${result.exitCode}` : "";
     return {
       kind: "invalid",
-      message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed.\n\nIs it installed? You may need to restart your IDE.`,
+      message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed${withExitCode}.\n\nIs it installed? You may need to restart your IDE.\n`,
     };
   }
-  const nodeVersion = result.stdout;
+  const nodeVersion = result.stdout.split("\n").at(-1)!.trim();
   const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
   const invalidVersion = {
     kind: "invalid",
