@@ -103,6 +103,9 @@ async function main() {
   await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
     cwd: releaseDirPath,
   });
+  await execa("git", ["add", "."]);
+  await execa("git", ["commit", "-m", `release: update loader dependencies`]);
+  await execa("git", ["push", "origin", "main"]);
   const prompt = inquirer.createPromptModule();
   const { releaseCli } = await prompt({
     name: "releaseCli",
