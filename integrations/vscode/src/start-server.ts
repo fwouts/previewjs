@@ -9,15 +9,25 @@ import { SERVER_PORT } from "./port";
 export async function startPreviewJsServer(
   outputChannel: OutputChannel
 ): Promise<Client | null> {
+  const isWindows = process.platform === "win32";
   let useWsl = false;
-  outputChannel.appendLine(`$ node --version`);
-  const nodeVersion = await execa("node", ["--version"], {
-    shell: process.env.SHELL || true,
+  const nodeVersionCommand = "node --version";
+  outputChannel.appendLine(`$ ${nodeVersionCommand}`);
+  const [command, commandArgs] =
+    wrapCommandWithShellIfRequired(nodeVersionCommand);
+  const nodeVersion = await execa(command, commandArgs, {
     cwd: __dirname,
     reject: false,
   });
   if (nodeVersion.stderr) {
-    outputChannel.appendLine(nodeVersion.stderr);
+    // We expect to see (eval):1: can't change option: zle
+    // when dealing with zsh.
+    const error = nodeVersion.stderr
+      .replace("(eval):1: can't change option: zle", "")
+      .trim();
+    if (error) {
+      outputChannel.appendLine(error);
+    }
   }
   if (nodeVersion.stdout) {
     outputChannel.appendLine(nodeVersion.stdout);
@@ -27,29 +37,29 @@ export async function startPreviewJsServer(
     outputChannel.appendLine(`✅ Detected compatible NodeJS version`);
   }
   invalidNode: if (checkNodeVersion.kind === "invalid") {
-    // On Windows, try WSL as well.
-    if (process.platform === "win32") {
-      outputChannel.appendLine(`Attempting again with WSL...`);
-      const nodeVersionWsl = await execa(
-        "wsl",
-        wslCommandArgs("node", ["--version"]),
-        {
-          cwd: __dirname,
-          reject: false,
-        }
-      );
-      if (checkNodeVersionResult(nodeVersionWsl).kind === "valid") {
-        outputChannel.appendLine(
-          `✅ Detected compatible NodeJS version in WSL`
-        );
-        // The right version of Node is available through WSL. No need to crash, perfect.
-        useWsl = true;
-        break invalidNode;
-      }
-      // Show the original error.
-      outputChannel.appendLine(checkNodeVersion.message);
+    outputChannel.appendLine(checkNodeVersion.message);
+    if (!isWindows) {
       return null;
     }
+    // On Windows, try WSL as well.
+    outputChannel.appendLine(`Attempting again with WSL...`);
+    const wslArgs = wslCommandArgs("node --version");
+    outputChannel.appendLine(
+      `$ wsl ${wslArgs.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")}`
+    );
+    const nodeVersionWsl = await execa("wsl", wslArgs, {
+      cwd: __dirname,
+      reject: false,
+    });
+    const checkNodeVersionWsl = checkNodeVersionResult(nodeVersionWsl);
+    if (checkNodeVersionWsl.kind === "valid") {
+      outputChannel.appendLine(`✅ Detected compatible NodeJS version in WSL`);
+      // The right version of Node is available through WSL. No need to crash, perfect.
+      useWsl = true;
+      break invalidNode;
+    }
+    outputChannel.appendLine(checkNodeVersionWsl.message);
+    return null;
   }
   const logsPath = path.join(__dirname, "server.log");
   const logs = openSync(logsPath, "w");
@@ -60,11 +70,26 @@ export async function startPreviewJsServer(
   outputChannel.appendLine(
     `If you experience any issues, please include this log file in bug reports.`
   );
-  const serverProcess = execLongRunningCommand("node", ["server.js"], {
+  const nodeServerCommand = "node server.js";
+  const serverOptions = {
     cwd: __dirname,
-    wsl: useWsl,
     stdio: ["ignore", logs, logs],
-  });
+  } as const;
+  let serverProcess: execa.ExecaChildProcess<string>;
+  if (useWsl) {
+    serverProcess = execa(
+      "wsl",
+      wslCommandArgs(nodeServerCommand, true),
+      serverOptions
+    );
+  } else {
+    const [command, commandArgs] =
+      wrapCommandWithShellIfRequired(nodeServerCommand);
+    serverProcess = execa(command, commandArgs, {
+      ...serverOptions,
+      detached: true,
+    });
+  }
 
   const client = createClient(`http://localhost:${SERVER_PORT}`);
   try {
@@ -123,12 +148,14 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
       message: string;
     } {
   if (result.failed || result.exitCode !== 0) {
+    const withExitCode =
+      result.exitCode !== 0 ? ` with exit code ${result.exitCode}` : "";
     return {
       kind: "invalid",
-      message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed.\n\nIs it installed? You may need to restart your IDE.`,
+      message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed${withExitCode}.\n\nIs it installed? You may need to restart your IDE.\n`,
     };
   }
-  const nodeVersion = result.stdout;
+  const nodeVersion = result.stdout.split("\n").at(-1)!.trim();
   const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
   const invalidVersion = {
     kind: "invalid",
@@ -149,32 +176,16 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
   };
 }
 
-function execLongRunningCommand(
-  command: string,
-  commandArgs: string[],
-  { wsl, ...options }: execa.Options & { wsl: boolean }
-) {
-  return execa(
-    wsl ? "wsl" : command,
-    wsl ? wslCommandArgs(command, commandArgs, true) : commandArgs,
-    {
-      ...options,
-      ...(!wsl && {
-        shell: process.env.SHELL || true,
-        detached: true,
-      }),
-    }
-  );
+function wrapCommandWithShellIfRequired(command: string) {
+  const segments =
+    process.platform === "win32"
+      ? command.split(" ")
+      : // On Linux & Mac, run inside an interactive login shell to
+        // ensure NVM is set up properly.
+        [process.env.SHELL || "bash", "-lic", command];
+  return [segments[0]!, segments.slice(1)] as const;
 }
 
-function wslCommandArgs(
-  command: string,
-  commandArgs: string[],
-  longRunning = false
-) {
-  return [
-    "bash",
-    "-lic",
-    [command, ...commandArgs, ...(longRunning ? ["&"] : [])].join(" "),
-  ];
+function wslCommandArgs(command: string, longRunning = false) {
+  return ["bash", "-lic", longRunning ? `${command} &` : command];
 }
