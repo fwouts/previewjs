@@ -81,7 +81,7 @@ export class ViteManager {
     //
     // Useful when the project may contain some invalid files.
     const typeScriptConfigFilePaths = await recrawl({
-      only: ["tsconfig.json"],
+      only: ["jsconfig.json", "tsconfig.json"],
       skip: ["node_modules", ".git"],
     })(this.options.rootDirPath);
     const validTypeScriptFilePaths: string[] = [];
@@ -91,34 +91,36 @@ export class ViteManager {
         validTypeScriptFilePaths.push(configFilePath);
       } catch (e) {
         console.warn(
-          `Encountered an invalid tsconfig.json file, ignoring: ${configFilePath}`
+          `Encountered an invalid config file, ignoring: ${configFilePath}`
         );
       }
     }
     const tsInferredAlias: Record<string, string> = {};
-    if (typeScriptConfigFilePaths.includes("tsconfig.json")) {
-      // If there is a top-level tsconfig.json, use it to infer aliases.
-      // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-      const config = loadTsconfig("tsconfig.json");
-      if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
-        const { baseUrl, paths } = config.compilerOptions;
-        for (const [match, mapping] of Object.entries(paths)) {
-          const firstMapping = mapping[0];
-          if (!firstMapping) {
-            continue;
-          }
-          const matchNoWildcard = match.endsWith("/*")
-            ? match.slice(0, match.length - 2)
-            : match;
-          const firstMappingNoWildcard = firstMapping.endsWith("/*")
-            ? firstMapping.slice(0, firstMapping.length - 2)
-            : firstMapping;
-          tsInferredAlias[matchNoWildcard] = path.join(
-            this.options.rootDirPath,
-            baseUrl,
-            firstMappingNoWildcard
-          );
+    // If there is a top-level tsconfig.json, use it to infer aliases.
+    // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
+    const config = loadTsconfig(
+      typeScriptConfigFilePaths.includes("tsconfig.json")
+        ? "tsconfig.json"
+        : "jsconfig.json"
+    );
+    if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
+      const { baseUrl, paths } = config.compilerOptions;
+      for (const [match, mapping] of Object.entries(paths)) {
+        const firstMapping = mapping[0];
+        if (!firstMapping) {
+          continue;
         }
+        const matchNoWildcard = match.endsWith("/*")
+          ? match.slice(0, match.length - 2)
+          : match;
+        const firstMappingNoWildcard = firstMapping.endsWith("/*")
+          ? firstMapping.slice(0, firstMapping.length - 2)
+          : firstMapping;
+        tsInferredAlias[matchNoWildcard] = path.join(
+          this.options.rootDirPath,
+          baseUrl,
+          firstMappingNoWildcard
+        );
       }
     }
     const alias = {
