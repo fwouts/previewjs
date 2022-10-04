@@ -1,6 +1,7 @@
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
+import { existsSync, readFileSync } from "fs";
 import http from "http";
 import isWsl from "is-wsl";
 import net from "net";
@@ -112,6 +113,50 @@ async function startServer({
   const workspaces: Record<string, Workspace> = {};
   const previews: Record<string, Preview> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
+  let wslRoot: string | null = null;
+
+  function transformAbsoluteFilePath(absoluteFilePath: string) {
+    if (!isWsl) {
+      return absoluteFilePath;
+    }
+    if (absoluteFilePath.match(/^[a-z]:.*$/i)) {
+      if (!wslRoot) {
+        wslRoot = detectWslRoot();
+      }
+      // This is a Windows path, which needs to be converted to Linux format inside WSL.
+      return `${wslRoot}/${absoluteFilePath
+        .substring(0, 1)
+        .toLowerCase()}/${absoluteFilePath.substring(3).replace(/\\/g, "/")}`;
+    }
+    // This is already a Linux path.
+    return absoluteFilePath;
+  }
+
+  function detectWslRoot() {
+    const wslConfPath = "/etc/wsl.conf";
+    const defaultRoot = "/mnt";
+    try {
+      if (!existsSync(wslConfPath)) {
+        return defaultRoot;
+      }
+      const configText = readFileSync(wslConfPath, "utf8");
+      const match = configText.match(/root\s*=\s*(.*)/);
+      if (!match) {
+        return defaultRoot;
+      }
+      const detectedRoot = match[1]!.trim();
+      if (detectedRoot.endsWith("/")) {
+        return detectedRoot.substring(0, detectedRoot.length - 1);
+      } else {
+        return detectedRoot;
+      }
+    } catch (e) {
+      console.warn(
+        `Unable to read WSL config, assuming default root: ${defaultRoot}`
+      );
+      return defaultRoot;
+    }
+  }
 
   const app = http.createServer((req, res) => {
     if (!req.url) {
@@ -360,18 +405,4 @@ async function startServer({
       `Another Preview.js daemon server spun up concurrently on ${port}. All good.`
     );
   }
-}
-
-function transformAbsoluteFilePath(absoluteFilePath: string) {
-  if (!isWsl) {
-    return absoluteFilePath;
-  }
-  if (absoluteFilePath.match(/^[a-z]:.*$/i)) {
-    // This is a Windows path, which needs to be converted to Linux format inside WSL.
-    return `/mnt/${absoluteFilePath
-      .substring(0, 1)
-      .toLowerCase()}/${absoluteFilePath.substring(3).replace(/\\/g, "/")}`;
-  }
-  // This is already a Linux path.
-  return absoluteFilePath;
 }
