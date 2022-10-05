@@ -125,7 +125,7 @@ importers:
       '@types/react': 18.0.21
       assert-never: ^1.2.1
       autoprefixer: 10.4.12
-      axios: ^0.27.2
+      axios: ^1.0.0
       clsx: ^1.2.1
       framer-motion: ^7.5.2
       mobx: ^6.6.1
@@ -150,7 +150,7 @@ importers:
       '@previewjs/type-analyzer': link:../type-analyzer
       '@react-hook/window-size': 3.1.1_react@18.2.0
       assert-never: 1.2.1
-      axios: 0.27.2
+      axios: 1.0.0
       clsx: 1.2.1
       framer-motion: 7.5.2_biqbaboplfbrettd7655fr4n2y
       mobx: 6.6.1
@@ -12171,11 +12171,12 @@ packages:
     resolution: {integrity: sha512-32+ub6kkdhhWick/UjvEwRchgoetXqTK14INLqbGm5U2TzBkBNF3nQtLYm8ovxSkQWArjEQvftCKryjZaATu3w==}
     engines: {node: '>=4'}
 
-  /axios/0.27.2:
-    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+  /axios/1.0.0:
+    resolution: {integrity: sha512-SsHsGFN1qNPFT5QhSoSD37SHDfGyLSW5AESmyLk2JeCMHv5g0I9g0Hz/zQHx2KNe0jGXh2q2hAm7OdkXm360CA==}
     dependencies:
       follow-redirects: 1.15.1
       form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -25746,6 +25747,10 @@ packages:
     dependencies:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
+
+  /proxy-from-env/1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
 
   /prr/1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
