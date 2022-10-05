@@ -1037,6 +1037,33 @@ importers:
       postcss: 8.4.16
       tailwindcss: 3.1.8_postcss@8.4.16
 
+  smoke-test-apps/cra-tailwind-postcsscjs:
+    specifiers:
+      '@craco/craco': ^6
+      '@types/node': ^16
+      '@types/react': ^17
+      '@types/react-dom': ^17
+      autoprefixer: ^10
+      postcss: ^8
+      react: ^17
+      react-dom: ^17
+      react-scripts: ^4
+      tailwindcss: ^3
+      typescript: ^4
+    dependencies:
+      '@types/node': 16.11.52
+      '@types/react': 17.0.48
+      '@types/react-dom': 17.0.17
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-scripts: 4.0.3_iduftfu3cnil6g2433jd7zcz3e
+      typescript: 4.8.4
+    devDependencies:
+      '@craco/craco': 6.4.5_lgho7fgdbz4q6ncyrkzqqev27q
+      autoprefixer: 10.4.12_postcss@8.4.17
+      postcss: 8.4.17
+      tailwindcss: 3.1.8_postcss@8.4.17
+
   smoke-test-apps/cra-tailwind-postcssts:
     specifiers:
       '@craco/craco': ^6
