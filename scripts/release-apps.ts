@@ -3,7 +3,7 @@ import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
 import { previewjsProVersion } from "../loader/src/version";
-import { assertCleanGit } from "./clean-git";
+import { assertCleanGit, isGitClean } from "./clean-git";
 import { gitChangelog } from "./git-changelog";
 import { incrementVersion } from "./increment-version";
 import { getPackageJson } from "./package-json";
@@ -103,6 +103,11 @@ async function main() {
   await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
     cwd: releaseDirPath,
   });
+  await execa("git", ["add", "."]);
+  if (!(await isGitClean())) {
+    await execa("git", ["commit", "-m", `release: update loader dependencies`]);
+    await execa("git", ["push", "origin", "main"]);
+  }
   const prompt = inquirer.createPromptModule();
   const { releaseCli } = await prompt({
     name: "releaseCli",

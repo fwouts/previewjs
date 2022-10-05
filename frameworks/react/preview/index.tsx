@@ -11,6 +11,7 @@ export const load: RendererLoader = async ({
   componentModule,
   componentName,
 }) => {
+  const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     React.Fragment;
@@ -34,12 +35,13 @@ export const load: RendererLoader = async ({
       };
     }
   );
-  const RenderComponent =
-    ComponentOrStory.render ||
-    ComponentOrStory.component ||
-    componentModule.default?.render ||
-    componentModule.default?.component ||
-    ComponentOrStory;
+  const RenderComponent = isStoryModule
+    ? ComponentOrStory.render ||
+      ComponentOrStory.component ||
+      componentModule.default?.render ||
+      componentModule.default?.component ||
+      ComponentOrStory
+    : ComponentOrStory;
   const Renderer = (props) => {
     return (
       <Wrapper>

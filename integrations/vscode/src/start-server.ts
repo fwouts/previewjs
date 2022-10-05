@@ -1,4 +1,4 @@
-import { createClient } from "@previewjs/server/client";
+import { Client, createClient } from "@previewjs/server/client";
 import execa from "execa";
 import { openSync, readFileSync } from "fs";
 import path from "path";
@@ -6,54 +6,90 @@ import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
 import { SERVER_PORT } from "./port";
 
-export async function startPreviewJsServer(outputChannel: OutputChannel) {
-  const nodeVersion = await execa("node", ["--version"], {
-    shell: process.env.SHELL || true,
+export async function startPreviewJsServer(
+  outputChannel: OutputChannel
+): Promise<Client | null> {
+  const isWindows = process.platform === "win32";
+  let useWsl = false;
+  const nodeVersionCommand = "node --version";
+  outputChannel.appendLine(`$ ${nodeVersionCommand}`);
+  const [command, commandArgs] =
+    wrapCommandWithShellIfRequired(nodeVersionCommand);
+  const nodeVersion = await execa(command, commandArgs, {
     cwd: __dirname,
     reject: false,
   });
-  let useWsl = false;
-  try {
-    try {
-      await checkNodeVersionResult(nodeVersion);
-    } catch (e) {
-      if (process.platform !== "win32") {
-        throw e;
-      }
-      const nodeVersionWsl = await execa(
-        "wsl",
-        wslCommandArgs("node", ["--version"]),
-        {
-          cwd: __dirname,
-          reject: false,
-        }
-      );
-      try {
-        await checkNodeVersionResult(nodeVersionWsl);
-        useWsl = true;
-      } catch {
-        // Throw the original error.
-        throw e;
-      }
+  if (nodeVersion.stderr) {
+    // We expect to see (eval):1: can't change option: zle
+    // when dealing with zsh.
+    const error = nodeVersion.stderr
+      .replace("(eval):1: can't change option: zle", "")
+      .trim();
+    if (error) {
+      outputChannel.appendLine(error);
     }
-  } catch (e: any) {
-    if (e.message) {
-      outputChannel.appendLine(e.message);
+  }
+  if (nodeVersion.stdout) {
+    outputChannel.appendLine(nodeVersion.stdout);
+  }
+  const checkNodeVersion = checkNodeVersionResult(nodeVersion);
+  if (checkNodeVersion.kind === "valid") {
+    outputChannel.appendLine(`✅ Detected compatible NodeJS version`);
+  }
+  invalidNode: if (checkNodeVersion.kind === "invalid") {
+    outputChannel.appendLine(checkNodeVersion.message);
+    if (!isWindows) {
+      return null;
     }
-    throw e;
+    // On Windows, try WSL as well.
+    outputChannel.appendLine(`Attempting again with WSL...`);
+    const wslArgs = wslCommandArgs("node --version");
+    outputChannel.appendLine(
+      `$ wsl ${wslArgs.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")}`
+    );
+    const nodeVersionWsl = await execa("wsl", wslArgs, {
+      cwd: __dirname,
+      reject: false,
+    });
+    const checkNodeVersionWsl = checkNodeVersionResult(nodeVersionWsl);
+    if (checkNodeVersionWsl.kind === "valid") {
+      outputChannel.appendLine(`✅ Detected compatible NodeJS version in WSL`);
+      // The right version of Node is available through WSL. No need to crash, perfect.
+      useWsl = true;
+      break invalidNode;
+    }
+    outputChannel.appendLine(checkNodeVersionWsl.message);
+    return null;
   }
   const logsPath = path.join(__dirname, "server.log");
   const logs = openSync(logsPath, "w");
-  outputChannel.appendLine(`Starting Preview.js server...`);
-  if (useWsl) {
-    outputChannel.appendLine(`Using NodeJS from WSL.`);
-  }
-  outputChannel.appendLine(`Streaming logs to: ${logsPath}`);
-  const serverProcess = execLongRunningCommand("node", ["server.js"], {
+  outputChannel.appendLine(
+    `🚀 Starting Preview.js server${useWsl ? " from WSL" : ""}...`
+  );
+  outputChannel.appendLine(`Streaming server logs to: ${logsPath}`);
+  outputChannel.appendLine(
+    `If you experience any issues, please include this log file in bug reports.`
+  );
+  const nodeServerCommand = "node server.js";
+  const serverOptions = {
     cwd: __dirname,
-    wsl: useWsl,
     stdio: ["ignore", logs, logs],
-  });
+  } as const;
+  let serverProcess: execa.ExecaChildProcess<string>;
+  if (useWsl) {
+    serverProcess = execa(
+      "wsl",
+      wslCommandArgs(nodeServerCommand, true),
+      serverOptions
+    );
+  } else {
+    const [command, commandArgs] =
+      wrapCommandWithShellIfRequired(nodeServerCommand);
+    serverProcess = execa(command, commandArgs, {
+      ...serverOptions,
+      detached: true,
+    });
+  }
 
   const client = createClient(`http://localhost:${SERVER_PORT}`);
   try {
@@ -84,11 +120,14 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
     }
     client.info();
     await client.waitForReady();
-    outputChannel.appendLine(`Preview.js server ready.`);
+    outputChannel.appendLine(`✅ Preview.js server ready.`);
     serverProcess.unref();
-  } catch (e) {
+  } catch (e: any) {
+    if (e.stack) {
+      outputChannel.appendLine(e.stack);
+    }
     outputChannel.appendLine(
-      `Preview.js server failed to start. Please check logs above and report the issue: https://github.com/fwouts/previewjs/issues`
+      `❌ Preview.js server failed to start. Please check logs above and report the issue: https://github.com/fwouts/previewjs/issues`
     );
     await serverProcess;
     throw e;
@@ -100,52 +139,53 @@ export async function startPreviewJsServer(outputChannel: OutputChannel) {
   return client;
 }
 
-function checkNodeVersionResult(result: execa.ExecaReturnValue<string>) {
+function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
+  | {
+      kind: "valid";
+    }
+  | {
+      kind: "invalid";
+      message: string;
+    } {
   if (result.failed || result.exitCode !== 0) {
-    throw new Error(
-      `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed.\n\nIs it installed? You may need to restart your IDE.`
-    );
+    const withExitCode =
+      result.exitCode !== 0 ? ` with exit code ${result.exitCode}` : "";
+    return {
+      kind: "invalid",
+      message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed${withExitCode}.\n\nIs it installed? You may need to restart your IDE.\n`,
+    };
   }
-  const nodeVersion = result.stdout;
+  const nodeVersion = result.stdout.split("\n").at(-1)!.trim();
   const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
-  if (match) {
-    const majorVersion = parseInt(match[1]!, 10);
-    const minorVersion = parseInt(match[2]!, 10);
-    // Minimum version: 14.18.0.
-    if (majorVersion < 14 || (majorVersion === 14 && minorVersion < 18)) {
-      throw new Error(
-        `Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.`
-      );
-    }
+  const invalidVersion = {
+    kind: "invalid",
+    message: `Preview.js needs NodeJS 14.18.0+ to run.\n\nPlease upgrade then restart your IDE.`,
+  } as const;
+  if (!match) {
+    return invalidVersion;
   }
+  const majorVersion = parseInt(match[1]!, 10);
+  const minorVersion = parseInt(match[2]!, 10);
+  // Minimum version: 14.18.0.
+  if (majorVersion < 14 || (majorVersion === 14 && minorVersion < 18)) {
+    return invalidVersion;
+  }
+
+  return {
+    kind: "valid",
+  };
 }
 
-function execLongRunningCommand(
-  command: string,
-  commandArgs: string[],
-  { wsl, ...options }: execa.Options & { wsl: boolean }
-) {
-  return execa(
-    wsl ? "wsl" : command,
-    wsl ? wslCommandArgs(command, commandArgs, true) : commandArgs,
-    {
-      ...options,
-      ...(!wsl && {
-        shell: process.env.SHELL || true,
-        detached: true,
-      }),
-    }
-  );
+function wrapCommandWithShellIfRequired(command: string) {
+  const segments =
+    process.platform === "win32"
+      ? command.split(" ")
+      : // On Linux & Mac, run inside an interactive login shell to
+        // ensure NVM is set up properly.
+        [process.env.SHELL || "bash", "-lic", command];
+  return [segments[0]!, segments.slice(1)] as const;
 }
 
-function wslCommandArgs(
-  command: string,
-  commandArgs: string[],
-  longRunning = false
-) {
-  return [
-    "bash",
-    "-lic",
-    [command, ...commandArgs, ...(longRunning ? ["&"] : [])].join(" "),
-  ];
+function wslCommandArgs(command: string, longRunning = false) {
+  return ["bash", "-lic", longRunning ? `${command} &` : command];
 }

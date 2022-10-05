@@ -10,10 +10,7 @@ import { inferComponentNameFromVuePath } from "./infer-component-name";
 
 export function extractVueComponents(
   resolver: TypeResolver,
-  absoluteFilePath: string,
-  options: {
-    offset?: number;
-  } = {}
+  absoluteFilePath: string
 ): Component[] {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
@@ -22,14 +19,6 @@ export function extractVueComponents(
 
   const functions: Array<[string, ts.Statement, ts.Node]> = [];
   for (const statement of sourceFile.statements) {
-    if (options.offset !== undefined) {
-      if (
-        options.offset < statement.getFullStart() ||
-        options.offset > statement.getEnd()
-      ) {
-        continue;
-      }
-    }
     if (ts.isExportAssignment(statement)) {
       if (ts.isIdentifier(statement.expression)) {
         // Avoid duplicates.

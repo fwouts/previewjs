@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/cli",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
@@ -23,19 +23,20 @@
     "dev:community": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app ts-node-dev --respawn src/main.ts",
     "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
   },
-  "dependencies": {},
   "devDependencies": {
     "@previewjs/api": "workspace:*",
     "@previewjs/loader": "workspace:*",
     "@types/node": "17.0.8",
     "chalk": "^4.1.2",
-    "commander": "^9.4.0",
+    "commander": "^9.4.1",
     "cross-env": "7.0.3",
-    "esbuild": "0.15.5",
+    "esbuild": "0.15.10",
+    "inquirer": "^8.2.4",
+    "inquirer-autocomplete-prompt": "^2.0.0",
     "open": "^8.4.0",
     "rimraf": "3.0.2",
     "ts-node-dev": "2.0.0",
-    "typescript": "4.8.2"
+    "typescript": "4.8.4"
   },
   "engines": {
     "node": "^14.18.0 || >=16.0.0"

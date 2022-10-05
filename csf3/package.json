@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/csf3",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -30,13 +30,13 @@
     "test": "vitest --no-threads"
   },
   "dependencies": {
-    "@previewjs/core": "^7.0.0",
-    "@previewjs/type-analyzer": "^4.0.3",
-    "typescript": "^4.8.2"
+    "@previewjs/core": "^7.1.0",
+    "@previewjs/type-analyzer": "^4.0.4",
+    "typescript": "^4.8.4"
   },
   "devDependencies": {
     "@previewjs/vfs": "workspace:*",
-    "unbuild": "0.8.10",
-    "vitest": "0.22.0"
+    "unbuild": "0.8.11",
+    "vitest": "0.23.4"
   }
 }

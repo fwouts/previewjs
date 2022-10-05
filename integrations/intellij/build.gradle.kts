@@ -7,9 +7,9 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    id("org.jetbrains.kotlin.jvm") version "1.7.20"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.8.1"
+    id("org.jetbrains.intellij") version "1.9.0"
     // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
@@ -25,8 +25,8 @@ repositories {
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
-    implementation("com.squareup.moshi:moshi:1.13.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
+    implementation("com.squareup.moshi:moshi:1.14.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 

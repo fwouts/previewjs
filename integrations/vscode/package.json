@@ -1,6 +1,6 @@
 {
   "name": "previewjs",
-  "version": "1.13.0",
+  "version": "1.14.2",
   "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
@@ -30,7 +30,7 @@
     "Visualization"
   ],
   "engines": {
-    "vscode": "^1.69.0"
+    "vscode": "^1.71.2"
   },
   "activationEvents": [
     "onLanguage:javascript",
@@ -87,22 +87,22 @@
   "main": "./dist/index.js",
   "scripts": {
     "vscode:prepublish": "pnpm build",
-    "build": "rimraf dist previewjs-1.13.0.vsix && tsc && node esbuild.js && cp -rL ../../loader/src/release/node_modules dist/node_modules",
+    "build": "rimraf dist previewjs-1.14.2.vsix && tsc && node esbuild.js && cp -rL ../../loader/src/release/node_modules dist/node_modules",
     "prod": "cross-env PREVIEWJS_DEV=0 pnpm vsce package --no-dependencies && pnpm dev:install",
     "dev": "cross-env PREVIEWJS_DEV=1 pnpm vsce package --no-dependencies && pnpm dev:install",
     "dev:community": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm dev",
-    "dev:install": "code --install-extension previewjs-1.13.0.vsix --force"
+    "dev:install": "code --install-extension previewjs-1.14.2.vsix --force"
   },
   "devDependencies": {
     "@previewjs/server": "workspace:*",
-    "@types/vscode": "1.69.0",
+    "@types/vscode": "1.71.0",
     "cross-env": "7.0.3",
-    "esbuild": "0.15.5",
+    "esbuild": "0.15.10",
     "exclusive-promises": "^1.0.3",
     "execa": "5.1.1",
     "ovsx": "0.5.1",
     "rimraf": "3.0.2",
-    "typescript": "4.8.2",
+    "typescript": "4.8.4",
     "vsce": "2.11.0"
   }
 }
