@@ -102,14 +102,20 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "log-message":
         listener(data);
         break;
-      case "renderer-updated":
-        this.clearExpectRenderTimeout();
+      case "rendering-setup":
         listener({
-          kind: "update",
-          rendering: {
+          kind: "rendering-setup",
+          info: {
             variantKey: data.variantKey,
             variants: data.variants,
           },
+        });
+        break;
+      case "rendering-success":
+        this.clearExpectRenderTimeout();
+        listener({
+          kind: "rendering-done",
+          success: true,
         });
         break;
       case "rendering-error":
@@ -120,6 +126,10 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           timestamp: Date.now(),
           message: data.message,
         });
+        listener({
+          kind: "rendering-done",
+          success: false,
+        });
         break;
       case "vite-error":
         listener({
@@ -127,12 +137,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           level: "error",
           timestamp: Date.now(),
           message: generateMessageFromViteError(data.payload.err),
-        });
-        break;
-      case "vite-before-update":
-        listener({
-          kind: "update",
-          rendering: null,
         });
         break;
     }
@@ -193,7 +197,8 @@ function generateMessageFromViteError(err: ErrorPayload["err"]) {
 export type PreviewEvent =
   | PreviewBootstrapped
   | BeforeRender
-  | PreviewUpdate
+  | RenderingSetup
+  | RenderingDone
   | Action
   | LogMessage;
 
@@ -205,13 +210,18 @@ export type BeforeRender = {
   kind: "before-render";
 };
 
-export type PreviewUpdate = {
-  kind: "update";
-  rendering: {
+export type RenderingSetup = {
+  kind: "rendering-setup";
+  info: {
     variantKey: string;
     variants: Variant[];
-  } | null;
+  };
 };
+
+export interface RenderingDone {
+  kind: "rendering-done";
+  success: boolean;
+}
 
 export interface Action {
   kind: "action";

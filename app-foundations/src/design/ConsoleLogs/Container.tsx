@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 
 export const Container = (props: {
   children: React.ReactNode[];
-  onClear(): void;
+  onClear?(): void;
 }) => {
   const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -24,7 +24,7 @@ export const Container = (props: {
       >
         {props.children}
       </div>
-      {props.children.length > 0 && (
+      {props.children.length > 0 && props.onClear && (
         <button
           id="clear-console-button"
           className="p-2 text-gray-400 border-t-2 border-gray-100 hover:text-gray-600"

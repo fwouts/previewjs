@@ -62,7 +62,7 @@ export async function updateComponent({
         `);
     }
     sendMessageFromPreview({
-      kind: "renderer-updated",
+      kind: "rendering-setup",
       filePath: componentFilePath,
       componentName,
       variantKey: variant.key,
@@ -77,6 +77,9 @@ export async function updateComponent({
       []
     );
     await render(props);
+    sendMessageFromPreview({
+      kind: "rendering-success",
+    });
   } catch (error: any) {
     sendMessageFromPreview({
       kind: "rendering-error",

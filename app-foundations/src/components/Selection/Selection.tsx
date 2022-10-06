@@ -25,7 +25,10 @@ export const Selection = observer(
           key="component"
           icon={icon}
           label={state.component.name}
-          loading={!state.component.details?.variants}
+          loading={
+            !state.component.details ||
+            state.component.details.renderingAlwaysFailing === null
+          }
           buttons={
             state.component.details?.variants?.filter(
               (v) => !v.isEditorDriven

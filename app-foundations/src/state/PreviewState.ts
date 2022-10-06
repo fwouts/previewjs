@@ -65,6 +65,16 @@ export class PreviewState {
        * Null while the list of variants hasn't yet been loaded (this may only happen at runtime).
        */
       variants: Variant[] | null;
+
+      /**
+       * Whether or not rendering failed on every render.
+       *
+       * Used to show a fullscreen error for components that never render successfully, instead
+       * of a loading screen with logs panel hidden by default.
+       *
+       * Null when rendering hasn't finished yet.
+       */
+      renderingAlwaysFailing: boolean | null;
     } | null;
   } | null = null;
   appInfo: ResponseOf<typeof localEndpoints.GetInfo>["appInfo"] | null = null;
@@ -96,14 +106,21 @@ export class PreviewState {
           }
           switch (event.kind) {
             case "bootstrapped":
+              this.consoleLogs.onClear();
+              break;
             case "before-render":
               this.consoleLogs.onClear();
               break;
-            case "update":
+            case "rendering-setup":
               this.consoleLogs.onClear();
-              if (event.rendering) {
-                this.component.variantKey = event.rendering.variantKey;
-                this.component.details.variants = event.rendering.variants;
+              this.component.variantKey = event.info.variantKey;
+              this.component.details.variants = event.info.variants;
+              break;
+            case "rendering-done":
+              if (this.component.details.renderingAlwaysFailing === null) {
+                this.component.details.renderingAlwaysFailing = !event.success;
+              } else if (event.success) {
+                this.component.details.renderingAlwaysFailing = false;
               }
               break;
             case "log-message":
@@ -294,6 +311,7 @@ export class PreviewState {
           filePath,
           variants: null,
           props,
+          renderingAlwaysFailing: null,
         },
       };
     });
