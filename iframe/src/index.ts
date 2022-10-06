@@ -107,7 +107,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         listener({
           kind: "update",
           rendering: {
-            kind: "success",
             variantKey: data.variantKey,
             variants: data.variants,
           },
@@ -208,17 +207,10 @@ export type BeforeRender = {
 
 export type PreviewUpdate = {
   kind: "update";
-  rendering:
-    | {
-        kind: "error";
-        error: string;
-      }
-    | {
-        kind: "success";
-        variantKey: string;
-        variants: Variant[];
-      }
-    | null;
+  rendering: {
+    variantKey: string;
+    variants: Variant[];
+  } | null;
 };
 
 export interface Action {
