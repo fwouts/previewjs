@@ -13,7 +13,7 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
-import { analyzeProject, ProjectAnalysis } from "./analyze-project";
+import { analyzeProject } from "./analyze-project";
 import {
   LocalFilePersistedStateManager,
   PersistedStateManager,
@@ -21,7 +21,6 @@ import {
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter, RegisterEndpoint } from "./router";
-export type { ProjectAnalysis } from "./analyze-project";
 export { generateComponentId } from "./component-id";
 export type { PersistedStateManager } from "./persisted-state";
 export type {
@@ -135,6 +134,9 @@ export async function createWorkspace({
       };
     }
   );
+  router.registerEndpoint(localEndpoints.AnalyzeProject, (options) =>
+    analyzeProject(workspace, options)
+  );
   const previewer = new Previewer({
     reader,
     rootDirPath,
@@ -196,11 +198,6 @@ export async function createWorkspace({
         };
       },
     },
-    components: {
-      list: (options) => {
-        return analyzeProject(workspace, options);
-      },
-    },
     dispose: async () => {
       typeAnalyzer.dispose();
     },
@@ -239,9 +236,6 @@ export interface Workspace {
   frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
-  };
-  components: {
-    list(options?: { forceRefresh?: boolean }): Promise<ProjectAnalysis>;
   };
   dispose(): Promise<void>;
 }
