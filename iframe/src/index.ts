@@ -139,6 +139,11 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           message: generateMessageFromViteError(data.payload.err),
         });
         break;
+      case "vite-before-update":
+        listener({
+          kind: "before-vite-update",
+        });
+        break;
     }
   };
 
@@ -196,6 +201,7 @@ function generateMessageFromViteError(err: ErrorPayload["err"]) {
 
 export type PreviewEvent =
   | PreviewBootstrapped
+  | BeforeViteUpdate
   | BeforeRender
   | RenderingSetup
   | RenderingDone
@@ -204,6 +210,10 @@ export type PreviewEvent =
 
 export type PreviewBootstrapped = {
   kind: "bootstrapped";
+};
+
+export type BeforeViteUpdate = {
+  kind: "before-vite-update";
 };
 
 export type BeforeRender = {

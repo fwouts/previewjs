@@ -106,13 +106,11 @@ export class PreviewState {
           }
           switch (event.kind) {
             case "bootstrapped":
-              this.consoleLogs.onClear();
-              break;
+            case "before-vite-update":
             case "before-render":
               this.consoleLogs.onClear();
               break;
             case "rendering-setup":
-              this.consoleLogs.onClear();
               this.component.variantKey = event.info.variantKey;
               this.component.details.variants = event.info.variants;
               break;
