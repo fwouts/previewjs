@@ -206,7 +206,13 @@ export const Preview = observer(
               Please select a component to preview.
             </div>
           )}
-          <TabbedPanel defaultTabKey="props" tabs={tabs} height={panelHeight} />
+          {tabs.length > 0 && (
+            <TabbedPanel
+              defaultTabKey="props"
+              tabs={tabs}
+              height={panelHeight}
+            />
+          )}
           {footer}
         </div>
       </div>
