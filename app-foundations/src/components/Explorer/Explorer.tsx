@@ -50,7 +50,7 @@ export const Explorer = ({ state }: { state: PreviewState }) => {
               {display.map(([segment, indent], j) => (
                 <div
                   key={filePath + "-" + segment}
-                  className="px-2 py-1 whitespace-pre truncate font-normal font-mono text-sm bg-gray-400"
+                  className="px-2 py-1 whitespace-pre truncate font-normal text-sm bg-gray-400"
                   style={{ paddingLeft: indent + 0.5 + "rem" }}
                   title={newFilePath.slice(0, i + j + 1).join("/")}
                 >
@@ -58,7 +58,7 @@ export const Explorer = ({ state }: { state: PreviewState }) => {
                 </div>
               ))}
               <div className="bg-white shadow-md rounded-lg border border-gray-200 m-2 p-2">
-                <div className="whitespace-pre truncate font-medium font-mono text-sm mb-2">
+                <div className="whitespace-pre truncate font-medium text-sm mb-2">
                   {fileName}
                 </div>
                 <div className="flex flex-row flex-wrap gap-2">
