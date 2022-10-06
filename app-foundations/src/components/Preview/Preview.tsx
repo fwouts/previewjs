@@ -4,8 +4,6 @@ import {
   faCode,
   faExternalLink,
   faSpinner,
-  faSquare,
-  faSquareCheck,
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,7 +16,7 @@ import {
 import { useWindowHeight } from "@react-hook/window-size";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { FilePath } from "../../design/FilePath";
 import { Header } from "../../design/Header";
 import { Link } from "../../design/Link";
@@ -53,7 +51,6 @@ export const Preview = observer(
     viewport: React.ReactNode;
   }) => {
     const panelHeight = useWindowHeight() * 0.3;
-    const [showComponents, setShowComponents] = useState(false);
 
     if (!state.reachable) {
       return (
@@ -136,27 +133,12 @@ export const Preview = observer(
         <div className="w-1/4 bg-gray-600 flex flex-col h-screen overflow-auto">
           {state.project ? (
             <>
-              <div className="sticky top-0 bg-gray-600 bg-opacity-40 filter backdrop-blur">
-                <button
-                  className="flex flex-row items-center gap-2 bg-gray-900 hover:bg-gray-800 text-gray-100 rounded-md m-2 p-2 select-none"
-                  onClick={() => setShowComponents(!showComponents)}
-                >
-                  <FontAwesomeIcon
-                    className="text-lg text-white"
-                    icon={showComponents ? faSquareCheck : faSquare}
-                    fixedWidth
-                  />
-                  <div>Show components</div>
-                </button>
-              </div>
               {(() => {
                 let currentFilePath: string[] = [];
                 return Object.entries(state.project.components).map(
                   ([filePath, components]) => {
                     const filteredComponents = components.filter(
-                      (c) =>
-                        c.info.kind === "story" ||
-                        (showComponents && c.info.exported)
+                      (c) => c.info.kind === "story" || c.info.exported
                     );
                     if (filteredComponents.length === 0) {
                       return null;
