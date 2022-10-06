@@ -23,6 +23,8 @@ export class PreviewState {
   readonly updateBanner: UpdateBannerState;
   reachable = true;
 
+  project: localEndpoints.AnalyzeProjectResponse | null = null;
+
   component: {
     /**
      * ID of the component, comprising of a file path and local component ID.
@@ -126,6 +128,7 @@ export class PreviewState {
       iframeRef: observable.ref,
       pingInterval: observable.ref,
       appInfo: observable.ref,
+      project: observable.ref,
     });
   }
 
@@ -150,6 +153,9 @@ export class PreviewState {
     });
     await this.persistedStateController.start();
     await this.updateBanner.start(appInfo);
+    this.project = await this.localApi.request(localEndpoints.AnalyzeProject, {
+      forceRefresh: false,
+    });
   }
 
   stop() {

@@ -5,11 +5,7 @@ import { load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
-import { prompt, registerPrompt } from "inquirer";
-import autocompletePrompt from "inquirer-autocomplete-prompt";
 import open from "open";
-
-registerPrompt("autocomplete", autocompletePrompt);
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -26,9 +22,6 @@ const PORT_OPTION = [
 interface SharedOptions {
   port: string;
 }
-
-const noComponentOption = chalk.blueBright("Skip component selection");
-const forceRefreshOption = chalk.magenta("Refresh component list");
 
 program
   .arguments("[dir-path]")
@@ -77,52 +70,8 @@ program
     }
 
     const port = parseInt(options.port);
-    await promptComponent();
-
-    async function promptComponent(forceRefresh = false): Promise<void> {
-      console.log(`Analyzing project for components...`);
-      const { components } = await workspace!.components.list({
-        forceRefresh,
-      });
-      const allComponents = Object.entries(components)
-        .map(([filePath, fileComponents]) =>
-          fileComponents.map((component) => ({
-            filePath,
-            component,
-          }))
-        )
-        .flat()
-        .filter(
-          ({ component }) =>
-            component.info.kind === "story" || component.info.exported
-        );
-      const { componentId } = await prompt([
-        {
-          type: "autocomplete",
-          name: "componentId",
-          message: "Select a component",
-          source: (_: unknown, input = "") => [
-            ...(!input ? [noComponentOption, forceRefreshOption] : []),
-            ...allComponents
-              .filter(
-                ({ filePath, component }) =>
-                  filePath.toLowerCase().includes(input.toLowerCase()) ||
-                  component.name.toLowerCase().includes(input.toLowerCase())
-              )
-              .map(
-                ({ filePath, component }) => `${filePath}:${component.name}`
-              ),
-          ],
-        },
-      ]);
-      if (componentId === forceRefreshOption) {
-        return promptComponent(true);
-      }
-      await workspace!.preview.start(async () => port);
-      const pathSuffix =
-        componentId === noComponentOption ? "" : `/?p=${componentId}`;
-      await open(`http://localhost:${port}${pathSuffix}`);
-    }
+    await workspace!.preview.start(async () => port);
+    await open(`http://localhost:${port}`);
   });
 
 program.parseAsync(process.argv).catch((e) => {
