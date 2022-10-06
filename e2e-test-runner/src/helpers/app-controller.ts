@@ -37,7 +37,9 @@ export class AppController {
     let iframe: playwright.ElementHandle<Element> | null = null;
     let frame: playwright.Frame | null = null;
     while (!frame) {
-      iframe = await this.page.waitForSelector("iframe");
+      iframe = await this.page.waitForSelector("iframe", {
+        state: "attached",
+      });
       if (iframe) {
         frame = await iframe.contentFrame();
       }

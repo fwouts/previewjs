@@ -115,13 +115,15 @@ export const Preview = observer(
         }
       }
 
-      tabs.push({
-        label: "Console",
-        key: "console",
-        icon: faTerminal,
-        notificationCount: state.consoleLogs.unreadCount,
-        panel: <ConsolePanel state={state.consoleLogs} />,
-      });
+      if (state.component?.details?.renderingAlwaysFailing !== true) {
+        tabs.push({
+          label: "Console",
+          key: "console",
+          icon: faTerminal,
+          notificationCount: state.consoleLogs.unreadCount,
+          panel: <ConsolePanel state={state.consoleLogs} />,
+        });
+      }
     }
 
     if (panelTabs) {
@@ -188,7 +190,20 @@ export const Preview = observer(
           </Header>
           <UpdateBanner state={state.updateBanner} />
           {state.component ? (
-            viewport
+            <>
+              <div
+                className={
+                  state.component.details?.renderingAlwaysFailing
+                    ? "hidden"
+                    : "flex-grow flex flex-col"
+                }
+              >
+                {viewport}
+              </div>
+              {state.component.details?.renderingAlwaysFailing && (
+                <FailedRendering state={state} />
+              )}
+            </>
           ) : (
             <div
               id="no-selection"
@@ -197,12 +212,86 @@ export const Preview = observer(
               Please select a component to preview.
             </div>
           )}
-          <TabbedPanel defaultTabKey="props" tabs={tabs} height={panelHeight} />
+          {tabs.length > 0 && (
+            <TabbedPanel
+              defaultTabKey="props"
+              tabs={tabs}
+              height={panelHeight}
+            />
+          )}
           {footer}
         </div>
       </div>
     );
   }
+);
+
+const FailedRendering = ({ state }: { state: PreviewState }) => (
+  <div className="flex-grow overflow-auto">
+    <div className="flex flex-col">
+      <h2 className="m-2 text-red-500 font-bold self-start rounded-lg text-sm">
+        Unable to render <code>{state.component?.name}</code>
+      </h2>
+      <p className="mx-2 text-sm">
+        While Preview.js can work out of the box for simple components, you may
+        need a custom configuration to render components that depend on:
+      </p>
+      <ul className="mx-2 text-sm list-disc list-inside leading-6">
+        <li>
+          a specific state or context (see{" "}
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/wrapper"
+          >
+            Wrapping components
+          </Link>
+          )
+        </li>
+        <li>
+          modules imported via{" "}
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/aliases"
+          >
+            aliases
+          </Link>
+        </li>
+        <li>
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/static-assets"
+          >
+            static assets
+          </Link>{" "}
+          or{" "}
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/svgr"
+          >
+            SVGR
+          </Link>
+        </li>
+      </ul>
+      <p className="mx-2 mt-2 text-sm">Please see the logs below:</p>
+      <div className="m-2 rounded-lg overflow-auto shadow-inner border-2 border-red-200">
+        <ConsolePanel state={state.consoleLogs} disallowClear />
+      </div>
+      <p className="m-2 text-sm">
+        If you get stuck, do not hesitate to ask for help on{" "}
+        <Link className="underline" href="https://discord.previewjs.com">
+          Discord
+        </Link>{" "}
+        or{" "}
+        <Link
+          className="underline"
+          href="https://github.com/fwouts/previewjs/issues"
+        >
+          GitHub
+        </Link>
+        !
+      </p>
+    </div>
+  </div>
 );
 
 type PropsPanelProps = {
