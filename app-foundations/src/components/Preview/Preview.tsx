@@ -130,8 +130,8 @@ export const Preview = observer(
 
     return (
       <div className="flex flex-row flex-grow min-h-0">
-        {"a" && ( // TODO: IF CLI
-          <div className="w-1/4 bg-gray-600 flex flex-col h-screen overflow-auto">
+        {state.appInfo?.platform === "cli" && (
+          <div className="w-64 lg:w-80 flex-shrink-0 bg-gray-600 h-screen overflow-auto">
             <Explorer state={state} />
           </div>
         )}
