@@ -190,14 +190,20 @@ export const Preview = observer(
           </Header>
           <UpdateBanner state={state.updateBanner} />
           {state.component ? (
-            state.component.details?.renderingAlwaysFailing ? (
-              <>
-                <div className="hidden">{viewport}</div>
+            <>
+              <div
+                className={
+                  state.component.details?.renderingAlwaysFailing
+                    ? "hidden"
+                    : "flex-grow flex flex-col"
+                }
+              >
+                {viewport}
+              </div>
+              {state.component.details?.renderingAlwaysFailing && (
                 <FailedRendering state={state} />
-              </>
-            ) : (
-              <div className="flex-grow flex flex-col">{viewport}</div>
-            )
+              )}
+            </>
           ) : (
             <div
               id="no-selection"
