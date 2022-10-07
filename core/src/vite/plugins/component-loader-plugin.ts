@@ -91,6 +91,9 @@ export async function refresh() {
     componentModule,
     componentFilePath: ${JSON.stringify(filePath)},
     componentName: ${JSON.stringify(componentName)},
+    updateId: ${JSON.stringify(filePath)} + "-" + ${JSON.stringify(
+    componentName
+  )} + counter,
     loadingError,
     load,
   })
