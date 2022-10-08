@@ -1,10 +1,11 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
+import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
 import type { PreviewState } from "../../state/PreviewState";
 
-export const Explorer = ({ state }: { state: PreviewState }) => {
+export const Explorer = observer(({ state }: { state: PreviewState }) => {
   if (!state.project) {
     return (
       <div className="flex h-full items-center justify-center">
@@ -88,4 +89,4 @@ export const Explorer = ({ state }: { state: PreviewState }) => {
       )}
     </>
   );
-};
+});
