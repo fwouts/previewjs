@@ -385,7 +385,7 @@ export const errorHandlingTests = testSuite(
           );
           await expectErrors(controller, [
             "Error: Expected error",
-            "Consider adding an error boundary",
+            "React will try to recreate this component tree from scratch using the error boundary you provided",
             ...(version === 18 ? ["Error: Expected error"] : []),
           ]);
           await appDir.update(
