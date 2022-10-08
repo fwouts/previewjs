@@ -2,6 +2,7 @@ import type { RendererLoader } from "@previewjs/iframe";
 import React from "react";
 // @ts-ignore Vite is fine with this
 import { version } from "react/package.json";
+import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
 const moduleName = parseInt(version) >= 18 ? "./render-18" : "./render-16";
 
@@ -10,6 +11,7 @@ export const load: RendererLoader = async ({
   wrapperName,
   componentModule,
   componentName,
+  updateId,
 }) => {
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
@@ -44,18 +46,20 @@ export const load: RendererLoader = async ({
     : ComponentOrStory;
   const Renderer = (props) => {
     return (
-      <Wrapper>
-        {decorators.reduce(
-          (component, decorator) => () => decorator(component),
-          () => (
-            <RenderComponent
-              {...componentModule.default?.args}
-              {...ComponentOrStory.args}
-              {...props}
-            />
-          )
-        )()}
-      </Wrapper>
+      <ErrorBoundary key={updateId} updateId={updateId}>
+        <Wrapper>
+          {decorators.reduce(
+            (component, decorator) => () => decorator(component),
+            () => (
+              <RenderComponent
+                {...componentModule.default?.args}
+                {...ComponentOrStory.args}
+                {...props}
+              />
+            )
+          )()}
+        </Wrapper>
+      </ErrorBoundary>
     );
   };
   return {
@@ -63,6 +67,10 @@ export const load: RendererLoader = async ({
     render: async (props) => {
       const { render } = await import(/* @vite-ignore */ moduleName);
       await render(Renderer, props);
+      const errorBoundary = await expectErrorBoundary(updateId);
+      if (errorBoundary.state.error) {
+        throw errorBoundary.state.error;
+      }
     },
   };
 };

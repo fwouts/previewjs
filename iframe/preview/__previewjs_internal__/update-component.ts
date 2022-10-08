@@ -8,6 +8,7 @@ export async function updateComponent({
   componentModule,
   componentFilePath,
   componentName,
+  updateId,
   loadingError,
   load,
 }: {
@@ -16,6 +17,7 @@ export async function updateComponent({
   componentModule: any;
   componentFilePath: string;
   componentName: string;
+  updateId: string;
   loadingError: string | null;
   load: RendererLoader;
 }) {
@@ -40,6 +42,7 @@ export async function updateComponent({
       componentFilePath,
       componentModule,
       componentName,
+      updateId,
     });
     variants.push({
       key: "custom",
@@ -83,7 +86,7 @@ export async function updateComponent({
   } catch (error: any) {
     sendMessageFromPreview({
       kind: "rendering-error",
-      message: error.stack || error.message,
+      message: error.stack || error.message || "Unknown error",
     });
   }
 }

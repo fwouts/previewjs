@@ -260,6 +260,7 @@ export type RendererLoader = (options: {
   componentFilePath: string;
   componentModule: any;
   componentName?: string;
+  updateId: string;
 }) => Promise<{
   variants: Array<
     Variant & {
