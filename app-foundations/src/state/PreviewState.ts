@@ -168,8 +168,11 @@ export class PreviewState {
     });
     await this.persistedStateController.start();
     await this.updateBanner.start(appInfo);
-    this.project = await this.localApi.request(localEndpoints.AnalyzeProject, {
+    const project = await this.localApi.request(localEndpoints.AnalyzeProject, {
       forceRefresh: false,
+    });
+    runInAction(() => {
+      this.project = project;
     });
   }
 
