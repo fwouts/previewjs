@@ -66,6 +66,9 @@ async function analyzeProjectCore(
   changedAbsoluteFilePaths: string[]
 ): Promise<ProjectComponents> {
   const components: ProjectComponents = {};
+  if (changedAbsoluteFilePaths.length === 0) {
+    return components;
+  }
   const found = await workspace.frameworkPlugin.detectComponents(
     workspace.typeAnalyzer,
     changedAbsoluteFilePaths
