@@ -152,6 +152,8 @@ export class AppController {
 
   noSelection = this.element("#no-selection");
 
+  fullscreenRenderingError = this.element("#fullscreen-rendering-error");
+
   appError = this.element("#app-error");
 
   component = {

@@ -101,7 +101,13 @@ function Foo() {
             }
           );
           const expectedErrors = errors[i];
-          await expectErrors(controller, expectedErrors || []);
+          await expectErrors(
+            controller,
+            {
+              fullscreen: false,
+            },
+            expectedErrors || []
+          );
         }
       }
     );

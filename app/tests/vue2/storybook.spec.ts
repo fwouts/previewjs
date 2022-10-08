@@ -350,7 +350,13 @@ export const Primary = () => ({
           search: "Primary",
           replace: "Renamed",
         });
-        await expectErrors(controller, [`Error: No component named 'Primary'`]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [`Error: No component named 'Primary'`]
+        );
       }
     );
   }

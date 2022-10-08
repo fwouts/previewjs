@@ -3,6 +3,9 @@ import { expect } from "./expect";
 
 export async function expectErrors(
   controller: AppController,
+  options: {
+    fullscreen: boolean;
+  },
   expectedErrors: Array<string | string[]>
 ) {
   await controller.waitForIdle();
@@ -18,8 +21,14 @@ export async function expectErrors(
     await consoleTab.click();
   }
   if (expectedErrors.length === 0) {
+    expect(await controller.fullscreenRenderingError.waitUntilGone());
     expect(await controller.console.items.count()).toEqual(0);
   } else {
+    if (options.fullscreen) {
+      expect(await controller.fullscreenRenderingError.waitUntilVisible());
+    } else {
+      expect(await controller.fullscreenRenderingError.waitUntilGone());
+    }
     const itemCount = await controller.console.items.count();
     const actualErrors: string[] = [];
     for (let i = 0; i < itemCount; i++) {
