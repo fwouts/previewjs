@@ -174,7 +174,7 @@ export const errorHandlingTests = testSuite(
         await expectErrors(
           controller,
           {
-            fullscreen: false,
+            fullscreen: true,
           },
           [
             `Failed to resolve import "/src/AppMissing.vue"`,

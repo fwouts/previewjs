@@ -90,7 +90,7 @@ export const errorHandlingTests = testSuite(
           await expectErrors(
             controller,
             {
-              fullscreen: false,
+              fullscreen: true,
             },
             [
               `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
@@ -202,7 +202,7 @@ export const errorHandlingTests = testSuite(
           await expectErrors(
             controller,
             {
-              fullscreen: false,
+              fullscreen: true,
             },
             [
               `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
@@ -304,7 +304,7 @@ export const errorHandlingTests = testSuite(
           await expectErrors(
             controller,
             {
-              fullscreen: false,
+              fullscreen: true,
             },
             ["Failed to fetch dynamically imported module"]
           );
@@ -623,7 +623,7 @@ export const errorHandlingTests = testSuite(
           await expectErrors(
             controller,
             {
-              fullscreen: false,
+              fullscreen: true,
             },
             [
               `Failed to resolve import "/src/App-missing.tsx"`,
@@ -669,7 +669,7 @@ export const errorHandlingTests = testSuite(
           await expectErrors(
             controller,
             {
-              fullscreen: false,
+              fullscreen: true,
             },
             [`Error: No component named 'App'`]
           );
