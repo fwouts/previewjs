@@ -18,10 +18,16 @@ export const errorHandlingTests = testSuite(
           search: /<p>/g,
           replace: "<p",
         });
-        await expectErrors(controller, [
-          `src${path.sep}App.tsx: Unexpected token`,
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `src${path.sep}App.tsx: Unexpected token`,
+            "Failed to reload /src/App.tsx.",
+          ]
+        );
         // The component should still be shown.
         await previewIframe.waitForSelector(".App-logo");
       }
@@ -44,10 +50,16 @@ export const errorHandlingTests = testSuite(
           search: /<p>/g,
           replace: "<p",
         });
-        await expectErrors(controller, [
-          `src${path.sep}App.tsx: Unexpected token`,
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `src${path.sep}App.tsx: Unexpected token`,
+            "Failed to reload /src/App.tsx.",
+          ]
+        );
         // The component should still be shown.
         await previewIframe.waitForSelector(".App-logo");
       }
@@ -74,10 +86,16 @@ export const errorHandlingTests = testSuite(
         );
         await controller.show("src/App.tsx:App");
         const previewIframe = await controller.previewIframe();
-        await expectErrors(controller, [
-          `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
-          "Failed to fetch dynamically imported module",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: true,
+          },
+          [
+            `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
+            "Failed to fetch dynamically imported module",
+          ]
+        );
         await appDir.update(
           "src/App.tsx",
           {
@@ -92,7 +110,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -118,10 +142,16 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, [
-          `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
+            "Failed to reload /src/App.tsx.",
+          ]
+        );
         await appDir.update(
           "src/App.tsx",
           {
@@ -136,7 +166,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -162,10 +198,16 @@ export const errorHandlingTests = testSuite(
         );
         await controller.show("src/App.tsx:App");
         const previewIframe = await controller.previewIframe();
-        await expectErrors(controller, [
-          `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
-          "Failed to fetch dynamically imported module",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: true,
+          },
+          [
+            `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
+            "Failed to fetch dynamically imported module",
+          ]
+        );
         await appDir.update(
           "src/App.tsx",
           {
@@ -180,7 +222,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -206,10 +254,16 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, [
-          `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
+            "Failed to reload /src/App.tsx.",
+          ]
+        );
         await appDir.update(
           "src/App.tsx",
           {
@@ -224,7 +278,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -240,15 +300,25 @@ export const errorHandlingTests = testSuite(
         });
         await controller.show("src/App.tsx:App");
         const previewIframe = await controller.previewIframe();
-        await expectErrors(controller, [
-          "Failed to fetch dynamically imported module",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: true,
+          },
+          ["Failed to fetch dynamically imported module"]
+        );
         await appDir.update("src/App.tsx", {
           kind: "edit",
           search: "App-missing.css",
           replace: "App.css",
         });
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector(".App-logo");
       }
     );
@@ -265,13 +335,25 @@ export const errorHandlingTests = testSuite(
           search: "App.css",
           replace: "App-missing.css",
         });
-        await expectErrors(controller, ["Failed to reload /src/App.tsx."]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          ["Failed to reload /src/App.tsx."]
+        );
         await appDir.update("src/App.tsx", {
           kind: "edit",
           search: "App-missing.css",
           replace: "App.css",
         });
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector(".App-logo");
       }
     );
@@ -295,10 +377,16 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, [
-          `src${path.sep}App.tsx: Unexpected token`,
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `src${path.sep}App.tsx: Unexpected token`,
+            "Failed to reload /src/App.tsx.",
+          ]
+        );
         await appDir.update(
           "src/App.tsx",
           {
@@ -311,7 +399,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -337,10 +431,16 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, [
-          `src${path.sep}App.tsx: Unexpected token, expected "jsxTagEnd"`,
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `src${path.sep}App.tsx: Unexpected token, expected "jsxTagEnd"`,
+            "Failed to reload /src/App.tsx.",
+          ]
+        );
         await appDir.update(
           "src/App.tsx",
           {
@@ -355,7 +455,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -382,7 +488,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, ["Error: Expected error"]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          ["Error: Expected error"]
+        );
         await appDir.update(
           "src/App.tsx",
           {
@@ -395,7 +507,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -421,10 +539,16 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, [
-          ["Expected error", "src/Dependency.tsx"],
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            ["Expected error", "src/Dependency.tsx"],
+            "Failed to reload /src/App.tsx.",
+          ]
+        );
         await appDir.update(
           "src/Dependency.tsx",
           {
@@ -437,7 +561,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#recovered");
       }
     );
@@ -455,13 +585,25 @@ export const errorHandlingTests = testSuite(
           replace: " BROKEN",
         });
         // We don't expect to see any errors for pure CSS.
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await appDir.update("src/App.css", {
           kind: "edit",
           search: " BROKEN",
           replace: " {",
         });
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
       }
     );
 
@@ -472,10 +614,16 @@ export const errorHandlingTests = testSuite(
         await controller.show("src/App-missing.tsx:App", {
           expectMissing: true,
         });
-        await expectErrors(controller, [
-          `Failed to resolve import "/src/App-missing.tsx"`,
-          "Failed to fetch dynamically imported module",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: true,
+          },
+          [
+            `Failed to resolve import "/src/App-missing.tsx"`,
+            "Failed to fetch dynamically imported module",
+          ]
+        );
       }
     );
 
@@ -487,9 +635,15 @@ export const errorHandlingTests = testSuite(
         const previewIframe = await controller.previewIframe();
         await previewIframe.waitForSelector(".App-logo");
         await appDir.rename("src/App.tsx", "src/App-renamed.tsx");
-        await expectErrors(controller, [
-          `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`,
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.`,
+          ]
+        );
       }
     );
 
@@ -509,7 +663,7 @@ export const errorHandlingTests = testSuite(
     //       await controller.show("src/App.tsx:App", {
     //         expectMissing: true,
     //       });
-    //       await expectErrors(controller, [`Error: No component named 'App'`]);
+    //       await expectErrors(controller, { fullscreen: true }, [`Error: No component named 'App'`]);
     //     }
     //   );
 
@@ -525,7 +679,13 @@ export const errorHandlingTests = testSuite(
           text: `
 export const App2 = () => <div>Hello, World!</div>;`,
         });
-        await expectErrors(controller, [`Error: No component named 'App'`]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [`Error: No component named 'App'`]
+        );
       }
     );
 

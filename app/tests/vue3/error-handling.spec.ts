@@ -19,10 +19,16 @@ export const errorHandlingTests = testSuite(
           search: /<img .*\/>/g,
           replace: "<img",
         });
-        await expectErrors(controller, [
-          `Attribute name cannot contain U+0022 ("), U+0027 ('), and U+003C (<)`,
-          "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `Attribute name cannot contain U+0022 ("), U+0027 ('), and U+003C (<)`,
+            "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
+          ]
+        );
         // The component should still be shown.
         await previewIframe.waitForSelector(".logo");
       }
@@ -45,10 +51,16 @@ export const errorHandlingTests = testSuite(
           search: /<img .*\/>/g,
           replace: "<img",
         });
-        await expectErrors(controller, [
-          `Attribute name cannot contain U+0022 ("), U+0027 ('), and U+003C (<)`,
-          "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `Attribute name cannot contain U+0022 ("), U+0027 ('), and U+003C (<)`,
+            "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
+          ]
+        );
         // The component should still be shown.
         await previewIframe.waitForSelector(".logo");
       }
@@ -73,9 +85,15 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, [
-          "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
+          ]
+        );
         await previewIframe.waitForSelector(".logo");
         await previewIframe.waitForSelector(".hello");
         await appDir.update(
@@ -101,7 +119,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector(".logo");
         await previewIframe.waitForSelector(".greetings");
       }
@@ -119,18 +143,30 @@ export const errorHandlingTests = testSuite(
           search: "#app {",
           replace: " BROKEN",
         });
-        await expectErrors(controller, [
-          `${path
-            .join(appDir.rootPath, "src/App.vue")
-            .replace(/\\/g, "/")}:3:3: Unknown word`,
-          " Failed to reload /src/App.vue?vue&type=style&index=0&lang.css. This could be due to syntax errors or importing non-existent modules.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `${path
+              .join(appDir.rootPath, "src/App.vue")
+              .replace(/\\/g, "/")}:3:3: Unknown word`,
+            " Failed to reload /src/App.vue?vue&type=style&index=0&lang.css. This could be due to syntax errors or importing non-existent modules.",
+          ]
+        );
         await appDir.update("src/App.vue", {
           kind: "edit",
           search: " BROKEN",
           replace: "#app {",
         });
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
       }
     );
 
@@ -141,10 +177,16 @@ export const errorHandlingTests = testSuite(
         await controller.show("src/AppMissing.vue:AppMissing", {
           expectMissing: true,
         });
-        await expectErrors(controller, [
-          `Failed to resolve import "/src/AppMissing.vue"`,
-          "Failed to fetch dynamically imported module",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: true,
+          },
+          [
+            `Failed to resolve import "/src/AppMissing.vue"`,
+            "Failed to fetch dynamically imported module",
+          ]
+        );
       }
     );
 
@@ -156,11 +198,17 @@ export const errorHandlingTests = testSuite(
         const previewIframe = await controller.previewIframe();
         await previewIframe.waitForSelector(".logo");
         await appDir.rename("src/App.vue", "src/App-renamed.vue");
-        await expectErrors(controller, [
-          "ENOENT: no such file or directory, open '/src/App.vue'",
-          "Failed to reload /src/App.vue",
-          "Failed to reload /src/App.vue",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            "ENOENT: no such file or directory, open '/src/App.vue'",
+            "Failed to reload /src/App.vue",
+            "Failed to reload /src/App.vue",
+          ]
+        );
       }
     );
   }

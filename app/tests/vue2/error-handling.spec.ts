@@ -19,7 +19,13 @@ export const errorHandlingTests = testSuite(
           replace: "<img",
         });
         // We don't expect to see any errors.
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("img", { state: "hidden" });
         // The rest of the component should still be shown.
         await previewIframe.waitForSelector("#app");
@@ -44,7 +50,13 @@ export const errorHandlingTests = testSuite(
           replace: "<img",
         });
         // We don't expect to see any errors.
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("img", { state: "hidden" });
         // The rest of the component should still be shown.
         await previewIframe.waitForSelector("#app");
@@ -70,9 +82,15 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, [
-          "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
+          ]
+        );
         await previewIframe.waitForSelector("#app");
         await previewIframe.waitForSelector(".hello");
         await appDir.update(
@@ -98,7 +116,13 @@ export const errorHandlingTests = testSuite(
             inMemoryOnly: true,
           }
         );
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
         await previewIframe.waitForSelector("#app");
         await previewIframe.waitForSelector(".greetings");
       }
@@ -116,15 +140,27 @@ export const errorHandlingTests = testSuite(
           search: "#app {",
           replace: " BROKEN",
         });
-        await expectErrors(controller, [
-          `Failed to reload /src/App.vue?vue&type=style&index=0&lang.css. This could be due to syntax errors or importing non-existent modules.`,
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            `Failed to reload /src/App.vue?vue&type=style&index=0&lang.css. This could be due to syntax errors or importing non-existent modules.`,
+          ]
+        );
         await appDir.update("src/App.vue", {
           kind: "edit",
           search: " BROKEN",
           replace: "#app {",
         });
-        await expectErrors(controller, []);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          []
+        );
       }
     );
 
@@ -135,10 +171,16 @@ export const errorHandlingTests = testSuite(
         await controller.show("src/AppMissing.vue:AppMissing", {
           expectMissing: true,
         });
-        await expectErrors(controller, [
-          `Failed to resolve import "/src/AppMissing.vue"`,
-          "Failed to fetch dynamically imported module",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: true,
+          },
+          [
+            `Failed to resolve import "/src/AppMissing.vue"`,
+            "Failed to fetch dynamically imported module",
+          ]
+        );
       }
     );
 
@@ -150,12 +192,18 @@ export const errorHandlingTests = testSuite(
         const previewIframe = await controller.previewIframe();
         await previewIframe.waitForSelector("#app");
         await appDir.rename("src/App.vue", "src/App-renamed.vue");
-        await expectErrors(controller, [
-          // TODO: Consider replacing error message.
-          `/src/App.vue has no corresponding SFC entry in the cache. This is a vite-plugin-vue2 internal error, please open an issue`,
-          "Failed to reload /src/App.vue",
-          "Failed to reload /src/App.vue",
-        ]);
+        await expectErrors(
+          controller,
+          {
+            fullscreen: false,
+          },
+          [
+            // TODO: Consider replacing error message.
+            `/src/App.vue has no corresponding SFC entry in the cache. This is a vite-plugin-vue2 internal error, please open an issue`,
+            "Failed to reload /src/App.vue",
+            "Failed to reload /src/App.vue",
+          ]
+        );
       }
     );
   }

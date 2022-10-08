@@ -227,7 +227,7 @@ export const Preview = observer(
 );
 
 const FailedRendering = ({ state }: { state: PreviewState }) => (
-  <div className="flex-grow overflow-auto">
+  <div className="flex-grow overflow-auto" id="fullscreen-rendering-error">
     <div className="flex flex-col">
       <h2 className="m-2 text-red-500 font-bold self-start rounded-lg text-sm">
         Unable to render <code>{state.component?.name}</code>
