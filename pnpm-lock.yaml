@@ -48,7 +48,7 @@ importers:
 
   api:
     specifiers:
-      '@previewjs/type-analyzer': ^4.0.4
+      '@previewjs/type-analyzer': ^4.0.5
       unbuild: 0.8.11
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -117,10 +117,10 @@ importers:
       '@fortawesome/free-solid-svg-icons': ^6.2.0
       '@fortawesome/react-fontawesome': ^0.2.0
       '@monaco-editor/react': ^4.4.6
-      '@previewjs/api': ^3.0.1
-      '@previewjs/iframe': ^1.1.8
-      '@previewjs/serializable-values': ^3.0.4
-      '@previewjs/type-analyzer': ^4.0.4
+      '@previewjs/api': ^4.0.0
+      '@previewjs/iframe': ^2.0.0
+      '@previewjs/serializable-values': ^3.0.5
+      '@previewjs/type-analyzer': ^4.0.5
       '@react-hook/window-size': ^3.1.1
       '@types/react': 18.0.21
       assert-never: ^1.2.1
@@ -215,11 +215,11 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': ^3.0.1
-      '@previewjs/config': ^3.0.4
-      '@previewjs/iframe': ^1.1.8
-      '@previewjs/type-analyzer': ^4.0.4
-      '@previewjs/vfs': ^1.2.7
+      '@previewjs/api': ^4.0.0
+      '@previewjs/config': ^3.0.5
+      '@previewjs/iframe': ^2.0.0
+      '@previewjs/type-analyzer': ^4.0.5
+      '@previewjs/vfs': ^1.2.8
       '@types/cookie-parser': 1.4.3
       '@types/express': 4.17.14
       '@types/fs-extra': 9.0.13
@@ -274,8 +274,8 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': ^7.1.0
-      '@previewjs/type-analyzer': ^4.0.4
+      '@previewjs/core': ^8.0.0
+      '@previewjs/type-analyzer': ^4.0.5
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.8.11
@@ -309,9 +309,9 @@ importers:
 
   e2e-test-runner:
     specifiers:
-      '@previewjs/core': ^7.1.0
+      '@previewjs/core': ^8.0.0
       '@previewjs/iframe': workspace:*
-      '@previewjs/vfs': ^1.2.7
+      '@previewjs/vfs': ^1.2.8
       '@types/fs-extra': ^9.0.13
       '@types/lodash': ^4.14.186
       '@types/node': ^17.0.8
@@ -345,9 +345,9 @@ importers:
   frameworks/react:
     specifiers:
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.1
-      '@previewjs/type-analyzer': ^4.0.4
-      '@previewjs/vfs': ^1.2.7
+      '@previewjs/csf3': ^3.0.2
+      '@previewjs/type-analyzer': ^4.0.5
+      '@previewjs/vfs': ^1.2.8
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.21
       react: 18.2.0
@@ -389,9 +389,9 @@ importers:
   frameworks/solid:
     specifiers:
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.1
-      '@previewjs/type-analyzer': ^4.0.4
-      '@previewjs/vfs': ^1.2.7
+      '@previewjs/csf3': ^3.0.2
+      '@previewjs/type-analyzer': ^4.0.5
+      '@previewjs/vfs': ^1.2.8
       rimraf: 3.0.2
       solid-js: 1.5.7
       typescript: ^4.8.4
@@ -424,9 +424,9 @@ importers:
     specifiers:
       '@nuxt/config': ^2.15.8
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.1
-      '@previewjs/type-analyzer': ^4.0.4
-      '@previewjs/vfs': ^1.2.7
+      '@previewjs/csf3': ^3.0.2
+      '@previewjs/type-analyzer': ^4.0.5
+      '@previewjs/vfs': ^1.2.8
       '@types/fs-extra': 9.0.13
       fs-extra: ^10.1.0
       rimraf: 3.0.2
@@ -469,9 +469,9 @@ importers:
   frameworks/vue3:
     specifiers:
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.1
-      '@previewjs/type-analyzer': ^4.0.4
-      '@previewjs/vfs': ^1.2.7
+      '@previewjs/csf3': ^3.0.2
+      '@previewjs/type-analyzer': ^4.0.5
+      '@previewjs/vfs': ^1.2.8
       '@vitejs/plugin-vue': ^3
       '@vitejs/plugin-vue-jsx': ^2
       '@vue/compiler-sfc': ^3.2.40
@@ -590,7 +590,7 @@ importers:
 
   serializable-values:
     specifiers:
-      '@previewjs/type-analyzer': ^4.0.4
+      '@previewjs/type-analyzer': ^4.0.5
       '@types/prettier': 2.7.1
       assert-never: ^1.2.1
       prettier: ^2.7.1
@@ -1665,7 +1665,7 @@ importers:
 
   type-analyzer:
     specifiers:
-      '@previewjs/vfs': ^1.2.7
+      '@previewjs/vfs': ^1.2.8
       '@types/lodash': 4.14.186
       '@types/prettier': 2.7.1
       assert-never: ^1.2.1
@@ -18149,7 +18149,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4_supports-color@6.1.0
+      debug: 4.3.4
 
   /fontfaceobserver/2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
