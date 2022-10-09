@@ -1,4 +1,7 @@
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpinner,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
@@ -6,7 +9,7 @@ import React, { Fragment } from "react";
 import type { PreviewState } from "../../state/PreviewState";
 
 export const Explorer = observer(({ state }: { state: PreviewState }) => {
-  if (!state.project) {
+  if (state.analyzeProjectResponse.kind === "loading") {
     return (
       <div className="flex h-full items-center justify-center">
         <FontAwesomeIcon
@@ -17,10 +20,24 @@ export const Explorer = observer(({ state }: { state: PreviewState }) => {
     );
   }
 
+  if (state.analyzeProjectResponse.kind === "failure") {
+    return (
+      <div className="flex flex-col h-full items-center justify-center">
+        <FontAwesomeIcon
+          icon={faTriangleExclamation}
+          className="text-6xl text-red-300"
+        />
+        <p className="bg-gray-100 p-2 m-2 rounded-lg whitespace-pre">
+          {state.analyzeProjectResponse.message}
+        </p>
+      </div>
+    );
+  }
+
   let currentFilePath: string[] = [];
   return (
     <>
-      {Object.entries(state.project.components).map(
+      {Object.entries(state.analyzeProjectResponse.response.components).map(
         ([filePath, components]) => {
           const filteredComponents = components.filter(
             (c) => c.info.kind === "story" || c.info.exported

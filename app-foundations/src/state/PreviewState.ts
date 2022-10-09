@@ -23,7 +23,20 @@ export class PreviewState {
   readonly updateBanner: UpdateBannerState;
   reachable = true;
 
-  project: localEndpoints.AnalyzeProjectResponse | null = null;
+  analyzeProjectResponse:
+    | {
+        kind: "loading";
+      }
+    | {
+        kind: "success";
+        response: localEndpoints.AnalyzeProjectResponse;
+      }
+    | {
+        kind: "failure";
+        message: string;
+      } = {
+    kind: "loading",
+  };
 
   component: {
     /**
@@ -143,7 +156,7 @@ export class PreviewState {
       iframeRef: observable.ref,
       pingInterval: observable.ref,
       appInfo: observable.ref,
-      project: observable.ref,
+      analyzeProjectResponse: observable.ref,
     });
   }
 
@@ -168,12 +181,27 @@ export class PreviewState {
     });
     await this.persistedStateController.start();
     await this.updateBanner.start(appInfo);
-    const project = await this.localApi.request(localEndpoints.AnalyzeProject, {
-      forceRefresh: false,
-    });
-    runInAction(() => {
-      this.project = project;
-    });
+    try {
+      const project = await this.localApi.request(
+        localEndpoints.AnalyzeProject,
+        {
+          forceRefresh: false,
+        }
+      );
+      runInAction(() => {
+        this.analyzeProjectResponse = {
+          kind: "success",
+          response: project,
+        };
+      });
+    } catch (e: any) {
+      runInAction(() => {
+        this.analyzeProjectResponse = {
+          kind: "failure",
+          message: e.message || "Unknown error",
+        };
+      });
+    }
   }
 
   stop() {
