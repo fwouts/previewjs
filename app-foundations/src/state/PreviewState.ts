@@ -121,9 +121,15 @@ export class PreviewState {
           }
           switch (event.kind) {
             case "bootstrapped":
-            case "before-vite-update":
             case "before-render":
               this.consoleLogs.onClear();
+              break;
+            case "before-vite-update":
+              this.consoleLogs.onClear();
+              if (this.component.details.renderingAlwaysFailing) {
+                // Full refresh as Vite doesn't recover well when it never succeeded before.
+                this.renderComponent();
+              }
               break;
             case "rendering-setup":
               this.component.variantKey = event.info.variantKey;

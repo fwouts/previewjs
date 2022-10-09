@@ -1,4 +1,4 @@
-import type { ErrorPayload } from "vite/types/hmrPayload";
+import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import type { AppToPreviewMessage, PreviewToAppMessage } from "./messages";
 
 export function createController(options: {
@@ -142,6 +142,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "vite-before-update":
         listener({
           kind: "before-vite-update",
+          payload: data.payload,
         });
         break;
     }
@@ -214,6 +215,7 @@ export type PreviewBootstrapped = {
 
 export type BeforeViteUpdate = {
   kind: "before-vite-update";
+  payload: UpdatePayload;
 };
 
 export type BeforeRender = {
