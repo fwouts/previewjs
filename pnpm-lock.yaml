@@ -118,7 +118,7 @@ importers:
       '@fortawesome/react-fontawesome': ^0.2.0
       '@monaco-editor/react': ^4.4.6
       '@previewjs/api': ^4.0.0
-      '@previewjs/iframe': ^2.0.0
+      '@previewjs/iframe': ^2.1.0
       '@previewjs/serializable-values': ^3.0.5
       '@previewjs/type-analyzer': ^4.0.5
       '@react-hook/window-size': ^3.1.1
@@ -217,7 +217,7 @@ importers:
     specifiers:
       '@previewjs/api': ^4.0.0
       '@previewjs/config': ^3.0.5
-      '@previewjs/iframe': ^2.0.0
+      '@previewjs/iframe': ^2.1.0
       '@previewjs/type-analyzer': ^4.0.5
       '@previewjs/vfs': ^1.2.8
       '@types/cookie-parser': 1.4.3
@@ -274,7 +274,7 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': ^8.0.0
+      '@previewjs/core': ^8.0.1
       '@previewjs/type-analyzer': ^4.0.5
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
@@ -309,7 +309,7 @@ importers:
 
   e2e-test-runner:
     specifiers:
-      '@previewjs/core': ^8.0.0
+      '@previewjs/core': ^8.0.1
       '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.8
       '@types/fs-extra': ^9.0.13
@@ -18140,17 +18140,6 @@ packages:
       debug:
         optional: true
 
-  /follow-redirects/1.15.1_debug@4.3.4:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.4_supports-color@6.1.0
-
   /fontfaceobserver/2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
     dev: false
@@ -19423,7 +19412,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.15.1_debug@4.3.4
+      follow-redirects: 1.15.1
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
