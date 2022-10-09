@@ -12,7 +12,7 @@ export async function expectErrorBoundary(updateId: string) {
     !errorBoundaryInstance ||
     errorBoundaryInstance.props.updateId !== updateId
   ) {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
   return errorBoundaryInstance;
 }
