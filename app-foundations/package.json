@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app-foundations --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "watch": "concurrently 'tsc --watch' 'nodemon --watch src -x pnpm unbuild'",
+    "watch": "concurrently 'tsc --watch' 'nodemon -e ts,tsx --watch src -x pnpm unbuild'",
     "test": "vitest --no-threads"
   },
   "dependencies": {
