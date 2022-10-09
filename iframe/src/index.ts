@@ -1,4 +1,4 @@
-import type { ErrorPayload } from "vite/types/hmrPayload";
+import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import type { AppToPreviewMessage, PreviewToAppMessage } from "./messages";
 
 export function createController(options: {
@@ -13,6 +13,7 @@ export interface PreviewIframeController {
   stop(): void;
   showLoading(): void;
   loadComponent(options: LoadComponentOptions): void;
+  resetIframe(): void;
 }
 
 export interface LoadComponentOptions {
@@ -80,7 +81,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     }
   }
 
-  private resetIframe() {
+  resetIframe() {
     const iframe = this.options.getIframe();
     this.previewBootstrapped = false;
     if (!iframe) {
@@ -100,6 +101,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "before-render":
       case "action":
       case "log-message":
+      case "file-changed":
         listener(data);
         break;
       case "rendering-setup":
@@ -142,6 +144,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "vite-before-update":
         listener({
           kind: "before-vite-update",
+          payload: data.payload,
         });
         break;
     }
@@ -206,7 +209,8 @@ export type PreviewEvent =
   | RenderingSetup
   | RenderingDone
   | Action
-  | LogMessage;
+  | LogMessage
+  | FileChanged;
 
 export type PreviewBootstrapped = {
   kind: "bootstrapped";
@@ -214,6 +218,7 @@ export type PreviewBootstrapped = {
 
 export type BeforeViteUpdate = {
   kind: "before-vite-update";
+  payload: UpdatePayload;
 };
 
 export type BeforeRender = {
@@ -247,6 +252,11 @@ export interface LogMessage {
 }
 
 export type LogLevel = "log" | "info" | "warn" | "error";
+
+export interface FileChanged {
+  kind: "file-changed";
+  path: string;
+}
 
 export interface Variant {
   key: string;

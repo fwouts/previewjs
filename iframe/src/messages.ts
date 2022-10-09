@@ -9,6 +9,7 @@ export type PreviewToAppMessage =
   | RenderingSetup
   | RenderingSuccess
   | RenderingError
+  | FileChanged
   | ViteErrorMessage
   | ViteBeforeUpdateMessage;
 
@@ -35,6 +36,11 @@ export interface RenderingSuccess {
 export interface RenderingError {
   kind: "rendering-error";
   message: string;
+}
+
+export interface FileChanged {
+  kind: "file-changed";
+  path: string;
 }
 
 export interface ViteErrorMessage {
