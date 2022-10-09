@@ -255,6 +255,15 @@ export class ViteManager {
       });
     });
     this.viteServer = await viteServerPromise;
+    this.viteServer.watcher.addListener("change", (path) => {
+      this.viteServer?.ws.send({
+        type: "custom",
+        event: "previewjs-file-changed",
+        data: {
+          path,
+        },
+      });
+    });
   }
 
   async stop() {

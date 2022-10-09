@@ -127,8 +127,12 @@ export class PreviewState {
             case "before-vite-update":
               this.consoleLogs.onClear();
               if (this.component.details.renderingAlwaysFailing) {
-                // Full refresh as Vite doesn't recover well when it never succeeded before.
-                this.renderComponent();
+                this.iframeController.resetIframe();
+              }
+              break;
+            case "file-changed":
+              if (this.component.details.renderingAlwaysFailing) {
+                this.iframeController.resetIframe();
               }
               break;
             case "rendering-setup":
