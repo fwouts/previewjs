@@ -1,6 +1,7 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import type { Node } from "acorn";
+import fs from "fs-extra";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
@@ -48,7 +49,9 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             components.push({
               absoluteFilePath,
               name: inferComponentNameFromVuePath(absoluteFilePath),
-              offsets: [[0, Infinity]],
+              offsets: [
+                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
+              ],
               info: {
                 kind: "component",
                 exported: true,

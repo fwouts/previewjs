@@ -46,7 +46,9 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
             components.push({
               absoluteFilePath,
               name: inferComponentNameFromVuePath(absoluteFilePath),
-              offsets: [[0, Infinity]],
+              offsets: [
+                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
+              ],
               info: {
                 kind: "component",
                 exported: true,
