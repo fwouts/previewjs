@@ -42,7 +42,10 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory = {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (absoluteFilePath.endsWith(".vue")) {
+          if (
+            absoluteFilePath.endsWith(".vue") &&
+            (await fs.pathExists(absoluteFilePath))
+          ) {
             components.push({
               absoluteFilePath,
               name: inferComponentNameFromVuePath(absoluteFilePath),
