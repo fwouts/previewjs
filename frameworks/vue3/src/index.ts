@@ -113,6 +113,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
                         declaration.type === "VariableDeclarator" &&
                         declaration.id.type === "Identifier" &&
                         declaration.id.name === "_sfc_main" &&
+                        declaration.init &&
                         declaration.init.type === "CallExpression" &&
                         declaration.init.callee.type === "Identifier" &&
                         declaration.init.callee.name === "_defineComponent" &&
@@ -124,8 +125,8 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
                           declaration.init.arguments[0].properties;
                         const setupProperty = properties.find(
                           (p: any) =>
-                            p.key.name === "setup" &&
-                            p.value.type === "FunctionExpression"
+                            p.key?.name === "setup" &&
+                            p.value?.type === "FunctionExpression"
                         );
                         if (!setupProperty) {
                           continue;
