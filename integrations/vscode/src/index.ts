@@ -185,7 +185,7 @@ export async function activate(context: vscode.ExtensionContext) {
           componentId = undefined;
         }
         const editor = vscode.window.activeTextEditor;
-        if (!document) {
+        if (!document?.fileName) {
           if (editor?.document) {
             document = editor.document;
           } else {
