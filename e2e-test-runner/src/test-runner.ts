@@ -42,7 +42,9 @@ export async function runTests({
       return true;
     }
     for (const filter of filters) {
-      const [filterTestSuite, filterTestCase] = filter.split(":");
+      const [filterTestSuite, filterTestCase] = filter
+        .split(":")
+        .map((s) => s.trim());
       if (
         filterTestSuite !== undefined &&
         testSuiteDescription.includes(filterTestSuite) &&
