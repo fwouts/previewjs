@@ -6,9 +6,9 @@ import { runTests } from "./test-runner";
 program
   .option("-s, --setup-module <module-path>")
   .option("-t, --tests-path <tests-path>")
-  .option("-f, --filter [filters...]")
   .option("-r, --repeat <times>")
-  .action(async ({ setupModule, testsPath, filter = [], repeat = 1 }) => {
+  .argument("[filter...]")
+  .action(async (filter, { setupModule, testsPath, repeat = 1 }) => {
     let failed = false;
     const groupCount = parseInt(process.env.GROUP_COUNT || "1");
     const groupIndex = parseInt(process.env.GROUP_INDEX || "0");
