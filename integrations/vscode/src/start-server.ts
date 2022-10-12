@@ -30,7 +30,7 @@ export async function startPreviewJsServer(
     }
   }
   if (nodeVersion.stdout) {
-    outputChannel.appendLine(nodeVersion.stdout);
+    outputChannel.appendLine(ignoreBellPrefix(nodeVersion.stdout));
   }
   const checkNodeVersion = checkNodeVersionResult(nodeVersion);
   if (checkNodeVersion.kind === "valid") {
@@ -155,7 +155,10 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
       message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed${withExitCode}.\n\nIs it installed? You may need to restart your IDE.\n`,
     };
   }
-  const nodeVersion = result.stdout.split("\n").at(-1)!.trim();
+  const nodeVersion = ignoreBellPrefix(result.stdout)
+    .split("\n")
+    .at(-1)!
+    .trim();
   const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
   const invalidVersion = {
     kind: "invalid",
@@ -174,6 +177,14 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
   return {
     kind: "valid",
   };
+}
+
+function ignoreBellPrefix(stdout: string) {
+  // Important: because we use an interactive login shell, the stream may contain some other logging caused by
+  // sourcing scripts. For example:
+  // ]697;DoneSourcing]697;DoneSourcingmissing
+  // We ignore anything before the last BEL character (07).
+  return stdout.split("\u0007").at(-1)!;
 }
 
 function wrapCommandWithShellIfRequired(command: string) {
