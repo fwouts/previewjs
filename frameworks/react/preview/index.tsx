@@ -6,6 +6,8 @@ import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
 const moduleName = parseInt(version) >= 18 ? "./render-18" : "./render-16";
 
+let currentUpdateId = "";
+
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
@@ -13,6 +15,7 @@ export const load: RendererLoader = async ({
   componentName,
   updateId,
 }) => {
+  currentUpdateId = updateId;
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
@@ -67,7 +70,13 @@ export const load: RendererLoader = async ({
     render: async (props) => {
       const { render } = await import(/* @vite-ignore */ moduleName);
       await render(Renderer, props);
-      const errorBoundary = await expectErrorBoundary(updateId);
+      const errorBoundary = await expectErrorBoundary(
+        updateId,
+        () => currentUpdateId
+      );
+      if (!errorBoundary) {
+        return;
+      }
       if (errorBoundary.state.error) {
         throw errorBoundary.state.error;
       }

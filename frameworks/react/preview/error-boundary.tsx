@@ -7,12 +7,18 @@ type ErrorBoundaryProps = {
 
 let errorBoundaryInstance: ErrorBoundary | null = null;
 
-export async function expectErrorBoundary(updateId: string) {
+export async function expectErrorBoundary(
+  updateId: string,
+  getCurrentUpdateId: () => string
+) {
   while (
     !errorBoundaryInstance ||
     errorBoundaryInstance.props.updateId !== updateId
   ) {
     await new Promise((resolve) => setTimeout(resolve, 100));
+    if (getCurrentUpdateId() !== updateId) {
+      return null;
+    }
   }
   return errorBoundaryInstance;
 }
