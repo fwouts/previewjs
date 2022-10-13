@@ -140,7 +140,7 @@ importers:
       tailwindcss: 3.1.8
       typescript: 4.8.4
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.2.0
       '@fortawesome/free-brands-svg-icons': 6.2.0
@@ -171,7 +171,7 @@ importers:
       tailwindcss: 3.1.8_postcss@8.4.17
       typescript: 4.8.4
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   cli:
     specifiers:
@@ -279,7 +279,7 @@ importers:
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -287,7 +287,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   dev-workspace:
     specifiers:
@@ -354,7 +354,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.1.6
-      vitest: 0.24.0
+      vitest: 0.24.1
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -367,7 +367,7 @@ importers:
       react: 18.2.0
       rimraf: 3.0.2
       vite: 3.1.6
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   frameworks/react/preview:
     specifiers:
@@ -397,7 +397,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.1.6
       vite-plugin-solid: ^2.3.9
-      vitest: 0.24.0
+      vitest: 0.24.1
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -409,7 +409,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.5.7
       vite: 3.1.6
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   frameworks/solid/preview:
     specifiers:
@@ -433,7 +433,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.1.6
       vite-plugin-vue2: ^2.0.2
-      vitest: 0.24.0
+      vitest: 0.24.1
       vue: ^2.7.10
       vue-template-compiler: ^2.7.10
     dependencies:
@@ -451,7 +451,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.1.6
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   frameworks/vue2/preview:
     specifiers:
@@ -481,7 +481,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.1.6
-      vitest: 0.24.0
+      vitest: 0.24.1
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -499,7 +499,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.1.6
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   frameworks/vue3/preview:
     specifiers:
@@ -600,7 +600,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
       assert-never: 1.2.1
@@ -609,7 +609,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.1
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   server:
     specifiers:
@@ -1677,7 +1677,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1688,7 +1688,7 @@ importers:
       '@types/prettier': 2.7.1
       lodash: 4.17.21
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
 
   vfs:
     specifiers:
@@ -1697,7 +1697,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1705,7 +1705,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.8.11
-      vitest: 0.24.0
+      vitest: 0.24.1
 
 packages:
 
@@ -6451,7 +6451,7 @@ packages:
       postcss-import: 13.0.0_postcss@8.4.17
       postcss-loader: 4.3.0_3i7lurx3nqejeipuvieovu64yu
       postcss-url: 10.1.3_postcss@8.4.17
-      semver: 7.3.7
+      semver: 7.3.8
     transitivePeerDependencies:
       - webpack
     dev: true
@@ -18280,7 +18280,7 @@ packages:
       memfs: 3.4.7
       minimatch: 3.1.2
       schema-utils: 2.7.0
-      semver: 7.3.8
+      semver: 7.3.7
       tapable: 1.1.3
       typescript: 4.7.4
       webpack: 4.46.0
@@ -29207,7 +29207,7 @@ packages:
       detective: 5.2.1
       didyoumean: 1.2.2
       dlv: 1.1.3
-      fast-glob: 3.2.11
+      fast-glob: 3.2.12
       fs-extra: 10.1.0
       glob-parent: 6.0.2
       html-tags: 3.2.0
@@ -31240,8 +31240,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitest/0.24.0:
-    resolution: {integrity: sha512-k5j3FPTor+MJx2x0pDW2gtVk+s9VC6nSHT3SoqOIk9Je5fFpPgict+Xy2eAVXUogvSixs45Ya1oZk+oK93BO0w==}
+  /vitest/0.24.1:
+    resolution: {integrity: sha512-NKkK1xnDIOOr42pKBfGQQl6b6IWdFVBpG6ZS1T+nUlJuqcOiZ7lxjVwHy9wrtTYpJ0BWww9y6bSGYXubD29Nag==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -31272,7 +31272,7 @@ packages:
       tinybench: 2.3.0
       tinypool: 0.3.0
       tinyspy: 1.0.2
-      vite: 3.1.6
+      vite: 3.1.7
     transitivePeerDependencies:
       - less
       - sass
