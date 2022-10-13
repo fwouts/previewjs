@@ -79,18 +79,22 @@ function Foo() {
             [
               "c is not defined",
               "The above error occurred in the <Foo> component",
+              ...(version === 18 ? ["c is not defined"] : []),
             ],
             [
               "co is not defined",
               "The above error occurred in the <Foo> component",
+              ...(version === 18 ? ["co is not defined"] : []),
             ],
             [
               "con is not defined",
               "The above error occurred in the <Foo> component",
+              ...(version === 18 ? ["con is not defined"] : []),
             ],
             [
               "cons is not defined",
               "The above error occurred in the <Foo> component",
+              ...(version === 18 ? ["cons is not defined"] : []),
             ],
             [`Unexpected keyword 'return'`, "Failed to reload"],
             [`Unexpected keyword 'return'`, "Failed to reload"],

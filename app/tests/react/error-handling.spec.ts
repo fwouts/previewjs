@@ -549,7 +549,7 @@ export const errorHandlingTests = testSuite(
             },
             [
               ["Expected error", "src/Dependency.tsx"],
-              "Failed to reload /src/Dependency.tsx.",
+              "Failed to reload /src/App.tsx.",
             ]
           );
           await appDir.update(
