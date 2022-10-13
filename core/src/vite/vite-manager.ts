@@ -133,6 +133,14 @@ export class ViteManager {
       ...this.options.config,
       alias,
     });
+    const existingViteConfig = await vite.loadConfigFromFile(
+      {
+        command: "serve",
+        mode: "development",
+      },
+      undefined,
+      this.options.rootDirPath
+    );
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
@@ -160,6 +168,7 @@ export class ViteManager {
       cssModulesWithoutSuffixPlugin(),
       componentLoaderPlugin(this.options),
       ...(frameworkPluginViteConfig.plugins || []),
+      ...(existingViteConfig?.config.plugins || []),
       ...(this.options.config.vite?.plugins || []),
     ];
 
@@ -197,9 +206,9 @@ export class ViteManager {
         };
       })
     );
-
     const viteServerPromise = vite.createServer({
       ...frameworkPluginViteConfig,
+      ...existingViteConfig?.config,
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
@@ -214,6 +223,7 @@ export class ViteManager {
             ? this.options.config.vite?.server?.hmr
             : {}),
         },
+        ...existingViteConfig?.config.server,
         ...this.options.config.vite?.server,
       },
       customLogger: {
@@ -228,22 +238,30 @@ export class ViteManager {
         hasErrorLogged: defaultLogger.hasErrorLogged,
       },
       clearScreen: false,
-      cacheDir: this.options.config.vite?.cacheDir || this.options.cacheDir,
+      cacheDir:
+        existingViteConfig?.config.cacheDir ||
+        this.options.config.vite?.cacheDir ||
+        this.options.cacheDir,
       publicDir:
-        this.options.config.vite?.publicDir || this.options.config.publicDir,
+        existingViteConfig?.config.publicDir ||
+        this.options.config.vite?.publicDir ||
+        this.options.config.publicDir,
       plugins,
       define: {
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
+        ...existingViteConfig?.config.define,
         ...this.options.config.vite?.define,
       },
       resolve: {
+        ...existingViteConfig?.config.resolve,
         ...this.options.config.vite?.resolve,
         alias: {
           "~": "",
           "@": "",
           ...alias,
+          ...existingViteConfig?.config.resolve?.alias,
           ...frameworkPluginViteConfig.resolve?.alias,
         },
       },
