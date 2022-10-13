@@ -24,91 +24,91 @@ jobs:
         with:
           run_install: true
       - id: checkApiVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./api/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkAppFoundationsVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./app-foundations/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkAppVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./app/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkConfigVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./config/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkCoreVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./core/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkCsf3Version
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./csf3/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkE2ETestRunnerVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./e2e-test-runner/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkIframeVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./iframe/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkPluginReactVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/react/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkPluginSolidVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/solid/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkPluginVue2Version
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/vue2/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkPluginVue3Version
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/vue3/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkSerializableValuesVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./serializable-values/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkTypeAnalyzerVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./type-analyzer/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkVfsVersion
-        uses: EndBug/version-check@v2.1.0
+        uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./vfs/package.json
