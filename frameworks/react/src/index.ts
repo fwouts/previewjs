@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import ts from "typescript";
 import { extractReactComponents } from "./extract-component";
+import { reactImportsPlugin } from "./react-js-imports-plugin";
 import { REACT_SPECIAL_TYPES } from "./special-types";
 
 /** @deprecated */
@@ -55,7 +56,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory = {
               "react-native": "react-native-web",
             },
           },
-          plugins: [react()],
+          plugins: [reactImportsPlugin(), react()],
           define: {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
