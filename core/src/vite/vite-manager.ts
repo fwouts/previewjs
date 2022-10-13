@@ -176,8 +176,8 @@ export class ViteManager {
       }),
       cssModulesWithoutSuffixPlugin(),
       componentLoaderPlugin(this.options),
-      frameworkVitePlugins,
       projectVitePlugins,
+      frameworkVitePlugins,
     ];
 
     // We need to patch handleHotUpdate() in every plugin because, by
