@@ -56,7 +56,21 @@ export const reactFrameworkPlugin: FrameworkPluginFactory = {
               "react-native": "react-native-web",
             },
           },
-          plugins: [reactImportsPlugin(), react()],
+          plugins: [
+            reactImportsPlugin(),
+            react(),
+            {
+              name: "previewjs:disable-react-hmr",
+              async transform(code, id) {
+                if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
+                  return null;
+                }
+                // HMR prevents preview props from being refreshed.
+                // For now, we disable it entirely.
+                return code.replace(/import\.meta/g, "({})");
+              },
+            },
+          ],
           define: {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
