@@ -37,6 +37,35 @@ export type ComputePropsResponse = {
     props: ValueType;
     all: CollectedTypes;
   };
-  isStory: boolean;
-  args: string[];
+};
+
+export const AnalyzeProject: Endpoint<
+  {
+    forceRefresh?: boolean;
+  },
+  AnalyzeProjectResponse
+> = {
+  path: "analyze-project",
+};
+
+export type AnalyzeProjectResponse = {
+  components: {
+    [filePath: string]: Component[];
+  };
+};
+
+export type Component = {
+  name: string;
+  info:
+    | {
+        kind: "component";
+        exported: boolean;
+      }
+    | {
+        kind: "story";
+        associatedComponent: {
+          filePath: string;
+          name: string;
+        } | null;
+      };
 };

@@ -1,16 +1,11 @@
 #!/usr/bin/env node
 
 import type * as api from "@previewjs/api";
-import { install, isInstalled, load } from "@previewjs/loader";
+import { load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
-import { prompt, registerPrompt } from "inquirer";
-import autocompletePrompt from "inquirer-autocomplete-prompt";
 import open from "open";
-import path from "path";
-
-registerPrompt("autocomplete", autocompletePrompt);
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -28,17 +23,20 @@ interface SharedOptions {
   port: string;
 }
 
-const noComponentOption = chalk.blueBright("Skip component selection");
-const forceRefreshOption = chalk.magenta("Refresh component list");
-
 program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    const previewjs = await initializePreviewJs();
+    const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
+    if (!packageName) {
+      throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
+    }
+    const previewjs = await load({
+      installDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
+      packageName,
+    });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
-      logLevel: "info",
       absoluteFilePath: dirPath || process.cwd(),
       persistedStateManager: {
         get: async (_, req) => {
@@ -72,79 +70,9 @@ program
     }
 
     const port = parseInt(options.port);
-    await promptComponent();
-
-    async function promptComponent(forceRefresh = false): Promise<void> {
-      console.log(`Analyzing project for components...`);
-      const { components, cached } = await workspace!.components.list({
-        forceRefresh,
-      });
-      if (cached) {
-        console.log(`Using cached component list from previous run.`);
-      }
-      const allComponents = Object.entries(components)
-        .map(([filePath, fileComponents]) =>
-          fileComponents.map(({ componentName, exported }) => ({
-            filePath,
-            componentName,
-            exported,
-          }))
-        )
-        .flat();
-      const { componentId } = await prompt([
-        {
-          type: "autocomplete",
-          name: "componentId",
-          message: "Select a component",
-          source: (_: unknown, input = "") => [
-            ...(!input ? [noComponentOption, forceRefreshOption] : []),
-            ...allComponents
-              .filter(
-                ({ filePath, componentName }) =>
-                  filePath.toLowerCase().includes(input.toLowerCase()) ||
-                  componentName.toLowerCase().includes(input.toLowerCase())
-              )
-              .map(
-                ({ filePath, componentName }) => `${filePath}:${componentName}`
-              ),
-          ],
-        },
-      ]);
-      if (componentId === forceRefreshOption) {
-        return promptComponent(true);
-      }
-      await workspace!.preview.start(async () => port);
-      const pathSuffix =
-        componentId === noComponentOption ? "" : `/?p=${componentId}`;
-      await open(`http://localhost:${port}${pathSuffix}`);
-    }
+    await workspace!.preview.start(async () => port);
+    await open(`http://localhost:${port}`);
   });
-
-async function initializePreviewJs() {
-  const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
-  if (!packageName) {
-    throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
-  }
-
-  let requirePath = process.env.PREVIEWJS_MODULES_DIR;
-  if (!requirePath) {
-    requirePath = path.join(__dirname, "..", "dependencies");
-    if (!(await isInstalled({ installDir: requirePath, packageName }))) {
-      await install({
-        installDir: requirePath,
-        packageName,
-        onOutput: (chunk) => {
-          process.stdout.write(chunk);
-        },
-      });
-    }
-  }
-
-  return load({
-    installDir: requirePath,
-    packageName,
-  });
-}
 
 program.parseAsync(process.argv).catch((e) => {
   console.error(e);

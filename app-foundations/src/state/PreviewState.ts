@@ -23,6 +23,21 @@ export class PreviewState {
   readonly updateBanner: UpdateBannerState;
   reachable = true;
 
+  analyzeProjectResponse:
+    | {
+        kind: "loading";
+      }
+    | {
+        kind: "success";
+        response: localEndpoints.AnalyzeProjectResponse;
+      }
+    | {
+        kind: "failure";
+        message: string;
+      } = {
+    kind: "loading",
+  };
+
   component: {
     /**
      * ID of the component, comprising of a file path and local component ID.
@@ -65,6 +80,16 @@ export class PreviewState {
        * Null while the list of variants hasn't yet been loaded (this may only happen at runtime).
        */
       variants: Variant[] | null;
+
+      /**
+       * Whether or not rendering failed on every render.
+       *
+       * Used to show a fullscreen error for components that never render successfully, instead
+       * of a loading screen with logs panel hidden by default.
+       *
+       * Null when rendering hasn't finished yet.
+       */
+      renderingAlwaysFailing: boolean | null;
     } | null;
   } | null = null;
   appInfo: ResponseOf<typeof localEndpoints.GetInfo>["appInfo"] | null = null;
@@ -99,11 +124,26 @@ export class PreviewState {
             case "before-render":
               this.consoleLogs.onClear();
               break;
-            case "update":
+            case "before-vite-update":
               this.consoleLogs.onClear();
-              if (event.rendering?.kind === "success") {
-                this.component.variantKey = event.rendering.variantKey;
-                this.component.details.variants = event.rendering.variants;
+              if (this.component.details.renderingAlwaysFailing) {
+                this.iframeController.resetIframe();
+              }
+              break;
+            case "file-changed":
+              if (this.component.details.renderingAlwaysFailing) {
+                this.iframeController.resetIframe();
+              }
+              break;
+            case "rendering-setup":
+              this.component.variantKey = event.info.variantKey;
+              this.component.details.variants = event.info.variants;
+              break;
+            case "rendering-done":
+              if (this.component.details.renderingAlwaysFailing === null) {
+                this.component.details.renderingAlwaysFailing = !event.success;
+              } else if (event.success) {
+                this.component.details.renderingAlwaysFailing = false;
               }
               break;
             case "log-message":
@@ -126,16 +166,13 @@ export class PreviewState {
       iframeRef: observable.ref,
       pingInterval: observable.ref,
       appInfo: observable.ref,
+      analyzeProjectResponse: observable.ref,
     });
   }
 
   async start() {
-    window.__previewjs_navigate = (componentId, variantKey) => {
-      history.pushState(
-        null,
-        "",
-        `/?p=${componentId}${variantKey ? `&v=${variantKey}` : ""}`
-      );
+    window.__previewjs_navigate = (componentId) => {
+      history.pushState(null, "", `/?p=${componentId}`);
       this.onUrlChanged().catch(console.error);
     };
     window.addEventListener("message", this.messageListener);
@@ -154,6 +191,27 @@ export class PreviewState {
     });
     await this.persistedStateController.start();
     await this.updateBanner.start(appInfo);
+    try {
+      const project = await this.localApi.request(
+        localEndpoints.AnalyzeProject,
+        {
+          forceRefresh: false,
+        }
+      );
+      runInAction(() => {
+        this.analyzeProjectResponse = {
+          kind: "success",
+          response: project,
+        };
+      });
+    } catch (e: any) {
+      runInAction(() => {
+        this.analyzeProjectResponse = {
+          kind: "failure",
+          message: e.message || "Unknown error",
+        };
+      });
+    }
   }
 
   stop() {
@@ -224,10 +282,17 @@ export class PreviewState {
   }
 
   setVariant(variantKey: string) {
-    if (!this.component) {
+    const component = this.component;
+    if (!component) {
       return;
     }
-    window.__previewjs_navigate(this.component.componentId, variantKey);
+    runInAction(() => {
+      this.component = {
+        ...component,
+        variantKey,
+      };
+    });
+    this.renderComponent();
   }
 
   updateProps(source: string) {
@@ -251,7 +316,6 @@ export class PreviewState {
   private async onUrlChanged() {
     const urlParams = new URLSearchParams(document.location.search);
     const componentId = urlParams.get("p") || "";
-    const variantKey = urlParams.get("v") || null;
     const decodedComponentId = decodeComponentId(componentId);
     if (!decodedComponentId.component) {
       runInAction(() => {
@@ -263,46 +327,39 @@ export class PreviewState {
       return;
     }
     const name = decodedComponentId.component.name;
-    if (this.component?.componentId === componentId) {
-      runInAction(() => {
-        if (this.component) {
-          this.component.variantKey = variantKey;
-        }
-      });
-    } else {
-      this.iframeController.showLoading();
-      runInAction(() => {
-        this.component = {
-          componentId,
-          name,
-          variantKey,
-          details: null,
-        };
-      });
-      if (this.options.onFileChanged) {
-        await this.options.onFileChanged(decodedComponentId.currentFilePath);
-      }
-      const filePath = decodedComponentId.component.filePath;
-      const props = new ComponentProps(
-        this.localApi,
-        filePath,
+    this.iframeController.showLoading();
+    runInAction(() => {
+      this.component = {
+        componentId,
         name,
-        this.cachedInvocations[componentId] || null
-      );
-      await props.refresh();
-      runInAction(() => {
-        this.component = {
-          componentId,
-          name,
-          variantKey,
-          details: {
-            filePath,
-            variants: null,
-            props,
-          },
-        };
-      });
+        variantKey: null,
+        details: null,
+      };
+    });
+    if (this.options.onFileChanged) {
+      await this.options.onFileChanged(decodedComponentId.currentFilePath);
     }
+    const filePath = decodedComponentId.component.filePath;
+    const props = new ComponentProps(
+      this.localApi,
+      filePath,
+      name,
+      this.cachedInvocations[componentId] || null
+    );
+    await props.refresh();
+    runInAction(() => {
+      this.component = {
+        componentId,
+        name,
+        variantKey: null,
+        details: {
+          filePath,
+          variants: null,
+          props,
+          renderingAlwaysFailing: null,
+        },
+      };
+    });
     this.renderComponent();
   }
 

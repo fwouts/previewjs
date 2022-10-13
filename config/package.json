@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/config",
-  "version": "3.0.0",
+  "version": "3.0.5",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -27,11 +27,11 @@
   "sideEffects": false,
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
-    "build": "unbuild"
+    "build": "tsc && unbuild"
   },
   "devDependencies": {
     "@types/node": "17.0.8",
-    "unbuild": "0.7.6",
-    "vite": "3.0.4"
+    "unbuild": "0.8.11",
+    "vite": "3.1.6"
   }
 }

@@ -1,5 +1,6 @@
 package com.previewjs.intellij.plugin.services
 
+import com.intellij.execution.process.OSProcessUtil
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.ide.util.PropertiesComponent
@@ -62,21 +63,22 @@ class PreviewJsSharedService : Disposable {
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
-        var installChecked = false
         var errorCount = 0
         val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
         for (msg in channel) {
             try {
-                if (!installChecked) {
-                    if (!isInstalled()) {
-                        install(msg.project)
-                    }
-                    installChecked = true
-                }
                 if (serverProcess == null) {
                     api = runServer(msg.project)
                 }
                 openDocsForFirstUsage()
+            } catch (e: NodeVersionError) {
+                notificationGroup.createNotification(
+                    "Incompatible Node.js version",
+                    e.message,
+                    NotificationType.ERROR
+                )
+                    .notify(msg.project)
+                return@actor
             } catch (e: Throwable) {
                 notificationGroup.createNotification(
                     "Preview.js crashed",
@@ -128,22 +130,6 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
-    private fun isInstalled(): Boolean {
-        val builder = processBuilder("node dist/is-installed.js")
-            .directory(nodeDirPath.toFile())
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
-        val process = builder.start()
-        if (process.waitFor() != 0) {
-            throw Error(readInputStream(process.errorStream))
-        }
-        val output = readInputStream(process.inputStream)
-        return when (val result = output.split("\n").last { x -> x.isNotEmpty() }.split(" ").last()) {
-            "installed" -> true
-            "missing" -> false
-            else -> throw Error("Unexpected output: $result")
-        }
-    }
-
     private fun readInputStream(inputStream: InputStream): String {
         val reader = BufferedReader(InputStreamReader(inputStream))
         val builder = StringBuilder()
@@ -163,23 +149,6 @@ Include the content of the Preview.js logs panel for easier debugging.
         return str.split("\u0007").last()
     }
 
-    private fun install(project: Project) {
-        val builder = processBuilder("node dist/install.js")
-            .directory(nodeDirPath.toFile())
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
-        val process = builder.start()
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val projectService = project.service<ProjectService>()
-        projectService.showConsole()
-        var line: String?
-        while (reader.readLine().also { line = it } != null) {
-            projectService.printToConsole(ignoreBellPrefix(line + "\n"))
-        }
-        if (process.waitFor() != 0) {
-            throw Error(readInputStream(process.errorStream))
-        }
-    }
-
     private suspend fun runServer(project: Project): PreviewJsApi {
         val port: Int
         try {
@@ -189,12 +158,30 @@ Include the content of the Preview.js logs panel for easier debugging.
         } catch (e: IOException) {
             throw Error("No port is not available to run Preview.js controller")
         }
-        val builder = processBuilder("node dist/run-server.js")
+        val nodeVersionProcess = processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
+        var useWsl = false
+        try {
+            if (nodeVersionProcess.waitFor() !== 0) {
+                throw Error("Preview.js was unable to run node.\\n\\nIs it installed? You may need to restart your IDE.")
+            }
+            checkNodeVersion(nodeVersionProcess)
+        } catch (e: Error) {
+            // Unable to start Node. Check WSL if we're on Windows.
+            if (!isWindows()) {
+                throw e
+            }
+            val nodeVersionProcessWsl = processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
+            if (nodeVersionProcessWsl.waitFor() === 0) {
+                checkNodeVersion(nodeVersionProcessWsl)
+                useWsl = true
+            } else {
+                // If WSL failed, just ignore it.
+                throw e
+            }
+        }
+        val builder = processBuilder("node dist/main.js $port", useWsl)
             .redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
-        builder.environment()["PORT"] = "$port"
-        builder.environment()["PREVIEWJS_INTELLIJ_VERSION"] = plugin.version
-        builder.environment()["PREVIEWJS_PACKAGE_NAME"] = PACKAGE_NAME
         val process = builder.start()
         serverProcess = process
         val serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
@@ -231,13 +218,35 @@ Include the content of the Preview.js logs panel for easier debugging.
         return api
     }
 
-    private fun processBuilder(command: String): ProcessBuilder {
-        return if (System.getProperty("os.name").lowercase().contains("win")) {
-            ProcessBuilder(
-                "cmd.exe",
-                "/C",
-                command
-            )
+    private fun checkNodeVersion(process: Process) {
+        val nodeVersion = readInputStream(process.inputStream)
+        val matchResult = "v(\\d+)\\.(\\d+)".toRegex().find(nodeVersion)
+        matchResult?.let {
+            val majorVersion = matchResult.groups[1]!!.value.toInt()
+            val minorVersion = matchResult.groups[2]!!.value.toInt()
+            // Minimum version: 14.18.0.
+            if (majorVersion < 14 || majorVersion === 14 && minorVersion < 18) {
+                throw NodeVersionError("Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
+            }
+        }
+    }
+
+    private fun processBuilder(command: String, useWsl: Boolean): ProcessBuilder {
+        return if (isWindows()) {
+            if (useWsl) {
+                ProcessBuilder(
+                    "wsl",
+                    "bash",
+                    "-lic",
+                    command
+                )
+            } else {
+                ProcessBuilder(
+                    "cmd.exe",
+                    "/C",
+                    command
+                )
+            }
         } else {
             // Note: in production builds of IntelliJ / WebStorm, PATH is not initialised
             // from the shell. This means that /usr/local/bin or nvm paths may not be
@@ -277,7 +286,13 @@ Include the content of the Preview.js logs panel for easier debugging.
     }
 
     override fun dispose() {
-        serverProcess?.destroy()
+        serverProcess?.let {
+            OSProcessUtil.killProcessTree(it)
+        }
         disposed = true
     }
+
+    private fun isWindows() = System.getProperty("os.name").lowercase().contains("win")
 }
+
+class NodeVersionError(override val message: String) : Exception(message)

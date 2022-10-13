@@ -1,16 +1,17 @@
 import type * as core from "@previewjs/core";
+import type * as vfs from "@previewjs/vfs";
+import { chmodSync, constants, existsSync, lstatSync, readdirSync } from "fs";
+import path from "path";
 
 export function loadModules({
   installDir,
   packageName,
-  logError = true,
 }: {
   installDir: string;
   packageName: string;
-  logError?: boolean;
 }) {
-  const core = requireModule("@previewjs/core");
-  const vfs = requireModule("@previewjs/vfs");
+  const coreModule = requireModule("@previewjs/core") as typeof core;
+  const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;
   const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName);
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
@@ -27,16 +28,26 @@ export function loadModules({
         paths: [installDir],
       }));
     } catch (e) {
-      if (logError) {
-        console.error(`Unable to load ${name} from ${installDir}`, e);
-      }
+      console.error(`Unable to load ${name} from ${installDir}`, e);
       throw e;
     }
   }
 
+  for (const f of readdirSync(path.join(installDir, "node_modules"))) {
+    if (f.startsWith("esbuild-")) {
+      const binPath = path.join(__dirname, "node_modules", f, "bin", "esbuild");
+      if (
+        existsSync(binPath) &&
+        !(lstatSync(binPath).mode & constants.S_IXUSR)
+      ) {
+        chmodSync(binPath, "555");
+      }
+    }
+  }
+
   return {
-    core,
-    vfs,
+    core: coreModule,
+    vfs: vfsModule,
     setupEnvironment,
     frameworkPluginFactories,
   };

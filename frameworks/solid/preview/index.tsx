@@ -8,6 +8,7 @@ export const load: RendererLoader = async ({
   componentModule,
   componentName,
 }) => {
+  const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     (({ children }) => <>{children}</>);
@@ -31,12 +32,13 @@ export const load: RendererLoader = async ({
       };
     }
   );
-  const RenderComponent =
-    ComponentOrStory.render ||
-    ComponentOrStory.component ||
-    componentModule.default?.render ||
-    componentModule.default?.component ||
-    ComponentOrStory;
+  const RenderComponent = isStoryModule
+    ? ComponentOrStory.render ||
+      ComponentOrStory.component ||
+      componentModule.default?.render ||
+      componentModule.default?.component ||
+      ComponentOrStory
+    : ComponentOrStory;
   const Renderer = (props) => {
     const effectiveProps = {
       ...componentModule.default?.args,

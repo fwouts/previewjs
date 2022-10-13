@@ -17,7 +17,7 @@ export const consoleTests = testSuite(
           expect(await controller.console.container.visible()).toEqual(true);
           expect(await controller.console.items.count()).toEqual(0);
 
-          appDir.update("src/App.tsx", {
+          await appDir.update("src/App.tsx", {
             kind: "replace",
             text: `
 function App() {
@@ -35,7 +35,7 @@ function App() {
             .waitUntilVisible();
           expect(await controller.console.items.count()).toEqual(1);
 
-          appDir.update("src/App.tsx", {
+          await appDir.update("src/App.tsx", {
             kind: "replace",
             text: `
 function App() {
@@ -59,7 +59,7 @@ function App() {
         `${version}/hides errors once resolved`,
         `react${version}`,
         async ({ appDir, controller }) => {
-          appDir.update("src/App.tsx", {
+          await appDir.update("src/App.tsx", {
             kind: "replace",
             text: `
 function Foo() {
@@ -96,22 +96,22 @@ function Foo() {
               "The above error occurred in the <Foo> component",
               ...(version === 18 ? ["cons is not defined"] : []),
             ],
-            [`Expected identifier but found "return"`, "Failed to reload"],
-            [`Expected identifier but found "return"`, "Failed to reload"],
-            [`The constant "f" must be initialized`, "Failed to reload"],
-            [`The constant "fo" must be initialized`, "Failed to reload"],
-            [`The constant "foo" must be initialized`, "Failed to reload"],
-            [`The constant "foo" must be initialized`, "Failed to reload"],
-            [`Unexpected "return"`, "Failed to reload"],
-            [`Unexpected "return"`, "Failed to reload"],
-            [`Unterminated string literal`, "Failed to reload"],
-            [`Unterminated string literal`, "Failed to reload"],
-            [`Unterminated string literal`, "Failed to reload"],
+            [`Unexpected keyword 'return'`, "Failed to reload"],
+            [`Unexpected keyword 'return'`, "Failed to reload"],
+            [`Missing initializer in const declaration`, "Failed to reload"],
+            [`Missing initializer in const declaration`, "Failed to reload"],
+            [`Missing initializer in const declaration`, "Failed to reload"],
+            [`Missing initializer in const declaration`, "Failed to reload"],
+            [`Unexpected token`, "Failed to reload"],
+            [`Unexpected token`, "Failed to reload"],
+            [`Unterminated string constant`, "Failed to reload"],
+            [`Unterminated string constant`, "Failed to reload"],
+            [`Unterminated string constant`, "Failed to reload"],
             null,
           ];
           for (let i = 0; i < append.length; i++) {
             const partialAppend = append.slice(0, i);
-            appDir.update(
+            await appDir.update(
               "src/App.tsx",
               {
                 kind: "replace",
@@ -126,7 +126,13 @@ function Foo() {
               }
             );
             const expectedErrors = errors[i];
-            await expectErrors(controller, expectedErrors || []);
+            await expectErrors(
+              controller,
+              {
+                fullscreen: false,
+              },
+              expectedErrors || []
+            );
           }
         }
       );

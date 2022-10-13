@@ -6,8 +6,10 @@ export type PreviewToAppMessage =
   | BeforeRender
   | Action
   | LogMessage
-  | RendererUpdated
+  | RenderingSetup
+  | RenderingSuccess
   | RenderingError
+  | FileChanged
   | ViteErrorMessage
   | ViteBeforeUpdateMessage;
 
@@ -19,17 +21,26 @@ export interface BeforeRender {
   kind: "before-render";
 }
 
-export interface RendererUpdated {
-  kind: "renderer-updated";
+export interface RenderingSetup {
+  kind: "rendering-setup";
   filePath: string;
   componentName: string;
   variantKey: string;
   variants: Variant[];
 }
 
+export interface RenderingSuccess {
+  kind: "rendering-success";
+}
+
 export interface RenderingError {
   kind: "rendering-error";
   message: string;
+}
+
+export interface FileChanged {
+  kind: "file-changed";
+  path: string;
 }
 
 export interface ViteErrorMessage {

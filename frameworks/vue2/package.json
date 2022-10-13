@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-vue2",
-  "version": "4.0.0",
+  "version": "5.0.6",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -28,21 +28,21 @@
     "test": "vitest --no-threads"
   },
   "dependencies": {
-    "@previewjs/csf3": "^2.0.0",
-    "@previewjs/type-analyzer": "^3.0.3",
-    "@previewjs/vfs": "^1.2.3",
+    "@previewjs/csf3": "^3.0.2",
+    "@previewjs/type-analyzer": "^4.0.5",
+    "@previewjs/vfs": "^1.2.8",
     "@nuxt/config": "^2.15.8",
     "fs-extra": "^10.1.0",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.4",
     "vite-plugin-vue2": "^2.0.2",
-    "vue": "^2.7.8",
-    "vue-template-compiler": "^2.7.8"
+    "vue": "^2.7.10",
+    "vue-template-compiler": "^2.7.10"
   },
   "devDependencies": {
     "@previewjs/core": "workspace:*",
     "@types/fs-extra": "9.0.13",
     "rimraf": "3.0.2",
-    "vite": "3.0.4",
-    "vitest": "0.21.0"
+    "vite": "3.1.6",
+    "vitest": "0.24.1"
   }
 }

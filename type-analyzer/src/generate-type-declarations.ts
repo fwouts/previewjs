@@ -1,6 +1,6 @@
 import assertNever from "assert-never";
 import prettier from "prettier";
-import parserTypescript from "prettier/parser-typescript";
+import parserTypescript from "prettier/parser-typescript.js";
 import type { CollectedTypes, ValueType } from "./definitions";
 
 export function generateTypeDeclarations(
@@ -128,6 +128,12 @@ function generateTypeScriptType(
         typeNameMapping,
         usedTypes
       )}>`;
+    case "tuple":
+      return `[${type.items
+        .map((item) =>
+          generateTypeScriptType(item, collected, typeNameMapping, usedTypes)
+        )
+        .join(", ")}]`;
     case "object":
       return `{
               ${Object.entries(type.fields)

@@ -1,9 +1,9 @@
 import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import {
+  faCircleXmark,
   faCode,
   faExternalLink,
   faTerminal,
-  faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,6 +27,7 @@ import { generatePropsTypeDeclarations } from "../../state/generators/generate-t
 import type { PreviewState } from "../../state/PreviewState";
 import { ActionLogs } from "../ActionLogs";
 import { ConsolePanel } from "../ConsolePanel";
+import { Explorer } from "../Explorer";
 import { UpdateBanner } from "../UpdateBanner";
 
 export const Preview = observer(
@@ -79,7 +80,7 @@ export const Preview = observer(
           propsType.kind === "object" &&
           Object.entries(propsType.fields).length === 0;
 
-        if (!isEmptyProps && !props.isStory) {
+        if (!isEmptyProps) {
           tabs.push({
             label: "Properties",
             key: "props",
@@ -114,13 +115,15 @@ export const Preview = observer(
         }
       }
 
-      tabs.push({
-        label: "Console",
-        key: "console",
-        icon: faTerminal,
-        notificationCount: state.consoleLogs.unreadCount,
-        panel: <ConsolePanel state={state.consoleLogs} />,
-      });
+      if (state.component?.details?.renderingAlwaysFailing !== true) {
+        tabs.push({
+          label: "Console",
+          key: "console",
+          icon: faTerminal,
+          notificationCount: state.consoleLogs.unreadCount,
+          panel: <ConsolePanel state={state.consoleLogs} />,
+        });
+      }
     }
 
     if (panelTabs) {
@@ -128,73 +131,167 @@ export const Preview = observer(
     }
 
     return (
-      <div className="flex flex-col h-screen overflow-hidden bg-white">
-        <ActionLogs state={state.actionLogs} />
-        <Header>
-          <Header.Row>
-            {headerAddon}
-            {state.component?.componentId && (
-              <>
-                <FilePath
-                  key="file"
-                  filePath={
-                    decodeComponentId(state.component.componentId)
-                      .currentFilePath
-                  }
-                />
-                <Link
-                  href={document.location.href}
-                  target="_blank"
-                  title="Open in new tab"
-                  className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
-                >
-                  <FontAwesomeIcon icon={faExternalLink} fixedWidth />
-                </Link>
-              </>
-            )}
-            <div className="flex-grow"></div>
-            <SmallLogo
-              href="https://previewjs.com/docs"
-              label={appLabel}
-              title={state.appInfo?.version && `v${state.appInfo.version}`}
-            />
-            <Link
-              className="ml-2 text-xl text-[#1DA1F2] hover:text-white"
-              href="https://twitter.com/previewjs"
-              target="_blank"
-              title="Follow Preview.js on Twitter"
-            >
-              <FontAwesomeIcon icon={faTwitter} fixedWidth />
-            </Link>
-            <Link
-              className="ml-2 text-xl bg-[#333] text-white rounded-md hover:bg-white hover:text-[#333]"
-              href="https://github.com/fwouts/previewjs"
-              target="_blank"
-              title="Star Preview.js on GitHub"
-            >
-              <FontAwesomeIcon icon={faGithub} fixedWidth />
-            </Link>
-          </Header.Row>
-          {subheader && (
-            <Header.Row className="bg-gray-100">{subheader}</Header.Row>
-          )}
-        </Header>
-        <UpdateBanner state={state.updateBanner} />
-        {state.component ? (
-          viewport
-        ) : (
-          <div
-            id="no-selection"
-            className="flex-grow bg-gray-700 text-gray-100 p-2 grid place-items-center text-lg"
-          >
-            Please select a component to preview.
+      <div className="flex flex-row flex-grow min-h-0">
+        {state.appInfo?.platform === "cli" && (
+          <div className="w-64 lg:w-80 flex-shrink-0 bg-gray-600 h-screen overflow-auto">
+            <Explorer state={state} />
           </div>
         )}
-        <TabbedPanel defaultTabKey="props" tabs={tabs} height={panelHeight} />
-        {footer}
+        <div className="flex flex-col flex-grow h-screen overflow-hidden bg-white">
+          <ActionLogs state={state.actionLogs} />
+          <Header>
+            <Header.Row>
+              {headerAddon}
+              {state.component?.componentId && (
+                <>
+                  <FilePath
+                    key="file"
+                    filePath={
+                      decodeComponentId(state.component.componentId)
+                        .currentFilePath
+                    }
+                  />
+                  <Link
+                    href={document.location.href}
+                    target="_blank"
+                    title="Open in new tab"
+                    className="text-gray-500 hover:text-gray-200 ml-2 text-lg"
+                  >
+                    <FontAwesomeIcon icon={faExternalLink} fixedWidth />
+                  </Link>
+                </>
+              )}
+              <div className="flex-grow"></div>
+              <SmallLogo
+                href="https://previewjs.com/docs"
+                label={appLabel}
+                title={state.appInfo?.version && `v${state.appInfo.version}`}
+              />
+              <Link
+                className="ml-2 text-xl text-[#1DA1F2] hover:text-white"
+                href="https://twitter.com/previewjs"
+                target="_blank"
+                title="Follow Preview.js on Twitter"
+              >
+                <FontAwesomeIcon icon={faTwitter} fixedWidth />
+              </Link>
+              <Link
+                className="ml-2 text-xl bg-[#333] text-white rounded-md hover:bg-white hover:text-[#333]"
+                href="https://github.com/fwouts/previewjs"
+                target="_blank"
+                title="Star Preview.js on GitHub"
+              >
+                <FontAwesomeIcon icon={faGithub} fixedWidth />
+              </Link>
+            </Header.Row>
+            {subheader && (
+              <Header.Row className="bg-gray-100">{subheader}</Header.Row>
+            )}
+          </Header>
+          <UpdateBanner state={state.updateBanner} />
+          {state.component ? (
+            <>
+              <div
+                className={
+                  state.component.details?.renderingAlwaysFailing
+                    ? "hidden"
+                    : "flex-grow flex flex-col"
+                }
+              >
+                {viewport}
+              </div>
+              {state.component.details?.renderingAlwaysFailing && (
+                <FailedRendering state={state} />
+              )}
+            </>
+          ) : (
+            <div
+              id="no-selection"
+              className="flex-grow bg-gray-700 text-gray-100 p-2 grid place-items-center text-lg"
+            >
+              Please select a component to preview.
+            </div>
+          )}
+          {tabs.length > 0 && (
+            <TabbedPanel
+              defaultTabKey="props"
+              tabs={tabs}
+              height={panelHeight}
+            />
+          )}
+          {footer}
+        </div>
       </div>
     );
   }
+);
+
+const FailedRendering = ({ state }: { state: PreviewState }) => (
+  <div className="flex-grow overflow-auto" id="fullscreen-rendering-error">
+    <div className="flex flex-col">
+      <h2 className="m-2 text-red-500 font-bold self-start rounded-lg text-sm">
+        Unable to render <code>{state.component?.name}</code>
+      </h2>
+      <p className="mx-2 text-sm">
+        While Preview.js can work out of the box for simple components, you may
+        need a custom configuration to render components that depend on:
+      </p>
+      <ul className="mx-2 text-sm list-disc list-inside leading-6">
+        <li>
+          a specific state or context (see{" "}
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/wrapper"
+          >
+            Wrapping components
+          </Link>
+          )
+        </li>
+        <li>
+          modules imported via{" "}
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/aliases"
+          >
+            aliases
+          </Link>
+        </li>
+        <li>
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/static-assets"
+          >
+            static assets
+          </Link>{" "}
+          or{" "}
+          <Link
+            className="underline"
+            href="https://previewjs.com/docs/config/svgr"
+          >
+            SVGR
+          </Link>
+        </li>
+      </ul>
+      <p className="mx-2 mt-2 text-sm">Please see the logs below:</p>
+      <div className="m-2 rounded-lg overflow-auto shadow-inner border-2 border-red-200">
+        <ConsolePanel state={state.consoleLogs} disallowClear />
+      </div>
+      <p className="m-2 text-sm">
+        If you get stuck, do not hesitate to ask for help on{" "}
+        <Link className="underline" href="https://discord.previewjs.com">
+          Discord
+        </Link>{" "}
+        or{" "}
+        <Link
+          className="underline"
+          href="https://github.com/fwouts/previewjs/issues"
+        >
+          GitHub
+        </Link>
+        !
+      </p>
+    </div>
+  </div>
 );
 
 type PropsPanelProps = {
@@ -225,7 +322,7 @@ const DefaultPropsPanel: React.FunctionComponent<PropsPanelProps> = ({
         disabled={!onReset}
         onClick={onReset}
       >
-        <FontAwesomeIcon icon={faUndo} />
+        <FontAwesomeIcon icon={faCircleXmark} />
       </button>
       {codeEditor}
     </Fragment>

@@ -1,6 +1,5 @@
 import { ensureServerRunning } from "@previewjs/server";
 import { readFileSync } from "fs";
-import { getLoaderInstallDir } from "./loader-install-dir";
 import { SERVER_PORT } from "./port";
 
 const { version } = JSON.parse(
@@ -13,7 +12,7 @@ if (!packageName) {
 }
 
 ensureServerRunning({
-  loaderInstallDir: getLoaderInstallDir(),
+  loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
   packageName,
   versionCode: `vscode-${version}`,
   port: SERVER_PORT,

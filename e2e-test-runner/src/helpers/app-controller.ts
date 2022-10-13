@@ -37,7 +37,9 @@ export class AppController {
     let iframe: playwright.ElementHandle<Element> | null = null;
     let frame: playwright.Frame | null = null;
     while (!frame) {
-      iframe = await this.page.waitForSelector("iframe");
+      iframe = await this.page.waitForSelector("iframe", {
+        state: "attached",
+      });
       if (iframe) {
         frame = await iframe.contentFrame();
       }
@@ -64,14 +66,52 @@ export class AppController {
 
   async waitForExpectedIframeRefresh() {
     const frame = await this.previewIframe();
-    await frame.$eval("body", () => {
-      return window.__waitForExpectedRefresh__();
-    });
+    try {
+      await frame.$eval("body", async () => {
+        // It's possible that __waitForExpectedRefresh__ isn't ready yet.
+        let waitStart = Date.now();
+        while (
+          !window.__waitForExpectedRefresh__ &&
+          Date.now() - waitStart < 5000
+        ) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+        return window.__waitForExpectedRefresh__();
+      });
+    } catch (e: any) {
+      if (
+        e.message.includes(
+          "Execution context was destroyed, most likely because of a navigation"
+        )
+      ) {
+        await this.waitForExpectedIframeRefresh();
+      } else {
+        throw e;
+      }
+    }
   }
 
-  async show(componentId: string) {
+  async show(componentId: string, options: { expectMissing?: boolean } = {}) {
     if (!this.preview) {
       throw new Error(`Preview server is not started.`);
+    }
+    const filePath = componentId.split(":")[0]!;
+    const detectedComponents =
+      await this.workspace.frameworkPlugin.detectComponents(
+        this.workspace.typeAnalyzer,
+        [path.join(this.workspace.rootDirPath, filePath)]
+      );
+    const matchingDetectedComponent = detectedComponents.find(
+      (c) =>
+        componentId ===
+        `${path
+          .relative(this.workspace.rootDirPath, c.absoluteFilePath)
+          .replace(/\\/g, "/")}:${c.name}`
+    );
+    if (!matchingDetectedComponent && !options.expectMissing) {
+      throw new Error(
+        `Component may be previewable but was not detected by framework plugin: ${componentId}`
+      );
     }
     const previewBaseUrl = this.preview.url();
     const url = `${previewBaseUrl}?p=${componentId}`;
@@ -131,6 +171,8 @@ export class AppController {
   }
 
   noSelection = this.element("#no-selection");
+
+  fullscreenRenderingError = this.element("#fullscreen-rendering-error");
 
   appError = this.element("#app-error");
 

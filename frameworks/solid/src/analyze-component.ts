@@ -3,7 +3,6 @@ import {
   CollectedTypes,
   dereferenceType,
   EMPTY_OBJECT_TYPE,
-  helpers,
   objectType,
   TypeResolver,
   UNKNOWN_TYPE,
@@ -13,25 +12,12 @@ import ts from "typescript";
 
 export function analyzeSolidComponent(
   typeResolver: TypeResolver,
-  absoluteFilePath: string,
-  componentName: string,
   signature: ts.Signature
 ): ComponentAnalysis {
-  const sourceFile = typeResolver.sourceFile(absoluteFilePath);
-  let args: ts.Expression | null = null;
-  if (sourceFile) {
-    args = helpers.extractArgs(sourceFile)[componentName] || null;
-  }
   const resolved = computePropsType(typeResolver, signature);
-  let providedArgs = new Set<string>();
-  if (args) {
-    const argsType = typeResolver.checker.getTypeAtLocation(args);
-    providedArgs = new Set(argsType.getProperties().map((prop) => prop.name));
-  }
   return {
     propsType: resolved.type,
     types: { ...resolved.collected },
-    providedArgs,
   };
 }
 

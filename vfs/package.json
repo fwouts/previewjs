@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/vfs",
-  "version": "1.2.3",
+  "version": "1.2.8",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -26,7 +26,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/vfs --no-deps --include-dependencies",
-    "build": "unbuild",
+    "build": "tsc && unbuild",
     "test": "vitest --no-threads"
   },
   "dependencies": {
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
-    "unbuild": "0.7.6",
-    "vitest": "0.21.0"
+    "unbuild": "0.8.11",
+    "vitest": "0.24.1"
   }
 }

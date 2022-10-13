@@ -1,5 +1,9 @@
-import { Component } from "@previewjs/core";
-import { extractCsf3Stories } from "@previewjs/csf3";
+import type { Component } from "@previewjs/core";
+import {
+  extractCsf3Stories,
+  extractDefaultComponent,
+  resolveComponent,
+} from "@previewjs/csf3";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component";
@@ -12,58 +16,25 @@ export function extractSolidComponents(
   if (!sourceFile) {
     return [];
   }
-  const args = helpers.extractArgs(sourceFile);
-  const components: Array<
-    Omit<Component, "analyze"> & {
-      signature: ts.Signature;
-    }
-  > = [];
-  const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
+  const functions: Array<[string, ts.Statement, ts.Node]> = [];
   for (const statement of sourceFile.statements) {
     if (ts.isExportAssignment(statement)) {
       if (ts.isIdentifier(statement.expression)) {
         // Avoid duplicates.
         continue;
       }
-      const signature = extractSolidComponent(
-        resolver.checker,
-        statement.expression
-      );
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name: "default",
-          isStory: false,
-          exported: true,
-          offsets: [[statement.getStart(), statement.getEnd()]],
-          signature,
-        });
-      }
+      functions.push(["default", statement, statement.expression]);
     } else if (ts.isVariableStatement(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
           continue;
         }
-        const name = declaration.name.text;
-        const exportedName = nameToExportedName[name];
-        if (!isValidSolidComponentName(name)) {
-          continue;
-        }
-        const signature = extractSolidComponent(
-          resolver.checker,
-          declaration.initializer
-        );
-        if (signature) {
-          components.push({
-            absoluteFilePath,
-            name,
-            isStory: !!args[name],
-            exported: !!exportedName,
-            offsets: [[statement.getStart(), statement.getEnd()]],
-            signature,
-          });
-        }
+        functions.push([
+          declaration.name.text,
+          statement,
+          declaration.initializer,
+        ]);
       }
     } else if (ts.isFunctionDeclaration(statement)) {
       const isDefaultExport =
@@ -74,54 +45,47 @@ export function extractSolidComponents(
           (m) => m.kind === ts.SyntaxKind.DefaultKeyword
         );
       const name = statement.name?.text;
-      const exported = (name && !!nameToExportedName[name]) || isDefaultExport;
-      if (isDefaultExport || (name && isValidSolidComponentName(name))) {
-        const signature = extractSolidComponent(resolver.checker, statement);
-        if (signature) {
-          components.push({
-            absoluteFilePath,
-            name: isDefaultExport || !name ? "default" : name,
-            isStory: name ? !!args[name] : false,
-            exported,
-            offsets: [[statement.getStart(), statement.getEnd()]],
-            signature,
-          });
-        }
-      }
-    } else if (ts.isClassDeclaration(statement) && statement.name) {
-      const name = statement.name.text;
-      const exportedName = nameToExportedName[name];
-      if (!isValidSolidComponentName(name)) {
-        continue;
-      }
-      const signature = extractSolidComponent(resolver.checker, statement);
-      if (signature) {
-        components.push({
-          absoluteFilePath,
-          name,
-          isStory: !!args[name],
-          exported: !!exportedName,
-          offsets: [[statement.getStart(), statement.getEnd()]],
-          signature,
-        });
+      if (isDefaultExport || name) {
+        functions.push([
+          isDefaultExport || !name ? "default" : name,
+          statement,
+          statement,
+        ]);
       }
     }
   }
 
-  const solidComponents = components.map(({ signature, ...component }) => ({
-    ...component,
-    analyze: async () =>
-      analyzeSolidComponent(
-        resolver,
-        component.absoluteFilePath,
-        component.name,
-        signature
-      ),
-  }));
-  return [
-    ...solidComponents,
-    ...extractCsf3Stories(absoluteFilePath, sourceFile),
-  ];
+  const storiesDefaultComponent = extractDefaultComponent(sourceFile);
+  const resolvedStoriesComponent = storiesDefaultComponent
+    ? resolveComponent(resolver.checker, storiesDefaultComponent)
+    : null;
+  const components: Component[] = [];
+  const args = helpers.extractArgs(sourceFile);
+  const nameToExportedName = helpers.extractExportedNames(sourceFile);
+  for (const [name, statement, node] of functions) {
+    const hasArgs = !!args[name];
+    const isExported = name === "default" || !!nameToExportedName[name];
+    const signature = extractSolidComponent(resolver.checker, node);
+    if (signature) {
+      components.push({
+        absoluteFilePath,
+        name,
+        offsets: [[statement.getStart(), statement.getEnd()]],
+        info:
+          storiesDefaultComponent && hasArgs && isExported
+            ? {
+                kind: "story",
+                associatedComponent: resolvedStoriesComponent,
+              }
+            : {
+                kind: "component",
+                exported: isExported,
+                analyze: async () => analyzeSolidComponent(resolver, signature),
+              },
+      });
+    }
+  }
+  return [...components, ...extractCsf3Stories(resolver, sourceFile)];
 }
 
 function extractSolidComponent(
@@ -129,21 +93,9 @@ function extractSolidComponent(
   node: ts.Node
 ): ts.Signature | null {
   const type = checker.getTypeAtLocation(node);
-
-  // Function component.
   for (const callSignature of type.getCallSignatures()) {
     if (isValidComponentReturnType(callSignature.getReturnType())) {
       return callSignature;
-    }
-  }
-  // Class component.
-  if (type.symbol) {
-    const classType = checker.getTypeOfSymbolAtLocation(type.symbol, node);
-    for (const constructSignature of classType.getConstructSignatures()) {
-      const returnType = constructSignature.getReturnType();
-      if (returnType.getProperty("render")) {
-        return constructSignature;
-      }
     }
   }
   return null;
@@ -166,8 +118,4 @@ function isJsxElement(type: ts.Type): boolean {
     }
   }
   return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
-}
-
-function isValidSolidComponentName(name: string) {
-  return name.length > 0 && name[0]! >= "A" && name[0]! <= "Z";
 }

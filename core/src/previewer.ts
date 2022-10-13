@@ -20,7 +20,19 @@ import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
 import { ViteManager } from "./vite/vite-manager";
 
-const POSTCSS_CONFIG_FILE = ["postcss.config.js", ".postcssrc.js"];
+const POSTCSS_CONFIG_FILE = [
+  ".postcssrc",
+  ".postcssrc.json",
+  ".postcssrc.yml",
+  ".postcssrc.js",
+  ".postcssrc.mjs",
+  ".postcssrc.cjs",
+  ".postcssrc.ts",
+  "postcss.config.js",
+  "postcss.config.mjs",
+  "postcss.config.cjs",
+  "postcss.config.ts",
+];
 const GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT = [
   "index",
   "global",

@@ -9,6 +9,7 @@ import {
   promiseType,
   recordType,
   setType,
+  tupleType,
   UNKNOWN_TYPE,
   ValueType,
 } from "./definitions";
@@ -69,6 +70,10 @@ function replaceNamedType(
       return arrayType(replaceNamedType(type.items, named, replacement));
     case "set":
       return setType(replaceNamedType(type.items, named, replacement));
+    case "tuple":
+      return tupleType(
+        type.items.map((t) => replaceNamedType(t, named, replacement))
+      );
     case "map":
       return mapType(
         replaceNamedType(type.keys, named, replacement),

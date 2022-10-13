@@ -65,11 +65,30 @@ export const PropsEditor = ({
     }
   }, [monaco, typeDeclarationsSource]);
   useEffect(() => {
-    const model = modelRef.current;
-    if (!model || !source || model.getValue() === source) {
+    const editor = editorRef.current;
+    if (!editor) {
       return;
     }
-    model.setValue(source);
+    const model = modelRef.current;
+    const currentSource = model?.getValue();
+    if (
+      currentSource === undefined ||
+      source === undefined ||
+      currentSource === source
+    ) {
+      return;
+    }
+    editor.executeEdits(null, [
+      {
+        range: {
+          startLineNumber: 1,
+          startColumn: 1,
+          endLineNumber: Number.MAX_SAFE_INTEGER,
+          endColumn: 1,
+        },
+        text: source,
+      },
+    ]);
   }, [source, mounted]);
   const beforeMount = useCallback<BeforeMount>((monaco) => {
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({

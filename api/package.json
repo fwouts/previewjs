@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/api",
-  "version": "2.4.0",
+  "version": "4.0.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -26,12 +26,12 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/api --no-deps --include-dependencies",
-    "build": "unbuild"
+    "build": "tsc && unbuild"
   },
   "dependencies": {
-    "@previewjs/type-analyzer": "^3.0.3"
+    "@previewjs/type-analyzer": "^4.0.5"
   },
   "devDependencies": {
-    "unbuild": "0.7.6"
+    "unbuild": "0.8.11"
   }
 }

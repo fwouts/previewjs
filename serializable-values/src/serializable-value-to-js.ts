@@ -1,6 +1,6 @@
 import assertNever from "assert-never";
 import prettier from "prettier";
-import parserBabel from "prettier/parser-babel";
+import parserBabel from "prettier/parser-babel.js";
 import type { SerializableValue } from "./serializable-value";
 
 export function serializableValueToJavaScript(

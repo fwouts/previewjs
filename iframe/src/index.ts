@@ -1,4 +1,4 @@
-import type { ErrorPayload } from "vite/types/hmrPayload";
+import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import type { AppToPreviewMessage, PreviewToAppMessage } from "./messages";
 
 export function createController(options: {
@@ -13,6 +13,7 @@ export interface PreviewIframeController {
   stop(): void;
   showLoading(): void;
   loadComponent(options: LoadComponentOptions): void;
+  resetIframe(): void;
 }
 
 export interface LoadComponentOptions {
@@ -80,7 +81,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     }
   }
 
-  private resetIframe() {
+  resetIframe() {
     const iframe = this.options.getIframe();
     this.previewBootstrapped = false;
     if (!iframe) {
@@ -100,17 +101,23 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "before-render":
       case "action":
       case "log-message":
+      case "file-changed":
         listener(data);
         break;
-      case "renderer-updated":
-        this.clearExpectRenderTimeout();
+      case "rendering-setup":
         listener({
-          kind: "update",
-          rendering: {
-            kind: "success",
+          kind: "rendering-setup",
+          info: {
             variantKey: data.variantKey,
             variants: data.variants,
           },
+        });
+        break;
+      case "rendering-success":
+        this.clearExpectRenderTimeout();
+        listener({
+          kind: "rendering-done",
+          success: true,
         });
         break;
       case "rendering-error":
@@ -120,6 +127,10 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           level: "error",
           timestamp: Date.now(),
           message: data.message,
+        });
+        listener({
+          kind: "rendering-done",
+          success: false,
         });
         break;
       case "vite-error":
@@ -132,8 +143,8 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         break;
       case "vite-before-update":
         listener({
-          kind: "update",
-          rendering: null,
+          kind: "before-vite-update",
+          payload: data.payload,
         });
         break;
     }
@@ -193,33 +204,39 @@ function generateMessageFromViteError(err: ErrorPayload["err"]) {
 
 export type PreviewEvent =
   | PreviewBootstrapped
+  | BeforeViteUpdate
   | BeforeRender
-  | PreviewUpdate
+  | RenderingSetup
+  | RenderingDone
   | Action
-  | LogMessage;
+  | LogMessage
+  | FileChanged;
 
 export type PreviewBootstrapped = {
   kind: "bootstrapped";
+};
+
+export type BeforeViteUpdate = {
+  kind: "before-vite-update";
+  payload: UpdatePayload;
 };
 
 export type BeforeRender = {
   kind: "before-render";
 };
 
-export type PreviewUpdate = {
-  kind: "update";
-  rendering:
-    | {
-        kind: "error";
-        error: string;
-      }
-    | {
-        kind: "success";
-        variantKey: string;
-        variants: Variant[];
-      }
-    | null;
+export type RenderingSetup = {
+  kind: "rendering-setup";
+  info: {
+    variantKey: string;
+    variants: Variant[];
+  };
 };
+
+export interface RenderingDone {
+  kind: "rendering-done";
+  success: boolean;
+}
 
 export interface Action {
   kind: "action";
@@ -236,6 +253,11 @@ export interface LogMessage {
 
 export type LogLevel = "log" | "info" | "warn" | "error";
 
+export interface FileChanged {
+  kind: "file-changed";
+  path: string;
+}
+
 export interface Variant {
   key: string;
   label: string;
@@ -248,6 +270,7 @@ export type RendererLoader = (options: {
   componentFilePath: string;
   componentModule: any;
   componentName?: string;
+  updateId: string;
 }) => Promise<{
   variants: Array<
     Variant & {

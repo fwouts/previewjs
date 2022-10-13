@@ -3,22 +3,31 @@ import { expect } from "./expect";
 
 export async function expectErrors(
   controller: AppController,
+  options: {
+    fullscreen: boolean;
+  },
   expectedErrors: Array<string | string[]>
 ) {
   await controller.waitForIdle();
   await controller.waitForExpectedIframeRefresh();
   const selectedTab = await controller.bottomPanel.tabs.selected();
+  const consoleTab = controller.bottomPanel.tabs.get("Console");
   const isConsoleSelected =
     (await selectedTab.text())?.includes("Console") || false;
   if (expectedErrors.length === 0) {
     await controller.console.notificationCount.waitUntilGone();
-    if (!isConsoleSelected) {
-      await controller.bottomPanel.tabs.get("Console").click();
-    }
+  }
+  if (!isConsoleSelected && (await consoleTab.visible())) {
+    await consoleTab.click();
+  }
+  if (expectedErrors.length === 0) {
+    expect(await controller.fullscreenRenderingError.waitUntilGone());
     expect(await controller.console.items.count()).toEqual(0);
   } else {
-    if (!isConsoleSelected) {
-      await controller.bottomPanel.tabs.get("Console").click();
+    if (options.fullscreen) {
+      expect(await controller.fullscreenRenderingError.waitUntilVisible());
+    } else {
+      expect(await controller.fullscreenRenderingError.waitUntilGone());
     }
     const itemCount = await controller.console.items.count();
     const actualErrors: string[] = [];
@@ -67,8 +76,10 @@ export async function expectErrors(
         );
       }
     }
-    expect(await controller.console.notificationCount.text()).toEqual(
-      expectedErrors.length.toString(10)
-    );
+    if (await consoleTab.visible()) {
+      expect(await controller.console.notificationCount.text()).toEqual(
+        expectedErrors.length.toString(10)
+      );
+    }
   }
 }

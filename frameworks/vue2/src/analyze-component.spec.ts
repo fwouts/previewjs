@@ -25,7 +25,6 @@ import { createVueTypeScriptReader } from "./vue-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
-const EMPTY_SET: ReadonlySet<string> = new Set();
 
 describe("analyze Vue 2 component", () => {
   let memoryReader: Reader & Writer;
@@ -76,7 +75,6 @@ export default {
       )
     ).toEqual({
       propsType: objectType({}),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -118,7 +116,6 @@ export default {
         h: unionType([STRING_TYPE, NUMBER_TYPE]),
         i: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -144,7 +141,6 @@ export default {
         b: UNKNOWN_TYPE,
         c: UNKNOWN_TYPE,
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });
@@ -182,7 +178,6 @@ export default class App extends Vue {
           ])
         ),
       }),
-      providedArgs: EMPTY_SET,
       types: {},
     });
   });

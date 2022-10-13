@@ -1,7 +1,9 @@
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
+import { existsSync, readFileSync } from "fs";
 import http from "http";
+import isWsl from "is-wsl";
 import net from "net";
 import path from "path";
 import type {
@@ -38,10 +40,9 @@ export interface ServerStartOptions {
 export async function ensureServerRunning(options: ServerStartOptions) {
   const alreadyRunning = await isServerAlreadyRunning(options);
   if (alreadyRunning) {
-    JSON.stringify(
+    console.log(
       `Preview.js daemon server is already running on port ${options.port}.`
     );
-    sendParentProcessReadyMessage();
     return;
   }
   await startServer(options);
@@ -112,6 +113,50 @@ async function startServer({
   const workspaces: Record<string, Workspace> = {};
   const previews: Record<string, Preview> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
+  let wslRoot: string | null = null;
+
+  function transformAbsoluteFilePath(absoluteFilePath: string) {
+    if (!isWsl) {
+      return absoluteFilePath;
+    }
+    if (absoluteFilePath.match(/^[a-z]:.*$/i)) {
+      if (!wslRoot) {
+        wslRoot = detectWslRoot();
+      }
+      // This is a Windows path, which needs to be converted to Linux format inside WSL.
+      return `${wslRoot}/${absoluteFilePath
+        .substring(0, 1)
+        .toLowerCase()}/${absoluteFilePath.substring(3).replace(/\\/g, "/")}`;
+    }
+    // This is already a Linux path.
+    return absoluteFilePath;
+  }
+
+  function detectWslRoot() {
+    const wslConfPath = "/etc/wsl.conf";
+    const defaultRoot = "/mnt";
+    try {
+      if (!existsSync(wslConfPath)) {
+        return defaultRoot;
+      }
+      const configText = readFileSync(wslConfPath, "utf8");
+      const match = configText.match(/root\s*=\s*(.*)/);
+      if (!match) {
+        return defaultRoot;
+      }
+      const detectedRoot = match[1]!.trim();
+      if (detectedRoot.endsWith("/")) {
+        return detectedRoot.substring(0, detectedRoot.length - 1);
+      } else {
+        return detectedRoot;
+      }
+    } catch (e) {
+      console.warn(
+        `Unable to read WSL config, assuming default root: ${defaultRoot}`
+      );
+      return defaultRoot;
+    }
+  }
 
   const app = http.createServer((req, res) => {
     if (!req.url) {
@@ -221,8 +266,7 @@ async function startServer({
     async (req) => {
       const workspace = await previewjs.getWorkspace({
         versionCode,
-        logLevel: "info",
-        absoluteFilePath: req.absoluteFilePath,
+        absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
       if (!workspace) {
         return {
@@ -233,10 +277,11 @@ async function startServer({
         .filter(([, value]) => value === workspace)
         ?.map(([key]) => key)[0];
       const workspaceId =
-        existingWorkspaceId || crypto.randomBytes(16).toString("base64url");
+        existingWorkspaceId || crypto.randomBytes(16).toString("hex");
       workspaces[workspaceId] = workspace;
       return {
         workspaceId,
+        rootDirPath: workspace.rootDirPath,
       };
     }
   );
@@ -257,7 +302,7 @@ async function startServer({
 
   endpoint<AnalyzeFileRequest, AnalyzeFileResponse>(
     "/analyze/file",
-    async ({ workspaceId, absoluteFilePath, options }) => {
+    async ({ workspaceId, absoluteFilePath }) => {
       const workspace = workspaces[workspaceId];
       if (!workspace) {
         throw new NotFoundError();
@@ -265,29 +310,22 @@ async function startServer({
       const components = (
         await workspace.frameworkPlugin.detectComponents(
           workspace.typeAnalyzer,
-          [absoluteFilePath]
+          [transformAbsoluteFilePath(absoluteFilePath)]
         )
       )
         .map((c) => {
-          return c.offsets
-            .filter(([start, end]) => {
-              if (options?.offset === undefined) {
-                return true;
-              }
-              return options.offset >= start && options.offset <= end;
-            })
-            .map(([start]) => ({
-              componentName: c.name,
-              exported: c.exported,
-              offset: start,
-              componentId: previewjs.core.generateComponentId({
-                currentFilePath: path.relative(
-                  workspace.rootDirPath,
-                  c.absoluteFilePath
-                ),
-                name: c.name,
-              }),
-            }));
+          return c.offsets.map(([start, end]) => ({
+            componentName: c.name,
+            start,
+            end,
+            componentId: previewjs.core.generateComponentId({
+              currentFilePath: path.relative(
+                workspace.rootDirPath,
+                c.absoluteFilePath
+              ),
+              name: c.name,
+            }),
+          }));
         })
         .flat();
       return { components };
@@ -327,7 +365,10 @@ async function startServer({
   endpoint<UpdatePendingFileRequest, UpdatePendingFileResponse>(
     "/pending-files/update",
     async (req) => {
-      await previewjs.updateFileInMemory(req.absoluteFilePath, req.utf8Content);
+      await previewjs.updateFileInMemory(
+        transformAbsoluteFilePath(req.absoluteFilePath),
+        req.utf8Content
+      );
       return {};
     }
   );
@@ -363,13 +404,5 @@ async function startServer({
     console.log(
       `Another Preview.js daemon server spun up concurrently on ${port}. All good.`
     );
-  }
-
-  sendParentProcessReadyMessage();
-}
-
-function sendParentProcessReadyMessage() {
-  if (process.send) {
-    process.send(JSON.stringify({ type: "ready" }));
   }
 }

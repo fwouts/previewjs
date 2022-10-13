@@ -17,6 +17,7 @@ import {
   recordType,
   setType,
   STRING_TYPE,
+  tupleType,
   unionType,
   UNKNOWN_TYPE,
   VOID_TYPE,
@@ -244,6 +245,7 @@ describe("generateSerializableValue", () => {
 
             arrayType: arrayType(STRING_TYPE),
             setType: setType(STRING_TYPE),
+            tupleType: tupleType([STRING_TYPE, NUMBER_TYPE]),
             recordType: recordType(STRING_TYPE, NUMBER_TYPE),
             unionType: unionType([STRING_TYPE, NUMBER_TYPE]),
             intersectionType: intersectionType([STRING_TYPE, NUMBER_TYPE]),
@@ -406,6 +408,25 @@ describe("generateSerializableValue", () => {
                 ],
                 "kind": "array",
               },
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "tupleType",
+            },
+            "value": {
+              "items": [
+                {
+                  "kind": "string",
+                  "value": "tupleType",
+                },
+                {
+                  "kind": "number",
+                  "value": 0,
+                },
+              ],
+              "kind": "array",
             },
           },
           {

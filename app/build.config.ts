@@ -5,4 +5,5 @@ export default {
   },
   externals: ["@previewjs/api", "@previewjs/core"],
   clean: true,
+  failOnWarn: false,
 };

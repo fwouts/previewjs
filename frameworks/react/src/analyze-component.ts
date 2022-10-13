@@ -3,7 +3,6 @@ import {
   CollectedTypes,
   dereferenceType,
   EMPTY_OBJECT_TYPE,
-  helpers,
   maybeOptionalType,
   objectType,
   stripUnusedTypes,
@@ -21,22 +20,14 @@ export function analyzeReactComponent(
   signature: ts.Signature
 ): ComponentAnalysis {
   const sourceFile = typeResolver.sourceFile(absoluteFilePath);
-  let args: ts.Expression | null = null;
   let propTypes: ts.Expression | null = null;
   if (sourceFile) {
-    args = helpers.extractArgs(sourceFile)[componentName] || null;
     propTypes = detectPropTypes(sourceFile, componentName);
   }
   const resolved = computePropsType(typeResolver, signature, propTypes);
-  let providedArgs = new Set<string>();
-  if (args) {
-    const argsType = typeResolver.checker.getTypeAtLocation(args);
-    providedArgs = new Set(argsType.getProperties().map((prop) => prop.name));
-  }
   return {
     propsType: resolved.type,
     types: { ...resolved.collected },
-    providedArgs,
   };
 }
 

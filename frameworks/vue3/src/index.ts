@@ -1,14 +1,19 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import type { Node } from "acorn";
+import fs from "fs-extra";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 /** @deprecated */
 export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    const version = await dependencies["vue"]?.readInstalledVersion();
+    const version =
+      (await dependencies["vue"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt3"]?.readInstalledVersion());
     if (!version) {
       return false;
     }
@@ -40,19 +45,25 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (absoluteFilePath.endsWith(".vue")) {
-            const name = path.basename(
-              absoluteFilePath,
-              path.extname(absoluteFilePath)
-            );
+          if (
+            absoluteFilePath.endsWith(".vue") &&
+            (await fs.pathExists(absoluteFilePath))
+          ) {
             components.push({
               absoluteFilePath,
-              name,
-              isStory: false,
-              exported: true,
-              offsets: [[0, Infinity]],
-              analyze: async () =>
-                analyzeVueComponentFromTemplate(typeAnalyzer, absoluteFilePath),
+              name: inferComponentNameFromVuePath(absoluteFilePath),
+              offsets: [
+                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
+              ],
+              info: {
+                kind: "component",
+                exported: true,
+                analyze: async () =>
+                  analyzeVueComponentFromTemplate(
+                    typeAnalyzer,
+                    absoluteFilePath
+                  ),
+              },
             });
           } else {
             components.push(
@@ -105,6 +116,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
                         declaration.type === "VariableDeclarator" &&
                         declaration.id.type === "Identifier" &&
                         declaration.id.name === "_sfc_main" &&
+                        declaration.init &&
                         declaration.init.type === "CallExpression" &&
                         declaration.init.callee.type === "Identifier" &&
                         declaration.init.callee.name === "_defineComponent" &&
@@ -116,8 +128,8 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
                           declaration.init.arguments[0].properties;
                         const setupProperty = properties.find(
                           (p: any) =>
-                            p.key.name === "setup" &&
-                            p.value.type === "FunctionExpression"
+                            p.key?.name === "setup" &&
+                            p.value?.type === "FunctionExpression"
                         );
                         if (!setupProperty) {
                           continue;

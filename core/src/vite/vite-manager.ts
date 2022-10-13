@@ -8,6 +8,7 @@ import { recrawl } from "recrawl";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
+import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
@@ -80,7 +81,7 @@ export class ViteManager {
     //
     // Useful when the project may contain some invalid files.
     const typeScriptConfigFilePaths = await recrawl({
-      only: ["tsconfig.json"],
+      only: ["jsconfig.json", "tsconfig.json"],
       skip: ["node_modules", ".git"],
     })(this.options.rootDirPath);
     const validTypeScriptFilePaths: string[] = [];
@@ -90,34 +91,36 @@ export class ViteManager {
         validTypeScriptFilePaths.push(configFilePath);
       } catch (e) {
         console.warn(
-          `Encountered an invalid tsconfig.json file, ignoring: ${configFilePath}`
+          `Encountered an invalid config file, ignoring: ${configFilePath}`
         );
       }
     }
     const tsInferredAlias: Record<string, string> = {};
-    if (typeScriptConfigFilePaths.includes("tsconfig.json")) {
-      // If there is a top-level tsconfig.json, use it to infer aliases.
-      // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-      const config = loadTsconfig("tsconfig.json");
-      if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
-        const { baseUrl, paths } = config.compilerOptions;
-        for (const [match, mapping] of Object.entries(paths)) {
-          const firstMapping = mapping[0];
-          if (!firstMapping) {
-            continue;
-          }
-          const matchNoWildcard = match.endsWith("/*")
-            ? match.slice(0, match.length - 2)
-            : match;
-          const firstMappingNoWildcard = firstMapping.endsWith("/*")
-            ? firstMapping.slice(0, firstMapping.length - 2)
-            : firstMapping;
-          tsInferredAlias[matchNoWildcard] = path.join(
-            this.options.rootDirPath,
-            baseUrl,
-            firstMappingNoWildcard
-          );
+    // If there is a top-level tsconfig.json, use it to infer aliases.
+    // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
+    const config = loadTsconfig(
+      typeScriptConfigFilePaths.includes("tsconfig.json")
+        ? "tsconfig.json"
+        : "jsconfig.json"
+    );
+    if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
+      const { baseUrl, paths } = config.compilerOptions;
+      for (const [match, mapping] of Object.entries(paths)) {
+        const firstMapping = mapping[0];
+        if (!firstMapping) {
+          continue;
         }
+        const matchNoWildcard = match.endsWith("/*")
+          ? match.slice(0, match.length - 2)
+          : match;
+        const firstMappingNoWildcard = firstMapping.endsWith("/*")
+          ? firstMapping.slice(0, firstMapping.length - 2)
+          : firstMapping;
+        tsInferredAlias[matchNoWildcard] = path.join(
+          this.options.rootDirPath,
+          baseUrl,
+          firstMappingNoWildcard
+        );
       }
     }
     const alias = {
@@ -130,6 +133,23 @@ export class ViteManager {
       ...this.options.config,
       alias,
     });
+    const existingViteConfig = await vite.loadConfigFromFile(
+      {
+        command: "serve",
+        mode: "development",
+      },
+      undefined,
+      this.options.rootDirPath
+    );
+    const projectVitePlugins = [
+      ...(existingViteConfig?.config.plugins || []),
+      ...(this.options.config.vite?.plugins || []),
+    ];
+    // Use Preview.js framework plugins unless they're already provided by the project.
+    const frameworkVitePlugins = await excludePlugins(
+      await extractPluginNames(projectVitePlugins),
+      frameworkPluginViteConfig.plugins || []
+    );
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
@@ -138,6 +158,9 @@ export class ViteManager {
       virtualPlugin({
         reader: this.options.reader,
         rootDirPath: this.options.rootDirPath,
+        allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow || [
+          searchForWorkspaceRoot(this.options.rootDirPath),
+        ],
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
@@ -153,8 +176,8 @@ export class ViteManager {
       }),
       cssModulesWithoutSuffixPlugin(),
       componentLoaderPlugin(this.options),
-      ...(frameworkPluginViteConfig.plugins || []),
-      ...(this.options.config.vite?.plugins || []),
+      frameworkVitePlugins,
+      projectVitePlugins,
     ];
 
     // We need to patch handleHotUpdate() in every plugin because, by
@@ -167,7 +190,12 @@ export class ViteManager {
         if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
           return plugin;
         }
-        const handleHotUpdate = plugin.handleHotUpdate.bind(plugin);
+        // Note: this gets rid of the "pre" / "post" handler. It's probably fine.
+        // If not, it's easily fixed. PR welcome!
+        const handleHotUpdate =
+          typeof plugin.handleHotUpdate === "function"
+            ? plugin.handleHotUpdate
+            : plugin.handleHotUpdate.handler;
         return {
           ...plugin,
           handleHotUpdate: async (ctx: vite.HmrContext) => {
@@ -186,9 +214,9 @@ export class ViteManager {
         };
       })
     );
-
     const viteServerPromise = vite.createServer({
       ...frameworkPluginViteConfig,
+      ...existingViteConfig?.config,
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
@@ -221,22 +249,30 @@ export class ViteManager {
         hasErrorLogged: defaultLogger.hasErrorLogged,
       },
       clearScreen: false,
-      cacheDir: this.options.config.vite?.cacheDir || this.options.cacheDir,
+      cacheDir:
+        existingViteConfig?.config.cacheDir ||
+        this.options.config.vite?.cacheDir ||
+        this.options.cacheDir,
       publicDir:
-        this.options.config.vite?.publicDir || this.options.config.publicDir,
+        existingViteConfig?.config.publicDir ||
+        this.options.config.vite?.publicDir ||
+        this.options.config.publicDir,
       plugins,
       define: {
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
+        ...existingViteConfig?.config.define,
         ...this.options.config.vite?.define,
       },
       resolve: {
+        ...existingViteConfig?.config.resolve,
         ...this.options.config.vite?.resolve,
         alias: {
           "~": "",
           "@": "",
           ...alias,
+          ...existingViteConfig?.config.resolve?.alias,
           ...frameworkPluginViteConfig.resolve?.alias,
         },
       },
@@ -248,6 +284,15 @@ export class ViteManager {
       });
     });
     this.viteServer = await viteServerPromise;
+    this.viteServer.watcher.addListener("change", (path) => {
+      this.viteServer?.ws.send({
+        type: "custom",
+        event: "previewjs-file-changed",
+        data: {
+          path,
+        },
+      });
+    });
   }
 
   async stop() {
@@ -273,16 +318,41 @@ export class ViteManager {
       onChange(absoluteFilePath);
     }
   }
+}
 
-  async renderIndexHtml(originalUrl: string) {
-    await this.viteStartupPromise;
-    if (!this.viteServer) {
-      throw new Error(`Vite server is not running.`);
+async function extractPluginNames(
+  pluginOptions: vite.PluginOption[]
+): Promise<Set<string>> {
+  const names = new Set<string>();
+  for (const pluginOption of await Promise.all(pluginOptions)) {
+    if (!pluginOption) {
+      continue;
     }
-    const template = await fs.readFile(
-      this.options.shadowHtmlFilePath,
-      "utf-8"
-    );
-    return await this.viteServer.transformIndexHtml(originalUrl, template);
+    if (Array.isArray(pluginOption)) {
+      for (const name of await extractPluginNames(pluginOption)) {
+        names.add(name);
+      }
+    } else {
+      names.add(pluginOption.name);
+    }
   }
+  return names;
+}
+
+async function excludePlugins(
+  excludePluginNames: Set<string>,
+  pluginOptions: vite.PluginOption[]
+): Promise<vite.Plugin[]> {
+  const plugins: vite.Plugin[] = [];
+  for (const pluginOption of await Promise.all(pluginOptions)) {
+    if (!pluginOption) {
+      continue;
+    }
+    if (Array.isArray(pluginOption)) {
+      plugins.push(...(await excludePlugins(excludePluginNames, pluginOption)));
+    } else if (!excludePluginNames.has(pluginOption.name)) {
+      plugins.push(pluginOption);
+    }
+  }
+  return plugins;
 }
