@@ -310,7 +310,6 @@ export const errorHandlingTests = testSuite(
             search: "App-missing.css",
             replace: "App.css",
           });
-          await new Promise((resolve) => setTimeout(resolve, 1000));
           const previewIframe = await controller.previewIframe();
           await expectErrors(
             controller,
