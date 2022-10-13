@@ -141,6 +141,7 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
+    const frameworkVitePlugins = frameworkPluginViteConfig.plugins || [];
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
@@ -167,9 +168,11 @@ export class ViteManager {
       }),
       cssModulesWithoutSuffixPlugin(),
       componentLoaderPlugin(this.options),
-      ...(frameworkPluginViteConfig.plugins || []),
-      ...(existingViteConfig?.config.plugins || []),
-      ...(this.options.config.vite?.plugins || []),
+      frameworkVitePlugins,
+      await excludePlugins(await extractPluginNames(frameworkVitePlugins), [
+        ...(existingViteConfig?.config.plugins || []),
+        ...(this.options.config.vite?.plugins || []),
+      ]),
     ];
 
     // We need to patch handleHotUpdate() in every plugin because, by
@@ -307,4 +310,41 @@ export class ViteManager {
       onChange(absoluteFilePath);
     }
   }
+}
+
+async function extractPluginNames(
+  pluginOptions: vite.PluginOption[]
+): Promise<Set<string>> {
+  const names = new Set<string>();
+  for (const pluginOption of await Promise.all(pluginOptions)) {
+    if (!pluginOption) {
+      continue;
+    }
+    if (Array.isArray(pluginOption)) {
+      for (const name of await extractPluginNames(pluginOption)) {
+        names.add(name);
+      }
+    } else {
+      names.add(pluginOption.name);
+    }
+  }
+  return names;
+}
+
+async function excludePlugins(
+  excludePluginNames: Set<string>,
+  pluginOptions: vite.PluginOption[]
+): Promise<vite.Plugin[]> {
+  const plugins: vite.Plugin[] = [];
+  for (const pluginOption of await Promise.all(pluginOptions)) {
+    if (!pluginOption) {
+      continue;
+    }
+    if (Array.isArray(pluginOption)) {
+      plugins.push(...(await excludePlugins(excludePluginNames, pluginOption)));
+    } else if (!excludePluginNames.has(pluginOption.name)) {
+      plugins.push(pluginOption);
+    }
+  }
+  return plugins;
 }
