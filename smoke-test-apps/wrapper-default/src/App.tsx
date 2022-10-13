@@ -23,4 +23,4 @@ function App() {
   );
 }
 
-export { App, AppProps };
+export { App };
