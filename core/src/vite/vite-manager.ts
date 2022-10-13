@@ -141,7 +141,15 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
-    const frameworkVitePlugins = frameworkPluginViteConfig.plugins || [];
+    const projectVitePlugins = [
+      ...(existingViteConfig?.config.plugins || []),
+      ...(this.options.config.vite?.plugins || []),
+    ];
+    // Use Preview.js framework plugins unless they're already provided by the project.
+    const frameworkVitePlugins = await excludePlugins(
+      await extractPluginNames(projectVitePlugins),
+      frameworkPluginViteConfig.plugins || []
+    );
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
@@ -169,10 +177,7 @@ export class ViteManager {
       cssModulesWithoutSuffixPlugin(),
       componentLoaderPlugin(this.options),
       frameworkVitePlugins,
-      await excludePlugins(await extractPluginNames(frameworkVitePlugins), [
-        ...(existingViteConfig?.config.plugins || []),
-        ...(this.options.config.vite?.plugins || []),
-      ]),
+      projectVitePlugins,
     ];
 
     // We need to patch handleHotUpdate() in every plugin because, by
