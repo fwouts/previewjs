@@ -196,7 +196,6 @@ export const errorHandlingTests = testSuite(
             }
           );
           await controller.show("src/App.tsx:App");
-          const previewIframe = await controller.previewIframe();
           await expectErrors(
             controller,
             {
@@ -228,6 +227,7 @@ export const errorHandlingTests = testSuite(
             },
             []
           );
+          const previewIframe = await controller.previewIframe();
           await previewIframe.waitForSelector("#recovered");
         }
       );
@@ -298,7 +298,6 @@ export const errorHandlingTests = testSuite(
             replace: "App-missing.css",
           });
           await controller.show("src/App.tsx:App");
-          const previewIframe = await controller.previewIframe();
           await expectErrors(
             controller,
             {
@@ -318,6 +317,7 @@ export const errorHandlingTests = testSuite(
             },
             []
           );
+          const previewIframe = await controller.previewIframe();
           await previewIframe.waitForSelector(".App-logo");
         }
       );
