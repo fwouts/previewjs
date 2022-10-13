@@ -44,7 +44,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps> {
 
   render() {
     if (this.state.error) {
-      return <h1>Something went wrong.</h1>;
+      return <></>;
     }
 
     return this.props.children;
