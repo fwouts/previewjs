@@ -1,19 +1,18 @@
 import path from "path";
 import type { Plugin } from "vite";
 
-// Since React 17, importing React is optional when building with webpack.
-// We do need the import with Vite, however.
+// Since React 17, importing React is optional.
+// @vitejs/plugin-react adds the import automatically for .jsx/tsx files
+// but not .js files.
 const reactImportRegExp = /import (\* as )?React[ ,]/;
-const extensions = new Set([".js", ".jsx", ".tsx"]);
 
 export function reactImportsPlugin(): Plugin {
   return {
-    name: "previewjs:react-imports",
+    name: "previewjs:react-js-imports",
     async transform(code, id) {
-      const ext = path.extname(id);
       if (
         id.includes("node_modules") ||
-        (ext && !extensions.has(ext)) ||
+        path.extname(id) !== ".js" ||
         reactImportRegExp.test(code)
       ) {
         return code;

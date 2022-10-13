@@ -350,6 +350,7 @@ importers:
       '@previewjs/vfs': ^1.2.8
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.21
+      '@vitejs/plugin-react': 2.1.0
       react: 18.2.0
       rimraf: 3.0.2
       typescript: ^4.8.4
@@ -359,6 +360,7 @@ importers:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
+      '@vitejs/plugin-react': 2.1.0_vite@3.1.6
       typescript: 4.8.4
     devDependencies:
       '@previewjs/core': link:../../core
@@ -10167,12 +10169,11 @@ packages:
       '@babel/plugin-transform-react-jsx-development': 7.18.6_@babel+core@7.19.1
       '@babel/plugin-transform-react-jsx-self': 7.18.6_@babel+core@7.19.1
       '@babel/plugin-transform-react-jsx-source': 7.18.6_@babel+core@7.19.1
-      magic-string: 0.26.3
+      magic-string: 0.26.7
       react-refresh: 0.14.0
       vite: 3.1.6
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@vitejs/plugin-vue-jsx/2.0.0_vite@3.1.6+vue@3.2.37:
     resolution: {integrity: sha512-WF9ApZ/ivyyW3volQfu0Td0KNPhcccYEaRNzNY1NxRLVJQLSX0nFqquv3e2g7MF74p1XZK4bGtDL2y5i5O5+1A==}
@@ -21723,7 +21724,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       sourcemap-codec: 1.4.8
-    dev: true
 
   /make-dir/1.3.0:
     resolution: {integrity: sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==}
@@ -26440,7 +26440,6 @@ packages:
   /react-refresh/0.14.0:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /react-refresh/0.4.3:
     resolution: {integrity: sha512-Hwln1VNuGl/6bVwnd0Xdn1e84gT/8T9aYNL+HAKDArLCS7LWjwr7StE30IEYbIkx0Vi3vs+coQxe+SQDbGbbpA==}

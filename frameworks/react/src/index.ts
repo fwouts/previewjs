@@ -1,10 +1,10 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
+import react from "@vitejs/plugin-react";
 import path from "path";
 import ts from "typescript";
 import { extractReactComponents } from "./extract-component";
-import { optimizeReactDepsPlugin } from "./optimize-deps-plugin";
-import { reactImportsPlugin } from "./react-imports-plugin";
+import { reactImportsPlugin } from "./react-js-imports-plugin";
 import { REACT_SPECIAL_TYPES } from "./special-types";
 
 /** @deprecated */
@@ -56,7 +56,21 @@ export const reactFrameworkPlugin: FrameworkPluginFactory = {
               "react-native": "react-native-web",
             },
           },
-          plugins: [optimizeReactDepsPlugin(), reactImportsPlugin()],
+          plugins: [
+            reactImportsPlugin(),
+            react(),
+            {
+              name: "previewjs:disable-react-hmr",
+              async transform(code, id) {
+                if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
+                  return null;
+                }
+                // HMR prevents preview props from being refreshed.
+                // For now, we disable it entirely.
+                return code.replace(/import\.meta/g, "({})");
+              },
+            },
+          ],
           define: {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
