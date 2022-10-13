@@ -66,9 +66,21 @@ export class AppController {
 
   async waitForExpectedIframeRefresh() {
     const frame = await this.previewIframe();
-    await frame.$eval("body", () => {
-      return window.__waitForExpectedRefresh__();
-    });
+    try {
+      await frame.$eval("body", () => {
+        return window.__waitForExpectedRefresh__();
+      });
+    } catch (e: any) {
+      if (
+        e.message.includes(
+          "Execution context was destroyed, most likely because of a navigation"
+        )
+      ) {
+        await this.waitForExpectedIframeRefresh();
+      } else {
+        throw e;
+      }
+    }
   }
 
   async show(componentId: string, options: { expectMissing?: boolean } = {}) {
