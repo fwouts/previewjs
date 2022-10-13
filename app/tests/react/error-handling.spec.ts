@@ -436,7 +436,7 @@ export const errorHandlingTests = testSuite(
               fullscreen: false,
             },
             [
-              `src/App.tsx:4:10: ERROR: Expected ">" but found "<"`,
+              `src/App.tsx: Unexpected token, expected "jsxTagEnd"`,
               "Failed to reload /src/App.tsx.",
             ]
           );
