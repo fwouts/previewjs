@@ -67,7 +67,15 @@ export class AppController {
   async waitForExpectedIframeRefresh() {
     const frame = await this.previewIframe();
     try {
-      await frame.$eval("body", () => {
+      await frame.$eval("body", async () => {
+        // It's possible that __waitForExpectedRefresh__ isn't ready yet.
+        let waitStart = Date.now();
+        while (
+          !window.__waitForExpectedRefresh__ &&
+          Date.now() - waitStart < 5000
+        ) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
         return window.__waitForExpectedRefresh__();
       });
     } catch (e: any) {
