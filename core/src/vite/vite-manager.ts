@@ -123,16 +123,6 @@ export class ViteManager {
         );
       }
     }
-    const alias = {
-      ...tsInferredAlias,
-      ...this.options.config.alias,
-      ...this.options.config.vite?.resolve?.alias,
-    };
-    const defaultLogger = vite.createLogger(this.options.logLevel);
-    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig({
-      ...this.options.config,
-      alias,
-    });
     const existingViteConfig = await vite.loadConfigFromFile(
       {
         command: "serve",
@@ -141,6 +131,17 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
+    const alias = {
+      ...tsInferredAlias,
+      ...existingViteConfig?.config.resolve?.alias,
+      ...this.options.config.alias,
+      ...this.options.config.vite?.resolve?.alias,
+    };
+    const defaultLogger = vite.createLogger(this.options.logLevel);
+    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig({
+      ...this.options.config,
+      alias,
+    });
     const projectVitePlugins = [
       ...(existingViteConfig?.config.plugins || []),
       ...(this.options.config.vite?.plugins || []),
@@ -215,13 +216,14 @@ export class ViteManager {
       })
     );
     const viteServerPromise = vite.createServer({
-      ...frameworkPluginViteConfig,
       ...existingViteConfig?.config,
+      ...frameworkPluginViteConfig,
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
       base: "/preview/",
       server: {
+        ...existingViteConfig?.config.server,
         middlewareMode: true,
         hmr: {
           overlay: false,
@@ -231,7 +233,6 @@ export class ViteManager {
             ? this.options.config.vite?.server?.hmr
             : {}),
         },
-        ...existingViteConfig?.config.server,
         ...this.options.config.vite?.server,
       },
       customLogger: {
@@ -247,19 +248,19 @@ export class ViteManager {
       },
       clearScreen: false,
       cacheDir:
-        existingViteConfig?.config.cacheDir ||
         this.options.config.vite?.cacheDir ||
+        existingViteConfig?.config.cacheDir ||
         this.options.cacheDir,
       publicDir:
-        existingViteConfig?.config.publicDir ||
         this.options.config.vite?.publicDir ||
-        this.options.config.publicDir,
+        this.options.config.publicDir ||
+        existingViteConfig?.config.publicDir,
       plugins,
       define: {
+        ...existingViteConfig?.config.define,
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
-        ...existingViteConfig?.config.define,
         ...this.options.config.vite?.define,
       },
       resolve: {
@@ -269,7 +270,6 @@ export class ViteManager {
           "~": "",
           "@": "",
           ...alias,
-          ...existingViteConfig?.config.resolve?.alias,
           ...frameworkPluginViteConfig.resolve?.alias,
         },
       },
