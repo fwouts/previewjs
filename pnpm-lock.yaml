@@ -902,6 +902,7 @@ importers:
       react-dom: ^17
       react-scripts: ^4
       sass: ^1
+      sass-mq: ^6.0.0
       typescript: ^4
     dependencies:
       '@types/node': 16.11.52
@@ -911,6 +912,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-scripts: 4.0.3_puor7ija57liycrd7axn3chspu
       sass: 1.54.5
+      sass-mq: 6.0.0
       typescript: 4.7.4
 
   smoke-test-apps/cra-sass-modules:
@@ -13167,7 +13169,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1
+      promise-inflight: 1.0.1_bluebird@3.7.2
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.11
@@ -16905,7 +16907,7 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 4.33.0_z4bbprzjrhnsfa24uvmcbu7f5q
+      '@typescript-eslint/parser': 4.33.0_l76llshcx5hpzqzl7lfng4kpb4
       debug: 3.2.7
       eslint: 8.25.0
       eslint-import-resolver-node: 0.3.6
@@ -16932,7 +16934,7 @@ packages:
       '@typescript-eslint/parser':
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 4.33.0_z4bbprzjrhnsfa24uvmcbu7f5q
+      '@typescript-eslint/parser': 4.33.0_l76llshcx5hpzqzl7lfng4kpb4
       array-includes: 3.1.5
       array.prototype.flat: 1.3.0
       debug: 2.6.9
@@ -25714,14 +25716,6 @@ packages:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
 
-  /promise-inflight/1.0.1:
-    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
-    peerDependencies:
-      bluebird: '*'
-    peerDependenciesMeta:
-      bluebird:
-        optional: true
-
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
     peerDependencies:
@@ -27819,6 +27813,10 @@ packages:
       schema-utils: 3.1.1
       semver: 7.3.8
       webpack: 4.44.2
+
+  /sass-mq/6.0.0:
+    resolution: {integrity: sha512-h4VicIy8lszFlqqggqLIFGt/9wS5fHLPoTXHRjC8Vw6UsA4s4JtDvEeypXbbECfgY336mXyc/cdpbRacH0UzGA==}
+    dev: false
 
   /sass/1.54.5:
     resolution: {integrity: sha512-p7DTOzxkUPa/63FU0R3KApkRHwcVZYC0PLnLm5iyZACyp15qSi32x7zVUhRdABAATmkALqgGrjCJAcWvobmhHw==}
