@@ -11,7 +11,6 @@ import {
 } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import type express from "express";
-import { pathExistsSync } from "fs-extra";
 import path from "path";
 import type * as vite from "vite";
 import { getCacheDir } from "./caching";
@@ -156,7 +155,13 @@ export class Previewer {
         // PostCSS requires the current directory to change because it relies
         // on the `import-cwd` package to resolve plugins.
         process.chdir(this.options.rootDirPath);
-        this.config = await readConfig(this.options.rootDirPath);
+        const config = await readConfig(this.options.rootDirPath);
+        this.config = {
+          ...config,
+          wrapper: config.wrapper || {
+            path: this.options.frameworkPlugin.defaultWrapperPath,
+          },
+        };
         const globalCssAbsoluteFilePaths = await findFiles(
           this.options.rootDirPath,
           `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
@@ -189,7 +194,7 @@ export class Previewer {
           ),
           reader: this.transformingReader,
           cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
-          config: this.configWithWrapper(this.config),
+          config: this.config,
           logLevel: this.options.logLevel,
           frameworkPlugin: this.options.frameworkPlugin,
         });
@@ -224,21 +229,6 @@ export class Previewer {
     } else {
       await this.stopNow();
     }
-  }
-
-  private configWithWrapper(config: PreviewConfig): PreviewConfig {
-    if (!config.wrapper) {
-      const defaultWrapperPath =
-        this.options.frameworkPlugin.defaultWrapperPath;
-      if (
-        pathExistsSync(path.join(this.options.rootDirPath, defaultWrapperPath))
-      ) {
-        config.wrapper = {
-          path: defaultWrapperPath,
-        };
-      }
-    }
-    return config;
   }
 
   private async shutdownCheck() {
@@ -289,15 +279,17 @@ export class Previewer {
   private readonly onFileChangeListener = {
     onChange: (absoluteFilePath: string, info: ReaderListenerInfo) => {
       absoluteFilePath = path.resolve(absoluteFilePath);
-      const wrapperPath = this.config
-        ? this.configWithWrapper(this.config).wrapper?.path
-        : null;
       if (
         !info.virtual &&
-        (FILES_REQUIRING_RESTART.has(path.basename(absoluteFilePath)) ||
-          (wrapperPath &&
-            absoluteFilePath ===
-              path.resolve(this.options.rootDirPath, wrapperPath)))
+        this.config?.wrapper &&
+        absoluteFilePath ===
+          path.resolve(this.options.rootDirPath, this.config.wrapper.path)
+      ) {
+        this.viteManager?.triggerFullReload();
+      }
+      if (
+        !info.virtual &&
+        FILES_REQUIRING_RESTART.has(path.basename(absoluteFilePath))
       ) {
         if (this.status.kind === "starting" || this.status.kind === "started") {
           const port = this.status.port;

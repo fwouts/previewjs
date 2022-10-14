@@ -316,6 +316,13 @@ export class ViteManager {
       onChange(absoluteFilePath);
     }
   }
+
+  triggerFullReload() {
+    this.viteServer?.moduleGraph.invalidateAll();
+    this.viteServer?.ws.send({
+      type: "full-reload",
+    });
+  }
 }
 
 async function extractPluginNames(
