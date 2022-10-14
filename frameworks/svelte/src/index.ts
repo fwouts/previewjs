@@ -36,7 +36,10 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
                 kind: "component",
                 exported: true,
                 analyze: async () =>
-                  analyzeSvelteComponent(typeAnalyzer, absoluteFilePath),
+                  analyzeSvelteComponent(
+                    typeAnalyzer,
+                    absoluteFilePath + ".ts"
+                  ),
               },
             });
           }
