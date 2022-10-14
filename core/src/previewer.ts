@@ -209,6 +209,9 @@ export class Previewer {
       onceUnused?: boolean;
     } = {}
   ) {
+    if (this.status.kind === "starting") {
+      await this.status.promise;
+    }
     if (this.status.kind !== "started") {
       return;
     }

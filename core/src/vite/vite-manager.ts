@@ -123,16 +123,6 @@ export class ViteManager {
         );
       }
     }
-    const alias = {
-      ...tsInferredAlias,
-      ...this.options.config.alias,
-      ...this.options.config.vite?.resolve?.alias,
-    };
-    const defaultLogger = vite.createLogger(this.options.logLevel);
-    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig({
-      ...this.options.config,
-      alias,
-    });
     const existingViteConfig = await vite.loadConfigFromFile(
       {
         command: "serve",
@@ -141,6 +131,17 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
+    const alias = {
+      ...tsInferredAlias,
+      ...existingViteConfig?.config.resolve?.alias,
+      ...this.options.config.alias,
+      ...this.options.config.vite?.resolve?.alias,
+    };
+    const defaultLogger = vite.createLogger(this.options.logLevel);
+    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig({
+      ...this.options.config,
+      alias,
+    });
     const projectVitePlugins = [
       ...(existingViteConfig?.config.plugins || []),
       ...(this.options.config.vite?.plugins || []),
@@ -151,7 +152,8 @@ export class ViteManager {
       frameworkPluginViteConfig.plugins || []
     );
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
-      viteTsconfigPaths({
+      // @ts-expect-error
+      viteTsconfigPaths.default({
         root: this.options.rootDirPath,
         projects: validTypeScriptFilePaths,
       }),
@@ -176,8 +178,8 @@ export class ViteManager {
       }),
       cssModulesWithoutSuffixPlugin(),
       componentLoaderPlugin(this.options),
-      frameworkVitePlugins,
       projectVitePlugins,
+      frameworkVitePlugins,
     ];
 
     // We need to patch handleHotUpdate() in every plugin because, by
@@ -215,6 +217,7 @@ export class ViteManager {
       })
     );
     const viteServerPromise = vite.createServer({
+      ...existingViteConfig?.config,
       ...frameworkPluginViteConfig,
       ...existingViteConfig?.config,
       ...this.options.config.vite,
@@ -222,6 +225,7 @@ export class ViteManager {
       root: this.options.rootDirPath,
       base: "/preview/",
       server: {
+        ...existingViteConfig?.config.server,
         middlewareMode: true,
         hmr: {
           overlay: false,
@@ -250,15 +254,16 @@ export class ViteManager {
       },
       clearScreen: false,
       cacheDir:
-        existingViteConfig?.config.cacheDir ||
         this.options.config.vite?.cacheDir ||
+        existingViteConfig?.config.cacheDir ||
         this.options.cacheDir,
       publicDir:
-        existingViteConfig?.config.publicDir ||
         this.options.config.vite?.publicDir ||
-        this.options.config.publicDir,
+        this.options.config.publicDir ||
+        existingViteConfig?.config.publicDir,
       plugins,
       define: {
+        ...existingViteConfig?.config.define,
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
