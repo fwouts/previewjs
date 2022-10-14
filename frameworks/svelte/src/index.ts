@@ -48,6 +48,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         define: {
           __SVELTEKIT_DEV__: "false",
         },
+        publicDir: "static",
         resolve: {
           alias: {
             $app: ".svelte-kit/runtime/app",
@@ -55,6 +56,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         },
         plugins: [svelte()],
       }),
+      incompatibleVitePlugins: ["vite-plugin-svelte-kit"],
     };
   },
 };

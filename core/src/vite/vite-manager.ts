@@ -142,10 +142,13 @@ export class ViteManager {
       ...this.options.config,
       alias,
     });
-    const projectVitePlugins = [
-      ...(existingViteConfig?.config.plugins || []),
-      ...(this.options.config.vite?.plugins || []),
-    ];
+    const projectVitePlugins = await excludePlugins(
+      new Set(this.options.frameworkPlugin.incompatibleVitePlugins),
+      [
+        ...(existingViteConfig?.config.plugins || []),
+        ...(this.options.config.vite?.plugins || []),
+      ]
+    );
     // Use Preview.js framework plugins unless they're already provided by the project.
     const frameworkVitePlugins = await excludePlugins(
       await extractPluginNames(projectVitePlugins),
@@ -259,8 +262,9 @@ export class ViteManager {
         this.options.cacheDir,
       publicDir:
         this.options.config.vite?.publicDir ||
-        this.options.config.publicDir ||
-        existingViteConfig?.config.publicDir,
+        existingViteConfig?.config.publicDir ||
+        frameworkPluginViteConfig.publicDir ||
+        this.options.config.publicDir,
       plugins,
       define: {
         ...existingViteConfig?.config.define,

@@ -39,6 +39,7 @@ const GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT = [
   "globals",
   "style",
   "styles",
+  "app",
 ];
 const GLOBAL_CSS_EXTS = ["css", "sass", "scss", "less", "styl", "stylus"];
 const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
