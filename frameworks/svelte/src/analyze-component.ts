@@ -35,7 +35,6 @@ export function analyzeSvelteComponent(
   }
   return {
     propsType: objectType(propsTypeFields),
-    providedArgs: new Set(),
     types: collected,
   };
 }

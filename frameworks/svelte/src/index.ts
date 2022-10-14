@@ -31,11 +31,13 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
             components.push({
               absoluteFilePath,
               name,
-              isStory: false,
-              exported: true,
               offsets: [[0, Infinity]],
-              analyze: async () =>
-                analyzeSvelteComponent(typeAnalyzer, absoluteFilePath),
+              info: {
+                kind: "component",
+                exported: true,
+                analyze: async () =>
+                  analyzeSvelteComponent(typeAnalyzer, absoluteFilePath),
+              },
             });
           }
           // TODO: Storybook support.
