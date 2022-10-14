@@ -18,9 +18,6 @@ async function load({
   customVariantPropsSource,
 }: RenderMessage) {
   try {
-    const componentLoaderModuleId = `/@component-loader.js?p=${encodeURIComponent(
-      filePath
-    )}&c=${encodeURIComponent(componentName)}`;
     setState({
       filePath,
       componentName,
@@ -28,10 +25,10 @@ async function load({
       customVariantPropsSource,
       variantKey,
     });
-    const { refresh } = await import(
-      /* @vite-ignore */
-      `/preview${componentLoaderModuleId}`
-    );
+    const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
+      filePath
+    )}&c=${encodeURIComponent(componentName)}`;
+    const { refresh } = await import(/* @vite-ignore */ componentLoaderUrl);
     await refresh();
   } catch (error: any) {
     sendMessageFromPreview({
