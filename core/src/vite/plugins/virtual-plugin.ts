@@ -122,6 +122,22 @@ export function virtualPlugin(options: {
             : source,
       };
     },
+    transform: (code, id) => {
+      if (!id.startsWith(VIRTUAL_PREFIX)) {
+        return null;
+      }
+      // Disable source mapping for virtual files.
+      // Otherwise, we'd see warnings about missing /@previewjs-virtual/... files.
+      return {
+        code,
+        map: {
+          mappings: "",
+          names: [],
+          sources: [],
+          version: 3,
+        },
+      };
+    },
     handleHotUpdate: async function (context) {
       const moduleGraph = options.moduleGraph();
       if (!moduleGraph) {
