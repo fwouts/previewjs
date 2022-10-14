@@ -25,7 +25,7 @@ export const errorHandlingTests = testSuite(
               fullscreen: false,
             },
             [
-              `src/App.tsx: Unexpected token (24:15)`,
+              `src${path.sep}App.tsx: Unexpected token (24:15)`,
               "Failed to reload /src/App.tsx.",
             ]
           );
@@ -57,7 +57,7 @@ export const errorHandlingTests = testSuite(
               fullscreen: false,
             },
             [
-              `src/App.tsx: Unexpected token (24:15)`,
+              `src${path.sep}App.tsx: Unexpected token (24:15)`,
               "Failed to reload /src/App.tsx.",
             ]
           );
@@ -382,7 +382,7 @@ export const errorHandlingTests = testSuite(
               fullscreen: false,
             },
             [
-              `src/App.tsx: Unexpected token (2:31)`,
+              `src${path.sep}App.tsx: Unexpected token (2:31)`,
               "Failed to reload /src/App.tsx.",
             ]
           );
@@ -436,7 +436,7 @@ export const errorHandlingTests = testSuite(
               fullscreen: false,
             },
             [
-              `src/App.tsx: Unexpected token, expected "jsxTagEnd"`,
+              `src${path.sep}App.tsx: Unexpected token, expected "jsxTagEnd"`,
               "Failed to reload /src/App.tsx.",
             ]
           );
