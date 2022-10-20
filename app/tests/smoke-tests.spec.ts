@@ -1,6 +1,7 @@
 import { testSuite } from "@previewjs/e2e-test-runner";
 import reactPlugin from "@previewjs/plugin-react";
 import solidPlugin from "@previewjs/plugin-solid";
+import sveltePlugin from "@previewjs/plugin-svelte";
 import vue2Plugin from "@previewjs/plugin-vue2";
 import vue3Plugin from "@previewjs/plugin-vue3";
 import fs from "fs-extra";
@@ -14,7 +15,7 @@ export const smokeTests = fs
   )
   .map((appName) =>
     testSuite(
-      [reactPlugin, solidPlugin, vue2Plugin, vue3Plugin],
+      [reactPlugin, solidPlugin, sveltePlugin, vue2Plugin, vue3Plugin],
       `smoke test: ${appName}`,
       async (test) => {
         test(
