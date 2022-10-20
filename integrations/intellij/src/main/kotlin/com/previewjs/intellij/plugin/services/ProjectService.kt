@@ -40,6 +40,7 @@ import kotlinx.coroutines.Runnable
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
+import java.net.URLEncoder
 import java.util.Timer
 import java.util.TimerTask
 import javax.swing.ImageIcon
@@ -229,7 +230,7 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
-            val previewUrl = "$previewBaseUrl?p=$componentId"
+            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {

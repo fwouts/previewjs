@@ -54,7 +54,7 @@ export function updatePreviewPanel(
         let iframe;
         window.addEventListener("load", () => {
           iframe = document.getElementById('preview-iframe');
-          iframe.src = "${previewBaseUrl}?p=${componentId}";
+          iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(componentId)}";
         });
         window.addEventListener("message", (event) => {
           const data = event.data;
@@ -62,7 +62,7 @@ export function updatePreviewPanel(
             if (iframe.src.startsWith(data.previewBaseUrl)) {
               iframe.contentWindow.postMessage(data, data.previewBaseUrl);
             } else {
-              iframe.src = \`\${data.previewBaseUrl}?p=\${data.componentId}\`;
+              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.componentId)}\`;
             }
           } else {
             // Other messages come from the preview iframe.

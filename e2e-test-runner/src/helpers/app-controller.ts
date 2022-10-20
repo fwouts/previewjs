@@ -114,7 +114,7 @@ export class AppController {
       );
     }
     const previewBaseUrl = this.preview.url();
-    const url = `${previewBaseUrl}?p=${componentId}`;
+    const url = `${previewBaseUrl}?p=${encodeURIComponent(componentId)}`;
     if (this.page.url().startsWith(previewBaseUrl)) {
       // Soft refresh.
       await this.page.evaluate((componentId: string) => {
