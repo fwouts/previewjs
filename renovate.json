@@ -1,5 +1,6 @@
 {
   "extends": ["config:base"],
+  "branchConcurrentLimit": 3,
   "ignoreDeps": [
     "@previewjs/api",
     "@previewjs/app",
