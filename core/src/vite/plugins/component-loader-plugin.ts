@@ -1,10 +1,13 @@
 import type { PreviewConfig } from "@previewjs/config";
+import { pathExistsSync } from "fs-extra";
+import path from "path";
 import { URLSearchParams } from "url";
 import type { Plugin } from "vite";
 
 const COMPONENT_LOADER_MODULE = "/@component-loader.js";
 
 type PluginOptions = {
+  rootDirPath: string;
   config: PreviewConfig;
   detectedGlobalCssFilePaths: string[];
 };
@@ -30,12 +33,16 @@ export function componentLoaderPlugin(options: PluginOptions): Plugin {
 
 function generateComponentLoaderModule(
   urlParams: URLSearchParams,
-  { detectedGlobalCssFilePaths, config: { wrapper } }: PluginOptions
+  {
+    rootDirPath,
+    detectedGlobalCssFilePaths,
+    config: { wrapper },
+  }: PluginOptions
 ): string {
   const filePath = urlParams.get("p");
   const componentName = urlParams.get("c");
   if (filePath === null || componentName === null) {
-    throw new Error(`Invalid use of /@component-loader.js module`);
+    throw new Error(`Invalid use of ${COMPONENT_LOADER_MODULE} module`);
   }
   const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
@@ -46,7 +53,7 @@ export async function refresh() {
   const currentCounter = ++counter;
   let loadingError = null;
   ${
-    wrapper
+    wrapper && pathExistsSync(path.join(rootDirPath, wrapper.path))
       ? `
   let wrapperModulePromise;
   if (import.meta.hot.data.preloadedWrapperModule) {
