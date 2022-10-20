@@ -140,7 +140,7 @@ importers:
       tailwindcss: 3.1.8
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.2.0
       '@fortawesome/free-brands-svg-icons': 6.2.0
@@ -171,7 +171,7 @@ importers:
       tailwindcss: 3.1.8_postcss@8.4.18
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   cli:
     specifiers:
@@ -279,7 +279,7 @@ importers:
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -287,7 +287,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   dev-workspace:
     specifiers:
@@ -355,7 +355,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.1.8
-      vitest: 0.24.1
+      vitest: 0.24.3
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -369,7 +369,7 @@ importers:
       react: 18.2.0
       rimraf: 3.0.2
       vite: 3.1.8
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   frameworks/react/preview:
     specifiers:
@@ -399,7 +399,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.1.8
       vite-plugin-solid: ^2.3.9
-      vitest: 0.24.1
+      vitest: 0.24.3
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -411,7 +411,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.6.0
       vite: 3.1.8
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   frameworks/solid/preview:
     specifiers:
@@ -435,7 +435,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.1.8
       vite-plugin-vue2: ^2.0.2
-      vitest: 0.24.1
+      vitest: 0.24.3
       vue: ^2.7.13
       vue-template-compiler: ^2.7.13
     dependencies:
@@ -453,7 +453,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.1.8
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   frameworks/vue2/preview:
     specifiers:
@@ -483,7 +483,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.1.8
-      vitest: 0.24.1
+      vitest: 0.24.3
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -501,7 +501,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.1.8
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   frameworks/vue3/preview:
     specifiers:
@@ -602,7 +602,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
       assert-never: 1.2.1
@@ -611,7 +611,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.1
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   server:
     specifiers:
@@ -1681,7 +1681,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1692,7 +1692,7 @@ importers:
       '@types/prettier': 2.7.1
       lodash: 4.17.21
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
 
   vfs:
     specifiers:
@@ -1701,7 +1701,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1709,7 +1709,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
-      vitest: 0.24.1
+      vitest: 0.24.3
 
 packages:
 
@@ -4143,7 +4143,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.19.1
+      '@babel/compat-data': 7.18.8
       '@babel/core': 7.19.1
       '@babel/helper-compilation-targets': 7.19.1_@babel+core@7.19.1
       '@babel/helper-plugin-utils': 7.18.9
@@ -31505,8 +31505,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest/0.24.1:
-    resolution: {integrity: sha512-NKkK1xnDIOOr42pKBfGQQl6b6IWdFVBpG6ZS1T+nUlJuqcOiZ7lxjVwHy9wrtTYpJ0BWww9y6bSGYXubD29Nag==}
+  /vitest/0.24.3:
+    resolution: {integrity: sha512-aM0auuPPgMSstWvr851hB74g/LKaKBzSxcG3da7ejfZbx08Y21JpZmbmDYrMTCGhVZKqTGwzcnLMwyfz2WzkhQ==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
