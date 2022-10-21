@@ -77,7 +77,7 @@ importers:
       postcss: 8.4.18
       react: 18.2.0
       react-dom: 18.2.0
-      tailwindcss: 3.2.0
+      tailwindcss: 3.2.1
       typescript: 4.8.4
       unbuild: 0.9.1
       vite: 3.1.8
@@ -104,7 +104,7 @@ importers:
       postcss: 8.4.18
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      tailwindcss: 3.2.0_postcss@8.4.18
+      tailwindcss: 3.2.1_postcss@8.4.18
       typescript: 4.8.4
       unbuild: 0.9.1
       vite: 3.1.8
@@ -137,7 +137,7 @@ importers:
       postcss: 8.4.18
       react: ^18.2.0
       react-dom: ^18.2.0
-      tailwindcss: 3.2.0
+      tailwindcss: 3.2.1
       typescript: 4.8.4
       unbuild: 0.9.1
       vitest: 0.24.3
@@ -168,7 +168,7 @@ importers:
       concurrently: 7.4.0
       nodemon: 2.0.20
       postcss: 8.4.18
-      tailwindcss: 3.2.0_postcss@8.4.18
+      tailwindcss: 3.2.1_postcss@8.4.18
       typescript: 4.8.4
       unbuild: 0.9.1
       vitest: 0.24.3
@@ -29531,8 +29531,8 @@ packages:
       - ts-node
     dev: true
 
-  /tailwindcss/3.2.0_postcss@8.4.18:
-    resolution: {integrity: sha512-ARh/W0uH5UlWIC2nn02V0+5fyF0k6qZliyt4QYic2upOhPUE/Spu1EURNc9txJ3+4j8OEmdigqfDpw4d2tA4vA==}
+  /tailwindcss/3.2.1_postcss@8.4.18:
+    resolution: {integrity: sha512-Uw+GVSxp5CM48krnjHObqoOwlCt5Qo6nw1jlCRwfGy68dSYb/LwS9ZFidYGRiM+w6rMawkZiu1mEMAsHYAfoLg==}
     engines: {node: '>=12.13.0'}
     hasBin: true
     peerDependencies:
@@ -29548,6 +29548,7 @@ packages:
       glob-parent: 6.0.2
       is-glob: 4.0.3
       lilconfig: 2.0.6
+      micromatch: 4.0.5
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.0
