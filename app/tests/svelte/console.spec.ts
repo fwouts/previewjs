@@ -17,10 +17,11 @@ export const consoleTests = testSuite(
         kind: "replace",
         text: `
 <div class="App-updated-1">
-  Hello, World!
+  {foo}
 </div>
 
 <script>
+export let foo = 123;
 console.log("Render 1");
 </script>
 `,
@@ -33,10 +34,11 @@ console.log("Render 1");
         kind: "replace",
         text: `
 <div class="App-updated-2">
-  Hello, World!
+  {foo}
 </div>
 
 <script>
+export let foo = 123;
 console.log("Render 2");
 </script>
 `,
