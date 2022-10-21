@@ -16,7 +16,7 @@ export const smokeTests = fs
   .filter((appName) => {
     if (
       appName.includes("sveltekit") &&
-      parseInt(process.versions.node.split(".")[0]) < 16
+      parseInt(process.versions.node.split(".")[0]!) < 16
     ) {
       // SvelteKit requires Node 16.
       // See https://github.com/sveltejs/kit/issues/2412
