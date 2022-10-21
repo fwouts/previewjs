@@ -118,9 +118,7 @@ console.log("Render 2");
           null,
         ];
         for (let i = 0; i < append.length; i++) {
-          console.error(i);
           const partialAppend = append.slice(0, i);
-          console.log(partialAppend);
           await appDir.update(
             "src/App.svelte",
             {
