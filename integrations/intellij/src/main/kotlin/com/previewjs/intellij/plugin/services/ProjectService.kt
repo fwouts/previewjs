@@ -49,7 +49,7 @@ import kotlin.concurrent.schedule
 class ProjectService(private val project: Project) : Disposable {
     companion object {
         private const val INLAY_PRIORITY = 1000
-        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "vue")
+        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
     }

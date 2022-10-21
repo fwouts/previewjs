@@ -18,10 +18,23 @@ window.__waitForExpectedRefresh__ = async function () {
   await expectedUpdatePromise;
 };
 
+function triggerOnUpdateSoon() {
+  if (callOnUpdateTimeout) {
+    clearTimeout(callOnUpdateTimeout);
+  }
+  callOnUpdateTimeout = setTimeout(() => {
+    onUpdate();
+    onUpdate = () => {
+      // Do nothing.
+    };
+  }, maxWaitBeforeUpdatesDeclaredOverMillis);
+}
+
 const hmr = import.meta.hot!;
 let error: ErrorPayload | null = null;
 let isFirstUpdate = true;
 hmr.on("vite:error", (payload: ErrorPayload) => {
+  triggerOnUpdateSoon();
   error = payload;
   if (typeof payload.err?.message !== "string") {
     // This error doesn't match the expected payload.
@@ -66,15 +79,7 @@ hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
     kind: "vite-before-update",
     payload,
   });
-  if (callOnUpdateTimeout) {
-    clearTimeout(callOnUpdateTimeout);
-  }
-  callOnUpdateTimeout = setTimeout(() => {
-    onUpdate();
-    onUpdate = () => {
-      // Do nothing.
-    };
-  }, maxWaitBeforeUpdatesDeclaredOverMillis);
+  triggerOnUpdateSoon();
 });
 hmr.on("previewjs-file-changed", ({ path }: { path: string }) => {
   sendMessageFromPreview({

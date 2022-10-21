@@ -57,7 +57,18 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
             $app: ".svelte-kit/runtime/app",
           },
         },
-        plugins: [svelte()],
+        plugins: [
+          svelte(),
+          {
+            name: "previewjs:disable-svelte-hmr",
+            async transform(code, id) {
+              if (!id.endsWith(".svelte")) {
+                return null;
+              }
+              return code.replace(/import\.meta/g, "({})");
+            },
+          },
+        ],
       }),
       incompatibleVitePlugins: ["vite-plugin-svelte-kit"],
     };

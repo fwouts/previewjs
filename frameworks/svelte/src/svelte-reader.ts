@@ -22,12 +22,15 @@ export function createSvelteTypeScriptReader(reader: Reader): Reader {
 class SvelteTypeScriptReader implements Reader {
   readonly listeners = new ReaderListeners();
 
+  observe?(path: string): Promise<() => Promise<void>>;
+
   constructor(private readonly reader: Reader) {
     reader.listeners.add({
       onChange: (absoluteFilePath, info) => {
         this.listeners.notify(absoluteFilePath, info);
       },
     });
+    this.observe = reader.observe?.bind(reader);
   }
 
   async read(filePath: string): Promise<File | Directory | null> {
