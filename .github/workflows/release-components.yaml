@@ -83,6 +83,12 @@ jobs:
           diff-search: true
           file-name: ./frameworks/solid/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - id: checkPluginSvelteVersion
+        uses: EndBug/version-check@v2.1.1
+        with:
+          diff-search: true
+          file-name: ./frameworks/svelte/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
       - id: checkPluginVue2Version
         uses: EndBug/version-check@v2.1.1
         with:
@@ -135,6 +141,8 @@ jobs:
         run: cd frameworks/react && pnpm publish --no-git-checks --access public
       - if: steps.checkPluginSolidVersion.outputs.changed == 'true'
         run: cd frameworks/solid && pnpm publish --no-git-checks --access public
+      - if: steps.checkPluginSvelteVersion.outputs.changed == 'true'
+        run: cd frameworks/svelte && pnpm publish --no-git-checks --access public
       - if: steps.checkPluginVue2Version.outputs.changed == 'true'
         run: cd frameworks/vue2 && pnpm publish --no-git-checks --access public
       - if: steps.checkPluginVue3Version.outputs.changed == 'true'
