@@ -23,133 +23,133 @@ jobs:
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: true
+      - name: Update NPM token
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
       - id: checkApiVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./api/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkApiVersion.outputs.changed == 'true'
+        run: cd api && pnpm publish --no-git-checks --access public
       - id: checkAppFoundationsVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./app-foundations/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkAppFoundationsVersion.outputs.changed == 'true'
+        run: cd app-foundations && pnpm publish --no-git-checks --access public
       - id: checkAppVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./app/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkAppVersion.outputs.changed == 'true'
+        run: cd app && pnpm publish --no-git-checks --access public
       - id: checkConfigVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./config/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkConfigVersion.outputs.changed == 'true'
+        run: cd config && pnpm publish --no-git-checks --access public
       - id: checkCoreVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./core/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkCoreVersion.outputs.changed == 'true'
+        run: cd core && pnpm publish --no-git-checks --access public
       - id: checkCsf3Version
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./csf3/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkCsf3Version.outputs.changed == 'true'
+        run: cd csf3 && pnpm publish --no-git-checks --access public
       - id: checkE2ETestRunnerVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./e2e-test-runner/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkE2ETestRunnerVersion.outputs.changed == 'true'
+        run: cd e2e-test-runner && pnpm publish --no-git-checks --access public
       - id: checkIframeVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./iframe/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkIframeVersion.outputs.changed == 'true'
+        run: cd iframe && pnpm publish --no-git-checks --access public
       - id: checkPluginReactVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/react/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkPluginReactVersion.outputs.changed == 'true'
+        run: cd frameworks/react && pnpm publish --no-git-checks --access public
       - id: checkPluginSolidVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/solid/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkPluginSolidVersion.outputs.changed == 'true'
+        run: cd frameworks/solid && pnpm publish --no-git-checks --access public
       - id: checkPluginSvelteVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/svelte/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkPluginSvelteVersion.outputs.changed == 'true'
+        run: cd frameworks/svelte && pnpm publish --no-git-checks --access public
       - id: checkPluginVue2Version
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/vue2/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkPluginVue2Version.outputs.changed == 'true'
+        run: cd frameworks/vue2 && pnpm publish --no-git-checks --access public
       - id: checkPluginVue3Version
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./frameworks/vue3/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkPluginVue3Version.outputs.changed == 'true'
+        run: cd frameworks/vue3 && pnpm publish --no-git-checks --access public
       - id: checkSerializableValuesVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./serializable-values/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkSerializableValuesVersion.outputs.changed == 'true'
+        run: cd serializable-values && pnpm publish --no-git-checks --access public
       - id: checkTypeAnalyzerVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./type-analyzer/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkTypeAnalyzerVersion.outputs.changed == 'true'
+        run: cd type-analyzer && pnpm publish --no-git-checks --access public
       - id: checkVfsVersion
         uses: EndBug/version-check@v2.1.1
         with:
           diff-search: true
           file-name: ./vfs/package.json
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Update NPM token
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      - if: steps.checkApiVersion.outputs.changed == 'true'
-        run: cd api && pnpm publish --no-git-checks --access public
-      - if: steps.checkAppFoundationsVersion.outputs.changed == 'true'
-        run: cd app-foundations && pnpm publish --no-git-checks --access public
-      - if: steps.checkAppVersion.outputs.changed == 'true'
-        run: cd app && pnpm publish --no-git-checks --access public
-      - if: steps.checkConfigVersion.outputs.changed == 'true'
-        run: cd config && pnpm publish --no-git-checks --access public
-      - if: steps.checkCoreVersion.outputs.changed == 'true'
-        run: cd core && pnpm publish --no-git-checks --access public
-      - if: steps.checkCsf3Version.outputs.changed == 'true'
-        run: cd csf3 && pnpm publish --no-git-checks --access public
-      - if: steps.checkE2ETestRunnerVersion.outputs.changed == 'true'
-        run: cd e2e-test-runner && pnpm publish --no-git-checks --access public
-      - if: steps.checkIframeVersion.outputs.changed == 'true'
-        run: cd iframe && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginReactVersion.outputs.changed == 'true'
-        run: cd frameworks/react && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginSolidVersion.outputs.changed == 'true'
-        run: cd frameworks/solid && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginSvelteVersion.outputs.changed == 'true'
-        run: cd frameworks/svelte && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginVue2Version.outputs.changed == 'true'
-        run: cd frameworks/vue2 && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginVue3Version.outputs.changed == 'true'
-        run: cd frameworks/vue3 && pnpm publish --no-git-checks --access public
-      - if: steps.checkSerializableValuesVersion.outputs.changed == 'true'
-        run: cd serializable-values && pnpm publish --no-git-checks --access public
-      - if: steps.checkTypeAnalyzerVersion.outputs.changed == 'true'
-        run: cd type-analyzer && pnpm publish --no-git-checks --access public
       - if: steps.checkVfsVersion.outputs.changed == 'true'
         run: cd vfs && pnpm publish --no-git-checks --access public
