@@ -1,5 +1,6 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import fs from "fs-extra";
 import path from "path";
 import { analyzeSvelteComponent } from "./analyze-component";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
@@ -23,7 +24,10 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (absoluteFilePath.endsWith(".svelte")) {
+          if (
+            absoluteFilePath.endsWith(".svelte") &&
+            (await fs.pathExists(absoluteFilePath))
+          ) {
             const name = path.basename(
               absoluteFilePath,
               path.extname(absoluteFilePath)
@@ -31,7 +35,9 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
             components.push({
               absoluteFilePath,
               name,
-              offsets: [[0, Infinity]],
+              offsets: [
+                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
+              ],
               info: {
                 kind: "component",
                 exported: true,
