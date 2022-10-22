@@ -22,6 +22,9 @@ async function main() {
   const { version: solidPluginVersion } = await import(
     "../frameworks/solid/package.json"
   );
+  const { version: sveltePluginVersion } = await import(
+    "../frameworks/svelte/package.json"
+  );
   const { version: vue2PluginVersion } = await import(
     "../frameworks/vue2/package.json"
   );
@@ -87,6 +90,7 @@ async function main() {
           "@previewjs/core": coreVersion,
           "@previewjs/plugin-react": reactPluginVersion,
           "@previewjs/plugin-solid": solidPluginVersion,
+          "@previewjs/plugin-svelte": sveltePluginVersion,
           "@previewjs/plugin-vue2": vue2PluginVersion,
           "@previewjs/plugin-vue3": vue3PluginVersion,
           "@previewjs/pro": previewjsProVersion,
