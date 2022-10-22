@@ -172,7 +172,7 @@ export class PreviewState {
 
   async start() {
     window.__previewjs_navigate = (componentId) => {
-      history.pushState(null, "", `/?p=${componentId}`);
+      history.pushState(null, "", `/?p=${encodeURIComponent(componentId)}`);
       this.onUrlChanged().catch(console.error);
     };
     window.addEventListener("message", this.messageListener);

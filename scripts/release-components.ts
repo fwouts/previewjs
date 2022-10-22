@@ -68,6 +68,11 @@ const packages: Package[] = [
     tagName: "plugins/solid",
   },
   {
+    name: "plugin-svelte",
+    dirPath: "frameworks/svelte",
+    tagName: "plugins/svelte",
+  },
+  {
     name: "plugin-vue2",
     dirPath: "frameworks/vue2",
     tagName: "plugins/vue2",

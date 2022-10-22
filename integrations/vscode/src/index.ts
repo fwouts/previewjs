@@ -11,6 +11,7 @@ const codeLensLanguages = [
   "javascript",
   "javascriptreact",
   "jsx",
+  "svelte",
   "typescriptreact",
   "vue",
 ];
@@ -27,6 +28,7 @@ const watchedExtensions = new Set([
   ".less",
   ".styl",
   ".stylus",
+  ".svelte",
   ".svg",
 ]);
 

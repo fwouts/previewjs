@@ -17,6 +17,7 @@ export function loadModules({
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
     requireModule("@previewjs/plugin-react").default,
     requireModule("@previewjs/plugin-solid").default,
+    requireModule("@previewjs/plugin-svelte").default,
     requireModule("@previewjs/plugin-vue2").default,
     requireModule("@previewjs/plugin-vue3").default,
   ];

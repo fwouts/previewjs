@@ -38,6 +38,7 @@ const GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT = [
   "globals",
   "style",
   "styles",
+  "app",
 ];
 const GLOBAL_CSS_EXTS = ["css", "sass", "scss", "less", "styl", "stylus"];
 const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
@@ -305,6 +306,7 @@ export class Previewer {
       }
       if (info.virtual) {
         this.viteManager?.triggerReload(absoluteFilePath);
+        this.viteManager?.triggerReload(absoluteFilePath + ".ts");
       } else if (this.options.onFileChanged) {
         this.options.onFileChanged(absoluteFilePath);
       }

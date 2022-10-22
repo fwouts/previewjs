@@ -142,10 +142,13 @@ export class ViteManager {
       ...this.options.config,
       alias,
     });
-    const projectVitePlugins = [
-      ...(existingViteConfig?.config.plugins || []),
-      ...(this.options.config.vite?.plugins || []),
-    ];
+    const projectVitePlugins = await excludePlugins(
+      new Set(this.options.frameworkPlugin.incompatibleVitePlugins),
+      [
+        ...(existingViteConfig?.config.plugins || []),
+        ...(this.options.config.vite?.plugins || []),
+      ]
+    );
     // Use Preview.js framework plugins unless they're already provided by the project.
     const frameworkVitePlugins = await excludePlugins(
       await extractPluginNames(projectVitePlugins),
@@ -219,6 +222,7 @@ export class ViteManager {
     const viteServerPromise = vite.createServer({
       ...existingViteConfig?.config,
       ...frameworkPluginViteConfig,
+      ...existingViteConfig?.config,
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
@@ -233,6 +237,10 @@ export class ViteManager {
           ...(typeof this.options.config.vite?.server?.hmr === "object"
             ? this.options.config.vite?.server?.hmr
             : {}),
+        },
+        fs: {
+          strict: false,
+          ...(this.options.config.vite?.server?.fs || {}),
         },
         ...this.options.config.vite?.server,
       },
@@ -254,14 +262,16 @@ export class ViteManager {
         this.options.cacheDir,
       publicDir:
         this.options.config.vite?.publicDir ||
-        this.options.config.publicDir ||
-        existingViteConfig?.config.publicDir,
+        existingViteConfig?.config.publicDir ||
+        frameworkPluginViteConfig.publicDir ||
+        this.options.config.publicDir,
       plugins,
       define: {
         ...existingViteConfig?.config.define,
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
+        ...existingViteConfig?.config.define,
         ...this.options.config.vite?.define,
       },
       resolve: {
@@ -271,6 +281,7 @@ export class ViteManager {
           "~": "",
           "@": "",
           ...alias,
+          ...existingViteConfig?.config.resolve?.alias,
           ...frameworkPluginViteConfig.resolve?.alias,
         },
       },

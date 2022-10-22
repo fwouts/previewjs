@@ -40,6 +40,7 @@ import kotlinx.coroutines.Runnable
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
+import java.net.URLEncoder
 import java.util.Timer
 import java.util.TimerTask
 import javax.swing.ImageIcon
@@ -48,7 +49,7 @@ import kotlin.concurrent.schedule
 class ProjectService(private val project: Project) : Disposable {
     companion object {
         private const val INLAY_PRIORITY = 1000
-        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "vue")
+        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
     }
@@ -229,7 +230,7 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
-            val previewUrl = "$previewBaseUrl?p=$componentId"
+            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {

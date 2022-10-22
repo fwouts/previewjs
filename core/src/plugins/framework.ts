@@ -23,6 +23,7 @@ export interface FrameworkPlugin {
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
   readonly specialTypes?: Record<string, ValueType>;
   readonly viteConfig: (config: PreviewConfig) => vite.UserConfig;
+  readonly incompatibleVitePlugins?: string[];
   readonly detectComponents: (
     typeAnalyzer: TypeAnalyzer,
     absoluteFilePaths: string[]
