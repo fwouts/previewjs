@@ -18,7 +18,7 @@ importers:
       eslint-plugin-react: ^7.31.10
       eslint-plugin-react-hooks: ^4.6.0
       execa: 5.1.1
-      inquirer: 8.2.4
+      inquirer: 8.2.5
       license-checker: 25.0.1
       npm: 8.19.2
       prettier: 2.7.1
@@ -38,7 +38,7 @@ importers:
       eslint-plugin-react: 7.31.10_eslint@8.26.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.26.0
       execa: 5.1.1
-      inquirer: 8.2.4
+      inquirer: 8.2.5
       license-checker: 25.0.1
       npm: 8.19.2
       prettier: 2.7.1
@@ -10929,7 +10929,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
+      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
       '@vue/cli-shared-utils': 4.5.19
     dev: true
 
@@ -10938,7 +10938,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
+      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
     dev: true
 
   /@vue/cli-service/4.5.19_2yymnzrok6eda47acnj2yjm3ae:
@@ -20089,8 +20089,8 @@ packages:
       through: 2.3.8
     dev: false
 
-  /inquirer/8.2.4:
-    resolution: {integrity: sha512-nn4F01dxU8VeKfq192IjLsxu0/OmMZ4Lg3xKAns148rCaXP6ntAoEkVYZThWjwON8AlzdZZi6oqnhNbxUG9hVg==}
+  /inquirer/8.2.5:
+    resolution: {integrity: sha512-QAgPDQMEgrDssk1XiwwHoOGYF9BAbUcc1+j+FhEvaOt8/cKRqyLn0U5qA6F74fGhTMGxf92pOvPBeh29jQJDTQ==}
     engines: {node: '>=12.0.0'}
     dependencies:
       ansi-escapes: 4.3.2
@@ -20103,7 +20103,7 @@ packages:
       mute-stream: 0.0.8
       ora: 5.4.1
       run-async: 2.4.1
-      rxjs: 7.5.6
+      rxjs: 7.5.7
       string-width: 4.2.3
       strip-ansi: 6.0.1
       through: 2.3.8
@@ -28180,12 +28180,6 @@ packages:
     dependencies:
       tslib: 1.14.1
     dev: false
-
-  /rxjs/7.5.6:
-    resolution: {integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==}
-    dependencies:
-      tslib: 2.4.0
-    dev: true
 
   /rxjs/7.5.7:
     resolution: {integrity: sha512-z9MzKh/UcOqB3i20H6rtrlaE/CgjLOvheWK/9ILrbhROGTweAi1BaFsTT9FbwZi5Trr1qNRs+MXkhmR06awzQA==}
