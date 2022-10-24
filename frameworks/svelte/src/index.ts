@@ -53,15 +53,37 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       viteConfig: () => ({
         define: {
           __SVELTEKIT_DEV__: "false",
+          __SVELTEKIT_APP_VERSION_POLL_INTERVAL__: "0",
         },
         publicDir: "static",
         resolve: {
           alias: {
-            $app: ".svelte-kit/runtime/app",
+            $app: "node_modules/@sveltejs/kit/src/runtime/app",
           },
         },
         plugins: [
           svelte(),
+          {
+            name: "previewjs:fake-sveltekit-client",
+            transform(code, id) {
+              if (
+                id.includes("@sveltejs/kit/src/runtime/client/singletons.js")
+              ) {
+                // Prevent errors with missing client methods such as disable_scroll_handling.
+                return code
+                  .replace(`export let client`, `export let client = {}`)
+                  .replace(
+                    `url: notifiable_store({})`,
+                    `url: notifiable_store(document.location)`
+                  )
+                  .replace(
+                    `page: notifiable_store({})`,
+                    `page: notifiable_store({ url: document.location })`
+                  );
+              }
+              return null;
+            },
+          },
           {
             name: "previewjs:disable-svelte-hmr",
             async transform(code, id) {

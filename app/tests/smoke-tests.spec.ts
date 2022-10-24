@@ -43,6 +43,7 @@ export const smokeTests = fs
               "src/App.svelte:App",
               "src/App.vue:App",
               "src/SolidApp.jsx:default",
+              "src/routes/Header.svelte:Header",
               "src/routes/+page.svelte:+page",
               "pages/index.tsx:App",
               "pages/index.vue:index",
