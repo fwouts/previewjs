@@ -1,6 +1,6 @@
 {
   "name": "previewjs",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
@@ -88,11 +88,11 @@
   "main": "./dist/index.js",
   "scripts": {
     "vscode:prepublish": "pnpm build",
-    "build": "rimraf dist previewjs-1.16.0.vsix && tsc && node esbuild.js && cp -rL ../../loader/src/release/node_modules dist/node_modules",
+    "build": "rimraf dist previewjs-1.16.1.vsix && tsc && node esbuild.js && cp -rL ../../loader/src/release/node_modules dist/node_modules",
     "prod": "cross-env PREVIEWJS_DEV=0 pnpm vsce package --no-dependencies && pnpm dev:install",
     "dev": "cross-env PREVIEWJS_DEV=1 pnpm vsce package --no-dependencies && pnpm dev:install",
     "dev:community": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm dev",
-    "dev:install": "code --install-extension previewjs-1.16.0.vsix --force"
+    "dev:install": "code --install-extension previewjs-1.16.1.vsix --force"
   },
   "devDependencies": {
     "@previewjs/server": "workspace:*",
