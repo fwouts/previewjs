@@ -2,7 +2,7 @@ import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
-import { analyzeSvelteComponent } from "./analyze-component";
+import { analyzeSvelteComponentFromSFC } from "./analyze-component";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
@@ -42,10 +42,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
                 kind: "component",
                 exported: true,
                 analyze: async () =>
-                  analyzeSvelteComponent(
-                    typeAnalyzer,
-                    absoluteFilePath + ".ts"
-                  ),
+                  analyzeSvelteComponentFromSFC(typeAnalyzer, absoluteFilePath),
               },
             });
           }
