@@ -184,8 +184,6 @@ importers:
       commander: ^9.4.1
       cross-env: 7.0.3
       esbuild: 0.15.12
-      inquirer: ^8.2.4
-      inquirer-autocomplete-prompt: ^2.0.0
       open: ^8.4.0
       rimraf: 3.0.2
       ts-node-dev: 2.0.0
@@ -198,8 +196,6 @@ importers:
       commander: 9.4.1
       cross-env: 7.0.3
       esbuild: 0.15.12
-      inquirer: 8.2.4
-      inquirer-autocomplete-prompt: 2.0.0_inquirer@8.2.4
       open: 8.4.0
       rimraf: 3.0.2
       ts-node-dev: 2.0.0_jjx6bptzavexybfrynuepmylhu
@@ -20073,20 +20069,6 @@ packages:
     dependencies:
       css-in-js-utils: 2.0.1
     dev: false
-
-  /inquirer-autocomplete-prompt/2.0.0_inquirer@8.2.4:
-    resolution: {integrity: sha512-c2LljLP3ewVJe4AUZzKdA6oWjqhpy5pfsisHAjh7mP3WUQ/O02x5OLMMqcLOYuRHx6i2hlVSIhUv0xYGyFxFYA==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      inquirer: ^8.0.0
-    dependencies:
-      ansi-escapes: 4.3.2
-      figures: 3.2.0
-      inquirer: 8.2.4
-      picocolors: 1.0.0
-      run-async: 2.4.1
-      rxjs: 7.5.6
-    dev: true
 
   /inquirer/7.3.3:
     resolution: {integrity: sha512-JG3eIAj5V9CwcGvuOmoo6LB9kbAYT8HXffUl6memuszlwDC/qvFAJw49XJ5NROSFNPxp3iQg1GqkFhaY/CR0IA==}
