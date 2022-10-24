@@ -20,7 +20,7 @@ export function preparePropsType(
   if (type.kind === "name") {
     rootTypeName = type.name;
   } else {
-    rootTypeName = `:${name}Props`;
+    rootTypeName = `:${name.replace(/[^a-zA-Z0-9_]/g, "")}Props`;
     types[rootTypeName] = { type, parameters: {} };
   }
 
