@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import {
   ArrayType,
   arrayType,
@@ -78,7 +79,9 @@ function _generateSerializableValue(
       return random && Math.random() < 0.5 ? TRUE : FALSE;
     case "string":
     case "node":
-      return string(random ? generateRandomString() : fieldName);
+      return string(
+        random ? faker.lorem.words(generateRandomInteger(0, 10)) : fieldName
+      );
     case "number":
       return number(random ? generateRandomInteger() : 0);
     case "literal":
@@ -338,21 +341,6 @@ function generateRecordValue(
     });
   }
   return object(entries);
-}
-
-function generateRandomString() {
-  if (Math.random() < 0.2) {
-    // Slightly higher chance of an empty string.
-    return "";
-  }
-  const length = generateRandomInteger(0, 50);
-  const chars =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !@#$%^&*()-_=+[]{}|;':,.<>/?`'\"~";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += chars[generateRandomInteger(0, chars.length)];
-  }
-  return result;
 }
 
 function generateRandomInteger(minInclusive = -5000, maxExclusive = +5000) {

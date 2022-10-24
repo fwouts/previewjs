@@ -638,6 +638,7 @@ importers:
 
   serializable-values:
     specifiers:
+      '@faker-js/faker': ^7.6.0
       '@previewjs/type-analyzer': ^4.0.6
       '@types/prettier': 2.7.1
       assert-never: ^1.2.1
@@ -646,6 +647,7 @@ importers:
       unbuild: 0.9.1
       vitest: 0.24.3
     dependencies:
+      '@faker-js/faker': 7.6.0
       '@previewjs/type-analyzer': link:../type-analyzer
       assert-never: 1.2.1
       prettier: 2.7.1
@@ -5184,6 +5186,11 @@ packages:
       lodash.omit: 4.5.0
       lodash.pick: 4.4.0
       lodash.template: 4.5.0
+    dev: false
+
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
     dev: false
 
   /@fontsource/fira-mono/4.5.10:
