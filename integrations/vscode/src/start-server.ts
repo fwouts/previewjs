@@ -193,7 +193,12 @@ function wrapCommandWithShellIfRequired(command: string) {
       ? command.split(" ")
       : // On Linux & Mac, run inside an interactive login shell to
         // ensure NVM is set up properly.
-        [process.env.SHELL || "bash", "-lic", command];
+        [
+          process.env.SHELL || "bash",
+          "-lic",
+          // Note: We need cd ... for GitPod, which doesn't start shell in current working directory.
+          `cd "${__dirname}" && ${command}`,
+        ];
   return [segments[0]!, segments.slice(1)] as const;
 }
 
