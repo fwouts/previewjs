@@ -52,6 +52,8 @@ const FILES_REQUIRING_RESTART = new Set([
   "package.json",
   "package-lock.json",
   "pnpm-lock.yaml",
+  "vite.config.js",
+  "vite.config.ts",
   "yarn.lock",
   ...POSTCSS_CONFIG_FILE,
   ...GLOBAL_CSS_FILE,
