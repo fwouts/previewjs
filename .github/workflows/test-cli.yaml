@@ -9,13 +9,13 @@ on:
     branches:
       - main
     paths:
-      - "cli/**"
+      - "integrations/cli/**"
       - ".github/workflows/test-cli.yaml"
   pull_request:
     branches:
       - "*"
     paths:
-      - "cli/**"
+      - "integrations/cli/**"
       - ".github/workflows/test-cli.yaml"
 
 jobs:

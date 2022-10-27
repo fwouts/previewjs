@@ -175,32 +175,6 @@ importers:
       unbuild: 0.9.1
       vitest: 0.24.3
 
-  cli:
-    specifiers:
-      '@previewjs/api': workspace:*
-      '@previewjs/loader': workspace:*
-      '@types/node': 17.0.8
-      chalk: ^4.1.2
-      commander: ^9.4.1
-      cross-env: 7.0.3
-      esbuild: 0.15.12
-      open: ^8.4.0
-      rimraf: 3.0.2
-      ts-node-dev: 2.0.0
-      typescript: 4.8.4
-    devDependencies:
-      '@previewjs/api': link:../api
-      '@previewjs/loader': link:../loader
-      '@types/node': 17.0.8
-      chalk: 4.1.2
-      commander: 9.4.1
-      cross-env: 7.0.3
-      esbuild: 0.15.12
-      open: 8.4.0
-      rimraf: 3.0.2
-      ts-node-dev: 2.0.0_jjx6bptzavexybfrynuepmylhu
-      typescript: 4.8.4
-
   config:
     specifiers:
       '@types/node': 17.0.8
@@ -569,6 +543,32 @@ importers:
     devDependencies:
       unbuild: 0.9.1
       vite: 3.2.0
+
+  integrations/cli:
+    specifiers:
+      '@previewjs/api': workspace:*
+      '@previewjs/loader': workspace:*
+      '@types/node': 17.0.8
+      chalk: ^4.1.2
+      commander: ^9.4.1
+      cross-env: 7.0.3
+      esbuild: 0.15.12
+      open: ^8.4.0
+      rimraf: 3.0.2
+      ts-node-dev: 2.0.0
+      typescript: 4.8.4
+    devDependencies:
+      '@previewjs/api': link:../../api
+      '@previewjs/loader': link:../../loader
+      '@types/node': 17.0.8
+      chalk: 4.1.2
+      commander: 9.4.1
+      cross-env: 7.0.3
+      esbuild: 0.15.12
+      open: 8.4.0
+      rimraf: 3.0.2
+      ts-node-dev: 2.0.0_jjx6bptzavexybfrynuepmylhu
+      typescript: 4.8.4
 
   integrations/intellij/controller:
     specifiers:
@@ -4912,7 +4912,7 @@ packages:
     dependencies:
       '@babel/core': 7.19.1
       '@babel/helper-module-imports': 7.18.6
-      '@babel/helper-plugin-utils': 7.18.9
+      '@babel/helper-plugin-utils': 7.19.0
       babel-plugin-polyfill-corejs2: 0.3.2_@babel+core@7.19.1
       babel-plugin-polyfill-corejs3: 0.5.3_@babel+core@7.19.1
       babel-plugin-polyfill-regenerator: 0.4.0_@babel+core@7.19.1
@@ -5618,13 +5618,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/generator': 7.19.0
+      '@babel/generator': 7.19.6
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-function-name': 7.19.0
       '@babel/helper-hoist-variables': 7.18.6
       '@babel/helper-split-export-declaration': 7.18.6
-      '@babel/parser': 7.19.1
-      '@babel/types': 7.19.0
+      '@babel/parser': 7.19.6
+      '@babel/types': 7.19.4
       debug: 4.3.4_supports-color@5.5.0
       globals: 11.12.0
     transitivePeerDependencies:
@@ -11820,8 +11820,8 @@ packages:
       '@babel/helper-module-imports': 7.18.6
       '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.19.6
       '@babel/template': 7.18.10
-      '@babel/traverse': 7.19.1
-      '@babel/types': 7.19.0
+      '@babel/traverse': 7.19.6
+      '@babel/types': 7.19.4
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0
       html-tags: 3.2.0
@@ -33251,7 +33251,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      esbuild: 0.15.10
+      esbuild: 0.15.12
       postcss: 8.4.18
       resolve: 1.22.1
       rollup: 2.78.1

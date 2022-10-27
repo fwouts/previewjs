@@ -186,7 +186,7 @@ async function releaseVscodeExtension() {
 }
 
 async function releaseCliApp() {
-  const cliPath = path.join(__dirname, "..", "cli");
+  const cliPath = path.join(__dirname, "..", "integrations", "cli");
   const packageJson = getPackageJson(`${cliPath}/package.json`);
   const { version: currentVersion } = await packageJson.read();
   const version = await incrementVersion(currentVersion);

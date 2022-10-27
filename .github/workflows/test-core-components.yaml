@@ -12,7 +12,6 @@ on:
       - "**"
       - ".github/workflows/test-core-components.yaml"
       - "!assets/**"
-      - "!cli/**"
       - "!integrations/**"
   pull_request:
     branches:
@@ -21,7 +20,6 @@ on:
       - "**"
       - ".github/workflows/test-core-components.yaml"
       - "!assets/**"
-      - "!cli/**"
       - "!integrations/**"
 
 jobs:

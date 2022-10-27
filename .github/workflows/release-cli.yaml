@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: cli
+    working-directory: integrations/cli
 
 jobs:
   build:
@@ -39,7 +39,7 @@ jobs:
         uses: sergeysova/jq-action@v2.2.1
         id: version
         with:
-          cmd: "jq .version cli/package.json -r"
+          cmd: "jq .version integrations/cli/package.json -r"
       - name: Extract version from release name
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/cli\/v/}" >> $GITHUB_ENV
       - name: Check that versions match
