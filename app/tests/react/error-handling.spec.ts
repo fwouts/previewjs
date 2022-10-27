@@ -674,9 +674,7 @@ export const errorHandlingTests = testSuite(
         }
       );
 
-      // TODO: Enable this test again when it passes.
-      // It seems to not fail because of React Refresh?
-      test.skip(
+      test(
         `${version}/shows error when component is missing after update`,
         `react${version}`,
         async ({ appDir, controller }) => {
