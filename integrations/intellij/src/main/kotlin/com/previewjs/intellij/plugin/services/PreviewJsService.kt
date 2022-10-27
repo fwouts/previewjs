@@ -179,7 +179,7 @@ Include the content of the Preview.js logs panel for easier debugging.
                 throw e
             }
         }
-        val builder = processBuilder("node dist/main.js $port", useWsl)
+        val builder = processBuilder("node --trace-warnings dist/main.js $port", useWsl)
             .redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
         val process = builder.start()

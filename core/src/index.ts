@@ -35,6 +35,10 @@ export type {
   SetupPreviewEnvironment,
 } from "./preview-env";
 
+process.on("uncaughtException", (e) => {
+  console.error("Uncaught Exception:", e);
+});
+
 export async function createWorkspace({
   versionCode,
   rootDirPath,

@@ -70,7 +70,7 @@ export async function startPreviewJsServer(
   outputChannel.appendLine(
     `If you experience any issues, please include this log file in bug reports.`
   );
-  const nodeServerCommand = "node server.js";
+  const nodeServerCommand = "node --trace-warnings server.js";
   const serverOptions = {
     cwd: __dirname,
     stdio: ["ignore", logs, logs],
