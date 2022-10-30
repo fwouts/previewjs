@@ -27,13 +27,10 @@ export interface RenderingSetup {
   componentName: string;
   variantKey: string;
   variants: Variant[];
-<<<<<<< HEAD:core/iframe/preview/__previewjs_internal__/messages.ts
-=======
 }
 
 export interface RenderingSuccess {
   kind: "rendering-success";
->>>>>>> main:iframe/src/messages.ts
 }
 
 export interface RenderingError {
