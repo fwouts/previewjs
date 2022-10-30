@@ -9,12 +9,12 @@ type Component = {
 
 const components: Component[] = [
   {
-    filePath: "design/HeroHeader/HeroHeader.tsx",
-    componentName: "HeroHeader",
+    filePath: "design/RestaurantHeader/RestaurantHeader.tsx",
+    componentName: "RestaurantHeader",
   },
   {
-    filePath: "design/MenuItemPicker/MenuItemPicker.tsx",
-    componentName: "MenuItemPicker",
+    filePath: "design/RestaurantMenuItem/RestaurantMenuItem.tsx",
+    componentName: "RestaurantMenuItem",
   },
   {
     filePath: "design/Counter/Counter.tsx",
@@ -32,7 +32,8 @@ const controller = createController({
   getIframe: () => iframe,
   listener: (event) => {
     if (event.kind === "bootstrapped" || event.kind === "rendering-done") {
-      nextScreenshot();
+      // nextScreenshot();
+      setTimeout(() => nextScreenshot(), 1000);
     }
   },
 });

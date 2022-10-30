@@ -52,6 +52,7 @@ async function main() {
       `No workspace could be created for directory: ${rootDirPath}`
     );
   }
+  // TODO: Use core.analyzeProject().
   const absoluteFilePaths = await findFiles(
     rootDirPath,
     "**/*.@(js|jsx|ts|tsx|svelte|vue)"
