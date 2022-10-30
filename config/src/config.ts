@@ -1,4 +1,4 @@
-import { UserConfig } from "vite";
+import type { UserConfig } from "vite";
 
 export interface PreviewConfig {
   alias: Record<string, string>;
@@ -7,6 +7,5 @@ export interface PreviewConfig {
     path: string;
     componentName?: string;
   };
-  frameworkPlugin?: any;
   vite?: UserConfig;
 }

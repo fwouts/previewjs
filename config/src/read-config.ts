@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { PreviewConfig } from "./config";
+import type { PreviewConfig } from "./config";
 
 export const PREVIEW_CONFIG_NAME = "preview.config.js";
 

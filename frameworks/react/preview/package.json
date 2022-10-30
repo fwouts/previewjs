@@ -1,13 +1,14 @@
 {
   "scripts": {
-    "prepare": "rimraf types && shx mkdir types && shx cp -r node_modules/@types/react types/react && shx cp -r node_modules/@types/prop-types types/prop-types"
+    "prepare": "rimraf types && shx mkdir types && shx cp -rL node_modules/@types/react types/react && shx cp -rL node_modules/@types/prop-types types/prop-types"
   },
   "dependencies": {
-    "@types/prop-types": "15.7.4",
-    "@types/react": "17.0.39",
-    "@types/react-dom": "17.0.14"
+    "@types/prop-types": "15.7.5",
+    "@types/react": "18.0.24",
+    "@types/react-dom": "18.0.8"
   },
   "devDependencies": {
+    "@previewjs/iframe": "workspace:*",
     "rimraf": "3.0.2",
     "shx": "0.3.4"
   }

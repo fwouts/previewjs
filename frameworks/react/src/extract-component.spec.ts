@@ -7,10 +7,13 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { reactFrameworkPlugin } from ".";
 import { extractReactComponents } from "./extract-component";
 
-const MAIN_FILE = path.join(__dirname, "virtual", "App.tsx");
+const ROOT_DIR = path.join(__dirname, "virtual");
+const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
+const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe("extractReactComponents", () => {
   let memoryReader: Reader & Writer;
@@ -18,9 +21,13 @@ describe("extractReactComponents", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
+    memoryReader.updateFile(
+      MAIN_FILE,
+      "export default () => <div>Hello, World!</div>;"
+    );
     const frameworkPlugin = await reactFrameworkPlugin.create();
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: path.join(__dirname, "virtual"),
+      rootDirPath: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
@@ -36,8 +43,9 @@ describe("extractReactComponents", () => {
   });
 
   it("detects expected components", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 import React, { Component, PureComponent } from "react";
 
 function wrapComponent<P>(c: React.ComponentType<P>): React.ComponentType<P> {
@@ -84,15 +92,26 @@ export const NotComponent = () => {
 export const NotComponentEither = () => {
   return "Hello";
 };
-`)
-    ).toMatchObject([
+
+export const AlsoNotAStory = {
+  args: {}
+};
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "DeclaredFunction",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "ConstantFunction",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       // Note: this isn't detected as of October 2021.
       // {
@@ -102,131 +121,268 @@ export const NotComponentEither = () => {
       // },
       {
         name: "ClassComponent1",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "ClassComponent2",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "ForwardRef",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "NextComponent",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "Pure",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
       {
         name: "NotObjectProps",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
       {
         name: "MissingType",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects components without any React import", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 function DeclaredFunction() {
   return <div>Hello, World!</div>;
 }
 
 const ConstantFunction = () => <div>Hello, World!</div>;
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "DeclaredFunction",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
       {
         name: "ConstantFunction",
-        exported: false,
+        info: {
+          kind: "component",
+          exported: false,
+        },
       },
     ]);
   });
 
   it("ignores default export of identifier", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 const A = () => {
   return <div>Hello, World!</div>;
 };
 
 export default A;
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "A",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects default export component (arrow function)", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 export default () => {
   return <div>Hello, World!</div>;
 }
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "default",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects default export component (named function)", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 export default function test(){
   return <div>Hello, World!</div>;
 }
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "test",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("detects default export component (anonymous function)", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 export default function(){
   return <div>Hello, World!</div>;
 }
-`)
-    ).toMatchObject([
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([
       {
         name: "default",
-        exported: true,
+        info: {
+          kind: "component",
+          exported: true,
+        },
       },
     ]);
   });
 
   it("does not detect default export non-component", async () => {
-    expect(
-      extract(`
+    memoryReader.updateFile(
+      MAIN_FILE,
+      `
 export default () => {
   return "foo";
 }
-`)
-    ).toMatchObject([]);
+`
+    );
+    expect(extract(MAIN_FILE)).toMatchObject([]);
   });
 
-  function extract(source: string) {
-    const rootDirPath = path.join(__dirname, "virtual");
-    memoryReader.updateFile(path.join(rootDirPath, "App.tsx"), source);
-    return extractReactComponents(typeAnalyzer.analyze([MAIN_FILE]), MAIN_FILE);
+  it("detects CSF2 stories", async () => {
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./App";
+
+export default {
+  component: Button
+}
+
+const Template = (args) => <Button {...args} />;
+
+export const Primary = Template.bind({});
+Primary.args = {
+   primary: true,
+   label: 'Button',
+};
+`
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
+      {
+        name: "Template",
+        info: {
+          kind: "component",
+          exported: false,
+        },
+      },
+      {
+        name: "Primary",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+    ]);
+  });
+
+  it("detects CSF3 stories", async () => {
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./App";
+
+export default {
+  component: Button
+}
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+`
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
+      {
+        name: "Example",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+      {
+        name: "NoArgs",
+        info: {
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+    ]);
+  });
+
+  function extract(absoluteFilePath: string) {
+    return extractReactComponents(
+      typeAnalyzer.analyze([absoluteFilePath]),
+      absoluteFilePath
+    );
   }
 });

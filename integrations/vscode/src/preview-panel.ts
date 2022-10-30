@@ -1,9 +1,11 @@
+import type { Client } from "@previewjs/server/client";
 import vscode, { Uri, WebviewPanel } from "vscode";
 import { ensurePreviewServerStopped } from "./preview-server";
 
 let previewPanel: WebviewPanel | null = null;
 
 export function updatePreviewPanel(
+  client: Client,
   previewBaseUrl: string,
   componentId: string
 ) {
@@ -24,7 +26,7 @@ export function updatePreviewPanel(
     });
     previewPanel.onDidDispose(() => {
       previewPanel = null;
-      ensurePreviewServerStopped().catch(console.error);
+      ensurePreviewServerStopped(client).catch(console.error);
     });
     previewPanel.webview.html = `<!DOCTYPE html>
   <html>
@@ -35,6 +37,7 @@ export function updatePreviewPanel(
           padding: 0;
           width: 100vw;
           height: 100vh;
+          overflow: hidden;
         }
 
         iframe {
@@ -51,7 +54,7 @@ export function updatePreviewPanel(
         let iframe;
         window.addEventListener("load", () => {
           iframe = document.getElementById('preview-iframe');
-          iframe.src = "${previewBaseUrl}?p=${componentId}";
+          iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(componentId)}";
         });
         window.addEventListener("message", (event) => {
           const data = event.data;
@@ -59,7 +62,7 @@ export function updatePreviewPanel(
             if (iframe.src.startsWith(data.previewBaseUrl)) {
               iframe.contentWindow.postMessage(data, data.previewBaseUrl);
             } else {
-              iframe.src = \`\${data.previewBaseUrl}?p=\${data.componentId}\`;
+              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.componentId)}\`;
             }
           } else {
             // Other messages come from the preview iframe.

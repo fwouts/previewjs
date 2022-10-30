@@ -1,4 +1,4 @@
-import { Reader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 import {
@@ -28,6 +28,7 @@ import {
   VOID_TYPE,
 } from "./definitions";
 import { computeIntersection } from "./intersection";
+import { stripUnusedTypes } from "./strip-unused-types";
 import { typescriptServiceHost } from "./ts-service-host";
 import { computeUnion } from "./union";
 export type { TypeAnalyzer, TypeResolver };
@@ -114,11 +115,10 @@ class TypeResolver {
   }
 
   resolveType(type: ts.Type) {
-    // TODO: Clean up any unused types.
     const resolved = this.resolveTypeInternal(type);
     return {
       type: resolved,
-      collected: this.collected,
+      collected: stripUnusedTypes(this.collected, resolved),
     };
   }
 
@@ -251,7 +251,7 @@ class TypeResolver {
       case "Record":
         return true;
       default:
-        return !!this.specialTypes[typeName];
+        return Object.keys(this.specialTypes).includes(typeName);
     }
   }
 
@@ -259,20 +259,18 @@ class TypeResolver {
     type: ts.Type,
     genericTypeNames: Set<string>
   ): ValueType {
+    const specialTypeNames = Object.keys(this.specialTypes);
     const typeArguments = (
       this.checker.getTypeArguments(type as ts.TypeReference) || []
     ).map((t) => this.resolveTypeInternal(t, genericTypeNames));
-    if (type.symbol?.name) {
-      const specialType = this.specialTypes[type.symbol.name];
-      if (specialType) {
-        return specialType;
-      }
+    if (type.symbol?.name && specialTypeNames.includes(type.symbol.name)) {
+      return this.specialTypes[type.symbol.name]!;
     }
-    if (type.aliasSymbol?.name) {
-      const specialType = this.specialTypes[type.aliasSymbol.name];
-      if (specialType) {
-        return specialType;
-      }
+    if (
+      type.aliasSymbol?.name &&
+      specialTypeNames.includes(type.aliasSymbol.name)
+    ) {
+      return this.specialTypes[type.aliasSymbol.name]!;
     }
     if (type.symbol?.name === "Array") {
       return arrayType(typeArguments[0] || UNKNOWN_TYPE);
@@ -376,7 +374,7 @@ class TypeResolver {
     if (type.isUnionOrIntersection()) {
       const subtypes: ValueType[] = [];
       for (const t of type.types) {
-        let subtype = this.resolveTypeInternal(t, genericTypeNames);
+        const subtype = this.resolveTypeInternal(t, genericTypeNames);
         if (!subtype) {
           console.debug(
             `Unable to resolve ${
@@ -395,17 +393,12 @@ class TypeResolver {
     // Note: for a React component, we don't expect more than one call signature.
     if (callSignatures.length > 0) {
       const callSignature = callSignatures[0]!;
-      const returnType = this.resolveTypeInternal(
-        callSignature.getReturnType(),
-        genericTypeNames
+      return functionType(
+        this.resolveTypeInternal(
+          callSignature.getReturnType(),
+          genericTypeNames
+        )
       );
-      if (!returnType) {
-        console.debug(
-          `Unable to resolve return type in ${this.checker.typeToString(type)}`
-        );
-        return UNKNOWN_TYPE;
-      }
-      return functionType(returnType);
     }
     const arrayItemType = type.getNumberIndexType();
     if (arrayItemType) {
@@ -416,6 +409,9 @@ class TypeResolver {
       if (tupleTypes.length > 0) {
         return tupleType(tupleTypes);
       }
+      return arrayType(
+        this.resolveTypeInternal(arrayItemType, genericTypeNames)
+      );
     }
     if (flags & ts.TypeFlags.Object) {
       const indexType = type.getStringIndexType();
@@ -432,10 +428,47 @@ class TypeResolver {
           // For now, we ignore property names such as "foo.bar".
           continue;
         }
-        const propertyTsType = (this.checker as any).getTypeOfPropertyOfType(
-          type,
-          property.name
-        );
+        if (
+          !propertyName ||
+          propertyName.startsWith("__@") ||
+          propertyName.startsWith("#")
+        ) {
+          continue;
+        }
+        let propertyTsType: ts.Type | undefined;
+        if (
+          property.valueDeclaration?.modifiers?.find(
+            (m) =>
+              m.kind === ts.SyntaxKind.PrivateKeyword ||
+              m.kind === ts.SyntaxKind.ProtectedKeyword
+          )
+        ) {
+          continue;
+        }
+        if (
+          property.valueDeclaration &&
+          ts.isPropertySignature(property.valueDeclaration) &&
+          property.valueDeclaration.type
+        ) {
+          const declaredType = this.checker.getTypeFromTypeNode(
+            property.valueDeclaration.type
+          );
+          if (
+            !(declaredType.flags & ts.TypeFlags.TypeParameter) &&
+            !declaredType.aliasTypeArguments?.length &&
+            // @ts-ignore
+            !declaredType.resolvedTypeArguments?.length
+          ) {
+            propertyTsType = declaredType;
+          }
+        }
+        if (!propertyTsType) {
+          // @ts-ignore
+          propertyTsType = this.checker.getTypeOfPropertyOfType(
+            type,
+            property.name
+          );
+        }
         fields[propertyName!] = maybeOptionalType(
           propertyTsType
             ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
@@ -494,7 +527,6 @@ class TypeResolver {
     types: ValueType[];
     collected: CollectedTypes;
   } {
-    // TODO: Remove unused collected types.
     return {
       types: this.resolveTypeArgumentsInternal(type, genericTypeNames),
       collected: this.collected,

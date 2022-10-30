@@ -16,7 +16,11 @@ import com.intellij.openapi.editor.Inlay
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.editor.impl.EditorImpl
-import com.intellij.openapi.fileEditor.*
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.FileEditorManagerListener
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
@@ -27,19 +31,25 @@ import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
-import com.previewjs.intellij.plugin.api.*
+import com.previewjs.intellij.plugin.api.AnalyzeFileRequest
+import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
+import com.previewjs.intellij.plugin.api.StartPreviewRequest
+import com.previewjs.intellij.plugin.api.StopPreviewRequest
+import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
 import kotlinx.coroutines.Runnable
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
-import java.util.*
+import java.net.URLEncoder
+import java.util.Timer
+import java.util.TimerTask
 import javax.swing.ImageIcon
 import kotlin.concurrent.schedule
 
 class ProjectService(private val project: Project) : Disposable {
     companion object {
         private const val INLAY_PRIORITY = 1000
-        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "vue")
+        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
     }
@@ -52,42 +62,50 @@ class ProjectService(private val project: Project) : Disposable {
     private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
-    private var currentPreviewId: String? = null
+    private var currentPreviewWorkspaceId: String? = null
 
     init {
-        EditorFactory.getInstance().eventMulticaster.addDocumentListener(object : DocumentListener {
-            override fun documentChanged(event: DocumentEvent) {
-                val file = FileDocumentManager.getInstance().getFile(event.document)
-                if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
-                    return
-                }
-                service.enqueueAction(project, { api ->
-                    service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-                    api.updatePendingFile(
-                        UpdatePendingFileRequest(
-                            absoluteFilePath = file.path,
-                            utf8Content = event.document.text
+        EditorFactory.getInstance().eventMulticaster.addDocumentListener(
+            object : DocumentListener {
+                override fun documentChanged(event: DocumentEvent) {
+                    val file = FileDocumentManager.getInstance().getFile(event.document)
+                    if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
+                        return
+                    }
+                    service.enqueueAction(project, { api ->
+                        service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
+                        api.updatePendingFile(
+                            UpdatePendingFileRequest(
+                                absoluteFilePath = file.path,
+                                utf8Content = event.document.text
+                            )
                         )
-                    )
-                }, {
-                    "Warning: unable to update pending file ${file.path}"
-                })
-                refreshTimerTask?.cancel()
-                refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
-                    refreshTimerTask = null
-                    app.invokeLater(Runnable {
-                        updateComponents(file)
+                    }, {
+                        "Warning: unable to update pending file ${file.path}"
                     })
+                    refreshTimerTask?.cancel()
+                    refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
+                        refreshTimerTask = null
+                        app.invokeLater(
+                            Runnable {
+                                updateComponents(file)
+                            }
+                        )
+                    }
                 }
-            }
-        }, this)
+            },
+            this
+        )
 
         project.messageBus.connect(project)
-            .subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object : FileEditorManagerListener {
-                override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
-                    updateComponents(file)
+            .subscribe(
+                FileEditorManagerListener.FILE_EDITOR_MANAGER,
+                object : FileEditorManagerListener {
+                    override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
+                        updateComponents(file)
+                    }
                 }
-            })
+            )
 
         for (file in editorManager.openFiles) {
             updateComponents(file)
@@ -140,9 +158,11 @@ class ProjectService(private val project: Project) : Disposable {
                     absoluteFilePath = file.path,
                 )
             ).components
-            app.invokeLater(Runnable {
-                updateComponentHints(file, fileEditors, components)
-            })
+            app.invokeLater(
+                Runnable {
+                    updateComponentHints(file, fileEditors, components)
+                }
+            )
         }, {
             "Warning: unable to find components in ${file.path}"
         })
@@ -160,7 +180,7 @@ class ProjectService(private val project: Project) : Disposable {
                     val presentationFactory = PresentationFactory(editor)
                     val offsets = HashSet<Int>()
                     for (component in components) {
-                        offsets.add(component.offset)
+                        offsets.add(component.start)
                     }
                     val existingBlockByOffset = HashMap<Int, Inlay<*>>()
                     for (block in editor.inlayModel.getBlockElementsInRange(0, Int.MAX_VALUE)) {
@@ -171,10 +191,10 @@ class ProjectService(private val project: Project) : Disposable {
                         }
                     }
                     for (component in components) {
-                        val existingBlock = existingBlockByOffset[component.offset]
+                        val existingBlock = existingBlockByOffset[component.start]
                         if (existingBlock == null) {
                             editor.inlayModel.addBlockElement(
-                                component.offset,
+                                component.start,
                                 false,
                                 true,
                                 INLAY_PRIORITY,
@@ -202,14 +222,15 @@ class ProjectService(private val project: Project) : Disposable {
         val app = ApplicationManager.getApplication()
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
-            val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
-            val previousPreviewId = currentPreviewId
-            if (previousPreviewId != null && previousPreviewId != startPreviewResponse.previewId) {
-                api.stopPreview(StopPreviewRequest(previewId = previousPreviewId))
+            currentPreviewWorkspaceId?.let {
+                if (workspaceId != it) {
+                    api.stopPreview(StopPreviewRequest(workspaceId = it))
+                }
             }
-            currentPreviewId = startPreviewResponse.previewId
+            currentPreviewWorkspaceId = workspaceId
+            val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
-            val previewUrl = "$previewBaseUrl?p=$componentId"
+            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {
@@ -222,19 +243,22 @@ class ProjectService(private val project: Project) : Disposable {
                         BrowserUtil.browse(link)
                         return@addHandler null
                     }
-                    browser.jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
-                        override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
-                            browser.executeJavaScript(
-                                """
+                    browser.jbCefClient.addLoadHandler(
+                        object : CefLoadHandlerAdapter() {
+                            override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
+                                browser.executeJavaScript(
+                                    """
                         window.openInExternalBrowser = function(url) {
                             ${linkHandler.inject("url")}
                         };
                     """,
-                                browser.url,
-                                0
-                            )
-                        }
-                    }, browser.cefBrowser)
+                                    browser.url,
+                                    0
+                                )
+                            }
+                        },
+                        browser.cefBrowser
+                    )
                     Disposer.register(browser, linkHandler)
                     previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
                         RegisterToolWindowTask(
@@ -271,12 +295,11 @@ class ProjectService(private val project: Project) : Disposable {
         consoleView = null
         consoleToolWindow = null
         service.enqueueAction(project, { api ->
-            val previewId = currentPreviewId
-            if (previewId != null) {
-                api.stopPreview(StopPreviewRequest(previewId = previewId))
+            currentPreviewWorkspaceId?.let {
+                api.stopPreview(StopPreviewRequest(workspaceId = it))
             }
             service.disposeWorkspaces(project)
-            currentPreviewId = null
+            currentPreviewWorkspaceId = null
         }, {
             "Warning: unable to dispose of workspaces"
         })

@@ -1,5 +1,5 @@
-import { ReaderListener } from ".";
-import { Directory, DirectorySync, Entry, EntrySync, Reader } from "./api";
+import type { ReaderListener } from ".";
+import type { Directory, DirectorySync, Entry, EntrySync, Reader } from "./api";
 import { ReaderListeners } from "./listeners";
 
 export class StackedReader implements Reader {
@@ -63,20 +63,22 @@ function merge(entries: Array<Entry | null>): Entry | null {
     kind: "directory",
     name: first.name,
     entries: async () => {
-      const names = new Set<string>();
-      const uniques: Entry[] = [];
+      const entries: Record<string, Entry[]> = {};
       for (const directoryEntries of mergedDirectories.map((d) =>
         d.entries()
       )) {
         for (const entry of await directoryEntries) {
-          if (names.has(entry.name)) {
-            continue;
+          if (!entries[entry.name]) {
+            entries[entry.name] = [];
           }
-          names.add(entry.name);
-          uniques.push(entry);
+          entries[entry.name]!.push(entry);
         }
       }
-      return uniques;
+      return Object.values(entries)
+        .map((entriesForName) => {
+          return merge(entriesForName);
+        })
+        .filter(<T>(v: T | null): v is T => v !== null);
     },
   };
 }
@@ -101,20 +103,22 @@ function mergeSync(entries: Array<EntrySync | null>): EntrySync | null {
     kind: "directory",
     name: first.name,
     entries: () => {
-      const names = new Set<string>();
-      const uniques: EntrySync[] = [];
+      const entries: Record<string, EntrySync[]> = {};
       for (const directoryEntries of mergedDirectories.map((d) =>
         d.entries()
       )) {
         for (const entry of directoryEntries) {
-          if (names.has(entry.name)) {
-            continue;
+          if (!entries[entry.name]) {
+            entries[entry.name] = [];
           }
-          names.add(entry.name);
-          uniques.push(entry);
+          entries[entry.name]!.push(entry);
         }
       }
-      return uniques;
+      return Object.values(entries)
+        .map((entriesForName) => {
+          return mergeSync(entriesForName);
+        })
+        .filter(<T>(v: T | null): v is T => v !== null);
     },
   };
 }

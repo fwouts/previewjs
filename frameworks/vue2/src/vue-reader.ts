@@ -21,15 +21,16 @@ export function createVueTypeScriptReader(reader: Reader): Reader {
 class VueTypeScriptReader implements Reader {
   readonly listeners = new ReaderListeners();
 
+  observe?(path: string): Promise<() => Promise<void>>;
+
   constructor(private readonly reader: Reader) {
     reader.listeners.add({
       onChange: (absoluteFilePath, info) => {
         this.listeners.notify(absoluteFilePath, info);
       },
     });
+    this.observe = reader.observe?.bind(reader);
   }
-
-  observe = this.reader.observe?.bind(this.reader);
 
   async read(absoluteFilePath: string): Promise<File | Directory | null> {
     if (absoluteFilePath.endsWith(".vue.ts")) {
@@ -70,7 +71,17 @@ class VueTypeScriptReader implements Reader {
         size: () => source.size(),
       };
     }
-    return this.reader.readSync(absoluteFilePath);
+    const entry = this.reader.readSync(absoluteFilePath);
+    if (
+      entry?.kind === "file" &&
+      (entry.name.endsWith(".jsx") || entry.name.endsWith(".tsx"))
+    ) {
+      return {
+        ...entry,
+        read: () => `/// <reference types="vue/types/jsx" />\n${entry.read()}`,
+      };
+    }
+    return entry;
   }
 }
 
@@ -146,7 +157,9 @@ function convertToTypeScript(vueTemplateSource: string, name: string) {
               const extractedProps: ts.PropertyAssignment[] = [];
               for (const member of node.members) {
                 if (ts.isPropertyDeclaration(member)) {
-                  const [decorator] = member.decorators || [];
+                  const [decorator] = ts.canHaveDecorators(member)
+                    ? ts.getDecorators(member) || []
+                    : [];
                   if (
                     decorator &&
                     ts.isCallExpression(decorator.expression) &&

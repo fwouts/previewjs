@@ -10,15 +10,40 @@ import {
   ReaderListenerInfo,
 } from "@previewjs/vfs";
 import assertNever from "assert-never";
-import express from "express";
-import { pathExistsSync } from "fs-extra";
+import type express from "express";
 import path from "path";
-import * as vite from "vite";
-import { FrameworkPlugin } from "./plugins/framework";
+import type * as vite from "vite";
+import { getCacheDir } from "./caching";
+import { findFiles } from "./find-files";
+import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
 import { ViteManager } from "./vite/vite-manager";
 
-const POSTCSS_CONFIG_FILE = ["postcss.config.js", ".postcssrc.js"];
+const POSTCSS_CONFIG_FILE = [
+  ".postcssrc",
+  ".postcssrc.json",
+  ".postcssrc.yml",
+  ".postcssrc.js",
+  ".postcssrc.mjs",
+  ".postcssrc.cjs",
+  ".postcssrc.ts",
+  "postcss.config.js",
+  "postcss.config.mjs",
+  "postcss.config.cjs",
+  "postcss.config.ts",
+];
+const GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT = [
+  "index",
+  "global",
+  "globals",
+  "style",
+  "styles",
+  "app",
+];
+const GLOBAL_CSS_EXTS = ["css", "sass", "scss", "less", "styl", "stylus"];
+const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
+  GLOBAL_CSS_EXTS.map((ext) => `${fileName}.${ext}`)
+);
 
 const FILES_REQUIRING_RESTART = new Set([
   PREVIEW_CONFIG_NAME,
@@ -27,8 +52,11 @@ const FILES_REQUIRING_RESTART = new Set([
   "package.json",
   "package-lock.json",
   "pnpm-lock.yaml",
+  "vite.config.js",
+  "vite.config.ts",
   "yarn.lock",
   ...POSTCSS_CONFIG_FILE,
+  ...GLOBAL_CSS_FILE,
 ]);
 
 const SHUTDOWN_CHECK_INTERVAL = 3000;
@@ -48,7 +76,6 @@ export class Previewer {
       reader: Reader;
       previewDirPath: string;
       rootDirPath: string;
-      cacheDirPath: string;
       logLevel: vite.UserConfig["logLevel"];
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
@@ -131,7 +158,19 @@ export class Previewer {
         // PostCSS requires the current directory to change because it relies
         // on the `import-cwd` package to resolve plugins.
         process.chdir(this.options.rootDirPath);
-        this.config = await readConfig(this.options.rootDirPath);
+        const config = await readConfig(this.options.rootDirPath);
+        this.config = {
+          ...config,
+          wrapper: config.wrapper || {
+            path: this.options.frameworkPlugin.defaultWrapperPath,
+          },
+        };
+        const globalCssAbsoluteFilePaths = await findFiles(
+          this.options.rootDirPath,
+          `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
+            "|"
+          )}).@(${GLOBAL_CSS_EXTS.join("|")})`
+        );
         this.appServer = new Server({
           middlewares: [
             ...(this.options.middlewares || []),
@@ -152,9 +191,13 @@ export class Previewer {
             this.options.previewDirPath,
             "index.html"
           ),
+          detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
+            (absoluteFilePath) =>
+              path.relative(this.options.rootDirPath, absoluteFilePath)
+          ),
           reader: this.transformingReader,
-          cacheDir: path.join(this.options.cacheDirPath, "vite"),
-          config: this.configWithWrapper(this.config),
+          cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
+          config: this.config,
           logLevel: this.options.logLevel,
           frameworkPlugin: this.options.frameworkPlugin,
         });
@@ -174,6 +217,9 @@ export class Previewer {
       onceUnused?: boolean;
     } = {}
   ) {
+    if (this.status.kind === "starting") {
+      await this.status.promise;
+    }
     if (this.status.kind !== "started") {
       return;
     }
@@ -186,21 +232,6 @@ export class Previewer {
     } else {
       await this.stopNow();
     }
-  }
-
-  private configWithWrapper(config: PreviewConfig): PreviewConfig {
-    if (!config.wrapper) {
-      const defaultWrapperPath =
-        this.options.frameworkPlugin.defaultWrapperPath;
-      if (
-        pathExistsSync(path.join(this.options.rootDirPath, defaultWrapperPath))
-      ) {
-        config.wrapper = {
-          path: defaultWrapperPath,
-        };
-      }
-    }
-    return config;
   }
 
   private async shutdownCheck() {
@@ -251,15 +282,17 @@ export class Previewer {
   private readonly onFileChangeListener = {
     onChange: (absoluteFilePath: string, info: ReaderListenerInfo) => {
       absoluteFilePath = path.resolve(absoluteFilePath);
-      const wrapperPath = this.config
-        ? this.configWithWrapper(this.config).wrapper?.path
-        : null;
       if (
         !info.virtual &&
-        (FILES_REQUIRING_RESTART.has(path.basename(absoluteFilePath)) ||
-          (wrapperPath &&
-            absoluteFilePath ===
-              path.resolve(this.options.rootDirPath, wrapperPath)))
+        this.config?.wrapper &&
+        absoluteFilePath ===
+          path.resolve(this.options.rootDirPath, this.config.wrapper.path)
+      ) {
+        this.viteManager?.triggerFullReload();
+      }
+      if (
+        !info.virtual &&
+        FILES_REQUIRING_RESTART.has(path.basename(absoluteFilePath))
       ) {
         if (this.status.kind === "starting" || this.status.kind === "started") {
           const port = this.status.port;
@@ -275,6 +308,7 @@ export class Previewer {
       }
       if (info.virtual) {
         this.viteManager?.triggerReload(absoluteFilePath);
+        this.viteManager?.triggerReload(absoluteFilePath + ".ts");
       } else if (this.options.onFileChanged) {
         this.options.onFileChanged(absoluteFilePath);
       }

@@ -1,55 +1,46 @@
-import { readConfig } from "@previewjs/config";
-import { RequestHandler } from "express";
+import type * as express from "express";
 import fs from "fs-extra";
 import path from "path";
-import {
-  FrameworkPlugin,
+import type {
   FrameworkPluginFactory,
   PersistedStateManager,
   Workspace,
 } from ".";
-import { PackageDependencies } from "./plugins/dependencies";
-import { ApiRouter } from "./router";
+import type { PackageDependencies } from "./plugins/dependencies";
+import type { RegisterEndpoint } from "./router";
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;
-}) => Promise<PreviewEnvironment | null>;
+}) => Promise<PreviewEnvironment>;
 
 export type PreviewEnvironment = {
-  frameworkPluginFactories?: FrameworkPluginFactory[];
-  middlewares?: RequestHandler[];
+  middlewares?: express.RequestHandler[];
   persistedStateManager?: PersistedStateManager;
-  onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
+  onReady?(options: {
+    registerEndpoint: RegisterEndpoint;
+    workspace: Workspace;
+  }): Promise<void>;
 };
 
 export async function loadPreviewEnv({
   rootDirPath,
   setupEnvironment,
+  frameworkPluginFactories,
 }: {
   rootDirPath: string;
   setupEnvironment: SetupPreviewEnvironment;
+  frameworkPluginFactories?: FrameworkPluginFactory[];
 }) {
-  const previewEnv = await setupEnvironment({ rootDirPath });
-  if (!previewEnv) {
-    return null;
-  }
-  let frameworkPlugin: FrameworkPlugin | undefined = await readConfig(
-    rootDirPath
-  ).frameworkPlugin;
-  fallbackToDefault: if (!frameworkPlugin) {
-    const dependencies = await extractPackageDependencies(rootDirPath);
-    for (const candidate of previewEnv.frameworkPluginFactories || []) {
-      if (await candidate.isCompatible(dependencies)) {
-        frameworkPlugin = await candidate.create();
-        break fallbackToDefault;
-      }
+  const dependencies = await extractPackageDependencies(rootDirPath);
+  for (const candidate of frameworkPluginFactories || []) {
+    if (await candidate.isCompatible(dependencies)) {
+      return {
+        previewEnv: await setupEnvironment({ rootDirPath }),
+        frameworkPlugin: await candidate.create(),
+      };
     }
-    return null;
   }
-  return {
-    previewEnv,
-    frameworkPlugin,
-  };
+  return null;
 }
 
 async function extractPackageDependencies(
@@ -59,24 +50,68 @@ async function extractPackageDependencies(
   if (!(await fs.pathExists(packageJsonPath))) {
     return {};
   }
-  let { dependencies, devDependencies } = JSON.parse(
+  const { dependencies, devDependencies, peerDependencies } = JSON.parse(
     await fs.readFile(packageJsonPath, "utf8")
   );
   const allDependencies = {
     ...dependencies,
     ...devDependencies,
+    ...peerDependencies,
   };
-  return Object.fromEntries<{ majorVersion: number }>(
-    Object.entries(allDependencies).map(([name, version]) => {
-      let majorVersion: number;
-      if (typeof version !== "string") {
-        majorVersion = 0;
-      } else if (version.startsWith("^") || version.startsWith("~")) {
-        majorVersion = parseInt(version.slice(1));
-      } else {
-        majorVersion = parseInt(version);
+  return Object.fromEntries(
+    Object.entries(allDependencies).map(
+      ([name, version]): [string, PackageDependencies[string]] => {
+        let majorVersion: number;
+        if (typeof version !== "string") {
+          majorVersion = 0;
+        } else if (version.startsWith("^") || version.startsWith("~")) {
+          majorVersion = parseInt(version.slice(1));
+        } else {
+          majorVersion = parseInt(version);
+        }
+        const readInstalledVersion = async () => {
+          try {
+            const moduleEntryPath = require.resolve(name, {
+              paths: [rootDirPath],
+            });
+            let packagePath = moduleEntryPath;
+            let packageJsonPath: string | null = null;
+            while (packagePath !== path.dirname(packagePath)) {
+              const candidatePackageJsonPath = path.join(
+                packagePath,
+                "package.json"
+              );
+              if (fs.existsSync(candidatePackageJsonPath)) {
+                packageJsonPath = candidatePackageJsonPath;
+                break;
+              }
+              packagePath = path.dirname(packagePath);
+            }
+            if (!packageJsonPath) {
+              throw new Error(
+                `No package.json path found from: ${moduleEntryPath}`
+              );
+            }
+            const packageInfo = JSON.parse(
+              await fs.readFile(packageJsonPath, "utf8")
+            );
+            const version = packageInfo["version"];
+            if (!version || typeof version !== "string") {
+              throw new Error(
+                `Invalid version found for package: ${packageJsonPath}`
+              );
+            }
+            return version;
+          } catch (e) {
+            console.error(
+              `Unable to read installed version of package: ${name}`,
+              e
+            );
+            return null;
+          }
+        };
+        return [name, { majorVersion, readInstalledVersion }];
       }
-      return [name, { majorVersion }];
-    })
+    )
   );
 }

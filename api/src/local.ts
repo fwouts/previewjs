@@ -1,5 +1,6 @@
-import { Endpoint } from "./endpoint";
-import { PersistedState } from "./persisted-state";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type { Endpoint } from "./endpoint";
+import type { PersistedState } from "./persisted-state";
 
 export const GetInfo: Endpoint<
   void,
@@ -26,13 +27,45 @@ export const ComputeProps: Endpoint<
     filePath: string;
     componentName: string;
   },
-  PreviewSources | null
+  ComputePropsResponse
 > = {
   path: "compute-props",
 };
 
-export interface PreviewSources {
-  typeDeclarationsSource: string;
-  defaultPropsSource: string;
-  defaultInvocationSource: string;
-}
+export type ComputePropsResponse = {
+  types: {
+    props: ValueType;
+    all: CollectedTypes;
+  };
+};
+
+export const AnalyzeProject: Endpoint<
+  {
+    forceRefresh?: boolean;
+  },
+  AnalyzeProjectResponse
+> = {
+  path: "analyze-project",
+};
+
+export type AnalyzeProjectResponse = {
+  components: {
+    [filePath: string]: Component[];
+  };
+};
+
+export type Component = {
+  name: string;
+  info:
+    | {
+        kind: "component";
+        exported: boolean;
+      }
+    | {
+        kind: "story";
+        associatedComponent: {
+          filePath: string;
+          name: string;
+        } | null;
+      };
+};

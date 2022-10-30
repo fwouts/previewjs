@@ -1,18 +1,10 @@
 import type { SetupPreviewEnvironment } from "@previewjs/core";
-import { reactFrameworkPlugin } from "@previewjs/plugin-react";
-import { vue2FrameworkPlugin } from "@previewjs/plugin-vue2";
-import { vue3FrameworkPlugin } from "@previewjs/plugin-vue3";
 import express from "express";
 import fs from "fs";
 import path from "path";
 
 const setup: SetupPreviewEnvironment = async () => {
   return {
-    frameworkPluginFactories: [
-      reactFrameworkPlugin,
-      vue2FrameworkPlugin,
-      vue3FrameworkPlugin,
-    ],
     middlewares: [express.static(findClientDir(__dirname))],
   };
 };

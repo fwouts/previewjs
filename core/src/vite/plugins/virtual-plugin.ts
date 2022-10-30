@@ -1,8 +1,7 @@
-import { Reader } from "@previewjs/vfs";
-import { Node, Parser } from "acorn";
+import type { Reader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
-import * as vite from "vite";
+import type * as vite from "vite";
 import { transformWithEsbuild } from "vite";
 
 const VIRTUAL_PREFIX = `/@previewjs-virtual:`;
@@ -12,6 +11,7 @@ const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 export function virtualPlugin(options: {
   reader: Reader;
   rootDirPath: string;
+  allowedAbsolutePaths: string[];
   moduleGraph: () => vite.ModuleGraph | null;
   esbuildOptions: vite.ESBuildOptions;
 }): vite.Plugin {
@@ -72,43 +72,70 @@ export function virtualPlugin(options: {
         return null;
       }
       const [absoluteFilePath, entry] = resolved;
-      if (entry.kind !== "file") {
-        console.error(`Unable to read from ${absoluteFilePath}`);
+      let isAllowed = false;
+      for (const allowedAbsolutePath of options.allowedAbsolutePaths) {
+        const relativePath = path.relative(
+          allowedAbsolutePath,
+          absoluteFilePath
+        );
+        if (
+          relativePath &&
+          !relativePath.startsWith("..") &&
+          !path.isAbsolute(relativePath)
+        ) {
+          // The path is a descendant of an allowed path, so we're OK.
+          isAllowed = true;
+          break;
+        }
+      }
+      if (!isAllowed) {
+        console.error(
+          `Attempted access to ${absoluteFilePath} which is outside of allowed directories. See https://previewjs.com/docs/config and https://vitejs.dev/config/server-options.html#server-fs-allow for more information.`
+        );
         return null;
       }
-      let source = await entry.read();
+      if (entry.kind !== "file") {
+        console.error(`Unable to read file from ${absoluteFilePath}`);
+        return null;
+      }
+      const source = await entry.read();
       const fileExtension = path.extname(absoluteFilePath);
       if (!jsExtensions.has(fileExtension)) {
         return source;
       }
-      // Transform with esbuild so we can find top-level entity names.
-      const transformed = {
-        ...(await transformWithEsbuild(source, absoluteFilePath, {
-          loader: fileExtension === ".ts" ? "ts" : "tsx",
-          format: "esm",
-          sourcefile: path.relative(rootDirPath, absoluteFilePath),
-          ...options.esbuildOptions,
-        })),
-        // Prevent injectSourcesContent() from running on Vite side.
-        // It could fail when the parent directory doesn't exist
-        // (which is the case for __react_internal__ files).
-        map: "{}",
-      };
-      const topLevelEntityNames = findTopLevelEntityNames(transformed.code);
       const moduleExtension = path.extname(id);
       return {
         code:
-          // We do use the transform for .js because it may include JSX. Otherwise, let plugins decide whether
-          // to use esbuild or not.
-          (moduleExtension === "" || moduleExtension === ".js"
-            ? transformed.code
-            : source) +
-          `;
-          export {
-          ${topLevelEntityNames
-            .map((c) => `${c} as __previewjs__${c},`)
-            .join("")}
-        }`,
+          // We run an esbuild transform for .js or no extension
+          // because it may include JSX. Otherwise, let plugins
+          // decide whether to use esbuild or not.
+          moduleExtension === "" || moduleExtension === ".js"
+            ? (
+                await transformWithEsbuild(source, absoluteFilePath, {
+                  loader: "tsx",
+                  format: "esm",
+                  target: "es2020",
+                  sourcefile: path.relative(rootDirPath, absoluteFilePath),
+                  ...options.esbuildOptions,
+                })
+              ).code
+            : source,
+      };
+    },
+    transform: (code, id) => {
+      if (!id.startsWith(VIRTUAL_PREFIX)) {
+        return null;
+      }
+      // Disable source mapping for virtual files.
+      // Otherwise, we'd see warnings about missing /@previewjs-virtual/... files.
+      return {
+        code,
+        map: {
+          mappings: "",
+          names: [],
+          sources: [],
+          version: 3,
+        },
       };
     },
     handleHotUpdate: async function (context) {
@@ -145,51 +172,10 @@ export function virtualPlugin(options: {
     ]) {
       const absoluteFilePath = `${baseFilePath}${suffix}`;
       const entry = await reader.read(absoluteFilePath);
-      if (entry !== null) {
+      if (entry?.kind === "file") {
         return [absoluteFilePath, entry] as const;
       }
     }
     return null;
-  }
-}
-
-function findTopLevelEntityNames(source: string): string[] {
-  let parsed: Node;
-  try {
-    parsed = Parser.parse(source, {
-      ecmaVersion: "latest",
-      sourceType: "module",
-    });
-  } catch (e) {
-    console.warn(e);
-    return [];
-  }
-  const topLevelEntityNames: string[] = [];
-  // Note: acorn doesn't provide detailed typings.
-  for (const statement of (parsed as any).body || []) {
-    if (statement.type === "VariableDeclaration") {
-      for (const declaration of statement.declarations) {
-        if (declaration.type === "VariableDeclarator") {
-          addIfIdentifier(topLevelEntityNames, declaration.id);
-        }
-      }
-    }
-    if (statement.type === "FunctionDeclaration") {
-      addIfIdentifier(topLevelEntityNames, statement.id);
-    }
-    if (statement.type === "ClassDeclaration") {
-      addIfIdentifier(topLevelEntityNames, statement.id);
-    }
-  }
-  return topLevelEntityNames;
-}
-
-function addIfIdentifier(array: string[], id?: Node) {
-  if (id && id.type === "Identifier") {
-    const name = (id as any).name;
-    if (name.endsWith("_default")) {
-      return;
-    }
-    array.push(name);
   }
 }

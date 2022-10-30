@@ -2,11 +2,23 @@
   <a href="https://previewjs.com" target="_blank">
     <img src="assets/banner.svg" alt="Preview.js" />
   </a>
+  <br />
+  <br />
+  <a href="https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs" target="_blank">
+    <img src="https://img.shields.io/visual-studio-marketplace/v/zenclabs.previewjs?label=vscode extension" />
+    <img src="https://img.shields.io/visual-studio-marketplace/d/zenclabs.previewjs" />
+  </a>
+  <br />
+  <a href="https://plugins.jetbrains.com/plugin/18384-preview-js" target="_blank">
+    <img src="https://img.shields.io/jetbrains/plugin/v/18384" />
+    <img src="https://img.shields.io/jetbrains/plugin/d/18384" />
+  </a>
 </div>
+<br />
 
-Preview.js lets you preview Vue and React components instantly in your IDE.
+Preview.js lets you preview React, Solid and Vue components instantly in your IDE.
 
-![Demo](assets/previewjs-overview.gif)
+[![Demo](assets/previewjs-overview.gif)](https://previewjs.com)
 
 ## Get started
 

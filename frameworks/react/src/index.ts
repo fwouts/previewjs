@@ -1,30 +1,25 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
+import react from "@vitejs/plugin-react";
 import path from "path";
 import ts from "typescript";
-import { reactComponentLoaderPlugin } from "./component-loader-plugin";
 import { extractReactComponents } from "./extract-component";
-import { optimizeReactDepsPlugin } from "./optimize-deps-plugin";
-import { reactImportsPlugin } from "./react-imports-plugin";
+import { reactImportsPlugin } from "./react-js-imports-plugin";
 import { REACT_SPECIAL_TYPES } from "./special-types";
-import { svgrPlugin } from "./svgr-plugin";
 
-export const reactFrameworkPlugin: FrameworkPluginFactory<{
-  svgr?: {
-    componentName?: string;
-  };
-}> = {
+/** @deprecated */
+export const reactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    const react = dependencies["react"];
-    if (!react) {
+    const version = await dependencies["react"]?.readInstalledVersion();
+    if (!version) {
       return false;
     }
-    return react.majorVersion >= 16;
+    return parseInt(version) >= 16;
   },
-  async create({ svgr } = {}) {
+  async create() {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 2,
+      pluginApiVersion: 3,
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
@@ -54,18 +49,27 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
         }
         return components;
       },
-      viteConfig: (config) => {
+      viteConfig: () => {
         return {
+          resolve: {
+            alias: {
+              "react-native": "react-native-web",
+            },
+          },
           plugins: [
-            optimizeReactDepsPlugin(),
-            reactComponentLoaderPlugin({
-              config,
-            }),
-            svgrPlugin({
-              exportedComponentName: svgr?.componentName || "ReactComponent",
-              alias: config.alias,
-            }),
             reactImportsPlugin(),
+            react(),
+            {
+              name: "previewjs:disable-react-hmr",
+              async transform(code, id) {
+                if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
+                  return null;
+                }
+                // HMR prevents preview props from being refreshed.
+                // For now, we disable it entirely.
+                return code.replace(/import\.meta/g, "({})");
+              },
+            },
           ],
           define: {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
@@ -75,3 +79,5 @@ export const reactFrameworkPlugin: FrameworkPluginFactory<{
     };
   },
 };
+
+export default reactFrameworkPlugin;

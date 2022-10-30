@@ -2,21 +2,27 @@ import { localEndpoints } from "@previewjs/api";
 import {
   CollectedTypes,
   createTypeAnalyzer,
+  EMPTY_OBJECT_TYPE,
   TypeAnalyzer,
+  UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
-import { Reader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
+import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
-import * as vite from "vite";
-import { computeProps } from "./compute-props";
-import { PersistedStateManager } from "./persisted-state";
-import { FrameworkPlugin } from "./plugins/framework";
+import type * as vite from "vite";
+import { analyzeProject } from "./analyze-project";
+import {
+  LocalFilePersistedStateManager,
+  PersistedStateManager,
+} from "./persisted-state";
+import type { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
-import { ApiRouter } from "./router";
+import { ApiRouter, RegisterEndpoint } from "./router";
 export { generateComponentId } from "./component-id";
-export { PersistedStateManager } from "./persisted-state";
+export type { PersistedStateManager } from "./persisted-state";
 export type {
   Component,
   ComponentAnalysis,
@@ -29,6 +35,10 @@ export type {
   SetupPreviewEnvironment,
 } from "./preview-env";
 
+process.on("uncaughtException", (e) => {
+  console.error("Uncaught Exception:", e);
+});
+
 export async function createWorkspace({
   versionCode,
   rootDirPath,
@@ -37,7 +47,7 @@ export async function createWorkspace({
   logLevel,
   middlewares,
   onReady,
-  persistedStateManager = new PersistedStateManager(),
+  persistedStateManager = new LocalFilePersistedStateManager(),
 }: {
   versionCode: string;
   rootDirPath: string;
@@ -46,29 +56,23 @@ export async function createWorkspace({
   logLevel: vite.LogLevel;
   reader: Reader;
   persistedStateManager?: PersistedStateManager;
-  onReady?(options: { router: ApiRouter; workspace: Workspace }): Promise<void>;
-}): Promise<Workspace | null> {
-  if (frameworkPlugin.pluginApiVersion !== 2) {
+  onReady?(options: {
+    registerEndpoint: RegisterEndpoint;
+    workspace: Workspace;
+  }): Promise<void>;
+}): Promise<Workspace> {
+  const expectedPluginApiVersion = 3;
+  if (
+    !frameworkPlugin.pluginApiVersion ||
+    frameworkPlugin.pluginApiVersion < expectedPluginApiVersion
+  ) {
     throw new Error(
-      `Detected incompatible Preview.js framework plugin. Please install latest version of ${frameworkPlugin.name}.`
+      `Preview.js framework plugin ${frameworkPlugin.name} is incompatible with this version of Preview.js. Please upgrade it.`
     );
-  }
-  let cacheDirPath: string;
-  try {
-    const { version } = JSON.parse(
-      fs.readFileSync(
-        path.resolve(__dirname, "..", "..", "package.json"),
-        "utf8"
-      )
+  } else if (frameworkPlugin.pluginApiVersion > expectedPluginApiVersion) {
+    throw new Error(
+      `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
     );
-    cacheDirPath = path.resolve(
-      rootDirPath,
-      "node_modules",
-      ".previewjs",
-      `v${version}`
-    );
-  } catch (e) {
-    throw new Error(`Unable to detect @previewjs/core version.`);
   }
   if (frameworkPlugin.transformReader) {
     reader = frameworkPlugin.transformReader(reader, rootDirPath);
@@ -82,7 +86,7 @@ export async function createWorkspace({
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
   const router = new ApiRouter();
-  router.onRequest(localEndpoints.GetInfo, async () => {
+  router.registerEndpoint(localEndpoints.GetInfo, async () => {
     const separatorPosition = versionCode.indexOf("-");
     if (separatorPosition === -1) {
       throw new Error(`Unsupported version code format: ${versionCode}`);
@@ -96,11 +100,12 @@ export async function createWorkspace({
       },
     };
   });
-  router.onRequest(localEndpoints.GetState, () => persistedStateManager.get());
-  router.onRequest(localEndpoints.UpdateState, (stateUpdate) =>
-    persistedStateManager.update(stateUpdate)
+  router.registerEndpoint(localEndpoints.GetState, persistedStateManager.get);
+  router.registerEndpoint(
+    localEndpoints.UpdateState,
+    persistedStateManager.update
   );
-  router.onRequest(
+  router.registerEndpoint(
     localEndpoints.ComputeProps,
     async ({ filePath, componentName }) => {
       const component = (
@@ -109,32 +114,55 @@ export async function createWorkspace({
         ])
       ).find((c) => c.name === componentName);
       if (!component) {
-        return null;
+        return {
+          types: {
+            props: UNKNOWN_TYPE,
+            all: {},
+          },
+        };
       }
-      return computeProps({
-        rootDirPath,
-        component,
-      });
+      if (component.info.kind === "story") {
+        return {
+          types: {
+            props: EMPTY_OBJECT_TYPE,
+            all: {},
+          },
+        };
+      }
+      const result = await component.info.analyze();
+      return {
+        types: {
+          props: result.propsType,
+          all: result.types,
+        },
+      };
     }
+  );
+  router.registerEndpoint(localEndpoints.AnalyzeProject, (options) =>
+    analyzeProject(workspace, options)
   );
   const previewer = new Previewer({
     reader,
     rootDirPath,
-    previewDirPath: path.join(__dirname, "..", "..", "iframe", "preview"),
-    cacheDirPath,
+    // TODO: Use a cleaner approach.
+    previewDirPath: path.join(
+      path.dirname(path.dirname(require.resolve("@previewjs/iframe"))),
+      "preview"
+    ),
     frameworkPlugin,
     logLevel,
     middlewares: [
       express.json(),
+      cookieParser(),
       express
         .Router()
         .use(
           "/monaco-editor",
-          express.static(path.join(__dirname, "..", "monaco-editor"))
+          express.static(path.join(__dirname, "monaco-editor"))
         ),
       async (req, res, next) => {
         if (req.path.startsWith("/api/")) {
-          res.json(await router.handle(req.path.substr(5), req.body));
+          res.json(await router.handle(req.path.substr(5), req.body, req, res));
         } else {
           next();
         }
@@ -180,7 +208,8 @@ export async function createWorkspace({
   };
   if (onReady) {
     await onReady({
-      router,
+      registerEndpoint: (endpoint, handler) =>
+        router.registerEndpoint(endpoint, handler),
       workspace,
     });
   }
@@ -193,7 +222,10 @@ export async function createWorkspace({
 export function findWorkspaceRoot(absoluteFilePath: string): string | null {
   let dirPath = path.resolve(absoluteFilePath);
   while (dirPath !== path.dirname(dirPath)) {
-    if (fs.existsSync(path.join(dirPath, "package.json"))) {
+    if (
+      fs.existsSync(path.join(dirPath, "package.json")) &&
+      fs.existsSync(path.join(dirPath, "node_modules"))
+    ) {
       return dirPath;
     }
     dirPath = path.dirname(dirPath);

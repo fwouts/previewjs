@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.x]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -27,17 +27,15 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2.2.1
+      - uses: pnpm/action-setup@v2.2.4
         with:
-          version: 6.24.4
           run_install: true
-      - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies
-      - run: yarn --frozen-lockfile
+      - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --include-dependencies
       - name: Extract version from package.json
-        uses: sergeysova/jq-action@v2.1.0
+        uses: sergeysova/jq-action@v2.2.1
         id: version
         with:
           cmd: "jq .version integrations/vscode/package.json -r"
@@ -46,10 +44,6 @@ jobs:
       - name: Check that versions match
         run: '[[ "${{ steps.version.outputs.value }}" == "$VERSION" ]] && echo "Versions match"'
       - name: Publish to Visual Studio Code Marketplace
-        run: yarn vsce publish
+        run: pnpm vsce publish
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-      - name: Publish to Open VSX Registry
-        run: yarn ovsx publish -p $OVSX_TOKEN
-        env:
-          OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}

@@ -1,28 +1,50 @@
+import { testSuite } from "@previewjs/e2e-test-runner";
+import reactPlugin from "@previewjs/plugin-react";
+import solidPlugin from "@previewjs/plugin-solid";
+import sveltePlugin from "@previewjs/plugin-svelte";
+import vue2Plugin from "@previewjs/plugin-vue2";
+import vue3Plugin from "@previewjs/plugin-vue3";
 import fs from "fs-extra";
 import path from "path";
-import { testSuite } from "../testing";
 
 const smokeTestAppsDir = path.join(__dirname, "..", "..", "smoke-test-apps");
 export const smokeTests = fs
   .readdirSync(smokeTestAppsDir)
-  .filter(
-    (appName) =>
-      !appName.startsWith("_tmp_") &&
-      fs.pathExistsSync(path.join(smokeTestAppsDir, appName, "package.json"))
+  .filter((appName) =>
+    fs.pathExistsSync(path.join(smokeTestAppsDir, appName, "package.json"))
   )
+  .filter((appName) => {
+    if (
+      appName.includes("sveltekit") &&
+      parseInt(process.versions.node.split(".")[0]!) < 16
+    ) {
+      // SvelteKit requires Node 16.
+      // See https://github.com/sveltejs/kit/issues/2412
+      return false;
+    }
+    return true;
+  })
   .map((appName) =>
     testSuite(
+      [reactPlugin, solidPlugin, sveltePlugin, vue2Plugin, vue3Plugin],
       `smoke test: ${appName}`,
       async (test) => {
         test(
           appName,
           `../smoke-test-apps/${appName}`,
-          async ({ outputDirPath, appDir, controller }) => {
+          async ({ appDir, controller }) => {
             const candidates = [
+              "App.tsx:App",
+              "App.jsx:App",
+              "App.js:App",
               "src/App.tsx:App",
               "src/App.jsx:App",
               "src/App.js:App",
+              "src/App.svelte:App",
               "src/App.vue:App",
+              "src/SolidApp.jsx:default",
+              "src/routes/Header.svelte:Header",
+              "src/routes/+page.svelte:+page",
               "pages/index.tsx:App",
               "pages/index.vue:index",
               "app.vue:app",
@@ -56,7 +78,9 @@ export const smokeTests = fs
             await controller.takeScreenshot(
               "#ready",
               path.join(
-                outputDirPath,
+                __dirname,
+                "..",
+                "tests",
                 "__screenshots__",
                 process.platform,
                 `${appName}.png`
@@ -65,6 +89,7 @@ export const smokeTests = fs
           }
         );
       },
-      path.join(smokeTestAppsDir, appName)
+      path.join(smokeTestAppsDir, appName),
+      false
     )
   );

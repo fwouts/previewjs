@@ -1,16 +1,19 @@
-import {
+import type {
   Endpoint,
   RequestOf,
   ResponseOf,
   WrappedResponse,
 } from "@previewjs/api";
+import type * as express from "express";
 
 export class ApiRouter {
   private handlers = new Map<string, RequestHandler<any, any>>();
 
   async handle(
     path: string,
-    request: unknown
+    request: unknown,
+    expressRequest: express.Request,
+    expressResponse: express.Response
   ): Promise<WrappedResponse<unknown>> {
     const handler = this.handlers.get(path);
     if (!handler) {
@@ -20,13 +23,13 @@ export class ApiRouter {
       };
     }
     try {
-      const response = await handler(request);
+      const response = await handler(request, expressRequest, expressResponse);
       return {
         kind: "success",
         response,
       };
     } catch (e: any) {
-      console.warn(e);
+      console.error(`Handler ${path} failed`, e);
       return {
         kind: "error",
         message: e.message,
@@ -34,19 +37,30 @@ export class ApiRouter {
     }
   }
 
-  onRequest<E extends Endpoint<any, any>>(
-    endpoint: E,
-    handler: RequestHandler<RequestOf<E>, ResponseOf<E>>
-  ) {
+  registerEndpoint: RegisterEndpoint = (endpoint, handler) => {
     if (this.handlers.has(endpoint.path)) {
       throw new Error(
         `Multiple handlers registered for endpoint '${endpoint.path}'`
       );
     }
     this.handlers.set(endpoint.path, handler);
-  }
+  };
 }
 
-export type RequestHandler<Request, Response> = (
-  request: Request
-) => Promise<Response>;
+export type RegisterEndpoint = <E extends Endpoint<any, any>>(
+  endpoint: E,
+  handler: RequestHandler<RequestOf<E>, ResponseOf<E>>
+) => void;
+
+export type RequestHandler<Req, Res> = (
+  request: Req,
+  expressRequest: express.Request,
+  expressResponse: express.Response
+) => Promise<Res>;
+
+export type RequestHandlerForEndpoint<E> = E extends Endpoint<
+  infer Req,
+  infer Res
+>
+  ? RequestHandler<Req, Res>
+  : never;

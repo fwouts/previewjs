@@ -1,25 +1,32 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import type { Node } from "acorn";
+import fs from "fs-extra";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
+/** @deprecated */
 export const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    return dependencies["vue"]?.majorVersion === 3 || !!dependencies["nuxt3"];
+    const version =
+      (await dependencies["vue"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt3"]?.readInstalledVersion());
+    if (!version) {
+      return false;
+    }
+    return parseInt(version) === 3;
   },
   async create() {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
-    const { vueComponentLoaderPlugin } = await import(
-      "./component-loader-plugin"
-    );
     const { extractVueComponents } = await import("./extract-component");
     const { Parser } = await import("acorn");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 2,
+      pluginApiVersion: 3,
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
@@ -38,18 +45,25 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (absoluteFilePath.endsWith(".vue")) {
-            const name = path.basename(
-              absoluteFilePath,
-              path.extname(absoluteFilePath)
-            );
+          if (
+            absoluteFilePath.endsWith(".vue") &&
+            (await fs.pathExists(absoluteFilePath))
+          ) {
             components.push({
               absoluteFilePath,
-              name,
-              exported: true,
-              offsets: [[0, Infinity]],
-              analyze: async () =>
-                analyzeVueComponentFromTemplate(typeAnalyzer, absoluteFilePath),
+              name: inferComponentNameFromVuePath(absoluteFilePath),
+              offsets: [
+                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
+              ],
+              info: {
+                kind: "component",
+                exported: true,
+                analyze: async () =>
+                  analyzeVueComponentFromTemplate(
+                    typeAnalyzer,
+                    absoluteFilePath
+                  ),
+              },
             });
           } else {
             components.push(
@@ -59,12 +73,9 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: (config) => {
+      viteConfig: () => {
         return {
           plugins: [
-            vueComponentLoaderPlugin({
-              config,
-            }),
             createVuePlugin(),
             vueJsxPlugin(),
             {
@@ -83,7 +94,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
             },
             {
               name: "previewjs:process-define-preview",
-              async transform(code, id) {
+              async transform(code) {
                 if (!code.includes("const _sfc_main = ")) {
                   return;
                 }
@@ -105,6 +116,7 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
                         declaration.type === "VariableDeclarator" &&
                         declaration.id.type === "Identifier" &&
                         declaration.id.name === "_sfc_main" &&
+                        declaration.init &&
                         declaration.init.type === "CallExpression" &&
                         declaration.init.callee.type === "Identifier" &&
                         declaration.init.callee.name === "_defineComponent" &&
@@ -116,8 +128,8 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
                           declaration.init.arguments[0].properties;
                         const setupProperty = properties.find(
                           (p: any) =>
-                            p.key.name === "setup" &&
-                            p.value.type === "FunctionExpression"
+                            p.key?.name === "setup" &&
+                            p.value?.type === "FunctionExpression"
                         );
                         if (!setupProperty) {
                           continue;
@@ -177,3 +189,5 @@ export const vue3FrameworkPlugin: FrameworkPluginFactory = {
     };
   },
 };
+
+export default vue3FrameworkPlugin;

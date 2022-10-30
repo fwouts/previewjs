@@ -1,11 +1,11 @@
-import { ComponentAnalysis } from "@previewjs/core";
+import type { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
   dereferenceType,
   EMPTY_OBJECT_TYPE,
-  helpers,
   maybeOptionalType,
   objectType,
+  stripUnusedTypes,
   TypeResolver,
   UNKNOWN_TYPE,
   ValueType,
@@ -20,22 +20,14 @@ export function analyzeReactComponent(
   signature: ts.Signature
 ): ComponentAnalysis {
   const sourceFile = typeResolver.sourceFile(absoluteFilePath);
-  let args: ts.Expression | null = null;
   let propTypes: ts.Expression | null = null;
   if (sourceFile) {
-    args = helpers.extractArgs(sourceFile)[componentName] || null;
     propTypes = detectPropTypes(sourceFile, componentName);
   }
-  let resolved = computePropsType(typeResolver, signature, propTypes);
-  let providedArgs = new Set<string>();
-  if (args) {
-    const argsType = typeResolver.checker.getTypeAtLocation(args);
-    providedArgs = new Set(argsType.getProperties().map((prop) => prop.name));
-  }
+  const resolved = computePropsType(typeResolver, signature, propTypes);
   return {
     propsType: resolved.type,
     types: { ...resolved.collected },
-    providedArgs,
   };
 }
 
@@ -87,6 +79,8 @@ function computePropsTypeFromSignature(
       if (ts.isObjectBindingPattern(firstParam.valueDeclaration.name)) {
         const bindingPattern = firstParam.valueDeclaration.name;
         const usedProps = new Set<string>();
+        // TODO: Integrate this into Solid plugin as well.
+        const propsWithDefault = new Set<string>();
         for (const element of bindingPattern.elements) {
           if (element.dotDotDotToken) {
             break stripUnusedProps;
@@ -96,12 +90,18 @@ function computePropsTypeFromSignature(
             break stripUnusedProps;
           }
           usedProps.add(elementName.text);
+          if (element.initializer) {
+            propsWithDefault.add(elementName.text);
+          }
         }
         propsType = objectType(
           Object.fromEntries(
-            Object.entries(propsType.fields).filter(([key]) =>
-              usedProps.has(key)
-            )
+            Object.entries(propsType.fields)
+              .filter(([key]) => usedProps.has(key))
+              .map(([key, type]) => [
+                key,
+                maybeOptionalType(type, propsWithDefault.has(key)),
+              ])
           )
         );
       }
@@ -154,8 +154,9 @@ function computePropsTypeFromPropTypes(
       return UNKNOWN_TYPE;
     })();
   }
+  const resolved = objectType(fields);
   return {
-    type: objectType(fields),
-    collected: {},
+    type: resolved,
+    collected: stripUnusedTypes(collected, resolved),
   };
 }

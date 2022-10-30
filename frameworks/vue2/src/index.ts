@@ -3,27 +3,27 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
-export const vue2FrameworkPlugin: FrameworkPluginFactory<{
-  vueOptionsModule?: string;
-}> = {
+/** @deprecated */
+export const vue2FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    return (
-      dependencies["vue"]?.majorVersion === 2 ||
-      dependencies["nuxt"]?.majorVersion === 2
-    );
+    const version =
+      (await dependencies["vue"]?.readInstalledVersion()) ||
+      (await dependencies["nuxt"]?.readInstalledVersion());
+    if (!version) {
+      return false;
+    }
+    return parseInt(version) === 2;
   },
-  async create({ vueOptionsModule } = {}) {
+  async create() {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { createVuePlugin } = await import("vite-plugin-vue2");
-    const { vueComponentLoaderPlugin } = await import(
-      "./component-loader-plugin"
-    );
     const { extractVueComponents } = await import("./extract-component");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 2,
+      pluginApiVersion: 3,
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
@@ -42,18 +42,25 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (absoluteFilePath.endsWith(".vue")) {
-            const name = path.basename(
-              absoluteFilePath,
-              path.extname(absoluteFilePath)
-            );
+          if (
+            absoluteFilePath.endsWith(".vue") &&
+            (await fs.pathExists(absoluteFilePath))
+          ) {
             components.push({
               absoluteFilePath,
-              name,
-              exported: true,
-              offsets: [[0, Infinity]],
-              analyze: async () =>
-                analyzeVueComponentFromTemplate(typeAnalyzer, absoluteFilePath),
+              name: inferComponentNameFromVuePath(absoluteFilePath),
+              offsets: [
+                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
+              ],
+              info: {
+                kind: "component",
+                exported: true,
+                analyze: async () =>
+                  analyzeVueComponentFromTemplate(
+                    typeAnalyzer,
+                    absoluteFilePath
+                  ),
+              },
             });
           } else {
             components.push(
@@ -63,8 +70,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
         }
         return components;
       },
-      viteConfig: (config) => {
-        const OPTIONS_MODULE = "@previewjs/plugin-vue2/options";
+      viteConfig: () => {
         let rootDirPath: string;
         return {
           resolve: {
@@ -73,31 +79,9 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
             },
           },
           plugins: [
-            vueComponentLoaderPlugin({
-              config,
-            }),
             createVuePlugin({
               jsx: true,
             }),
-            {
-              name: "previewjs:vue-options",
-              async resolveId(source) {
-                if (source === OPTIONS_MODULE) {
-                  if (vueOptionsModule) {
-                    return path.join(rootDirPath, vueOptionsModule);
-                  } else {
-                    return OPTIONS_MODULE;
-                  }
-                }
-                return null;
-              },
-              async load(id) {
-                if (id === OPTIONS_MODULE) {
-                  return `export {}`;
-                }
-                return null;
-              },
-            },
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
@@ -118,7 +102,7 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
             },
             {
               name: "previewjs:disable-vue-hmr",
-              async transform(code, id) {
+              async transform(code) {
                 // HMR causes issues such as https://github.com/underfin/vite-plugin-vue2/issues/149.
                 // It also prevents preview props from being refreshed.
                 // For now, we disable it entirely.
@@ -178,3 +162,5 @@ export const vue2FrameworkPlugin: FrameworkPluginFactory<{
     };
   },
 };
+
+export default vue2FrameworkPlugin;

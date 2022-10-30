@@ -1,7 +1,7 @@
 import assertNever from "assert-never";
 import path from "path";
-import { Writer } from ".";
-import {
+import type { Writer } from ".";
+import type {
   Directory,
   DirectorySync,
   Entry,
