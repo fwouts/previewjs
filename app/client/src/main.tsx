@@ -1,6 +1,5 @@
 import {
   createLocalApi,
-  createWebApi,
   PersistedStateController,
   Preview,
   PreviewState,
@@ -14,7 +13,6 @@ import "./index.css";
 const localApi = createLocalApi("/api/");
 const state = new PreviewState(
   localApi,
-  createWebApi("https://previewjs.com/api/"),
   new PersistedStateController(localApi)
 );
 state.start().catch(console.error);

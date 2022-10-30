@@ -1,13 +1,13 @@
-import { Api, localEndpoints, ResponseOf, webEndpoints } from "@previewjs/api";
+import type { localEndpoints, ResponseOf } from "@previewjs/api";
+import axios from "axios";
 import { makeAutoObservable, runInAction } from "mobx";
 import type { PersistedStateController } from "../../state/PersistedStateController";
 import "../../window";
 
 export class UpdateBannerState {
-  private checkVersionResponse: webEndpoints.CheckVersionResponse | null = null;
+  private checkVersionResponse: CheckVersionResponse | null = null;
 
   constructor(
-    private readonly webApi: Api,
     private readonly persistedStateController: PersistedStateController
   ) {
     makeAutoObservable(this);
@@ -15,12 +15,14 @@ export class UpdateBannerState {
 
   async start(appInfo: ResponseOf<typeof localEndpoints.GetInfo>["appInfo"]) {
     try {
-      const checkVersionResponse = await this.webApi.request(
-        webEndpoints.CheckVersion,
-        {
-          appInfo,
-        }
+      const request: CheckVersionRequest = {
+        appInfo,
+      };
+      const axiosResponse = await axios.post(
+        "https://previewjs.com/api/versions/check",
+        request
       );
+      const checkVersionResponse = axiosResponse.data as CheckVersionResponse;
       runInAction(() => {
         this.checkVersionResponse = checkVersionResponse;
       });
@@ -30,7 +32,7 @@ export class UpdateBannerState {
     }
   }
 
-  get update(): webEndpoints.UpdateAvailable | null {
+  get update(): UpdateAvailable | null {
     const update = this.checkVersionResponse?.update;
     const persistedState = this.persistedStateController.state;
     if (!update?.available || !persistedState) {
@@ -54,4 +56,31 @@ export class UpdateBannerState {
       },
     });
   };
+}
+
+type CheckVersionRequest = {
+  appInfo: VersionInfo;
+};
+
+interface VersionInfo {
+  platform: string;
+  version: string;
+}
+
+interface CheckVersionResponse {
+  update: UpdateAvailability;
+}
+
+type UpdateAvailability =
+  | {
+      available: false;
+      url?: string;
+    }
+  | UpdateAvailable;
+
+interface UpdateAvailable {
+  available: true;
+  required: boolean;
+  bannerMessage: string;
+  url: string;
 }

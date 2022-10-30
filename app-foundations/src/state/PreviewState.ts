@@ -102,16 +102,12 @@ export class PreviewState {
 
   constructor(
     private readonly localApi: Api,
-    webApi: Api,
     private readonly persistedStateController: PersistedStateController,
     private readonly options: {
       onFileChanged?: (filePath: string | null) => Promise<void>;
     } = {}
   ) {
-    this.updateBanner = new UpdateBannerState(
-      webApi,
-      this.persistedStateController
-    );
+    this.updateBanner = new UpdateBannerState(this.persistedStateController);
     this.iframeController = createController({
       getIframe: () => this.iframeRef.current,
       listener: (event) => {
