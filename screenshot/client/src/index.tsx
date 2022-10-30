@@ -55,3 +55,12 @@ function nextScreenshot() {
     });
   }, 0);
 }
+
+/**
+ * TODO:
+ * - get props type through exposed core router function
+ * - refactor generateInvocation() and generateDefaultProps(), move to another package?
+ * - generate props with them
+ * - set up test runner with snapshot of controller listener events
+ * - convert existing tests to it?
+ */
