@@ -22,21 +22,23 @@
     "dev": "concurrently 'vite client' 'ts-node-dev --respawn src/index.ts'"
   },
   "dependencies": {
-    "@previewjs/core": "1.5.0",
-    "@previewjs/plugin-react": "2.0.3",
-    "@previewjs/plugin-vue2": "2.0.2",
-    "@previewjs/plugin-vue3": "2.0.3",
-    "@previewjs/vfs": "workspace:^1.1.3",
-    "express": "^4.17.3",
+    "@previewjs/core": "^8.1.0",
+    "@previewjs/plugin-react": "^6.2.0",
+    "@previewjs/plugin-solid": "^3.0.3",
+    "@previewjs/plugin-svelte": "^1.0.2",
+    "@previewjs/plugin-vue2": "^5.0.7",
+    "@previewjs/plugin-vue3": "^5.0.6",
+    "@previewjs/vfs": "^1.2.9",
+    "express": "^4.18.2",
     "glob": "^7.2.0"
   },
   "devDependencies": {
-    "@types/express": "4.17.13",
+    "@types/express": "4.17.14",
     "@types/glob": "7.2.0",
-    "concurrently": "^7.0.0",
+    "concurrently": "7.5.0",
     "rimraf": "3.0.2",
-    "ts-node-dev": "1.1.8",
-    "typescript": "4.6.3",
-    "vite": "2.9.1"
+    "ts-node-dev": "2.0.0",
+    "typescript": "4.8.4",
+    "vite": "3.2.1"
   }
 }
