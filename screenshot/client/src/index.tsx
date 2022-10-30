@@ -49,7 +49,7 @@ function nextScreenshot() {
     }
     controller.loadComponent({
       ...component,
-      customVariantPropsSource: "{}",
+      customVariantPropsSource: "properties = {}",
       defaultPropsSource: "{}",
       variantKey: null,
     });
