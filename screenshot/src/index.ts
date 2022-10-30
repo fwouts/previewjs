@@ -24,15 +24,15 @@ async function main() {
   const env = await loadPreviewEnv({
     rootDirPath,
     setupEnvironment: async () => ({
-      frameworkPluginFactories: [
-        reactFrameworkPlugin,
-        solidFrameworkPlugin,
-        svelteFrameworkPlugin,
-        vue2FrameworkPlugin,
-        vue3FrameworkPlugin,
-      ],
       middlewares: [express.static(findClientDir(__dirname))],
     }),
+    frameworkPluginFactories: [
+      reactFrameworkPlugin,
+      solidFrameworkPlugin,
+      svelteFrameworkPlugin,
+      vue2FrameworkPlugin,
+      vue3FrameworkPlugin,
+    ],
   });
   if (!env) {
     throw new Error(
