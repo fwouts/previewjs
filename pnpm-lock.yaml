@@ -635,6 +635,7 @@ importers:
   screenshot:
     specifiers:
       '@previewjs/core': ^8.1.0
+      '@previewjs/iframe': ^2.1.1
       '@previewjs/plugin-react': ^6.2.0
       '@previewjs/plugin-solid': ^3.0.3
       '@previewjs/plugin-svelte': ^1.0.2
@@ -652,6 +653,7 @@ importers:
       vite: 3.2.1
     dependencies:
       '@previewjs/core': link:../core
+      '@previewjs/iframe': link:../iframe
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-solid': link:../frameworks/solid
       '@previewjs/plugin-svelte': link:../frameworks/svelte

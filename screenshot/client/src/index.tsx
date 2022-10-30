@@ -1,4 +1,4 @@
-import { createController } from "@previewjs/core/controller";
+import { createController } from "@previewjs/iframe";
 
 // TODO: Automate this.
 
@@ -31,10 +31,7 @@ let currentIndex = -1;
 const controller = createController({
   getIframe: () => iframe,
   listener: (event) => {
-    if (
-      event.kind === "bootstrapped" ||
-      (event.kind === "update" && event.rendering?.kind === "success")
-    ) {
+    if (event.kind === "bootstrapped" || event.kind === "rendering-done") {
       nextScreenshot();
     }
   },
