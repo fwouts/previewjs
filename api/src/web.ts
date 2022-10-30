@@ -1,9 +1,8 @@
-import type { Endpoint } from "./endpoint";
+import type { RPC } from "./endpoint";
 
-export const CheckVersion: Endpoint<CheckVersionRequest, CheckVersionResponse> =
-  {
-    path: "versions/check",
-  };
+export const CheckVersion: RPC<CheckVersionRequest, CheckVersionResponse> = {
+  path: "versions/check",
+};
 
 export type CheckVersionRequest = {
   appInfo: VersionInfo;

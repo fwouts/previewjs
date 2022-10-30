@@ -1,10 +1,10 @@
-import { Api, localEndpoints, ResponseOf, webEndpoints } from "@previewjs/api";
+import { Api, localRPCs, ResponseOf, webRPCs } from "@previewjs/api";
 import { makeAutoObservable, runInAction } from "mobx";
 import type { PersistedStateController } from "../../state/PersistedStateController";
 import "../../window";
 
 export class UpdateBannerState {
-  private checkVersionResponse: webEndpoints.CheckVersionResponse | null = null;
+  private checkVersionResponse: webRPCs.CheckVersionResponse | null = null;
 
   constructor(
     private readonly webApi: Api,
@@ -13,10 +13,10 @@ export class UpdateBannerState {
     makeAutoObservable(this);
   }
 
-  async start(appInfo: ResponseOf<typeof localEndpoints.GetInfo>["appInfo"]) {
+  async start(appInfo: ResponseOf<typeof localRPCs.GetInfo>["appInfo"]) {
     try {
       const checkVersionResponse = await this.webApi.request(
-        webEndpoints.CheckVersion,
+        webRPCs.CheckVersion,
         {
           appInfo,
         }
@@ -30,7 +30,7 @@ export class UpdateBannerState {
     }
   }
 
-  get update(): webEndpoints.UpdateAvailable | null {
+  get update(): webRPCs.UpdateAvailable | null {
     const update = this.checkVersionResponse?.update;
     const persistedState = this.persistedStateController.state;
     if (!update?.available || !persistedState) {

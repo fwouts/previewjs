@@ -1,8 +1,8 @@
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
-import type { Endpoint } from "./endpoint";
+import type { RPC } from "./endpoint";
 import type { PersistedState } from "./persisted-state";
 
-export const GetInfo: Endpoint<
+export const GetInfo: RPC<
   void,
   {
     appInfo: {
@@ -14,15 +14,15 @@ export const GetInfo: Endpoint<
   path: "get-info",
 };
 
-export const GetState: Endpoint<void, PersistedState> = {
+export const GetState: RPC<void, PersistedState> = {
   path: "get-state",
 };
 
-export const UpdateState: Endpoint<Partial<PersistedState>, PersistedState> = {
+export const UpdateState: RPC<Partial<PersistedState>, PersistedState> = {
   path: "update-state",
 };
 
-export const ComputeProps: Endpoint<
+export const ComputeProps: RPC<
   {
     filePath: string;
     componentName: string;
@@ -39,7 +39,7 @@ export type ComputePropsResponse = {
   };
 };
 
-export const AnalyzeProject: Endpoint<
+export const AnalyzeProject: RPC<
   {
     forceRefresh?: boolean;
   },

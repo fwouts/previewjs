@@ -66,7 +66,7 @@ export function createClient(baseUrl: string): Client {
     });
   }
 
-  function makeEndpoint<Req, Res>(path: `/${string}`) {
+  function makeRPC<Req, Res>(path: `/${string}`) {
     return (request: Req): Promise<Res> => makeRequest(path, request);
   }
 
@@ -74,15 +74,15 @@ export function createClient(baseUrl: string): Client {
     waitForReady: async () => {
       await waitForSuccessfulPromise(() => client.info());
     },
-    info: () => makeEndpoint<InfoRequest, InfoResponse>("/previewjs/info")({}),
-    kill: () => makeEndpoint<KillRequest, KillResponse>("/previewjs/kill")({}),
-    updateClientStatus: makeEndpoint("/previewjs/clients/status"),
-    getWorkspace: makeEndpoint("/workspaces/get"),
-    disposeWorkspace: makeEndpoint("/workspaces/dispose"),
-    analyzeFile: makeEndpoint("/analyze/file"),
-    startPreview: makeEndpoint("/previews/start"),
-    stopPreview: makeEndpoint("/previews/stop"),
-    updatePendingFile: makeEndpoint("/pending-files/update"),
+    info: () => makeRPC<InfoRequest, InfoResponse>("/previewjs/info")({}),
+    kill: () => makeRPC<KillRequest, KillResponse>("/previewjs/kill")({}),
+    updateClientStatus: makeRPC("/previewjs/clients/status"),
+    getWorkspace: makeRPC("/workspaces/get"),
+    disposeWorkspace: makeRPC("/workspaces/dispose"),
+    analyzeFile: makeRPC("/analyze/file"),
+    startPreview: makeRPC("/previews/start"),
+    stopPreview: makeRPC("/previews/stop"),
+    updatePendingFile: makeRPC("/pending-files/update"),
   };
   return client;
 }

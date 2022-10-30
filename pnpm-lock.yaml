@@ -283,6 +283,7 @@ importers:
 
   e2e-test-runner:
     specifiers:
+      '@previewjs/api': workspace:^4.0.1
       '@previewjs/core': ^8.1.0
       '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.9
@@ -313,6 +314,7 @@ importers:
       playwright: 1.27.1
       ts-node: 10.9.1_ksn4eycaeggbrckn3ykh37hwf4
     devDependencies:
+      '@previewjs/api': link:../api
       '@previewjs/iframe': link:../iframe
       unbuild: 0.9.1
 

@@ -1,12 +1,12 @@
-import type { localEndpoints, PersistedState } from "@previewjs/api";
+import type { PersistedState } from "@previewjs/api";
 import envPaths from "env-paths";
+import type express from "express";
 import fs from "fs-extra";
 import path from "path";
-import type { RequestHandlerForEndpoint } from "./router";
 
 export interface PersistedStateManager {
-  get: RequestHandlerForEndpoint<typeof localEndpoints.GetState>;
-  update: RequestHandlerForEndpoint<typeof localEndpoints.UpdateState>;
+  get(req: express.Request): Promise<PersistedState>;
+  update(req: express.Request, res: express.Response): Promise<PersistedState>;
 }
 
 export class LocalFilePersistedStateManager implements PersistedStateManager {
@@ -22,8 +22,8 @@ export class LocalFilePersistedStateManager implements PersistedStateManager {
     return state || this.#update({});
   };
 
-  update = async (partialState: Partial<PersistedState>) => {
-    return this.#update(partialState);
+  update = async (req: express.Request) => {
+    return this.#update(req.body);
   };
 
   async #read(): Promise<PersistedState | null> {

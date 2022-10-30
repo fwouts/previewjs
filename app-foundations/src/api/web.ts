@@ -1,4 +1,4 @@
-import type { Api, Endpoint, RequestOf, ResponseOf } from "@previewjs/api";
+import type { Api, RequestOf, ResponseOf, RPC } from "@previewjs/api";
 import axios from "axios";
 
 export function createWebApi(url: string): Api {
@@ -15,7 +15,7 @@ class WebApi implements Api {
     this.url = url;
   }
 
-  async request<E extends Endpoint<unknown, unknown>>(
+  async request<E extends RPC<unknown, unknown>>(
     ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>> {
     const { data } = await axios.post<ResponseOf<E>>(

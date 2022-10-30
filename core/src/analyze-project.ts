@@ -1,18 +1,18 @@
-import type { localEndpoints } from "@previewjs/api";
+import type { localRPCs } from "@previewjs/api";
 import fs from "fs-extra";
 import path from "path";
 import type { Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
 
-type ProjectComponents = localEndpoints.AnalyzeProjectResponse["components"];
+type ProjectComponents = localRPCs.AnalyzeProjectResponse["components"];
 
 export async function analyzeProject(
   workspace: Workspace,
   options: {
     forceRefresh?: boolean;
   } = {}
-): Promise<localEndpoints.AnalyzeProjectResponse> {
+): Promise<localRPCs.AnalyzeProjectResponse> {
   const cacheFilePath = path.join(
     getCacheDir(workspace.rootDirPath),
     "components.json"
