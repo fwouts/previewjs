@@ -1,4 +1,4 @@
-import type { localEndpoints, ResponseOf } from "@previewjs/api";
+import type { localRPCs, ResponseOf } from "@previewjs/api";
 import axios from "axios";
 import { makeAutoObservable, runInAction } from "mobx";
 import type { PersistedStateController } from "../../state/PersistedStateController";
@@ -13,7 +13,7 @@ export class UpdateBannerState {
     makeAutoObservable(this);
   }
 
-  async start(appInfo: ResponseOf<typeof localEndpoints.GetInfo>["appInfo"]) {
+  async start(appInfo: ResponseOf<typeof localRPCs.GetInfo>["appInfo"]) {
     try {
       const request: CheckVersionRequest = {
         appInfo,
