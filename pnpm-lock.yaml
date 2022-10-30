@@ -369,7 +369,7 @@ importers:
       '@previewjs/type-analyzer': ^4.0.6
       '@previewjs/vfs': ^1.2.9
       rimraf: 3.0.2
-      solid-js: 1.6.0
+      solid-js: 1.6.1
       typescript: ^4.8.4
       vite: 3.2.1
       vite-plugin-solid: ^2.3.10
@@ -379,20 +379,20 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.8.4
-      vite-plugin-solid: 2.3.10_solid-js@1.6.0+vite@3.2.1
+      vite-plugin-solid: 2.3.10_solid-js@1.6.1+vite@3.2.1
     devDependencies:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
-      solid-js: 1.6.0
+      solid-js: 1.6.1
       vite: 3.2.1
       vitest: 0.24.3
 
   frameworks/solid/preview:
     specifiers:
       '@previewjs/iframe': workspace:*
-      solid-js: 1.6.0
+      solid-js: 1.6.1
     dependencies:
-      solid-js: 1.6.0
+      solid-js: 1.6.1
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
 
@@ -5078,6 +5078,19 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@babel/plugin-transform-typescript/7.18.12_@babel+core@7.19.6:
+    resolution: {integrity: sha512-2vjjam0cum0miPkenUbQswKowuxs/NjMwIKEq0zwegRxXk12C9YOF9STXnaUptITOtOJHKHpzvvWYOjbm6tc0w==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.19.6
+      '@babel/helper-create-class-features-plugin': 7.19.0_@babel+core@7.19.6
+      '@babel/helper-plugin-utils': 7.19.0
+      '@babel/plugin-syntax-typescript': 7.18.6_@babel+core@7.19.6
+    transitivePeerDependencies:
+      - supports-color
+
   /@babel/plugin-transform-typescript/7.19.3_@babel+core@7.18.10:
     resolution: {integrity: sha512-z6fnuK9ve9u/0X0rRvI9MY0xg+DOUaABDYOe+/SQTxtlptaBB/V9JIUxJn6xp3lMBeb9qe8xSFmHU35oZDXD+w==}
     engines: {node: '>=6.9.0'}
@@ -5530,9 +5543,9 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.19.6
-      '@babel/helper-plugin-utils': 7.19.0
+      '@babel/helper-plugin-utils': 7.18.9
       '@babel/helper-validator-option': 7.18.6
-      '@babel/plugin-transform-typescript': 7.19.3_@babel+core@7.19.6
+      '@babel/plugin-transform-typescript': 7.18.12_@babel+core@7.19.6
     transitivePeerDependencies:
       - supports-color
 
@@ -30186,8 +30199,8 @@ packages:
   /solid-js/1.4.8:
     resolution: {integrity: sha512-XErZdnnYYXF7OwGSUAPcua2y5/ELB/c53zFCpWiEGqxTNoH1iQghzI8EsHJXk06sNn+Z/TGhb8bPDNNGSgimag==}
 
-  /solid-js/1.6.0:
-    resolution: {integrity: sha512-db5s65ErgZnBhapPx77qauzul8akHlMCvirS+Y86U4abMa3uizMVNW9ql3UxbO0yMzMGNpFJwUiOlXmJCbwVpA==}
+  /solid-js/1.6.1:
+    resolution: {integrity: sha512-i8OmR419Hr0918Or6sm1ET/cgmxTtAB7Bdz/UwhZ7G2THixrvVSO3jd+C7YqMKKfVwmf8PJ2gUSbKE8NKv28GA==}
     dependencies:
       csstype: 3.1.0
 
@@ -30202,7 +30215,7 @@ packages:
       solid-js: 1.4.8
     dev: true
 
-  /solid-refresh/0.4.1_solid-js@1.6.0:
+  /solid-refresh/0.4.1_solid-js@1.6.1:
     resolution: {integrity: sha512-v3tD/OXQcUyXLrWjPW1dXZyeWwP7/+GQNs8YTL09GBq+5FguA6IejJWUvJDrLIA4M0ho9/5zK2e9n+uy+4488g==}
     peerDependencies:
       solid-js: ^1.3
@@ -30210,7 +30223,7 @@ packages:
       '@babel/generator': 7.19.0
       '@babel/helper-module-imports': 7.18.6
       '@babel/types': 7.19.0
-      solid-js: 1.6.0
+      solid-js: 1.6.1
     dev: false
 
   /sorcery/0.10.0:
@@ -33053,7 +33066,7 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-solid/2.3.10_solid-js@1.6.0+vite@3.2.1:
+  /vite-plugin-solid/2.3.10_solid-js@1.6.1+vite@3.2.1:
     resolution: {integrity: sha512-5jMF+QFk2TQaPLlDl7LvZZ99D4kO1X+rD9LR78p9sx9O+XisVSQaHFPLrCsyW/lXuBwub+ox/pNaZdCUZJwd3Q==}
     peerDependencies:
       solid-js: ^1.3.17
@@ -33063,8 +33076,8 @@ packages:
       '@babel/preset-typescript': 7.18.6_@babel+core@7.19.1
       babel-preset-solid: 1.4.8_@babel+core@7.19.1
       merge-anything: 5.0.2
-      solid-js: 1.6.0
-      solid-refresh: 0.4.1_solid-js@1.6.0
+      solid-js: 1.6.1
+      solid-refresh: 0.4.1_solid-js@1.6.1
       vite: 3.2.1
     transitivePeerDependencies:
       - supports-color
