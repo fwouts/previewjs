@@ -1,5 +1,4 @@
 export { createLocalApi } from "./api/local";
-export { createWebApi } from "./api/web";
 export { Preview } from "./components/Preview";
 export { Selection } from "./components/Selection";
 export { Link } from "./design/Link";
