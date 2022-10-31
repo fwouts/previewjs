@@ -105,8 +105,9 @@ export class AppController {
     );
     const detectedComponents = components[filePath] || [];
     const matchingDetectedComponent = detectedComponents.find(
-      (c) => componentId === `${filePath.replace(/\\/g, "/")}}:${c.name}`
+      (c) => componentId === `${filePath.replace(/\\/g, "/")}:${c.name}`
     );
+    console.error(detectedComponents, componentId);
     if (!matchingDetectedComponent && !options.expectMissing) {
       throw new Error(
         `Component may be previewable but was not detected by framework plugin: ${componentId}`
