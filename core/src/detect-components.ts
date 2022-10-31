@@ -31,7 +31,7 @@ export async function detectComponents(
       );
   const filePathsSet = new Set(
     absoluteFilePaths.map((absoluteFilePath) =>
-      path.relative(workspace.rootDirPath, absoluteFilePath)
+      path.relative(workspace.rootDirPath, absoluteFilePath).replace(/\\/g, "/")
     )
   );
   const existingCacheLastModified =
@@ -67,8 +67,8 @@ export async function detectComponents(
   };
   const components = Object.keys(allComponents)
     .sort()
-    .reduce<ProjectComponents>((ordered, key) => {
-      ordered[key] = allComponents[key]!;
+    .reduce<ProjectComponents>((ordered, filePath) => {
+      ordered[filePath] = allComponents[filePath]!;
       return ordered;
     }, {});
   if (!options.filePaths) {
