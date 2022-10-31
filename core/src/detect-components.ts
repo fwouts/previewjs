@@ -43,14 +43,11 @@ export async function detectComponents(
     : {};
   const changedAbsoluteFilePaths = absoluteFilePaths.filter(
     (absoluteFilePath) => {
-      try {
-        return (
-          fs.statSync(absoluteFilePath).mtimeMs > existingCacheLastModified
-        );
-      } catch (e) {
-        // If file doesn't exist or isn't accessible, filter out.
-        return false;
-      }
+      const entry = workspace.reader.readSync(absoluteFilePath);
+      return (
+        entry?.kind === "file" &&
+        entry.lastModifiedMillis() > existingCacheLastModified
+      );
     }
   );
   const recycledComponents = Object.fromEntries(
