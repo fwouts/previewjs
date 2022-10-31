@@ -144,7 +144,7 @@ importers:
       tailwindcss: 3.2.1
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.2.0
       '@fortawesome/free-brands-svg-icons': 6.2.0
@@ -175,7 +175,7 @@ importers:
       tailwindcss: 3.2.1_postcss@8.4.18
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   config:
     specifiers:
@@ -265,7 +265,7 @@ importers:
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -273,7 +273,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   dev-workspace:
     specifiers:
@@ -343,7 +343,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -357,7 +357,7 @@ importers:
       react: 18.2.0
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/react/preview:
     specifiers:
@@ -387,7 +387,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.2.1
       vite-plugin-solid: ^2.3.10
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -399,7 +399,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.6.1
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/solid/preview:
     specifiers:
@@ -423,7 +423,7 @@ importers:
       svelte: ^3.52.0
       typescript: ^4.8.4
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -437,7 +437,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/svelte/preview:
     specifiers:
@@ -461,7 +461,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.2.1
       vite-plugin-vue2: ^2.0.2
-      vitest: 0.24.3
+      vitest: 0.24.4
       vue: ^2.7.13
       vue-template-compiler: ^2.7.13
     dependencies:
@@ -479,7 +479,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/vue2/preview:
     specifiers:
@@ -509,7 +509,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -527,7 +527,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/vue3/preview:
     specifiers:
@@ -661,7 +661,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@faker-js/faker': 7.6.0
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -671,7 +671,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.1
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   server:
     specifiers:
@@ -1507,8 +1507,8 @@ importers:
       typescript: ^4.7.4
       vite: ^3.1.0
     devDependencies:
-      '@sveltejs/adapter-auto': 1.0.0-next.85
-      '@sveltejs/kit': 1.0.0-next.528_svelte@3.52.0+vite@3.1.8
+      '@sveltejs/adapter-auto': 1.0.0-next.86
+      '@sveltejs/kit': 1.0.0-next.529_svelte@3.52.0+vite@3.1.8
       svelte: 3.52.0
       svelte-check: 2.9.2_svelte@3.52.0
       svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
@@ -1532,8 +1532,8 @@ importers:
     devDependencies:
       '@fontsource/fira-mono': 4.5.10
       '@neoconfetti/svelte': 1.0.0
-      '@sveltejs/adapter-auto': 1.0.0-next.85
-      '@sveltejs/kit': 1.0.0-next.528_svelte@3.52.0+vite@3.1.8
+      '@sveltejs/adapter-auto': 1.0.0-next.86
+      '@sveltejs/kit': 1.0.0-next.529_svelte@3.52.0+vite@3.1.8
       '@types/cookie': 0.5.1
       svelte: 3.52.0
       svelte-check: 2.9.2_svelte@3.52.0
@@ -1831,7 +1831,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1842,7 +1842,7 @@ importers:
       '@types/prettier': 2.7.1
       lodash: 4.17.21
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   vfs:
     specifiers:
@@ -1851,7 +1851,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1859,7 +1859,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
 packages:
 
@@ -5098,6 +5098,19 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@babel/plugin-transform-typescript/7.18.12_@babel+core@7.19.6:
+    resolution: {integrity: sha512-2vjjam0cum0miPkenUbQswKowuxs/NjMwIKEq0zwegRxXk12C9YOF9STXnaUptITOtOJHKHpzvvWYOjbm6tc0w==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.19.6
+      '@babel/helper-create-class-features-plugin': 7.19.0_@babel+core@7.19.6
+      '@babel/helper-plugin-utils': 7.19.0
+      '@babel/plugin-syntax-typescript': 7.18.6_@babel+core@7.19.6
+    transitivePeerDependencies:
+      - supports-color
+
   /@babel/plugin-transform-typescript/7.19.3_@babel+core@7.18.10:
     resolution: {integrity: sha512-z6fnuK9ve9u/0X0rRvI9MY0xg+DOUaABDYOe+/SQTxtlptaBB/V9JIUxJn6xp3lMBeb9qe8xSFmHU35oZDXD+w==}
     engines: {node: '>=6.9.0'}
@@ -5550,9 +5563,9 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.19.6
-      '@babel/helper-plugin-utils': 7.19.0
+      '@babel/helper-plugin-utils': 7.18.9
       '@babel/helper-validator-option': 7.18.6
-      '@babel/plugin-transform-typescript': 7.19.3_@babel+core@7.19.6
+      '@babel/plugin-transform-typescript': 7.18.12_@babel+core@7.19.6
     transitivePeerDependencies:
       - supports-color
 
@@ -5716,8 +5729,8 @@ packages:
       mime: 3.0.0
     dev: true
 
-  /@cloudflare/workers-types/3.17.0:
-    resolution: {integrity: sha512-u0cUQ4ntWFFwn5jx0ETa2ItvwvfOMjyaKF2fX2vFVujrSgNES/PnvRzPAhdt9CMYAMidInm0MGkIjxHRsFBaeg==}
+  /@cloudflare/workers-types/3.18.0:
+    resolution: {integrity: sha512-ehKOJVLMeR+tZkYhWEaLYQxl0TaIZu/kE86HF3/RidR8Xv5LuQxpbh+XXAoKVqsaphWLhIgBhgnlN5HGdheXSQ==}
     dev: true
 
   /@cnakazawa/watch/1.0.4:
@@ -10243,35 +10256,35 @@ packages:
       ejs: 2.7.4
       magic-string: 0.25.9
 
-  /@sveltejs/adapter-auto/1.0.0-next.85:
-    resolution: {integrity: sha512-lyByWPm7nYVACRfGuz68Xwfu/zU1THhKJSEXzFXW4cFsYxEGRkUOqzPX+xzwXMvFSLz68yu4dcodo1HlNrHWtA==}
+  /@sveltejs/adapter-auto/1.0.0-next.86:
+    resolution: {integrity: sha512-IKW1SUiXPPZ+qumQu5v48VH4aGmYiSLS83qbDlwfNmoRQejgU54f1M5s+isVmnr9kIOwbMQ0CfYhmZWJ7sEv6Q==}
     dependencies:
-      '@sveltejs/adapter-cloudflare': 1.0.0-next.39
-      '@sveltejs/adapter-netlify': 1.0.0-next.82
-      '@sveltejs/adapter-vercel': 1.0.0-next.80
+      '@sveltejs/adapter-cloudflare': 1.0.0-next.40
+      '@sveltejs/adapter-netlify': 1.0.0-next.83
+      '@sveltejs/adapter-vercel': 1.0.0-next.81
     transitivePeerDependencies:
       - encoding
       - supports-color
     dev: true
 
-  /@sveltejs/adapter-cloudflare/1.0.0-next.39:
-    resolution: {integrity: sha512-95iRY3+mFVqEp4BqTJQGAyga7gSovIsm4SvhqsfBE/IQLkb2MnwLq2usRkXm9R6nby4w/jzEwgQM2ohsZD2HHA==}
+  /@sveltejs/adapter-cloudflare/1.0.0-next.40:
+    resolution: {integrity: sha512-KT4TK40T9pl24nPFWHgw1QwAv9AjOkUymjFpS07Ro2zeBHJVgga1Jl0OA1bsiyEiLNRivNRwaWHFySlZ2JJpxQ==}
     dependencies:
-      '@cloudflare/workers-types': 3.17.0
+      '@cloudflare/workers-types': 3.18.0
       esbuild: 0.15.12
       worktop: 0.8.0-next.14
     dev: true
 
-  /@sveltejs/adapter-netlify/1.0.0-next.82:
-    resolution: {integrity: sha512-UIgwWMbMbBXMdNPFp1sPbSManB0HPJZTFq5blN/wP5+IxloQ7vKVfxU7I3KrPX49FwjH1+ze7caxr9JGtAD/6A==}
+  /@sveltejs/adapter-netlify/1.0.0-next.83:
+    resolution: {integrity: sha512-4hPKs7T1v81KatpMm8AgPEe4LSvoRNWiooxbSlLL8su/nnVe2FHPlpGgRcdSsE9VUmlkyd+4YIbVFG0ZcYO4LQ==}
     dependencies:
       '@iarna/toml': 2.2.5
       esbuild: 0.15.12
       set-cookie-parser: 2.5.1
     dev: true
 
-  /@sveltejs/adapter-vercel/1.0.0-next.80:
-    resolution: {integrity: sha512-a1ibKgN5RsNw6HPzhNKrPuEndgYRXCYlGIioVzfKpt/tEr4RuV5o/bST2FBgjCIWCqajKhWg1QLZmN2DZfPy6Q==}
+  /@sveltejs/adapter-vercel/1.0.0-next.81:
+    resolution: {integrity: sha512-cuNolQSqabSs97J2hn9bnRDOscihIO+VEYltsc+POLU/ecv7pbUm1qdRakeG3+ehK1mfZ9dub6vEVuLKhm+Qng==}
     dependencies:
       '@vercel/nft': 0.22.1
       esbuild: 0.15.12
@@ -10280,8 +10293,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.528_svelte@3.52.0+vite@3.1.8:
-    resolution: {integrity: sha512-zUtXzWU4+EgT9cw5s7laPM6jgLQatGui+pCxUyQzEpMwDAOeNWduYl4bEFCRyfQTSNzQK+nnpkR+e5X+TO8BHA==}
+  /@sveltejs/kit/1.0.0-next.529_svelte@3.52.0+vite@3.1.8:
+    resolution: {integrity: sha512-wM9Y38m8GVNT2YDQo41XNNa55OwTiGE+4fEuuhQnQY4nOSihXGllPsdIulnVsrxcSw9jKLkzwJdFr+i2y2y+OQ==}
     engines: {node: '>=16.14'}
     hasBin: true
     requiresBuild: true
@@ -31804,8 +31817,8 @@ packages:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
     dev: false
 
-  /tinybench/2.3.0:
-    resolution: {integrity: sha512-zs1gMVBwyyG2QbVchYIbnabRhMOCGvrwZz/q+SV+LIMa9q5YDQZi2kkI6ZRqV2Bz7ba1uvrc7ieUoE4KWnGeKg==}
+  /tinybench/2.3.1:
+    resolution: {integrity: sha512-hGYWYBMPr7p4g5IarQE7XhlyWveh1EKhy4wUBS1LrHXCKYgvz+4/jCqgmJqZxxldesn05vccrtME2RLLZNW7iA==}
     dev: true
 
   /tinypool/0.3.0:
@@ -33345,8 +33358,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest/0.24.3:
-    resolution: {integrity: sha512-aM0auuPPgMSstWvr851hB74g/LKaKBzSxcG3da7ejfZbx08Y21JpZmbmDYrMTCGhVZKqTGwzcnLMwyfz2WzkhQ==}
+  /vitest/0.24.4:
+    resolution: {integrity: sha512-4ratHSyVEJPtBLV00uhL4Wj3Pmandc9rsxUkE0q9peNOfaOgGF4lEepdkaXGRi9AGFKr1GRVtjGOJ6Fp2lCpEg==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -33374,7 +33387,7 @@ packages:
       debug: 4.3.4
       local-pkg: 0.4.2
       strip-literal: 0.4.2
-      tinybench: 2.3.0
+      tinybench: 2.3.1
       tinypool: 0.3.0
       tinyspy: 1.0.2
       vite: 3.2.1
