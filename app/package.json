@@ -27,7 +27,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
-    "build": "tsc && unbuild && pnpm tsc -p client/tsconfig.json && vite build client && pnpm tsc -p tsconfig.tests.json",
+    "build": "tsc && unbuild && pnpm tsc -p client/tsconfig.json && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build client && pnpm tsc -p tsconfig.tests.json",
     "client:dev": "vite client",
     "e2e-test": "tsc -p tsconfig.tests.json && pnpm previewjs-e2e-test -s ./dist/index.cjs -t ./dist-tests/index.js"
   },
@@ -45,11 +45,12 @@
     "@previewjs/plugin-vue3": "workspace:*",
     "@types/express": "4.17.14",
     "@types/fs-extra": "9.0.13",
-    "@types/node": "17.0.8",
+    "@types/node": "18.11.8",
     "@types/react": "18.0.24",
     "@types/react-dom": "18.0.8",
     "@vitejs/plugin-react": "2.2.0",
     "autoprefixer": "10.4.13",
+    "cross-env": "7.0.3",
     "fs-extra": "10.1.0",
     "mobx-react-lite": "3.4.0",
     "postcss": "8.4.18",

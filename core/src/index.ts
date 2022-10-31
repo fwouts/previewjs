@@ -1,9 +1,8 @@
-import { localEndpoints } from "@previewjs/api";
+import { RequestOf, ResponseOf, RPC, RPCs } from "@previewjs/api";
 import {
   CollectedTypes,
   createTypeAnalyzer,
   EMPTY_OBJECT_TYPE,
-  TypeAnalyzer,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
@@ -13,15 +12,14 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
-import { analyzeProject } from "./analyze-project";
+import { detectComponents } from "./detect-components";
 import {
   LocalFilePersistedStateManager,
   PersistedStateManager,
 } from "./persisted-state";
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
-import { ApiRouter, RegisterEndpoint } from "./router";
-export { generateComponentId } from "./component-id";
+import { ApiRouter, RegisterRPC } from "./router";
 export type { PersistedStateManager } from "./persisted-state";
 export type {
   Component,
@@ -57,7 +55,7 @@ export async function createWorkspace({
   reader: Reader;
   persistedStateManager?: PersistedStateManager;
   onReady?(options: {
-    registerEndpoint: RegisterEndpoint;
+    registerRPC: RegisterRPC;
     workspace: Workspace;
   }): Promise<void>;
 }): Promise<Workspace> {
@@ -86,7 +84,7 @@ export async function createWorkspace({
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
   const router = new ApiRouter();
-  router.registerEndpoint(localEndpoints.GetInfo, async () => {
+  router.registerRPC(RPCs.GetInfo, async () => {
     const separatorPosition = versionCode.indexOf("-");
     if (separatorPosition === -1) {
       throw new Error(`Unsupported version code format: ${versionCode}`);
@@ -100,46 +98,38 @@ export async function createWorkspace({
       },
     };
   });
-  router.registerEndpoint(localEndpoints.GetState, persistedStateManager.get);
-  router.registerEndpoint(
-    localEndpoints.UpdateState,
-    persistedStateManager.update
-  );
-  router.registerEndpoint(
-    localEndpoints.ComputeProps,
-    async ({ filePath, componentName }) => {
-      const component = (
-        await frameworkPlugin.detectComponents(typeAnalyzer, [
-          path.join(rootDirPath, filePath),
-        ])
-      ).find((c) => c.name === componentName);
-      if (!component) {
-        return {
-          types: {
-            props: UNKNOWN_TYPE,
-            all: {},
-          },
-        };
-      }
-      if (component.info.kind === "story") {
-        return {
-          types: {
-            props: EMPTY_OBJECT_TYPE,
-            all: {},
-          },
-        };
-      }
-      const result = await component.info.analyze();
+  router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
+    const component = (
+      await frameworkPlugin.detectComponents(typeAnalyzer, [
+        path.join(rootDirPath, filePath),
+      ])
+    ).find((c) => c.name === componentName);
+    if (!component) {
       return {
         types: {
-          props: result.propsType,
-          all: result.types,
+          props: UNKNOWN_TYPE,
+          all: {},
         },
       };
     }
-  );
-  router.registerEndpoint(localEndpoints.AnalyzeProject, (options) =>
-    analyzeProject(workspace, options)
+    if (component.info.kind === "story") {
+      return {
+        types: {
+          props: EMPTY_OBJECT_TYPE,
+          all: {},
+        },
+      };
+    }
+    const result = await component.info.analyze();
+    return {
+      types: {
+        props: result.propsType,
+        all: result.types,
+      },
+    };
+  });
+  router.registerRPC(RPCs.DetectComponents, (options) =>
+    detectComponents(workspace, frameworkPlugin, typeAnalyzer, options)
   );
   const previewer = new Previewer({
     reader,
@@ -161,8 +151,12 @@ export async function createWorkspace({
           express.static(path.join(__dirname, "monaco-editor"))
         ),
       async (req, res, next) => {
-        if (req.path.startsWith("/api/")) {
-          res.json(await router.handle(req.path.substr(5), req.body, req, res));
+        if (req.path === "/api/" + RPCs.GetState.path) {
+          res.json(await persistedStateManager.get(req));
+        } else if (req.path === "/api/" + RPCs.UpdateState.path) {
+          res.json(await persistedStateManager.update(req, res));
+        } else if (req.path.startsWith("/api/")) {
+          res.json(await router.handle(req.path.substr(5), req.body));
         } else {
           next();
         }
@@ -181,8 +175,6 @@ export async function createWorkspace({
   const workspace: Workspace = {
     rootDirPath,
     reader,
-    typeAnalyzer,
-    frameworkPlugin,
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -202,14 +194,23 @@ export async function createWorkspace({
         };
       },
     },
+    async localRpc<E extends RPC<any, any>>(
+      endpoint: E,
+      request: RequestOf<E>
+    ): Promise<ResponseOf<E>> {
+      const result = await router.handle(endpoint.path, request);
+      if (result.kind === "success") {
+        return result.response as ResponseOf<E>;
+      }
+      throw new Error(result.message);
+    },
     dispose: async () => {
       typeAnalyzer.dispose();
     },
   };
   if (onReady) {
     await onReady({
-      registerEndpoint: (endpoint, handler) =>
-        router.registerEndpoint(endpoint, handler),
+      registerRPC: (endpoint, handler) => router.registerRPC(endpoint, handler),
       workspace,
     });
   }
@@ -236,11 +237,13 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
-  typeAnalyzer: TypeAnalyzer;
-  frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
+  localRpc<E extends RPC<any, any>>(
+    endpoint: E,
+    request: RequestOf<E>
+  ): Promise<ResponseOf<E>>;
   dispose(): Promise<void>;
 }
 

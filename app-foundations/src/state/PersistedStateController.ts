@@ -1,15 +1,15 @@
-import { Api, localEndpoints, PersistedState } from "@previewjs/api";
+import { Api, PersistedState, RPCs } from "@previewjs/api";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export class PersistedStateController {
   private persistedState: PersistedState | null = null;
 
-  constructor(private readonly localApi: Api) {
+  constructor(private readonly rpcApi: Api) {
     makeAutoObservable(this);
   }
 
   async start() {
-    const persistedState = await this.localApi.request(localEndpoints.GetState);
+    const persistedState = await this.rpcApi.request(RPCs.GetState);
     runInAction(() => {
       this.persistedState = persistedState;
     });
@@ -26,6 +26,6 @@ export class PersistedStateController {
         ...stateUpdate,
       };
     });
-    await this.localApi.request(localEndpoints.UpdateState, stateUpdate);
+    await this.rpcApi.request(RPCs.UpdateState, stateUpdate);
   }
 }

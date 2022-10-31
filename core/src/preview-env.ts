@@ -7,7 +7,7 @@ import type {
   Workspace,
 } from ".";
 import type { PackageDependencies } from "./plugins/dependencies";
-import type { RegisterEndpoint } from "./router";
+import type { RegisterRPC } from "./router";
 
 export type SetupPreviewEnvironment = (options: {
   rootDirPath: string;
@@ -17,7 +17,7 @@ export type PreviewEnvironment = {
   middlewares?: express.RequestHandler[];
   persistedStateManager?: PersistedStateManager;
   onReady?(options: {
-    registerEndpoint: RegisterEndpoint;
+    registerRPC: RegisterRPC;
     workspace: Workspace;
   }): Promise<void>;
 };
