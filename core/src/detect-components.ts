@@ -91,7 +91,7 @@ async function detectComponentsCore(
     const filePath = path.relative(
       workspace.rootDirPath,
       component.absoluteFilePath
-    );
+    ).replace(/\\/g, "/");
     const fileComponents = (components[filePath] ||= []);
     const [start, end] = component.offsets[0]!;
     fileComponents.push({
