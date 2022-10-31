@@ -1,6 +1,6 @@
 /// <reference types="@previewjs/iframe/preview/window" />
 
-import { localRPCs } from "@previewjs/api";
+import { RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import fs from "fs-extra";
 import path from "path";
@@ -98,7 +98,7 @@ export class AppController {
     }
     const filePath = componentId.split(":")[0]!;
     const { components } = await this.workspace.localRpc(
-      localRPCs.DetectComponents,
+      RPCs.DetectComponents,
       {
         filePaths: [filePath],
       }

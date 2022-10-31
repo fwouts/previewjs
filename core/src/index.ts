@@ -1,4 +1,4 @@
-import { localRPCs, RequestOf, ResponseOf, RPC } from "@previewjs/api";
+import { RequestOf, ResponseOf, RPC, RPCs } from "@previewjs/api";
 import {
   CollectedTypes,
   createTypeAnalyzer,
@@ -84,7 +84,7 @@ export async function createWorkspace({
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
   });
   const router = new ApiRouter();
-  router.registerRPC(localRPCs.GetInfo, async () => {
+  router.registerRPC(RPCs.GetInfo, async () => {
     const separatorPosition = versionCode.indexOf("-");
     if (separatorPosition === -1) {
       throw new Error(`Unsupported version code format: ${versionCode}`);
@@ -98,40 +98,37 @@ export async function createWorkspace({
       },
     };
   });
-  router.registerRPC(
-    localRPCs.ComputeProps,
-    async ({ filePath, componentName }) => {
-      const component = (
-        await frameworkPlugin.detectComponents(typeAnalyzer, [
-          path.join(rootDirPath, filePath),
-        ])
-      ).find((c) => c.name === componentName);
-      if (!component) {
-        return {
-          types: {
-            props: UNKNOWN_TYPE,
-            all: {},
-          },
-        };
-      }
-      if (component.info.kind === "story") {
-        return {
-          types: {
-            props: EMPTY_OBJECT_TYPE,
-            all: {},
-          },
-        };
-      }
-      const result = await component.info.analyze();
+  router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
+    const component = (
+      await frameworkPlugin.detectComponents(typeAnalyzer, [
+        path.join(rootDirPath, filePath),
+      ])
+    ).find((c) => c.name === componentName);
+    if (!component) {
       return {
         types: {
-          props: result.propsType,
-          all: result.types,
+          props: UNKNOWN_TYPE,
+          all: {},
         },
       };
     }
-  );
-  router.registerRPC(localRPCs.DetectComponents, (options) =>
+    if (component.info.kind === "story") {
+      return {
+        types: {
+          props: EMPTY_OBJECT_TYPE,
+          all: {},
+        },
+      };
+    }
+    const result = await component.info.analyze();
+    return {
+      types: {
+        props: result.propsType,
+        all: result.types,
+      },
+    };
+  });
+  router.registerRPC(RPCs.DetectComponents, (options) =>
     detectComponents(workspace, frameworkPlugin, typeAnalyzer, options)
   );
   const previewer = new Previewer({
@@ -154,9 +151,9 @@ export async function createWorkspace({
           express.static(path.join(__dirname, "monaco-editor"))
         ),
       async (req, res, next) => {
-        if (req.path === "/api/" + localRPCs.GetState.path) {
+        if (req.path === "/api/" + RPCs.GetState.path) {
           res.json(await persistedStateManager.get(req));
-        } else if (req.path === "/api/" + localRPCs.UpdateState.path) {
+        } else if (req.path === "/api/" + RPCs.UpdateState.path) {
           res.json(await persistedStateManager.update(req, res));
         } else if (req.path.startsWith("/api/")) {
           res.json(await router.handle(req.path.substr(5), req.body));

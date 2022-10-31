@@ -1,4 +1,4 @@
-import { generateComponentId, localRPCs } from "@previewjs/api";
+import { generateComponentId, RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
@@ -308,19 +308,16 @@ async function startServer({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components } = await workspace.localRpc(
-        localRPCs.DetectComponents,
-        {
-          filePaths: [
-            path
-              .relative(
-                workspace.rootDirPath,
-                transformAbsoluteFilePath(absoluteFilePath)
-              )
-              .replace(/\\/g, "/"),
-          ],
-        }
-      );
+      const { components } = await workspace.localRpc(RPCs.DetectComponents, {
+        filePaths: [
+          path
+            .relative(
+              workspace.rootDirPath,
+              transformAbsoluteFilePath(absoluteFilePath)
+            )
+            .replace(/\\/g, "/"),
+        ],
+      });
       const results: Array<{
         componentName: string;
         start: number;

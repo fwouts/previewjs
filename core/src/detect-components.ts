@@ -1,4 +1,4 @@
-import type { localRPCs } from "@previewjs/api";
+import type { RPCs } from "@previewjs/api";
 import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import fs from "fs-extra";
 import path from "path";
@@ -6,7 +6,7 @@ import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
 
-type ProjectComponents = localRPCs.DetectComponentsResponse["components"];
+type ProjectComponents = RPCs.DetectComponentsResponse["components"];
 
 export async function detectComponents(
   workspace: Workspace,
@@ -16,7 +16,7 @@ export async function detectComponents(
     filePaths?: string[];
     forceRefresh?: boolean;
   } = {}
-): Promise<localRPCs.DetectComponentsResponse> {
+): Promise<RPCs.DetectComponentsResponse> {
   const cacheFilePath = path.join(
     getCacheDir(workspace.rootDirPath),
     "components.json"

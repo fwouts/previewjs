@@ -1,4 +1,4 @@
-import { Api, localRPCs, ResponseOf } from "@previewjs/api";
+import { Api, ResponseOf, RPCs } from "@previewjs/api";
 import {
   createController,
   PreviewIframeController,
@@ -29,7 +29,7 @@ export class PreviewState {
       }
     | {
         kind: "success";
-        response: localRPCs.DetectComponentsResponse;
+        response: RPCs.DetectComponentsResponse;
       }
     | {
         kind: "failure";
@@ -92,7 +92,7 @@ export class PreviewState {
       renderingAlwaysFailing: boolean | null;
     } | null;
   } | null = null;
-  appInfo: ResponseOf<typeof localRPCs.GetInfo>["appInfo"] | null = null;
+  appInfo: ResponseOf<typeof RPCs.GetInfo>["appInfo"] | null = null;
 
   private iframeRef: React.RefObject<HTMLIFrameElement | null> = {
     current: null,
@@ -181,14 +181,14 @@ export class PreviewState {
         .catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
     document.addEventListener("keydown", this.keydownListener);
-    const { appInfo } = await this.localApi.request(localRPCs.GetInfo);
+    const { appInfo } = await this.localApi.request(RPCs.GetInfo);
     runInAction(() => {
       this.appInfo = appInfo;
     });
     await this.persistedStateController.start();
     await this.updateBanner.start(appInfo);
     try {
-      const project = await this.localApi.request(localRPCs.DetectComponents, {
+      const project = await this.localApi.request(RPCs.DetectComponents, {
         forceRefresh: false,
       });
       runInAction(() => {

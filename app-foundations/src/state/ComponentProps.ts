@@ -1,4 +1,4 @@
-import { Api, localRPCs } from "@previewjs/api";
+import { Api, RPCs } from "@previewjs/api";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import { makeAutoObservable, runInAction } from "mobx";
 import { extractFunctionKeys } from "./generators/extract-function-keys";
@@ -7,7 +7,7 @@ import { generateInvocation } from "./generators/generate-invocation";
 import { preparePropsType } from "./generators/prepare-props-type";
 
 export class ComponentProps {
-  private computePropsResponse: localRPCs.ComputePropsResponse;
+  private computePropsResponse: RPCs.ComputePropsResponse;
   private _invocationSource: string | null;
 
   constructor(
@@ -33,7 +33,7 @@ export class ComponentProps {
    * any other method can be used.
    */
   async refresh() {
-    const response = await this.localApi.request(localRPCs.ComputeProps, {
+    const response = await this.localApi.request(RPCs.ComputeProps, {
       filePath: this.filePath,
       componentName: this.componentName,
     });
