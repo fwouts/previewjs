@@ -656,6 +656,7 @@ importers:
 
   screenshot:
     specifiers:
+      '@previewjs/api': ^4.0.1
       '@previewjs/core': ^8.1.0
       '@previewjs/iframe': ^2.1.1
       '@previewjs/plugin-react': ^6.2.0
@@ -674,6 +675,7 @@ importers:
       typescript: 4.8.4
       vite: 3.2.1
     dependencies:
+      '@previewjs/api': link:../api
       '@previewjs/core': link:../core
       '@previewjs/iframe': link:../iframe
       '@previewjs/plugin-react': link:../frameworks/react
@@ -689,7 +691,7 @@ importers:
       '@types/glob': 7.2.0
       concurrently: 7.5.0
       rimraf: 3.0.2
-      ts-node-dev: 2.0.0_fxotr6iqnckpi76swcl5uzszdi
+      ts-node-dev: 2.0.0_7jzoohtnaegavowzoeccrsbhty
       typescript: 4.8.4
       vite: 3.2.1
 
@@ -2105,31 +2107,6 @@ packages:
     dependencies:
       '@babel/compat-data': 7.19.4
       '@babel/core': 7.18.10
-      '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
-      semver: 6.3.0
-
-  /@babel/helper-compilation-targets/7.18.9_@babel+core@7.19.1:
-    resolution: {integrity: sha512-tzLCyVmqUiFlcFoAPLA/gL9TeYrF61VLNtb+hvkuVaB5SUjW7jcfrglBIX1vUIoT7CLP3bBlIMeyEsIl2eFQNg==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/compat-data': 7.19.4
-      '@babel/core': 7.19.1
-      '@babel/helper-validator-option': 7.18.6
-      browserslist: 4.21.4
-      semver: 6.3.0
-    dev: true
-
-  /@babel/helper-compilation-targets/7.18.9_@babel+core@7.19.6:
-    resolution: {integrity: sha512-tzLCyVmqUiFlcFoAPLA/gL9TeYrF61VLNtb+hvkuVaB5SUjW7jcfrglBIX1vUIoT7CLP3bBlIMeyEsIl2eFQNg==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/compat-data': 7.19.4
-      '@babel/core': 7.19.6
       '@babel/helper-validator-option': 7.18.6
       browserslist: 4.21.4
       semver: 6.3.0
@@ -5356,10 +5333,10 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.18.8
+      '@babel/compat-data': 7.19.4
       '@babel/core': 7.19.1
-      '@babel/helper-compilation-targets': 7.18.9_@babel+core@7.19.1
-      '@babel/helper-plugin-utils': 7.18.9
+      '@babel/helper-compilation-targets': 7.19.3_@babel+core@7.19.1
+      '@babel/helper-plugin-utils': 7.19.0
       '@babel/helper-validator-option': 7.18.6
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6_@babel+core@7.19.1
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.18.9_@babel+core@7.19.1
@@ -5426,7 +5403,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.18.10_@babel+core@7.19.1
       '@babel/plugin-transform-unicode-regex': 7.18.6_@babel+core@7.19.1
       '@babel/preset-modules': 0.1.5_@babel+core@7.19.1
-      '@babel/types': 7.18.10
+      '@babel/types': 7.19.4
       babel-plugin-polyfill-corejs2: 0.3.2_@babel+core@7.19.1
       babel-plugin-polyfill-corejs3: 0.5.3_@babel+core@7.19.1
       babel-plugin-polyfill-regenerator: 0.4.0_@babel+core@7.19.1
@@ -5442,10 +5419,10 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.18.8
+      '@babel/compat-data': 7.19.4
       '@babel/core': 7.19.6
-      '@babel/helper-compilation-targets': 7.18.9_@babel+core@7.19.6
-      '@babel/helper-plugin-utils': 7.18.9
+      '@babel/helper-compilation-targets': 7.19.3_@babel+core@7.19.6
+      '@babel/helper-plugin-utils': 7.19.0
       '@babel/helper-validator-option': 7.18.6
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6_@babel+core@7.19.6
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.18.9_@babel+core@7.19.6
@@ -5512,7 +5489,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.18.10_@babel+core@7.19.6
       '@babel/plugin-transform-unicode-regex': 7.18.6_@babel+core@7.19.6
       '@babel/preset-modules': 0.1.5_@babel+core@7.19.6
-      '@babel/types': 7.18.10
+      '@babel/types': 7.19.4
       babel-plugin-polyfill-corejs2: 0.3.2_@babel+core@7.19.6
       babel-plugin-polyfill-corejs3: 0.5.3_@babel+core@7.19.6
       babel-plugin-polyfill-regenerator: 0.4.0_@babel+core@7.19.6

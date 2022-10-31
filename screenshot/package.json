@@ -22,6 +22,7 @@
     "dev": "concurrently 'vite client' 'ts-node-dev --respawn src/index.ts'"
   },
   "dependencies": {
+    "@previewjs/api": "^4.0.1",
     "@previewjs/core": "^8.1.0",
     "@previewjs/iframe": "^2.1.1",
     "@previewjs/plugin-react": "^6.2.0",
