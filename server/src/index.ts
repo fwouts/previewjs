@@ -309,7 +309,7 @@ async function startServer({
         throw new NotFoundError();
       }
       const { components } = await workspace.localRpc(
-        localRPCs.AnalyzeProject,
+        localRPCs.DetectComponents,
         {
           filePaths: [
             path

@@ -12,7 +12,7 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
-import { analyzeProject } from "./analyze-project";
+import { detectComponents } from "./detect-components";
 import {
   LocalFilePersistedStateManager,
   PersistedStateManager,
@@ -131,8 +131,8 @@ export async function createWorkspace({
       };
     }
   );
-  router.registerRPC(localRPCs.AnalyzeProject, (options) =>
-    analyzeProject(workspace, frameworkPlugin, typeAnalyzer, options)
+  router.registerRPC(localRPCs.DetectComponents, (options) =>
+    detectComponents(workspace, frameworkPlugin, typeAnalyzer, options)
   );
   const previewer = new Previewer({
     reader,

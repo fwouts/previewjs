@@ -6,9 +6,9 @@ import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
 
-type ProjectComponents = localRPCs.AnalyzeProjectResponse["components"];
+type ProjectComponents = localRPCs.DetectComponentsResponse["components"];
 
-export async function analyzeProject(
+export async function detectComponents(
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
   typeAnalyzer: TypeAnalyzer,
@@ -16,7 +16,7 @@ export async function analyzeProject(
     filePaths?: string[];
     forceRefresh?: boolean;
   } = {}
-): Promise<localRPCs.AnalyzeProjectResponse> {
+): Promise<localRPCs.DetectComponentsResponse> {
   const cacheFilePath = path.join(
     getCacheDir(workspace.rootDirPath),
     "components.json"
@@ -50,7 +50,7 @@ export async function analyzeProject(
       filePathsSet.has(filePath)
     )
   );
-  const refreshedComponents = await analyzeProjectCore(
+  const refreshedComponents = await detectComponentsCore(
     workspace,
     frameworkPlugin,
     typeAnalyzer,
@@ -73,7 +73,7 @@ export async function analyzeProject(
   return { components };
 }
 
-async function analyzeProjectCore(
+async function detectComponentsCore(
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
   typeAnalyzer: TypeAnalyzer,

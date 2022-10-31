@@ -98,7 +98,7 @@ export class AppController {
     }
     const filePath = componentId.split(":")[0]!;
     const { components } = await this.workspace.localRpc(
-      localRPCs.AnalyzeProject,
+      localRPCs.DetectComponents,
       {
         filePaths: [filePath],
       }

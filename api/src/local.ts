@@ -39,17 +39,17 @@ export type ComputePropsResponse = {
   };
 };
 
-export const AnalyzeProject: RPC<
+export const DetectComponents: RPC<
   {
     filePaths?: string[];
     forceRefresh?: boolean;
   },
-  AnalyzeProjectResponse
+  DetectComponentsResponse
 > = {
-  path: "analyze-project",
+  path: "detect-components",
 };
 
-export type AnalyzeProjectResponse = {
+export type DetectComponentsResponse = {
   components: {
     [filePath: string]: Component[];
   };
