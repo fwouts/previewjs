@@ -11,7 +11,7 @@ export class ComponentProps {
   private _invocationSource: string | null;
 
   constructor(
-    private readonly localApi: Api,
+    private readonly rpcApi: Api,
     private readonly filePath: string,
     private readonly componentName: string,
     cachedInvocationSource: string | null
@@ -33,7 +33,7 @@ export class ComponentProps {
    * any other method can be used.
    */
   async refresh() {
-    const response = await this.localApi.request(RPCs.ComputeProps, {
+    const response = await this.rpcApi.request(RPCs.ComputeProps, {
       filePath: this.filePath,
       componentName: this.componentName,
     });

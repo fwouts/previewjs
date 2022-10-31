@@ -1,5 +1,5 @@
 import {
-  createLocalApi,
+  createRpcApi,
   PersistedStateController,
   Preview,
   PreviewState,
@@ -10,11 +10,8 @@ import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
-const localApi = createLocalApi("/api/");
-const state = new PreviewState(
-  localApi,
-  new PersistedStateController(localApi)
-);
+const rpcApi = createRpcApi("/api/");
+const state = new PreviewState(rpcApi, new PersistedStateController(rpcApi));
 state.start().catch(console.error);
 
 const App = observer(() => {

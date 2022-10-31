@@ -7,7 +7,7 @@ import type {
 } from "@previewjs/api";
 import axios from "axios";
 
-export function createLocalApi(url: string): Api {
+export function createRpcApi(url: string): Api {
   return new LocalApi(url);
 }
 
