@@ -68,9 +68,11 @@ jobs:
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: true
-      - run: pnpm turbo run build --scope="@previewjs/e2e-test-runner" --include-dependencies
+      - run: pnpm turbo run build
+        env:
+          SKIP_PREFLIGHT_CHECK: "true"
       - run: pnpm install # necessary to link e2e-test-runner
-      - run: pnpm turbo run e2e-test --scope="@previewjs/app" --include-dependencies
+      - run: pnpm turbo run e2e-test
         env:
           GROUP_INDEX: ${{ matrix.group }}
           GROUP_COUNT: 3
