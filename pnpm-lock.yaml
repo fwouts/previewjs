@@ -72,6 +72,7 @@ importers:
       '@types/react-dom': 18.0.8
       '@vitejs/plugin-react': 2.2.0
       autoprefixer: 10.4.13
+      cross-env: 7.0.3
       express: ^4.18.2
       fs-extra: 10.1.0
       mobx-react-lite: 3.4.0
@@ -101,6 +102,7 @@ importers:
       '@types/react-dom': 18.0.8
       '@vitejs/plugin-react': 2.2.0_vite@3.2.1
       autoprefixer: 10.4.13_postcss@8.4.18
+      cross-env: 7.0.3
       fs-extra: 10.1.0
       mobx-react-lite: 3.4.0_m26jawr67gnusmh4egzqtnhxru
       postcss: 8.4.18
@@ -567,6 +569,7 @@ importers:
       esbuild: 0.15.12
       open: ^8.4.0
       rimraf: 3.0.2
+      shx: 0.3.4
       ts-node-dev: 2.0.0
       typescript: 4.8.4
     devDependencies:
@@ -579,6 +582,7 @@ importers:
       esbuild: 0.15.12
       open: 8.4.0
       rimraf: 3.0.2
+      shx: 0.3.4
       ts-node-dev: 2.0.0_7jzoohtnaegavowzoeccrsbhty
       typescript: 4.8.4
 
@@ -587,12 +591,14 @@ importers:
       '@previewjs/server': workspace:*
       esbuild: 0.15.12
       rimraf: 3.0.2
+      shx: 0.3.4
       ts-node-dev: 2.0.0
       typescript: 4.8.4
     devDependencies:
       '@previewjs/server': link:../../../server
       esbuild: 0.15.12
       rimraf: 3.0.2
+      shx: 0.3.4
       ts-node-dev: 2.0.0_7jzoohtnaegavowzoeccrsbhty
       typescript: 4.8.4
 
@@ -606,6 +612,7 @@ importers:
       execa: 5.1.1
       ovsx: 0.5.2
       rimraf: 3.0.2
+      shx: 0.3.4
       typescript: 4.8.4
       vsce: 2.13.0
     devDependencies:
@@ -617,6 +624,7 @@ importers:
       execa: 5.1.1
       ovsx: 0.5.2
       rimraf: 3.0.2
+      shx: 0.3.4
       typescript: 4.8.4
       vsce: 2.13.0
 
@@ -2428,10 +2436,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.19.4
-
-  /@babel/helper-string-parser/7.18.10:
-    resolution: {integrity: sha512-XtIfWmeNY3i4t7t4D2t02q50HvqHybPqW2ki1kosnvWCwuCMeo81Jf0gwr85jy/neUdg5XDdeFE/80DXiO+njw==}
-    engines: {node: '>=6.9.0'}
 
   /@babel/helper-string-parser/7.19.4:
     resolution: {integrity: sha512-nHtDoQcuqFmwYNYPz3Rah5ph2p8PFeFCsZk9A/48dPc/rGocJ5J3hAAZ7pb76VWX3fZKu+uEr/FhH5jLx7umrw==}
@@ -5687,7 +5691,7 @@ packages:
     resolution: {integrity: sha512-YuGopBq3ke25BVSiS6fgF49Ul9gH1x70Bcr6bqRLjWCkcX8Hre1/5+z+IiWOIerRMSSEfGZVB9z9kyq7wVs9YA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/helper-string-parser': 7.18.10
+      '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
 
@@ -11987,7 +11991,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.19.1
-      '@babel/helper-compilation-targets': 7.19.1_@babel+core@7.19.1
+      '@babel/helper-compilation-targets': 7.19.3_@babel+core@7.19.1
       '@babel/helper-module-imports': 7.18.6
       '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.19.1
       '@babel/plugin-proposal-decorators': 7.18.10_@babel+core@7.19.1
@@ -12020,7 +12024,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.19.1
-      '@babel/helper-compilation-targets': 7.19.1_@babel+core@7.19.1
+      '@babel/helper-compilation-targets': 7.19.3_@babel+core@7.19.1
       '@babel/helper-module-imports': 7.18.6
       '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.19.1
       '@babel/plugin-proposal-decorators': 7.18.10_@babel+core@7.19.1
@@ -12053,7 +12057,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.19.1
-      '@babel/helper-compilation-targets': 7.19.1_@babel+core@7.19.1
+      '@babel/helper-compilation-targets': 7.19.3_@babel+core@7.19.1
       '@babel/helper-module-imports': 7.18.6
       '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.19.1
       '@babel/plugin-proposal-decorators': 7.18.10_@babel+core@7.19.1
@@ -12674,7 +12678,7 @@ packages:
   /@vue/compiler-core/3.2.37:
     resolution: {integrity: sha512-81KhEjo7YAOh0vQJoSmAD68wLfYqJvoiD4ulyedzF+OEk/bk6/hx3fTNVfuzugIIaTrOx4PGx6pAiBRe5e9Zmg==}
     dependencies:
-      '@babel/parser': 7.19.1
+      '@babel/parser': 7.19.6
       '@vue/shared': 3.2.37
       estree-walker: 2.0.2
       source-map: 0.6.1
@@ -12745,7 +12749,7 @@ packages:
   /@vue/compiler-sfc/3.2.40:
     resolution: {integrity: sha512-tzqwniIN1fu1PDHC3CpqY/dPCfN/RN1thpBC+g69kJcrl7mbGiHKNwbA6kJ3XKKy8R6JLKqcpVugqN4HkeBFFg==}
     dependencies:
-      '@babel/parser': 7.19.1
+      '@babel/parser': 7.19.6
       '@vue/compiler-core': 3.2.40
       '@vue/compiler-dom': 3.2.40
       '@vue/compiler-ssr': 3.2.40
@@ -12943,7 +12947,7 @@ packages:
   /@vue/reactivity-transform/3.2.37:
     resolution: {integrity: sha512-IWopkKEb+8qpu/1eMKVeXrK0NLw9HicGviJzhJDEyfxTR9e1WtpnnbYkJWurX6WwoFP0sz10xQg8yL8lgskAZg==}
     dependencies:
-      '@babel/parser': 7.19.1
+      '@babel/parser': 7.19.6
       '@vue/compiler-core': 3.2.37
       '@vue/shared': 3.2.37
       estree-walker: 2.0.2
