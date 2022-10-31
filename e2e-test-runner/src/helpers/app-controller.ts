@@ -1,5 +1,6 @@
 /// <reference types="@previewjs/iframe/preview/window" />
 
+import { RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import fs from "fs-extra";
 import path from "path";
@@ -96,17 +97,15 @@ export class AppController {
       throw new Error(`Preview server is not started.`);
     }
     const filePath = componentId.split(":")[0]!;
-    const detectedComponents =
-      await this.workspace.frameworkPlugin.detectComponents(
-        this.workspace.typeAnalyzer,
-        [path.join(this.workspace.rootDirPath, filePath)]
-      );
+    const { components } = await this.workspace.localRpc(
+      RPCs.DetectComponents,
+      {
+        filePaths: [filePath],
+      }
+    );
+    const detectedComponents = components[filePath] || [];
     const matchingDetectedComponent = detectedComponents.find(
-      (c) =>
-        componentId ===
-        `${path
-          .relative(this.workspace.rootDirPath, c.absoluteFilePath)
-          .replace(/\\/g, "/")}:${c.name}`
+      (c) => componentId === `${filePath}:${c.name}`
     );
     if (!matchingDetectedComponent && !options.expectMissing) {
       throw new Error(

@@ -1,4 +1,5 @@
 export * from "./api";
-export * from "./endpoint";
-export * as localEndpoints from "./local";
+export * from "./component-id";
 export * from "./persisted-state";
+export * from "./rpc";
+export * as RPCs from "./rpcs";

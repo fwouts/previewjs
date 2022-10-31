@@ -297,6 +297,7 @@ importers:
 
   e2e-test-runner:
     specifiers:
+      '@previewjs/api': ^4.0.1
       '@previewjs/core': ^8.1.0
       '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.9
@@ -313,6 +314,7 @@ importers:
       ts-node: ^10.9.1
       unbuild: 0.9.1
     dependencies:
+      '@previewjs/api': link:../api
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
       '@types/fs-extra': 9.0.13
@@ -675,6 +677,7 @@ importers:
 
   server:
     specifiers:
+      '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/loader': workspace:*
       '@types/node': 18.11.8
@@ -685,6 +688,7 @@ importers:
       typescript: 4.8.4
       unbuild: 0.9.1
     devDependencies:
+      '@previewjs/api': link:../api
       '@previewjs/core': link:../core
       '@previewjs/loader': link:../loader
       '@types/node': 18.11.8
@@ -12361,7 +12365,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
+      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
       '@vue/cli-shared-utils': 4.5.19
     dev: true
 
@@ -12370,7 +12374,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
+      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
     dev: true
 
   /@vue/cli-service/4.5.19_2yymnzrok6eda47acnj2yjm3ae:

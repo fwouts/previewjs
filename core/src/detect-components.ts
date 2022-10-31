@@ -1,29 +1,37 @@
-import type { localEndpoints } from "@previewjs/api";
+import type { RPCs } from "@previewjs/api";
+import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import fs from "fs-extra";
 import path from "path";
-import type { Workspace } from ".";
+import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
 
-type ProjectComponents = localEndpoints.AnalyzeProjectResponse["components"];
+type ProjectComponents = RPCs.DetectComponentsResponse["components"];
 
-export async function analyzeProject(
+export async function detectComponents(
   workspace: Workspace,
+  frameworkPlugin: FrameworkPlugin,
+  typeAnalyzer: TypeAnalyzer,
   options: {
+    filePaths?: string[];
     forceRefresh?: boolean;
   } = {}
-): Promise<localEndpoints.AnalyzeProjectResponse> {
+): Promise<RPCs.DetectComponentsResponse> {
   const cacheFilePath = path.join(
     getCacheDir(workspace.rootDirPath),
     "components.json"
   );
-  const absoluteFilePaths = await findFiles(
-    workspace.rootDirPath,
-    "**/*.@(js|jsx|ts|tsx|svelte|vue)"
-  );
+  const absoluteFilePaths = options.filePaths
+    ? options.filePaths.map((filePath) =>
+        path.join(workspace.rootDirPath, filePath)
+      )
+    : await findFiles(
+        workspace.rootDirPath,
+        "**/*.@(js|jsx|ts|tsx|svelte|vue)"
+      );
   const filePathsSet = new Set(
     absoluteFilePaths.map((absoluteFilePath) =>
-      path.relative(workspace.rootDirPath, absoluteFilePath)
+      path.relative(workspace.rootDirPath, absoluteFilePath).replace(/\\/g, "/")
     )
   );
   const existingCacheLastModified =
@@ -34,16 +42,23 @@ export async function analyzeProject(
     ? JSON.parse(fs.readFileSync(cacheFilePath, "utf8"))
     : {};
   const changedAbsoluteFilePaths = absoluteFilePaths.filter(
-    (absoluteFilePath) =>
-      fs.statSync(absoluteFilePath).mtimeMs > existingCacheLastModified
+    (absoluteFilePath) => {
+      const entry = workspace.reader.readSync(absoluteFilePath);
+      return (
+        entry?.kind === "file" &&
+        entry.lastModifiedMillis() > existingCacheLastModified
+      );
+    }
   );
   const recycledComponents = Object.fromEntries(
     Object.entries(existingCache).filter(([filePath]) =>
       filePathsSet.has(filePath)
     )
   );
-  const refreshedComponents = await analyzeProjectCore(
+  const refreshedComponents = await detectComponentsCore(
     workspace,
+    frameworkPlugin,
+    typeAnalyzer,
     changedAbsoluteFilePaths
   );
   const allComponents = {
@@ -52,35 +67,41 @@ export async function analyzeProject(
   };
   const components = Object.keys(allComponents)
     .sort()
-    .reduce<ProjectComponents>((ordered, key) => {
-      ordered[key] = allComponents[key]!;
+    .reduce<ProjectComponents>((ordered, filePath) => {
+      ordered[filePath] = allComponents[filePath]!;
       return ordered;
     }, {});
-  await fs.mkdirp(path.dirname(cacheFilePath));
-  await fs.writeFile(cacheFilePath, JSON.stringify(components));
+  if (!options.filePaths) {
+    await fs.mkdirp(path.dirname(cacheFilePath));
+    await fs.writeFile(cacheFilePath, JSON.stringify(components));
+  }
   return { components };
 }
 
-async function analyzeProjectCore(
+async function detectComponentsCore(
   workspace: Workspace,
+  frameworkPlugin: FrameworkPlugin,
+  typeAnalyzer: TypeAnalyzer,
   changedAbsoluteFilePaths: string[]
 ): Promise<ProjectComponents> {
   const components: ProjectComponents = {};
   if (changedAbsoluteFilePaths.length === 0) {
     return components;
   }
-  const found = await workspace.frameworkPlugin.detectComponents(
-    workspace.typeAnalyzer,
+  const found = await frameworkPlugin.detectComponents(
+    typeAnalyzer,
     changedAbsoluteFilePaths
   );
   for (const component of found) {
-    const filePath = path.relative(
-      workspace.rootDirPath,
-      component.absoluteFilePath
-    );
+    const filePath = path
+      .relative(workspace.rootDirPath, component.absoluteFilePath)
+      .replace(/\\/g, "/");
     const fileComponents = (components[filePath] ||= []);
+    const [start, end] = component.offsets[0]!;
     fileComponents.push({
       name: component.name,
+      start,
+      end,
       info:
         component.info.kind === "component"
           ? {

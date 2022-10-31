@@ -1,4 +1,4 @@
-export { createLocalApi } from "./api/local";
+export { createRpcApi } from "./api/local";
 export { Preview } from "./components/Preview";
 export { Selection } from "./components/Selection";
 export { Link } from "./design/Link";

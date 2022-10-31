@@ -1,3 +1,4 @@
+import { generateComponentId, RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
@@ -307,28 +308,36 @@ async function startServer({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const components = (
-        await workspace.frameworkPlugin.detectComponents(
-          workspace.typeAnalyzer,
-          [transformAbsoluteFilePath(absoluteFilePath)]
-        )
-      )
-        .map((c) => {
-          return c.offsets.map(([start, end]) => ({
-            componentName: c.name,
-            start,
-            end,
-            componentId: previewjs.core.generateComponentId({
-              currentFilePath: path.relative(
-                workspace.rootDirPath,
-                c.absoluteFilePath
-              ),
-              name: c.name,
+      const { components } = await workspace.localRpc(RPCs.DetectComponents, {
+        filePaths: [
+          path
+            .relative(
+              workspace.rootDirPath,
+              transformAbsoluteFilePath(absoluteFilePath)
+            )
+            .replace(/\\/g, "/"),
+        ],
+      });
+      const results: Array<{
+        componentName: string;
+        start: number;
+        end: number;
+        componentId: string;
+      }> = [];
+      for (const [filePath, fileComponents] of Object.entries(components)) {
+        for (const component of fileComponents) {
+          results.push({
+            componentName: component.name,
+            componentId: generateComponentId({
+              currentFilePath: filePath,
+              name: component.name,
             }),
-          }));
-        })
-        .flat();
-      return { components };
+            start: component.start,
+            end: component.end,
+          });
+        }
+      }
+      return { components: results };
     }
   );
 

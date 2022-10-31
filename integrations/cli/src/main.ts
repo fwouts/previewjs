@@ -39,14 +39,14 @@ program
       versionCode: `cli-${version}`,
       absoluteFilePath: dirPath || process.cwd(),
       persistedStateManager: {
-        get: async (_, req) => {
+        get: async (req) => {
           const cookie = req.cookies["state"];
           if (cookie) {
             return JSON.parse(cookie);
           }
           return {};
         },
-        update: async (partialState, req, res) => {
+        update: async (req, res) => {
           const existingCookie = req.cookies["state"];
           let existingState: api.PersistedState = {};
           if (existingCookie) {
@@ -54,7 +54,7 @@ program
           }
           const state = {
             ...existingState,
-            ...partialState,
+            ...req.body,
           };
           res.cookie("state", JSON.stringify(state), {
             httpOnly: true,

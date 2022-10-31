@@ -1,4 +1,4 @@
-import { Api, localEndpoints, ResponseOf } from "@previewjs/api";
+import { Api, ResponseOf, RPCs } from "@previewjs/api";
 import {
   createController,
   PreviewIframeController,
@@ -23,13 +23,13 @@ export class PreviewState {
   readonly updateBanner: UpdateBannerState;
   reachable = true;
 
-  analyzeProjectResponse:
+  detectComponentsResponse:
     | {
         kind: "loading";
       }
     | {
         kind: "success";
-        response: localEndpoints.AnalyzeProjectResponse;
+        response: RPCs.DetectComponentsResponse;
       }
     | {
         kind: "failure";
@@ -92,7 +92,7 @@ export class PreviewState {
       renderingAlwaysFailing: boolean | null;
     } | null;
   } | null = null;
-  appInfo: ResponseOf<typeof localEndpoints.GetInfo>["appInfo"] | null = null;
+  appInfo: ResponseOf<typeof RPCs.GetInfo>["appInfo"] | null = null;
 
   private iframeRef: React.RefObject<HTMLIFrameElement | null> = {
     current: null,
@@ -101,7 +101,7 @@ export class PreviewState {
   private pingInterval: NodeJS.Timer | null = null;
 
   constructor(
-    private readonly localApi: Api,
+    private readonly rpcApi: Api,
     private readonly persistedStateController: PersistedStateController,
     private readonly options: {
       onFileChanged?: (filePath: string | null) => Promise<void>;
@@ -162,7 +162,7 @@ export class PreviewState {
       iframeRef: observable.ref,
       pingInterval: observable.ref,
       appInfo: observable.ref,
-      analyzeProjectResponse: observable.ref,
+      detectComponentsResponse: observable.ref,
     });
   }
 
@@ -181,28 +181,25 @@ export class PreviewState {
         .catch(console.error);
     }, REFRESH_PERIOD_MILLIS);
     document.addEventListener("keydown", this.keydownListener);
-    const { appInfo } = await this.localApi.request(localEndpoints.GetInfo);
+    const { appInfo } = await this.rpcApi.request(RPCs.GetInfo);
     runInAction(() => {
       this.appInfo = appInfo;
     });
     await this.persistedStateController.start();
     await this.updateBanner.start(appInfo);
     try {
-      const project = await this.localApi.request(
-        localEndpoints.AnalyzeProject,
-        {
-          forceRefresh: false,
-        }
-      );
+      const project = await this.rpcApi.request(RPCs.DetectComponents, {
+        forceRefresh: false,
+      });
       runInAction(() => {
-        this.analyzeProjectResponse = {
+        this.detectComponentsResponse = {
           kind: "success",
           response: project,
         };
       });
     } catch (e: any) {
       runInAction(() => {
-        this.analyzeProjectResponse = {
+        this.detectComponentsResponse = {
           kind: "failure",
           message: e.message || "Unknown error",
         };
@@ -337,7 +334,7 @@ export class PreviewState {
     }
     const filePath = decodedComponentId.component.filePath;
     const props = new ComponentProps(
-      this.localApi,
+      this.rpcApi,
       filePath,
       name,
       this.cachedInvocations[componentId] || null

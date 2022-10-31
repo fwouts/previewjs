@@ -1,11 +1,9 @@
-export type Endpoint<_Request, _Response> = {
+export type RPC<_Request, _Response> = {
   path: string;
 };
 
-export type RequestOf<E> = E extends Endpoint<infer Request, any>
-  ? Request
-  : never;
-export type ResponseOf<E> = E extends Endpoint<any, infer Response>
+export type RequestOf<E> = E extends RPC<infer Request, any> ? Request : never;
+export type ResponseOf<E> = E extends RPC<any, infer Response>
   ? Response
   : never;
 

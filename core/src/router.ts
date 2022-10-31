@@ -1,19 +1,16 @@
 import type {
-  Endpoint,
   RequestOf,
   ResponseOf,
+  RPC,
   WrappedResponse,
 } from "@previewjs/api";
-import type * as express from "express";
 
 export class ApiRouter {
   private handlers = new Map<string, RequestHandler<any, any>>();
 
   async handle(
     path: string,
-    request: unknown,
-    expressRequest: express.Request,
-    expressResponse: express.Response
+    request: unknown
   ): Promise<WrappedResponse<unknown>> {
     const handler = this.handlers.get(path);
     if (!handler) {
@@ -23,7 +20,7 @@ export class ApiRouter {
       };
     }
     try {
-      const response = await handler(request, expressRequest, expressResponse);
+      const response = await handler(request);
       return {
         kind: "success",
         response,
@@ -37,7 +34,7 @@ export class ApiRouter {
     }
   }
 
-  registerEndpoint: RegisterEndpoint = (endpoint, handler) => {
+  registerRPC: RegisterRPC = (endpoint, handler) => {
     if (this.handlers.has(endpoint.path)) {
       throw new Error(
         `Multiple handlers registered for endpoint '${endpoint.path}'`
@@ -47,20 +44,13 @@ export class ApiRouter {
   };
 }
 
-export type RegisterEndpoint = <E extends Endpoint<any, any>>(
+export type RegisterRPC = <E extends RPC<any, any>>(
   endpoint: E,
   handler: RequestHandler<RequestOf<E>, ResponseOf<E>>
 ) => void;
 
-export type RequestHandler<Req, Res> = (
-  request: Req,
-  expressRequest: express.Request,
-  expressResponse: express.Response
-) => Promise<Res>;
+export type RequestHandler<Req, Res> = (request: Req) => Promise<Res>;
 
-export type RequestHandlerForEndpoint<E> = E extends Endpoint<
-  infer Req,
-  infer Res
->
+export type RequestHandlerForRPC<E> = E extends RPC<infer Req, infer Res>
   ? RequestHandler<Req, Res>
   : never;
