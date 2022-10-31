@@ -76,7 +76,7 @@ export const smokeTests = fs
               await controller.props.editor.isReady();
             }
             await controller.takeScreenshot(
-              "#ready",
+              iframe,
               path.join(
                 __dirname,
                 "..",
@@ -86,6 +86,7 @@ export const smokeTests = fs
                 `${appName}.png`
               )
             );
+            console.error("E");
           }
         );
       },

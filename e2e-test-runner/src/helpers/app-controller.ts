@@ -127,9 +127,7 @@ export class AppController {
     }
   }
 
-  async takeScreenshot(waitForSelector: string, destinationPath: string) {
-    const preview = await this.previewIframe();
-    await preview.waitForSelector(waitForSelector);
+  async takeScreenshot(preview: playwright.Frame, destinationPath: string) {
     preview.addStyleTag({
       content: `
 *,
@@ -154,10 +152,18 @@ export class AppController {
           if (img.complete) {
             return;
           }
-          return new Promise((resolve) => {
-            img.addEventListener("load", resolve);
-            // If an image fails to load, ignore it.
-            img.addEventListener("error", resolve);
+          return new Promise<unknown>((resolve) => {
+            const observer = new IntersectionObserver((entries) => {
+              if (entries[0]?.isIntersecting) {
+                img.addEventListener("load", resolve);
+                // If an image fails to load, ignore it.
+                img.addEventListener("error", resolve);
+              } else {
+                resolve(null);
+              }
+              observer.unobserve(img);
+            });
+            observer.observe(img);
           });
         })
       );
