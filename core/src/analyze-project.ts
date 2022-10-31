@@ -1,7 +1,8 @@
 import type { localRPCs } from "@previewjs/api";
+import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import fs from "fs-extra";
 import path from "path";
-import type { Workspace } from ".";
+import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
 
@@ -9,7 +10,10 @@ type ProjectComponents = localRPCs.AnalyzeProjectResponse["components"];
 
 export async function analyzeProject(
   workspace: Workspace,
+  frameworkPlugin: FrameworkPlugin,
+  typeAnalyzer: TypeAnalyzer,
   options: {
+    filePaths?: string[];
     forceRefresh?: boolean;
   } = {}
 ): Promise<localRPCs.AnalyzeProjectResponse> {
@@ -17,10 +21,14 @@ export async function analyzeProject(
     getCacheDir(workspace.rootDirPath),
     "components.json"
   );
-  const absoluteFilePaths = await findFiles(
-    workspace.rootDirPath,
-    "**/*.@(js|jsx|ts|tsx|svelte|vue)"
-  );
+  const absoluteFilePaths = options.filePaths
+    ? options.filePaths.map((filePath) =>
+        path.join(workspace.rootDirPath, filePath)
+      )
+    : await findFiles(
+        workspace.rootDirPath,
+        "**/*.@(js|jsx|ts|tsx|svelte|vue)"
+      );
   const filePathsSet = new Set(
     absoluteFilePaths.map((absoluteFilePath) =>
       path.relative(workspace.rootDirPath, absoluteFilePath)
@@ -44,6 +52,8 @@ export async function analyzeProject(
   );
   const refreshedComponents = await analyzeProjectCore(
     workspace,
+    frameworkPlugin,
+    typeAnalyzer,
     changedAbsoluteFilePaths
   );
   const allComponents = {
@@ -56,21 +66,25 @@ export async function analyzeProject(
       ordered[key] = allComponents[key]!;
       return ordered;
     }, {});
-  await fs.mkdirp(path.dirname(cacheFilePath));
-  await fs.writeFile(cacheFilePath, JSON.stringify(components));
+  if (!options.filePaths) {
+    await fs.mkdirp(path.dirname(cacheFilePath));
+    await fs.writeFile(cacheFilePath, JSON.stringify(components));
+  }
   return { components };
 }
 
 async function analyzeProjectCore(
   workspace: Workspace,
+  frameworkPlugin: FrameworkPlugin,
+  typeAnalyzer: TypeAnalyzer,
   changedAbsoluteFilePaths: string[]
 ): Promise<ProjectComponents> {
   const components: ProjectComponents = {};
   if (changedAbsoluteFilePaths.length === 0) {
     return components;
   }
-  const found = await workspace.frameworkPlugin.detectComponents(
-    workspace.typeAnalyzer,
+  const found = await frameworkPlugin.detectComponents(
+    typeAnalyzer,
     changedAbsoluteFilePaths
   );
   for (const component of found) {
@@ -79,8 +93,11 @@ async function analyzeProjectCore(
       component.absoluteFilePath
     );
     const fileComponents = (components[filePath] ||= []);
+    const [start, end] = component.offsets[0]!;
     fileComponents.push({
       name: component.name,
+      start,
+      end,
       info:
         component.info.kind === "component"
           ? {

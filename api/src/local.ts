@@ -41,6 +41,7 @@ export type ComputePropsResponse = {
 
 export const AnalyzeProject: RPC<
   {
+    filePaths?: string[];
     forceRefresh?: boolean;
   },
   AnalyzeProjectResponse
@@ -56,6 +57,8 @@ export type AnalyzeProjectResponse = {
 
 export type Component = {
   name: string;
+  start: number;
+  end: number;
   info:
     | {
         kind: "component";

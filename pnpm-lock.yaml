@@ -283,7 +283,7 @@ importers:
 
   e2e-test-runner:
     specifiers:
-      '@previewjs/api': workspace:^4.0.1
+      '@previewjs/api': ^4.0.1
       '@previewjs/core': ^8.1.0
       '@previewjs/iframe': workspace:*
       '@previewjs/vfs': ^1.2.9
@@ -300,6 +300,7 @@ importers:
       ts-node: ^10.9.1
       unbuild: 0.9.1
     dependencies:
+      '@previewjs/api': link:../api
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
       '@types/fs-extra': 9.0.13
@@ -314,7 +315,6 @@ importers:
       playwright: 1.27.1
       ts-node: 10.9.1_7jzoohtnaegavowzoeccrsbhty
     devDependencies:
-      '@previewjs/api': link:../api
       '@previewjs/iframe': link:../iframe
       unbuild: 0.9.1
 
@@ -657,6 +657,7 @@ importers:
 
   server:
     specifiers:
+      '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/loader': workspace:*
       '@types/node': 18.11.8
@@ -667,6 +668,7 @@ importers:
       typescript: 4.8.4
       unbuild: 0.9.1
     devDependencies:
+      '@previewjs/api': link:../api
       '@previewjs/core': link:../core
       '@previewjs/loader': link:../loader
       '@types/node': 18.11.8
@@ -5080,19 +5082,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@babel/plugin-transform-typescript/7.18.12_@babel+core@7.19.6:
-    resolution: {integrity: sha512-2vjjam0cum0miPkenUbQswKowuxs/NjMwIKEq0zwegRxXk12C9YOF9STXnaUptITOtOJHKHpzvvWYOjbm6tc0w==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.19.6
-      '@babel/helper-create-class-features-plugin': 7.19.0_@babel+core@7.19.6
-      '@babel/helper-plugin-utils': 7.19.0
-      '@babel/plugin-syntax-typescript': 7.18.6_@babel+core@7.19.6
-    transitivePeerDependencies:
-      - supports-color
-
   /@babel/plugin-transform-typescript/7.19.3_@babel+core@7.18.10:
     resolution: {integrity: sha512-z6fnuK9ve9u/0X0rRvI9MY0xg+DOUaABDYOe+/SQTxtlptaBB/V9JIUxJn6xp3lMBeb9qe8xSFmHU35oZDXD+w==}
     engines: {node: '>=6.9.0'}
@@ -5545,9 +5534,9 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.19.6
-      '@babel/helper-plugin-utils': 7.18.9
+      '@babel/helper-plugin-utils': 7.19.0
       '@babel/helper-validator-option': 7.18.6
-      '@babel/plugin-transform-typescript': 7.18.12_@babel+core@7.19.6
+      '@babel/plugin-transform-typescript': 7.19.3_@babel+core@7.19.6
     transitivePeerDependencies:
       - supports-color
 
@@ -12216,7 +12205,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
+      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
       '@vue/cli-shared-utils': 4.5.19
     dev: true
 
@@ -12225,7 +12214,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
+      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
     dev: true
 
   /@vue/cli-service/4.5.19_2yymnzrok6eda47acnj2yjm3ae:

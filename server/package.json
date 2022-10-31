@@ -42,6 +42,7 @@
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
+    "@previewjs/api": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@previewjs/loader": "workspace:*",
     "@types/node": "18.11.8",

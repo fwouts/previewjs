@@ -3,7 +3,6 @@ import {
   CollectedTypes,
   createTypeAnalyzer,
   EMPTY_OBJECT_TYPE,
-  TypeAnalyzer,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
@@ -21,7 +20,6 @@ import {
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter, RegisterRPC } from "./router";
-export { generateComponentId } from "./component-id";
 export type { PersistedStateManager } from "./persisted-state";
 export type {
   Component,
@@ -134,7 +132,7 @@ export async function createWorkspace({
     }
   );
   router.registerRPC(localRPCs.AnalyzeProject, (options) =>
-    analyzeProject(workspace, options)
+    analyzeProject(workspace, frameworkPlugin, typeAnalyzer, options)
   );
   const previewer = new Previewer({
     reader,
@@ -180,8 +178,6 @@ export async function createWorkspace({
   const workspace: Workspace = {
     rootDirPath,
     reader,
-    typeAnalyzer,
-    frameworkPlugin,
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -244,8 +240,6 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
-  typeAnalyzer: TypeAnalyzer;
-  frameworkPlugin: FrameworkPlugin;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
