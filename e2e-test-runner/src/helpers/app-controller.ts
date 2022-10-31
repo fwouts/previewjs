@@ -105,7 +105,7 @@ export class AppController {
     );
     const detectedComponents = components[filePath] || [];
     const matchingDetectedComponent = detectedComponents.find(
-      (c) => componentId === `${filePath}:${c.name}`
+      (c) => componentId === `${filePath.replace(/\\/g, "/")}}:${c.name}`
     );
     if (!matchingDetectedComponent && !options.expectMissing) {
       throw new Error(
