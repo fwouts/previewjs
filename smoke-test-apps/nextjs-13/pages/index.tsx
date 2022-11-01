@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function App() {
   const router = useRouter();
 
   console.log("Current path is", router.pathname);
