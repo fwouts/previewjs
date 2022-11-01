@@ -9,8 +9,8 @@ importers:
       '@types/inquirer': 8.2.4
       '@types/license-checker': 25.0.3
       '@types/node': 18.11.8
-      '@typescript-eslint/eslint-plugin': ^5.41.0
-      '@typescript-eslint/parser': ^5.41.0
+      '@typescript-eslint/eslint-plugin': ^5.42.0
+      '@typescript-eslint/parser': ^5.42.0
       assert-never: 1.2.1
       depcheck: ^1.4.3
       eslint: ^8.26.0
@@ -145,7 +145,7 @@ importers:
       tailwindcss: 3.2.1
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.2.0
       '@fortawesome/free-brands-svg-icons': 6.2.0
@@ -177,7 +177,7 @@ importers:
       tailwindcss: 3.2.1_postcss@8.4.18
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   config:
     specifiers:
@@ -188,6 +188,18 @@ importers:
       '@types/node': 18.11.8
       unbuild: 0.9.1
       vite: 3.2.1
+
+  config-helpers/nextjs:
+    specifiers:
+      '@types/react': 18.0.24
+      next: 13.0.1
+      react: 18.2.0
+      unbuild: 0.9.1
+    devDependencies:
+      '@types/react': 18.0.24
+      next: 13.0.1_qtpcxnaaarbm4ws7ughq6oxfve
+      react: 18.2.0
+      unbuild: 0.9.1
 
   core:
     specifiers:
@@ -255,7 +267,7 @@ importers:
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -263,7 +275,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   dev-workspace:
     specifiers:
@@ -335,7 +347,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -349,7 +361,7 @@ importers:
       react: 18.2.0
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/react/preview:
     specifiers:
@@ -379,7 +391,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.2.1
       vite-plugin-solid: ^2.3.10
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -391,7 +403,7 @@ importers:
       rimraf: 3.0.2
       solid-js: 1.6.1
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/solid/preview:
     specifiers:
@@ -415,7 +427,7 @@ importers:
       svelte: ^3.52.0
       typescript: ^4.8.4
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -429,7 +441,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/svelte/preview:
     specifiers:
@@ -453,7 +465,7 @@ importers:
       typescript: ^4.8.4
       vite: 3.2.1
       vite-plugin-vue2: ^2.0.2
-      vitest: 0.24.3
+      vitest: 0.24.4
       vue: ^2.7.13
       vue-template-compiler: ^2.7.13
     dependencies:
@@ -471,7 +483,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/vue2/preview:
     specifiers:
@@ -501,7 +513,7 @@ importers:
       rimraf: 3.0.2
       typescript: ^4.8.4
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -519,7 +531,7 @@ importers:
       '@types/fs-extra': 9.0.13
       rimraf: 3.0.2
       vite: 3.2.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   frameworks/vue3/preview:
     specifiers:
@@ -666,7 +678,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@faker-js/faker': 7.6.0
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -676,7 +688,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.1
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   server:
     specifiers:
@@ -1302,6 +1314,7 @@ importers:
   smoke-test-apps/nextjs-11:
     specifiers:
       '@babel/core': ^7
+      '@previewjs/config-helper-nextjs': workspace:*
       '@types/react': ^17
       next: ^11
       react: ^17
@@ -1313,12 +1326,14 @@ importers:
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
       '@babel/core': 7.18.10
+      '@previewjs/config-helper-nextjs': link:../../config-helpers/nextjs
       '@types/react': 17.0.48
       typescript: 4.7.4
 
   smoke-test-apps/nextjs-12:
     specifiers:
       '@babel/core': ^7
+      '@previewjs/config-helper-nextjs': workspace:*
       '@types/react': ^17
       next: ^12
       react: ^17
@@ -1330,6 +1345,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
       '@babel/core': 7.18.10
+      '@previewjs/config-helper-nextjs': link:../../config-helpers/nextjs
       '@types/react': 17.0.48
       typescript: 4.7.4
 
@@ -1834,7 +1850,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1845,7 +1861,7 @@ importers:
       '@types/prettier': 2.7.1
       lodash: 4.17.21
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
   vfs:
     specifiers:
@@ -1854,7 +1870,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1862,7 +1878,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
-      vitest: 0.24.3
+      vitest: 0.24.4
 
 packages:
 
@@ -7213,6 +7229,10 @@ packages:
     resolution: {integrity: sha512-vLPLV3cpPGjUPT3PjgRj7e3nio9t6USkuew3JE/jMeon/9Mvp1WyR18v3iwnCuX7eUAm1HmAbJHHLAbcu/EJcw==}
     dev: false
 
+  /@next/env/13.0.1:
+    resolution: {integrity: sha512-gK60YoFae3s8qi5UgIzbvxOhsh5gKyEaiKH5+kLBUYXLlrPyWJR2xKBj2WqvHkO7wDX7/Hed3DAqjSpU4ijIvQ==}
+    dev: true
+
   /@next/polyfill-module/11.1.4:
     resolution: {integrity: sha512-CY3bOSQf9Dy3+34dFjFbOdg3DRXIGfujb54D/AVO83ajyQczRZ3xdU0i5VV0eSR6B56ktVy3/aelOffpTUq6LA==}
     dev: false
@@ -7259,6 +7279,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-android-arm-eabi/13.0.1:
+    resolution: {integrity: sha512-M28QSbohZlNXNn//HY6lV2T3YaMzG58Jwr0YwOdVmOQv6i+7lu6xe3GqQu4kdqInqhLrBXnL+nabFuGTVSHtTg==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [android]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /@next/swc-android-arm64/12.2.5:
     resolution: {integrity: sha512-vMj0efliXmC5b7p+wfcQCX0AfU8IypjkzT64GiKJD9PgiA3IILNiGJr1fw2lyUDHkjeWx/5HMlMEpLnTsQslwg==}
     engines: {node: '>= 10'}
@@ -7266,6 +7295,15 @@ packages:
     os: [android]
     requiresBuild: true
     dev: false
+    optional: true
+
+  /@next/swc-android-arm64/13.0.1:
+    resolution: {integrity: sha512-szmO/i6GoHcPXcbhUKhwBMETWHNXH3ITz9wfxwOOFBNKdDU8pjKsHL88lg28aOiQYZSU1sxu1v1p9KY5kJIZCg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+    requiresBuild: true
+    dev: true
     optional: true
 
   /@next/swc-darwin-arm64/11.1.4:
@@ -7286,6 +7324,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-darwin-arm64/13.0.1:
+    resolution: {integrity: sha512-O1RxCaiDNOjGZmdAp6SQoHUITt9aVDQXoR3lZ/TloI/NKRAyAV4u0KUUofK+KaZeHOmVTnPUaQuCyZSc3i1x5Q==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /@next/swc-darwin-x64/11.1.4:
     resolution: {integrity: sha512-5i9tOQNO8kawwggHvQUVR3a5KzIGaE2dw1g1kL//z/N840djvGseHrJSFEGdP1c35gM+dSGPpAKHmeBKrwHM8g==}
     engines: {node: '>= 10'}
@@ -7304,6 +7351,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-darwin-x64/13.0.1:
+    resolution: {integrity: sha512-8E6BY/VO+QqQkthhoWgB8mJMw1NcN9Vhl2OwEwxv8jy2r3zjeU+WNRxz4y8RLbcY0R1h+vHlXuP0mLnuac84tQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /@next/swc-freebsd-x64/12.2.5:
     resolution: {integrity: sha512-yYUbyup1JnznMtEBRkK4LT56N0lfK5qNTzr6/DEyDw5TbFVwnuy2hhLBzwCBkScFVjpFdfiC6SQAX3FrAZzuuw==}
     engines: {node: '>= 10'}
@@ -7311,6 +7367,15 @@ packages:
     os: [freebsd]
     requiresBuild: true
     dev: false
+    optional: true
+
+  /@next/swc-freebsd-x64/13.0.1:
+    resolution: {integrity: sha512-ocwoOxm2KVwF50RyoAT+2RQPLlkyoF7sAqzMUVgj+S6+DTkY3iwH+Zpo0XAk2pnqT9qguOrKnEpq9EIx//+K7Q==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: true
     optional: true
 
   /@next/swc-linux-arm-gnueabihf/12.2.5:
@@ -7322,6 +7387,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-linux-arm-gnueabihf/13.0.1:
+    resolution: {integrity: sha512-yO7e3zITfGol/N6lPQnmIRi0WyuILBMXrvH6EdmWzzqMDJFfTCII6l+B6gMO5WVDCTQUGQlQRNZ7sFqWR4I71g==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /@next/swc-linux-arm64-gnu/12.2.5:
     resolution: {integrity: sha512-/I6+PWVlz2wkTdWqhlSYYJ1pWWgUVva6SgX353oqTh8njNQp1SdFQuWDqk8LnM6ulheVfSsgkDzxrDaAQZnzjQ==}
     engines: {node: '>= 10'}
@@ -7331,6 +7405,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-linux-arm64-gnu/13.0.1:
+    resolution: {integrity: sha512-OEs6WDPDI8RyM8SjOqTDMqMBfOlU97VnW6ZMXUvzUTyH0K9c7NF+cn7UMu+I4tKFN0uJ9WQs/6TYaFBGkgoVVA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /@next/swc-linux-arm64-musl/12.2.5:
     resolution: {integrity: sha512-LPQRelfX6asXyVr59p5sTpx5l+0yh2Vjp/R8Wi4X9pnqcayqT4CUJLiHqCvZuLin3IsFdisJL0rKHMoaZLRfmg==}
     engines: {node: '>= 10'}
@@ -7338,6 +7421,15 @@ packages:
     os: [linux]
     requiresBuild: true
     dev: false
+    optional: true
+
+  /@next/swc-linux-arm64-musl/13.0.1:
+    resolution: {integrity: sha512-y5ypFK0Y3urZSFoQxbtDqvKsBx026sz+Fm+xHlPWlGHNZrbs3Q812iONjcZTo09QwRMk5X86iMWBRxV18xMhaw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
     optional: true
 
   /@next/swc-linux-x64-gnu/11.1.4:
@@ -7358,6 +7450,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-linux-x64-gnu/13.0.1:
+    resolution: {integrity: sha512-XDIHEE6SU8VCF+dUVntD6PDv6RK31N0forx9kucZBYirbe8vCZ+Yx8hYgvtIaGrTcWtGxibxmND0pIuHDq8H5g==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /@next/swc-linux-x64-musl/12.2.5:
     resolution: {integrity: sha512-zg/Y6oBar1yVnW6Il1I/08/2ukWtOG6s3acdJdEyIdsCzyQi4RLxbbhkD/EGQyhqBvd3QrC6ZXQEXighQUAZ0g==}
     engines: {node: '>= 10'}
@@ -7365,6 +7466,15 @@ packages:
     os: [linux]
     requiresBuild: true
     dev: false
+    optional: true
+
+  /@next/swc-linux-x64-musl/13.0.1:
+    resolution: {integrity: sha512-yxIOuuz5EOx0F1FDtsyzaLgnDym0Ysxv8CWeJyDTKKmt9BVyITg6q/cD+RP9bEkT1TQi+PYXIMATSz675Q82xw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
     optional: true
 
   /@next/swc-win32-arm64-msvc/12.2.5:
@@ -7376,6 +7486,15 @@ packages:
     dev: false
     optional: true
 
+  /@next/swc-win32-arm64-msvc/13.0.1:
+    resolution: {integrity: sha512-+ucLe2qgQzP+FM94jD4ns6LDGyMFaX9k3lVHqu/tsQCy2giMymbport4y4p77mYcXEMlDaHMzlHgOQyHRniWFA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /@next/swc-win32-ia32-msvc/12.2.5:
     resolution: {integrity: sha512-hGLc0ZRAwnaPL4ulwpp4D2RxmkHQLuI8CFOEEHdzZpS63/hMVzv81g8jzYA0UXbb9pus/iTc3VRbVbAM03SRrw==}
     engines: {node: '>= 10'}
@@ -7383,6 +7502,15 @@ packages:
     os: [win32]
     requiresBuild: true
     dev: false
+    optional: true
+
+  /@next/swc-win32-ia32-msvc/13.0.1:
+    resolution: {integrity: sha512-Krr/qGN7OB35oZuvMAZKoXDt2IapynIWLh5A5rz6AODb7f/ZJqyAuZSK12vOa2zKdobS36Qm4IlxxBqn9c00MA==}
+    engines: {node: '>= 10'}
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: true
     optional: true
 
   /@next/swc-win32-x64-msvc/11.1.4:
@@ -7401,6 +7529,15 @@ packages:
     os: [win32]
     requiresBuild: true
     dev: false
+    optional: true
+
+  /@next/swc-win32-x64-msvc/13.0.1:
+    resolution: {integrity: sha512-t/0G33t/6VGWZUGCOT7rG42qqvf/x+MrFp1CU+8CN6PrjSSL57R5bqkXfubV9t4eCEnUxVP+5Hn3MoEXEebtEw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
     optional: true
 
   /@node-ipc/js-queue/2.0.3:
@@ -10540,6 +10677,12 @@ packages:
       loader-utils: 2.0.2
     transitivePeerDependencies:
       - supports-color
+
+  /@swc/helpers/0.4.11:
+    resolution: {integrity: sha512-rEUrBSGIoSFuYxwBYtlUFMlE2CwGhmW+w9355/5oduSw8e5h2+Tj4UrAGNNgP9915++wj5vkQo0UuOBqOAq4nw==}
+    dependencies:
+      tslib: 2.4.0
+    dev: true
 
   /@swc/helpers/0.4.3:
     resolution: {integrity: sha512-6JrF+fdUK2zbGpJIlN7G3v966PQjyx/dPt1T9km2wj+EUBqgrxCk3uX4Kct16MIm9gGxfKRcfax2hVf5jvlTzA==}
@@ -15424,6 +15567,10 @@ packages:
   /cli-width/4.0.0:
     resolution: {integrity: sha512-ZksGS2xpa/bYkNzN3BAw1wEjsLV/ZKOf/CCrJ/QOBsxx6fOARIkwTutxp1XIOIohi6HKmOFjMoK/XaqDVUpEEw==}
     engines: {node: '>= 12'}
+    dev: true
+
+  /client-only/0.0.1:
+    resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
     dev: true
 
   /clipboardy/2.3.0:
@@ -24666,6 +24813,51 @@ packages:
       - babel-plugin-macros
     dev: false
 
+  /next/13.0.1_qtpcxnaaarbm4ws7ughq6oxfve:
+    resolution: {integrity: sha512-ErCNBPIeZMKFn6hX+ZBSlqZVgJIeitEqhGTuQUNmYXJ07/A71DZ7AJI8eyHYUdBb686LUpV1/oBdTq9RpzRVPg==}
+    engines: {node: '>=14.6.0'}
+    hasBin: true
+    peerDependencies:
+      fibers: '>= 3.1.0'
+      node-sass: ^6.0.0 || ^7.0.0
+      react: ^18.2.0 || 18
+      react-dom: ^18.2.0 || 18
+      sass: ^1.3.0
+    peerDependenciesMeta:
+      fibers:
+        optional: true
+      node-sass:
+        optional: true
+      sass:
+        optional: true
+    dependencies:
+      '@next/env': 13.0.1
+      '@swc/helpers': 0.4.11
+      caniuse-lite: 1.0.30001426
+      postcss: 8.4.14
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      styled-jsx: 5.1.0_otspjrsspon4ofp37rshhlhp2y
+      use-sync-external-store: 1.2.0_react@18.2.0
+    optionalDependencies:
+      '@next/swc-android-arm-eabi': 13.0.1
+      '@next/swc-android-arm64': 13.0.1
+      '@next/swc-darwin-arm64': 13.0.1
+      '@next/swc-darwin-x64': 13.0.1
+      '@next/swc-freebsd-x64': 13.0.1
+      '@next/swc-linux-arm-gnueabihf': 13.0.1
+      '@next/swc-linux-arm64-gnu': 13.0.1
+      '@next/swc-linux-arm64-musl': 13.0.1
+      '@next/swc-linux-x64-gnu': 13.0.1
+      '@next/swc-linux-x64-musl': 13.0.1
+      '@next/swc-win32-arm64-msvc': 13.0.1
+      '@next/swc-win32-ia32-msvc': 13.0.1
+      '@next/swc-win32-x64-msvc': 13.0.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+    dev: true
+
   /nice-try/1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
 
@@ -27457,7 +27649,6 @@ packages:
       nanoid: 3.3.4
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: false
 
   /postcss/8.4.16:
     resolution: {integrity: sha512-ipHE1XBvKzm5xI7hiHCZJCSugxvsdq2mPnsq5+UF+VHCjiBvtDrlxJfMBToWaP9D5XlgNmcFGqoHmUn0EYEaRQ==}
@@ -30875,6 +31066,24 @@ packages:
       react: 17.0.2
     dev: false
 
+  /styled-jsx/5.1.0_otspjrsspon4ofp37rshhlhp2y:
+    resolution: {integrity: sha512-/iHaRJt9U7T+5tp6TRelLnqBqiaIT0HsO0+vgyj8hK2KUk7aejFqRrumqPUlAqDwAj8IbS/1hk3IhBAAK/FCUQ==}
+    engines: {node: '>= 12.0.0'}
+    peerDependencies:
+      '@babel/core': '*'
+      babel-plugin-macros: '*'
+      react: '>= 16.8.0 || 17.x.x || ^18.0.0-0 || 18'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      babel-plugin-macros:
+        optional: true
+    dependencies:
+      '@babel/core': 7.19.6
+      client-only: 0.0.1
+      react: 18.2.0
+    dev: true
+
   /stylehacks/4.0.3:
     resolution: {integrity: sha512-7GlLk9JwlElY4Y6a/rmbH2MhVlTyVmiJd1PfTCqFaIBEGMYNsrO/v3SeGTdhBThLg4Z+NbOk/qFMwCa+J+3p/g==}
     engines: {node: '>=6.9.0'}
@@ -32714,6 +32923,14 @@ packages:
       react: 17.0.2
     dev: false
 
+  /use-sync-external-store/1.2.0_react@18.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || 18
+    dependencies:
+      react: 18.2.0
+    dev: true
+
   /use/3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}
     engines: {node: '>=0.10.0'}
@@ -33165,8 +33382,8 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vitest/0.24.3:
-    resolution: {integrity: sha512-aM0auuPPgMSstWvr851hB74g/LKaKBzSxcG3da7ejfZbx08Y21JpZmbmDYrMTCGhVZKqTGwzcnLMwyfz2WzkhQ==}
+  /vitest/0.24.4:
+    resolution: {integrity: sha512-4ratHSyVEJPtBLV00uhL4Wj3Pmandc9rsxUkE0q9peNOfaOgGF4lEepdkaXGRi9AGFKr1GRVtjGOJ6Fp2lCpEg==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:

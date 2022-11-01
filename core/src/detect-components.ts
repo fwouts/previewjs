@@ -31,7 +31,7 @@ export async function detectComponents(
       );
   const filePathsSet = new Set(
     absoluteFilePaths.map((absoluteFilePath) =>
-      path.relative(workspace.rootDirPath, absoluteFilePath)
+      path.relative(workspace.rootDirPath, absoluteFilePath).replace(/\\/g, "/")
     )
   );
   const existingCacheLastModified =
@@ -43,14 +43,11 @@ export async function detectComponents(
     : {};
   const changedAbsoluteFilePaths = absoluteFilePaths.filter(
     (absoluteFilePath) => {
-      try {
-        return (
-          fs.statSync(absoluteFilePath).mtimeMs > existingCacheLastModified
-        );
-      } catch (e) {
-        // If file doesn't exist or isn't accessible, filter out.
-        return false;
-      }
+      const entry = workspace.reader.readSync(absoluteFilePath);
+      return (
+        entry?.kind === "file" &&
+        entry.lastModifiedMillis() > existingCacheLastModified
+      );
     }
   );
   const recycledComponents = Object.fromEntries(
@@ -70,8 +67,8 @@ export async function detectComponents(
   };
   const components = Object.keys(allComponents)
     .sort()
-    .reduce<ProjectComponents>((ordered, key) => {
-      ordered[key] = allComponents[key]!;
+    .reduce<ProjectComponents>((ordered, filePath) => {
+      ordered[filePath] = allComponents[filePath]!;
       return ordered;
     }, {});
   if (!options.filePaths) {

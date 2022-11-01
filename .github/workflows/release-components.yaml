@@ -57,6 +57,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.checkConfigVersion.outputs.changed == 'true'
         run: cd config && pnpm publish --no-git-checks --access public
+      - id: checkConfigHelperNextjsVersion
+        uses: EndBug/version-check@v2.1.1
+        with:
+          diff-search: true
+          file-name: ./config-helpers/nextjs/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkConfigHelperNextjsVersion.outputs.changed == 'true'
+        run: cd config-helpers/nextjs && pnpm publish --no-git-checks --access public
       - id: checkCoreVersion
         uses: EndBug/version-check@v2.1.1
         with:

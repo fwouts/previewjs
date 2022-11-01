@@ -43,6 +43,11 @@ const packages: Package[] = [
     tagName: "config",
   },
   {
+    name: "config-helper-nextjs",
+    dirPath: "config-helpers/nextjs",
+    tagName: "config-helpers/nextjs",
+  },
+  {
     name: "csf3",
     dirPath: "csf3",
     tagName: "csf3",
