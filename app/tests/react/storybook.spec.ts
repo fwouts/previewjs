@@ -7,6 +7,30 @@ export const storybookTests = testSuite(
   (test) => {
     for (const version of [16, 17, 18]) {
       test(
+        `${version}/renders CSF2 story with no args`,
+        `react${version}`,
+        async ({ appDir, controller }) => {
+          await appDir.update("src/Button.tsx", {
+            kind: "replace",
+            text: `
+  const Button = ({ label }) => <button>{label}</button>;
+
+  const ButtonStory = () => <Button label="Hello, World!" />;
+
+  export default {
+    component: Button
+  }
+      `,
+          });
+          await controller.show("src/Button.tsx:ButtonStory");
+          const previewIframe = await controller.previewIframe();
+          await previewIframe.waitForSelector(
+            "xpath=//button[contains(., 'Hello, World!')]"
+          );
+        }
+      );
+
+      test(
         `${version}/renders CSF2 story with explicit args`,
         `react${version}`,
         async ({ appDir, controller }) => {

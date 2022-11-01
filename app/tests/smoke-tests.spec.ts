@@ -86,7 +86,6 @@ export const smokeTests = fs
                 `${appName}.png`
               )
             );
-            console.error("E");
           }
         );
       },
