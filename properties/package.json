@@ -1,7 +1,7 @@
 {
-  "name": "@previewjs/config-helper-nextjs",
+  "name": "@previewjs/properties",
   "version": "0.0.1",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
     "email": "f@zenc.io"
@@ -25,17 +25,16 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/config-helper-nextjs --no-deps --include-dependencies",
-    "build": "tsc && unbuild"
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/properties --no-deps --include-dependencies",
+    "build": "tsc && unbuild",
+    "test": "vitest --no-threads"
+  },
+  "dependencies": {
+    "@previewjs/serializable-values": "^3.1.0",
+    "@previewjs/type-analyzer": "^4.0.6"
   },
   "devDependencies": {
-    "@types/react": "18.0.24",
-    "next": "13.0.1",
-    "react": "18.2.0",
-    "unbuild": "0.9.1"
-  },
-  "peerDependencies": {
-    "next": "*",
-    "react": "*"
+    "unbuild": "0.9.1",
+    "vitest": "0.24.3"
   }
 }
