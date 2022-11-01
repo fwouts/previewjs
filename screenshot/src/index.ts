@@ -36,12 +36,31 @@ async function main() {
       `No preview environment could be created for directory: ${rootDirPath}`
     );
   }
+  const clientDirPath = findClientDir(__dirname);
+  const components: Array<{
+    filePath: string;
+    componentName: string;
+  }> = [];
   const workspace = await createWorkspace({
     rootDirPath,
     frameworkPlugin: env.frameworkPlugin,
     logLevel: "error",
     versionCode: "0.0.0-dev",
-    middlewares: [express.static(findClientDir(__dirname))],
+    middlewares: [
+      (req, res, next) => {
+        if (req.path !== "/") {
+          return next();
+        }
+        const indexHtml = fs.readFileSync(
+          path.join(clientDirPath, "index.html"),
+          "utf8"
+        );
+        res.send(
+          indexHtml.replace("__COMPONENTS__", JSON.stringify(components))
+        );
+      },
+      express.static(clientDirPath),
+    ],
     reader: createFileSystemReader(),
   });
   if (!workspace) {
@@ -50,7 +69,14 @@ async function main() {
     );
   }
   const found = await workspace.localRpc(RPCs.DetectComponents, {});
-  console.log(found);
+  for (const [filePath, fileComponents] of Object.entries(found.components)) {
+    for (const component of fileComponents) {
+      components.push({
+        filePath,
+        componentName: component.name,
+      });
+    }
+  }
   await workspace.preview.start(async () => 3250);
 }
 
