@@ -6,6 +6,30 @@ export const storybookTests = testSuite(
   "solid/storybook",
   (test) => {
     test(
+      "renders CSF2 story with no args",
+      "solid",
+      async ({ appDir, controller }) => {
+        await appDir.update("src/Button.tsx", {
+          kind: "replace",
+          text: `
+  const Button = ({ label }) => <button>{label}</button>;
+
+  const ButtonStory = () => <Button label="Hello, World!" />;
+
+  export default {
+    component: Button
+  }
+  `,
+        });
+        await controller.show("src/Button.tsx:ButtonStory");
+        const previewIframe = await controller.previewIframe();
+        await previewIframe.waitForSelector(
+          "xpath=//button[contains(., 'Hello, World!')]"
+        );
+      }
+    );
+
+    test(
       "renders CSF2 story with explicit args",
       "solid",
       async ({ appDir, controller }) => {
