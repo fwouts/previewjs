@@ -46,7 +46,6 @@ export const smokeTests = fs
               "src/routes/Header.svelte:Header",
               "src/routes/+page.svelte:+page",
               "pages/index.tsx:App",
-              "pages/index.tsx:Home",
               "pages/index.vue:index",
               "app.vue:app",
             ];
@@ -87,7 +86,6 @@ export const smokeTests = fs
                 `${appName}.png`
               )
             );
-            console.error("E");
           }
         );
       },
