@@ -22,9 +22,7 @@ async function main() {
   }
   const env = await loadPreviewEnv({
     rootDirPath,
-    setupEnvironment: async () => ({
-      middlewares: [express.static(findClientDir(__dirname))],
-    }),
+    setupEnvironment: async () => ({}),
     frameworkPluginFactories: [
       reactFrameworkPlugin,
       solidFrameworkPlugin,
@@ -43,7 +41,7 @@ async function main() {
     frameworkPlugin: env.frameworkPlugin,
     logLevel: "error",
     versionCode: "0.0.0-dev",
-    middlewares: [],
+    middlewares: [express.static(findClientDir(__dirname))],
     reader: createFileSystemReader(),
   });
   if (!workspace) {
