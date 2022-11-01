@@ -5,6 +5,7 @@ import solidFrameworkPlugin from "@previewjs/plugin-solid";
 import svelteFrameworkPlugin from "@previewjs/plugin-svelte";
 import vue2FrameworkPlugin from "@previewjs/plugin-vue2";
 import vue3FrameworkPlugin from "@previewjs/plugin-vue3";
+import { generateInvocation } from "@previewjs/properties";
 import { createFileSystemReader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs";
@@ -40,6 +41,7 @@ async function main() {
   const components: Array<{
     filePath: string;
     componentName: string;
+    customVariantPropsSource: string;
   }> = [];
   const workspace = await createWorkspace({
     rootDirPath,
@@ -71,9 +73,19 @@ async function main() {
   const found = await workspace.localRpc(RPCs.DetectComponents, {});
   for (const [filePath, fileComponents] of Object.entries(found.components)) {
     for (const component of fileComponents) {
+      const properties = await workspace.localRpc(RPCs.ComputeProps, {
+        filePath,
+        componentName: component.name,
+      });
+      const invocation = generateInvocation(
+        properties.types.props,
+        [],
+        properties.types.all
+      );
       components.push({
         filePath,
         componentName: component.name,
+        customVariantPropsSource: invocation,
       });
     }
   }

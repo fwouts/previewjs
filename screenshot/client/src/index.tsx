@@ -3,6 +3,7 @@ import { createController } from "@previewjs/iframe";
 type Component = {
   filePath: string;
   componentName: string;
+  customVariantPropsSource: string;
 };
 
 declare global {
@@ -19,7 +20,7 @@ window.render = (components: Component[]) => {
     listener: (event) => {
       if (event.kind === "bootstrapped" || event.kind === "rendering-done") {
         // nextScreenshot();
-        setTimeout(() => nextScreenshot(), 1000);
+        setTimeout(() => nextScreenshot(), 100);
       }
     },
   });
@@ -33,9 +34,9 @@ window.render = (components: Component[]) => {
         console.log("Done!");
         return;
       }
+      console.log(component);
       controller.loadComponent({
         ...component,
-        customVariantPropsSource: "properties = {}",
         defaultPropsSource: "{}",
         variantKey: null,
       });
