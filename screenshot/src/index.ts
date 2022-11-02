@@ -1,5 +1,6 @@
 import { RPCs } from "@previewjs/api";
 import { createWorkspace, loadPreviewEnv } from "@previewjs/core";
+import type { PreviewEvent } from "@previewjs/iframe";
 import reactFrameworkPlugin from "@previewjs/plugin-react";
 import solidFrameworkPlugin from "@previewjs/plugin-solid";
 import svelteFrameworkPlugin from "@previewjs/plugin-svelte";
@@ -10,6 +11,7 @@ import { createFileSystemReader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs";
 import path from "path";
+import playwright from "playwright";
 
 main().catch((e) => {
   console.error(e);
@@ -87,9 +89,38 @@ async function main() {
         componentName: component.name,
         customVariantPropsSource: invocation,
       });
+      // We only need one component for testing here.
+      break;
     }
+    break;
   }
-  await workspace.preview.start(async () => 3250);
+  const port = 3250;
+  await workspace.preview.start(async () => port);
+  const browser = await playwright.chromium.launch();
+  const page = await browser.newPage();
+  page.on("console", console.log);
+  await page.goto(`http://localhost:${port}`);
+  let onReady: () => void;
+  const ready = new Promise<void>((resolve) => {
+    onReady = resolve;
+  });
+  await page.exposeFunction("onIframeEvent", (event: PreviewEvent) => {
+    console.log("RECEIVED", event);
+    if (event.kind === "rendering-done") {
+      onReady();
+    }
+  });
+  await page.evaluate((components) => {
+    // @ts-ignore
+    window.renderComponent(components[0]);
+  }, components);
+  console.log("Waiting for ready...");
+  await ready;
+  console.log("Ready!");
+  await page.screenshot({
+    path: path.join(__dirname, "screenshot.png"),
+  });
+  console.log("Screenshot!");
 }
 
 function findClientDir(dirPath: string): string {

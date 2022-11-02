@@ -1,4 +1,4 @@
-import { createController } from "@previewjs/iframe";
+import { createController, PreviewEvent } from "@previewjs/iframe";
 
 type Component = {
   filePath: string;
@@ -8,43 +8,21 @@ type Component = {
 
 declare global {
   interface Window {
-    render(components: Component[]): void;
+    renderComponent(component: Component): void;
+    onIframeEvent(event: PreviewEvent): void;
   }
 }
 
-window.render = (components: Component[]) => {
+window.renderComponent = (component: Component) => {
   const iframe = document.getElementById("iframe") as HTMLIFrameElement;
-  let currentIndex = -1;
   const controller = createController({
     getIframe: () => iframe,
-    listener: (event) => {
-      if (event.kind === "bootstrapped" || event.kind === "rendering-done") {
-        nextScreenshot();
-      }
-    },
+    listener: window.onIframeEvent,
   });
   controller.start();
-
-  function nextScreenshot() {
-    setTimeout(() => {
-      console.log(iframe.contentDocument?.body.innerHTML);
-      const component = components[++currentIndex];
-      if (!component) {
-        console.log("Done!");
-        return;
-      }
-      console.log(component);
-      controller.loadComponent({
-        ...component,
-        defaultPropsSource: "{}",
-        variantKey: null,
-      });
-    }, 0);
-  }
+  controller.loadComponent({
+    ...component,
+    defaultPropsSource: "{}",
+    variantKey: null,
+  });
 };
-
-/**
- * TODO:
- * - set up test runner with snapshot of controller listener events
- * - convert existing tests to it?
- */
