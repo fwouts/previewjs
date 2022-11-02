@@ -19,8 +19,7 @@ window.render = (components: Component[]) => {
     getIframe: () => iframe,
     listener: (event) => {
       if (event.kind === "bootstrapped" || event.kind === "rendering-done") {
-        // nextScreenshot();
-        setTimeout(() => nextScreenshot(), 100);
+        nextScreenshot();
       }
     },
   });
