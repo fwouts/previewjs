@@ -88,6 +88,11 @@ const packages: Package[] = [
     tagName: "plugins/vue3",
   },
   {
+    name: "properties",
+    dirPath: "properties",
+    tagName: "properties",
+  },
+  {
     name: "serializable-values",
     dirPath: "serializable-values",
     tagName: "serializable-values",

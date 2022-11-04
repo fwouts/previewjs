@@ -137,6 +137,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.checkPluginVue3Version.outputs.changed == 'true'
         run: cd frameworks/vue3 && pnpm publish --no-git-checks --access public
+      - id: checkPropertiesVersion
+        uses: EndBug/version-check@v2.1.1
+        with:
+          diff-search: true
+          file-name: ./properties/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkPropertiesVersion.outputs.changed == 'true'
+        run: cd properties && pnpm publish --no-git-checks --access public
       - id: checkSerializableValuesVersion
         uses: EndBug/version-check@v2.1.1
         with:

@@ -1,9 +1,11 @@
 import { Api, RPCs } from "@previewjs/api";
+import {
+  generateDefaultProps,
+  generateInvocation,
+} from "@previewjs/properties";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import { makeAutoObservable, runInAction } from "mobx";
 import { extractFunctionKeys } from "./generators/extract-function-keys";
-import { generateDefaultProps } from "./generators/generate-default-props";
-import { generateInvocation } from "./generators/generate-invocation";
 import { preparePropsType } from "./generators/prepare-props-type";
 
 export class ComponentProps {
