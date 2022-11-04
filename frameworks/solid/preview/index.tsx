@@ -33,11 +33,13 @@ export const load: RendererLoader = async ({
     }
   );
   const RenderComponent = isStoryModule
-    ? ComponentOrStory.render ||
-      ComponentOrStory.component ||
-      componentModule.default?.render ||
-      componentModule.default?.component ||
-      ComponentOrStory
+    ? typeof ComponentOrStory === "function"
+      ? ComponentOrStory
+      : ComponentOrStory.render ||
+        ComponentOrStory.component ||
+        componentModule.default?.render ||
+        componentModule.default?.component ||
+        ComponentOrStory
     : ComponentOrStory;
   const Renderer = (props) => {
     const effectiveProps = {
