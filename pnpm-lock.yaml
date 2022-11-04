@@ -390,14 +390,14 @@ importers:
       solid-js: 1.6.1
       typescript: ^4.8.4
       vite: 3.2.2
-      vite-plugin-solid: ^2.3.10
+      vite-plugin-solid: ^2.4.0
       vitest: 0.24.5
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.8.4
-      vite-plugin-solid: 2.3.10_solid-js@1.6.1+vite@3.2.2
+      vite-plugin-solid: 2.4.0_solid-js@1.6.1+vite@3.2.2
     devDependencies:
       '@previewjs/core': link:../../core
       rimraf: 3.0.2
@@ -5164,6 +5164,7 @@ packages:
       '@babel/plugin-syntax-typescript': 7.18.6_@babel+core@7.19.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@babel/plugin-transform-typescript/7.19.3_@babel+core@7.19.6:
     resolution: {integrity: sha512-z6fnuK9ve9u/0X0rRvI9MY0xg+DOUaABDYOe+/SQTxtlptaBB/V9JIUxJn6xp3lMBeb9qe8xSFmHU35oZDXD+w==}
@@ -5595,6 +5596,7 @@ packages:
       '@babel/plugin-transform-typescript': 7.19.3_@babel+core@7.19.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@babel/preset-typescript/7.18.6_@babel+core@7.19.6:
     resolution: {integrity: sha512-s9ik86kXBAnD760aybBucdpnLsAt0jK1xqJn2juOn9lkOvSHV60os5hxoVJsPzMQxvnUJFAlkont2DvvaYEBtQ==}
@@ -14383,6 +14385,19 @@ packages:
       '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.19.1
       '@babel/types': 7.19.4
       html-entities: 2.3.2
+    dev: true
+
+  /babel-plugin-jsx-dom-expressions/0.33.14_@babel+core@7.19.6:
+    resolution: {integrity: sha512-91T8uEz6Wb42bUm5vxRBawY05fBHiwUxah/xWBimuWpH3nf7E0KJ0Wm/s8R7lxRIZzwGCILv1IBlUCqA50WOVw==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/core': 7.19.6
+      '@babel/helper-module-imports': 7.16.0
+      '@babel/plugin-syntax-jsx': 7.18.6_@babel+core@7.19.6
+      '@babel/types': 7.19.4
+      html-entities: 2.3.2
+    dev: false
 
   /babel-plugin-macros/3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
@@ -14747,6 +14762,16 @@ packages:
     dependencies:
       '@babel/core': 7.19.1
       babel-plugin-jsx-dom-expressions: 0.33.14_@babel+core@7.19.1
+    dev: true
+
+  /babel-preset-solid/1.4.8_@babel+core@7.19.6:
+    resolution: {integrity: sha512-Qv1yoE7yIux68egUsUUEV26t7B0KLNyXKz1MTk89GJDc6mt+2s7+lDVr4tXa29PTZ/hXDTu2uLbEN/1OtmFFBg==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/core': 7.19.6
+      babel-plugin-jsx-dom-expressions: 0.33.14_@babel+core@7.19.6
+    dev: false
 
   /babel-runtime/6.26.0:
     resolution: {integrity: sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==}
@@ -33579,19 +33604,20 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-solid/2.3.10_solid-js@1.6.1+vite@3.2.2:
-    resolution: {integrity: sha512-5jMF+QFk2TQaPLlDl7LvZZ99D4kO1X+rD9LR78p9sx9O+XisVSQaHFPLrCsyW/lXuBwub+ox/pNaZdCUZJwd3Q==}
+  /vite-plugin-solid/2.4.0_solid-js@1.6.1+vite@3.2.2:
+    resolution: {integrity: sha512-Rr+t2sr9TWIvH16yzBZzx6O9YSpYAvcwKUMPqbi/4iU3mRumXQ4O10i1XGtQIynC7U3XwJsMzAJigDFGbiJBiw==}
     peerDependencies:
       solid-js: ^1.3.17
       vite: ^3.0.0
     dependencies:
-      '@babel/core': 7.19.1
-      '@babel/preset-typescript': 7.18.6_@babel+core@7.19.1
-      babel-preset-solid: 1.4.8_@babel+core@7.19.1
+      '@babel/core': 7.19.6
+      '@babel/preset-typescript': 7.18.6_@babel+core@7.19.6
+      babel-preset-solid: 1.4.8_@babel+core@7.19.6
       merge-anything: 5.0.2
       solid-js: 1.6.1
       solid-refresh: 0.4.1_solid-js@1.6.1
       vite: 3.2.2
+      vitefu: 0.1.1_vite@3.2.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -33810,6 +33836,17 @@ packages:
       rollup: 2.79.1
     optionalDependencies:
       fsevents: 2.3.2
+
+  /vitefu/0.1.1_vite@3.2.2:
+    resolution: {integrity: sha512-HClD14fjMJ+NQgXBqT3dC3RdO/+Chayil+cCPYZKY3kT+KcJomKzrdgzfCHJkIL2L0OAY+VPvrSW615iPtc7ag==}
+    peerDependencies:
+      vite: ^3.0.0
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      vite: 3.2.2
+    dev: false
 
   /vitest/0.24.3:
     resolution: {integrity: sha512-aM0auuPPgMSstWvr851hB74g/LKaKBzSxcG3da7ejfZbx08Y21JpZmbmDYrMTCGhVZKqTGwzcnLMwyfz2WzkhQ==}
