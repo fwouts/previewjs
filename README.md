@@ -31,6 +31,14 @@ Preview.js is available for:
 
 [Read the docs to learn more](https://previewjs.com)
 
+## Sponsors
+
+<p align="center">
+  <a href="https://github.com/sponsors/fwouts">
+    <img src='https://cdn.jsdelivr.net/gh/fwouts/sponsors/sponsorkit/sponsors.svg'/>
+  </a>
+</p>
+
 ## License
 
 Preview.js is divided into multiple packages, each licensed under either AGPL-3.0 or MIT.
