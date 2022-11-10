@@ -1,14 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es2020",
-    "module": "es2020",
-    "moduleResolution": "node",
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "types": [
-      "preact"
-    ]
-  }
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
