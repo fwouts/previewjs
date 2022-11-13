@@ -170,14 +170,15 @@ export async function startPreview({
           computePropsResponse.types.all
         );
       }
+      const donePromise = new Promise<void>((resolve) => {
+        onRenderingDone = resolve;
+      });
       await render(page, {
         ...component,
         defaultPropsSource: defaultProps.source,
         propsAssignmentSource,
       });
-      await new Promise<void>((resolve) => {
-        onRenderingDone = resolve;
-      });
+      await donePromise;
     },
     async stop() {
       await preview.stop();
