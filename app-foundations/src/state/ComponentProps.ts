@@ -1,11 +1,10 @@
 import { Api, RPCs } from "@previewjs/api";
 import {
   generateDefaultProps,
-  generateInvocation,
+  generatePropsAssignmentSource,
 } from "@previewjs/properties";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import { makeAutoObservable, runInAction } from "mobx";
-import { extractFunctionKeys } from "./generators/extract-function-keys";
 import { preparePropsType } from "./generators/prepare-props-type";
 
 export class ComponentProps {
@@ -56,7 +55,7 @@ export class ComponentProps {
    *
    * Unlike defaultInvocation, defaultProps is not shown to the user.
    */
-  get defaultPropsSource() {
+  get defaultProps() {
     return generateDefaultProps(
       this.computePropsResponse.types.props,
       this.computePropsResponse.types.all
@@ -94,14 +93,9 @@ export class ComponentProps {
    * component's props.
    */
   private get defaultInvocationSource() {
-    return generateInvocation(
+    return generatePropsAssignmentSource(
       this.computePropsResponse.types.props,
-      [
-        ...extractFunctionKeys(
-          this.computePropsResponse.types.props,
-          this.computePropsResponse.types.all
-        ),
-      ],
+      this.defaultProps.keys,
       this.computePropsResponse.types.all
     );
   }

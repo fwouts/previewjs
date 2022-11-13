@@ -66,5 +66,5 @@ export interface RenderMessage {
   // Note: `null` means "first available preset variant, or fall back to custom".
   variantKey: string | null;
   defaultPropsSource: string;
-  customVariantPropsSource: string;
+  propsAssignmentSource: string;
 }

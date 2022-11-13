@@ -21,12 +21,12 @@ import {
   VOID_TYPE,
 } from "@previewjs/type-analyzer";
 import { describe, expect, test } from "vitest";
-import { generateInvocation } from "./generate-invocation";
+import { generatePropsAssignmentSource } from "./generate-props-assignment-source";
 
-describe("generateInvocation", () => {
+describe("generatePropsAssignmentSource", () => {
   test("simple props with object type", () => {
     expect(
-      generateInvocation(
+      generatePropsAssignmentSource(
         objectType({
           foo: STRING_TYPE,
         }),
@@ -42,14 +42,18 @@ describe("generateInvocation", () => {
 
   test("simple props with named type", () => {
     expect(
-      generateInvocation(namedType("/foo.tsx:MyComponentProps"), [], {
-        "/foo.tsx:MyComponentProps": {
-          type: objectType({
-            foo: STRING_TYPE,
-          }),
-          parameters: {},
-        },
-      })
+      generatePropsAssignmentSource(
+        namedType("/foo.tsx:MyComponentProps"),
+        [],
+        {
+          "/foo.tsx:MyComponentProps": {
+            type: objectType({
+              foo: STRING_TYPE,
+            }),
+            parameters: {},
+          },
+        }
+      )
     ).toMatchInlineSnapshot(`
       "properties = {
         foo: \\"foo\\"
@@ -59,15 +63,19 @@ describe("generateInvocation", () => {
 
   test("recursive type", () => {
     expect(
-      generateInvocation(namedType("/foo.tsx:MyComponentProps"), [], {
-        "/foo.tsx:MyComponentProps": {
-          type: objectType({
-            foo: STRING_TYPE,
-            recursive: namedType("/foo.tsx:MyComponentProps", []),
-          }),
-          parameters: {},
-        },
-      })
+      generatePropsAssignmentSource(
+        namedType("/foo.tsx:MyComponentProps"),
+        [],
+        {
+          "/foo.tsx:MyComponentProps": {
+            type: objectType({
+              foo: STRING_TYPE,
+              recursive: namedType("/foo.tsx:MyComponentProps", []),
+            }),
+            parameters: {},
+          },
+        }
+      )
     ).toMatchInlineSnapshot(`
       "properties = {
         foo: \\"foo\\",
@@ -81,7 +89,7 @@ describe("generateInvocation", () => {
 
   test("all types", () => {
     expect(
-      generateInvocation(namedType("/foo.tsx:Foo"), [], {
+      generatePropsAssignmentSource(namedType("/foo.tsx:Foo"), [], {
         "/foo.tsx:Foo": {
           type: objectType({
             anyType: ANY_TYPE,
@@ -159,15 +167,19 @@ describe("generateInvocation", () => {
 
   test("ignores provided keys", () => {
     expect(
-      generateInvocation(namedType("/foo.tsx:MyComponentProps"), ["foo"], {
-        "/foo.tsx:MyComponentProps": {
-          type: objectType({
-            foo: STRING_TYPE,
-            bar: STRING_TYPE,
-          }),
-          parameters: {},
-        },
-      })
+      generatePropsAssignmentSource(
+        namedType("/foo.tsx:MyComponentProps"),
+        ["foo"],
+        {
+          "/foo.tsx:MyComponentProps": {
+            type: objectType({
+              foo: STRING_TYPE,
+              bar: STRING_TYPE,
+            }),
+            parameters: {},
+          },
+        }
+      )
     ).toMatchInlineSnapshot(`
       "properties = {
         bar: \\"bar\\"

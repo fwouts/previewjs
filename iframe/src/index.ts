@@ -20,7 +20,7 @@ export interface LoadComponentOptions {
   filePath: string;
   componentName: string;
   variantKey: string | null;
-  customVariantPropsSource: string;
+  propsAssignmentSource: string;
   defaultPropsSource: string;
 }
 

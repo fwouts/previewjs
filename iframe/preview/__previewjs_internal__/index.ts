@@ -15,14 +15,14 @@ async function load({
   componentName,
   variantKey,
   defaultPropsSource,
-  customVariantPropsSource,
+  propsAssignmentSource,
 }: RenderMessage) {
   try {
     setState({
       filePath,
       componentName,
       defaultPropsSource,
-      customVariantPropsSource,
+      propsAssignmentSource,
       variantKey,
     });
     const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(

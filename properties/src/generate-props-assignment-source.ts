@@ -17,7 +17,7 @@ import {
  * properties = { title: "foo" }
  * ```
  */
-export function generateInvocation(
+export function generatePropsAssignmentSource(
   propsType: ValueType,
   providedKeys: string[],
   collected: CollectedTypes

@@ -60,7 +60,7 @@ export async function updateComponent({
     if (variant.key === "custom") {
       eval(`
         let properties = {};
-        ${currentState.customVariantPropsSource};
+        ${currentState.propsAssignmentSource};
         variant.props = properties;
         `);
     }

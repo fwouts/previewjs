@@ -365,8 +365,8 @@ export class PreviewState {
       componentName: this.component.name,
       filePath: this.component.details.filePath,
       variantKey: this.component.variantKey,
-      customVariantPropsSource: this.component.details.props.invocationSource,
-      defaultPropsSource: this.component.details.props.defaultPropsSource,
+      propsAssignmentSource: this.component.details.props.invocationSource,
+      defaultPropsSource: this.component.details.props.defaultProps.source,
     });
   }
 
