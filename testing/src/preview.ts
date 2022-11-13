@@ -16,7 +16,6 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import type playwright from "playwright";
-import type { Frame } from "playwright";
 import { createPreviewEventListener } from "./events";
 import { prepareFileManager } from "./file-manager";
 import { prepareTestDir } from "./test-dir";
@@ -76,9 +75,14 @@ export async function startPreview(
     fileManager,
     events,
     iframe: {
-      async waitForSelector(...args: Parameters<Frame["waitForSelector"]>) {
+      async waitForSelector(
+        selector: string,
+        options: {
+          state?: "attached" | "detached" | "visible" | "hidden";
+        } = {}
+      ) {
         const iframe = await getPreviewIframe(page);
-        return iframe.waitForSelector(...args);
+        return iframe.waitForSelector(selector, options);
       },
       waitForExpectedIframeRefresh: () => waitForExpectedIframeRefresh(page),
       async takeScreenshot(destinationPath: string) {
