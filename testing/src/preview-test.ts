@@ -1,6 +1,10 @@
 import { test } from "@playwright/test";
 import type { FrameworkPluginFactory } from "@previewjs/core";
+import getPort from "get-port";
 import { startPreview } from "./preview";
+
+// Port allocated for the duration of the process.
+let port: number;
 
 export const previewTest = (
   frameworkPluginFactories: FrameworkPluginFactory[],
@@ -14,11 +18,15 @@ export const previewTest = (
     playwrightTest: typeof test.only = test
   ) => {
     return playwrightTest(title, async ({ page }) => {
-      const preview = await startPreview(
+      if (!port) {
+        port = await getPort();
+      }
+      const preview = await startPreview({
         frameworkPluginFactories,
         page,
-        workspaceDirPath
-      );
+        workspaceDirPath,
+        port,
+      });
       try {
         await testFunction(preview);
       } finally {

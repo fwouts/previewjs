@@ -20,14 +20,17 @@ import { createPreviewEventListener } from "./events";
 import { prepareFileManager } from "./file-manager";
 import { prepareTestDir } from "./test-dir";
 
-// Port allocated for the duration of the process.
-let port: number;
-
-export async function startPreview(
-  frameworkPluginFactories: FrameworkPluginFactory[],
-  page: playwright.Page,
-  workspaceDirPath: string
-) {
+export async function startPreview({
+  frameworkPluginFactories,
+  page,
+  workspaceDirPath,
+  port,
+}: {
+  frameworkPluginFactories: FrameworkPluginFactory[];
+  page: playwright.Page;
+  workspaceDirPath: string;
+  port: number;
+}) {
   const rootDirPath = await prepareTestDir(workspaceDirPath);
   if (!port) {
     port = await getPort();
