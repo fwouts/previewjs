@@ -20,7 +20,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      npm: 8.19.3
+      npm: 9.1.1
       prettier: 2.7.1
       ts-node: 10.9.1
       turbo: 1.6.3
@@ -40,7 +40,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      npm: 8.19.3
+      npm: 9.1.1
       prettier: 2.7.1
       ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
       turbo: 1.6.3
@@ -25532,9 +25532,9 @@ packages:
     dependencies:
       path-key: 3.1.1
 
-  /npm/8.19.3:
-    resolution: {integrity: sha512-0QjmyPtDxSyMWWD8I91QGbrgx9KzbV6C9FK1liEb/K0zppiZkr5KxXc990G+LzPwBHDfRjUBlO9T1qZ08vl9mA==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+  /npm/9.1.1:
+    resolution: {integrity: sha512-FgrLK0VAqiCENet9EiC3mAwqpUMP+2AeEZLs9k8FB5LNZ1v+oIleubE1TfMCjeKzigtTkz7K0Cfs8qAAZLVeNw==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dev: true
     bundledDependencies:
@@ -25542,7 +25542,6 @@ packages:
       - '@npmcli/arborist'
       - '@npmcli/ci-detect'
       - '@npmcli/config'
-      - '@npmcli/fs'
       - '@npmcli/map-workspaces'
       - '@npmcli/package-json'
       - '@npmcli/run-script'
@@ -25550,7 +25549,6 @@ packages:
       - archy
       - cacache
       - chalk
-      - chownr
       - cli-columns
       - cli-table3
       - columnify
@@ -25579,7 +25577,6 @@ packages:
       - minipass
       - minipass-pipeline
       - mkdirp
-      - mkdirp-infer-owner
       - ms
       - node-gyp
       - nopt
@@ -25591,7 +25588,6 @@ packages:
       - npm-registry-fetch
       - npm-user-validate
       - npmlog
-      - opener
       - p-map
       - pacote
       - parse-conflict-json
@@ -25600,7 +25596,6 @@ packages:
       - read
       - read-package-json
       - read-package-json-fast
-      - readdir-scoped-modules
       - rimraf
       - semver
       - ssri
