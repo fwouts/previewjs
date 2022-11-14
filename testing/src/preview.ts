@@ -85,7 +85,8 @@ export async function startPreview({
         } = {}
       ) {
         const iframe = await getPreviewIframe(page);
-        return iframe.waitForSelector(selector, options);
+        const element = await iframe.waitForSelector(selector, options);
+        return element!;
       },
       waitForExpectedIframeRefresh: () => waitForExpectedIframeRefresh(page),
       async takeScreenshot(destinationPath: string) {
