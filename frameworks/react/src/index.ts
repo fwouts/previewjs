@@ -1,6 +1,7 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
+import fs from "fs";
 import path from "path";
 import ts from "typescript";
 import { extractReactComponents } from "./extract-component";
@@ -16,7 +17,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     return parseInt(version) >= 16;
   },
   async create() {
-    const previewDirPath = path.resolve(__dirname, "..", "..", "preview");
+    const previewDirPath = findPreviewDir(path.join(__dirname, ".."));
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-react",
@@ -78,5 +79,18 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     };
   },
 };
+
+function findPreviewDir(dirPath: string): string {
+  const potentialPath = path.join(dirPath, "preview");
+  if (fs.existsSync(potentialPath)) {
+    return potentialPath;
+  } else {
+    const parentPath = path.dirname(dirPath);
+    if (!parentPath || parentPath === dirPath) {
+      throw new Error(`Unable to find preview directory`);
+    }
+    return findPreviewDir(parentPath);
+  }
+}
 
 export default reactFrameworkPlugin;
