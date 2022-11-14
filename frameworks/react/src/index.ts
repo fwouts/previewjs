@@ -16,7 +16,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     return parseInt(version) >= 16;
   },
   async create() {
-    const previewDirPath = path.resolve(__dirname, "..", "preview");
+    const previewDirPath = path.resolve(__dirname, "..", "..", "preview");
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-react",
