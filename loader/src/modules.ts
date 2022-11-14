@@ -1,15 +1,22 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
+import execa from "execa";
 import { chmodSync, constants, existsSync, lstatSync, readdirSync } from "fs";
 import path from "path";
 
-export function loadModules({
+export async function loadModules({
   installDir,
   packageName,
 }: {
   installDir: string;
   packageName: string;
 }) {
+  await execa.command(
+    `cd "${installDir}" && ./node_modules/pnpm/bin/pnpm.cjs install @previewjs/core`,
+    {
+      shell: true,
+    }
+  );
   const coreModule = requireModule("@previewjs/core") as typeof core;
   const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;
   const setupEnvironment: core.SetupPreviewEnvironment =
