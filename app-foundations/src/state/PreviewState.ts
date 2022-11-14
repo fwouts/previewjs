@@ -365,7 +365,7 @@ export class PreviewState {
       componentName: this.component.name,
       filePath: this.component.details.filePath,
       propsAssignmentSource: this.component.variantKey
-        ? `properties = variants?.find(v => v.key === "${this.component.variantKey}")?.props`
+        ? `properties = variants?.find(v => v.key === "${this.component.variantKey}")?.props || {}`
         : this.component.details.props.invocationSource,
       defaultPropsSource: this.component.details.props.defaultProps.source,
     });
