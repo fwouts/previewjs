@@ -1,4 +1,3 @@
-import type { PreviewConfig } from "@previewjs/config";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -22,7 +21,7 @@ export interface FrameworkPlugin {
   readonly transformReader?: (reader: Reader, rootDirPath: string) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
   readonly specialTypes?: Record<string, ValueType>;
-  readonly viteConfig: (config: PreviewConfig) => vite.UserConfig;
+  readonly viteConfig: () => vite.UserConfig;
   readonly incompatibleVitePlugins?: string[];
   readonly detectComponents: (
     typeAnalyzer: TypeAnalyzer,

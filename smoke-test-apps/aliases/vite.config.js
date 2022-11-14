@@ -1,10 +1,14 @@
 import { svgr } from "vite-plugin-react-svgr";
 
+/** @type {import('vite').UserConfig} */
 export default {
   resolve: {
-    alias: {
-      button2: "./src/components/Button",
-    },
+    alias: [
+      {
+        find: /button2/,
+        replacement: "./src/components/Button",
+      },
+    ],
   },
   plugins: [
     svgr({
