@@ -7,8 +7,7 @@ import { extractSolidComponents } from "./extract-component";
 import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin";
 import { SOLID_SPECIAL_TYPES } from "./special-types";
 
-/** @deprecated */
-export const solidFrameworkPlugin: FrameworkPluginFactory = {
+const solidFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version = await dependencies["solid-js"]?.readInstalledVersion();
     if (!version) {

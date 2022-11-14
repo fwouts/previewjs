@@ -8,7 +8,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { vue3FrameworkPlugin } from ".";
+import vue3FrameworkPlugin from ".";
 import { extractVueComponents } from "./extract-component";
 import { createVueTypeScriptReader } from "./vue-reader";
 

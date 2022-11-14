@@ -6,8 +6,7 @@ import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
-/** @deprecated */
-export const vue2FrameworkPlugin: FrameworkPluginFactory = {
+const vue2FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version =
       (await dependencies["vue"]?.readInstalledVersion()) ||

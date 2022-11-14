@@ -19,7 +19,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { solidFrameworkPlugin } from ".";
+import solidFrameworkPlugin from ".";
 import { SOLID_SPECIAL_TYPES } from "./special-types";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
