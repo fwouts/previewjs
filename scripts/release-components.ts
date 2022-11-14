@@ -33,6 +33,11 @@ const packages: Package[] = [
     tagName: "app-foundations",
   },
   {
+    name: "chromeless",
+    dirPath: "chromeless",
+    tagName: "chromeless",
+  },
+  {
     name: "core",
     dirPath: "core",
     tagName: "core",
@@ -96,6 +101,11 @@ const packages: Package[] = [
     name: "serializable-values",
     dirPath: "serializable-values",
     tagName: "serializable-values",
+  },
+  {
+    name: "testing",
+    dirPath: "testing",
+    tagName: "testing",
   },
   {
     name: "type-analyzer",

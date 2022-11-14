@@ -10,6 +10,7 @@ import {
   ReaderListenerInfo,
 } from "@previewjs/vfs";
 import assertNever from "assert-never";
+import axios from "axios";
 import type express from "express";
 import path from "path";
 import type * as vite from "vite";
@@ -210,6 +211,20 @@ export class Previewer {
       })(),
     };
     await this.status.promise;
+    // Note: It's unclear why, but in some situations (e.g. Playwright tests) the server
+    // doesn't accept connections right away.
+    for (let i = 0; ; i++) {
+      try {
+        await axios.get(`http://localhost:${port}`);
+        break;
+      } catch (e) {
+        if (i === 10) {
+          throw e;
+        } else {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+      }
+    }
   }
 
   async stop(
