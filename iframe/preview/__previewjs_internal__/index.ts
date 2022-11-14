@@ -13,7 +13,6 @@ overrideCopyCutPaste();
 async function load({
   filePath,
   componentName,
-  variantKey,
   defaultPropsSource,
   propsAssignmentSource,
 }: RenderMessage) {
@@ -23,7 +22,6 @@ async function load({
       componentName,
       defaultPropsSource,
       propsAssignmentSource,
-      variantKey,
     });
     const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
       filePath

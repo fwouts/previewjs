@@ -28,8 +28,5 @@ window.onload = () => {
 };
 
 window.renderComponent = (component: Component) => {
-  controller.loadComponent({
-    ...component,
-    variantKey: null,
-  });
+  controller.loadComponent(component);
 };
