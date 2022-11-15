@@ -48,10 +48,17 @@ function generateComponentLoaderModule(
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
 
-export async function refresh({
-  renderId,
-  shouldAbortRender,
-}) {
+let initOptions;
+
+export function init(options) {
+  initOptions = options;
+}
+
+export async function refresh() {
+  const {
+    renderId,
+    shouldAbortRender,
+  } = initOptions;
   let loadingError = null;
   ${
     wrapper && pathExistsSync(path.join(rootDirPath, wrapper.path))

@@ -29,11 +29,14 @@ async function load({
     const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
       filePath
     )}&c=${encodeURIComponent(componentName)}`;
-    const { refresh } = await import(/* @vite-ignore */ componentLoaderUrl);
-    await refresh({
+    const { init, refresh } = await import(
+      /* @vite-ignore */ componentLoaderUrl
+    );
+    init({
       renderId,
       shouldAbortRender: () => currentRenderId !== renderId,
     });
+    await refresh();
   } catch (error: any) {
     sendMessageFromPreview({
       kind: "rendering-error",
