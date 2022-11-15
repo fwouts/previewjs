@@ -6,8 +6,6 @@ import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
 const moduleName = parseInt(version) >= 18 ? "./render-18" : "./render-16";
 
-let currentRenderId = 0;
-
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
@@ -16,7 +14,6 @@ export const load: RendererLoader = async ({
   renderId,
   shouldAbortRender,
 }) => {
-  currentRenderId = renderId;
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
