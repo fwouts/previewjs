@@ -8,7 +8,8 @@ export async function updateComponent({
   componentModule,
   componentFilePath,
   componentName,
-  updateId,
+  renderId,
+  shouldAbortRender,
   loadingError,
   load,
 }: {
@@ -17,12 +18,13 @@ export async function updateComponent({
   componentModule: any;
   componentFilePath: string;
   componentName: string;
-  updateId: string;
+  renderId: number;
+  shouldAbortRender: () => boolean;
   loadingError: string | null;
   load: RendererLoader;
 }) {
   const currentState = getState();
-  if (!currentState) {
+  if (!currentState || shouldAbortRender()) {
     return;
   }
   try {
@@ -42,8 +44,12 @@ export async function updateComponent({
       componentFilePath,
       componentModule,
       componentName,
-      updateId,
+      renderId,
+      shouldAbortRender,
     });
+    if (shouldAbortRender()) {
+      return;
+    }
     let defaultProps = {};
     eval(`defaultProps = ${currentState.defaultPropsSource};`);
     let properties = {};
@@ -63,6 +69,9 @@ export async function updateComponent({
       []
     );
     await render(props);
+    if (shouldAbortRender()) {
+      return;
+    }
     sendMessageFromPreview({
       kind: "rendering-success",
     });

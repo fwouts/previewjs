@@ -266,7 +266,8 @@ export type RendererLoader = (options: {
   componentFilePath: string;
   componentModule: any;
   componentName?: string;
-  updateId: string;
+  renderId: number;
+  shouldAbortRender: () => boolean;
 }) => Promise<{
   variants?: Array<
     Variant & {

@@ -10,12 +10,15 @@ setUpLogInterception();
 setUpLinkInterception();
 overrideCopyCutPaste();
 
+let renderId = 0;
+
 async function load({
   filePath,
   componentName,
   defaultPropsSource,
   propsAssignmentSource,
 }: RenderMessage) {
+  const currentRenderId = ++renderId;
   try {
     setState({
       filePath,
@@ -27,7 +30,10 @@ async function load({
       filePath
     )}&c=${encodeURIComponent(componentName)}`;
     const { refresh } = await import(/* @vite-ignore */ componentLoaderUrl);
-    await refresh();
+    await refresh({
+      renderId,
+      shouldAbortRender: () => currentRenderId !== renderId,
+    });
   } catch (error: any) {
     sendMessageFromPreview({
       kind: "rendering-error",
