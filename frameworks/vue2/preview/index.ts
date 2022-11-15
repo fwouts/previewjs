@@ -7,6 +7,7 @@ export const load: RendererLoader = async ({
   componentFilePath,
   componentModule,
   componentName,
+  shouldAbortRender,
 }) => {
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
@@ -103,6 +104,9 @@ export const load: RendererLoader = async ({
   return {
     variants,
     render: async (props) => {
+      if (shouldAbortRender()) {
+        return;
+      }
       await render((h, props) => {
         const Wrapped = h(Decorated, {
           props: {

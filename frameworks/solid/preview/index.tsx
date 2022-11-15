@@ -7,6 +7,7 @@ export const load: RendererLoader = async ({
   wrapperName,
   componentModule,
   componentName,
+  shouldAbortRender,
 }) => {
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
@@ -58,7 +59,12 @@ export const load: RendererLoader = async ({
   };
   return {
     variants,
-    render: (props) => render(Renderer, props),
+    render: (props) => {
+      if (shouldAbortRender()) {
+        return;
+      }
+      return render(Renderer, props);
+    },
   };
 };
 

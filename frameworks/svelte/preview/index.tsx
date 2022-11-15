@@ -10,6 +10,7 @@ export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   componentModule,
+  shouldAbortRender,
 }) => {
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
@@ -17,6 +18,9 @@ export const load: RendererLoader = async ({
   return {
     variants: [],
     render: async (props) => {
+      if (shouldAbortRender()) {
+        return;
+      }
       detach();
       (currentElement = Wrapper
         ? new Wrapper({
