@@ -235,7 +235,6 @@ test.describe("react/error handling", () => {
           "Error: Expected error",
           "Error: Expected error",
           "React will try to recreate this component tree from scratch using the error boundary you provided",
-          ...(reactVersion === 18 ? ["Error: Expected error"] : []),
         ]);
         await preview.fileManager.update(
           "src/App.tsx",
