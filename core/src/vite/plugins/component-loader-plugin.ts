@@ -48,17 +48,20 @@ function generateComponentLoaderModule(
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
 
-let initOptions;
+let componentLoadId;
+let getLatestComponentLoadId;
+let refreshId = 0;
 
 export function init(options) {
-  initOptions = options;
+  ({
+    componentLoadId,
+    getLatestComponentLoadId,
+  } = options);
 }
 
 export async function refresh() {
-  const {
-    renderId,
-    shouldAbortRender,
-  } = initOptions;
+  const renderId = componentLoadId + "-" + (++refreshId);
+  const shouldAbortRender = () => renderId !== (getLatestComponentLoadId() + "-" + refreshId);
   let loadingError = null;
   ${
     wrapper && pathExistsSync(path.join(rootDirPath, wrapper.path))

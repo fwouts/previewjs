@@ -10,7 +10,7 @@ setUpLogInterception();
 setUpLinkInterception();
 overrideCopyCutPaste();
 
-let renderId = 0;
+let componentLoadId = 0;
 
 async function load({
   filePath,
@@ -18,7 +18,7 @@ async function load({
   defaultPropsSource,
   propsAssignmentSource,
 }: RenderMessage) {
-  const currentRenderId = ++renderId;
+  const currentComponentLoadId = ++componentLoadId;
   try {
     setState({
       filePath,
@@ -33,8 +33,8 @@ async function load({
       /* @vite-ignore */ componentLoaderUrl
     );
     init({
-      renderId,
-      shouldAbortRender: () => currentRenderId !== renderId,
+      componentLoadId: currentComponentLoadId,
+      getLatestComponentLoadId: () => componentLoadId,
     });
     await refresh();
   } catch (error: any) {
