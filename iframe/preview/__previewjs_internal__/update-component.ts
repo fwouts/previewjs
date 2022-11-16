@@ -8,7 +8,8 @@ export async function updateComponent({
   componentModule,
   componentFilePath,
   componentName,
-  updateId,
+  renderId,
+  shouldAbortRender,
   loadingError,
   load,
 }: {
@@ -17,12 +18,13 @@ export async function updateComponent({
   componentModule: any;
   componentFilePath: string;
   componentName: string;
-  updateId: string;
+  renderId: number;
+  shouldAbortRender: () => boolean;
   loadingError: string | null;
   load: RendererLoader;
 }) {
   const currentState = getState();
-  if (!currentState) {
+  if (!currentState || shouldAbortRender()) {
     return;
   }
   try {
@@ -42,44 +44,34 @@ export async function updateComponent({
       componentFilePath,
       componentModule,
       componentName,
-      updateId,
+      renderId,
+      shouldAbortRender,
     });
-    variants.push({
-      key: "custom",
-      label: componentName,
-      props: {},
-      isEditorDriven: true,
-    });
-    const variant =
-      variants.find((v) => v.key === currentState.variantKey) || variants[0];
-    if (!variant) {
-      throw new Error(`No variant was found.`);
+    if (shouldAbortRender()) {
+      return;
     }
     let defaultProps = {};
     eval(`defaultProps = ${currentState.defaultPropsSource};`);
-    if (variant.key === "custom") {
-      eval(`
-        let properties = {};
-        ${currentState.propsAssignmentSource};
-        variant.props = properties;
-        `);
-    }
+    let properties = {};
+    eval(`${currentState.propsAssignmentSource};`);
     sendMessageFromPreview({
       kind: "rendering-setup",
       filePath: componentFilePath,
       componentName,
-      variantKey: variant.key,
       // Note: we must remove `props` since it may not be serialisable.
-      variants: variants.map(({ props: _, ...rest }) => rest),
+      variants: variants?.map(({ key, label }) => ({ key, label })),
     });
     const props = transformFunctions(
       {
         ...defaultProps,
-        ...variant.props,
+        ...properties,
       },
       []
     );
     await render(props);
+    if (shouldAbortRender()) {
+      return;
+    }
     sendMessageFromPreview({
       kind: "rendering-success",
     });

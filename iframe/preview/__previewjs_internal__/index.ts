@@ -10,25 +10,32 @@ setUpLogInterception();
 setUpLinkInterception();
 overrideCopyCutPaste();
 
+let componentLoadId = 0;
+
 async function load({
   filePath,
   componentName,
-  variantKey,
   defaultPropsSource,
   propsAssignmentSource,
 }: RenderMessage) {
+  const currentComponentLoadId = ++componentLoadId;
   try {
     setState({
       filePath,
       componentName,
       defaultPropsSource,
       propsAssignmentSource,
-      variantKey,
     });
     const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
       filePath
     )}&c=${encodeURIComponent(componentName)}`;
-    const { refresh } = await import(/* @vite-ignore */ componentLoaderUrl);
+    const { init, refresh } = await import(
+      /* @vite-ignore */ componentLoaderUrl
+    );
+    init({
+      componentLoadId: currentComponentLoadId,
+      getLatestComponentLoadId: () => componentLoadId,
+    });
     await refresh();
   } catch (error: any) {
     sendMessageFromPreview({

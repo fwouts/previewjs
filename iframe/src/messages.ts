@@ -25,8 +25,7 @@ export interface RenderingSetup {
   kind: "rendering-setup";
   filePath: string;
   componentName: string;
-  variantKey: string;
-  variants: Variant[];
+  variants?: Variant[];
 }
 
 export interface RenderingSuccess {
@@ -63,8 +62,6 @@ export interface RenderMessage {
   kind: "render";
   filePath: string;
   componentName: string;
-  // Note: `null` means "first available preset variant, or fall back to custom".
-  variantKey: string | null;
   defaultPropsSource: string;
   propsAssignmentSource: string;
 }
