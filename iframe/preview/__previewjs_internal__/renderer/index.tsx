@@ -3,7 +3,3 @@ export async function load() {
   // a framework-specific implementation at runtime.
   console.error("Dummy loader was invoked!");
 }
-
-export async function detach() {
-  // Same here!
-}

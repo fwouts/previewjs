@@ -68,10 +68,6 @@ export const load: RendererLoader = async ({
   };
 };
 
-export async function detach() {
-  detachFn();
-}
-
 const container = document.getElementById("root");
 let detachFn: () => void = () => {
   // This function will be replaced by the real one when the component is loaded.

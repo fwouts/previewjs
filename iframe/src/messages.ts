@@ -52,11 +52,7 @@ export interface ViteBeforeUpdateMessage {
   payload: UpdatePayload;
 }
 
-export type AppToPreviewMessage = ShowLoadingMessage | RenderMessage;
-
-export interface ShowLoadingMessage {
-  kind: "show-loading";
-}
+export type AppToPreviewMessage = RenderMessage;
 
 export interface RenderMessage {
   kind: "render";

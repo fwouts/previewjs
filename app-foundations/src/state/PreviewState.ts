@@ -320,7 +320,7 @@ export class PreviewState {
       return;
     }
     const name = decodedComponentId.component.name;
-    this.iframeController.showLoading();
+    this.iframeController.resetIframe();
     runInAction(() => {
       this.component = {
         componentId,

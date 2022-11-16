@@ -11,7 +11,6 @@ export function createController(options: {
 export interface PreviewIframeController {
   start(): void;
   stop(): void;
-  showLoading(): void;
   loadComponent(options: LoadComponentOptions): void;
   resetIframe(): void;
 }
@@ -43,12 +42,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
   stop() {
     window.removeEventListener("message", this.onWindowMessage);
-  }
-
-  showLoading() {
-    this.send({
-      kind: "show-loading",
-    });
   }
 
   loadComponent(options: LoadComponentOptions) {

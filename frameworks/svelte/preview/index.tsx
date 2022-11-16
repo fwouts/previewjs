@@ -21,8 +21,12 @@ export const load: RendererLoader = async ({
       if (shouldAbortRender()) {
         return;
       }
-      detach();
-      (currentElement = Wrapper
+      if (currentElement) {
+        currentElement.$destroy();
+        currentElement = null;
+      }
+      root.innerHTML = "";
+      currentElement = Wrapper
         ? new Wrapper({
             target: root,
             props: {
@@ -35,22 +39,10 @@ export const load: RendererLoader = async ({
         : new Component({
             target: root,
             props,
-          })),
-        {
-          // ...defaultProps,
-          ...props,
-        };
+          });
     },
   };
 };
-
-export async function detach() {
-  if (currentElement) {
-    currentElement.$destroy();
-    currentElement = null;
-  }
-  root.innerHTML = "";
-}
 
 // Source: https://github.com/sveltejs/svelte/issues/2588#issuecomment-828578980
 const createSlots = (slots) => {
