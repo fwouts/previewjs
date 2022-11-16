@@ -18,6 +18,7 @@ export const previewTest = (
     playwrightTest: typeof test.only = test
   ) => {
     return playwrightTest(title, async ({ page }) => {
+      test.setTimeout(120000);
       if (!port) {
         port = await getPort();
       }
