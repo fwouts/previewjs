@@ -6,10 +6,15 @@ import {
 import fs from "fs-extra";
 import path from "path";
 
-export function prepareFileManager(
-  rootDirPath: string,
-  onBeforeFileUpdated: () => void
-) {
+export function prepareFileManager({
+  rootDirPath,
+  onBeforeFileUpdated,
+  onAfterFileUpdated,
+}: {
+  rootDirPath: string;
+  onBeforeFileUpdated: () => void;
+  onAfterFileUpdated: () => void;
+}) {
   const memoryReader = createMemoryReader();
   const reader = createStackedReader([
     memoryReader,
@@ -49,14 +54,17 @@ export function prepareFileManager(
         await fs.mkdirp(dirPath);
         await fs.writeFile(absoluteFilePath, text, "utf8");
       }
+      await onAfterFileUpdated();
     },
     rename: async (from, to) => {
       await onBeforeFileUpdated();
       await fs.rename(path.join(rootDirPath, from), path.join(rootDirPath, to));
+      await onAfterFileUpdated();
     },
     remove: async (f) => {
       await onBeforeFileUpdated();
       await fs.unlink(path.join(rootDirPath, f));
+      await onAfterFileUpdated();
     },
   };
   return {
