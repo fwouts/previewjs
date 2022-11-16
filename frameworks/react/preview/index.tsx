@@ -92,8 +92,3 @@ export const load: RendererLoader = async ({
     },
   };
 };
-
-export async function detach() {
-  const { render } = await import(/* @vite-ignore */ moduleName);
-  render(null, {});
-}

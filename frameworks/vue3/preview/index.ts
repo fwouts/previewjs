@@ -138,7 +138,3 @@ export async function render<P extends Record<string, unknown>>(
   app = createApp(Renderer, props || {});
   app.mount("#root");
 }
-
-export async function detach() {
-  render(null, {});
-}

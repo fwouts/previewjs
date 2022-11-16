@@ -143,7 +143,3 @@ async function render<P>(Renderer: any, props: P) {
   }
   root.appendChild(app.$el);
 }
-
-export async function detach() {
-  render(null, {});
-}
