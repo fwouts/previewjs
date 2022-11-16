@@ -35,25 +35,34 @@ export async function startPreview({
   if (!port) {
     port = await getPort();
   }
-  const { reader, fileManager } = await prepareFileManager(
+  let showingComponent = false;
+  const { reader, fileManager } = await prepareFileManager({
     rootDirPath,
-    async () => {
-      try {
-        const iframe = await page.$("iframe");
-        if (!iframe) {
-          // No iframe yet, so no need to expect anything to change.
-          return;
-        }
-      } catch (e) {
-        // Ignore, most likely due to whole-page refresh.
+    onBeforeFileUpdated: async () => {
+      if (!showingComponent) {
         return;
       }
-      const frame = await getPreviewIframe(page);
-      await frame.$eval("body", () => {
+      await runInIframe(page, async () => {
         return window.__expectFutureRefresh__();
       });
-    }
-  );
+    },
+    onAfterFileUpdated: async () => {
+      if (!showingComponent) {
+        return;
+      }
+      await runInIframe(page, async () => {
+        // It's possible that __waitForExpectedRefresh__ isn't ready yet.
+        let waitStart = Date.now();
+        while (
+          !window.__waitForExpectedRefresh__ &&
+          Date.now() - waitStart < 5000
+        ) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+        return window.__waitForExpectedRefresh__();
+      });
+    },
+  });
   const workspace = await createChromelessWorkspace({
     rootDirPath: rootDirPath,
     reader,
@@ -88,7 +97,6 @@ export async function startPreview({
         const element = await iframe.waitForSelector(selector, options);
         return element!;
       },
-      waitForExpectedIframeRefresh: () => waitForExpectedIframeRefresh(page),
       async takeScreenshot(destinationPath: string) {
         const preview = await getPreviewIframe(page);
         preview.addStyleTag({
@@ -139,6 +147,7 @@ export async function startPreview({
       },
     },
     async show(componentId: string, propsAssignmentSource?: string) {
+      showingComponent = true;
       const filePath = componentId.split(":")[0]!;
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
@@ -188,27 +197,23 @@ export async function startPreview({
   };
 }
 
-async function waitForExpectedIframeRefresh(page: playwright.Page) {
+async function runInIframe(
+  page: playwright.Page,
+  fn: () => void | Promise<void>
+) {
   const frame = await getPreviewIframe(page);
   try {
-    await frame.$eval("body", async () => {
-      // It's possible that __waitForExpectedRefresh__ isn't ready yet.
-      let waitStart = Date.now();
-      while (
-        !window.__waitForExpectedRefresh__ &&
-        Date.now() - waitStart < 5000
-      ) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
-      return window.__waitForExpectedRefresh__();
-    });
+    await frame.$eval("body", fn);
   } catch (e: any) {
     if (
       e.message.includes(
         "Execution context was destroyed, most likely because of a navigation"
+      ) ||
+      e.message.includes(
+        "Unable to adopt element handle from a different document"
       )
     ) {
-      await waitForExpectedIframeRefresh(page);
+      await runInIframe(page, fn);
     } else {
       throw e;
     }
