@@ -16,10 +16,14 @@
   "homepage": "https://previewjs.com",
   "sideEffects": false,
   "type": "commonjs",
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/src/index.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
     "./setup": {
       "module": "./setup.mjs",
@@ -28,7 +32,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
+    "build": "tsc && unbuild",
     "test": "concurrently 'pnpm unit-test' 'pnpm integration-test'",
     "unit-test": "vitest --no-threads",
     "integration-test": "playwright test"
@@ -51,7 +55,7 @@
     "@types/react": "18.0.25",
     "concurrently": "7.5.0",
     "react": "18.2.0",
-    "rimraf": "3.0.2",
+    "unbuild": "0.9.1",
     "vite": "3.2.4",
     "vitest": "0.25.1"
   }
