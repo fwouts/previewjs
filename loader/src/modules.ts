@@ -15,7 +15,7 @@ export function loadModules({
   const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName);
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
-    requireModule("@previewjs/plugin-react").default,
+    requireModule("@previewjs/plugin-react"),
     requireModule("@previewjs/plugin-solid").default,
     requireModule("@previewjs/plugin-svelte").default,
     requireModule("@previewjs/plugin-vue2").default,
