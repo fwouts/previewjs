@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import type * as api from "@previewjs/api";
+import { createChromelessWorkspace } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
+import reactPlugin from "@previewjs/plugin-react";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
@@ -27,6 +29,20 @@ program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
+    {
+      const workspace = await createChromelessWorkspace({
+        // TODO: Detect root directory.
+        rootDirPath: dirPath || process.cwd(),
+        // TODO: Auto-pass framework plugin factories, or get them from config.
+        frameworkPluginFactories: [reactPlugin],
+      });
+      workspace;
+    }
+
+    if ("dev") {
+      return;
+    }
+
     const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
     if (!packageName) {
       throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
