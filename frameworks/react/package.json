@@ -33,9 +33,8 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "concurrently 'pnpm unit-test' 'pnpm integration-test'",
-    "unit-test": "vitest --no-threads",
-    "integration-test": "playwright test"
+    "test": "vitest --no-threads",
+    "e2e-test": "playwright test"
   },
   "dependencies": {
     "@previewjs/csf3": "^3.0.3",
