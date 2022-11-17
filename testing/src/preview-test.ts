@@ -112,7 +112,8 @@ async function runInIframe(
       ) ||
       e.message.includes(
         "Unable to adopt element handle from a different document"
-      )
+      ) ||
+      e.message.includes("Cannot find context with specified id")
     ) {
       await runInIframe(page, fn);
     } else {
