@@ -1,7 +1,13 @@
+/// <reference types="@previewjs/iframe/preview/window" />
+
 import { test } from "@playwright/test";
+import { getPreviewIframe, startPreview } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
-import { startPreview } from "./preview";
+import type playwright from "playwright";
+import { expectLoggedMessages, LoggedMessagesMatcher } from "./events";
+import { FileManager, prepareFileManager } from "./file-manager";
+import { prepareTestDir } from "./test-dir";
 
 // Port allocated for the duration of the process.
 let port: number;
@@ -13,7 +19,10 @@ export const previewTest = (
   const testFn = (
     title: string,
     testFunction: (
-      preview: Awaited<ReturnType<typeof startPreview>>
+      preview: Awaited<ReturnType<typeof startPreview>> & {
+        fileManager: FileManager;
+        expectLoggedMessages: LoggedMessagesMatcher;
+      }
     ) => Promise<void>,
     playwrightTest: typeof test.only = test
   ) => {
@@ -22,14 +31,55 @@ export const previewTest = (
       if (!port) {
         port = await getPort();
       }
+      const rootDirPath = await prepareTestDir(workspaceDirPath);
+      let showingComponent = false;
+      const { reader, fileManager } = await prepareFileManager({
+        rootDirPath,
+        onBeforeFileUpdated: async () => {
+          if (!showingComponent) {
+            return;
+          }
+          await runInIframe(page, async () => {
+            return window.__expectFutureRefresh__();
+          });
+        },
+        onAfterFileUpdated: async () => {
+          if (!showingComponent) {
+            return;
+          }
+          await runInIframe(page, async () => {
+            // It's possible that __waitForExpectedRefresh__ isn't ready yet.
+            let waitStart = Date.now();
+            while (
+              !window.__waitForExpectedRefresh__ &&
+              Date.now() - waitStart < 5000
+            ) {
+              await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            return window.__waitForExpectedRefresh__();
+          });
+        },
+      });
       const preview = await startPreview({
         frameworkPluginFactories,
         page,
-        workspaceDirPath,
+        rootDirPath,
+        reader,
         port,
       });
+      const previewShow = preview.show.bind(preview);
+      preview.show = (...args) => {
+        showingComponent = true;
+        return previewShow(...args);
+      };
       try {
-        await testFunction(preview);
+        await testFunction({
+          fileManager,
+          get expectLoggedMessages() {
+            return expectLoggedMessages(this.events.get());
+          },
+          ...preview,
+        });
       } finally {
         await preview.stop();
       }
@@ -47,3 +97,26 @@ export const previewTest = (
   };
   return testFn;
 };
+
+async function runInIframe(
+  page: playwright.Page,
+  fn: () => void | Promise<void>
+) {
+  const frame = await getPreviewIframe(page);
+  try {
+    await frame.$eval("body", fn);
+  } catch (e: any) {
+    if (
+      e.message.includes(
+        "Execution context was destroyed, most likely because of a navigation"
+      ) ||
+      e.message.includes(
+        "Unable to adopt element handle from a different document"
+      )
+    ) {
+      await runInIframe(page, fn);
+    } else {
+      throw e;
+    }
+  }
+}
