@@ -1,63 +1,33 @@
-/// <reference types="@previewjs/iframe/preview/window" />
-
 import { RPCs } from "@previewjs/api";
-import {
-  createChromelessWorkspace,
-  getPreviewIframe,
-  render,
-  setupPreviewEventListener,
-} from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import {
   generateDefaultProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
-import fs from "fs-extra";
-import getPort from "get-port";
-import path from "path";
+import type { Reader } from "@previewjs/vfs";
 import type playwright from "playwright";
-import { createPreviewEventListener } from "./events";
-import { prepareFileManager } from "./file-manager";
-import { prepareTestDir } from "./test-dir";
+import { setupPreviewEventListener } from "./event-listener";
+import { getPreviewIframe } from "./iframe";
+import { render } from "./render";
+import { createChromelessWorkspace } from "./workspace";
 
 export async function startPreview({
   frameworkPluginFactories,
   page,
-  workspaceDirPath,
+  rootDirPath,
   port,
+  reader,
 }: {
   frameworkPluginFactories: FrameworkPluginFactory[];
   page: playwright.Page;
-  workspaceDirPath: string;
+  rootDirPath: string;
   port: number;
+  reader?: Reader;
 }) {
-  const rootDirPath = await prepareTestDir(workspaceDirPath);
-  if (!port) {
-    port = await getPort();
-  }
-  const { reader, fileManager } = await prepareFileManager(
-    rootDirPath,
-    async () => {
-      try {
-        const iframe = await page.$("iframe");
-        if (!iframe) {
-          // No iframe yet, so no need to expect anything to change.
-          return;
-        }
-      } catch (e) {
-        // Ignore, most likely due to whole-page refresh.
-        return;
-      }
-      const frame = await getPreviewIframe(page);
-      await frame.$eval("body", () => {
-        return window.__expectFutureRefresh__();
-      });
-    }
-  );
   const workspace = await createChromelessWorkspace({
-    rootDirPath: rootDirPath,
+    rootDirPath,
     reader,
-    frameworkPluginFactories: frameworkPluginFactories,
+    frameworkPluginFactories,
   });
   const preview = await workspace.preview.start(async () => port);
   await page.goto(preview.url());
@@ -66,16 +36,13 @@ export async function startPreview({
   let onRenderingDone = () => {
     // No-op by default.
   };
-  const [eventListener, events] = createPreviewEventListener();
-  await setupPreviewEventListener(page, (event) => {
-    eventListener(event);
+  const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
       onRenderingDone();
     }
   });
 
   return {
-    fileManager,
     events,
     iframe: {
       async waitForSelector(
@@ -88,7 +55,6 @@ export async function startPreview({
         const element = await iframe.waitForSelector(selector, options);
         return element!;
       },
-      waitForExpectedIframeRefresh: () => waitForExpectedIframeRefresh(page),
       async takeScreenshot(destinationPath: string) {
         const preview = await getPreviewIframe(page);
         preview.addStyleTag({
@@ -131,8 +97,6 @@ export async function startPreview({
             })
           );
         });
-        const destinationDirPath = path.dirname(destinationPath);
-        await fs.mkdirp(destinationDirPath);
         await page.screenshot({
           path: destinationPath,
         });
@@ -186,31 +150,4 @@ export async function startPreview({
       await workspace.dispose();
     },
   };
-}
-
-async function waitForExpectedIframeRefresh(page: playwright.Page) {
-  const frame = await getPreviewIframe(page);
-  try {
-    await frame.$eval("body", async () => {
-      // It's possible that __waitForExpectedRefresh__ isn't ready yet.
-      let waitStart = Date.now();
-      while (
-        !window.__waitForExpectedRefresh__ &&
-        Date.now() - waitStart < 5000
-      ) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
-      return window.__waitForExpectedRefresh__();
-    });
-  } catch (e: any) {
-    if (
-      e.message.includes(
-        "Execution context was destroyed, most likely because of a navigation"
-      )
-    ) {
-      await waitForExpectedIframeRefresh(page);
-    } else {
-      throw e;
-    }
-  }
 }
