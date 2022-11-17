@@ -29,29 +29,29 @@ jobs:
       matrix:
         node-version: [18.x]
         os: [ubuntu-20.04, macos-11, windows-2022]
-        group: [0, 1, 2]
+        group: [1, 2, 3]
         include:
           # Important: Node 14 version must match minimum checked
           # for CLI package.json, as well as IntelliJ and VS Code
           # node --version checks.
           - node-version: 14.18.0
             os: ubuntu-latest
-            group: 0
-          - node-version: 14.18.0
-            os: ubuntu-latest
             group: 1
           - node-version: 14.18.0
             os: ubuntu-latest
             group: 2
-          - node-version: 16.9.0
+          - node-version: 14.18.0
             os: ubuntu-latest
-            group: 0
+            group: 3
           - node-version: 16.9.0
             os: ubuntu-latest
             group: 1
           - node-version: 16.9.0
             os: ubuntu-latest
             group: 2
+          - node-version: 16.9.0
+            os: ubuntu-latest
+            group: 3
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -72,7 +72,8 @@ jobs:
         env:
           SKIP_PREFLIGHT_CHECK: "true"
       - run: pnpm install # necessary to link e2e-test-runner
-      - run: pnpm turbo run e2e-test
+      - run: cd frameworks/react && pnpm e2e-test --shard=${{ matrix.group }}/3
+      - run: cd app && pnpm e2e-test
         env:
           GROUP_INDEX: ${{ matrix.group }}
           GROUP_COUNT: 3
@@ -90,7 +91,7 @@ jobs:
             git status
             export SCREENSHOTS_CHANGED=1
             echo "::set-env name=SCREENSHOTS_CHANGED::$SCREENSHOTS_CHANGED"
-            git add app/tests/__screenshots__ 
+            git add .
             git stash
             git config --global user.name 'CI bot'
             git config --global user.email 'fwouts@users.noreply.github.com'
