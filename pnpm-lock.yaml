@@ -1378,6 +1378,7 @@ importers:
       cross-env: 7.0.3
       esbuild: 0.15.14
       open: ^8.4.0
+      playwright: ^1.27.1
       rimraf: 3.0.2
       shx: 0.3.4
       ts-node-dev: 2.0.0
@@ -1385,6 +1386,7 @@ importers:
     dependencies:
       '@previewjs/chromeless': link:../../chromeless
       '@previewjs/plugin-react': link:../../frameworks/react
+      playwright: 1.27.1
     devDependencies:
       '@previewjs/api': link:../../api
       '@previewjs/loader': link:../../loader

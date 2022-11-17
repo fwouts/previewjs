@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
 import type * as api from "@previewjs/api";
-import { createChromelessWorkspace } from "@previewjs/chromeless";
+import { startPreview } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
 import reactPlugin from "@previewjs/plugin-react";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
 import open from "open";
+import path from "path";
+import playwright from "playwright";
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -30,13 +32,21 @@ program
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
     {
-      const workspace = await createChromelessWorkspace({
+      const browser = await playwright.chromium.launch();
+      const page = await browser.newPage();
+      const preview = await startPreview({
         // TODO: Detect root directory.
         rootDirPath: dirPath || process.cwd(),
         // TODO: Auto-pass framework plugin factories, or get them from config.
         frameworkPluginFactories: [reactPlugin],
+        page,
+        port: 3123,
       });
-      workspace;
+      // TODO: Find components.
+      for (const component of components) {
+        await preview.show(component.componentId);
+        await preview.iframe.takeScreenshot(path.join(__dirname, "foo.png"));
+      }
     }
 
     if ("dev") {
