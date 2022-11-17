@@ -12,18 +12,18 @@ import { prepareTestDir } from "./test-dir";
 // Port allocated for the duration of the process.
 let port: number;
 
+type TestPreview = Awaited<ReturnType<typeof startPreview>> & {
+  fileManager: FileManager;
+  expectLoggedMessages: LoggedMessagesMatcher;
+};
+
 export const previewTest = (
   frameworkPluginFactories: FrameworkPluginFactory[],
   workspaceDirPath: string
 ) => {
   const testFn = (
     title: string,
-    testFunction: (
-      preview: Awaited<ReturnType<typeof startPreview>> & {
-        fileManager: FileManager;
-        expectLoggedMessages: LoggedMessagesMatcher;
-      }
-    ) => Promise<void>,
+    testFunction: (preview: TestPreview) => Promise<void>,
     playwrightTest: typeof test.only = test
   ) => {
     return playwrightTest(title, async ({ page }) => {
@@ -89,9 +89,7 @@ export const previewTest = (
     test.describe(title, callback);
   testFn.only = (
     title: string,
-    testFunction: (
-      preview: Awaited<ReturnType<typeof startPreview>>
-    ) => Promise<void>
+    testFunction: (preview: TestPreview) => Promise<void>
   ) => {
     return testFn(title, testFunction, test.only);
   };
