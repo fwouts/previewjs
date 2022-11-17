@@ -31,7 +31,7 @@ program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    {
+    if ("test") {
       const browser = await playwright.chromium.launch();
       const page = await browser.newPage();
       const preview = await startPreview({
@@ -42,15 +42,26 @@ program
         page,
         port: 3123,
       });
-      // TODO: Find components.
-      for (const component of components) {
-        await preview.show(component.componentId);
-        await preview.iframe.takeScreenshot(path.join(__dirname, "foo.png"));
+      for (const componentId of await preview.detectComponents()) {
+        try {
+          await preview.show(componentId);
+          await preview.iframe.takeScreenshot(
+            path.join(
+              __dirname,
+              "__screenshots__",
+              componentId.split(":")[1] + ".png"
+            )
+          );
+          console.log(`✅ ${componentId}`);
+        } catch (e: any) {
+          console.log(`❌ ${componentId}`);
+          // TODO: Show if verbose on.
+          // console.warn(e.message);
+        }
       }
-    }
-
-    if ("dev") {
-      return;
+      await preview.stop();
+      console.log("Done!");
+      process.exit(0);
     }
 
     const packageName = process.env.PREVIEWJS_PACKAGE_NAME;

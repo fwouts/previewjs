@@ -48,14 +48,13 @@ for (const reactVersion of [16, 17, 18]) {
             );
           }`
         );
-        await preview.show(
-          "src/Button.tsx:Button",
-          `properties = {
+        await preview.show("src/Button.tsx:Button", {
+          propsAssignmentSource: `properties = {
             onClick: () => {
               console.log("onClick callback invoked!");
             }
-          }`
-        );
+          }`,
+        });
         const button = await preview.iframe.waitForSelector("#button");
         preview.events.clear();
         await button.click();

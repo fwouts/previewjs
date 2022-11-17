@@ -37,7 +37,9 @@ test.describe("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.show("src/App.tsx:App");
+        await preview.show("src/App.tsx:App", {
+          allowRenderingFailure: true,
+        });
         preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
@@ -89,7 +91,9 @@ test.describe("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.show("src/App.tsx:App");
+        await preview.show("src/App.tsx:App", {
+          allowRenderingFailure: true,
+        });
         preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
@@ -137,7 +141,9 @@ test.describe("react/error handling", () => {
           replace: "App.css",
           with: "App-missing.css",
         });
-        await preview.show("src/App.tsx:App");
+        await preview.show("src/App.tsx:App", {
+          allowRenderingFailure: true,
+        });
         preview.expectLoggedMessages.toMatch([
           "Failed to fetch dynamically imported module",
           "Failed to fetch dynamically imported module",

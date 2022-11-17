@@ -1,4 +1,4 @@
-import { RPCs } from "@previewjs/api";
+import { generateComponentId, RPCs } from "@previewjs/api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import {
   generateDefaultProps,
@@ -33,12 +33,12 @@ export async function startPreview({
   await page.goto(preview.url());
 
   // This callback will be invoked each time a component is done rendering.
-  let onRenderingDone = () => {
+  let onRenderingDone = (_success: boolean) => {
     // No-op by default.
   };
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
-      onRenderingDone();
+      onRenderingDone(event.success);
     }
   });
 
@@ -102,7 +102,33 @@ export async function startPreview({
         });
       },
     },
-    async show(componentId: string, propsAssignmentSource?: string) {
+    async detectComponents(): Promise<string[]> {
+      const response = await workspace.localRpc(RPCs.DetectComponents, {});
+      const componentIds: string[] = [];
+      for (const [filePath, fileComponents] of Object.entries(
+        response.components
+      )) {
+        for (const component of fileComponents) {
+          componentIds.push(
+            generateComponentId({
+              currentFilePath: filePath,
+              name: component.name,
+            })
+          );
+        }
+      }
+      return componentIds;
+    },
+    async show(
+      componentId: string,
+      {
+        allowRenderingFailure = false,
+        propsAssignmentSource,
+      }: {
+        allowRenderingFailure?: boolean;
+        propsAssignmentSource?: string;
+      } = {}
+    ) {
       const filePath = componentId.split(":")[0]!;
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
@@ -135,8 +161,22 @@ export async function startPreview({
           computePropsResponse.types.all
         );
       }
-      const donePromise = new Promise<void>((resolve) => {
-        onRenderingDone = resolve;
+      const donePromise = new Promise<void>((resolve, reject) => {
+        onRenderingDone = (success) => {
+          const logs = events
+            .get()
+            .map((e) => (e.kind === "log-message" ? e.message : ""))
+            .filter(Boolean);
+          success || allowRenderingFailure
+            ? resolve()
+            : reject(
+                new Error(
+                  `Unable to render ${componentId}. Logs:${
+                    logs.length === 0 ? " none" : `\n${logs.join("\n")}`
+                  }`
+                )
+              );
+        };
       });
       await render(page, {
         ...component,
