@@ -48,7 +48,7 @@ importers:
 
   api:
     specifiers:
-      '@previewjs/type-analyzer': ^4.0.6
+      '@previewjs/type-analyzer': ^4.0.7
       unbuild: 0.9.1
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -121,11 +121,11 @@ importers:
       '@fortawesome/free-solid-svg-icons': ^6.2.0
       '@fortawesome/react-fontawesome': ^0.2.0
       '@monaco-editor/react': ^4.4.6
-      '@previewjs/api': ^4.0.1
-      '@previewjs/iframe': ^2.1.1
-      '@previewjs/properties': ^0.0.1
-      '@previewjs/serializable-values': ^3.1.0
-      '@previewjs/type-analyzer': ^4.0.6
+      '@previewjs/api': ^5.0.0
+      '@previewjs/iframe': ^3.0.0
+      '@previewjs/properties': ^1.0.0
+      '@previewjs/serializable-values': ^3.1.1
+      '@previewjs/type-analyzer': ^4.0.7
       '@react-hook/window-size': ^3.1.1
       '@types/react': 18.0.25
       assert-never: ^1.2.1
@@ -181,11 +181,11 @@ importers:
 
   chromeless:
     specifiers:
-      '@previewjs/api': ^4.0.1
-      '@previewjs/core': ^8.1.0
-      '@previewjs/iframe': ^2.1.1
-      '@previewjs/properties': ^0.0.1
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/api': ^5.0.0
+      '@previewjs/core': ^9.0.0
+      '@previewjs/iframe': ^3.0.0
+      '@previewjs/properties': ^1.0.0
+      '@previewjs/vfs': ^1.2.10
       '@types/express': 4.17.14
       '@types/glob': 7.2.0
       express: ^4.18.2
@@ -236,11 +236,11 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': ^4.0.1
-      '@previewjs/config': ^3.0.6
-      '@previewjs/iframe': ^2.1.1
-      '@previewjs/type-analyzer': ^4.0.6
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/api': ^5.0.0
+      '@previewjs/config': ^3.1.0
+      '@previewjs/iframe': ^3.0.0
+      '@previewjs/type-analyzer': ^4.0.7
+      '@previewjs/vfs': ^1.2.10
       '@rollup/plugin-alias': ^4.0.2
       '@types/cookie-parser': 1.4.3
       '@types/express': 4.17.14
@@ -299,8 +299,8 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': ^8.1.0
-      '@previewjs/type-analyzer': ^4.0.6
+      '@previewjs/core': ^9.0.0
+      '@previewjs/type-analyzer': ^4.0.7
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.9.1
@@ -336,10 +336,10 @@ importers:
 
   e2e-test-runner:
     specifiers:
-      '@previewjs/api': ^4.0.1
-      '@previewjs/core': ^8.1.0
+      '@previewjs/api': ^5.0.0
+      '@previewjs/core': ^9.0.0
       '@previewjs/iframe': workspace:*
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/vfs': ^1.2.10
       '@types/fs-extra': ^9.0.13
       '@types/lodash': ^4.14.189
       '@types/node': ^18.11.9
@@ -376,12 +376,12 @@ importers:
       '@playwright/test': 1.27.1
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.3
+      '@previewjs/csf3': ^3.0.4
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/testing': workspace:*
-      '@previewjs/type-analyzer': ^4.0.6
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/type-analyzer': ^4.0.7
+      '@previewjs/vfs': ^1.2.10
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.25
       '@vitejs/plugin-react': 2.2.0
@@ -1187,9 +1187,9 @@ importers:
   frameworks/solid:
     specifiers:
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.3
-      '@previewjs/type-analyzer': ^4.0.6
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/csf3': ^3.0.4
+      '@previewjs/type-analyzer': ^4.0.7
+      '@previewjs/vfs': ^1.2.10
       solid-js: 1.6.1
       typescript: ^4.8.4
       unbuild: 0.9.1
@@ -1221,9 +1221,9 @@ importers:
   frameworks/svelte:
     specifiers:
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.3
-      '@previewjs/type-analyzer': ^4.0.6
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/csf3': ^3.0.4
+      '@previewjs/type-analyzer': ^4.0.7
+      '@previewjs/vfs': ^1.2.10
       '@sveltejs/vite-plugin-svelte': ^1.1.1
       '@types/fs-extra': ^9.0.13
       fs-extra: ^10.1.0
@@ -1260,9 +1260,9 @@ importers:
     specifiers:
       '@nuxt/config': ^2.15.8
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.3
-      '@previewjs/type-analyzer': ^4.0.6
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/csf3': ^3.0.4
+      '@previewjs/type-analyzer': ^4.0.7
+      '@previewjs/vfs': ^1.2.10
       '@types/fs-extra': 9.0.13
       fs-extra: ^10.1.0
       typescript: ^4.8.4
@@ -1305,9 +1305,9 @@ importers:
   frameworks/vue3:
     specifiers:
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.3
-      '@previewjs/type-analyzer': ^4.0.6
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/csf3': ^3.0.4
+      '@previewjs/type-analyzer': ^4.0.7
+      '@previewjs/vfs': ^1.2.10
       '@types/fs-extra': 9.0.13
       '@vitejs/plugin-vue': ^3
       '@vitejs/plugin-vue-jsx': ^2
@@ -1462,8 +1462,8 @@ importers:
 
   properties:
     specifiers:
-      '@previewjs/serializable-values': ^3.1.0
-      '@previewjs/type-analyzer': ^4.0.6
+      '@previewjs/serializable-values': ^3.1.1
+      '@previewjs/type-analyzer': ^4.0.7
       unbuild: 0.9.1
       vitest: 0.25.2
     dependencies:
@@ -1476,7 +1476,7 @@ importers:
   serializable-values:
     specifiers:
       '@faker-js/faker': ^7.6.0
-      '@previewjs/type-analyzer': ^4.0.6
+      '@previewjs/type-analyzer': ^4.0.7
       '@types/prettier': 2.7.1
       assert-never: ^1.2.1
       prettier: ^2.7.1
@@ -1912,11 +1912,11 @@ importers:
   testing:
     specifiers:
       '@playwright/test': ^1.27.1
-      '@previewjs/api': ^4.0.1
-      '@previewjs/chromeless': ^0.0.0
-      '@previewjs/core': ^8.1.0
-      '@previewjs/iframe': ^2.1.1
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/api': ^5.0.0
+      '@previewjs/chromeless': ^1.0.0
+      '@previewjs/core': ^9.0.0
+      '@previewjs/iframe': ^3.0.0
+      '@previewjs/vfs': ^1.2.10
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
       assert-never: ^1.2.1
@@ -1948,7 +1948,7 @@ importers:
 
   type-analyzer:
     specifiers:
-      '@previewjs/vfs': ^1.2.9
+      '@previewjs/vfs': ^1.2.10
       '@types/lodash': 4.14.189
       '@types/prettier': 2.7.1
       assert-never: ^1.2.1

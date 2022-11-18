@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/e2e-test-runner",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -33,9 +33,9 @@
     "dev": "ts-node --transpileOnly src/main.ts"
   },
   "dependencies": {
-    "@previewjs/api": "^4.0.1",
-    "@previewjs/core": "^8.1.0",
-    "@previewjs/vfs": "^1.2.9",
+    "@previewjs/api": "^5.0.0",
+    "@previewjs/core": "^9.0.0",
+    "@previewjs/vfs": "^1.2.10",
     "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.14.189",
     "@types/node": "^18.11.9",
