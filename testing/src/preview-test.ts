@@ -93,6 +93,12 @@ export const previewTest = (
   ) => {
     return testFn(title, testFunction, test.only);
   };
+  testFn.skip = (
+    title: string,
+    testFunction: (preview: TestPreview) => Promise<void>
+  ) => {
+    return testFn(title, testFunction, test.skip);
+  };
   return testFn;
 };
 

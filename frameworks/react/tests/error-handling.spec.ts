@@ -28,7 +28,8 @@ test.describe("react/error handling", () => {
         await preview.iframe.waitForSelector(".App");
       });
 
-      test("fails correctly when encountering broken module imports before update", async (preview) => {
+      // TODO: Figure out why this test is flaky on Windows (CI).
+      test.skip("fails correctly when encountering broken module imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "some-module";
@@ -80,7 +81,8 @@ test.describe("react/error handling", () => {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      test("fails correctly when encountering broken local imports before update", async (preview) => {
+      // TODO: Figure out why this test is flaky on Windows (CI).
+      test.skip("fails correctly when encountering broken local imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "./missing.svg";
