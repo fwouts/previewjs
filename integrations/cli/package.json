@@ -20,8 +20,8 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/cli --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && node esbuild.js && shx cp -rL ../../loader/src/release/node_modules dist/node_modules",
-    "dev:community": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app ts-node-dev --respawn src/main.ts",
-    "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
+    "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app ts-node-dev --respawn src/main.ts",
+    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
