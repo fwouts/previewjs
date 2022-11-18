@@ -4,6 +4,7 @@ import type { Node } from "acorn";
 import fs from "fs-extra";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { extractVueComponents } from "./extract-component";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
@@ -21,7 +22,6 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
   async create() {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
-    const { extractVueComponents } = await import("./extract-component");
     const { Parser } = await import("acorn");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {

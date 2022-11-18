@@ -11,7 +11,6 @@ export function createController(options: {
 export interface PreviewIframeController {
   start(): void;
   stop(): void;
-  showLoading(): void;
   loadComponent(options: LoadComponentOptions): void;
   resetIframe(): void;
 }
@@ -19,7 +18,6 @@ export interface PreviewIframeController {
 export interface LoadComponentOptions {
   filePath: string;
   componentName: string;
-  variantKey: string | null;
   propsAssignmentSource: string;
   defaultPropsSource: string;
 }
@@ -44,12 +42,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
   stop() {
     window.removeEventListener("message", this.onWindowMessage);
-  }
-
-  showLoading() {
-    this.send({
-      kind: "show-loading",
-    });
   }
 
   loadComponent(options: LoadComponentOptions) {
@@ -108,7 +100,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         listener({
           kind: "rendering-setup",
           info: {
-            variantKey: data.variantKey,
             variants: data.variants,
           },
         });
@@ -228,8 +219,7 @@ export type BeforeRender = {
 export type RenderingSetup = {
   kind: "rendering-setup";
   info: {
-    variantKey: string;
-    variants: Variant[];
+    variants?: Variant[];
   };
 };
 
@@ -261,7 +251,6 @@ export interface FileChanged {
 export interface Variant {
   key: string;
   label: string;
-  isEditorDriven?: boolean;
 }
 
 export type RendererLoader = (options: {
@@ -270,11 +259,12 @@ export type RendererLoader = (options: {
   componentFilePath: string;
   componentModule: any;
   componentName?: string;
-  updateId: string;
+  renderId: number;
+  shouldAbortRender: () => boolean;
 }) => Promise<{
-  variants: Array<
+  variants?: Array<
     Variant & {
-      props?: any;
+      props: any;
     }
   >;
   render: (props: any) => Promise<void>;

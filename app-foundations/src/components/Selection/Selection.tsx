@@ -29,13 +29,9 @@ export const Selection = observer(
             !state.component.details ||
             state.component.details.renderingAlwaysFailing === null
           }
-          buttons={
-            state.component.details?.variants?.filter(
-              (v) => !v.isEditorDriven
-            ) || undefined
-          }
+          buttons={state.component.details?.variants || undefined}
           selectedButtonKey={state.component.variantKey}
-          onClick={() => state.setVariant("custom")}
+          onClick={() => state.setVariant(null)}
           onButtonClicked={state.setVariant.bind(state)}
         />
       );

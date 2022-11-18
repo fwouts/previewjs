@@ -20,8 +20,7 @@ test.describe("react/error handling", () => {
           replace: /<p>/g,
           with: "<p",
         });
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           "App.tsx: Unexpected token (24:15)",
           "Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.",
         ]);
@@ -39,8 +38,7 @@ test.describe("react/error handling", () => {
           }`
         );
         await preview.show("src/App.tsx:App");
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
           "Failed to fetch dynamically imported module",
@@ -67,8 +65,7 @@ test.describe("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to reload /src/App.tsx.",
         ]);
@@ -93,8 +90,7 @@ test.describe("react/error handling", () => {
           }`
         );
         await preview.show("src/App.tsx:App");
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
           "Failed to fetch dynamically imported module",
@@ -121,8 +117,7 @@ test.describe("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to reload /src/App.tsx.",
         ]);
@@ -143,7 +138,7 @@ test.describe("react/error handling", () => {
           with: "App-missing.css",
         });
         await preview.show("src/App.tsx:App");
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           "Failed to fetch dynamically imported module",
           "Failed to fetch dynamically imported module",
         ]);
@@ -161,8 +156,9 @@ test.describe("react/error handling", () => {
           replace: "App.css",
           with: "App-missing.css",
         });
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages(["Failed to reload /src/App.tsx."]);
+        preview.expectLoggedMessages.toMatch([
+          "Failed to reload /src/App.tsx.",
+        ]);
         await preview.fileManager.update("src/App.tsx", {
           replace: "App-missing.css",
           with: "App.css",
@@ -179,8 +175,7 @@ test.describe("react/error handling", () => {
             return <divBroken</div>;
           }`
         );
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           "App.tsx: Unexpected token (2:29)",
           "Failed to reload /src/App.tsx.",
         ]);
@@ -204,8 +199,7 @@ test.describe("react/error handling", () => {
             </ul>
           }`
         );
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           `App.tsx: Unexpected token, expected "jsxTagEnd"`,
           "Failed to reload /src/App.tsx.",
         ]);
@@ -230,8 +224,7 @@ test.describe("react/error handling", () => {
             return <div>Broken</div>;
           }`
         );
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           "Error: Expected error",
           "Error: Expected error",
           "React will try to recreate this component tree from scratch using the error boundary you provided",
@@ -257,8 +250,7 @@ test.describe("react/error handling", () => {
             return <div>Hello, World!</div>;
           }`
         );
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           "Expected error",
           "Failed to reload /src/App.tsx.",
         ]);
@@ -275,8 +267,9 @@ test.describe("react/error handling", () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.rename("src/App.tsx", "src/App-renamed.tsx");
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages(["Failed to reload /src/App.tsx."]);
+        preview.expectLoggedMessages.toMatch([
+          "Failed to reload /src/App.tsx.",
+        ]);
       });
 
       test("fails correctly when component is missing after update", async (preview) => {
@@ -288,8 +281,7 @@ test.describe("react/error handling", () => {
 
           export const App2 = () => <div>Hello, World!</div>;`
         );
-        await preview.iframe.waitForExpectedIframeRefresh();
-        preview.events.expectLoggedMessages([
+        preview.expectLoggedMessages.toMatch([
           "Error: No component named 'App'",
         ]);
       });
@@ -301,9 +293,8 @@ test.describe("react/error handling", () => {
           replace: " {",
           with: " BROKEN",
         });
-        await preview.iframe.waitForExpectedIframeRefresh();
         // We don't expect to see any errors for pure CSS.
-        preview.events.expectLoggedMessages([]);
+        preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update("src/App.css", {
           replace: " BROKEN",
           with: " {",
@@ -322,8 +313,7 @@ test.describe("react/error handling", () => {
         replace: " {",
         with: " BROKEN",
       });
-      await preview.iframe.waitForExpectedIframeRefresh();
-      preview.events.expectLoggedMessages([
+      preview.expectLoggedMessages.toMatch([
         "App.scss 4:21  root stylesheet",
         "Failed to reload /src/App.scss.",
       ]);

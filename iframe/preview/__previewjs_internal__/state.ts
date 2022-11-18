@@ -13,6 +13,4 @@ export interface PreviewState {
   componentName: string;
   defaultPropsSource: string;
   propsAssignmentSource: string;
-  // Note: `null` means "first available preset variant, or fall back to custom".
-  variantKey: string | null;
 }

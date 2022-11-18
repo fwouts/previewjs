@@ -90,7 +90,6 @@ for (const reactVersion of [16, 17, 18]) {
                   inMemoryOnly,
                 }
               );
-              await preview.iframe.waitForExpectedIframeRefresh();
               expect((await dependencyComponent?.boundingBox())?.width).toEqual(
                 400
               );

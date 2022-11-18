@@ -91,7 +91,7 @@ function Button(props: { label: string; a(): void; b(): void; }) {
           await controller.show("src/Button.tsx:Button");
           await controller.props.editor.replaceText(`
       properties = {
-        a: () => {}
+        a: () => {},
         b: () => {}
       };
       `);

@@ -7,6 +7,7 @@ export const load: RendererLoader = async ({
   componentFilePath,
   componentModule,
   componentName,
+  shouldAbortRender,
 }) => {
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
@@ -103,6 +104,9 @@ export const load: RendererLoader = async ({
   return {
     variants,
     render: async (props) => {
+      if (shouldAbortRender()) {
+        return;
+      }
       await render((h, props) => {
         const Wrapped = h(Decorated, {
           props: {
@@ -138,8 +142,4 @@ async function render<P>(Renderer: any, props: P) {
     root.removeChild(root.firstChild);
   }
   root.appendChild(app.$el);
-}
-
-export async function detach() {
-  render(null, {});
 }

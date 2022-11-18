@@ -7,6 +7,7 @@ export const load: RendererLoader = async ({
   componentFilePath,
   componentModule,
   componentName,
+  shouldAbortRender,
 }) => {
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
@@ -103,6 +104,9 @@ export const load: RendererLoader = async ({
   return {
     variants,
     render: async (props) => {
+      if (shouldAbortRender()) {
+        return;
+      }
       await render(
         (props) =>
           Wrapper
@@ -133,8 +137,4 @@ export async function render<P extends Record<string, unknown>>(
   }
   app = createApp(Renderer, props || {});
   app.mount("#root");
-}
-
-export async function detach() {
-  render(null, {});
 }

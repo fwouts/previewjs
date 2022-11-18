@@ -3,6 +3,7 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
 import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { extractVueComponents } from "./extract-component";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
@@ -19,7 +20,6 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
   async create() {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { createVuePlugin } = await import("vite-plugin-vue2");
-    const { extractVueComponents } = await import("./extract-component");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
