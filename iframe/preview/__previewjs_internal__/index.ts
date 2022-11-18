@@ -4,7 +4,9 @@ import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
 import { sendMessageFromPreview } from "./messages";
 import { setState } from "./state";
+import { setupViteHmrListener } from "./vite-hmr-listener";
 
+setupViteHmrListener();
 setUpLogInterception();
 setUpLinkInterception();
 overrideCopyCutPaste();
