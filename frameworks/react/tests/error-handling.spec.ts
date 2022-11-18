@@ -28,8 +28,7 @@ test.describe("react/error handling", () => {
         await preview.iframe.waitForSelector(".App");
       });
 
-      // TODO: Figure out why this test is flaky on Windows (CI).
-      test.skip("fails correctly when encountering broken module imports before update", async (preview) => {
+      test("fails correctly when encountering broken module imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "some-module";
@@ -39,6 +38,7 @@ test.describe("react/error handling", () => {
           }`
         );
         await preview.show("src/App.tsx:App");
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
@@ -81,8 +81,7 @@ test.describe("react/error handling", () => {
         await preview.iframe.waitForSelector("#recovered");
       });
 
-      // TODO: Figure out why this test is flaky on Windows (CI).
-      test.skip("fails correctly when encountering broken local imports before update", async (preview) => {
+      test("fails correctly when encountering broken local imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "./missing.svg";
@@ -92,6 +91,7 @@ test.describe("react/error handling", () => {
           }`
         );
         await preview.show("src/App.tsx:App");
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
