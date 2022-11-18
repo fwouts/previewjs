@@ -18,10 +18,14 @@
   "homepage": "https://previewjs.com",
   "sideEffects": false,
   "type": "commonjs",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/index.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
     "./setup": {
       "module": "./setup.mjs",
@@ -30,7 +34,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-solid --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
+    "build": "tsc && unbuild",
     "test": "vitest --no-threads"
   },
   "dependencies": {
@@ -42,8 +46,8 @@
   },
   "devDependencies": {
     "@previewjs/core": "workspace:*",
-    "rimraf": "3.0.2",
     "solid-js": "1.6.1",
+    "unbuild": "0.9.1",
     "vite": "3.2.4",
     "vitest": "0.25.2"
   }
