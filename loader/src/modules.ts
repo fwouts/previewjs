@@ -11,10 +11,13 @@ export async function loadModules({
   installDir: string;
   packageName: string;
 }) {
+  console.log("Running pnpm install");
   await execa.command(
-    `cd "${installDir}" && ./node_modules/pnpm/bin/pnpm.cjs install @previewjs/core`,
+    `cd "${installDir}" && ./pnpm/bin/pnpm.cjs install --frozen-lockfile`,
     {
       shell: true,
+      stdout: "inherit",
+      stderr: "inherit",
     }
   );
   const coreModule = requireModule("@previewjs/core") as typeof core;
