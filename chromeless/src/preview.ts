@@ -8,7 +8,6 @@ import type { Reader } from "@previewjs/vfs";
 import type playwright from "playwright";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
-import { render } from "./render";
 import { createChromelessWorkspace } from "./workspace";
 
 export async function startPreview({
@@ -138,16 +137,33 @@ export async function startPreview({
       const donePromise = new Promise<void>((resolve) => {
         onRenderingDone = resolve;
       });
-      await render(page, {
-        ...component,
-        defaultPropsSource: defaultProps.source,
-        propsAssignmentSource,
-      });
+      await waitUntilNetworkIdle(page);
+      await page.evaluate(
+        (component) => {
+          window.renderComponent(component);
+        },
+        {
+          ...component,
+          defaultPropsSource: defaultProps.source,
+          propsAssignmentSource,
+        }
+      );
       await donePromise;
+      await waitUntilNetworkIdle(page);
     },
     async stop() {
       await preview.stop();
       await workspace.dispose();
     },
   };
+}
+
+async function waitUntilNetworkIdle(page: playwright.Page) {
+  await page.waitForLoadState("networkidle");
+  try {
+    await (await getPreviewIframe(page)).waitForLoadState("networkidle");
+  } catch (e) {
+    // It's OK for the iframe to be replaced by another one, in which case wait again.
+    await (await getPreviewIframe(page)).waitForLoadState("networkidle");
+  }
 }
