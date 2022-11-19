@@ -1,0 +1,35 @@
+{
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7",
+    "@storybook/addon-actions": "^6",
+    "@storybook/addon-essentials": "^6",
+    "@storybook/addon-links": "^6",
+    "@storybook/node-logger": "^6",
+    "@storybook/preset-create-react-app": "^4",
+    "@storybook/react": "^6",
+    "babel-loader": "^8",
+    "webpack": "^4"
+  },
+  "dependencies": {
+    "preact": "^10",
+    "typescript": "^4"
+  }
+}
