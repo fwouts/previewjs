@@ -1,6 +1,8 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
 import execa from "execa";
+import fs from "fs";
+import path from "path";
 
 export async function loadModules({
   installDir,
@@ -9,15 +11,16 @@ export async function loadModules({
   installDir: string;
   packageName: string;
 }) {
-  console.log("Running pnpm install");
-  await execa.command(
-    `cd "${installDir}" && ./pnpm/bin/pnpm.cjs install --frozen-lockfile`,
-    {
-      shell: true,
-      stdout: "inherit",
-      stderr: "inherit",
-    }
-  );
+  if (fs.existsSync(path.join(installDir, "pnpm"))) {
+    await execa.command(
+      `cd "${installDir}" && ./pnpm/bin/pnpm.cjs install --frozen-lockfile`,
+      {
+        shell: true,
+        stdout: "inherit",
+        stderr: "inherit",
+      }
+    );
+  }
   const coreModule = requireModule("@previewjs/core") as typeof core;
   const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;
   const setupEnvironment: core.SetupPreviewEnvironment =
