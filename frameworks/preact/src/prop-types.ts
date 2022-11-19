@@ -9,16 +9,18 @@ export function detectPropTypes(
       for (const varDeclaration of statement.declarationList.declarations) {
         if (varDeclaration.name.getText() != name) continue;
         if (
-          ts.isArrowFunction(varDeclaration.initializer) ||
-          ts.isFunctionExpression(varDeclaration.initializer)
+          ts.isArrowFunction(varDeclaration.initializer!) ||
+          ts.isFunctionExpression(varDeclaration.initializer!)
         ) {
-          return (varDeclaration.initializer as ts.ArrowFunction).parameters[0]
-            .initializer;
+          return (
+            (varDeclaration.initializer as ts.ArrowFunction).parameters[0]
+              ?.initializer ?? null
+          );
         }
       }
     } else if (ts.isFunctionDeclaration(statement)) {
-      if (statement.name.getText() != name) continue;
-      return statement.parameters[0].initializer;
+      if (statement.name?.getText() != name) continue;
+      return statement!.parameters[0]!.initializer ?? null;
     }
   }
   return null;
