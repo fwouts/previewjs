@@ -1,8 +1,6 @@
-// @ts-ignore
 import type { RendererLoader } from "@previewjs/iframe";
-import { render } from './render'
-import { Fragment } from 'preact';
-import { ErrorBoundary, expectErrorBoundary } from './error-boundary';
+import { render as preactRender, ComponentType, Fragment } from "preact";
+import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
 let currentUpdateId = "";
 
@@ -16,11 +14,10 @@ export const load: RendererLoader = async ({
   currentUpdateId = updateId;
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
-    (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
-    Fragment;
+    (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) || Fragment;
   const ComponentOrStory =
     componentModule[
-    componentName === "default" ? "default" : `__previewjs__${componentName}`
+      componentName === "default" ? "default" : `__previewjs__${componentName}`
     ];
   if (!ComponentOrStory) {
     throw new Error(`No component named '${componentName}'`);
@@ -29,23 +26,15 @@ export const load: RendererLoader = async ({
     ...(ComponentOrStory.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
-  const variants = (ComponentOrStory.__previewjs_variants || []).map(
-    (variant) => {
-      return {
-        key: variant.key,
-        label: variant.label,
-        props: variant.props,
-      };
-    }
-  );
+
   const RenderComponent = isStoryModule
     ? typeof ComponentOrStory === "function"
       ? ComponentOrStory
       : ComponentOrStory.render ||
-      ComponentOrStory.component ||
-      componentModule.default?.render ||
-      componentModule.default?.component ||
-      ComponentOrStory
+        ComponentOrStory.component ||
+        componentModule.default?.render ||
+        componentModule.default?.component ||
+        ComponentOrStory
     : ComponentOrStory;
   const Renderer = (props) => {
     return (
@@ -66,7 +55,6 @@ export const load: RendererLoader = async ({
     );
   };
   return {
-    variants,
     render: async (props) => {
       render(Renderer, props);
       const errorBoundary = await expectErrorBoundary(
@@ -83,6 +71,11 @@ export const load: RendererLoader = async ({
   };
 };
 
-export async function detach() {
-  render(null, {});
+export function render<P>(Renderer: ComponentType<P>, props: P) {
+  const container = document.getElementById("root");
+  if (!Renderer) {
+    preactRender(null, container);
+  } else {
+    preactRender(<Renderer {...props} />, container);
+  }
 }

@@ -16,20 +16,21 @@
   "homepage": "https://previewjs.com",
   "sideEffects": false,
   "type": "commonjs",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/index.js"
-    },
-    "./setup": {
-      "module": "./setup.mjs",
-      "default": "./setup.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
-    "test": "vitest --no-threads"
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-preact --no-deps --include-dependencies",
+    "build": "tsc && unbuild",
+    "test": "vitest --no-threads",
+    "e2e-test": "playwright test"
   },
   "dependencies": {
     "@previewjs/csf3": "^3.0.3",
@@ -38,8 +39,14 @@
     "typescript": "^4.8.4"
   },
   "devDependencies": {
+    "@playwright/test": "1.27.1",
+    "@previewjs/api": "workspace:*",
     "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/properties": "workspace:*",
+    "@previewjs/testing": "workspace:*",
     "preact": "10.11.2",
+    "unbuild": "0.9.1",
     "rimraf": "3.0.2",
     "vite": "3.2.3",
     "vitest": "0.25.1"
