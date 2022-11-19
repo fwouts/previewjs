@@ -1,5 +1,6 @@
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
+import type { Alias } from "@rollup/plugin-alias";
 import express from "express";
 import fs from "fs-extra";
 import type { Server } from "http";
@@ -95,7 +96,7 @@ export class ViteManager {
         );
       }
     }
-    const tsInferredAlias: Record<string, string> = {};
+    const tsInferredAlias: Alias[] = [];
     // If there is a top-level tsconfig.json, use it to infer aliases.
     // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
     const config = loadTsconfig(
@@ -116,11 +117,14 @@ export class ViteManager {
         const firstMappingNoWildcard = firstMapping.endsWith("/*")
           ? firstMapping.slice(0, firstMapping.length - 2)
           : firstMapping;
-        tsInferredAlias[matchNoWildcard] = path.join(
-          this.options.rootDirPath,
-          baseUrl,
-          firstMappingNoWildcard
-        );
+        tsInferredAlias.push({
+          find: matchNoWildcard,
+          replacement: path.join(
+            this.options.rootDirPath,
+            baseUrl,
+            firstMappingNoWildcard
+          ),
+        });
       }
     }
     const existingViteConfig = await vite.loadConfigFromFile(
@@ -131,17 +135,8 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
-    const alias = {
-      ...tsInferredAlias,
-      ...existingViteConfig?.config.resolve?.alias,
-      ...this.options.config.alias,
-      ...this.options.config.vite?.resolve?.alias,
-    };
     const defaultLogger = vite.createLogger(this.options.logLevel);
-    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig({
-      ...this.options.config,
-      alias,
-    });
+    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig();
     const projectVitePlugins = await excludePlugins(
       new Set(this.options.frameworkPlugin.incompatibleVitePlugins),
       [
@@ -277,13 +272,28 @@ export class ViteManager {
       resolve: {
         ...existingViteConfig?.config.resolve,
         ...this.options.config.vite?.resolve,
-        alias: {
-          "~": "",
-          "@": "",
-          ...alias,
-          ...existingViteConfig?.config.resolve?.alias,
-          ...frameworkPluginViteConfig.resolve?.alias,
-        },
+        alias: [
+          // First defined rules are applied first, therefore highest priority should come first.
+          ...viteAliasToRollupAliasEntries(
+            this.options.config.vite?.resolve?.alias
+          ),
+          ...viteAliasToRollupAliasEntries(this.options.config.alias),
+          ...viteAliasToRollupAliasEntries(
+            existingViteConfig?.config.resolve?.alias
+          ),
+          ...tsInferredAlias,
+          {
+            find: "~",
+            replacement: "",
+          },
+          {
+            find: "@",
+            replacement: "",
+          },
+          ...viteAliasToRollupAliasEntries(
+            frameworkPluginViteConfig.resolve?.alias
+          ),
+        ],
       },
     });
     this.viteStartupPromise = new Promise<void>((resolve) => {
@@ -333,6 +343,20 @@ export class ViteManager {
     this.viteServer?.ws.send({
       type: "full-reload",
     });
+  }
+}
+
+function viteAliasToRollupAliasEntries(alias?: vite.AliasOptions) {
+  if (!alias) {
+    return [];
+  }
+  if (Array.isArray(alias)) {
+    return alias;
+  } else {
+    return Object.entries(alias).map(([find, replacement]) => ({
+      find,
+      replacement,
+    }));
   }
 }
 

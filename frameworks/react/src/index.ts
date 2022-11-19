@@ -7,8 +7,7 @@ import { extractReactComponents } from "./extract-component";
 import { reactImportsPlugin } from "./react-js-imports-plugin";
 import { REACT_SPECIAL_TYPES } from "./special-types";
 
-/** @deprecated */
-export const reactFrameworkPlugin: FrameworkPluginFactory = {
+const reactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
     const version = await dependencies["react"]?.readInstalledVersion();
     if (!version) {
@@ -17,7 +16,7 @@ export const reactFrameworkPlugin: FrameworkPluginFactory = {
     return parseInt(version) >= 16;
   },
   async create() {
-    const previewDirPath = path.resolve(__dirname, "..", "preview");
+    const previewDirPath = path.join(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-react",

@@ -1,5 +1,6 @@
 import React from "react";
 
+/** @deprecated See https://previewjs.com/docs/features/custom-previews for more info. */
 export declare function setupPreviews<Props>(
   component: React.ComponentType<Props>,
   variants: VariantsProps<Props> | (() => VariantsProps<Props>)

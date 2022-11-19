@@ -1,5 +1,6 @@
 import { Component } from "solid-js";
 
+/** @deprecated See https://previewjs.com/docs/features/custom-previews for more info. */
 export declare function setupPreviews<Props>(
   component: Component<Props>,
   variants: VariantsProps<Props> | (() => VariantsProps<Props>)

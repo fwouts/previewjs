@@ -48,9 +48,20 @@ function generateComponentLoaderModule(
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
 
-let counter = 0;
+let componentLoadId;
+let getLatestComponentLoadId;
+let refreshId = 0;
+
+export function init(options) {
+  ({
+    componentLoadId,
+    getLatestComponentLoadId,
+  } = options);
+}
+
 export async function refresh() {
-  const currentCounter = ++counter;
+  const renderId = componentLoadId + "-" + (++refreshId);
+  const shouldAbortRender = () => renderId !== (getLatestComponentLoadId() + "-" + refreshId);
   let loadingError = null;
   ${
     wrapper && pathExistsSync(path.join(rootDirPath, wrapper.path))
@@ -88,8 +99,7 @@ export async function refresh() {
     loadingError = e.stack || e.message || null;
     return null;
   });
-  if (currentCounter !== counter) {
-    // Abort to avoid double rendering.
+  if (shouldAbortRender()) {
     return;
   }
   await updateComponent({
@@ -98,9 +108,8 @@ export async function refresh() {
     componentModule,
     componentFilePath: ${JSON.stringify(filePath)},
     componentName: ${JSON.stringify(componentName)},
-    updateId: ${JSON.stringify(filePath)} + "-" + ${JSON.stringify(
-    componentName
-  )} + counter,
+    renderId,
+    shouldAbortRender,
     loadingError,
     load,
   })

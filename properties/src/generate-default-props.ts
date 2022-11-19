@@ -16,10 +16,16 @@ import {
 export function generateDefaultProps(
   propsType: ValueType,
   types: CollectedTypes
-): string {
+): {
+  source: string;
+  keys: string[];
+} {
   propsType = resolveType(propsType);
   if (propsType.kind !== "object") {
-    return "{}";
+    return {
+      source: "{}",
+      keys: [],
+    };
   }
   const propKeys = new Set<string>();
   let text = "";
@@ -37,7 +43,10 @@ export function generateDefaultProps(
     }
   }
   text += "}";
-  return text;
+  return {
+    source: text,
+    keys: [...propKeys],
+  };
 
   function resolveType(type: ValueType): ValueType {
     if (type.kind === "name") {

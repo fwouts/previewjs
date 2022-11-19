@@ -1,22 +1,22 @@
 import { Component, ReactNode } from "react";
 
 type ErrorBoundaryProps = {
-  updateId: string;
+  renderId: number;
   children: ReactNode;
 };
 
 let errorBoundaryInstance: ErrorBoundary | null = null;
 
 export async function expectErrorBoundary(
-  updateId: string,
-  getCurrentUpdateId: () => string
+  renderId: number,
+  shouldAbortRender: () => boolean
 ) {
   while (
     !errorBoundaryInstance ||
-    errorBoundaryInstance.props.updateId !== updateId
+    errorBoundaryInstance.props.renderId !== renderId
   ) {
     await new Promise((resolve) => setTimeout(resolve, 100));
-    if (getCurrentUpdateId() !== updateId) {
+    if (shouldAbortRender()) {
       return null;
     }
   }

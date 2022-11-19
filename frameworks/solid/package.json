@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-solid",
-  "version": "3.0.3",
+  "version": "4.0.0",
   "description": "SolidJS plugin for Preview.js enabling instant preview of SolidJS components and stories",
   "info": "A framework plugin for Preview.js that enables instant preview and update-as-you-type of SolidJS components and stories with auto-generated properties and configurable custom previews, so you can iterate on any component without ever leaving your IDE",
   "license": "MIT",
@@ -18,10 +18,14 @@
   "homepage": "https://previewjs.com",
   "sideEffects": false,
   "type": "commonjs",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./dist/index.js"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
     "./setup": {
       "module": "./setup.mjs",
@@ -30,21 +34,21 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-solid --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
+    "build": "tsc && unbuild",
     "test": "vitest --no-threads"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.0.3",
-    "@previewjs/type-analyzer": "^4.0.6",
-    "@previewjs/vfs": "^1.2.9",
+    "@previewjs/csf3": "^3.0.4",
+    "@previewjs/type-analyzer": "^4.0.7",
+    "@previewjs/vfs": "^1.2.10",
     "typescript": "^4.8.4",
     "vite-plugin-solid": "^2.4.0"
   },
   "devDependencies": {
     "@previewjs/core": "workspace:*",
-    "rimraf": "3.0.2",
     "solid-js": "1.6.1",
-    "vite": "3.2.3",
-    "vitest": "0.25.1"
+    "unbuild": "0.9.1",
+    "vite": "3.2.4",
+    "vitest": "0.25.2"
   }
 }

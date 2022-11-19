@@ -11,7 +11,7 @@ program
   .action(async (filter, { setupModule, testsPath, repeat = 1 }) => {
     let failed = false;
     const groupCount = parseInt(process.env.GROUP_COUNT || "1");
-    const groupIndex = parseInt(process.env.GROUP_INDEX || "0");
+    const groupIndex = parseInt(process.env.GROUP_INDEX || "1") - 1;
     const port = parseInt(process.env.PORT || "8100");
     const setupEnvironmentPath = path.resolve(setupModule);
     const testsResolvedPath = path.resolve(testsPath);

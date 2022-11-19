@@ -8,7 +8,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { reactFrameworkPlugin } from ".";
+import reactFrameworkPlugin from ".";
 import { extractReactComponents } from "./extract-component";
 
 const ROOT_DIR = path.join(__dirname, "virtual");

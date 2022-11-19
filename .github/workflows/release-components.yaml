@@ -49,6 +49,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.checkAppVersion.outputs.changed == 'true'
         run: cd app && pnpm publish --no-git-checks --access public
+      - id: checkChromelessVersion
+        uses: EndBug/version-check@v2.1.1
+        with:
+          diff-search: true
+          file-name: ./chromeless/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkChromelessVersion.outputs.changed == 'true'
+        run: cd chromeless && pnpm publish --no-git-checks --access public
       - id: checkConfigVersion
         uses: EndBug/version-check@v2.1.1
         with:
@@ -153,6 +161,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.checkSerializableValuesVersion.outputs.changed == 'true'
         run: cd serializable-values && pnpm publish --no-git-checks --access public
+      - id: checkTestingVersion
+        uses: EndBug/version-check@v2.1.1
+        with:
+          diff-search: true
+          file-name: ./testing/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkTestingVersion.outputs.changed == 'true'
+        run: cd testing && pnpm publish --no-git-checks --access public
       - id: checkTypeAnalyzerVersion
         uses: EndBug/version-check@v2.1.1
         with:

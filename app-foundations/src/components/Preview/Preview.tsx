@@ -68,11 +68,7 @@ export const Preview = observer(
     const tabs: PanelTab[] = [];
 
     if (state.component) {
-      if (
-        (state.component.variantKey === null ||
-          state.component.variantKey === "custom") &&
-        state.component.details
-      ) {
+      if (!state.component.variantKey && state.component.details) {
         const { props } = state.component.details;
         const { propsTypeName, types } = props.propsType;
         const propsType = types[propsTypeName]?.type || UNKNOWN_TYPE;

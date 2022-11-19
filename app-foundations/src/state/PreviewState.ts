@@ -56,12 +56,7 @@ export class PreviewState {
     name: string;
 
     /**
-     * Key of the component's variant currently displayed.
-     *
-     * Set to "custom" when a preconfigured variant isn't being used.
-     *
-     * Null when the component is still loading and information about its variants hasn't been
-     * loaded yet (see details.variants below).
+     * Key of the component's variant currently displayed, if any.
      */
     variantKey: string | null;
 
@@ -131,10 +126,15 @@ export class PreviewState {
                 this.iframeController.resetIframe();
               }
               break;
-            case "rendering-setup":
-              this.component.variantKey = event.info.variantKey;
-              this.component.details.variants = event.info.variants;
+            case "rendering-setup": {
+              const hadVariants =
+                (this.component.details.variants?.length || 0) > 0;
+              this.component.details.variants = event.info.variants || [];
+              if (this.component.details.variants.length > 0 && !hadVariants) {
+                this.setVariant(this.component.details.variants[0]!.key);
+              }
               break;
+            }
             case "rendering-done":
               if (this.component.details.renderingAlwaysFailing === null) {
                 this.component.details.renderingAlwaysFailing = !event.success;
@@ -268,13 +268,13 @@ export class PreviewState {
 
   setComponent(componentId: string) {
     if (componentId === this.component?.componentId) {
-      this.setVariant("custom");
+      this.setVariant(null);
     } else {
       window.__previewjs_navigate(componentId);
     }
   }
 
-  setVariant(variantKey: string) {
+  setVariant(variantKey: string | null) {
     const component = this.component;
     if (!component) {
       return;
@@ -320,7 +320,7 @@ export class PreviewState {
       return;
     }
     const name = decodedComponentId.component.name;
-    this.iframeController.showLoading();
+    this.iframeController.resetIframe();
     runInAction(() => {
       this.component = {
         componentId,
@@ -364,9 +364,10 @@ export class PreviewState {
     this.iframeController.loadComponent({
       componentName: this.component.name,
       filePath: this.component.details.filePath,
-      variantKey: this.component.variantKey,
-      customVariantPropsSource: this.component.details.props.invocationSource,
-      defaultPropsSource: this.component.details.props.defaultPropsSource,
+      propsAssignmentSource: this.component.variantKey
+        ? `properties = variants?.find(v => v.key === "${this.component.variantKey}")?.props || {}`
+        : this.component.details.props.invocationSource,
+      defaultPropsSource: this.component.details.props.defaultProps.source,
     });
   }
 
