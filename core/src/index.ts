@@ -152,9 +152,33 @@ export async function createWorkspace({
         ),
       async (req, res, next) => {
         if (req.path === "/api/" + RPCs.GetState.path) {
-          res.json(await persistedStateManager.get(req));
+          try {
+            const response = await persistedStateManager.get(req);
+            res.json({
+              kind: "success",
+              response,
+            });
+          } catch (e: any) {
+            console.error(`Unable to fetch state`, e);
+            res.json({
+              kind: "error",
+              message: e.message,
+            });
+          }
         } else if (req.path === "/api/" + RPCs.UpdateState.path) {
-          res.json(await persistedStateManager.update(req, res));
+          try {
+            const response = await persistedStateManager.update(req, res);
+            res.json({
+              kind: "success",
+              response,
+            });
+          } catch (e: any) {
+            console.error(`Unable to update state`, e);
+            res.json({
+              kind: "error",
+              message: e.message,
+            });
+          }
         } else if (req.path.startsWith("/api/")) {
           res.json(await router.handle(req.path.substr(5), req.body));
         } else {
