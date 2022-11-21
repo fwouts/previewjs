@@ -46,6 +46,10 @@ export const preactFrameworkPlugin: FrameworkPluginFactory = {
               "react-native": "preact/compat",
             },
           },
+          esbuild: {
+            jsx: "automatic",
+            jsxImportSource: "preact",
+          },
           plugins: [
             {
               name: "previewjs:disable-preact-hmr",
