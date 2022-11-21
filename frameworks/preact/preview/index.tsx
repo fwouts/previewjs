@@ -1,6 +1,8 @@
 import type { RendererLoader } from "@previewjs/iframe";
-import { ComponentType, Fragment, render as preactRender } from "preact";
+import { Fragment, render } from "preact";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
+
+const container = document.getElementById("root");
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -57,7 +59,7 @@ export const load: RendererLoader = async ({
       if (shouldAbortRender()) {
         return;
       }
-      render(Renderer, props);
+      render(<Renderer {...props} />, container);
       if (shouldAbortRender()) {
         return;
       }
@@ -74,12 +76,3 @@ export const load: RendererLoader = async ({
     },
   };
 };
-
-export function render<P>(Renderer: ComponentType<P>, props: P) {
-  const container = document.getElementById("root");
-  if (!Renderer) {
-    preactRender(null, container);
-  } else {
-    preactRender(<Renderer {...props} />, container);
-  }
-}
