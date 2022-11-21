@@ -66,7 +66,7 @@ export const preactFrameworkPlugin: FrameworkPluginFactory = {
               name: "previewjs:optimize-deps",
               config: () => ({
                 optimizeDeps: {
-                  include: ["preact"],
+                  include: ["preact", "preact/jsx-runtime"],
                 },
               }),
             },
