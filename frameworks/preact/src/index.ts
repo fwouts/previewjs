@@ -7,17 +7,17 @@ import { extractPreactComponents } from "./extract-component";
 /** @deprecated */
 export const preactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
-    const version = await dependencies["react"]?.readInstalledVersion();
+    const version = await dependencies["preact"]?.readInstalledVersion();
     if (!version) {
       return false;
     }
-    return parseInt(version) >= 16;
+    return parseInt(version) >= 10;
   },
   async create() {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
-      name: "@previewjs/plugin-react",
+      name: "@previewjs/plugin-preact",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       specialTypes: PREACT_SPECIAL_TYPES,
