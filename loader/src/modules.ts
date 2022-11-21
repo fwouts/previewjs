@@ -11,15 +11,19 @@ export async function loadModules({
   installDir: string;
   packageName: string;
 }) {
-  if (fs.existsSync(path.join(installDir, "pnpm"))) {
-    await execa.command(
-      `cd "${installDir}" && ./pnpm/bin/pnpm.cjs install --frozen-lockfile`,
+  if (
+    fs.existsSync(path.join(installDir, "pnpm")) &&
+    !fs.existsSync(path.join(installDir, "node_modules"))
+  ) {
+    const pnpmProcess = execa.command(
+      `cd "${installDir}" && node pnpm/bin/pnpm.cjs install --frozen-lockfile`,
       {
         shell: true,
-        stdout: "inherit",
-        stderr: "inherit",
       }
     );
+    pnpmProcess.stdout?.on("data", (chunk) => process.stdout.write(chunk));
+    pnpmProcess.stderr?.on("data", (chunk) => process.stderr.write(chunk));
+    await pnpmProcess;
   }
   const coreModule = requireModule("@previewjs/core") as typeof core;
   const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;

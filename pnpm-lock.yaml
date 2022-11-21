@@ -1501,6 +1501,7 @@ importers:
       '@previewjs/loader': workspace:*
       '@types/node': 18.11.9
       exclusive-promises: ^1.0.3
+      exit-hook: ^3.1.2
       is-wsl: 2.2.0
       rimraf: 3.0.2
       ts-node-dev: 2.0.0
@@ -1512,6 +1513,7 @@ importers:
       '@previewjs/loader': link:../loader
       '@types/node': 18.11.9
       exclusive-promises: 1.0.3
+      exit-hook: 3.1.2
       is-wsl: 2.2.0
       rimraf: 3.0.2
       ts-node-dev: 2.0.0_cbe7ovvae6zqfnmtgctpgpys54
@@ -17560,6 +17562,11 @@ packages:
       onetime: 5.1.2
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
+
+  /exit-hook/3.1.2:
+    resolution: {integrity: sha512-CRCiyo8LiN5GGxBtID7IEm2UqCzXIsvPu5DNRcdIaRAUzXppaTzgmy+PXyk7xS4jDIvCGDHXm9DoKraOoJtcTw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: true
 
   /exit/0.1.2:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
