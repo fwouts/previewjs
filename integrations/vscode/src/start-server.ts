@@ -1,14 +1,29 @@
 import { Client, createClient } from "@previewjs/server/client";
 import execa from "execa";
-import { openSync, readFileSync } from "fs";
+import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
 import path from "path";
 import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
 import { SERVER_PORT } from "./port";
 
-export async function startPreviewJsServer(
+const logsPath = path.join(__dirname, "server.log");
+const serverLockFilePath = path.join(__dirname, "process.lock");
+
+export async function ensureServerRunning(
   outputChannel: OutputChannel
 ): Promise<Client | null> {
+  const client = createClient(`http://localhost:${SERVER_PORT}`);
+  await startServer(outputChannel);
+  const ready = streamServerLogs(outputChannel);
+  await ready;
+  await client.updateClientStatus({
+    clientId,
+    alive: true,
+  });
+  return client;
+}
+
+async function startServer(outputChannel: OutputChannel): Promise<boolean> {
   const isWindows = process.platform === "win32";
   let useWsl = false;
   const nodeVersionCommand = "node --version";
@@ -39,7 +54,7 @@ export async function startPreviewJsServer(
   invalidNode: if (checkNodeVersion.kind === "invalid") {
     outputChannel.appendLine(checkNodeVersion.message);
     if (!isWindows) {
-      return null;
+      return false;
     }
     // On Windows, try WSL as well.
     outputChannel.appendLine(`Attempting again with WSL...`);
@@ -59,22 +74,21 @@ export async function startPreviewJsServer(
       break invalidNode;
     }
     outputChannel.appendLine(checkNodeVersionWsl.message);
-    return null;
+    return false;
   }
-  const logsPath = path.join(__dirname, "server.log");
-  const logs = openSync(logsPath, "w");
   outputChannel.appendLine(
     `🚀 Starting Preview.js server${useWsl ? " from WSL" : ""}...`
   );
   outputChannel.appendLine(`Streaming server logs to: ${logsPath}`);
-  outputChannel.appendLine(
-    `If you experience any issues, please include this log file in bug reports.`
-  );
   const nodeServerCommand = "node --trace-warnings server.js";
-  const serverOptions = {
+  const serverOptions: execa.Options = {
     cwd: __dirname,
-    stdio: ["ignore", logs, logs],
-  } as const;
+    stdio: "inherit",
+    env: {
+      PREVIEWJS_LOCK_FILE: serverLockFilePath,
+      PREVIEWJS_LOG_FILE: logsPath,
+    },
+  };
   let serverProcess: execa.ExecaChildProcess<string>;
   if (useWsl) {
     serverProcess = execa(
@@ -90,53 +104,51 @@ export async function startPreviewJsServer(
       detached: true,
     });
   }
+  serverProcess.unref();
+  return true;
+}
 
-  const client = createClient(`http://localhost:${SERVER_PORT}`);
-  try {
-    const startTime = Date.now();
-    const timeoutMillis = 30000;
-    loop: while (true) {
-      try {
-        await client.info();
-        break loop;
-      } catch (e) {
-        if (serverProcess.exitCode) {
-          // Important: an exit code of 0 may be correct, especially if:
-          // 1. Another server is already running.
-          // 2. WSL is used, so the process exits immediately because it spans another one.
-          outputChannel.append(readFileSync(logsPath, "utf8"));
-          throw new Error(
-            `Preview.js server exited with code ${serverProcess.exitCode}`
-          );
+function streamServerLogs(outputChannel: OutputChannel) {
+  const ready = new Promise<void>((resolve) => {
+    let lastKnownLogsLength = 0;
+    let resolved = false;
+    // Ensure file exists before watching.
+    // Source: https://remarkablemark.org/blog/2017/12/17/touch-file-nodejs/
+    try {
+      const time = Date.now();
+      utimesSync(logsPath, time, time);
+    } catch (e) {
+      let fd = openSync(logsPath, "a");
+      closeSync(fd);
+    }
+    watch(
+      logsPath,
+      {
+        persistent: false,
+      },
+      () => {
+        try {
+          const logsContent = ignoreBellPrefix(readFileSync(logsPath, "utf8"));
+          const newLogsLength = logsContent.length;
+          if (newLogsLength < lastKnownLogsLength) {
+            // Log file has been rewritten.
+            outputChannel.append("\n⚠️ Preview.js server was restarted ⚠️\n\n");
+            lastKnownLogsLength = 0;
+          }
+          outputChannel.append(logsContent.slice(lastKnownLogsLength));
+          lastKnownLogsLength = newLogsLength;
+          // Note: " running on " also appears in "Preview.js daemon server is already running on port 9315".
+          if (!resolved && logsContent.includes(" running on ")) {
+            resolve();
+            resolved = true;
+          }
+        } catch (e: any) {
+          // Fine, ignore. It just means log streaming is broken.
         }
-        if (Date.now() - startTime > timeoutMillis) {
-          throw new Error(
-            `Connection timed out after ${timeoutMillis}ms: ${e}`
-          );
-        }
-        // Ignore the error and retry after a short delay.
-        await new Promise<void>((resolve) => setTimeout(resolve, 100));
       }
-    }
-    client.info();
-    await client.waitForReady();
-    outputChannel.appendLine(`✅ Preview.js server ready.`);
-    serverProcess.unref();
-  } catch (e: any) {
-    if (e.stack) {
-      outputChannel.appendLine(e.stack);
-    }
-    outputChannel.appendLine(
-      `❌ Preview.js server failed to start. Please check logs above and report the issue: https://github.com/fwouts/previewjs/issues`
     );
-    await serverProcess;
-    throw e;
-  }
-  await client.updateClientStatus({
-    clientId,
-    alive: true,
   });
-  return client;
+  return ready;
 }
 
 function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):

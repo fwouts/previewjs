@@ -1,4 +1,4 @@
-import { ensureServerRunning } from "@previewjs/server";
+import { startServer } from "@previewjs/server";
 import { readFileSync } from "fs";
 import { SERVER_PORT } from "./port";
 
@@ -11,7 +11,7 @@ if (!packageName) {
   throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
 }
 
-ensureServerRunning({
+startServer({
   loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
   packageName,
   versionCode: `vscode-${version}`,

@@ -1,12 +1,12 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
-import { extractPreactComponents } from "./extract-component";
 import { PREACT_SPECIAL_TYPES } from "../special-types";
+import { extractPreactComponents } from "./extract-component";
 
 /** @deprecated */
 export const preactFrameworkPlugin: FrameworkPluginFactory = {
-  isCompatible: async dependencies => {
+  isCompatible: async (dependencies) => {
     const version = await dependencies["react"]?.readInstalledVersion();
     if (!version) {
       return false;

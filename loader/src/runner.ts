@@ -9,7 +9,7 @@ export async function load(options: {
   packageName: string;
 }) {
   const { core, vfs, setupEnvironment, frameworkPluginFactories } =
-    loadModules(options);
+    await loadModules(options);
   const memoryReader = vfs.createMemoryReader();
   const reader = vfs.createStackedReader([
     memoryReader,
