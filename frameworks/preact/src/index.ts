@@ -58,6 +58,14 @@ export const preactFrameworkPlugin: FrameworkPluginFactory = {
                 return code.replace(/import\.meta/g, "({})");
               },
             },
+            {
+              name: "previewjs:optimize-deps",
+              config: () => ({
+                optimizeDeps: {
+                  include: ["preact"],
+                },
+              }),
+            },
           ],
           define: {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
