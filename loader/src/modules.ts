@@ -1,15 +1,30 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
-import { chmodSync, constants, existsSync, lstatSync, readdirSync } from "fs";
+import execa from "execa";
+import fs from "fs";
 import path from "path";
 
-export function loadModules({
+export async function loadModules({
   installDir,
   packageName,
 }: {
   installDir: string;
   packageName: string;
 }) {
+  if (
+    fs.existsSync(path.join(installDir, "pnpm")) &&
+    !fs.existsSync(path.join(installDir, "node_modules"))
+  ) {
+    const pnpmProcess = execa.command(
+      `cd "${installDir}" && node pnpm/bin/pnpm.cjs install --frozen-lockfile`,
+      {
+        shell: true,
+      }
+    );
+    pnpmProcess.stdout?.on("data", (chunk) => process.stdout.write(chunk));
+    pnpmProcess.stderr?.on("data", (chunk) => process.stderr.write(chunk));
+    await pnpmProcess;
+  }
   const coreModule = requireModule("@previewjs/core") as typeof core;
   const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;
   const setupEnvironment: core.SetupPreviewEnvironment =
@@ -30,18 +45,6 @@ export function loadModules({
     } catch (e) {
       console.error(`Unable to load ${name} from ${installDir}`, e);
       throw e;
-    }
-  }
-
-  for (const f of readdirSync(path.join(installDir, "node_modules"))) {
-    if (f.startsWith("esbuild-")) {
-      const binPath = path.join(__dirname, "node_modules", f, "bin", "esbuild");
-      if (
-        existsSync(binPath) &&
-        !(lstatSync(binPath).mode & constants.S_IXUSR)
-      ) {
-        chmodSync(binPath, "555");
-      }
     }
   }
 

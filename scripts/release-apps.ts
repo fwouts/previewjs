@@ -40,6 +40,7 @@ async function main() {
           "@previewjs/core": coreVersion,
           "@previewjs/plugin-react": reactPluginVersion,
           "@previewjs/plugin-solid": solidPluginVersion,
+          "@previewjs/plugin-svelte": sveltePluginVersion,
           "@previewjs/plugin-vue2": vue2PluginVersion,
           "@previewjs/plugin-vue3": vue3PluginVersion,
           "@previewjs/pro": previewjsProVersion,
@@ -52,61 +53,13 @@ async function main() {
     "utf8"
   );
   console.log(`Running npm install (without esbuild optional deps)...`);
-  await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
-    cwd: releaseDirPath,
-  });
-  const packageLock = JSON.parse(
-    await fs.promises.readFile(
-      path.join(releaseDirPath, "package-lock.json"),
-      "utf8"
-    )
-  );
-  const esbuildOptionalDependencies =
-    packageLock["packages"]["node_modules/esbuild"]["optionalDependencies"];
-  const esbuildBinaryPackages = [
-    "esbuild-darwin-64",
-    "esbuild-darwin-arm64",
-    "esbuild-linux-64",
-    "esbuild-linux-arm64",
-    "esbuild-windows-32",
-    "esbuild-windows-64",
-    "esbuild-windows-arm64",
-  ];
-  const esbuildBinaryDependencies: Record<string, string> = {};
-  for (const binaryPackage of esbuildBinaryPackages) {
-    const version = esbuildOptionalDependencies[binaryPackage];
-    if (!version) {
-      throw new Error(
-        `Missing esbuild binary dependency: ${binaryPackage}. Perhaps the release script needs to be updated.`
-      );
+  await execa(
+    "../../../node_modules/.bin/pnpm",
+    ["install", "--lockfile-only"],
+    {
+      cwd: releaseDirPath,
     }
-    esbuildBinaryDependencies[binaryPackage] = version;
-  }
-  await fs.promises.writeFile(
-    path.join(releaseDirPath, "package.json"),
-    JSON.stringify(
-      {
-        dependencies: {
-          "@previewjs/core": coreVersion,
-          "@previewjs/plugin-react": reactPluginVersion,
-          "@previewjs/plugin-solid": solidPluginVersion,
-          "@previewjs/plugin-svelte": sveltePluginVersion,
-          "@previewjs/plugin-vue2": vue2PluginVersion,
-          "@previewjs/plugin-vue3": vue3PluginVersion,
-          "@previewjs/pro": previewjsProVersion,
-          "@previewjs/vfs": vfsVersion,
-          ...esbuildBinaryDependencies,
-        },
-      },
-      null,
-      2
-    ),
-    "utf8"
   );
-  console.log(`Running npm install with esbuild optional deps...`);
-  await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
-    cwd: releaseDirPath,
-  });
   await execa("git", ["add", "."]);
   if (!(await isGitClean())) {
     await execa("git", ["commit", "-m", `release: update loader dependencies`]);

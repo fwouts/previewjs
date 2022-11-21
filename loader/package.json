@@ -34,7 +34,7 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc && cd src/release && pnpm npm install --ignore-scripts -f"
+    "build": "rimraf dist && tsc"
   },
   "devDependencies": {
     "@previewjs/core": "workspace:*",

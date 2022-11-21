@@ -20,7 +20,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      npm: 9.1.2
+      pnpm: 7.15.0
       prettier: 2.7.1
       ts-node: 10.9.1
       turbo: 1.6.3
@@ -40,7 +40,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      npm: 9.1.2
+      pnpm: 7.15.0
       prettier: 2.7.1
       ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
       turbo: 1.6.3
@@ -1501,6 +1501,7 @@ importers:
       '@previewjs/loader': workspace:*
       '@types/node': 18.11.9
       exclusive-promises: ^1.0.3
+      exit-hook: ^3.1.2
       is-wsl: 2.2.0
       rimraf: 3.0.2
       ts-node-dev: 2.0.0
@@ -1512,6 +1513,7 @@ importers:
       '@previewjs/loader': link:../loader
       '@types/node': 18.11.9
       exclusive-promises: 1.0.3
+      exit-hook: 3.1.2
       is-wsl: 2.2.0
       rimraf: 3.0.2
       ts-node-dev: 2.0.0_cbe7ovvae6zqfnmtgctpgpys54
@@ -17573,6 +17575,11 @@ packages:
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
 
+  /exit-hook/3.1.2:
+    resolution: {integrity: sha512-CRCiyo8LiN5GGxBtID7IEm2UqCzXIsvPu5DNRcdIaRAUzXppaTzgmy+PXyk7xS4jDIvCGDHXm9DoKraOoJtcTw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: true
+
   /exit/0.1.2:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
     engines: {node: '>= 0.8.0'}
@@ -23510,81 +23517,6 @@ packages:
     dependencies:
       path-key: 3.1.1
 
-  /npm/9.1.2:
-    resolution: {integrity: sha512-qOFg33/5YCHLArtRBep9HJydPZURbCwt8nxwXDRHZO9PZtTUMCo1C4iXBFPW1TxnzAdHscdw76ihbupdmL7cmw==}
-    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
-    hasBin: true
-    dev: true
-    bundledDependencies:
-      - '@isaacs/string-locale-compare'
-      - '@npmcli/arborist'
-      - '@npmcli/config'
-      - '@npmcli/map-workspaces'
-      - '@npmcli/package-json'
-      - '@npmcli/run-script'
-      - abbrev
-      - archy
-      - cacache
-      - chalk
-      - ci-info
-      - cli-columns
-      - cli-table3
-      - columnify
-      - fastest-levenshtein
-      - fs-minipass
-      - glob
-      - graceful-fs
-      - hosted-git-info
-      - ini
-      - init-package-json
-      - is-cidr
-      - json-parse-even-better-errors
-      - libnpmaccess
-      - libnpmdiff
-      - libnpmexec
-      - libnpmfund
-      - libnpmhook
-      - libnpmorg
-      - libnpmpack
-      - libnpmpublish
-      - libnpmsearch
-      - libnpmteam
-      - libnpmversion
-      - make-fetch-happen
-      - minimatch
-      - minipass
-      - minipass-pipeline
-      - mkdirp
-      - ms
-      - node-gyp
-      - nopt
-      - npm-audit-report
-      - npm-install-checks
-      - npm-package-arg
-      - npm-pick-manifest
-      - npm-profile
-      - npm-registry-fetch
-      - npm-user-validate
-      - npmlog
-      - p-map
-      - pacote
-      - parse-conflict-json
-      - proc-log
-      - qrcode-terminal
-      - read
-      - read-package-json
-      - read-package-json-fast
-      - rimraf
-      - semver
-      - ssri
-      - tar
-      - text-table
-      - tiny-relative-date
-      - treeverse
-      - validate-npm-package-name
-      - which
-      - write-file-atomic
-
   /npmlog/5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
     dependencies:
@@ -24673,6 +24605,12 @@ packages:
       ts-pnp: 1.2.0_typescript@4.8.4
     transitivePeerDependencies:
       - typescript
+    dev: true
+
+  /pnpm/7.15.0:
+    resolution: {integrity: sha512-GGQ5+MCwD0bpq+65uitpgO1+ZusZ1keO5ebG/CH6ciu1ohnZj5Y3X374Ow/CBApa+Jw2/NUifVRz2fW4JChftA==}
+    engines: {node: '>=14.6'}
+    hasBin: true
     dev: true
 
   /polished/4.2.2:
