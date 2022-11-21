@@ -1,68 +1,29 @@
 import type { ComponentAnalysis } from "@previewjs/core";
 import {
-  CollectedTypes,
   dereferenceType,
   EMPTY_OBJECT_TYPE,
   maybeOptionalType,
   objectType,
-  stripUnusedTypes,
   TypeResolver,
   UNKNOWN_TYPE,
-  ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { detectPropTypes } from "./prop-types";
 
 export function analyzePreactComponent(
   typeResolver: TypeResolver,
-  absoluteFilePath: string,
-  componentName: string,
   signature: ts.Signature
 ): ComponentAnalysis {
-  const sourceFile = typeResolver.sourceFile(absoluteFilePath);
-  let propTypes: ts.Expression | null = null;
-  if (sourceFile) {
-    propTypes = detectPropTypes(sourceFile, componentName);
-  }
-  const resolved = computePropsType(typeResolver, signature, propTypes);
-  return {
-    propsType: resolved.type,
-    types: { ...resolved.collected },
-  };
-}
-
-function computePropsType(
-  typeResolver: TypeResolver,
-  signature: ts.Signature,
-  propTypes: ts.Expression | null
-): {
-  type: ValueType;
-  collected: CollectedTypes;
-} {
-  if (propTypes) {
-    return computePropsTypeFromPropTypes(typeResolver, propTypes);
-  }
-  return computePropsTypeFromSignature(typeResolver, signature);
-}
-
-function computePropsTypeFromSignature(
-  typeResolver: TypeResolver,
-  signature: ts.Signature
-): {
-  type: ValueType;
-  collected: CollectedTypes;
-} {
   const firstParam = signature.getParameters()[0];
   if (!firstParam) {
     return {
-      type: EMPTY_OBJECT_TYPE,
-      collected: {},
+      propsType: EMPTY_OBJECT_TYPE,
+      types: {},
     };
   }
   if (!firstParam.valueDeclaration) {
     return {
-      type: UNKNOWN_TYPE,
-      collected: {},
+      propsType: UNKNOWN_TYPE,
+      types: {},
     };
   }
   const type = typeResolver.checker.getTypeOfSymbolAtLocation(
@@ -70,8 +31,8 @@ function computePropsTypeFromSignature(
     firstParam.valueDeclaration
   );
   try {
-    let { type: propsType, collected } = typeResolver.resolveType(type);
-    [propsType] = dereferenceType(propsType, collected, []);
+    let { type: propsType, collected: types } = typeResolver.resolveType(type);
+    [propsType] = dereferenceType(propsType, types, []);
     stripUnusedProps: if (
       propsType.kind === "object" &&
       ts.isParameter(firstParam.valueDeclaration)
@@ -106,7 +67,7 @@ function computePropsTypeFromSignature(
         );
       }
     }
-    return { type: propsType, collected };
+    return { propsType, types };
   } catch (e) {
     console.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(
@@ -116,47 +77,7 @@ function computePropsTypeFromSignature(
     );
   }
   return {
-    type: UNKNOWN_TYPE,
-    collected: {},
-  };
-}
-
-function computePropsTypeFromPropTypes(
-  typeResolver: TypeResolver,
-  propTypes: ts.Expression
-): {
-  type: ValueType;
-  collected: CollectedTypes;
-} {
-  const type = typeResolver.checker.getTypeAtLocation(propTypes);
-  const fields: Record<string, ValueType> = {};
-  let collected: CollectedTypes = {};
-  for (const property of type.getProperties()) {
-    fields[property.name] = (() => {
-      if (!property.valueDeclaration) {
-        return UNKNOWN_TYPE;
-      }
-      const propertyType = typeResolver.checker.getTypeAtLocation(
-        property.valueDeclaration
-      );
-      const typeArguments = typeResolver.resolveTypeArguments(propertyType);
-      const fieldType = typeArguments.types[0];
-      if (fieldType) {
-        collected = {
-          ...collected,
-          ...typeArguments.collected,
-        };
-        return maybeOptionalType(
-          fieldType,
-          propertyType.symbol.name === "Requireable"
-        );
-      }
-      return UNKNOWN_TYPE;
-    })();
-  }
-  const resolved = objectType(fields);
-  return {
-    type: resolved,
-    collected: stripUnusedTypes(collected, resolved),
+    propsType: UNKNOWN_TYPE,
+    types: {},
   };
 }
