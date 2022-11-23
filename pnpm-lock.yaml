@@ -1186,6 +1186,7 @@ importers:
 
   frameworks/solid:
     specifiers:
+      '@playwright/test': 1.27.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.4
       '@previewjs/type-analyzer': ^4.0.7
@@ -1203,6 +1204,7 @@ importers:
       typescript: 4.8.4
       vite-plugin-solid: 2.4.0_solid-js@1.6.1+vite@3.2.4
     devDependencies:
+      '@playwright/test': 1.27.1
       '@previewjs/core': link:../../core
       solid-js: 1.6.1
       unbuild: 0.9.1
@@ -1220,6 +1222,7 @@ importers:
 
   frameworks/svelte:
     specifiers:
+      '@playwright/test': 1.27.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.4
       '@previewjs/type-analyzer': ^4.0.7
@@ -1241,6 +1244,7 @@ importers:
       svelte: 3.53.1
       typescript: 4.8.4
     devDependencies:
+      '@playwright/test': 1.27.1
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
@@ -1259,6 +1263,7 @@ importers:
   frameworks/vue2:
     specifiers:
       '@nuxt/config': ^2.15.8
+      '@playwright/test': 1.27.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.4
       '@previewjs/type-analyzer': ^4.0.7
@@ -1283,6 +1288,7 @@ importers:
       vue: 2.7.14
       vue-template-compiler: 2.7.14
     devDependencies:
+      '@playwright/test': 1.27.1
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
@@ -1304,6 +1310,7 @@ importers:
 
   frameworks/vue3:
     specifiers:
+      '@playwright/test': 1.27.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.4
       '@previewjs/type-analyzer': ^4.0.7
@@ -1331,6 +1338,7 @@ importers:
       typescript: 4.8.4
       vue: 3.2.37
     devDependencies:
+      '@playwright/test': 1.27.1
       '@previewjs/core': link:../../core
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
