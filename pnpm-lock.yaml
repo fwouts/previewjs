@@ -1192,7 +1192,7 @@ importers:
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.0.7
       '@previewjs/vfs': ^1.2.10
-      solid-js: 1.6.1
+      solid-js: 1.6.2
       typescript: ^4.8.4
       unbuild: 0.9.1
       vite: 3.2.4
@@ -1203,12 +1203,16 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.8.4
-      vite-plugin-solid: 2.4.0_solid-js@1.6.1+vite@3.2.4
+      vite-plugin-solid: 2.4.0_solid-js@1.6.2+vite@3.2.4
     devDependencies:
       '@playwright/test': 1.27.1
       '@previewjs/core': link:../../core
+<<<<<<< HEAD
       '@previewjs/testing': link:../../testing
       solid-js: 1.6.1
+=======
+      solid-js: 1.6.2
+>>>>>>> main
       unbuild: 0.9.1
       vite: 3.2.4
       vitest: 0.25.3
@@ -1216,9 +1220,9 @@ importers:
   frameworks/solid/preview:
     specifiers:
       '@previewjs/iframe': workspace:*
-      solid-js: 1.6.1
+      solid-js: 1.6.2
     dependencies:
-      solid-js: 1.6.1
+      solid-js: 1.6.2
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
 
@@ -1719,7 +1723,7 @@ importers:
       vite: ^3.1.0
     devDependencies:
       '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.559_svelte@3.52.0+vite@3.1.8
+      '@sveltejs/kit': 1.0.0-next.560_svelte@3.52.0+vite@3.1.8
       svelte: 3.52.0
       svelte-check: 2.9.2_svelte@3.52.0
       svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
@@ -1744,7 +1748,7 @@ importers:
       '@fontsource/fira-mono': 4.5.10
       '@neoconfetti/svelte': 1.0.0
       '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.559_svelte@3.52.0+vite@3.1.8
+      '@sveltejs/kit': 1.0.0-next.560_svelte@3.52.0+vite@3.1.8
       '@types/cookie': 0.5.1
       svelte: 3.52.0
       svelte-check: 2.9.2_svelte@3.52.0
@@ -1971,11 +1975,15 @@ importers:
       get-port: 5.1.1
       glob: 7.2.3
       playwright: 1.27.1
+      rimraf: 3.0.2
     devDependencies:
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
       '@types/rimraf': 3.0.2
+<<<<<<< HEAD
       rimraf: 3.0.2
+=======
+>>>>>>> main
       typescript: 4.8.4
       unbuild: 0.9.1
 
@@ -8657,8 +8665,8 @@ packages:
       import-meta-resolve: 2.1.0
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.559_svelte@3.52.0+vite@3.1.8:
-    resolution: {integrity: sha512-8Dx5w7O5LGbzzCQ0SG/1FI7cKtfsA1y0qr+mIfFHxb78oUW3P1h88Xs4nlrO7nJslaZ/BuBcj4yblMv1C5+rpQ==}
+  /@sveltejs/kit/1.0.0-next.560_svelte@3.52.0+vite@3.1.8:
+    resolution: {integrity: sha512-ldZJyd+jfQWVkOkRHq25cXMffhL5MgB1Uzhhw1ngF8ezB38P/g4T+5ohP8wuk2lxPJIjbY3S6BeXN5mod9XOhA==}
     engines: {node: '>=16.14'}
     hasBin: true
     requiresBuild: true
@@ -11003,7 +11011,7 @@ packages:
   /@vue/compiler-sfc/2.7.9:
     resolution: {integrity: sha512-TD2FvT0fPUezw5RVP4tfwTZnKHP0QjeEUb39y7tORvOJQTjbOuHJEk4GPHUPsRaTeQ8rjuKjntyrYcEIx+ODxg==}
     dependencies:
-      '@babel/parser': 7.19.6
+      '@babel/parser': 7.20.3
       postcss: 8.4.19
       source-map: 0.6.1
 
@@ -28657,8 +28665,8 @@ packages:
   /solid-js/1.4.8:
     resolution: {integrity: sha512-XErZdnnYYXF7OwGSUAPcua2y5/ELB/c53zFCpWiEGqxTNoH1iQghzI8EsHJXk06sNn+Z/TGhb8bPDNNGSgimag==}
 
-  /solid-js/1.6.1:
-    resolution: {integrity: sha512-i8OmR419Hr0918Or6sm1ET/cgmxTtAB7Bdz/UwhZ7G2THixrvVSO3jd+C7YqMKKfVwmf8PJ2gUSbKE8NKv28GA==}
+  /solid-js/1.6.2:
+    resolution: {integrity: sha512-AZBsj+Yn1xliniTTeuQKG9V7VQVkQ8lZmSKvBjpcVSoZeF7nvt/N5f7Kcsx6QSufioa2YgvBjkIiA0cM0qhotw==}
     dependencies:
       csstype: 3.1.0
 
@@ -28673,7 +28681,7 @@ packages:
       solid-js: 1.4.8
     dev: true
 
-  /solid-refresh/0.4.1_solid-js@1.6.1:
+  /solid-refresh/0.4.1_solid-js@1.6.2:
     resolution: {integrity: sha512-v3tD/OXQcUyXLrWjPW1dXZyeWwP7/+GQNs8YTL09GBq+5FguA6IejJWUvJDrLIA4M0ho9/5zK2e9n+uy+4488g==}
     peerDependencies:
       solid-js: ^1.3
@@ -28681,7 +28689,12 @@ packages:
       '@babel/generator': 7.20.4
       '@babel/helper-module-imports': 7.18.6
       '@babel/types': 7.20.2
+<<<<<<< HEAD
       solid-js: 1.6.1
+=======
+      solid-js: 1.6.2
+    dev: false
+>>>>>>> main
 
   /sorcery/0.10.0:
     resolution: {integrity: sha512-R5ocFmKZQFfSTstfOtHjJuAwbpGyf9qjQa1egyhvXSbM7emjrtLXtGdZsDJDABC85YBfVvrOiGWKSYXPKdvP1g==}
@@ -31345,6 +31358,7 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
   /vite-plugin-solid/2.4.0_solid-js@1.6.1+vite@2.9.15:
     resolution: {integrity: sha512-Rr+t2sr9TWIvH16yzBZzx6O9YSpYAvcwKUMPqbi/4iU3mRumXQ4O10i1XGtQIynC7U3XwJsMzAJigDFGbiJBiw==}
     peerDependencies:
@@ -31364,6 +31378,9 @@ packages:
     dev: true
 
   /vite-plugin-solid/2.4.0_solid-js@1.6.1+vite@3.2.4:
+=======
+  /vite-plugin-solid/2.4.0_solid-js@1.6.2+vite@3.2.4:
+>>>>>>> main
     resolution: {integrity: sha512-Rr+t2sr9TWIvH16yzBZzx6O9YSpYAvcwKUMPqbi/4iU3mRumXQ4O10i1XGtQIynC7U3XwJsMzAJigDFGbiJBiw==}
     peerDependencies:
       solid-js: ^1.3.17
@@ -31373,8 +31390,8 @@ packages:
       '@babel/preset-typescript': 7.18.6_@babel+core@7.20.2
       babel-preset-solid: 1.4.8_@babel+core@7.20.2
       merge-anything: 5.0.2
-      solid-js: 1.6.1
-      solid-refresh: 0.4.1_solid-js@1.6.1
+      solid-js: 1.6.2
+      solid-refresh: 0.4.1_solid-js@1.6.2
       vite: 3.2.4
       vitefu: 0.1.1_vite@3.2.4
     transitivePeerDependencies:

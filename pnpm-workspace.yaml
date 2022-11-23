@@ -12,6 +12,7 @@ packages:
   - "frameworks/*"
   - "frameworks/*/preview"
   - "frameworks/*/tests/apps/*"
+  - "!frameworks/*/tests/apps/_tmp_*"
   - "iframe"
   - "integrations/cli"
   - "integrations/intellij/controller"
