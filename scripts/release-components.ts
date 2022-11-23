@@ -53,11 +53,6 @@ const packages: Package[] = [
     tagName: "csf3",
   },
   {
-    name: "e2e-test-runner",
-    dirPath: "e2e-test-runner",
-    tagName: "e2e-test-runner",
-  },
-  {
     name: "iframe",
     dirPath: "iframe",
     tagName: "iframe",

@@ -69,14 +69,7 @@ jobs:
         with:
           run_install: true
       - run: pnpm turbo run build
-        env:
-          SKIP_PREFLIGHT_CHECK: "true"
-      - run: pnpm install # necessary to link e2e-test-runner
-      - run: cd frameworks/react && pnpm e2e-test --shard=${{ matrix.group }}/3
-      - run: cd app && pnpm e2e-test
-        env:
-          GROUP_INDEX: ${{ matrix.group }}
-          GROUP_COUNT: 3
+      - run: pnpm e2e-test -- --shard=${{ matrix.group }}/3
       - name: Archive success screenshots
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
