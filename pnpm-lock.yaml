@@ -49,15 +49,17 @@ importers:
   api:
     specifiers:
       '@previewjs/type-analyzer': ^4.0.7
+      axios: ^1.1.3
       unbuild: 0.9.1
     dependencies:
       '@previewjs/type-analyzer': link:../type-analyzer
+      axios: 1.1.3
     devDependencies:
       unbuild: 0.9.1
 
   app:
     specifiers:
-      '@previewjs/app-foundations': workspace:*
+      '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/e2e-test-runner': workspace:*
       '@previewjs/plugin-react': workspace:*
@@ -65,6 +67,7 @@ importers:
       '@previewjs/plugin-svelte': workspace:*
       '@previewjs/plugin-vue2': workspace:*
       '@previewjs/plugin-vue3': workspace:*
+      '@previewjs/properties': workspace:*
       '@types/express': 4.17.14
       '@types/fs-extra': 9.0.13
       '@types/node': 18.11.9
@@ -77,7 +80,7 @@ importers:
     dependencies:
       express: 4.18.2
     devDependencies:
-      '@previewjs/app-foundations': link:../app-foundations
+      '@previewjs/api': link:../api
       '@previewjs/core': link:../core
       '@previewjs/e2e-test-runner': link:../e2e-test-runner
       '@previewjs/plugin-react': link:../frameworks/react
@@ -85,6 +88,7 @@ importers:
       '@previewjs/plugin-svelte': link:../frameworks/svelte
       '@previewjs/plugin-vue2': link:../frameworks/vue2
       '@previewjs/plugin-vue3': link:../frameworks/vue3
+      '@previewjs/properties': link:../properties
       '@types/express': 4.17.14
       '@types/fs-extra': 9.0.13
       '@types/node': 18.11.9
@@ -93,37 +97,6 @@ importers:
       typescript: 4.8.4
       unbuild: 0.9.1
       vite: 3.2.4_@types+node@18.11.9
-
-  app-foundations:
-    specifiers:
-      '@previewjs/api': ^5.0.0
-      '@previewjs/iframe': ^3.0.0
-      '@previewjs/properties': ^1.0.0
-      '@previewjs/serializable-values': ^3.1.1
-      '@previewjs/type-analyzer': ^4.0.7
-      assert-never: ^1.2.1
-      axios: ^1.1.3
-      concurrently: ^7.5.0
-      mobx: ^6.6.1
-      nodemon: ^2.0.20
-      typescript: 4.8.4
-      unbuild: 0.9.1
-      vitest: 0.25.2
-    dependencies:
-      '@previewjs/api': link:../api
-      '@previewjs/iframe': link:../iframe
-      '@previewjs/properties': link:../properties
-      '@previewjs/serializable-values': link:../serializable-values
-      '@previewjs/type-analyzer': link:../type-analyzer
-      assert-never: 1.2.1
-      axios: 1.1.3
-      mobx: 6.6.1
-    devDependencies:
-      concurrently: 7.5.0
-      nodemon: 2.0.20
-      typescript: 4.8.4
-      unbuild: 0.9.1
-      vitest: 0.25.2
 
   chromeless:
     specifiers:
@@ -15055,18 +15028,6 @@ packages:
     dependencies:
       ms: 2.1.3
 
-  /debug/3.2.7_supports-color@5.5.0:
-    resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.3
-      supports-color: 5.5.0
-    dev: true
-
   /debug/3.2.7_supports-color@6.1.0:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
     peerDependencies:
@@ -19249,10 +19210,6 @@ packages:
   /iferr/0.1.5:
     resolution: {integrity: sha512-DUNFN5j7Tln0D+TxzloUjKB+CtVu6myn0JEFak6dG18mNt9YkQ6lzGCdafwofISZ1lLF3xRHJ98VKy9ynkcFaA==}
 
-  /ignore-by-default/1.0.1:
-    resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}
-    dev: true
-
   /ignore/3.3.10:
     resolution: {integrity: sha512-Pgs951kaMm5GXP7MOvxERINe3gsaVjUWFm+UZPSq9xYriQAksyhg0csnS0KXSNRD5NmNdapXEpjxG49+AKh/ug==}
     dev: true
@@ -22255,10 +22212,6 @@ packages:
       ufo: 1.0.0
     dev: true
 
-  /mobx/6.6.1:
-    resolution: {integrity: sha512-7su3UZv5JF+ohLr2opabjbUAERfXstMY+wiBtey8yNAPoB8H187RaQXuhFjNkH8aE4iHbDWnhDFZw0+5ic4nGQ==}
-    dev: false
-
   /modern-normalize/1.1.0:
     resolution: {integrity: sha512-2lMlY1Yc1+CUy0gw4H95uNN7vjbpoED7NNRSBHE25nWfLBdmMzFCsPshlzbxHz+gYMcBEUN8V4pU16prcdPSgA==}
     engines: {node: '>=6'}
@@ -22915,30 +22868,6 @@ packages:
     resolution: {integrity: sha512-LN4fydt9TqhZhThkZIVQnF9cwjU3qmUH9h78Mx/K7d3VvfRqqwthLwJEUOEL0QPZ0XQmNN7be5Ggit5+4dq3Bw==}
     engines: {node: '>=0.12.0'}
     dev: false
-
-  /nodemon/2.0.20:
-    resolution: {integrity: sha512-Km2mWHKKY5GzRg6i1j5OxOHQtuvVsgskLfigG25yTtbyfRGn/GNvIbRyOf1PSCKJ2aT/58TiuUsuOU5UToVViw==}
-    engines: {node: '>=8.10.0'}
-    hasBin: true
-    dependencies:
-      chokidar: 3.5.3
-      debug: 3.2.7_supports-color@5.5.0
-      ignore-by-default: 1.0.1
-      minimatch: 3.1.2
-      pstree.remy: 1.1.8
-      semver: 5.7.1
-      simple-update-notifier: 1.0.7
-      supports-color: 5.5.0
-      touch: 3.1.0
-      undefsafe: 2.0.5
-    dev: true
-
-  /nopt/1.0.10:
-    resolution: {integrity: sha512-NWmpvLSqUrgrAC9HCuxEvb+PSloHpqVu+FqcO4eeF2h5qYRhA7ev6KvelyQAKtegUbC6RypJnlEOhd8vloNKYg==}
-    hasBin: true
-    dependencies:
-      abbrev: 1.1.1
-    dev: true
 
   /nopt/4.0.3:
     resolution: {integrity: sha512-CvaGwVMztSMJLOeXPrez7fyfObdZqNUK1cPAEzLHrTybIua9pMdmmPR5YwtfNftIOMv3DPUhFaxsZMNTQO20Kg==}
@@ -25545,10 +25474,6 @@ packages:
   /psl/1.9.0:
     resolution: {integrity: sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==}
 
-  /pstree.remy/1.1.8:
-    resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
-    dev: true
-
   /public-encrypt/4.0.3:
     resolution: {integrity: sha512-zVpa8oKZSz5bTMTFClc1fQOnyyEzpl5ozpi1B5YcvBrdohMjH2rfsBtyXcuNuwjsDIXmBYlF2N5FlJYhR29t8Q==}
     dependencies:
@@ -27964,13 +27889,6 @@ packages:
     dependencies:
       is-arrayish: 0.3.2
 
-  /simple-update-notifier/1.0.7:
-    resolution: {integrity: sha512-BBKgR84BJQJm6WjWFMHgLVuo61FBDSj1z/xSFUIozqO6wO7ii0JxCqlIud7Enr/+LhlbNI0whErq96P2qHNWew==}
-    engines: {node: '>=8.10.0'}
-    dependencies:
-      semver: 7.0.0
-    dev: true
-
   /sirv/1.0.19:
     resolution: {integrity: sha512-JuLThK3TnZG1TAKDwNIqNq6QA2afLOCcm+iE8D1Kj3GA40pSPsxQjjJl0J8X3tsR7T+CP1GavpzLwYkgVLWrZQ==}
     engines: {node: '>= 10'}
@@ -29579,13 +29497,6 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /touch/3.1.0:
-    resolution: {integrity: sha512-WBx8Uy5TLtOSRtIq+M03/sKDrXCLHxwDcquSP2c43Le03/9serjQBIztjRz6FkJez9D/hleyAXTBGLwwZUw9lA==}
-    hasBin: true
-    dependencies:
-      nopt: 1.0.10
-    dev: true
-
   /tough-cookie/2.5.0:
     resolution: {integrity: sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==}
     engines: {node: '>=0.8'}
@@ -30151,10 +30062,6 @@ packages:
       estree-walker: 3.0.1
       magic-string: 0.26.7
       unplugin: 1.0.0
-    dev: true
-
-  /undefsafe/2.0.5:
-    resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
     dev: true
 
   /underscore/1.13.4:

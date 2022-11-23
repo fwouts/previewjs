@@ -1,17 +1,12 @@
-import type {
-  Api,
-  RequestOf,
-  ResponseOf,
-  RPC,
-  WrappedResponse,
-} from "@previewjs/api";
 import axios from "axios";
+import type { Api } from "./api";
+import type { RequestOf, ResponseOf, RPC, WrappedResponse } from "./rpc";
 
-export function createRpcApi(url: string): Api {
-  return new LocalApi(url);
+export function createAxiosApi(url: string): Api {
+  return new AxiosApi(url);
 }
 
-class LocalApi {
+class AxiosApi {
   private readonly url: string;
 
   constructor(url: string) {

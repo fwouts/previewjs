@@ -28,11 +28,6 @@ const packages: Package[] = [
     tagName: "app",
   },
   {
-    name: "app-foundations",
-    dirPath: "app-foundations",
-    tagName: "app-foundations",
-  },
-  {
     name: "chromeless",
     dirPath: "chromeless",
     tagName: "chromeless",
