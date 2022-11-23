@@ -14,14 +14,14 @@ interface AppProps {
 
 function App(_props: AppProps) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div class="App">
+      <header class="App-header">
+        <img src={logo} class="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
-          className="App-link"
+          class="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"

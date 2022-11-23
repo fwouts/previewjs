@@ -1,3 +1,3 @@
 export const Dependency = () => {
-  return <div className="Dependency">Hello, World!</div>;
+  return <div class="Dependency">Hello, World!</div>;
 };
