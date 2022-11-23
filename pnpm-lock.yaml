@@ -1235,6 +1235,30 @@ importers:
       vite: 2.9.15
       vite-plugin-solid: 2.4.0_solid-js@1.6.1+vite@2.9.15
 
+  frameworks/solid/tests/apps/solid-js:
+    specifiers:
+      solid-js: ^1
+      vite: ^2
+      vite-plugin-solid: ^2
+    dependencies:
+      solid-js: 1.6.1
+    devDependencies:
+      vite: 2.9.15
+      vite-plugin-solid: 2.4.0_solid-js@1.6.1+vite@2.9.15
+
+  frameworks/solid/tests/apps/solid-ts:
+    specifiers:
+      solid-js: ^1
+      typescript: ^4
+      vite: ^2
+      vite-plugin-solid: ^2
+    dependencies:
+      solid-js: 1.6.1
+    devDependencies:
+      typescript: 4.8.4
+      vite: 2.9.15
+      vite-plugin-solid: 2.4.0_solid-js@1.6.1+vite@2.9.15
+
   frameworks/svelte:
     specifiers:
       '@playwright/test': 1.27.1
@@ -1662,30 +1686,6 @@ importers:
       vue: 3.2.37
     devDependencies:
       nuxt3: 3.0.1-rc.0-27817270.4f2bfbe_rollup@2.79.1
-
-  smoke-test-apps/solid-js:
-    specifiers:
-      solid-js: ^1
-      vite: ^2
-      vite-plugin-solid: ^2
-    dependencies:
-      solid-js: 1.4.8
-    devDependencies:
-      vite: 2.9.15
-      vite-plugin-solid: 2.3.0_solid-js@1.4.8+vite@2.9.15
-
-  smoke-test-apps/solid-ts:
-    specifiers:
-      solid-js: ^1
-      typescript: ^4
-      vite: ^2
-      vite-plugin-solid: ^2
-    dependencies:
-      solid-js: 1.4.8
-    devDependencies:
-      typescript: 4.7.4
-      vite: 2.9.15
-      vite-plugin-solid: 2.3.0_solid-js@1.4.8+vite@2.9.15
 
   smoke-test-apps/svelte-app:
     specifiers:
@@ -30606,6 +30606,7 @@ packages:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: false
 
   /typescript/4.8.4:
     resolution: {integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==}
