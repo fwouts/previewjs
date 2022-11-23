@@ -273,7 +273,7 @@ class ProjectService(private val project: Project) : Disposable {
                 val currentBrowserUrl = browser.cefBrowser.url
                 if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
                     browser.cefBrowser.executeJavaScript(
-                        "window.__previewjs_navigate(\"${componentId}\");",
+                        "window.postMessage({ kind: \"navigate\", componentId: \"${componentId}\" });",
                         previewUrl,
                         0
                     )
