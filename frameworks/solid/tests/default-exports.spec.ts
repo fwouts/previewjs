@@ -14,7 +14,7 @@ test.describe("solid/default exports", () => {
     await preview.fileManager.update(
       "src/App.tsx",
       `export default () => {
-            return <div className="default-export">
+            return <div class="default-export">
               Hello, World!
             </div>
           }`
@@ -27,12 +27,12 @@ test.describe("solid/default exports", () => {
     await preview.fileManager.update(
       "src/App.tsx",
       `export default function test() {
-            return <div className="default-export">
+            return <div class="default-export">
               Hello, World!
             </div>
           }`
     );
-    await preview.show("src/App.tsx:test");
+    await preview.show("src/App.tsx:default");
     await preview.iframe.waitForSelector(".default-export");
   });
 
@@ -40,7 +40,7 @@ test.describe("solid/default exports", () => {
     await preview.fileManager.update(
       "src/App.tsx",
       `export default function() {
-            return <div className="default-export">
+            return <div class="default-export">
               Hello, World!
             </div>
           }`

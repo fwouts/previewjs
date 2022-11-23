@@ -7,7 +7,7 @@ test.describe.configure({ mode: "parallel" });
 
 const WRAPPER_SOURCE = `import { ReactNode } from "react";
 export const Wrapper = ({ children }: { children: ReactNode }) => {
-  return <div className="wrapped">{children}</div>;
+  return <div class="wrapped">{children}</div>;
 };
 `;
 

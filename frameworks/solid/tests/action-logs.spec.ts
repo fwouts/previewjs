@@ -14,12 +14,14 @@ test.describe("solid/action logs", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `function Button(props: { label: string; onClick(): void }) {
-            return (
-              <button id="button" onClick={props.onClick}>
-                {props.label}
-              </button>
-            );
-          }`
+        return (
+          <button id="button" onClick={props.onClick}>
+            {props.label}
+          </button>
+        );
+      }
+      
+      export {}`
     );
     await preview.show("src/Button.tsx:Button");
     const button = await preview.iframe.waitForSelector("#button");
@@ -38,12 +40,14 @@ test.describe("solid/action logs", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `function Button(props: { label: string; onClick(): void }) {
-            return (
-              <button id="button" onClick={props.onClick}>
-                {props.label}
-              </button>
-            );
-          }`
+        return (
+          <button id="button" onClick={props.onClick}>
+            {props.label}
+          </button>
+        );
+      }
+      
+      export {}`
     );
     await preview.show(
       "src/Button.tsx:Button",
@@ -75,12 +79,14 @@ test.describe("solid/action logs", () => {
     await preview.fileManager.update(
       "src/Link.tsx",
       `function Link() {
-            return (
-              <a id="link" href="https://www.google.com">
-                Hello, World!
-              </a>
-            );
-          }`
+        return (
+          <a id="link" href="https://www.google.com">
+            Hello, World!
+          </a>
+        );
+      }
+  
+      export {}`
     );
     await preview.show("src/Link.tsx:Link");
     const link = await preview.iframe.waitForSelector("#link");

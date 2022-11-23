@@ -9,7 +9,7 @@ const smokeTestApp = (name: string) => path.join(__dirname, "apps", name);
 
 test.describe("smoke tests", () => {
   for (const [appName, componentId] of [
-    ["solid-js", "src/App.jsx:App"],
+    ["solid-js", "src/SolidApp.jsx:default"],
     ["solid-ts", "src/App.tsx:App"],
   ] as const) {
     const appDir = smokeTestApp(appName);

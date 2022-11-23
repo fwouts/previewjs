@@ -43,8 +43,8 @@ test.describe("solid/refreshing", () => {
           await preview.fileManager.update(
             "src/App.tsx",
             {
-              replace: `className="App"`,
-              with: `className="App-modified"`,
+              replace: `class="App"`,
+              with: `class="App-modified"`,
             },
             {
               inMemoryOnly,
@@ -59,8 +59,8 @@ test.describe("solid/refreshing", () => {
           await preview.fileManager.update(
             "src/Dependency.tsx",
             {
-              replace: `className="Dependency"`,
-              with: `className="Dependency-modified"`,
+              replace: `class="Dependency"`,
+              with: `class="Dependency-modified"`,
             },
             {
               inMemoryOnly,

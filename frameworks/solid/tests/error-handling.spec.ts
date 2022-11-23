@@ -18,7 +18,7 @@ test.describe("solid/error handling", () => {
       with: "<p",
     });
     preview.expectLoggedMessages.toMatch([
-      "App.tsx: Unexpected token (24:15)",
+      `src${path.sep}App.tsx: Unexpected token`,
       "Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.",
     ]);
     // The component should still be shown.
@@ -219,11 +219,7 @@ test.describe("solid/error handling", () => {
             return <div>Broken</div>;
           }`
     );
-    preview.expectLoggedMessages.toMatch([
-      "Error: Expected error",
-      "Error: Expected error",
-      "React will try to recreate this component tree from scratch using the error boundary you provided",
-    ]);
+    preview.expectLoggedMessages.toMatch(["Error: Expected error"]);
     await preview.fileManager.update(
       "src/App.tsx",
       `export function App() {
@@ -269,9 +265,7 @@ test.describe("solid/error handling", () => {
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update(
       "src/App.tsx",
-      `import React from 'react';
-
-          export const App2 = () => <div>Hello, World!</div>;`
+      `export const App2 = () => <div>Hello, World!</div>;`
     );
     preview.expectLoggedMessages.toMatch(["Error: No component named 'App'"]);
   });
