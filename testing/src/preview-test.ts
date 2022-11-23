@@ -5,6 +5,7 @@ import { getPreviewIframe, startPreview } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
 import type playwright from "playwright";
+import rimraf from "rimraf";
 import { expectLoggedMessages, LoggedMessagesMatcher } from "./events";
 import { FileManager, prepareFileManager } from "./file-manager";
 import { prepareTestDir } from "./test-dir";
@@ -82,6 +83,7 @@ export const previewTest = (
         });
       } finally {
         await preview.stop();
+        rimraf.sync(rootDirPath);
       }
     });
   };
