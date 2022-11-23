@@ -2,7 +2,6 @@ import type { ResponseOf, RPCs } from "@previewjs/api";
 import axios from "axios";
 import { makeAutoObservable, runInAction } from "mobx";
 import type { PersistedStateController } from "../../state/PersistedStateController";
-import "../../window";
 
 export class UpdateBannerState {
   private checkVersionResponse: CheckVersionResponse | null = null;

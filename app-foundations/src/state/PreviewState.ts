@@ -9,7 +9,6 @@ import { makeAutoObservable, observable, runInAction } from "mobx";
 import { ActionLogsState } from "../components/ActionLogs";
 import { ConsolePanelState } from "../components/ConsolePanel";
 import { UpdateBannerState } from "../components/UpdateBanner";
-import "../window";
 import { decodeComponentId } from "./component-id";
 import { ComponentProps } from "./ComponentProps";
 import type { PersistedStateController } from "./PersistedStateController";
@@ -167,10 +166,6 @@ export class PreviewState {
   }
 
   async start() {
-    window.__previewjs_navigate = (componentId) => {
-      history.pushState(null, "", `/?p=${encodeURIComponent(componentId)}`);
-      this.onUrlChanged().catch(console.error);
-    };
     window.addEventListener("message", this.messageListener);
     window.addEventListener("popstate", this.popStateListener);
     this.iframeController.start();
@@ -221,9 +216,14 @@ export class PreviewState {
   private messageListener = (event: MessageEvent) => {
     const data = event.data;
     if (data && data.kind === "navigate") {
-      window.__previewjs_navigate(data.componentId);
+      this.navigate(data.componentId);
     }
   };
+
+  private navigate(componentId: string) {
+    history.pushState(null, "", `/?p=${encodeURIComponent(componentId)}`);
+    this.onUrlChanged().catch(console.error);
+  }
 
   private popStateListener = () => {
     this.onUrlChanged().catch(console.error);
@@ -270,7 +270,7 @@ export class PreviewState {
     if (componentId === this.component?.componentId) {
       this.setVariant(null);
     } else {
-      window.__previewjs_navigate(componentId);
+      this.navigate(componentId);
     }
   }
 
