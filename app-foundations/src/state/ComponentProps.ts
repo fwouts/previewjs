@@ -9,13 +9,12 @@ import { preparePropsType } from "./generators/prepare-props-type";
 
 export class ComponentProps {
   private computePropsResponse: RPCs.ComputePropsResponse;
-  private _invocationSource: string | null;
+  private _invocationSource: string | null = null;
 
   constructor(
     private readonly rpcApi: Api,
     private readonly filePath: string,
-    private readonly componentName: string,
-    cachedInvocationSource: string | null
+    private readonly componentName: string
   ) {
     this.computePropsResponse = {
       types: {
@@ -23,7 +22,6 @@ export class ComponentProps {
         all: {},
       },
     };
-    this._invocationSource = cachedInvocationSource;
     makeAutoObservable(this);
   }
 

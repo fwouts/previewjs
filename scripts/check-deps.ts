@@ -18,7 +18,6 @@ const globalIgnores = [
 // TODO: Go through these deps and eliminate the ones that are not needed.
 const localIgnores: Record<string, string[]> = {
   "/": ["pnpm", "prettier", "turbo"],
-  "/core": ["monaco-editor"],
   "/frameworks/react": ["@types/prop-types"],
   "/frameworks/react/preview": ["@types/prop-types", "react", "react-dom"],
   "/frameworks/vue2": ["vue"],

@@ -144,12 +144,6 @@ export async function createWorkspace({
     middlewares: [
       express.json(),
       cookieParser(),
-      express
-        .Router()
-        .use(
-          "/monaco-editor",
-          express.static(path.join(__dirname, "monaco-editor"))
-        ),
       async (req, res, next) => {
         if (req.path === "/api/" + RPCs.GetState.path) {
           try {
