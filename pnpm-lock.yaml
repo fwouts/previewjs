@@ -145,7 +145,7 @@ importers:
       tailwindcss: 3.2.4
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.2.0
       '@fortawesome/free-brands-svg-icons': 6.2.0
@@ -177,7 +177,7 @@ importers:
       tailwindcss: 3.2.4_postcss@8.4.19
       typescript: 4.8.4
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   chromeless:
     specifiers:
@@ -304,7 +304,7 @@ importers:
       '@previewjs/vfs': workspace:*
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -312,7 +312,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   dev-workspace:
     specifiers:
@@ -390,7 +390,7 @@ importers:
       typescript: ^4.8.4
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -410,7 +410,7 @@ importers:
       react: 18.2.0
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   frameworks/react/preview:
     specifiers:
@@ -1195,7 +1195,7 @@ importers:
       unbuild: 0.9.1
       vite: 3.2.4
       vite-plugin-solid: ^2.4.0
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -1207,7 +1207,7 @@ importers:
       solid-js: 1.6.1
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   frameworks/solid/preview:
     specifiers:
@@ -1231,7 +1231,7 @@ importers:
       typescript: ^4.8.4
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -1245,7 +1245,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   frameworks/svelte/preview:
     specifiers:
@@ -1269,7 +1269,7 @@ importers:
       unbuild: 0.9.1
       vite: 3.2.4
       vite-plugin-vue2: ^2.0.2
-      vitest: 0.25.2
+      vitest: 0.25.3
       vue: ^2.7.14
       vue-template-compiler: ^2.7.14
     dependencies:
@@ -1287,7 +1287,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   frameworks/vue2/preview:
     specifiers:
@@ -1317,7 +1317,7 @@ importers:
       typescript: ^4.8.4
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
       vue: ^3
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -1335,7 +1335,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
       vite: 3.2.4
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   frameworks/vue3/preview:
     specifiers:
@@ -1465,13 +1465,13 @@ importers:
       '@previewjs/serializable-values': ^3.1.1
       '@previewjs/type-analyzer': ^4.0.7
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
     devDependencies:
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   serializable-values:
     specifiers:
@@ -1482,7 +1482,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@faker-js/faker': 7.6.0
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -1492,7 +1492,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.1
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   server:
     specifiers:
@@ -1690,7 +1690,7 @@ importers:
       vite: ^3.1.0
     devDependencies:
       '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.556_svelte@3.52.0+vite@3.1.8
+      '@sveltejs/kit': 1.0.0-next.559_svelte@3.52.0+vite@3.1.8
       svelte: 3.52.0
       svelte-check: 2.9.2_svelte@3.52.0
       svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
@@ -1715,7 +1715,7 @@ importers:
       '@fontsource/fira-mono': 4.5.10
       '@neoconfetti/svelte': 1.0.0
       '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.556_svelte@3.52.0+vite@3.1.8
+      '@sveltejs/kit': 1.0.0-next.559_svelte@3.52.0+vite@3.1.8
       '@types/cookie': 0.5.1
       svelte: 3.52.0
       svelte-check: 2.9.2_svelte@3.52.0
@@ -1958,7 +1958,7 @@ importers:
       prettier: ^2.7.1
       typescript: ^4.8.4
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -1969,7 +1969,7 @@ importers:
       '@types/prettier': 2.7.1
       lodash: 4.17.21
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
 
   vfs:
     specifiers:
@@ -1978,7 +1978,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^10.1.0
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -1986,7 +1986,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.13
       unbuild: 0.9.1
-      vitest: 0.25.2
+      vitest: 0.25.3
 
 packages:
 
@@ -4188,7 +4188,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-loong64/0.14.54:
@@ -4223,7 +4222,6 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@eslint/eslintrc/1.3.3:
@@ -8626,8 +8624,8 @@ packages:
       import-meta-resolve: 2.1.0
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.556_svelte@3.52.0+vite@3.1.8:
-    resolution: {integrity: sha512-poCCk0Eqd5uFwEzeoi2KsP+RtjeEoYsg+UMDIEZiNIZtM6lw2CPDZS98TYOFAdLN+pQJJAji8ZNfvcE/rJN+jA==}
+  /@sveltejs/kit/1.0.0-next.559_svelte@3.52.0+vite@3.1.8:
+    resolution: {integrity: sha512-8Dx5w7O5LGbzzCQ0SG/1FI7cKtfsA1y0qr+mIfFHxb78oUW3P1h88Xs4nlrO7nJslaZ/BuBcj4yblMv1C5+rpQ==}
     engines: {node: '>=16.14'}
     hasBin: true
     requiresBuild: true
@@ -16196,7 +16194,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-android-arm64/0.14.54:
@@ -16231,7 +16228,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-64/0.14.54:
@@ -16266,7 +16262,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-darwin-arm64/0.14.54:
@@ -16301,7 +16296,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-64/0.14.54:
@@ -16336,7 +16330,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-freebsd-arm64/0.14.54:
@@ -16371,7 +16364,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-32/0.14.54:
@@ -16406,7 +16398,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-64/0.14.54:
@@ -16441,7 +16432,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm/0.14.54:
@@ -16476,7 +16466,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-arm64/0.14.54:
@@ -16511,7 +16500,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-mips64le/0.14.54:
@@ -16546,7 +16534,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-ppc64le/0.14.54:
@@ -16581,7 +16568,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-riscv64/0.14.54:
@@ -16616,7 +16602,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-linux-s390x/0.14.54:
@@ -16651,7 +16636,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-netbsd-64/0.14.54:
@@ -16686,7 +16670,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-openbsd-64/0.14.54:
@@ -16721,7 +16704,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-sunos-64/0.14.54:
@@ -16756,7 +16738,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-32/0.14.54:
@@ -16791,7 +16772,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-64/0.14.54:
@@ -16826,7 +16806,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild-windows-arm64/0.14.54:
@@ -16861,7 +16840,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /esbuild/0.11.23:
@@ -16986,7 +16964,6 @@ packages:
       esbuild-windows-32: 0.15.15
       esbuild-windows-64: 0.15.15
       esbuild-windows-arm64: 0.15.15
-    dev: true
 
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -31538,7 +31515,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      esbuild: 0.15.13
+      esbuild: 0.15.15
       postcss: 8.4.19
       resolve: 1.22.1
       rollup: 2.79.1
@@ -31589,8 +31566,8 @@ packages:
       vite: 3.2.4
     dev: false
 
-  /vitest/0.25.2:
-    resolution: {integrity: sha512-qqkzfzglEFbQY7IGkgSJkdOhoqHjwAao/OrphnHboeYHC5JzsVFoLCaB2lnAy8krhj7sbrFTVRApzpkTOeuDWQ==}
+  /vitest/0.25.3:
+    resolution: {integrity: sha512-/UzHfXIKsELZhL7OaM2xFlRF8HRZgAHtPctacvNK8H4vOcbJJAMEgbWNGSAK7Y9b1NBe5SeM7VTuz2RsTHFJJA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
