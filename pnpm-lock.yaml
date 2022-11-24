@@ -1301,6 +1301,92 @@ importers:
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
 
+  frameworks/svelte/tests/apps/svelte:
+    specifiers:
+      '@sveltejs/vite-plugin-svelte': ^1.0.2
+      '@tsconfig/svelte': ^3.0.0
+      svelte: ^3.49.0
+      svelte-check: ^2.8.1
+      svelte-preprocess: ^4.10.7
+      tslib: ^2.4.0
+      typescript: ^4.6.4
+      vite: ^3.1.0
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte': 1.1.1_svelte@3.53.1+vite@3.2.4
+      '@tsconfig/svelte': 3.0.0
+      svelte: 3.53.1
+      svelte-check: 2.9.2_svelte@3.53.1
+      svelte-preprocess: 4.10.7_f4bsrsgtzvlkrtbz2ig7nipio4
+      tslib: 2.4.0
+      typescript: 4.8.4
+      vite: 3.2.4
+
+  frameworks/svelte/tests/apps/svelte-app:
+    specifiers:
+      '@sveltejs/vite-plugin-svelte': ^1.0.2
+      '@tsconfig/svelte': ^3.0.0
+      svelte: ^3.49.0
+      svelte-check: ^2.8.1
+      svelte-preprocess: ^4.10.7
+      tslib: ^2.4.0
+      typescript: ^4.6.4
+      vite: ^3.1.0
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte': 1.1.1_svelte@3.53.1+vite@3.2.4
+      '@tsconfig/svelte': 3.0.0
+      svelte: 3.53.1
+      svelte-check: 2.9.2_svelte@3.53.1
+      svelte-preprocess: 4.10.7_f4bsrsgtzvlkrtbz2ig7nipio4
+      tslib: 2.4.0
+      typescript: 4.8.4
+      vite: 3.2.4
+
+  frameworks/svelte/tests/apps/sveltekit-app:
+    specifiers:
+      '@sveltejs/adapter-auto': next
+      '@sveltejs/kit': next
+      svelte: ^3.44.0
+      svelte-check: ^2.7.1
+      svelte-preprocess: ^4.10.6
+      tslib: ^2.3.1
+      typescript: ^4.7.4
+      vite: ^3.1.0
+    devDependencies:
+      '@sveltejs/adapter-auto': 1.0.0-next.89
+      '@sveltejs/kit': 1.0.0-next.560_svelte@3.53.1+vite@3.2.4
+      svelte: 3.53.1
+      svelte-check: 2.9.2_svelte@3.53.1
+      svelte-preprocess: 4.10.7_f4bsrsgtzvlkrtbz2ig7nipio4
+      tslib: 2.4.0
+      typescript: 4.8.4
+      vite: 3.2.4
+
+  frameworks/svelte/tests/apps/sveltekit-demo:
+    specifiers:
+      '@fontsource/fira-mono': ^4.5.0
+      '@neoconfetti/svelte': ^1.0.0
+      '@sveltejs/adapter-auto': next
+      '@sveltejs/kit': next
+      '@types/cookie': ^0.5.1
+      svelte: ^3.46.0
+      svelte-check: ^2.7.1
+      svelte-preprocess: ^4.10.6
+      tslib: ^2.3.1
+      typescript: ^4.7.4
+      vite: ^3.1.0
+    devDependencies:
+      '@fontsource/fira-mono': 4.5.10
+      '@neoconfetti/svelte': 1.0.0
+      '@sveltejs/adapter-auto': 1.0.0-next.89
+      '@sveltejs/kit': 1.0.0-next.560_svelte@3.53.1+vite@3.2.4
+      '@types/cookie': 0.5.1
+      svelte: 3.53.1
+      svelte-check: 2.9.2_svelte@3.53.1
+      svelte-preprocess: 4.10.7_f4bsrsgtzvlkrtbz2ig7nipio4
+      tslib: 2.4.0
+      typescript: 4.8.4
+      vite: 3.2.4
+
   frameworks/vue2:
     specifiers:
       '@nuxt/config': ^2.15.8
@@ -1687,72 +1773,6 @@ importers:
     devDependencies:
       nuxt3: 3.0.1-rc.0-27817270.4f2bfbe_rollup@2.79.1
 
-  smoke-test-apps/svelte-app:
-    specifiers:
-      '@sveltejs/vite-plugin-svelte': ^1.0.2
-      '@tsconfig/svelte': ^3.0.0
-      svelte: ^3.49.0
-      svelte-check: ^2.8.1
-      svelte-preprocess: ^4.10.7
-      tslib: ^2.4.0
-      typescript: ^4.6.4
-      vite: ^3.1.0
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte': 1.0.9_svelte@3.52.0+vite@3.1.8
-      '@tsconfig/svelte': 3.0.0
-      svelte: 3.52.0
-      svelte-check: 2.9.2_svelte@3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
-      tslib: 2.4.0
-      typescript: 4.8.4
-      vite: 3.1.8
-
-  smoke-test-apps/sveltekit-app:
-    specifiers:
-      '@sveltejs/adapter-auto': next
-      '@sveltejs/kit': next
-      svelte: ^3.44.0
-      svelte-check: ^2.7.1
-      svelte-preprocess: ^4.10.6
-      tslib: ^2.3.1
-      typescript: ^4.7.4
-      vite: ^3.1.0
-    devDependencies:
-      '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.560_svelte@3.52.0+vite@3.1.8
-      svelte: 3.52.0
-      svelte-check: 2.9.2_svelte@3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
-      tslib: 2.4.0
-      typescript: 4.8.4
-      vite: 3.1.8
-
-  smoke-test-apps/sveltekit-demo:
-    specifiers:
-      '@fontsource/fira-mono': ^4.5.0
-      '@neoconfetti/svelte': ^1.0.0
-      '@sveltejs/adapter-auto': next
-      '@sveltejs/kit': next
-      '@types/cookie': ^0.5.1
-      svelte: ^3.46.0
-      svelte-check: ^2.7.1
-      svelte-preprocess: ^4.10.6
-      tslib: ^2.3.1
-      typescript: ^4.7.4
-      vite: ^3.1.0
-    devDependencies:
-      '@fontsource/fira-mono': 4.5.10
-      '@neoconfetti/svelte': 1.0.0
-      '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.560_svelte@3.52.0+vite@3.1.8
-      '@types/cookie': 0.5.1
-      svelte: 3.52.0
-      svelte-check: 2.9.2_svelte@3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
-      tslib: 2.4.0
-      typescript: 4.8.4
-      vite: 3.1.8
-
   smoke-test-apps/vue2-app:
     specifiers:
       '@vue/cli-plugin-babel': ~4.5.0
@@ -1878,39 +1898,6 @@ importers:
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@previewjs/plugin-react': link:../../frameworks/react
-
-  test-apps/solid:
-    specifiers:
-      '@previewjs/plugin-solid': workspace:*
-      solid-js: ^1.3.13
-      vite: ^2.8.6
-      vite-plugin-solid: ^2.2.6
-    dependencies:
-      solid-js: 1.4.8
-    devDependencies:
-      '@previewjs/plugin-solid': link:../../frameworks/solid
-      vite: 2.9.15
-      vite-plugin-solid: 2.3.0_solid-js@1.4.8+vite@2.9.15
-
-  test-apps/svelte:
-    specifiers:
-      '@sveltejs/vite-plugin-svelte': ^1.0.2
-      '@tsconfig/svelte': ^3.0.0
-      svelte: ^3.49.0
-      svelte-check: ^2.8.1
-      svelte-preprocess: ^4.10.7
-      tslib: ^2.4.0
-      typescript: ^4.6.4
-      vite: ^3.1.0
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte': 1.0.9_svelte@3.52.0+vite@3.1.8
-      '@tsconfig/svelte': 3.0.0
-      svelte: 3.52.0
-      svelte-check: 2.9.2_svelte@3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
-      tslib: 2.4.0
-      typescript: 4.8.4
-      vite: 3.1.8
 
   test-apps/vue2:
     specifiers:
@@ -8657,7 +8644,7 @@ packages:
       import-meta-resolve: 2.1.0
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.560_svelte@3.52.0+vite@3.1.8:
+  /@sveltejs/kit/1.0.0-next.560_svelte@3.53.1+vite@3.2.4:
     resolution: {integrity: sha512-ldZJyd+jfQWVkOkRHq25cXMffhL5MgB1Uzhhw1ngF8ezB38P/g4T+5ohP8wuk2lxPJIjbY3S6BeXN5mod9XOhA==}
     engines: {node: '>=16.14'}
     hasBin: true
@@ -8666,7 +8653,7 @@ packages:
       svelte: ^3.44.0
       vite: ^3.2.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 1.1.1_svelte@3.52.0+vite@3.1.8
+      '@sveltejs/vite-plugin-svelte': 1.1.1_svelte@3.53.1+vite@3.2.4
       '@types/cookie': 0.5.1
       cookie: 0.5.0
       devalue: 4.2.0
@@ -8676,57 +8663,12 @@ packages:
       sade: 1.8.1
       set-cookie-parser: 2.5.1
       sirv: 2.0.2
-      svelte: 3.52.0
+      svelte: 3.53.1
       tiny-glob: 0.2.9
       undici: 5.12.0
-      vite: 3.1.8
+      vite: 3.2.4
     transitivePeerDependencies:
       - diff-match-patch
-      - supports-color
-    dev: true
-
-  /@sveltejs/vite-plugin-svelte/1.0.9_svelte@3.52.0+vite@3.1.8:
-    resolution: {integrity: sha512-+SDrAnT7TDi8sdj4OfD2SC4s9DNrpNVBrue8fT2PmKks9Ddu0JIfSeX91wXZb/1xHz4EkGb+rli8GTRI0yGOjg==}
-    engines: {node: ^14.18.0 || >= 16}
-    peerDependencies:
-      diff-match-patch: ^1.0.5
-      svelte: ^3.44.0
-      vite: ^3.0.0
-    peerDependenciesMeta:
-      diff-match-patch:
-        optional: true
-    dependencies:
-      '@rollup/pluginutils': 4.2.1
-      debug: 4.3.4
-      deepmerge: 4.2.2
-      kleur: 4.1.5
-      magic-string: 0.26.7
-      svelte: 3.52.0
-      svelte-hmr: 0.15.0_svelte@3.52.0
-      vite: 3.1.8
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@sveltejs/vite-plugin-svelte/1.1.1_svelte@3.52.0+vite@3.1.8:
-    resolution: {integrity: sha512-NzIaGIzWh5hCSMUoxukYEGmxFCWgzaVglqHJLV5r0BA7hHZbHXu8DYR80i6QUX4xyoQ4PZ8ir7SUYsThbreMcg==}
-    engines: {node: ^14.18.0 || >= 16}
-    peerDependencies:
-      diff-match-patch: ^1.0.5
-      svelte: ^3.44.0
-      vite: ^3.0.0
-    peerDependenciesMeta:
-      diff-match-patch:
-        optional: true
-    dependencies:
-      debug: 4.3.4
-      deepmerge: 4.2.2
-      kleur: 4.1.5
-      magic-string: 0.26.7
-      svelte: 3.52.0
-      svelte-hmr: 0.15.0_svelte@3.52.0
-      vite: 3.1.8
-    transitivePeerDependencies:
       - supports-color
     dev: true
 
@@ -8750,7 +8692,6 @@ packages:
       vite: 3.2.4
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@svgr/babel-plugin-add-jsx-attribute/5.4.0:
     resolution: {integrity: sha512-ZFf2gs/8/6B8PnSofI0inYXr2SDNTDScPXhN7k5EqD4aZ3gi6u+rbmZHVB8IM3wDyx8ntKACZbtXSm7oZGRqVg==}
@@ -10607,7 +10548,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
+      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
       '@vue/cli-shared-utils': 4.5.19
     dev: true
 
@@ -10616,7 +10557,7 @@ packages:
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0-0
     dependencies:
-      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
+      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
     dev: true
 
   /@vue/cli-service/4.5.19_2yymnzrok6eda47acnj2yjm3ae:
@@ -28654,24 +28595,10 @@ packages:
       uuid: 8.3.2
       websocket-driver: 0.7.4
 
-  /solid-js/1.4.8:
-    resolution: {integrity: sha512-XErZdnnYYXF7OwGSUAPcua2y5/ELB/c53zFCpWiEGqxTNoH1iQghzI8EsHJXk06sNn+Z/TGhb8bPDNNGSgimag==}
-
   /solid-js/1.6.2:
     resolution: {integrity: sha512-AZBsj+Yn1xliniTTeuQKG9V7VQVkQ8lZmSKvBjpcVSoZeF7nvt/N5f7Kcsx6QSufioa2YgvBjkIiA0cM0qhotw==}
     dependencies:
       csstype: 3.1.0
-
-  /solid-refresh/0.4.1_solid-js@1.4.8:
-    resolution: {integrity: sha512-v3tD/OXQcUyXLrWjPW1dXZyeWwP7/+GQNs8YTL09GBq+5FguA6IejJWUvJDrLIA4M0ho9/5zK2e9n+uy+4488g==}
-    peerDependencies:
-      solid-js: ^1.3
-    dependencies:
-      '@babel/generator': 7.20.4
-      '@babel/helper-module-imports': 7.18.6
-      '@babel/types': 7.20.2
-      solid-js: 1.4.8
-    dev: true
 
   /solid-refresh/0.4.1_solid-js@1.6.2:
     resolution: {integrity: sha512-v3tD/OXQcUyXLrWjPW1dXZyeWwP7/+GQNs8YTL09GBq+5FguA6IejJWUvJDrLIA4M0ho9/5zK2e9n+uy+4488g==}
@@ -29444,7 +29371,7 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /svelte-check/2.9.2_svelte@3.52.0:
+  /svelte-check/2.9.2_svelte@3.53.1:
     resolution: {integrity: sha512-DRi8HhnCiqiGR2YF9ervPGvtoYrheE09cXieCTEqeTPOTJzfoa54Py8rovIBv4bH4n5HgZYIyTQ3DDLHQLl2uQ==}
     hasBin: true
     peerDependencies:
@@ -29456,8 +29383,8 @@ packages:
       import-fresh: 3.3.0
       picocolors: 1.0.0
       sade: 1.8.1
-      svelte: 3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
+      svelte: 3.53.1
+      svelte-preprocess: 4.10.7_f4bsrsgtzvlkrtbz2ig7nipio4
       typescript: 4.8.4
     transitivePeerDependencies:
       - '@babel/core'
@@ -29472,15 +29399,6 @@ packages:
       - sugarss
     dev: true
 
-  /svelte-hmr/0.15.0_svelte@3.52.0:
-    resolution: {integrity: sha512-Aw21SsyoohyVn4yiKXWPNCSW2DQNH/76kvUnE9kpt4h9hcg9tfyQc6xshx9hzgMfGF0kVx0EGD8oBMWSnATeOg==}
-    engines: {node: ^12.20 || ^14.13.1 || >= 16}
-    peerDependencies:
-      svelte: '>=3.19.0'
-    dependencies:
-      svelte: 3.52.0
-    dev: true
-
   /svelte-hmr/0.15.0_svelte@3.53.1:
     resolution: {integrity: sha512-Aw21SsyoohyVn4yiKXWPNCSW2DQNH/76kvUnE9kpt4h9hcg9tfyQc6xshx9hzgMfGF0kVx0EGD8oBMWSnATeOg==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
@@ -29488,9 +29406,8 @@ packages:
       svelte: '>=3.19.0'
     dependencies:
       svelte: 3.53.1
-    dev: false
 
-  /svelte-preprocess/4.10.7_besnmoibwkhwtentvwuriss7pa:
+  /svelte-preprocess/4.10.7_f4bsrsgtzvlkrtbz2ig7nipio4:
     resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}
     engines: {node: '>= 9.11.2'}
     requiresBuild: true
@@ -29537,18 +29454,18 @@ packages:
       magic-string: 0.25.9
       sorcery: 0.10.0
       strip-indent: 3.0.0
-      svelte: 3.52.0
+      svelte: 3.53.1
       typescript: 4.8.4
     dev: true
 
   /svelte/3.52.0:
     resolution: {integrity: sha512-FxcnEUOAVfr10vDU5dVgJN19IvqeHQCS1zfe8vayTfis9A2t5Fhx+JDe5uv/C3j//bB1umpLJ6quhgs9xyUbCQ==}
     engines: {node: '>= 8'}
+    dev: false
 
   /svelte/3.53.1:
     resolution: {integrity: sha512-Q4/hHkktZogGhN5iqxqSi9sjEVoe/NbIxX4hXEHoasTxj+TxEQVAq66LnDMdAZxjmsodkoI5F3slqsS68U7FNw==}
     engines: {node: '>= 8'}
-    dev: false
 
   /svg-parser/2.0.4:
     resolution: {integrity: sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==}
@@ -31324,23 +31241,6 @@ packages:
       '@svgr/core': 5.5.0
       esbuild: 0.14.54
       fs-extra: 10.1.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /vite-plugin-solid/2.3.0_solid-js@1.4.8+vite@2.9.15:
-    resolution: {integrity: sha512-N2sa54C3UZC2nN5vpj5o6YP+XdIAZW6n6xv8OasxNAcAJPFeZT7EOVvumL0V4c8hBz1yuYniMWdESY8807fVSg==}
-    peerDependencies:
-      solid-js: ^1.3.17
-      vite: ^3.0.0
-    dependencies:
-      '@babel/core': 7.20.2
-      '@babel/preset-typescript': 7.18.6_@babel+core@7.20.2
-      babel-preset-solid: 1.4.8_@babel+core@7.20.2
-      merge-anything: 5.0.2
-      solid-js: 1.4.8
-      solid-refresh: 0.4.1_solid-js@1.4.8
-      vite: 2.9.15
     transitivePeerDependencies:
       - supports-color
     dev: true
