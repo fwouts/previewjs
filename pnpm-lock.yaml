@@ -1057,6 +1057,58 @@ importers:
       '@types/react-native': 0.64.26
       typescript: 4.3.5
 
+  frameworks/react/tests/apps/react-sass:
+    specifiers:
+      '@types/react': ^17
+      react: ^17
+      react-dom: ^17
+      sass: ^1.53.0
+    dependencies:
+      '@types/react': 17.0.48
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    devDependencies:
+      sass: 1.54.5
+
+  frameworks/react/tests/apps/react16:
+    specifiers:
+      '@previewjs/plugin-react': workspace:*
+      '@types/react': ^16
+      react: ^16
+      react-dom: ^16
+    dependencies:
+      '@types/react': 16.14.30
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+    devDependencies:
+      '@previewjs/plugin-react': link:../../..
+
+  frameworks/react/tests/apps/react17:
+    specifiers:
+      '@previewjs/plugin-react': workspace:*
+      '@types/react': ^17
+      react: ^17
+      react-dom: ^17
+    dependencies:
+      '@types/react': 17.0.48
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    devDependencies:
+      '@previewjs/plugin-react': link:../../..
+
+  frameworks/react/tests/apps/react18:
+    specifiers:
+      '@previewjs/plugin-react': workspace:*
+      '@types/react': ^18
+      react: ^18
+      react-dom: ^18
+    dependencies:
+      '@types/react': 18.0.25
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    devDependencies:
+      '@previewjs/plugin-react': link:../../..
+
   frameworks/react/tests/apps/storybook-js:
     specifiers:
       '@babel/core': ^7
@@ -1797,19 +1849,6 @@ importers:
       typescript: 4.7.4
     devDependencies:
       '@babel/core': 7.18.10
-
-  test-apps/react-sass:
-    specifiers:
-      '@types/react': ^17
-      react: ^17
-      react-dom: ^17
-      sass: ^1.53.0
-    dependencies:
-      '@types/react': 17.0.48
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    devDependencies:
-      sass: 1.54.5
 
   test-apps/react16:
     specifiers:

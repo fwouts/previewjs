@@ -12,7 +12,7 @@ export const Wrapper = ({ children }: { children: ReactNode }) => {
 `;
 
 const testApp = (suffix: string | number) =>
-  path.join(__dirname, "../../../test-apps/react" + suffix);
+  path.join(__dirname, "apps", "react" + suffix);
 
 for (const reactVersion of [16, 17, 18]) {
   test.describe(`v${reactVersion}`, () => {
