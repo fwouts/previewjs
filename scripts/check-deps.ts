@@ -41,8 +41,7 @@ async function main() {
     const { path: workspacePath } = workspace;
     const relativePath = "/" + path.relative(rootDir, workspacePath);
     if (
-      relativePath.startsWith("/test-apps") ||
-      relativePath.startsWith("/smoke-test-apps") ||
+      relativePath.includes("/tests/apps/") ||
       relativePath === "/dev-workspace"
     ) {
       continue;

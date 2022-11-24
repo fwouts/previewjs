@@ -1403,7 +1403,7 @@ importers:
       vite: ^3.1.0
     devDependencies:
       '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.560_svelte@3.53.1+vite@3.2.4
+      '@sveltejs/kit': 1.0.0-next.561_svelte@3.53.1+vite@3.2.4
       svelte: 3.53.1
       svelte-check: 2.9.2_svelte@3.53.1
       svelte-preprocess: 4.10.7_f4bsrsgtzvlkrtbz2ig7nipio4
@@ -1428,7 +1428,7 @@ importers:
       '@fontsource/fira-mono': 4.5.10
       '@neoconfetti/svelte': 1.0.0
       '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.560_svelte@3.53.1+vite@3.2.4
+      '@sveltejs/kit': 1.0.0-next.561_svelte@3.53.1+vite@3.2.4
       '@types/cookie': 0.5.1
       svelte: 3.53.1
       svelte-check: 2.9.2_svelte@3.53.1
@@ -1609,7 +1609,7 @@ importers:
     dependencies:
       vue: 3.2.45
     devDependencies:
-      nuxt3: 3.0.1-rc.0-27817270.4f2bfbe_rollup@2.79.1
+      nuxt3: 3.0.1-rc.0-27821553.ab125bd_rollup@2.79.1
 
   frameworks/vue3/tests/apps/vue3:
     specifiers:
@@ -1881,165 +1881,6 @@ importers:
       react-scripts: 4.0.3_s7dhm7uhgnhsqh75wuilf3r4wi
       typescript: 4.7.4
 
-<<<<<<< HEAD
-=======
-  smoke-test-apps/nuxt2-app:
-    specifiers:
-      '@nuxt/types': ^2
-      '@nuxt/typescript-build': ^2
-      '@nuxtjs/tailwindcss': ^4
-      consola: ^2
-      core-js: ^3
-      nuxt: ^2
-      postcss: ^8
-      vue: ^2
-      vue-server-renderer: ^2
-      vue-template-compiler: ^2
-      webpack: ^4
-    dependencies:
-      core-js: 3.24.1
-      nuxt: 2.15.8_cwftffurhax4u3h35fkeuveko4
-      vue: 2.7.9
-      vue-server-renderer: 2.7.9
-      vue-template-compiler: 2.7.9
-      webpack: 4.46.0
-    devDependencies:
-      '@nuxt/types': 2.15.8_webpack@4.46.0
-      '@nuxt/typescript-build': 2.1.0_ovrifdu3kyu3dmwjcmm6rrkfkm
-      '@nuxtjs/tailwindcss': 4.2.1_webpack@4.46.0
-      consola: 2.15.3
-      postcss: 8.4.16
-
-  smoke-test-apps/nuxt3-app:
-    specifiers:
-      nuxt3: latest
-      vue: ^3
-    dependencies:
-      vue: 3.2.37
-    devDependencies:
-      nuxt3: 3.0.1-rc.0-27821553.ab125bd_rollup@2.79.1
-
-  smoke-test-apps/solid-js:
-    specifiers:
-      solid-js: ^1
-      vite: ^2
-      vite-plugin-solid: ^2
-    dependencies:
-      solid-js: 1.4.8
-    devDependencies:
-      vite: 2.9.15
-      vite-plugin-solid: 2.3.0_solid-js@1.4.8+vite@2.9.15
-
-  smoke-test-apps/solid-ts:
-    specifiers:
-      solid-js: ^1
-      typescript: ^4
-      vite: ^2
-      vite-plugin-solid: ^2
-    dependencies:
-      solid-js: 1.4.8
-    devDependencies:
-      typescript: 4.7.4
-      vite: 2.9.15
-      vite-plugin-solid: 2.3.0_solid-js@1.4.8+vite@2.9.15
-
-  smoke-test-apps/svelte-app:
-    specifiers:
-      '@sveltejs/vite-plugin-svelte': ^1.0.2
-      '@tsconfig/svelte': ^3.0.0
-      svelte: ^3.49.0
-      svelte-check: ^2.8.1
-      svelte-preprocess: ^4.10.7
-      tslib: ^2.4.0
-      typescript: ^4.6.4
-      vite: ^3.1.0
-    devDependencies:
-      '@sveltejs/vite-plugin-svelte': 1.0.9_svelte@3.52.0+vite@3.1.8
-      '@tsconfig/svelte': 3.0.0
-      svelte: 3.52.0
-      svelte-check: 2.9.2_svelte@3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
-      tslib: 2.4.0
-      typescript: 4.8.4
-      vite: 3.1.8
-
-  smoke-test-apps/sveltekit-app:
-    specifiers:
-      '@sveltejs/adapter-auto': next
-      '@sveltejs/kit': next
-      svelte: ^3.44.0
-      svelte-check: ^2.7.1
-      svelte-preprocess: ^4.10.6
-      tslib: ^2.3.1
-      typescript: ^4.7.4
-      vite: ^3.1.0
-    devDependencies:
-      '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.560_svelte@3.52.0+vite@3.1.8
-      svelte: 3.52.0
-      svelte-check: 2.9.2_svelte@3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
-      tslib: 2.4.0
-      typescript: 4.8.4
-      vite: 3.1.8
-
-  smoke-test-apps/sveltekit-demo:
-    specifiers:
-      '@fontsource/fira-mono': ^4.5.0
-      '@neoconfetti/svelte': ^1.0.0
-      '@sveltejs/adapter-auto': next
-      '@sveltejs/kit': next
-      '@types/cookie': ^0.5.1
-      svelte: ^3.46.0
-      svelte-check: ^2.7.1
-      svelte-preprocess: ^4.10.6
-      tslib: ^2.3.1
-      typescript: ^4.7.4
-      vite: ^3.1.0
-    devDependencies:
-      '@fontsource/fira-mono': 4.5.10
-      '@neoconfetti/svelte': 1.0.0
-      '@sveltejs/adapter-auto': 1.0.0-next.89
-      '@sveltejs/kit': 1.0.0-next.560_svelte@3.52.0+vite@3.1.8
-      '@types/cookie': 0.5.1
-      svelte: 3.52.0
-      svelte-check: 2.9.2_svelte@3.52.0
-      svelte-preprocess: 4.10.7_besnmoibwkhwtentvwuriss7pa
-      tslib: 2.4.0
-      typescript: 4.8.4
-      vite: 3.1.8
-
-  smoke-test-apps/vue2-app:
-    specifiers:
-      '@vue/cli-plugin-babel': ~4.5.0
-      '@vue/cli-service': ~4.5.0
-      core-js: ^3
-      vue: ^2
-      vue-template-compiler: ^2
-    dependencies:
-      core-js: 3.24.1
-      vue: 2.7.9
-    devDependencies:
-      '@vue/cli-plugin-babel': 4.5.19_btmr3p3suq6hbwlfhbde5riaiu
-      '@vue/cli-service': 4.5.19_w3z7yovxb2kaiktq3qixseei7e
-      vue-template-compiler: 2.7.9
-
-  smoke-test-apps/vue3-app:
-    specifiers:
-      '@vue/cli-plugin-babel': ~4.5.0
-      '@vue/cli-service': ~4.5.0
-      '@vue/compiler-sfc': ^3
-      core-js: ^3
-      vue: ^3
-    dependencies:
-      core-js: 3.24.1
-      vue: 3.2.37
-    devDependencies:
-      '@vue/cli-plugin-babel': 4.5.19_kax6ntqfrnovwgvnhmw5xkvu3y
-      '@vue/cli-service': 4.5.19_2yymnzrok6eda47acnj2yjm3ae
-      '@vue/compiler-sfc': 3.2.37
-
->>>>>>> main
   smoke-test-apps/wrapper-custom:
     specifiers:
       '@babel/core': ^7
@@ -8864,8 +8705,8 @@ packages:
       import-meta-resolve: 2.1.0
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.560_svelte@3.53.1+vite@3.2.4:
-    resolution: {integrity: sha512-ldZJyd+jfQWVkOkRHq25cXMffhL5MgB1Uzhhw1ngF8ezB38P/g4T+5ohP8wuk2lxPJIjbY3S6BeXN5mod9XOhA==}
+  /@sveltejs/kit/1.0.0-next.561_svelte@3.53.1+vite@3.2.4:
+    resolution: {integrity: sha512-N8HQvS6gcm7R78ADfM4xjhuFS3Ir+Ezce3De8WOnISXQ1tS2npc5LMH9LRHHi14nfosAfJ7vUlcLwLE6N/I7+Q==}
     engines: {node: '>=16.14'}
     hasBin: true
     requiresBuild: true
