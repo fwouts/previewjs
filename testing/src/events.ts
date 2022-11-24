@@ -1,9 +1,13 @@
 import type { LogMessage, PreviewEvent } from "@previewjs/iframe";
 import { inspect } from "util";
 
-export function expectLoggedMessages(events: PreviewEvent[], retrying = false) {
+export function expectLoggedMessages(events: PreviewEvent[]) {
   return {
-    toMatch: async (messages: string[], level = "error") => {
+    toMatch: async (
+      messages: string[],
+      level = "error",
+      retrying = false
+    ): Promise<void> => {
       const logEvents = events.filter(
         (e) => e.kind === "log-message" && (!level || e.level === level)
       ) as LogMessage[];
@@ -29,7 +33,7 @@ export function expectLoggedMessages(events: PreviewEvent[], retrying = false) {
               `Unable to find logged message immediately: "${message}".\n\nRetrying in two seconds...`
             );
             await new Promise((resolve) => setTimeout(resolve, 2000));
-            return expectLoggedMessages(events, true);
+            return expectLoggedMessages(events).toMatch(messages, level, true);
           }
         }
       }
