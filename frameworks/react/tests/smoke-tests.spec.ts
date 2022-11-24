@@ -10,7 +10,7 @@ const smokeTestApp = (name: string) => path.join(__dirname, "apps", name);
 test.describe("smoke tests", () => {
   for (const [appName, componentId] of [
     ["aliases", "src/App.tsx:App"],
-    ["aliases-via-jsconfig", "src/App.tsx:App"],
+    ["aliases-via-jsconfig", "src/App.js:App"],
     ["class-components-js", "src/App.jsx:App"],
     ["class-components-ts", "src/App.tsx:App"],
     ["cra-css-modules", "src/App.tsx:App"],
