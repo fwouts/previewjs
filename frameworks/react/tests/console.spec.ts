@@ -28,7 +28,7 @@ for (const reactVersion of [16, 17, 18]) {
           }`
         );
         await preview.iframe.waitForSelector("#update-1");
-        preview.expectLoggedMessages.toMatch(["Render 1"], "log");
+        await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
         preview.events.clear();
         await preview.fileManager.update(
           "src/App.tsx",
@@ -42,7 +42,7 @@ for (const reactVersion of [16, 17, 18]) {
           }`
         );
         await preview.iframe.waitForSelector("#update-2");
-        preview.expectLoggedMessages.toMatch(["Render 2"], "log");
+        await preview.expectLoggedMessages.toMatch(["Render 2"], "log");
       });
     });
   });

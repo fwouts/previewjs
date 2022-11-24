@@ -31,7 +31,7 @@ test.describe("vue3/console", () => {
       </script>`
     );
     await preview.iframe.waitForSelector(".App-updated-1");
-    preview.expectLoggedMessages.toMatch(["Render 1"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
     preview.events.clear();
     await preview.fileManager.update(
       "src/App.vue",
@@ -51,6 +51,6 @@ test.describe("vue3/console", () => {
       </script>`
     );
     await preview.iframe.waitForSelector(".App-updated-2");
-    preview.expectLoggedMessages.toMatch(["Render 2"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 2"], "log");
   });
 });

@@ -17,7 +17,7 @@ test.describe("solid/error handling", () => {
       replace: /<p>/g,
       with: "<p",
     });
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       `src${path.sep}App.tsx: Unexpected token`,
       "Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.",
     ]);
@@ -35,7 +35,7 @@ test.describe("solid/error handling", () => {
           }`
     );
     await preview.show("src/App.tsx:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
@@ -62,7 +62,7 @@ test.describe("solid/error handling", () => {
             return <div>{logo}</div>;
           }`
     );
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to reload /src/App.tsx.",
     ]);
@@ -87,7 +87,7 @@ test.describe("solid/error handling", () => {
           }`
     );
     await preview.show("src/App.tsx:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
@@ -114,7 +114,7 @@ test.describe("solid/error handling", () => {
             return <div>{logo}</div>;
           }`
     );
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to reload /src/App.tsx.",
     ]);
@@ -135,7 +135,7 @@ test.describe("solid/error handling", () => {
       with: "App-missing.css",
     });
     await preview.show("src/App.tsx:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -153,7 +153,9 @@ test.describe("solid/error handling", () => {
       replace: "App.css",
       with: "App-missing.css",
     });
-    preview.expectLoggedMessages.toMatch(["Failed to reload /src/App.tsx."]);
+    await preview.expectLoggedMessages.toMatch([
+      "Failed to reload /src/App.tsx.",
+    ]);
     await preview.fileManager.update("src/App.tsx", {
       replace: "App-missing.css",
       with: "App.css",
@@ -170,7 +172,7 @@ test.describe("solid/error handling", () => {
             return <divBroken</div>;
           }`
     );
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "App.tsx: Unexpected token (2:29)",
       "Failed to reload /src/App.tsx.",
     ]);
@@ -194,7 +196,7 @@ test.describe("solid/error handling", () => {
             </ul>
           }`
     );
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       `App.tsx: Unexpected token, expected "jsxTagEnd"`,
       "Failed to reload /src/App.tsx.",
     ]);
@@ -219,7 +221,7 @@ test.describe("solid/error handling", () => {
             return <div>Broken</div>;
           }`
     );
-    preview.expectLoggedMessages.toMatch(["Error: Expected error"]);
+    await preview.expectLoggedMessages.toMatch(["Error: Expected error"]);
     await preview.fileManager.update(
       "src/App.tsx",
       `export function App() {
@@ -240,7 +242,7 @@ test.describe("solid/error handling", () => {
             return <div>Hello, World!</div>;
           }`
     );
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Expected error",
       "Failed to reload /src/App.tsx.",
     ]);
@@ -257,7 +259,9 @@ test.describe("solid/error handling", () => {
     await preview.show("src/App.tsx:App");
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.rename("src/App.tsx", "src/App-renamed.tsx");
-    preview.expectLoggedMessages.toMatch(["Failed to reload /src/App.tsx."]);
+    await preview.expectLoggedMessages.toMatch([
+      "Failed to reload /src/App.tsx.",
+    ]);
   });
 
   test("fails correctly when component is missing after update", async (preview) => {
@@ -267,7 +271,9 @@ test.describe("solid/error handling", () => {
       "src/App.tsx",
       `export const App2 = () => <div>Hello, World!</div>;`
     );
-    preview.expectLoggedMessages.toMatch(["Error: No component named 'App'"]);
+    await preview.expectLoggedMessages.toMatch([
+      "Error: No component named 'App'",
+    ]);
   });
 
   test("fails correctly when encountering broken CSS", async (preview) => {
@@ -278,7 +284,7 @@ test.describe("solid/error handling", () => {
       with: " BROKEN",
     });
     // We don't expect to see any errors for pure CSS.
-    preview.expectLoggedMessages.toMatch([]);
+    await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.css", {
       replace: " BROKEN",
       with: " {",

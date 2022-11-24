@@ -18,7 +18,7 @@ test.describe("svelte/error handling", () => {
       replace: /<img .*\/>/g,
       with: "<img",
     });
-    preview.expectLoggedMessages.toMatch([`Expected >`]);
+    await preview.expectLoggedMessages.toMatch([`Expected >`]);
     // The component should still be shown.
     await preview.iframe.waitForSelector(".logo");
   });
@@ -29,7 +29,7 @@ test.describe("svelte/error handling", () => {
       with: "lib/Broken.svelte",
     });
     await preview.show("src/App.svelte:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -47,7 +47,7 @@ test.describe("svelte/error handling", () => {
       replace: "lib/Counter.svelte",
       with: "lib/Broken.svelte",
     });
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to reload /src/App.svelte. This could be due to syntax errors or importing non-existent modules.",
     ]);
     await preview.fileManager.update("src/App.svelte", {
@@ -65,7 +65,7 @@ test.describe("svelte/error handling", () => {
       with: " BROKEN",
     });
     await preview.show("src/App.svelte:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Identifier is expected",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
@@ -84,7 +84,7 @@ test.describe("svelte/error handling", () => {
       replace: ".logo {",
       with: " BROKEN",
     });
-    preview.expectLoggedMessages.toMatch(["Identifier is expected"]);
+    await preview.expectLoggedMessages.toMatch(["Identifier is expected"]);
     await preview.fileManager.update("src/App.svelte", {
       replace: " BROKEN",
       with: ".logo {",
@@ -99,7 +99,7 @@ test.describe("svelte/error handling", () => {
       "src/App.svelte",
       "src/App-renamed.svelte"
     );
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to reload /src/App.svelte",
       "Failed to reload /src/App.svelte",
     ]);

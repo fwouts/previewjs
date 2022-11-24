@@ -1,9 +1,9 @@
 import type { LogMessage, PreviewEvent } from "@previewjs/iframe";
 import { inspect } from "util";
 
-export function expectLoggedMessages(events: PreviewEvent[]) {
+export function expectLoggedMessages(events: PreviewEvent[], retrying = false) {
   return {
-    toMatch: (messages: string[], level = "error") => {
+    toMatch: async (messages: string[], level = "error") => {
       const logEvents = events.filter(
         (e) => e.kind === "log-message" && (!level || e.level === level)
       ) as LogMessage[];
@@ -18,11 +18,19 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
           }
         }
         if (!found) {
-          throw new Error(
-            `Unable to find logged message: "${message}".\nReceived: ${inspect(
-              logEvents
-            )}`
-          );
+          if (retrying) {
+            throw new Error(
+              `Unable to find logged message: "${message}".\nReceived: ${inspect(
+                logEvents
+              )}`
+            );
+          } else {
+            console.warn(
+              `Unable to find logged message immediately: "${message}".\n\nRetrying in two seconds...`
+            );
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await expectLoggedMessages(events, true);
+          }
         }
       }
       if (remainingLogEvents.length > 0) {

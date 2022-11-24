@@ -19,7 +19,7 @@ test.describe("vue2/error handling", () => {
       with: "<img",
     });
     // We don't expect to see any errors.
-    preview.expectLoggedMessages.toMatch([]);
+    await preview.expectLoggedMessages.toMatch([]);
     await preview.iframe.waitForSelector("img", { state: "hidden" });
     // The component should still be shown.
     await preview.iframe.waitForSelector("#app");
@@ -31,7 +31,7 @@ test.describe("vue2/error handling", () => {
       with: "components/Broken.vue",
     });
     await preview.show("src/App.vue:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -49,7 +49,7 @@ test.describe("vue2/error handling", () => {
       replace: "components/HelloWorld.vue",
       with: "components/Broken.vue",
     });
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
     ]);
     await preview.fileManager.update("src/App.vue", {
@@ -67,7 +67,7 @@ test.describe("vue2/error handling", () => {
       with: " BROKEN",
     });
     await preview.show("src/App.vue:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -85,7 +85,7 @@ test.describe("vue2/error handling", () => {
       replace: "#app {",
       with: " BROKEN",
     });
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to reload /src/App.vue?vue&type=style&index=0&lang.css",
     ]);
     await preview.fileManager.update("src/App.vue", {
@@ -99,7 +99,7 @@ test.describe("vue2/error handling", () => {
     await preview.show("src/App.vue:App");
     await preview.iframe.waitForSelector("#app");
     await preview.fileManager.rename("src/App.vue", "src/App-renamed.vue");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "/src/App.vue has no corresponding SFC entry in the cache",
       "Failed to reload /src/App.vue",
       "Failed to reload /src/App.vue",

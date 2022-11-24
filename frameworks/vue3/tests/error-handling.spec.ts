@@ -18,7 +18,7 @@ test.describe("vue3/error handling", () => {
       replace: /<img .*\/>/g,
       with: "<img",
     });
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Attribute name cannot contain U+0022",
       "Failed to reload /src/App.vue.",
     ]);
@@ -32,7 +32,7 @@ test.describe("vue3/error handling", () => {
       with: "components/Broken.vue",
     });
     await preview.show("src/App.vue:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -50,7 +50,7 @@ test.describe("vue3/error handling", () => {
       replace: "components/HelloWorld.vue",
       with: "components/Broken.vue",
     });
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
     ]);
     await preview.fileManager.update("src/App.vue", {
@@ -68,7 +68,7 @@ test.describe("vue3/error handling", () => {
       with: " BROKEN",
     });
     await preview.show("src/App.vue:App");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -86,7 +86,7 @@ test.describe("vue3/error handling", () => {
       replace: "#app {",
       with: " BROKEN",
     });
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "Unknown word",
       "Failed to reload /src/App.vue?vue&type=style&index=0&lang.css",
     ]);
@@ -101,7 +101,7 @@ test.describe("vue3/error handling", () => {
     await preview.show("src/App.vue:App");
     await preview.iframe.waitForSelector(".logo");
     await preview.fileManager.rename("src/App.vue", "src/App-renamed.vue");
-    preview.expectLoggedMessages.toMatch([
+    await preview.expectLoggedMessages.toMatch([
       "ENOENT: no such file or directory, open '/src/App.vue'",
       "Failed to reload /src/App.vue",
       "Failed to reload /src/App.vue",

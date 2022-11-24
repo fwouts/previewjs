@@ -247,7 +247,7 @@ test.describe("vue3/storybook", () => {
       replace: "Primary",
       with: "Renamed",
     });
-    await preview.expectLoggedMessages.toMatch([
+    await await preview.expectLoggedMessages.toMatch([
       "Error: No component named 'Primary'",
     ]);
   });
