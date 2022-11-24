@@ -73,6 +73,8 @@ jobs:
           SKIP_PREFLIGHT_CHECK: "true"
       - run: pnpm install # necessary to link e2e-test-runner
       - run: cd frameworks/react && pnpm e2e-test --shard=${{ matrix.group }}/3
+      - run: cd frameworks/solid && pnpm e2e-test --shard=${{ matrix.group }}/3
+      - run: cd frameworks/svelte && pnpm e2e-test --shard=${{ matrix.group }}/3
       - run: cd app && pnpm e2e-test
         env:
           GROUP_INDEX: ${{ matrix.group }}
