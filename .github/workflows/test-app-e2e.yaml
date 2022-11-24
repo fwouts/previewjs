@@ -77,16 +77,6 @@ jobs:
       - run: cd frameworks/svelte && pnpm e2e-test --shard=${{ matrix.group }}/3
       - run: cd frameworks/vue2 && pnpm e2e-test --shard=${{ matrix.group }}/3
       - run: cd frameworks/vue3 && pnpm e2e-test --shard=${{ matrix.group }}/3
-      - run: cd app && pnpm e2e-test
-        env:
-          GROUP_INDEX: ${{ matrix.group }}
-          GROUP_COUNT: 3
-      - name: Archive success screenshots
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
-          path: app/tests/__screenshots__
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
