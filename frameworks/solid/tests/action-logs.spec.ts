@@ -20,7 +20,7 @@ test.describe("solid/action logs", () => {
           </button>
         );
       }
-      
+
       export {}`
     );
     await preview.show("src/Button.tsx:Button");
@@ -46,7 +46,7 @@ test.describe("solid/action logs", () => {
           </button>
         );
       }
-      
+
       export {}`
     );
     await preview.show(
@@ -85,7 +85,7 @@ test.describe("solid/action logs", () => {
           </a>
         );
       }
-  
+
       export {}`
     );
     await preview.show("src/Link.tsx:Link");

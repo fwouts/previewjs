@@ -63,7 +63,7 @@ test.describe("vue3/storybook", () => {
         },
         template: '<Button :label="different" />',
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {
         different: "Hello, World!",
@@ -88,7 +88,7 @@ test.describe("vue3/storybook", () => {
         },
         template: '<Button v-bind="args" />',
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {
         label: "Hello, World!",
@@ -113,10 +113,10 @@ test.describe("vue3/storybook", () => {
         },
         template: '<Button v-bind="args" />',
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {};
-  
+
       export default {
         args: {
           label: "Hello, World!"
@@ -142,12 +142,12 @@ test.describe("vue3/storybook", () => {
         },
         template: '<Button v-bind="args" />',
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {
         label: "explicit"
       };
-  
+
       export default {
         args: {
           label: "default"
@@ -169,7 +169,7 @@ test.describe("vue3/storybook", () => {
       export default {
         component: Button
       };
-      
+
       export const Primary = {
         args: {
           label: "Hello, World!"
@@ -194,7 +194,7 @@ test.describe("vue3/storybook", () => {
           label: "Hello, World!"
         }
       };
-      
+
       export const Primary = {};`
     );
     await preview.show("src/Button.stories.js:Primary");
@@ -215,7 +215,7 @@ test.describe("vue3/storybook", () => {
           label: "default"
         }
       };
-      
+
       export const Primary = {
         args: {
           label: "explicit"

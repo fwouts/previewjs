@@ -16,14 +16,14 @@ for (const reactVersion of [16, 17, 18]) {
       test("controls props", async (preview) => {
         await preview.fileManager.update(
           "src/Button.tsx",
-          `import React from "react";	
-          
-          export function Button(props: { label: string; disabled?: boolean }) {	
-          return (	
-            <button id="button" disabled={props.disabled}>	
-              {props.label}	
-            </button>	
-          );	
+          `import React from "react";
+
+          export function Button(props: { label: string; disabled?: boolean }) {
+          return (
+            <button id="button" disabled={props.disabled}>
+              {props.label}
+            </button>
+          );
           }`
         );
         await preview.show("src/Button.tsx:Button");

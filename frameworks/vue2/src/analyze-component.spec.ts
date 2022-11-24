@@ -88,7 +88,7 @@ export default {
 </template>
 <script>
 export default {
-  
+
   props: {
     a: String,
     b: { type: String },
@@ -129,7 +129,7 @@ export default {
 </template>
 <script>
 export default {
-  
+
   props: ["a", "b", "c"]
 }
 </script>

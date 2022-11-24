@@ -32,7 +32,7 @@ test.describe("svelte/console", () => {
       `<div class="App-updated-2">
         {foo}
       </div>
-      
+
       <script>
       export let foo = 123;
       console.log("Render 2");

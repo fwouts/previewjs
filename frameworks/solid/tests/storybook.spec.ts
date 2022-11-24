@@ -14,7 +14,7 @@ test.describe("solid/storybook", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
-          
+
           const ButtonStory = () => <Button label="Hello, World!" />;
 
           export default {
@@ -31,7 +31,7 @@ test.describe("solid/storybook", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             args: {
               label: "Hello, World!"
@@ -51,7 +51,7 @@ test.describe("solid/storybook", () => {
           Button.args = {
             label: "explicit"
           };
-          
+
           export default {
             args: {
               label: "default"
@@ -68,11 +68,11 @@ test.describe("solid/storybook", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button
           }
-        
+
           export const Example = {
             args: {
               label: "Hello, World!"
@@ -89,14 +89,14 @@ test.describe("solid/storybook", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button,
             args: {
               label: "Hello, World!"
             }
           }
-        
+
           export const Example = {};`
     );
     await preview.show("src/Button.tsx:Example");
@@ -109,14 +109,14 @@ test.describe("solid/storybook", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button,
             args: {
               label: "default"
             }
           };
-        
+
           export const Example = {
             args: {
               label: "explicit"
@@ -133,11 +133,11 @@ test.describe("solid/storybook", () => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: () => <div>foo</div>
           };
-        
+
           export const Example = {
             args: {
               label: "Hello, World!"

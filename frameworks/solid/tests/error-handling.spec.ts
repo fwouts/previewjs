@@ -57,7 +57,7 @@ test.describe("solid/error handling", () => {
     await preview.fileManager.update(
       "src/App.tsx",
       `import logo from "some-module";
-  
+
           export function App() {
             return <div>{logo}</div>;
           }`
@@ -69,7 +69,7 @@ test.describe("solid/error handling", () => {
     await preview.fileManager.update(
       "src/App.tsx",
       `import logo from "./logo.svg";
-  
+
           export function App() {
             return <div id="recovered">{logo}</div>;
           }`
@@ -109,7 +109,7 @@ test.describe("solid/error handling", () => {
     await preview.fileManager.update(
       "src/App.tsx",
       `import logo from "./missing.svg";
-  
+
           export function App() {
             return <div>{logo}</div>;
           }`
@@ -121,7 +121,7 @@ test.describe("solid/error handling", () => {
     await preview.fileManager.update(
       "src/App.tsx",
       `import logo from "./logo.svg";
-  
+
           export function App() {
             return <div id="recovered">{logo}</div>;
           }`

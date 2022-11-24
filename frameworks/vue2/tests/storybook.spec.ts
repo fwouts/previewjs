@@ -61,7 +61,7 @@ test.describe("vue2/storybook", () => {
         components: { Button },
         template: '<Button :label="different" />',
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {
         different: "Hello, World!",
@@ -84,7 +84,7 @@ test.describe("vue2/storybook", () => {
         components: { Button },
         template: '<Button v-bind="$props" />',
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {
         label: "Hello, World!",
@@ -106,7 +106,7 @@ test.describe("vue2/storybook", () => {
         props: Object.keys(argTypes),
         components: { Button },
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {
         label: "Hello, World!",
@@ -128,10 +128,10 @@ test.describe("vue2/storybook", () => {
         props: Object.keys(argTypes),
         components: { Button },
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {};
-  
+
       export default {
         args: {
           label: "Hello, World!"
@@ -154,12 +154,12 @@ test.describe("vue2/storybook", () => {
         props: Object.keys(argTypes),
         components: { Button },
       });
-      
+
       export const Primary = Template.bind({});
       Primary.args = {
         label: "explicit"
       };
-  
+
       export default {
         args: {
           label: "default"
@@ -181,7 +181,7 @@ test.describe("vue2/storybook", () => {
       export default {
         component: Button
       };
-      
+
       export const Primary = {
         args: {
           label: "Hello, World!"
@@ -206,7 +206,7 @@ test.describe("vue2/storybook", () => {
           label: "Hello, World!"
         }
       };
-      
+
       export const Primary = {};`
     );
     await preview.show("src/Button.stories.js:Primary");
@@ -227,7 +227,7 @@ test.describe("vue2/storybook", () => {
           label: "default"
         }
       };
-      
+
       export const Primary = {
         args: {
           label: "explicit"

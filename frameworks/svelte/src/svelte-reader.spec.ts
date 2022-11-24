@@ -45,7 +45,7 @@ describe("createSvelteTypeScriptReader", () => {
   <img src={logo} alt="Svelte Logo" />
   <h1>Hello Typescript!</h1>
   <Counter />
-</main>   
+</main>
     `
     );
     const virtualFile = await reader.read(
