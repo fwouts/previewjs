@@ -140,7 +140,7 @@ export const errorHandlingTests = testSuite(
         await previewIframe.waitForSelector(".logo");
         await appDir.update("src/App.vue", {
           kind: "edit",
-          search: "#app {",
+          search: ".logo {",
           replace: " BROKEN",
         });
         await expectErrors(
@@ -158,7 +158,7 @@ export const errorHandlingTests = testSuite(
         await appDir.update("src/App.vue", {
           kind: "edit",
           search: " BROKEN",
-          replace: "#app {",
+          replace: ".logo {",
         });
         await expectErrors(
           controller,

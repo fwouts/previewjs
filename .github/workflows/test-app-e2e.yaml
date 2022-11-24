@@ -76,6 +76,7 @@ jobs:
       - run: cd frameworks/solid && pnpm e2e-test --shard=${{ matrix.group }}/3
       - run: cd frameworks/svelte && pnpm e2e-test --shard=${{ matrix.group }}/3
       - run: cd frameworks/vue2 && pnpm e2e-test --shard=${{ matrix.group }}/3
+      - run: cd frameworks/vue3 && pnpm e2e-test --shard=${{ matrix.group }}/3
       - run: cd app && pnpm e2e-test
         env:
           GROUP_INDEX: ${{ matrix.group }}
