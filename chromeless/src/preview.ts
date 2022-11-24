@@ -153,7 +153,12 @@ export async function startPreview({
       });
       await waitUntilNetworkIdle(page);
       await page.evaluate(
-        (component) => {
+        async (component) => {
+          // It's possible that window.renderComponent isn't ready yet.
+          let waitStart = Date.now();
+          while (!window.renderComponent && Date.now() - waitStart < 5000) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
           window.renderComponent(component);
         },
         {
