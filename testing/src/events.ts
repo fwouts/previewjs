@@ -29,7 +29,7 @@ export function expectLoggedMessages(events: PreviewEvent[], retrying = false) {
               `Unable to find logged message immediately: "${message}".\n\nRetrying in two seconds...`
             );
             await new Promise((resolve) => setTimeout(resolve, 2000));
-            await expectLoggedMessages(events, true);
+            return expectLoggedMessages(events, true);
           }
         }
       }
