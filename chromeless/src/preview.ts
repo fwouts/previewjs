@@ -48,6 +48,9 @@ export async function startPreview({
   return {
     events,
     iframe: {
+      async waitForIdle() {
+        await waitUntilNetworkIdle(page);
+      },
       async waitForSelector(
         selector: string,
         options: {

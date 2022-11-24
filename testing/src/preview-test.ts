@@ -59,6 +59,7 @@ export const previewTest = (
             }
             return window.__waitForExpectedRefresh__();
           });
+          await preview.iframe.waitForIdle();
         },
       });
       const preview = await startPreview({
