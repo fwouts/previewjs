@@ -8,9 +8,21 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
       level = "error",
       retrying = false
     ): Promise<void> => {
-      const logEvents = events.filter(
-        (e) => e.kind === "log-message" && (!level || e.level === level)
-      ) as LogMessage[];
+      let logEvents: LogMessage[] = [];
+      for (const event of events) {
+        switch (event.kind) {
+          case "bootstrapped":
+          case "before-vite-update":
+          case "before-render":
+            logEvents = [];
+            break;
+          case "log-message":
+            if (!level || event.level === level) {
+              logEvents.push(event);
+            }
+            break;
+        }
+      }
       const remainingLogEvents = [...logEvents];
       for (const message of messages) {
         let found = false;
