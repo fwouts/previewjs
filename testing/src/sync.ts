@@ -1,45 +1,49 @@
 import {
-  copyFile,
-  lstat,
-  mkdir,
-  pathExists,
-  readdir,
-  remove,
-  stat,
-  symlink,
-  unlink,
+  copyFileSync,
+  lstatSync,
+  mkdirSync,
+  pathExistsSync,
+  readdirSync,
+  removeSync,
+  statSync,
+  symlinkSync,
+  unlinkSync,
 } from "fs-extra";
 import path from "path";
 
-export async function sync(srcPath: string, dstPath: string): Promise<void> {
-  if (!(await pathExists(srcPath))) {
+export function sync(srcPath: string, dstPath: string): void {
+  if (!pathExistsSync(srcPath)) {
     throw new Error(`No such directory: ${srcPath}`);
   }
-  if (!(await pathExists(dstPath))) {
-    await mkdir(dstPath, { recursive: true });
+  if (!pathExistsSync(dstPath)) {
+    mkdirSync(dstPath, { recursive: true });
   }
 
   // Keep track of existing files so we can remove the old ones later.
-  const existingFiles = new Set(await readdir(dstPath));
+  const existingFiles = new Set(readdirSync(dstPath));
 
   // Update all source files.
-  const dirStat = (await pathExists(srcPath)) && (await stat(srcPath));
+  const dirStat = pathExistsSync(srcPath) && statSync(srcPath);
   if (!dirStat || !dirStat.isDirectory()) {
     throw new Error(`Expected a directory at ${srcPath}`);
   }
 
-  for (const name of await readdir(srcPath)) {
+  for (const name of readdirSync(srcPath)) {
     existingFiles.delete(name);
     const sourceFilePath = path.join(srcPath, name);
     const destinationFilePath = path.join(dstPath, name);
-    const fileStat = await lstat(sourceFilePath);
+    const fileStat = lstatSync(sourceFilePath);
     if (name === "node_modules") {
-      if (await pathExists(destinationFilePath)) {
-        await remove(destinationFilePath);
+      if (pathExistsSync(destinationFilePath)) {
+        continue;
       }
-      await mkdir(destinationFilePath);
-      for (const f of await readdir(sourceFilePath)) {
-        await symlink(
+      mkdirSync(destinationFilePath);
+      for (const f of readdirSync(sourceFilePath)) {
+        if (f === ".previewjs") {
+          // Ignore.
+          continue;
+        }
+        symlinkSync(
           path.join(sourceFilePath, f),
           path.join(destinationFilePath, f)
         );
@@ -47,28 +51,28 @@ export async function sync(srcPath: string, dstPath: string): Promise<void> {
     } else if (fileStat.isSymbolicLink()) {
       // Ignore it.
     } else if (fileStat.isFile()) {
-      if (await pathExists(destinationFilePath)) {
-        const destinationFileStat = await stat(destinationFilePath);
+      if (pathExistsSync(destinationFilePath)) {
+        const destinationFileStat = statSync(destinationFilePath);
         if (destinationFileStat.isDirectory()) {
-          await remove(destinationFilePath);
+          removeSync(destinationFilePath);
         } else if (!destinationFileStat.isFile()) {
-          await unlink(destinationFilePath);
+          unlinkSync(destinationFilePath);
         }
       }
-      await copyFile(sourceFilePath, destinationFilePath);
+      copyFileSync(sourceFilePath, destinationFilePath);
     } else {
-      await sync(sourceFilePath, destinationFilePath);
+      sync(sourceFilePath, destinationFilePath);
     }
   }
 
   // Remove any old files.
   for (const f of existingFiles) {
     const absoluteFilePath = path.join(dstPath, f);
-    const fileStat = await stat(absoluteFilePath);
+    const fileStat = statSync(absoluteFilePath);
     if (fileStat.isDirectory()) {
-      await remove(absoluteFilePath);
+      removeSync(absoluteFilePath);
     } else {
-      await unlink(absoluteFilePath);
+      unlinkSync(absoluteFilePath);
     }
   }
 }
