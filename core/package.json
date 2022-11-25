@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/core",
-  "version": "9.0.1",
+  "version": "10.0.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -29,11 +29,11 @@
     "build": "tsc && unbuild"
   },
   "dependencies": {
-    "@previewjs/api": "^5.0.0",
+    "@previewjs/api": "^5.1.0",
     "@previewjs/config": "^3.1.0",
     "@previewjs/iframe": "^3.0.0",
-    "@previewjs/type-analyzer": "^4.0.7",
-    "@previewjs/vfs": "^1.2.10",
+    "@previewjs/type-analyzer": "^4.0.8",
+    "@previewjs/vfs": "^1.2.11",
     "acorn": "^8.8.1",
     "assert-never": "^1.2.1",
     "axios": "^1.2.0",
