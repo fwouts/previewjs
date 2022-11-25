@@ -3,8 +3,6 @@ import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
-test.describe.configure({ mode: "parallel" });
-
 function sourceClassic(previews: string | null) {
   return `
 <template>

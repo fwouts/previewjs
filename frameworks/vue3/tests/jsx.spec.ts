@@ -3,8 +3,6 @@ import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
-test.describe.configure({ mode: "parallel" });
-
 const testApp = path.join(__dirname, "apps", "vue3");
 
 test.describe("vue3/jsx", () => {

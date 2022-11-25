@@ -3,8 +3,6 @@ import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
-test.describe.configure({ mode: "parallel" });
-
 const testApp = path.join(__dirname, "apps", "solid");
 
 test.describe("solid/default exports", () => {

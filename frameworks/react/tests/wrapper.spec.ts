@@ -3,8 +3,6 @@ import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
-test.describe.configure({ mode: "parallel" });
-
 const WRAPPER_SOURCE = `import { ReactNode } from "react";
 export const Wrapper = ({ children }: { children: ReactNode }) => {
   return <div className="wrapped">{children}</div>;

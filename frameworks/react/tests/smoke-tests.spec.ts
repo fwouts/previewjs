@@ -3,8 +3,6 @@ import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
-test.describe.configure({ mode: "parallel" });
-
 const smokeTestApp = (name: string) => path.join(__dirname, "apps", name);
 
 test.describe("smoke tests", () => {
