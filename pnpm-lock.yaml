@@ -109,7 +109,7 @@ importers:
       '@types/glob': 7.2.0
       express: ^4.18.2
       glob: ^7.2.3
-      playwright: ^1.27.1
+      playwright: ^1.28.1
       rimraf: 3.0.2
       typescript: 4.9.3
       unbuild: 0.9.1
@@ -122,7 +122,7 @@ importers:
       '@previewjs/vfs': link:../vfs
       express: 4.18.2
       glob: 7.2.3
-      playwright: 1.27.1
+      playwright: 1.28.1
     devDependencies:
       '@types/express': 4.17.14
       '@types/glob': 7.2.0
@@ -253,7 +253,7 @@ importers:
 
   frameworks/react:
     specifiers:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.5
@@ -278,7 +278,7 @@ importers:
       '@vitejs/plugin-react': 2.2.0_vite@3.2.4
       typescript: 4.9.3
     devDependencies:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/api': link:../../api
       '@previewjs/core': link:../../core
       '@previewjs/iframe': link:../../iframe
@@ -1240,7 +1240,7 @@ importers:
 
   frameworks/solid:
     specifiers:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.5
       '@previewjs/testing': workspace:*
@@ -1259,7 +1259,7 @@ importers:
       typescript: 4.9.3
       vite-plugin-solid: 2.4.0_solid-js@1.6.2+vite@3.2.4
     devDependencies:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': link:../../core
       '@previewjs/testing': link:../../testing
       solid-js: 1.6.2
@@ -1315,7 +1315,7 @@ importers:
 
   frameworks/svelte:
     specifiers:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.5
       '@previewjs/testing': workspace:*
@@ -1338,7 +1338,7 @@ importers:
       svelte: 3.53.1
       typescript: 4.9.3
     devDependencies:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': link:../../core
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 9.0.13
@@ -1444,7 +1444,7 @@ importers:
   frameworks/vue2:
     specifiers:
       '@nuxt/config': ^2.15.8
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.5
       '@previewjs/testing': workspace:*
@@ -1470,7 +1470,7 @@ importers:
       vue: 2.7.14
       vue-template-compiler: 2.7.14
     devDependencies:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': link:../../core
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 9.0.13
@@ -1548,7 +1548,7 @@ importers:
 
   frameworks/vue3:
     specifiers:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.0.5
       '@previewjs/testing': workspace:*
@@ -1577,7 +1577,7 @@ importers:
       typescript: 4.9.3
       vue: 3.2.37
     devDependencies:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/core': link:../../core
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 9.0.13
@@ -1809,7 +1809,7 @@ importers:
 
   testing:
     specifiers:
-      '@playwright/test': ^1.27.1
+      '@playwright/test': ^1.28.1
       '@previewjs/api': ^5.1.0
       '@previewjs/chromeless': ^1.1.0
       '@previewjs/core': ^10.0.0
@@ -1821,12 +1821,12 @@ importers:
       fs-extra: 10.1.0
       get-port: ^5.1.1
       glob: ^7.2.3
-      playwright: ^1.27.1
+      playwright: ^1.28.1
       rimraf: 3.0.2
       typescript: 4.9.3
       unbuild: 0.9.1
     dependencies:
-      '@playwright/test': 1.27.1
+      '@playwright/test': 1.28.1
       '@previewjs/api': link:../api
       '@previewjs/chromeless': link:../chromeless
       '@previewjs/core': link:../core
@@ -1836,7 +1836,7 @@ importers:
       fs-extra: 10.1.0
       get-port: 5.1.1
       glob: 7.2.3
-      playwright: 1.27.1
+      playwright: 1.28.1
     devDependencies:
       '@types/fs-extra': 9.0.13
       '@types/glob': 7.2.0
@@ -6176,13 +6176,13 @@ packages:
       stack-trace: 0.0.10
     dev: false
 
-  /@playwright/test/1.27.1:
-    resolution: {integrity: sha512-mrL2q0an/7tVqniQQF6RBL2saskjljXzqNcCOVMUjRIgE6Y38nCNaP+Dc2FBW06bcpD3tqIws/HT9qiMHbNU0A==}
+  /@playwright/test/1.28.1:
+    resolution: {integrity: sha512-xN6spdqrNlwSn9KabIhqfZR7IWjPpFK1835tFNgjrlysaSezuX8PYUwaz38V/yI8TJLG9PkAMEXoHRXYXlpTPQ==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@types/node': 18.11.9
-      playwright-core: 1.27.1
+      playwright-core: 1.28.1
 
   /@pmmmwh/react-refresh-webpack-plugin/0.4.3_t4ezke4netssl24gycl5qjajya:
     resolution: {integrity: sha512-br5Qwvh8D2OQqSXpd1g/xqXKnK0r+Jz6qVKBbWmpUcrbGOxUrf39V5oZ1876084CGn18uMdR5uvPqBv9UqtBjQ==}
@@ -23704,18 +23704,18 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core/1.27.1:
-    resolution: {integrity: sha512-9EmeXDncC2Pmp/z+teoVYlvmPWUC6ejSSYZUln7YaP89Z6lpAaiaAnqroUt/BoLo8tn7WYShcfaCh+xofZa44Q==}
+  /playwright-core/1.28.1:
+    resolution: {integrity: sha512-3PixLnGPno0E8rSBJjtwqTwJe3Yw72QwBBBxNoukIj3lEeBNXwbNiKrNuB1oyQgTBw5QHUhNO3SteEtHaMK6ag==}
     engines: {node: '>=14'}
     hasBin: true
 
-  /playwright/1.27.1:
-    resolution: {integrity: sha512-xXYZ7m36yTtC+oFgqH0eTgullGztKSRMb4yuwLPl8IYSmgBM88QiB+3IWb1mRIC9/NNwcgbG0RwtFlg+EAFQHQ==}
+  /playwright/1.28.1:
+    resolution: {integrity: sha512-92Sz6XBlfHlb9tK5UCDzIFAuIkHHpemA9zwUaqvo+w7sFMSmVMGmvKcbptof/eJObq63PGnMhM75x7qxhTR78Q==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.27.1
+      playwright-core: 1.28.1
     dev: false
 
   /please-upgrade-node/3.2.0:
