@@ -156,8 +156,17 @@ export async function startPreview({
         async (component) => {
           // It's possible that window.renderComponent isn't ready yet.
           let waitStart = Date.now();
-          while (!window.renderComponent && Date.now() - waitStart < 5000) {
+          const timeoutSeconds = 10;
+          while (
+            !window.renderComponent &&
+            Date.now() - waitStart < timeoutSeconds * 100
+          ) {
             await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+          if (!window.renderComponent) {
+            throw new Error(
+              `window.renderComponent() isn't available after waiting ${timeoutSeconds} seconds`
+            );
           }
           window.renderComponent(component);
         },
