@@ -29,7 +29,8 @@
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest --no-threads",
+    "e2e-test": "playwright test"
   },
   "dependencies": {
     "@previewjs/csf3": "^3.0.4",
@@ -43,7 +44,9 @@
     "vue-template-compiler": "^2.7.14"
   },
   "devDependencies": {
+    "@playwright/test": "1.27.1",
     "@previewjs/core": "workspace:*",
+    "@previewjs/testing": "workspace:*",
     "@types/fs-extra": "9.0.13",
     "unbuild": "0.9.1",
     "vite": "3.2.4",

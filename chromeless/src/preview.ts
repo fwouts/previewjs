@@ -1,5 +1,6 @@
 import { RPCs } from "@previewjs/api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
+import type { Variant } from "@previewjs/iframe";
 import {
   generateDefaultProps,
   generatePropsAssignmentSource,
@@ -35,8 +36,11 @@ export async function startPreview({
   let onRenderingDone = () => {
     // No-op by default.
   };
+  let variants: Variant[] = [];
   const events = await setupPreviewEventListener(page, (event) => {
-    if (event.kind === "rendering-done") {
+    if (event.kind === "rendering-setup") {
+      variants = event.info.variants || [];
+    } else if (event.kind === "rendering-done") {
       onRenderingDone();
     }
   });
@@ -44,6 +48,9 @@ export async function startPreview({
   return {
     events,
     iframe: {
+      async waitForIdle() {
+        await waitUntilNetworkIdle(page);
+      },
       async waitForSelector(
         selector: string,
         options: {
@@ -101,7 +108,10 @@ export async function startPreview({
         });
       },
     },
-    async show(componentId: string, propsAssignmentSource?: string) {
+    async show(
+      componentId: string,
+      propsAssignmentSource?: string | { variantKey: string }
+    ) {
       const filePath = componentId.split(":")[0]!;
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
@@ -127,19 +137,28 @@ export async function startPreview({
         computePropsResponse.types.props,
         computePropsResponse.types.all
       );
+      let variantKey: string | null = null;
       if (!propsAssignmentSource) {
         propsAssignmentSource = generatePropsAssignmentSource(
           computePropsResponse.types.props,
           defaultProps.keys,
           computePropsResponse.types.all
         );
+      } else if (typeof propsAssignmentSource !== "string") {
+        variantKey = propsAssignmentSource.variantKey;
+        propsAssignmentSource = `properties = variants?.find(v => v.key === "${variantKey}")?.props || {}`;
       }
       const donePromise = new Promise<void>((resolve) => {
         onRenderingDone = resolve;
       });
       await waitUntilNetworkIdle(page);
       await page.evaluate(
-        (component) => {
+        async (component) => {
+          // It's possible that window.renderComponent isn't ready yet.
+          let waitStart = Date.now();
+          while (!window.renderComponent && Date.now() - waitStart < 5000) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
           window.renderComponent(component);
         },
         {
@@ -149,6 +168,13 @@ export async function startPreview({
         }
       );
       await donePromise;
+      if (variantKey && !variants.find((v) => v.key === variantKey)) {
+        throw new Error(
+          `No variant with key: ${variantKey}. Available variants: ${
+            variants.map((v) => v.key).join(", ") || "none"
+          }`
+        );
+      }
       await waitUntilNetworkIdle(page);
     },
     async stop() {

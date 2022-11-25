@@ -31,7 +31,7 @@ export const previewTest = (
       if (!port) {
         port = await getPort();
       }
-      const rootDirPath = await prepareTestDir(workspaceDirPath);
+      const rootDirPath = prepareTestDir(workspaceDirPath);
       let showingComponent = false;
       const { reader, fileManager } = await prepareFileManager({
         rootDirPath,
@@ -58,6 +58,7 @@ export const previewTest = (
             }
             return window.__waitForExpectedRefresh__();
           });
+          await preview.iframe.waitForIdle();
         },
       });
       const preview = await startPreview({
