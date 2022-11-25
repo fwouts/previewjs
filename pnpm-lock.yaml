@@ -182,7 +182,7 @@ importers:
       typescript: ^4.9.3
       unbuild: 0.9.1
       vite: ^3.2.4
-      vite-tsconfig-paths: ^3.5.2
+      vite-tsconfig-paths: ^3.6.0
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
@@ -205,7 +205,7 @@ importers:
       tsconfig-paths: 4.1.0
       typescript: 4.9.3
       vite: 3.2.4_@types+node@18.11.9
-      vite-tsconfig-paths: 3.5.2_vite@3.2.4
+      vite-tsconfig-paths: 3.6.0_vite@3.2.4
     devDependencies:
       '@rollup/plugin-alias': 4.0.2_rollup@3.1.0
       '@types/cookie-parser': 1.4.3
@@ -30501,8 +30501,8 @@ packages:
       - whiskers
     dev: false
 
-  /vite-tsconfig-paths/3.5.2_vite@3.2.4:
-    resolution: {integrity: sha512-xJMgHA2oJ28QCG2f+hXrcqzo7IttrSRK4A//Tp94CfuX5eetOx33qiwXHUdi3FwkHP2ocpxHuvE45Ix67gwEmQ==}
+  /vite-tsconfig-paths/3.6.0_vite@3.2.4:
+    resolution: {integrity: sha512-UfsPYonxLqPD633X8cWcPFVuYzx/CMNHAjZTasYwX69sXpa4gNmQkR0XCjj82h7zhLGdTWagMjC1qfb9S+zv0A==}
     peerDependencies:
       vite: '>2.0.0-0'
     dependencies:
