@@ -22,7 +22,7 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          run_install:
+          run_install: |
             args: --filter=\!./frameworks/\*/tests/apps/\*
       - name: Update NPM token
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc

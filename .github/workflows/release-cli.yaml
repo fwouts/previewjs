@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          run_install:
+          run_install: |
             args: --filter=\!./frameworks/\*/tests/apps/\*
       - name: Extract version from package.json
         uses: sergeysova/jq-action@v2.2.1
