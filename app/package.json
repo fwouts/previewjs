@@ -27,9 +27,8 @@
   },
   "scripts": {
     "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
-    "build": "tsc && unbuild && pnpm tsc -p client/tsconfig.json && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build client && pnpm tsc -p tsconfig.tests.json",
-    "client:dev": "vite client",
-    "e2e-test": "tsc -p tsconfig.tests.json && pnpm previewjs-e2e-test -s ./dist/index.cjs -t ./dist-tests/index.js"
+    "build": "tsc && unbuild && pnpm tsc -p client/tsconfig.json && cross-env NODE_OPTIONS=--max-old-space-size=4096 vite build client",
+    "client:dev": "vite client"
   },
   "dependencies": {
     "express": "^4.18.2"
@@ -37,7 +36,6 @@
   "devDependencies": {
     "@previewjs/app-foundations": "workspace:*",
     "@previewjs/core": "workspace:*",
-    "@previewjs/e2e-test-runner": "workspace:*",
     "@previewjs/plugin-react": "workspace:*",
     "@previewjs/plugin-solid": "workspace:*",
     "@previewjs/plugin-svelte": "workspace:*",

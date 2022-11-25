@@ -17,7 +17,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-          
+
           const ButtonStory = () => <Button label="Hello, World!" />;
 
           export default {
@@ -34,7 +34,7 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             args: {
               label: "Hello, World!"
@@ -54,7 +54,7 @@ for (const reactVersion of [16, 17, 18]) {
           Button.args = {
             label: "explicit"
           };
-          
+
           export default {
             args: {
               label: "default"
@@ -71,11 +71,11 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button
           }
-        
+
           export const Example = {
             args: {
               label: "Hello, World!"
@@ -92,14 +92,14 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button,
             args: {
               label: "Hello, World!"
             }
           }
-        
+
           export const Example = {};`
         );
         await preview.show("src/Button.tsx:Example");
@@ -112,14 +112,14 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button,
             args: {
               label: "default"
             }
           };
-        
+
           export const Example = {
             args: {
               label: "explicit"
@@ -136,11 +136,11 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: () => <div>foo</div>
           };
-        
+
           export const Example = {
             args: {
               label: "Hello, World!"

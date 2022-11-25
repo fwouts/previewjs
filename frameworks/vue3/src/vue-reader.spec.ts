@@ -26,7 +26,7 @@ const count = ref(0)
 
 <template>
   <h1>{{ msg }}</h1>
-</template>  
+</template>
     `
     );
     const virtualFile = await reader.read(
@@ -60,7 +60,7 @@ export default defineComponent({
 
 <template>
   <h1>{{ msg }}</h1>
-</template>  
+</template>
     `
     );
     const virtualFile = await reader.read(
@@ -109,7 +109,7 @@ foo
 
 <template>
   <h1>{{ msg }}</h1>
-</template>  
+</template>
     `
     );
     const virtualFile = await reader.read(

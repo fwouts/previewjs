@@ -61,7 +61,7 @@ export const NotAStory = {
 };
 
 export default Component1;
-      
+
 `
     );
     expect(extract(MAIN_FILE)).toMatchObject([
