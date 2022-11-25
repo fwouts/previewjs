@@ -67,7 +67,8 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          run_install: true
+          run_install:
+            args: --filter=\!./frameworks/\*/tests/apps/\*
       - run: pnpm turbo build
       - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2
       - name: Update screenshots on non-main branches
