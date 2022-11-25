@@ -68,7 +68,8 @@ jobs:
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: true
-      - run: pnpm turbo e2e-test -- --shard=${{ matrix.group }}/3
+      - run: pnpm turbo build
+      - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
