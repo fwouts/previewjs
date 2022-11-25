@@ -30,9 +30,9 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
             );
           } else {
             console.warn(
-              `Unable to find logged message immediately: "${message}".\n\nRetrying in two seconds...`
+              `Unable to find logged message immediately: "${message}".\n\nRetrying in five seconds...`
             );
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await new Promise((resolve) => setTimeout(resolve, 5000));
             return expectLoggedMessages(events).toMatch(messages, level, true);
           }
         }
