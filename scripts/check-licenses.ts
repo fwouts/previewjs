@@ -11,11 +11,7 @@ const starts = [
 async function main() {
   const allPackages = await extractPackagesFromDirectories(starts, []);
   // Check that we don't get false negatives by missing packages.
-  for (const packageName of [
-    "@previewjs/app",
-    "mobx-react-lite",
-    "@fortawesome/react-fontawesome",
-  ]) {
+  for (const packageName of ["@previewjs/app", "express", "@types/fs-extra"]) {
     if (!allPackages.find(({ name }) => name === packageName)) {
       throw new Error(`Expected to find package: ${packageName}`);
     }

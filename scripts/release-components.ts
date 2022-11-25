@@ -28,11 +28,6 @@ const packages: Package[] = [
     tagName: "app",
   },
   {
-    name: "app-foundations",
-    dirPath: "app-foundations",
-    tagName: "app-foundations",
-  },
-  {
     name: "chromeless",
     dirPath: "chromeless",
     tagName: "chromeless",
@@ -56,11 +51,6 @@ const packages: Package[] = [
     name: "csf3",
     dirPath: "csf3",
     tagName: "csf3",
-  },
-  {
-    name: "e2e-test-runner",
-    dirPath: "e2e-test-runner",
-    tagName: "e2e-test-runner",
   },
   {
     name: "iframe",

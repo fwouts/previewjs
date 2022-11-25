@@ -33,14 +33,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.checkApiVersion.outputs.changed == 'true'
         run: cd api && pnpm publish --no-git-checks --access public
-      - id: checkAppFoundationsVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./app-foundations/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkAppFoundationsVersion.outputs.changed == 'true'
-        run: cd app-foundations && pnpm publish --no-git-checks --access public
       - id: checkAppVersion
         uses: EndBug/version-check@v2.1.1
         with:
@@ -89,14 +81,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.checkCsf3Version.outputs.changed == 'true'
         run: cd csf3 && pnpm publish --no-git-checks --access public
-      - id: checkE2ETestRunnerVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./e2e-test-runner/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkE2ETestRunnerVersion.outputs.changed == 'true'
-        run: cd e2e-test-runner && pnpm publish --no-git-checks --access public
       - id: checkIframeVersion
         uses: EndBug/version-check@v2.1.1
         with:
