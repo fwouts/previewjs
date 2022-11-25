@@ -40,5 +40,6 @@ jobs:
             ${{ runner.os }}-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          run_install: true
+          run_install:
+            args: --filter=\!./frameworks/\*/tests/apps/\*
       - run: pnpm turbo run build --scope="@previewjs/cli" --include-dependencies
