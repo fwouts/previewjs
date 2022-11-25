@@ -62,9 +62,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-full-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-full-
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: true
