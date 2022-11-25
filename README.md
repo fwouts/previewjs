@@ -1,3 +1,5 @@
+foo
+
 <div align="center">
   <a href="https://previewjs.com" target="_blank">
     <img src="assets/banner.svg" alt="Preview.js" />
