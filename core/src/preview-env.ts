@@ -1,11 +1,7 @@
 import type * as express from "express";
 import fs from "fs-extra";
 import path from "path";
-import type {
-  FrameworkPluginFactory,
-  PersistedStateManager,
-  Workspace,
-} from ".";
+import type { FrameworkPluginFactory, Workspace } from ".";
 import type { PackageDependencies } from "./plugins/dependencies";
 import type { RegisterRPC } from "./router";
 
@@ -15,7 +11,6 @@ export type SetupPreviewEnvironment = (options: {
 
 export type PreviewEnvironment = {
   middlewares?: express.RequestHandler[];
-  persistedStateManager?: PersistedStateManager;
   onReady?(options: {
     registerRPC: RegisterRPC;
     workspace: Workspace;
