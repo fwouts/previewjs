@@ -29,11 +29,9 @@ export async function load(options: {
     async getWorkspace({
       versionCode,
       absoluteFilePath,
-      persistedStateManager,
     }: {
       versionCode: string;
       absoluteFilePath: string;
-      persistedStateManager?: core.PersistedStateManager;
     }) {
       const rootDirPath = core.findWorkspaceRoot(absoluteFilePath);
       if (!rootDirPath) {
@@ -67,8 +65,6 @@ export async function load(options: {
           reader,
           frameworkPlugin,
           middlewares: previewEnv.middlewares || [],
-          persistedStateManager:
-            persistedStateManager || previewEnv.persistedStateManager,
           onReady: previewEnv.onReady?.bind(previewEnv),
         });
       });

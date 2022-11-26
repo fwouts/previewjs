@@ -13,14 +13,9 @@ import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
 import { detectComponents } from "./detect-components";
-import {
-  LocalFilePersistedStateManager,
-  PersistedStateManager,
-} from "./persisted-state";
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Previewer } from "./previewer";
 import { ApiRouter, RegisterRPC } from "./router";
-export type { PersistedStateManager } from "./persisted-state";
 export type {
   Component,
   ComponentAnalysis,
@@ -45,7 +40,6 @@ export async function createWorkspace({
   logLevel,
   middlewares,
   onReady,
-  persistedStateManager = new LocalFilePersistedStateManager(),
 }: {
   versionCode: string;
   rootDirPath: string;
@@ -53,7 +47,6 @@ export async function createWorkspace({
   frameworkPlugin: FrameworkPlugin;
   logLevel: vite.LogLevel;
   reader: Reader;
-  persistedStateManager?: PersistedStateManager;
   onReady?(options: {
     registerRPC: RegisterRPC;
     workspace: Workspace;
@@ -145,35 +138,7 @@ export async function createWorkspace({
       express.json(),
       cookieParser(),
       async (req, res, next) => {
-        if (req.path === "/api/" + RPCs.GetState.path) {
-          try {
-            const response = await persistedStateManager.get(req);
-            res.json({
-              kind: "success",
-              response,
-            });
-          } catch (e: any) {
-            console.error(`Unable to fetch state`, e);
-            res.json({
-              kind: "error",
-              message: e.message,
-            });
-          }
-        } else if (req.path === "/api/" + RPCs.UpdateState.path) {
-          try {
-            const response = await persistedStateManager.update(req, res);
-            res.json({
-              kind: "success",
-              response,
-            });
-          } catch (e: any) {
-            console.error(`Unable to update state`, e);
-            res.json({
-              kind: "error",
-              message: e.message,
-            });
-          }
-        } else if (req.path.startsWith("/api/")) {
+        if (req.path.startsWith("/api/")) {
           res.json(await router.handle(req.path.substr(5), req.body));
         } else {
           next();
