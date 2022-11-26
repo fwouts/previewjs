@@ -100,8 +100,8 @@ importers:
 
   chromeless:
     specifiers:
-      '@previewjs/api': ^5.1.0
-      '@previewjs/core': ^10.0.0
+      '@previewjs/api': ^6.0.0
+      '@previewjs/core': ^11.0.0
       '@previewjs/iframe': ^3.0.0
       '@previewjs/properties': ^1.0.1
       '@previewjs/vfs': ^1.2.11
@@ -155,7 +155,7 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': ^5.1.0
+      '@previewjs/api': ^6.0.0
       '@previewjs/config': ^3.1.0
       '@previewjs/iframe': ^3.0.0
       '@previewjs/type-analyzer': ^4.0.8
@@ -216,7 +216,7 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': ^10.0.0
+      '@previewjs/core': ^11.0.0
       '@previewjs/type-analyzer': ^4.0.8
       '@previewjs/vfs': workspace:*
       typescript: ^4.9.3
@@ -1810,9 +1810,9 @@ importers:
   testing:
     specifiers:
       '@playwright/test': ^1.28.1
-      '@previewjs/api': ^5.1.0
+      '@previewjs/api': ^6.0.0
       '@previewjs/chromeless': ^1.1.0
-      '@previewjs/core': ^10.0.0
+      '@previewjs/core': ^11.0.0
       '@previewjs/iframe': ^3.0.0
       '@previewjs/vfs': ^1.2.11
       '@types/fs-extra': 9.0.13
