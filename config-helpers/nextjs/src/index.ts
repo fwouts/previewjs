@@ -7,9 +7,11 @@ const OriginalNextImage = NextImage.default;
 // Patch Image to disable optimisations within Preview.js.
 Object.defineProperty(NextImage, "default", {
   configurable: true,
-  value: (props: NextImage.ImageProps) => (
-    <OriginalNextImage {...props} unoptimized />
-  ),
+  value: (props: NextImage.ImageProps) =>
+    React.createElement(OriginalNextImage, {
+      ...props,
+      unoptimized: true,
+    }),
 });
 
 // Patch useRouter() to fake the router within Preview.js.
