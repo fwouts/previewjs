@@ -89,9 +89,10 @@
   "scripts": {
     "vscode:prepublish": "pnpm build",
     "build": "rimraf dist previewjs-1.16.1.vsix && tsc && node esbuild.js && shx cp -rL ../../node_modules/pnpm dist/pnpm && shx cp -rL ../../loader/src/release/* dist/",
-    "prod": "cross-env PREVIEWJS_DEV=0 pnpm vsce package --no-dependencies && pnpm dev:install",
-    "dev": "cross-env PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm dev:build",
-    "dev:build": "cross-env PREVIEWJS_DEV=1 pnpm vsce package --no-dependencies && pnpm dev:install",
+    "prod": "pnpm vsce package --no-dependencies && pnpm dev:install",
+    "dev": "cross-env PREVIEWJS_MODULES_DIR=../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm dev:build",
+    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=../../../previewjs-pro/pro PREVIEWJS_PACKAGE_NAME=@previewjs/pro pnpm dev:build",
+    "dev:build": "pnpm vsce package --no-dependencies && pnpm dev:install",
     "dev:install": "code --install-extension previewjs-1.16.1.vsix --force"
   },
   "devDependencies": {
