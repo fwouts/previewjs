@@ -43,18 +43,16 @@ export async function load(options: {
         return existingWorkspace;
       }
       const created = await locking(async () => {
-        const loaded = await core.loadPreviewEnv({
+        const frameworkPlugin = await core.setupFrameworkPlugin({
           rootDirPath,
-          setupEnvironment,
           frameworkPluginFactories,
         });
-        if (!loaded) {
+        if (!frameworkPlugin) {
           console.warn(
             `No compatible Preview.js plugin for workspace: ${rootDirPath}`
           );
           return null;
         }
-        const { previewEnv, frameworkPlugin } = loaded;
         console.log(
           `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDirPath}`
         );
@@ -64,8 +62,7 @@ export async function load(options: {
           rootDirPath,
           reader,
           frameworkPlugin,
-          middlewares: previewEnv.middlewares || [],
-          onReady: previewEnv.onReady?.bind(previewEnv),
+          setupEnvironment,
         });
       });
       // Note: This caches the incompatibility of a workspace (i.e. caching null), which

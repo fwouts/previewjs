@@ -14,19 +14,17 @@ import path from "path";
 import type * as vite from "vite";
 import { detectComponents } from "./detect-components";
 import type { FrameworkPlugin } from "./plugins/framework";
+import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
-import { ApiRouter, RegisterRPC } from "./router";
+import { ApiRouter } from "./router";
 export type {
   Component,
   ComponentAnalysis,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
-export { loadPreviewEnv } from "./preview-env";
-export type {
-  PreviewEnvironment,
-  SetupPreviewEnvironment,
-} from "./preview-env";
+export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
+export type { SetupPreviewEnvironment } from "./preview-env";
 
 process.on("uncaughtException", (e) => {
   console.error("Uncaught Exception:", e);
@@ -38,19 +36,14 @@ export async function createWorkspace({
   reader,
   frameworkPlugin,
   logLevel,
-  middlewares,
-  onReady,
+  setupEnvironment,
 }: {
   versionCode: string;
   rootDirPath: string;
-  middlewares: express.RequestHandler[];
   frameworkPlugin: FrameworkPlugin;
   logLevel: vite.LogLevel;
   reader: Reader;
-  onReady?(options: {
-    registerRPC: RegisterRPC;
-    workspace: Workspace;
-  }): Promise<void>;
+  setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
   const expectedPluginApiVersion = 3;
   if (
@@ -124,6 +117,17 @@ export async function createWorkspace({
   router.registerRPC(RPCs.DetectComponents, (options) =>
     detectComponents(workspace, frameworkPlugin, typeAnalyzer, options)
   );
+  const middlewares: express.Handler[] = [
+    express.json(),
+    cookieParser(),
+    async (req, res, next) => {
+      if (req.path.startsWith("/api/")) {
+        res.json(await router.handle(req.path.substr(5), req.body));
+      } else {
+        next();
+      }
+    },
+  ];
   const previewer = new Previewer({
     reader,
     rootDirPath,
@@ -134,18 +138,7 @@ export async function createWorkspace({
     ),
     frameworkPlugin,
     logLevel,
-    middlewares: [
-      express.json(),
-      cookieParser(),
-      async (req, res, next) => {
-        if (req.path.startsWith("/api/")) {
-          res.json(await router.handle(req.path.substr(5), req.body));
-        } else {
-          next();
-        }
-      },
-      ...middlewares,
-    ],
+    middlewares,
     onFileChanged: (absoluteFilePath) => {
       const filePath = path.relative(rootDirPath, absoluteFilePath);
       for (const name of Object.keys(collected)) {
@@ -191,11 +184,14 @@ export async function createWorkspace({
       typeAnalyzer.dispose();
     },
   };
-  if (onReady) {
-    await onReady({
+  if (setupEnvironment) {
+    const environment = await setupEnvironment({
       registerRPC: (endpoint, handler) => router.registerRPC(endpoint, handler),
       workspace,
     });
+    if (environment.middlewares) {
+      middlewares.push(...environment.middlewares);
+    }
   }
   return workspace;
 }
