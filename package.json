@@ -20,6 +20,7 @@
     "release-components": "ts-node scripts/release-components.ts",
     "lint": "eslint --max-warnings 0 '**/*.ts' '**/*.tsx'",
     "vite-ecosystem-ci:build": "turbo build --filter=@previewjs/plugin-react",
+    "vite-ecosystem-ci:before-test": "cd $INIT_CWD/../../vite/packages/vite && pnpm add -D ts-node",
     "vite-ecosystem-ci:test": "turbo test --filter=@previewjs/plugin-react -- --run && turbo e2e-test --filter=@previewjs/plugin-react"
   },
   "devDependencies": {
