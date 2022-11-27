@@ -18,7 +18,9 @@
     "check-licenses": "ts-node scripts/check-licenses.ts",
     "release-apps": "ts-node scripts/release-apps.ts",
     "release-components": "ts-node scripts/release-components.ts",
-    "lint": "eslint --max-warnings 0 '**/*.ts' '**/*.tsx'"
+    "lint": "eslint --max-warnings 0 '**/*.ts' '**/*.tsx'",
+    "vite-ecosystem-ci:build": "turbo build",
+    "vite-ecosystem-ci:test": "turbo test -- --run && cd frameworks/react && pnpm e2e-test"
   },
   "devDependencies": {
     "@types/inquirer": "8.2.5",
