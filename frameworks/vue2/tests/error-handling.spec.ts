@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "vue2");
 
-test.describe("vue2/error handling", () => {
+test.describe.parallel("vue2/error handling", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("handles syntax errors gracefully", async (preview) => {

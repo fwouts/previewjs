@@ -18,8 +18,8 @@ const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 
 for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/custom preview", () => {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/custom preview", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("shows variants when already configured", async (preview) => {

@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "vue3");
 
-test.describe("vue3/refreshing", () => {
+test.describe.parallel("vue3/refreshing", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders top-level component", async (preview) => {
@@ -23,58 +23,53 @@ test.describe("vue3/refreshing", () => {
   });
 
   for (const inMemoryOnly of [false, true]) {
-    test.describe(
-      inMemoryOnly ? "in-memory file change" : "real file change",
-      () => {
-        test("updates top-level component after file change", async (preview) => {
-          await preview.show("src/App.vue:App");
-          await preview.iframe.waitForSelector(".logo");
-          await preview.fileManager.update(
-            "src/App.vue",
-            {
-              replace: `class="logo"`,
-              with: `class="logo-modified"`,
-            },
-            {
-              inMemoryOnly,
-            }
-          );
-          await preview.iframe.waitForSelector(".logo-modified");
-        });
+    test(`updates top-level component after file change (inMemoryOnly=${inMemoryOnly})`, async (preview) => {
+      await preview.show("src/App.vue:App");
+      await preview.iframe.waitForSelector(".logo");
+      await preview.fileManager.update(
+        "src/App.vue",
+        {
+          replace: `class="logo"`,
+          with: `class="logo-modified"`,
+        },
+        {
+          inMemoryOnly,
+        }
+      );
+      await preview.iframe.waitForSelector(".logo-modified");
+    });
 
-        test("updates dependency after file change", async (preview) => {
-          await preview.show("src/App.vue:App");
-          await preview.iframe.waitForSelector(".hello");
-          await preview.fileManager.update(
-            "src/components/HelloWorld.vue",
-            {
-              replace: `class="hello"`,
-              with: `class="hello-modified"`,
-            },
-            {
-              inMemoryOnly,
-            }
-          );
-          await preview.iframe.waitForSelector(".hello-modified");
-        });
+    test(`updates dependency after file change (inMemoryOnly=${inMemoryOnly})`, async (preview) => {
+      await preview.show("src/App.vue:App");
+      await preview.iframe.waitForSelector(".hello");
+      await preview.fileManager.update(
+        "src/components/HelloWorld.vue",
+        {
+          replace: `class="hello"`,
+          with: `class="hello-modified"`,
+        },
+        {
+          inMemoryOnly,
+        }
+      );
+      await preview.iframe.waitForSelector(".hello-modified");
+    });
 
-        test("updates CSS after file change", async (preview) => {
-          await preview.show("src/App.vue:App");
-          const helloWorld = await preview.iframe.waitForSelector(".hello");
-          expect((await helloWorld?.boundingBox())?.width).toEqual(400);
-          await preview.fileManager.update(
-            "src/components/HelloWorld.vue",
-            {
-              replace: `width: 400px`,
-              with: `width: 200px`,
-            },
-            {
-              inMemoryOnly,
-            }
-          );
-          expect((await helloWorld?.boundingBox())?.width).toEqual(200);
-        });
-      }
-    );
+    test(`updates CSS after file change (inMemoryOnly=${inMemoryOnly})`, async (preview) => {
+      await preview.show("src/App.vue:App");
+      const helloWorld = await preview.iframe.waitForSelector(".hello");
+      expect((await helloWorld?.boundingBox())?.width).toEqual(400);
+      await preview.fileManager.update(
+        "src/components/HelloWorld.vue",
+        {
+          replace: `width: 400px`,
+          with: `width: 200px`,
+        },
+        {
+          inMemoryOnly,
+        }
+      );
+      expect((await helloWorld?.boundingBox())?.width).toEqual(200);
+    });
   }
 });

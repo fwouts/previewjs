@@ -15,7 +15,7 @@ const ROOT_DIR = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
 const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe("extractReactComponents", () => {
+describe.concurrent("extractReactComponents", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 

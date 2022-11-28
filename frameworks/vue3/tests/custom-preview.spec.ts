@@ -53,7 +53,7 @@ definePreviews<Props>(${previews})
 
 const testApp = path.join(__dirname, "apps", "vue3");
 
-test.describe("vue3/custom preview", () => {
+test.describe.parallel("vue3/custom preview", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("shows variants when already configured with previews property", async (preview) => {

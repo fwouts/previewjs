@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const smokeTestApp = (name: string) => path.join(__dirname, "apps", name);
 
-test.describe("smoke tests", () => {
+test.describe.parallel("smoke tests", () => {
   for (const [appName, componentId] of [
     ["aliases", "src/App.tsx:App"],
     ["aliases-via-jsconfig", "src/App.js:App"],

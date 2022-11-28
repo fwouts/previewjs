@@ -7,8 +7,8 @@ const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 
 for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/storybook", () => {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/storybook", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("renders CSF2 story with no args", async (preview) => {

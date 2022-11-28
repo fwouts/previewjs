@@ -11,7 +11,7 @@ export const Wrapper = ({ children }: { children: ReactNode }) => {
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/wrapper", () => {
+test.describe.parallel("solid/wrapper", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("refreshes when wrapper is added", async (preview) => {

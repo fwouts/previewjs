@@ -10,7 +10,7 @@ const WRAPPER_SOURCE = `<div class="wrapped">
 
 const testApp = path.join(__dirname, "apps", "svelte");
 
-test.describe("svelte/wrapper", () => {
+test.describe.parallel("svelte/wrapper", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("refreshes when wrapper is added", async (preview) => {

@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/action logs", () => {
+test.describe.parallel("solid/action logs", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("emits action event for auto-generated callbacks", async (preview) => {

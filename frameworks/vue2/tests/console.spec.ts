@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "vue2");
 
-test.describe("vue2/console", () => {
+test.describe.parallel("vue2/console", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("intercepts logs", async (preview) => {

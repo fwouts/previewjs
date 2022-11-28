@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "vue3");
 
-test.describe("vue3/action logs", () => {
+test.describe.parallel("vue3/action logs", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("shows action logs on link click", async (preview) => {

@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/default exports", () => {
+test.describe.parallel("solid/default exports", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders default export component (arrow function)", async (preview) => {
