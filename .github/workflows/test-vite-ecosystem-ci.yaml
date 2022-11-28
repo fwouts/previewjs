@@ -46,5 +46,4 @@ jobs:
         with:
           run_install: true
       - run: pnpm vite-ecosystem-ci:build
-      - run: pnpm vite-ecosystem-ci:before-test
       - run: pnpm vite-ecosystem-ci:test
