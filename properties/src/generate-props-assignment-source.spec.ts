@@ -23,7 +23,7 @@ import {
 import { describe, expect, test } from "vitest";
 import { generatePropsAssignmentSource } from "./generate-props-assignment-source";
 
-describe.concurrent("generatePropsAssignmentSource", () => {
+describe("generatePropsAssignmentSource", () => {
   test("simple props with object type", () => {
     expect(
       generatePropsAssignmentSource(

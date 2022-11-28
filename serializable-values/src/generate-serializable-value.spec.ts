@@ -25,7 +25,7 @@ import {
 import { describe, expect, test } from "vitest";
 import { generateSerializableValue } from "./generate-serializable-value";
 
-describe.concurrent("generateSerializableValue", () => {
+describe("generateSerializableValue", () => {
   test("simple props with object type", () => {
     expect(
       generateSerializableValue(

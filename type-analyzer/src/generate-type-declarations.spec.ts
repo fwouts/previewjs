@@ -25,7 +25,7 @@ import {
 } from "./definitions";
 import { generateTypeDeclarations } from "./generate-type-declarations";
 
-describe.concurrent("generateTypeDeclarations", () => {
+describe("generateTypeDeclarations", () => {
   test("no types", () => {
     expect(
       generateTypeDeclarations([], {
