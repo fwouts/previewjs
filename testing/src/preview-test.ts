@@ -7,7 +7,6 @@ import getPort from "get-port";
 import type playwright from "playwright";
 import { expectLoggedMessages, LoggedMessagesMatcher } from "./events";
 import { FileManager, prepareFileManager } from "./file-manager";
-import { prepareTestDir } from "./test-dir";
 
 // Port allocated for the duration of the process.
 let port: number;
@@ -19,7 +18,7 @@ type TestPreview = Awaited<ReturnType<typeof startPreview>> & {
 
 export const previewTest = (
   frameworkPluginFactories: FrameworkPluginFactory[],
-  workspaceDirPath: string
+  testProjectDirPath: string
 ) => {
   const testFn = (
     title: string,
@@ -31,10 +30,9 @@ export const previewTest = (
       if (!port) {
         port = await getPort();
       }
-      const rootDirPath = prepareTestDir(workspaceDirPath);
       let showingComponent = false;
-      const { reader, fileManager } = await prepareFileManager({
-        rootDirPath,
+      const { rootDirPath, reader, fileManager } = await prepareFileManager({
+        testProjectDirPath,
         onBeforeFileUpdated: async () => {
           if (!showingComponent) {
             return;

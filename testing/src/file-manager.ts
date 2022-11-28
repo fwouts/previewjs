@@ -5,16 +5,22 @@ import {
 } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
+import { duplicateProjectForTesting } from "./test-dir";
 
 export function prepareFileManager({
-  rootDirPath,
-  onBeforeFileUpdated,
-  onAfterFileUpdated,
+  testProjectDirPath,
+  onBeforeFileUpdated = async () => {
+    /* no-op by default */
+  },
+  onAfterFileUpdated = async () => {
+    /* no-op by default */
+  },
 }: {
-  rootDirPath: string;
-  onBeforeFileUpdated: () => void;
-  onAfterFileUpdated: () => void;
+  testProjectDirPath: string;
+  onBeforeFileUpdated?: () => void;
+  onAfterFileUpdated?: () => void;
 }) {
+  const rootDirPath = duplicateProjectForTesting(testProjectDirPath);
   const memoryReader = createMemoryReader();
   const reader = createStackedReader([
     memoryReader,
@@ -24,7 +30,6 @@ export function prepareFileManager({
   ]);
   let lastDiskWriteMillis = 0;
   const fileManager: FileManager = {
-    rootPath: rootDirPath,
     update: async (f, content, { inMemoryOnly } = {}) => {
       await onBeforeFileUpdated();
       if (!inMemoryOnly) {
@@ -68,13 +73,13 @@ export function prepareFileManager({
     },
   };
   return {
+    rootDirPath,
     reader,
     fileManager,
   };
 }
 
 export interface FileManager {
-  rootPath: string;
   update(
     filePath: string,
     content:

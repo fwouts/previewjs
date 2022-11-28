@@ -12,15 +12,15 @@ import {
 } from "fs-extra";
 import path from "path";
 
-export function prepareTestDir(testDir: string) {
+export function duplicateProjectForTesting(testProjectDirPath: string) {
   const rootDirPath = path.join(
-    testDir,
+    testProjectDirPath,
     "..",
     "_tmp_",
-    `${path.basename(testDir)}-${process.pid}`
+    `${path.basename(testProjectDirPath)}-${process.pid}`
   );
   mkdirpSync(rootDirPath);
-  sync(testDir, rootDirPath);
+  sync(testProjectDirPath, rootDirPath);
   return rootDirPath;
 }
 
