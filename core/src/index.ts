@@ -6,7 +6,6 @@ import {
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
-import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
@@ -119,7 +118,6 @@ export async function createWorkspace({
   );
   const middlewares: express.Handler[] = [
     express.json(),
-    cookieParser(),
     async (req, res, next) => {
       if (req.path.startsWith("/api/")) {
         res.json(await router.handle(req.path.substr(5), req.body));
