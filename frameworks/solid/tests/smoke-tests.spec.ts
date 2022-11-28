@@ -13,6 +13,7 @@ test.describe("smoke tests", () => {
     const appDir = smokeTestApp(appName);
     previewTest([pluginFactory], appDir)(appName, async (preview) => {
       await preview.show(componentId);
+      await preview.iframe.waitForSelector("#ready");
       await preview.iframe.takeScreenshot(
         path.join(appDir, `__screenshot__${process.platform}.png`)
       );
