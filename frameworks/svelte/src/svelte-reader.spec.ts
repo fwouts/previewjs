@@ -10,7 +10,7 @@ import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
 
-describe("createSvelteTypeScriptReader", () => {
+describe.concurrent("createSvelteTypeScriptReader", () => {
   let memoryReader: Reader & Writer;
   let reader: Reader;
   let typeAnalyzer: TypeAnalyzer;

@@ -7,8 +7,8 @@ const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 
 for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/action logs", () => {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/action logs", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("emits action event for auto-generated callbacks", async (preview) => {

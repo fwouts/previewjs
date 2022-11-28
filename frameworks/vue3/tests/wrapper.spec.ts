@@ -12,7 +12,7 @@ const WRAPPER_SOURCE = `<template>
 
 const testApp = path.join(__dirname, "apps", "vue3");
 
-test.describe("vue3/wrapper", () => {
+test.describe.parallel("vue3/wrapper", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("refreshes when wrapper is added", async (preview) => {

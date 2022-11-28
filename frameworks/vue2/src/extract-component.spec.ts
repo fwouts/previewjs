@@ -17,7 +17,7 @@ const MAIN_FILE_TSX = path.join(ROOT_DIR, "App.tsx");
 const MAIN_FILE_VUE = path.join(ROOT_DIR, "MyComponent.vue");
 const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe("extractVueComponents", () => {
+describe.concurrent("extractVueComponents", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 

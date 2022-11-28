@@ -35,7 +35,7 @@ import {
   VOID_TYPE,
 } from ".";
 
-describe("TypeAnalyzer", () => {
+describe.concurrent("TypeAnalyzer", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 

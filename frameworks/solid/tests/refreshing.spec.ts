@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/refreshing", () => {
+test.describe.parallel("solid/refreshing", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders top-level component", async (preview) => {
@@ -32,7 +32,7 @@ test.describe("solid/refreshing", () => {
   });
 
   for (const inMemoryOnly of [false, true]) {
-    test.describe(
+    test.describe.parallel(
       inMemoryOnly ? "in-memory file change" : "real file change",
       () => {
         test("updates top-level component after file change", async (preview) => {

@@ -31,7 +31,7 @@ export default {
 
 const testApp = path.join(__dirname, "apps", "vue2");
 
-test.describe("vue2/custom preview", () => {
+test.describe.parallel("vue2/custom preview", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("shows variants when already configured", async (preview) => {

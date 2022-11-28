@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/storybook", () => {
+test.describe.parallel("solid/storybook", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders CSF2 story with no args", async (preview) => {

@@ -15,7 +15,7 @@ export function Button(props: { label: string; disabled?: boolean }) {
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/custom preview", () => {
+test.describe.parallel("solid/custom preview", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("shows variants when already configured", async (preview) => {

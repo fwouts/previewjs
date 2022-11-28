@@ -28,7 +28,7 @@ export default {
 
 const testApp = path.join(__dirname, "apps", "vue3");
 
-test.describe("vue3/storybook", () => {
+test.describe.parallel("vue3/storybook", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders basic CSF2 story", async (preview) => {

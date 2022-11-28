@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/console", () => {
+test.describe.parallel("solid/console", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("intercepts logs", async (preview) => {

@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const smokeTestApp = (name: string) => path.join(__dirname, "apps", name);
 
-test.describe("smoke tests", () => {
+test.describe.parallel("smoke tests", () => {
   for (const [appName, componentId] of [
     ["svelte-app", "src/App.svelte:App"],
     ...(parseInt(process.versions.node.split(".")[0]!) >= 16

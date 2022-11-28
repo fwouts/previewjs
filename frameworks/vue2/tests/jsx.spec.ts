@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "vue2");
 
-test.describe("vue2/jsx", () => {
+test.describe.parallel("vue2/jsx", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders JSX component", async (preview) => {

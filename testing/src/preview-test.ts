@@ -87,7 +87,7 @@ export const previewTest = (
     });
   };
   testFn.describe = (title: string, callback: () => void) =>
-    test.describe(title, callback);
+    test.describe.parallel(title, callback);
   testFn.only = (
     title: string,
     testFunction: (preview: TestPreview) => Promise<void>

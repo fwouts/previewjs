@@ -20,7 +20,7 @@ import {
 } from "./serializable-value";
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
-describe("serializableValueToJavaScript", () => {
+describe.concurrent("serializableValueToJavaScript", () => {
   test("array", () => {
     expect(serializableValueToJavaScript(array([]))).toMatchInlineSnapshot(
       '"[]"'

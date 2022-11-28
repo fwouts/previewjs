@@ -30,7 +30,7 @@ import { REACT_SPECIAL_TYPES } from "./special-types";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe("analyzeReactComponent", () => {
+describe.concurrent("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;

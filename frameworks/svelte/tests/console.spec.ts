@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "svelte");
 
-test.describe("svelte/console", () => {
+test.describe.parallel("svelte/console", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("intercepts logs", async (preview) => {

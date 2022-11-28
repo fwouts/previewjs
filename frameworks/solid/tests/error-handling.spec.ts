@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe("solid/error handling", () => {
+test.describe.parallel("solid/error handling", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("handles syntax errors gracefully", async (preview) => {

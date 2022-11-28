@@ -7,8 +7,8 @@ const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 
 for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/refreshing", () => {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/refreshing", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("renders top-level component", async (preview) => {
@@ -35,7 +35,7 @@ for (const reactVersion of [16, 17, 18]) {
       });
 
       for (const inMemoryOnly of [false, true]) {
-        test.describe(
+        test.describe.parallel(
           inMemoryOnly ? "in-memory file change" : "real file change",
           () => {
             test("updates top-level component after file change", async (preview) => {

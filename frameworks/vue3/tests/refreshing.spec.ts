@@ -5,7 +5,7 @@ import pluginFactory from "../src";
 
 const testApp = path.join(__dirname, "apps", "vue3");
 
-test.describe("vue3/refreshing", () => {
+test.describe.parallel("vue3/refreshing", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders top-level component", async (preview) => {
@@ -23,7 +23,7 @@ test.describe("vue3/refreshing", () => {
   });
 
   for (const inMemoryOnly of [false, true]) {
-    test.describe(
+    test.describe.parallel(
       inMemoryOnly ? "in-memory file change" : "real file change",
       () => {
         test("updates top-level component after file change", async (preview) => {

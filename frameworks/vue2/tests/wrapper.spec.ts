@@ -12,7 +12,7 @@ const WRAPPER_SOURCE = `<template>
 
 const testApp = path.join(__dirname, "apps", "vue2");
 
-test.describe("vue2/wrapper", () => {
+test.describe.parallel("vue2/wrapper", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("refreshes when wrapper is added", async (preview) => {

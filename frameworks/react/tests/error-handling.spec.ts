@@ -6,9 +6,9 @@ import pluginFactory from "../src";
 const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 
-test.describe("react/error handling", () => {
+test.describe.parallel("react/error handling", () => {
   for (const reactVersion of [16, 17, 18]) {
-    test.describe(`v${reactVersion}`, () => {
+    test.describe.parallel(`v${reactVersion}`, () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("handles syntax errors gracefully", async (preview) => {

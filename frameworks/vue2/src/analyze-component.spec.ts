@@ -26,7 +26,7 @@ import { createVueTypeScriptReader } from "./vue-reader";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
-describe("analyze Vue 2 component", () => {
+describe.concurrent("analyze Vue 2 component", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
