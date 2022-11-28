@@ -2,6 +2,7 @@ import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
+import { reactVersions } from "./react-versions";
 
 const WRAPPER_SOURCE = `import { ReactNode } from "react";
 export const Wrapper = ({ children }: { children: ReactNode }) => {
@@ -12,7 +13,7 @@ export const Wrapper = ({ children }: { children: ReactNode }) => {
 const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 
-for (const reactVersion of [16, 17, 18]) {
+for (const reactVersion of reactVersions()) {
   test.describe.parallel(`v${reactVersion}`, () => {
     test.describe.parallel("react/wrapper", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
