@@ -2,11 +2,12 @@ import test, { expect } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
+import { reactVersions } from "./react-versions";
 
 const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 
-for (const reactVersion of [16, 17, 18]) {
+for (const reactVersion of reactVersions()) {
   test.describe.parallel(`v${reactVersion}`, () => {
     test.describe.parallel("react/refreshing", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
