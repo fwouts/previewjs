@@ -5,7 +5,6 @@ import {
 } from "@previewjs/core";
 import { createFileSystemReader, Reader } from "@previewjs/vfs";
 import express from "express";
-import fs from "fs";
 import path from "path";
 
 export async function createChromelessWorkspace({
@@ -27,7 +26,7 @@ export async function createChromelessWorkspace({
       `No compatible framework plugin found for directory: ${rootDirPath}`
     );
   }
-  const clientDirPath = findClientDir(__dirname);
+  const clientDirPath = path.join(__dirname, "..", "client", "dist");
   const workspace = await createWorkspace({
     rootDirPath,
     frameworkPlugin,
@@ -44,17 +43,4 @@ export async function createChromelessWorkspace({
     );
   }
   return workspace;
-}
-
-function findClientDir(dirPath: string): string {
-  const potentialPath = path.join(dirPath, "client", "dist");
-  if (fs.existsSync(potentialPath)) {
-    return potentialPath;
-  } else {
-    const parentPath = path.dirname(dirPath);
-    if (!parentPath || parentPath === dirPath) {
-      throw new Error(`Unable to find compiled client directory (client/dist)`);
-    }
-    return findClientDir(parentPath);
-  }
 }
