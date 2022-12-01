@@ -12,7 +12,7 @@ export const Wrapper = ({ children }: { children: ComponentChildren }) => {
 test.describe.parallel("preact/wrapper", () => {
   const test = previewTest(
     [pluginFactory],
-    path.join(__dirname, "apps", "preact")
+    path.join(__dirname, "apps", "preact-app")
   );
 
   test("refreshes when wrapper is added", async (preview) => {

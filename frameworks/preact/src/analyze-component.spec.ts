@@ -1,19 +1,15 @@
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
-  ANY_TYPE,
   arrayType,
   createTypeAnalyzer,
   EMPTY_OBJECT_TYPE,
-  functionType,
   namedType,
   NODE_TYPE,
-  NULL_TYPE,
   NUMBER_TYPE,
   objectType,
   optionalType,
   STRING_TYPE,
   TypeAnalyzer,
-  unionType,
 } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
@@ -257,6 +253,8 @@ export const A = (props: { foo: string }) => {
     expect(
       await analyze(
         `
+import { ComponentChildren } from "preact";
+
 export const A = (props: { currentTab: PanelTab, tabs: PanelTab[] }) => {
   return <div>Hello, World!</div>;
 };
@@ -265,7 +263,7 @@ interface PanelTab {
   label: string;
   key: string;
   notificationCount: number;
-  panel: React.ReactNode;
+  panel: ComponentChildren;
 }
 `,
         "A"
@@ -304,6 +302,7 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
+        children: optionalType(NODE_TYPE),
       }),
       types: {},
     });
@@ -324,6 +323,7 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     ).toEqual({
       propsType: objectType({
         foo: STRING_TYPE,
+        children: optionalType(NODE_TYPE),
       }),
       types: {},
     });

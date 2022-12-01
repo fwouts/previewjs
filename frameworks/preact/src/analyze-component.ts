@@ -67,6 +67,16 @@ export function analyzePreactComponent(
         );
       }
     }
+    if (propsType.kind === "object") {
+      propsType = {
+        kind: "object",
+        fields: Object.fromEntries(
+          Object.entries(propsType.fields).filter(
+            ([key]) => !["jsx", "key", "ref"].includes(key)
+          )
+        ),
+      };
+    }
     return { propsType, types };
   } catch (e) {
     console.warn(

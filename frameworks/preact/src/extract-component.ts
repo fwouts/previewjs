@@ -119,7 +119,7 @@ function isValidComponentReturnType(type: ts.Type): boolean {
   return false;
 }
 
-const jsxElementTypes = new Set(["Element", "ReactElement"]);
+const jsxElementTypes = new Set(["Element", "VNode"]);
 function isJsxElement(type: ts.Type): boolean {
   if (type.isUnion()) {
     for (const subtype of type.types) {

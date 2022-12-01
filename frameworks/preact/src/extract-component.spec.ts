@@ -66,10 +66,6 @@ class ClassComponent1 extends Component {}
 
 const ForwardRef = forwardRef((props, ref) => <ConstantFunction {...props} />);
 
-const NextComponent: NextPage = () => {
-  return <div>Hello, World!</div>;
-};
-
 export class BaseClass<T> {}
 
 export class NotComponentClass extends BaseClass<SomeProps> {}
@@ -125,13 +121,6 @@ export const AlsoNotAStory = {
       },
       {
         name: "ForwardRef",
-        info: {
-          kind: "component",
-          exported: false,
-        },
-      },
-      {
-        name: "NextComponent",
         info: {
           kind: "component",
           exported: false,
