@@ -1,0 +1,54 @@
+{
+  "name": "@previewjs/plugin-preact",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Klemen Slavič",
+    "email": "krof.drakula@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "sideEffects": false,
+  "type": "commonjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-preact --no-deps --include-dependencies",
+    "build": "tsc && unbuild",
+    "test": "vitest --no-threads",
+    "e2e-test": "playwright test"
+  },
+  "dependencies": {
+    "@previewjs/csf3": "^3.0.3",
+    "@previewjs/type-analyzer": "^4.0.6",
+    "@previewjs/vfs": "^1.2.9",
+    "typescript": "^4.8.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.28.1",
+    "@previewjs/api": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/properties": "workspace:*",
+    "@previewjs/testing": "workspace:*",
+    "preact": "10.11.2",
+    "unbuild": "0.9.1",
+    "rimraf": "3.0.2",
+    "vite": "3.2.3",
+    "vitest": "0.25.1"
+  }
+}
