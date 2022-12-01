@@ -1,11 +1,10 @@
 import {
   createWorkspace,
   FrameworkPluginFactory,
-  loadPreviewEnv,
+  setupFrameworkPlugin,
 } from "@previewjs/core";
 import { createFileSystemReader, Reader } from "@previewjs/vfs";
 import express from "express";
-import fs from "fs";
 import path from "path";
 
 export async function createChromelessWorkspace({
@@ -18,24 +17,25 @@ export async function createChromelessWorkspace({
   reader?: Reader;
   port?: number;
 }) {
-  const env = await loadPreviewEnv({
+  const frameworkPlugin = await setupFrameworkPlugin({
     rootDirPath,
-    setupEnvironment: async () => ({}),
     frameworkPluginFactories,
   });
-  if (!env) {
+  if (!frameworkPlugin) {
     throw new Error(
-      `No preview environment could be created for directory: ${rootDirPath}`
+      `No compatible framework plugin found for directory: ${rootDirPath}`
     );
   }
-  const clientDirPath = findClientDir(__dirname);
+  const clientDirPath = path.join(__dirname, "..", "client", "dist");
   const workspace = await createWorkspace({
     rootDirPath,
-    frameworkPlugin: env.frameworkPlugin,
+    frameworkPlugin,
     logLevel: "info",
     versionCode: "0.0.0-dev",
-    middlewares: [express.static(clientDirPath)],
     reader,
+    setupEnvironment: async () => ({
+      middlewares: [express.static(clientDirPath)],
+    }),
   });
   if (!workspace) {
     throw new Error(
@@ -43,17 +43,4 @@ export async function createChromelessWorkspace({
     );
   }
   return workspace;
-}
-
-function findClientDir(dirPath: string): string {
-  const potentialPath = path.join(dirPath, "client", "dist");
-  if (fs.existsSync(potentialPath)) {
-    return potentialPath;
-  } else {
-    const parentPath = path.dirname(dirPath);
-    if (!parentPath || parentPath === dirPath) {
-      throw new Error(`Unable to find compiled client directory (client/dist)`);
-    }
-    return findClientDir(parentPath);
-  }
 }

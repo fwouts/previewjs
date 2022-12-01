@@ -17,8 +17,7 @@ const globalIgnores = [
 
 // TODO: Go through these deps and eliminate the ones that are not needed.
 const localIgnores: Record<string, string[]> = {
-  "/": ["npm", "prettier", "turbo"],
-  "/core": ["monaco-editor"],
+  "/": ["pnpm", "prettier", "turbo"],
   "/frameworks/react": ["@types/prop-types"],
   "/frameworks/react/preview": ["@types/prop-types", "react", "react-dom"],
   "/frameworks/vue2": ["vue"],
@@ -41,8 +40,7 @@ async function main() {
     const { path: workspacePath } = workspace;
     const relativePath = "/" + path.relative(rootDir, workspacePath);
     if (
-      relativePath.startsWith("/test-apps") ||
-      relativePath.startsWith("/smoke-test-apps") ||
+      relativePath.includes("/tests/apps/") ||
       relativePath === "/dev-workspace"
     ) {
       continue;

@@ -1,4 +1,4 @@
-import { ensureServerRunning } from "@previewjs/server";
+import { startServer } from "@previewjs/server";
 
 const port = parseInt(process.argv[2] || "0", 10);
 if (!port) {
@@ -15,7 +15,7 @@ if (!version) {
   throw new Error(`Missing environment variable: PREVIEWJS_INTELLIJ_VERSION`);
 }
 
-ensureServerRunning({
+startServer({
   loaderInstallDir: __dirname,
   packageName,
   versionCode: `intellij-${version}`,

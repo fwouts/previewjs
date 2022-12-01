@@ -2,10 +2,16 @@ import { generateComponentId, RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
-import { existsSync, readFileSync } from "fs";
+import exitHook from "exit-hook";
+import {
+  appendFileSync,
+  existsSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from "fs";
 import http from "http";
 import isWsl from "is-wsl";
-import net from "net";
 import path from "path";
 import type {
   AnalyzeFileRequest,
@@ -26,10 +32,68 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
-import { createClient } from "./client";
-import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
 
 const AUTOMATIC_SHUTDOWN_DELAY_MILLIS = 5000;
+
+const lockFilePath = process.env.PREVIEWJS_LOCK_FILE;
+if (lockFilePath) {
+  if (existsSync(lockFilePath)) {
+    const pid = parseInt(readFileSync(lockFilePath, "utf8"));
+    try {
+      // Test if PID is still running. This will fail if not.
+      process.kill(pid, 0);
+    } catch {
+      // Previous process ended prematurely (e.g. hardware crash).
+      try {
+        unlinkSync(lockFilePath);
+      } catch {
+        // It's possible for several processes to try unlinking at the same time.
+        // Ignore.
+      }
+    }
+  }
+  try {
+    writeFileSync(lockFilePath, process.pid.toString(10), {
+      flag: "wx",
+    });
+    exitHook(() => unlinkSync(lockFilePath));
+  } catch {
+    console.error(
+      `Unable to obtain lock: ${lockFilePath}\nYou can delete this file manually if you wish to override the lock.`
+    );
+    process.exit(1);
+  }
+}
+
+const logFilePath = process.env.PREVIEWJS_LOG_FILE;
+
+if (logFilePath) {
+  writeFileSync(logFilePath, "", "utf8");
+  const wrapProcessStreamWriter = (
+    oldWriter: typeof process.stdout.write
+  ): typeof process.stdout.write => {
+    return (buffer, callbackOrBufferEncoding) => {
+      appendFileSync(logFilePath, "" + buffer, "utf8");
+      if (!callbackOrBufferEncoding) {
+        return oldWriter(buffer);
+      } else if (typeof callbackOrBufferEncoding === "string") {
+        return oldWriter(buffer, callbackOrBufferEncoding);
+      } else {
+        return oldWriter(buffer, callbackOrBufferEncoding);
+      }
+    };
+  };
+  process.stderr.write = wrapProcessStreamWriter(
+    process.stderr.write.bind(process.stderr)
+  );
+  process.stdout.write = wrapProcessStreamWriter(
+    process.stdout.write.bind(process.stdout)
+  );
+  process.on("uncaughtException", (e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}
 
 export interface ServerStartOptions {
   loaderInstallDir: string;
@@ -38,68 +102,7 @@ export interface ServerStartOptions {
   port: number;
 }
 
-export async function ensureServerRunning(options: ServerStartOptions) {
-  const alreadyRunning = await isServerAlreadyRunning(options);
-  if (alreadyRunning) {
-    console.log(
-      `Preview.js daemon server is already running on port ${options.port}.`
-    );
-    return;
-  }
-  await startServer(options);
-}
-
-async function isServerAlreadyRunning({
-  loaderInstallDir,
-  packageName,
-  versionCode,
-  port,
-}: ServerStartOptions): Promise<boolean> {
-  const client = createClient(`http://localhost:${port}`);
-  let alreadyRunningInfo: InfoResponse | null = null;
-  try {
-    alreadyRunningInfo = await client.info();
-  } catch (e) {
-    // This is fine, it just means the server isn't running.
-  }
-  if (alreadyRunningInfo) {
-    if (
-      alreadyRunningInfo.loaderInstallDir === loaderInstallDir &&
-      alreadyRunningInfo.packageName === packageName &&
-      alreadyRunningInfo.versionCode === versionCode
-    ) {
-      // The server is already running with the same config.
-      return true;
-    }
-    console.warn(
-      "Server is already running with different config. Killing it."
-    );
-    await client.kill();
-    await waitForSuccessfulPromise(() => isPortAvailable(port));
-  }
-  return false;
-}
-
-function isPortAvailable(port: number) {
-  return new Promise<void>((resolve, reject) => {
-    const server = net.createServer();
-    server.unref();
-    server.on("error", reject);
-
-    server.listen(
-      {
-        port,
-      },
-      () => {
-        server.close(() => {
-          resolve();
-        });
-      }
-    );
-  });
-}
-
-async function startServer({
+export async function startServer({
   loaderInstallDir,
   packageName,
   versionCode,
@@ -382,36 +385,17 @@ async function startServer({
     }
   );
 
-  const server = await new Promise<http.Server | null>((resolve, reject) => {
+  await new Promise<http.Server>((resolve, reject) => {
     const server = app
       .listen(port, () => {
         resolve(server);
       })
       .on("error", async (e: any) => {
-        if (e.code === "EADDRINUSE") {
-          if (
-            await isServerAlreadyRunning({
-              loaderInstallDir,
-              packageName,
-              versionCode,
-              port,
-            })
-          ) {
-            resolve(null);
-            return;
-          }
-        }
         reject(e);
       });
   });
 
-  if (server) {
-    console.log(
-      `Preview.js daemon server is now running on http://localhost:${port}`
-    );
-  } else {
-    console.log(
-      `Another Preview.js daemon server spun up concurrently on ${port}. All good.`
-    );
-  }
+  console.log(
+    `Preview.js daemon server is now running on http://localhost:${port}`
+  );
 }

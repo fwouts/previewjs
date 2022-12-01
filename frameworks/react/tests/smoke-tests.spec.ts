@@ -3,12 +3,12 @@ import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
-test.describe.configure({ mode: "parallel" });
-
 const smokeTestApp = (name: string) => path.join(__dirname, "apps", name);
 
-test.describe("smoke tests", () => {
+test.describe.parallel("smoke tests", () => {
   for (const [appName, componentId] of [
+    ["aliases", "src/App.tsx:App"],
+    ["aliases-via-jsconfig", "src/App.js:App"],
     ["class-components-js", "src/App.jsx:App"],
     ["class-components-ts", "src/App.tsx:App"],
     ["cra-css-modules", "src/App.tsx:App"],
@@ -32,6 +32,8 @@ test.describe("smoke tests", () => {
     ["cra-ts", "src/App.tsx:App"],
     ["cra-ts-react16", "src/App.tsx:App"],
     ["cra-ts-react18", "src/App.tsx:App"],
+    ["custom-preview", "src/App.tsx:App"],
+    ["imported-types", "src/App.tsx:App"],
     ["material-ui", "src/App.tsx:App"],
     ["nextjs-11", "pages/index.tsx:App"],
     ["nextjs-12", "pages/index.tsx:App"],
@@ -42,10 +44,13 @@ test.describe("smoke tests", () => {
     ["vite-vanilla-extract", "src/App.tsx:App"],
     ["vite-with-svgr", "src/App.tsx:App"],
     ["vite-without-svgr", "src/App.tsx:App"],
+    ["wrapper-custom", "src/App.tsx:App"],
+    ["wrapper-default", "src/App.tsx:App"],
   ] as const) {
     const appDir = smokeTestApp(appName);
     previewTest([pluginFactory], appDir)(appName, async (preview) => {
       await preview.show(componentId);
+      await preview.iframe.waitForSelector("#ready");
       await preview.iframe.takeScreenshot(
         path.join(appDir, `__screenshot__${process.platform}.png`)
       );

@@ -25,8 +25,7 @@ const controller = createController({
 
 window.onload = () => {
   controller.start();
-};
-
-window.renderComponent = (component: Component) => {
-  controller.loadComponent(component);
+  window.renderComponent = (component: Component) => {
+    controller.loadComponent(component);
+  };
 };

@@ -6,32 +6,24 @@ import {
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
-import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
 import { detectComponents } from "./detect-components";
-import {
-  LocalFilePersistedStateManager,
-  PersistedStateManager,
-} from "./persisted-state";
 import type { FrameworkPlugin } from "./plugins/framework";
+import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
-import { ApiRouter, RegisterRPC } from "./router";
-export type { PersistedStateManager } from "./persisted-state";
+import { ApiRouter } from "./router";
 export type {
   Component,
   ComponentAnalysis,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
-export { loadPreviewEnv } from "./preview-env";
-export type {
-  PreviewEnvironment,
-  SetupPreviewEnvironment,
-} from "./preview-env";
+export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
+export type { SetupPreviewEnvironment } from "./preview-env";
 
 process.on("uncaughtException", (e) => {
   console.error("Uncaught Exception:", e);
@@ -43,21 +35,14 @@ export async function createWorkspace({
   reader,
   frameworkPlugin,
   logLevel,
-  middlewares,
-  onReady,
-  persistedStateManager = new LocalFilePersistedStateManager(),
+  setupEnvironment,
 }: {
   versionCode: string;
   rootDirPath: string;
-  middlewares: express.RequestHandler[];
   frameworkPlugin: FrameworkPlugin;
   logLevel: vite.LogLevel;
   reader: Reader;
-  persistedStateManager?: PersistedStateManager;
-  onReady?(options: {
-    registerRPC: RegisterRPC;
-    workspace: Workspace;
-  }): Promise<void>;
+  setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
   const expectedPluginApiVersion = 3;
   if (
@@ -131,6 +116,16 @@ export async function createWorkspace({
   router.registerRPC(RPCs.DetectComponents, (options) =>
     detectComponents(workspace, frameworkPlugin, typeAnalyzer, options)
   );
+  const middlewares: express.Handler[] = [
+    express.json(),
+    async (req, res, next) => {
+      if (req.path.startsWith("/api/")) {
+        res.json(await router.handle(req.path.substr(5), req.body));
+      } else {
+        next();
+      }
+    },
+  ];
   const previewer = new Previewer({
     reader,
     rootDirPath,
@@ -141,28 +136,7 @@ export async function createWorkspace({
     ),
     frameworkPlugin,
     logLevel,
-    middlewares: [
-      express.json(),
-      cookieParser(),
-      express
-        .Router()
-        .use(
-          "/monaco-editor",
-          express.static(path.join(__dirname, "monaco-editor"))
-        ),
-      async (req, res, next) => {
-        if (req.path === "/api/" + RPCs.GetState.path) {
-          res.json(await persistedStateManager.get(req));
-        } else if (req.path === "/api/" + RPCs.UpdateState.path) {
-          res.json(await persistedStateManager.update(req, res));
-        } else if (req.path.startsWith("/api/")) {
-          res.json(await router.handle(req.path.substr(5), req.body));
-        } else {
-          next();
-        }
-      },
-      ...middlewares,
-    ],
+    middlewares,
     onFileChanged: (absoluteFilePath) => {
       const filePath = path.relative(rootDirPath, absoluteFilePath);
       for (const name of Object.keys(collected)) {
@@ -208,11 +182,14 @@ export async function createWorkspace({
       typeAnalyzer.dispose();
     },
   };
-  if (onReady) {
-    await onReady({
+  if (setupEnvironment) {
+    const environment = await setupEnvironment({
       registerRPC: (endpoint, handler) => router.registerRPC(endpoint, handler),
       workspace,
     });
+    if (environment.middlewares) {
+      middlewares.push(...environment.middlewares);
+    }
   }
   return workspace;
 }

@@ -2,7 +2,7 @@ import path from "path";
 import { describe, expect, it } from "vitest";
 import { MemoryReader } from "./memory";
 
-describe("MemoryReader", () => {
+describe.concurrent("MemoryReader", () => {
   it("reads null when empty", async () => {
     const memoryReader = new MemoryReader();
     expect(await memoryReader.read(path.join(__dirname, "foo"))).toBe(null);

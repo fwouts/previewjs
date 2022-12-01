@@ -23,7 +23,7 @@ import { createSvelteTypeScriptReader } from "./svelte-reader";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
 
-describe("analyze Svelte component", () => {
+describe.concurrent("analyze Svelte component", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;

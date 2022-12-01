@@ -2,15 +2,14 @@ import test, { expect } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
-
-test.describe.configure({ mode: "parallel" });
+import { reactVersions } from "./react-versions";
 
 const testApp = (suffix: string | number) =>
-  path.join(__dirname, "../../../test-apps/react" + suffix);
+  path.join(__dirname, "apps", "react" + suffix);
 
-for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/action logs", () => {
+for (const reactVersion of reactVersions()) {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/action logs", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("emits action event for auto-generated callbacks", async (preview) => {

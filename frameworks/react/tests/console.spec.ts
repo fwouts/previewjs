@@ -2,15 +2,14 @@ import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
-
-test.describe.configure({ mode: "parallel" });
+import { reactVersions } from "./react-versions";
 
 const testApp = (suffix: string | number) =>
-  path.join(__dirname, "../../../test-apps/react" + suffix);
+  path.join(__dirname, "apps", "react" + suffix);
 
-for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/console", () => {
+for (const reactVersion of reactVersions()) {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/console", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("intercepts logs", async (preview) => {
@@ -28,7 +27,7 @@ for (const reactVersion of [16, 17, 18]) {
           }`
         );
         await preview.iframe.waitForSelector("#update-1");
-        preview.expectLoggedMessages.toMatch(["Render 1"], "log");
+        await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
         preview.events.clear();
         await preview.fileManager.update(
           "src/App.tsx",
@@ -42,7 +41,7 @@ for (const reactVersion of [16, 17, 18]) {
           }`
         );
         await preview.iframe.waitForSelector("#update-2");
-        preview.expectLoggedMessages.toMatch(["Render 2"], "log");
+        await preview.expectLoggedMessages.toMatch(["Render 2"], "log");
       });
     });
   });
