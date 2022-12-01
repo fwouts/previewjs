@@ -39,10 +39,10 @@ export function extractPreactComponents(
     } else if (ts.isFunctionDeclaration(statement)) {
       const isDefaultExport =
         !!statement.modifiers?.find(
-          m => m.kind === ts.SyntaxKind.ExportKeyword
+          (m) => m.kind === ts.SyntaxKind.ExportKeyword
         ) &&
         !!statement.modifiers?.find(
-          m => m.kind === ts.SyntaxKind.DefaultKeyword
+          (m) => m.kind === ts.SyntaxKind.DefaultKeyword
         );
       const name = statement.name?.text;
       if (isDefaultExport || name) {
@@ -79,12 +79,7 @@ export function extractPreactComponents(
                 kind: "component",
                 exported: isExported,
                 analyze: async () =>
-                  analyzePreactComponent(
-                    resolver,
-                    absoluteFilePath,
-                    name,
-                    signature
-                  ),
+                  analyzePreactComponent(resolver, signature),
               },
       });
     }

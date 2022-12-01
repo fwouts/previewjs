@@ -276,6 +276,15 @@ importers:
       vite: 3.2.3
       vitest: 0.25.1
 
+  frameworks/preact/tests/apps/preact-app:
+    specifiers:
+      '@previewjs/plugin-preact': workspace:*
+      preact: ^10
+    dependencies:
+      preact: 10.11.2
+    devDependencies:
+      '@previewjs/plugin-preact': link:../../..
+
   frameworks/preact/tests/apps/storybook-js:
     specifiers:
       '@babel/core': ^7
@@ -5834,7 +5843,7 @@ packages:
       fs-extra: 9.1.0
       glob: 7.2.3
       hash-sum: 2.0.0
-      ignore: 5.2.0
+      ignore: 5.2.1
       lodash: 4.17.21
       pify: 5.0.0
       serialize-javascript: 5.0.1
@@ -29759,6 +29768,7 @@ packages:
 
   /rollup-plugin-terser/5.3.1_rollup@1.32.1:
     resolution: {integrity: sha512-1pkwkervMJQGFYvM9nscrUoncPwiKR/K+bHdjv6PFgRo3cgPHoRT83y2Aa3GvINj4539S15t/tpFPb775TDs6w==}
+    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser
     peerDependencies:
       rollup: '>=0.66.0 <3'
     dependencies:

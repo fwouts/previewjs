@@ -1,17 +1,17 @@
 import type { RendererLoader } from "@previewjs/iframe";
-import { render as preactRender, ComponentType, Fragment } from "preact";
+import { Fragment, render } from "preact";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
-let currentUpdateId = "";
+const container = document.getElementById("root");
 
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   componentModule,
   componentName,
-  updateId,
+  renderId,
+  shouldAbortRender,
 }) => {
-  currentUpdateId = updateId;
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) || Fragment;
@@ -38,7 +38,7 @@ export const load: RendererLoader = async ({
     : ComponentOrStory;
   const Renderer = (props) => {
     return (
-      <ErrorBoundary key={updateId} updateId={updateId}>
+      <ErrorBoundary key={renderId} renderId={renderId}>
         <Wrapper>
           {decorators.reduce(
             (component, decorator) => () => decorator(component),
@@ -56,10 +56,16 @@ export const load: RendererLoader = async ({
   };
   return {
     render: async (props) => {
-      render(Renderer, props);
+      if (shouldAbortRender()) {
+        return;
+      }
+      render(<Renderer {...props} />, container);
+      if (shouldAbortRender()) {
+        return;
+      }
       const errorBoundary = await expectErrorBoundary(
-        updateId,
-        () => currentUpdateId
+        renderId,
+        shouldAbortRender
       );
       if (!errorBoundary) {
         return;
@@ -70,12 +76,3 @@ export const load: RendererLoader = async ({
     },
   };
 };
-
-export function render<P>(Renderer: ComponentType<P>, props: P) {
-  const container = document.getElementById("root");
-  if (!Renderer) {
-    preactRender(null, container);
-  } else {
-    preactRender(<Renderer {...props} />, container);
-  }
-}

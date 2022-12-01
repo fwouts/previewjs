@@ -1,23 +1,23 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
-import { extractPreactComponents } from "./extract-component";
 import { PREACT_SPECIAL_TYPES } from "../special-types";
+import { extractPreactComponents } from "./extract-component";
 
 /** @deprecated */
 export const preactFrameworkPlugin: FrameworkPluginFactory = {
-  isCompatible: async dependencies => {
-    const version = await dependencies["react"]?.readInstalledVersion();
+  isCompatible: async (dependencies) => {
+    const version = await dependencies["preact"]?.readInstalledVersion();
     if (!version) {
       return false;
     }
-    return parseInt(version) >= 16;
+    return parseInt(version) >= 10;
   },
   async create() {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
-      name: "@previewjs/plugin-react",
+      name: "@previewjs/plugin-preact",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       specialTypes: PREACT_SPECIAL_TYPES,
@@ -46,6 +46,10 @@ export const preactFrameworkPlugin: FrameworkPluginFactory = {
               "react-native": "preact/compat",
             },
           },
+          esbuild: {
+            jsx: "automatic",
+            jsxImportSource: "preact",
+          },
           plugins: [
             {
               name: "previewjs:disable-preact-hmr",
@@ -57,6 +61,14 @@ export const preactFrameworkPlugin: FrameworkPluginFactory = {
                 // For now, we disable it entirely.
                 return code.replace(/import\.meta/g, "({})");
               },
+            },
+            {
+              name: "previewjs:optimize-deps",
+              config: () => ({
+                optimizeDeps: {
+                  include: ["preact", "preact/jsx-runtime"],
+                },
+              }),
             },
           ],
           define: {
