@@ -6,55 +6,64 @@ import pluginFactory from "../src";
 test.describe.configure({ mode: "parallel" });
 
 test.describe("preact/refreshing", () => {
-  const test = previewTest(
+  const _test = previewTest(
     [pluginFactory],
     path.join(__dirname, "../../../test-apps/preact")
   );
 
-  test("renders top-level component", async (preview) => {
+  _test("renders top-level component", async (preview) => {
     await preview.show("src/App.tsx:App");
     await preview.iframe.waitForSelector(".App-logo");
   });
 
-  test("switches to another component back and forth smoothly between different files", async (preview) => {
-    await preview.show("src/App.tsx:App");
-    await preview.iframe.waitForSelector(".App");
-    await preview.show("src/Other.tsx:Other");
-    await preview.iframe.waitForSelector(".Other");
-    await preview.show("src/App.tsx:App");
-    await preview.iframe.waitForSelector(".App");
-  });
+  _test(
+    "switches to another component back and forth smoothly between different files",
+    async (preview) => {
+      await preview.show("src/App.tsx:App");
+      await preview.iframe.waitForSelector(".App");
+      await preview.show("src/Other.tsx:Other");
+      await preview.iframe.waitForSelector(".Other");
+      await preview.show("src/App.tsx:App");
+      await preview.iframe.waitForSelector(".App");
+    }
+  );
 
-  test("switches to another component back and forth smoothly within the same file", async (preview) => {
-    await preview.show("src/App.tsx:App");
-    await preview.iframe.waitForSelector(".App");
-    await preview.show("src/App.tsx:Other");
-    await preview.iframe.waitForSelector(".OtherSameFile");
-    await preview.show("src/App.tsx:App");
-    await preview.iframe.waitForSelector(".App");
-  });
+  _test(
+    "switches to another component back and forth smoothly within the same file",
+    async (preview) => {
+      await preview.show("src/App.tsx:App");
+      await preview.iframe.waitForSelector(".App");
+      await preview.show("src/App.tsx:Other");
+      await preview.iframe.waitForSelector(".OtherSameFile");
+      await preview.show("src/App.tsx:App");
+      await preview.iframe.waitForSelector(".App");
+    }
+  );
 
   for (const inMemoryOnly of [false, true]) {
     test.describe(
       inMemoryOnly ? "in-memory file change" : "real file change",
       () => {
-        test("updates top-level component after file change", async (preview) => {
-          await preview.show("src/App.tsx:App");
-          await preview.iframe.waitForSelector(".App");
-          await preview.fileManager.update(
-            "src/App.tsx",
-            {
-              replace: `className="App"`,
-              with: `className="App-modified"`,
-            },
-            {
-              inMemoryOnly,
-            }
-          );
-          await preview.iframe.waitForSelector(".App-modified");
-        });
+        _test(
+          "updates top-level component after file change",
+          async (preview) => {
+            await preview.show("src/App.tsx:App");
+            await preview.iframe.waitForSelector(".App");
+            await preview.fileManager.update(
+              "src/App.tsx",
+              {
+                replace: `className="App"`,
+                with: `className="App-modified"`,
+              },
+              {
+                inMemoryOnly,
+              }
+            );
+            await preview.iframe.waitForSelector(".App-modified");
+          }
+        );
 
-        test("updates dependency after file change", async (preview) => {
+        _test("updates dependency after file change", async (preview) => {
           await preview.show("src/App.tsx:App");
           await preview.iframe.waitForSelector(".Dependency");
           await preview.fileManager.update(
@@ -70,7 +79,7 @@ test.describe("preact/refreshing", () => {
           await preview.iframe.waitForSelector(".Dependency-modified");
         });
 
-        test("updates CSS after file change", async (preview) => {
+        _test("updates CSS after file change", async (preview) => {
           await preview.show("src/App.tsx:App");
           const dependencyComponent = await preview.iframe.waitForSelector(
             ".Dependency"
