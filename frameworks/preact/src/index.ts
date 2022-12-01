@@ -1,8 +1,8 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
-import { PREACT_SPECIAL_TYPES } from "./special-types";
 import { extractPreactComponents } from "./extract-component";
+import { PREACT_SPECIAL_TYPES } from "./special-types";
 
 const preactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -42,7 +42,6 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
               "react-dom/test-utils": "preact/test-utils",
               "react-dom": "preact/compat",
               "react/jsx-runtime": "preact/jsx-runtime",
-              "react-native": "preact/compat",
             },
           },
           esbuild: {
