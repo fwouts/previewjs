@@ -23,7 +23,8 @@ Each framework plugin has its own end-to-end tests, which can be run with `pnpm 
 
 ## Working with the VS Code extension
 
-Go to `integrations/vscode` and run `pnpm dev`.
+Start the development: `F5`\
+Reload the changes: `Ctrl+Shift+P` or ` ⇧⌘P`
 
 Note that the OSS implementation of Preview.js is a simpler webview than the official packaged extension.
 
