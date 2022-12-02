@@ -2,6 +2,7 @@ import { Client, createClient } from "@previewjs/server/client";
 import execa from "execa";
 import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
 import path from "path";
+import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
 import { SERVER_PORT } from "./port";
@@ -45,7 +46,7 @@ async function startServer(outputChannel: OutputChannel): Promise<boolean> {
     }
   }
   if (nodeVersion.stdout) {
-    outputChannel.appendLine(ignoreBellPrefix(nodeVersion.stdout));
+    outputChannel.appendLine(stripAnsi(nodeVersion.stdout));
   }
   const checkNodeVersion = checkNodeVersionResult(nodeVersion);
   if (checkNodeVersion.kind === "valid") {
@@ -128,7 +129,7 @@ function streamServerLogs(outputChannel: OutputChannel) {
       },
       () => {
         try {
-          const logsContent = ignoreBellPrefix(readFileSync(logsPath, "utf8"));
+          const logsContent = stripAnsi(readFileSync(logsPath, "utf8"));
           const newLogsLength = logsContent.length;
           if (newLogsLength < lastKnownLogsLength) {
             // Log file has been rewritten.
@@ -167,10 +168,7 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
       message: `Preview.js needs NodeJS 14.18.0+ but running \`node\` failed${withExitCode}.\n\nIs it installed? You may need to restart your IDE.\n`,
     };
   }
-  const nodeVersion = ignoreBellPrefix(result.stdout)
-    .split("\n")
-    .at(-1)!
-    .trim();
+  const nodeVersion = stripAnsi(result.stdout).split("\n").at(-1)!.trim();
   const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
   const invalidVersion = {
     kind: "invalid",
@@ -189,14 +187,6 @@ function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
   return {
     kind: "valid",
   };
-}
-
-function ignoreBellPrefix(stdout: string) {
-  // Important: because we use an interactive login shell, the stream may contain some other logging caused by
-  // sourcing scripts. For example:
-  // ]697;DoneSourcing]697;DoneSourcingmissing
-  // We ignore anything before the last BEL character (07).
-  return stdout.split("\u0007").at(-1)!;
 }
 
 function wrapCommandWithShellIfRequired(command: string) {

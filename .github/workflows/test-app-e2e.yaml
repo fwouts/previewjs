@@ -69,7 +69,7 @@ jobs:
         with:
           run_install: true
       - run: pnpm turbo build
-      - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2
+      - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2 --retries=3
       - name: Update screenshots on non-main branches
         run: |
           if [ -z "$(git status --porcelain)" ]; then
