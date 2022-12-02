@@ -8,7 +8,7 @@ Before you start, please review the [Contributor Assignment Agreement](./CAA.md)
 
 ## Repo Setup
 
-This is a monorepo managed by [pnpm]([url](https://pnpm.io)) using [Turborepo](https://turbo.build) to manage builds:
+This is a monorepo managed by [pnpm](https://pnpm.io) using [Turborepo](https://turbo.build) to manage builds:
 - Ensure you have `pnpm` installed.
 - Run `pnpm i` from the root.
 - Build all packages by running `pnpm turbo build`.
