@@ -736,6 +736,7 @@ importers:
       '@storybook/addon-interactions': ^6.5.14
       '@storybook/addon-links': ^6.5.14
       '@storybook/builder-webpack5': ^6.5.14
+      '@storybook/csf': 0.0.2--canary.4566f4d.1
       '@storybook/manager-webpack5': ^6.5.14
       '@storybook/node-logger': ^6.5.14
       '@storybook/preset-create-react-app': ^4.1.2
@@ -765,6 +766,7 @@ importers:
       '@storybook/addon-interactions': 6.5.14_ivdudmvvzzsf6tsttamhsg5viq
       '@storybook/addon-links': 6.5.14_biqbaboplfbrettd7655fr4n2y
       '@storybook/builder-webpack5': 6.5.14_gpshdmfc4w665ax2rx6w5ydgtu
+      '@storybook/csf': 0.0.2--canary.4566f4d.1
       '@storybook/manager-webpack5': 6.5.14_gpshdmfc4w665ax2rx6w5ydgtu
       '@storybook/node-logger': 6.5.14
       '@storybook/preset-create-react-app': 4.1.2_pk6vuyktsvibgufg6bwdpmnb5a
@@ -20102,7 +20104,7 @@ packages:
       glob-parent: 6.0.2
       globals: 13.18.0
       grapheme-splitter: 1.0.4
-      ignore: 5.2.0
+      ignore: 5.2.1
       import-fresh: 3.3.0
       imurmurhash: 0.1.4
       is-glob: 4.0.3
@@ -34265,6 +34267,7 @@ packages:
     resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+    requiresBuild: true
 
   /uglify-js/3.4.10:
     resolution: {integrity: sha512-Y2VsbPVs0FIshJztycsO2SfPk7/KAF/T72qzv9u5EpQ4kB2hQoHlhNQTsNyy6ul7lQtqJN/AoWeS23OzEiEFxw==}
