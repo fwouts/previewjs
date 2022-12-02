@@ -39,26 +39,30 @@ export function createTypeAnalyzer(options: {
   collected?: CollectedTypes;
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
   specialTypes?: Record<string, ValueType>;
+  printWarnings?: boolean;
 }): TypeAnalyzer {
   return new TypeAnalyzer(
     options.rootDirPath,
     options.reader,
     options.collected || {},
     options.specialTypes || {},
-    options.tsCompilerOptions || {}
+    options.tsCompilerOptions || {},
+    options.printWarnings || false
   );
 }
 
 class TypeAnalyzer {
   private service: ts.LanguageService | null = null;
   private entryPointFilePaths: string[] = [];
+  private printedWarnings = new Set<string>();
 
   constructor(
     private readonly rootDirPath: string,
     reader: Reader,
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
-    tsCompilerOptions: Partial<ts.CompilerOptions>
+    tsCompilerOptions: Partial<ts.CompilerOptions>,
+    private readonly printWarnings: boolean
   ) {
     this.service = ts.createLanguageService(
       typescriptServiceHost({
@@ -80,11 +84,36 @@ class TypeAnalyzer {
     if (!program) {
       throw new Error(`No program available.`);
     }
+    if (this.printWarnings) {
+      const semanticDiagnostics = program.getSemanticDiagnostics();
+      let printedSemanticWarningsHeader = false;
+      for (const diagnostic of semanticDiagnostics) {
+        const messageText =
+          typeof diagnostic.messageText === "string"
+            ? diagnostic.messageText
+            : diagnostic.messageText.messageText;
+        if (this.printedWarnings.has(messageText)) {
+          continue;
+        }
+        if (!printedSemanticWarningsHeader) {
+          console.warn(
+            "Warning: encountered some TypeScript error(s) while resolving types.\nThis may be safe to ignore, but could help point out why some components are not detected by Preview.js."
+          );
+          printedSemanticWarningsHeader = true;
+        }
+        if (diagnostic.file) {
+          console.warn(`In ${diagnostic.file.fileName}:`);
+        }
+        console.warn(messageText);
+        this.printedWarnings.add(messageText);
+      }
+    }
     return new TypeResolver(
       this.rootDirPath,
       this.collected,
       this.specialTypes,
-      program
+      program,
+      this.printWarnings
     );
   }
 
@@ -101,7 +130,8 @@ class TypeResolver {
     private readonly rootDirPath: string,
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
-    private readonly program: ts.Program
+    private readonly program: ts.Program,
+    private readonly printWarnings: boolean
   ) {
     this.checker = program.getTypeChecker();
   }
@@ -163,11 +193,13 @@ class TypeResolver {
       try {
         return this.resolveUncollectedType(type, genericTypeNames);
       } catch (e: any) {
-        console.debug(
-          `Unable to resolve uncollected type ${this.checker.typeToString(
-            type
-          )}\n\n${e.stack || e.message}`
-        );
+        if (this.printWarnings) {
+          console.warn(
+            `Unable to resolve type ${this.checker.typeToString(type)}\n\n${
+              e.stack || e.message
+            }`
+          );
+        }
         throw e;
       }
     }
@@ -376,11 +408,13 @@ class TypeResolver {
       for (const t of type.types) {
         const subtype = this.resolveTypeInternal(t, genericTypeNames);
         if (!subtype) {
-          console.debug(
-            `Unable to resolve ${
-              type.isUnion() ? "union" : "intersection"
-            } subtype ${this.checker.typeToString(t)}`
-          );
+          if (this.printWarnings) {
+            console.warn(
+              `Unable to resolve ${
+                type.isUnion() ? "union" : "intersection"
+              } subtype ${this.checker.typeToString(t)}`
+            );
+          }
           return UNKNOWN_TYPE;
         }
         subtypes.push(subtype);
@@ -478,11 +512,13 @@ class TypeResolver {
       }
       return objectType(fields);
     }
-    console.debug(
-      `Unable to recognise type with flags ${flags} in ${this.checker.typeToString(
-        type
-      )}`
-    );
+    if (this.printWarnings) {
+      console.warn(
+        `Unable to recognise type with flags ${flags} in ${this.checker.typeToString(
+          type
+        )}`
+      );
+    }
     return UNKNOWN_TYPE;
   }
 
