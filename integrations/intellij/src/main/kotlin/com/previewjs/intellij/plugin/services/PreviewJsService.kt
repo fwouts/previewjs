@@ -138,15 +138,16 @@ Include the content of the Preview.js logs panel for easier debugging.
             builder.append(line + "\n")
         }
         val output = builder.toString()
-        return ignoreBellPrefix(output)
+        return cleanStdOut(output)
     }
 
-    private fun ignoreBellPrefix(str: String): String {
+    private fun cleanStdOut(str: String): String {
         // Important: because we use an interactive login shell, the stream may contain some other logging caused by
         // sourcing scripts. For example:
         // ]697;DoneSourcing]697;DoneSourcingmissing
         // We ignore anything before the last BEL character (07).
-        return str.split("\u0007").last()
+        // We also remove escape sequences used e.g. for coloring, see https://stackoverflow.com/a/25189932.
+        return str.split("\u0007").last().replace("\\e\\[[\\d;]*[^\\d;]".toRegex(), "")
     }
 
     private suspend fun runServer(project: Project): PreviewJsApi {
@@ -192,7 +193,7 @@ Include the content of the Preview.js logs panel for easier debugging.
                     if (p.isDisposed) {
                         continue
                     }
-                    p.service<ProjectService>().printToConsole(ignoreBellPrefix(line + "\n"))
+                    p.service<ProjectService>().printToConsole(cleanStdOut(line + "\n"))
                 }
             }
         }
