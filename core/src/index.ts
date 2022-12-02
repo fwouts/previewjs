@@ -66,7 +66,11 @@ export async function createWorkspace({
     rootDirPath,
     collected,
     specialTypes: frameworkPlugin.specialTypes,
-    tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+    tsCompilerOptions: {
+      ...frameworkPlugin.tsCompilerOptions,
+      skipLibCheck: true,
+    },
+    printWarnings: logLevel === "info",
   });
   const router = new ApiRouter();
   router.registerRPC(RPCs.GetInfo, async () => {
