@@ -1466,7 +1466,7 @@ importers:
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.0.8
       '@previewjs/vfs': ^1.2.11
-      '@sveltejs/vite-plugin-svelte': ^1.3.1
+      '@sveltejs/vite-plugin-svelte': ^1.4.0
       '@types/fs-extra': ^9.0.13
       fs-extra: ^11.1.0
       svelte: ^3.53.1
@@ -1478,7 +1478,7 @@ importers:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@sveltejs/vite-plugin-svelte': 1.3.1_svelte@3.53.1+vite@3.2.4
+      '@sveltejs/vite-plugin-svelte': 1.4.0_svelte@3.53.1+vite@3.2.4
       fs-extra: 11.1.0
       svelte: 3.53.1
       typescript: 4.9.3
@@ -11483,7 +11483,7 @@ packages:
       svelte: ^3.44.0
       vite: ^3.2.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 1.3.1_svelte@3.53.1+vite@3.2.4
+      '@sveltejs/vite-plugin-svelte': 1.4.0_svelte@3.53.1+vite@3.2.4
       '@types/cookie': 0.5.1
       cookie: 0.5.0
       devalue: 4.2.0
@@ -11498,7 +11498,6 @@ packages:
       undici: 5.13.0
       vite: 3.2.4
     transitivePeerDependencies:
-      - diff-match-patch
       - supports-color
     dev: true
 
@@ -11525,16 +11524,12 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte/1.3.1_svelte@3.53.1+vite@3.2.4:
-    resolution: {integrity: sha512-2Uu2sDdIR+XQWF7QWOVSF2jR9EU6Ciw1yWfYnfLYj8HIgnNxkh/8g22Fw2pBUI8QNyW/KxtqJUWBI+8ypamSrQ==}
+  /@sveltejs/vite-plugin-svelte/1.4.0_svelte@3.53.1+vite@3.2.4:
+    resolution: {integrity: sha512-6QupI/jemMfK+yI2pMtJcu5iO2gtgTfcBdGwMZZt+lgbFELhszbDl6Qjh000HgAV8+XUA+8EY8DusOFk8WhOIg==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
-      diff-match-patch: ^1.0.5
       svelte: ^3.44.0
       vite: ^3.0.0
-    peerDependenciesMeta:
-      diff-match-patch:
-        optional: true
     dependencies:
       debug: 4.3.4
       deepmerge: 4.2.2
