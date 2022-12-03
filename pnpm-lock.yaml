@@ -20,7 +20,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      pnpm: 7.17.1
+      pnpm: 7.18.0
       prettier: 2.8.0
       ts-node: 10.9.1
       turbo: 1.6.3
@@ -40,7 +40,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      pnpm: 7.17.1
+      pnpm: 7.18.0
       prettier: 2.8.0
       ts-node: 10.9.1_eoe7put6ewfbqpy6gs36tihw6y
       turbo: 1.6.3
@@ -27711,8 +27711,8 @@ packages:
       - typescript
     dev: true
 
-  /pnpm/7.17.1:
-    resolution: {integrity: sha512-O76jPxzoeja81Z/8YyTfuXt+f7qkpsyEJsNBreWYBLHY5rJkjvNE/bIUGQ2uD/rcYPEtmrZZYox21OjAMC9EGw==}
+  /pnpm/7.18.0:
+    resolution: {integrity: sha512-igZRB0ip8cn9f1glYzsPTJblxQcidY7/fSfJ++j6GYLT0pqIlijsdW9ZI4Waaxhi22SC4HZHe5vMiSa2IKoIoA==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: true
@@ -32192,6 +32192,7 @@ packages:
 
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
+    deprecated: Please use @jridgewell/sourcemap-codec instead
 
   /space-separated-tokens/1.1.5:
     resolution: {integrity: sha512-q/JSVd1Lptzhf5bkYm4ob4iWPjx0KiRe3sRFBNrVqbJkFaBm5vbbowy1mymoPNLRa52+oadOhJ+K49wsSeSjTA==}
