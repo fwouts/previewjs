@@ -58,6 +58,11 @@ const packages: Package[] = [
     tagName: "iframe",
   },
   {
+    name: "plugin-preact",
+    dirPath: "frameworks/preact",
+    tagName: "plugins/preact",
+  },
+  {
     name: "plugin-react",
     dirPath: "frameworks/react",
     tagName: "plugins/react",

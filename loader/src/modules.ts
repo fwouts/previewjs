@@ -30,6 +30,7 @@ export async function loadModules({
   const setupEnvironment: core.SetupPreviewEnvironment =
     requireModule(packageName);
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
+    requireModule("@previewjs/plugin-preact"),
     requireModule("@previewjs/plugin-react"),
     requireModule("@previewjs/plugin-solid"),
     requireModule("@previewjs/plugin-svelte"),
