@@ -72,13 +72,13 @@
         "command": "previewjs.open",
         "key": "ctrl+k v",
         "mac": "cmd+k v",
-        "when": "editorLangId == javascript || editorLangId == javascriptreact || editorLangId == jsx || editorLangId == typescriptreact || editorLangId == vue"
+        "when": "previewjs.componentsDetected"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "when": "editorLangId == javascript || editorLangId == javascriptreact || editorLangId == jsx || editorLangId == typescriptreact || editorLangId == vue",
+          "when": "previewjs.componentsDetected",
           "command": "previewjs.open",
           "group": "navigation"
         }
