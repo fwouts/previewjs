@@ -19,9 +19,9 @@
     "release-apps": "ts-node scripts/release-apps.ts",
     "release-components": "ts-node scripts/release-components.ts",
     "lint": "eslint --max-warnings 0 '**/*.ts' '**/*.tsx'",
-    "vite-ecosystem-ci:build": "pnpm turbo build --filter=@previewjs/plugin-react --filter=@previewjs/config-helper-nextjs",
+    "vite-ecosystem-ci:build": "pnpm turbo build --filter=@previewjs/config-helper-nextjs",
     "vite-ecosystem-ci:before-test": "cd testing && pnpm playwright install && cd - && cd $INIT_CWD/../../vite/packages/vite && pnpm add -D ts-node",
-    "vite-ecosystem-ci:test": "export ONLY_REACT_VERSION=18 && pnpm turbo test --filter=@previewjs/plugin-react -- --run && pnpm turbo e2e-test --filter=@previewjs/plugin-react -- --retries=3"
+    "vite-ecosystem-ci:test": "export ONLY_REACT_VERSION=18 && pnpm turbo e2e-test --filter=@previewjs/plugin-react -- --retries=3 --workers=2"
   },
   "devDependencies": {
     "@types/inquirer": "8.2.5",
