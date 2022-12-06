@@ -1,6 +1,5 @@
 import { startServer } from "@previewjs/server";
 import { readFileSync } from "fs";
-import { SERVER_PORT } from "./port";
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -11,11 +10,16 @@ if (!packageName) {
   throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
 }
 
+const port = parseInt(process.env.PREVIEWJS_PORT || "0");
+if (!port) {
+  throw new Error(`Missing environment variable: PREVIEWJS_PORT`);
+}
+
 startServer({
   loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
   packageName,
   versionCode: `vscode-${version}`,
-  port: SERVER_PORT,
+  port,
 }).catch((e) => {
   console.error(e);
   process.exit(1);

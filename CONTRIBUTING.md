@@ -8,7 +8,8 @@ Before you start, please review the [Contributor Assignment Agreement](./CAA.md)
 
 ## Repo Setup
 
-This is a monorepo managed by [pnpm](https://pnpm.io) using [Turborepo](https://turbo.build) to manage builds:
+This is a monorepo managed by [pnpm](<[url](https://pnpm.io)>) using [Turborepo](https://turbo.build) to manage builds:
+
 - Ensure you have `pnpm` installed.
 - Run `pnpm i` from the root.
 - Build all packages by running `pnpm turbo build`.
@@ -23,8 +24,6 @@ Each framework plugin has its own end-to-end tests, which can be run with `pnpm 
 
 ## Working with the VS Code extension
 
-Go to `integrations/vscode` and run `pnpm dev`.
+In Visual Studio Code, hit `F5` or click ▶️ VS Code Extension in the "Run and Debug" panel.
 
 Note that the OSS implementation of Preview.js is a simpler webview than the official packaged extension.
-
-Note: You may need to run `killall node` and reload the VS Code window (Cmd/Ctrl+P then `Developer: Reload Window`) if Preview.js is already running.

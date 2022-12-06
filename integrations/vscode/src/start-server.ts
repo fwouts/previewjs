@@ -5,15 +5,15 @@ import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
-import { SERVER_PORT } from "./port";
 
+const port = process.env.PREVIEWJS_PORT || "9315";
 const logsPath = path.join(__dirname, "server.log");
 const serverLockFilePath = path.join(__dirname, "process.lock");
 
 export async function ensureServerRunning(
   outputChannel: OutputChannel
 ): Promise<Client | null> {
-  const client = createClient(`http://localhost:${SERVER_PORT}`);
+  const client = createClient(`http://localhost:${port}`);
   await startServer(outputChannel);
   const ready = streamServerLogs(outputChannel);
   await ready;
@@ -88,6 +88,7 @@ async function startServer(outputChannel: OutputChannel): Promise<boolean> {
     env: {
       PREVIEWJS_LOCK_FILE: serverLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
+      PREVIEWJS_PORT: port,
     },
   };
   let serverProcess: execa.ExecaChildProcess<string>;
