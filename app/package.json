@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/app",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -34,6 +34,7 @@
     "@previewjs/api": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@previewjs/iframe": "workspace:*",
+    "@previewjs/plugin-preact": "workspace:*",
     "@previewjs/plugin-react": "workspace:*",
     "@previewjs/plugin-solid": "workspace:*",
     "@previewjs/plugin-svelte": "workspace:*",
@@ -47,6 +48,6 @@
     "fs-extra": "11.1.0",
     "typescript": "4.9.3",
     "unbuild": "1.0.1",
-    "vite": "3.2.4"
+    "vite": "3.2.5"
   }
 }

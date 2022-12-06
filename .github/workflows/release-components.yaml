@@ -90,6 +90,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.checkIframeVersion.outputs.changed == 'true'
         run: cd iframe && pnpm publish --no-git-checks --access public
+      - id: checkPluginPreactVersion
+        uses: EndBug/version-check@v2.1.1
+        with:
+          diff-search: true
+          file-name: ./frameworks/preact/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.checkPluginPreactVersion.outputs.changed == 'true'
+        run: cd frameworks/preact && pnpm publish --no-git-checks --access public
       - id: checkPluginReactVersion
         uses: EndBug/version-check@v2.1.1
         with:

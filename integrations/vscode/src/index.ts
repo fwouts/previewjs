@@ -1,11 +1,12 @@
-import type { Client } from "@previewjs/server/client";
 import path from "path";
 import vscode from "vscode";
 import { clientId } from "./client-id";
+import { createComponentDetector } from "./component-detector";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
 import { ensurePreviewServerStarted } from "./preview-server";
 import { ensureServerRunning } from "./start-server";
 import { openUsageOnFirstTimeStart } from "./welcome";
+import { createWorkspaceGetter } from "./workspaces";
 
 const codeLensLanguages = [
   "javascript",
@@ -38,7 +39,7 @@ let dispose = async () => {
 
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
-
+  const getWorkspaceId = createWorkspaceGetter(outputChannel);
   const previewjsInitPromise = ensureServerRunning(outputChannel)
     .catch((e) => {
       outputChannel.appendLine(e.stack);
@@ -52,32 +53,13 @@ export async function activate(context: vscode.ExtensionContext) {
       }
       return p;
     });
+  const componentDetector = createComponentDetector(
+    previewjsInitPromise,
+    getWorkspaceId
+  );
 
   const config = vscode.workspace.getConfiguration();
   let focusedOutputChannelForError = false;
-  const workspaceIds = new Set<string>();
-
-  async function getWorkspaceId(
-    previewjsClient: Client,
-    document: vscode.TextDocument
-  ) {
-    if (!path.isAbsolute(document.fileName)) {
-      return null;
-    }
-    const workspace = await previewjsClient.getWorkspace({
-      absoluteFilePath: document.fileName,
-    });
-    if (!workspace.workspaceId) {
-      return null;
-    }
-    if (!workspaceIds.has(workspace.workspaceId)) {
-      outputChannel.appendLine(
-        `✨ Created Preview.js workspace for: ${workspace.rootDirPath}`
-      );
-      workspaceIds.add(workspace.workspaceId);
-    }
-    return workspace.workspaceId;
-  }
 
   // Note: ESlint warning isn't relevant because we're correctly inferring arguments types.
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -109,21 +91,19 @@ export async function activate(context: vscode.ExtensionContext) {
 
   await openUsageOnFirstTimeStart(context);
 
+  vscode.window.onDidChangeActiveTextEditor(async (e) => {
+    const components = await componentDetector.getComponents(e?.document);
+    vscode.commands.executeCommand(
+      "setContext",
+      "previewjs.componentsDetected",
+      components.length > 0
+    );
+  });
+
   if (config.get("previewjs.codelens", true)) {
     vscode.languages.registerCodeLensProvider(codeLensLanguages, {
       provideCodeLenses: catchErrors(async (document: vscode.TextDocument) => {
-        const previewjsClient = await previewjsInitPromise;
-        if (!previewjsClient) {
-          return [];
-        }
-        const workspaceId = await getWorkspaceId(previewjsClient, document);
-        if (!workspaceId) {
-          return [];
-        }
-        const { components } = await previewjsClient.analyzeFile({
-          workspaceId,
-          absoluteFilePath: document.fileName,
-        });
+        const components = await componentDetector.getComponents(document);
         return components.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
@@ -141,16 +121,10 @@ export async function activate(context: vscode.ExtensionContext) {
   if (config.get("previewjs.livePreview", true)) {
     vscode.workspace.onDidChangeTextDocument(async (e) => {
       await updateDocument(e.document);
+      componentDetector.invalidateCache(e.document);
     });
     vscode.workspace.onDidSaveTextDocument(async (e) => {
       await updateDocument(e, true);
-    });
-    vscode.window.onDidChangeActiveTextEditor(async (e) => {
-      if (!e) {
-        // Do nothing.
-        return;
-      }
-      await updateDocument(e.document);
     });
     async function updateDocument(
       document: vscode.TextDocument,
@@ -206,10 +180,9 @@ export async function activate(context: vscode.ExtensionContext) {
           const offset = editor?.selection.active
             ? document.offsetAt(editor.selection.active)
             : 0;
-          const { components } = await previewjsClient.analyzeFile({
-            workspaceId,
-            absoluteFilePath: document.fileName,
-          });
+          // Make sure we get fresh results.
+          componentDetector.invalidateCache(document);
+          const components = await componentDetector.getComponents(document);
           const component =
             components.find((c) => offset >= c.start && offset <= c.end) ||
             components[0];

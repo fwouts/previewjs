@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/core",
-  "version": "12.0.0",
+  "version": "12.1.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -30,13 +30,14 @@
   },
   "dependencies": {
     "@previewjs/api": "^6.0.0",
-    "@previewjs/config": "^3.1.0",
-    "@previewjs/iframe": "^3.0.0",
-    "@previewjs/type-analyzer": "^4.0.8",
-    "@previewjs/vfs": "^1.2.11",
+    "@previewjs/config": "^3.1.1",
+    "@previewjs/iframe": "^3.0.1",
+    "@previewjs/type-analyzer": "^4.1.0",
+    "@previewjs/vfs": "^1.2.12",
     "acorn": "^8.8.1",
     "assert-never": "^1.2.1",
     "axios": "^1.2.0",
+    "exclusive-promises": "^1.0.3",
     "express": "^4.18.2",
     "fs-extra": "^11.1.0",
     "get-port": "^5",
@@ -47,7 +48,7 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.9.3",
-    "vite": "^3.2.4",
+    "vite": "^3.2.5",
     "vite-tsconfig-paths": "^3.6.0"
   },
   "devDependencies": {

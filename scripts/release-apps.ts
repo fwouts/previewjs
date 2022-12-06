@@ -16,6 +16,9 @@ async function main() {
   );
   const { version: coreVersion } = await import("../core/package.json");
   const { version: vfsVersion } = await import("../vfs/package.json");
+  const { version: preactPluginVersion } = await import(
+    "../frameworks/preact/package.json"
+  );
   const { version: reactPluginVersion } = await import(
     "../frameworks/react/package.json"
   );
@@ -38,6 +41,7 @@ async function main() {
       {
         dependencies: {
           "@previewjs/core": coreVersion,
+          "@previewjs/plugin-preact": preactPluginVersion,
           "@previewjs/plugin-react": reactPluginVersion,
           "@previewjs/plugin-solid": solidPluginVersion,
           "@previewjs/plugin-svelte": sveltePluginVersion,
