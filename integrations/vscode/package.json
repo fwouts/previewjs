@@ -72,13 +72,13 @@
         "command": "previewjs.open",
         "key": "ctrl+k v",
         "mac": "cmd+k v",
-        "when": "editorLangId == javascript || editorLangId == javascriptreact || editorLangId == jsx || editorLangId == typescriptreact || editorLangId == vue"
+        "when": "previewjs.componentsDetected"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "when": "editorLangId == javascript || editorLangId == javascriptreact || editorLangId == jsx || editorLangId == typescriptreact || editorLangId == vue",
+          "when": "previewjs.componentsDetected",
           "command": "previewjs.open",
           "group": "navigation"
         }
@@ -99,13 +99,14 @@
     "@previewjs/server": "workspace:*",
     "@types/vscode": "1.71.0",
     "cross-env": "7.0.3",
-    "esbuild": "0.15.16",
+    "esbuild": "0.15.18",
     "exclusive-promises": "^1.0.3",
     "execa": "5.1.1",
     "ovsx": "0.6.0",
     "rimraf": "3.0.2",
     "shx": "0.3.4",
+    "strip-ansi": "^7.0.1",
     "typescript": "4.9.3",
-    "vsce": "2.14.0"
+    "vsce": "2.15.0"
   }
 }
