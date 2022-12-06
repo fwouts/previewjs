@@ -2,12 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Extension",
+      "name": "VS Code Extension",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}"
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}/integrations/vscode"
       ],
       "preLaunchTask": "build"
     }

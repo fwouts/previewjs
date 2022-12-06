@@ -6,21 +6,11 @@
     {
       "label": "build",
       "type": "npm",
-      "script": "dev:vscode",
-      "isBackground": true,
+      "script": "vscode:build:dev",
       "presentation": {
         "reveal": "never"
       },
-      "problemMatcher": [
-        {
-          "base": "$ts-webpack-watch",
-          "background": {
-            "activeOnStart": true,
-            "beginsPattern": "Build start",
-            "endsPattern": "Build success"
-          }
-        }
-      ],
+      "problemMatcher": ["$tsc"],
       "group": "build"
     }
   ]
