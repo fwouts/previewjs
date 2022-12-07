@@ -9,6 +9,11 @@ import { findFiles } from "./find-files";
 
 type ProjectComponents = RPCs.DetectComponentsResponse["components"];
 
+type CachedProjectComponents = {
+  detectionStartTimestamp: number;
+  components: ProjectComponents;
+};
+
 // Prevent concurrent running of detectComponents()
 // to avoid corrupting the cache and optimise for cache hits.
 const oneAtATime = exclusivePromiseRunner();
@@ -23,6 +28,7 @@ export function detectComponents(
   } = {}
 ): Promise<RPCs.DetectComponentsResponse> {
   return oneAtATime(async () => {
+    const detectionStartTimestamp = Date.now();
     const cacheFilePath = path.join(
       getCacheDir(workspace.rootDirPath),
       "components.json"
@@ -42,24 +48,26 @@ export function detectComponents(
           .replace(/\\/g, "/")
       )
     );
-    const existingCacheLastModified =
-      !options.forceRefresh && fs.existsSync(cacheFilePath)
-        ? fs.statSync(cacheFilePath).mtimeMs
-        : 0;
-    const existingCache: ProjectComponents = existingCacheLastModified
-      ? JSON.parse(fs.readFileSync(cacheFilePath, "utf8"))
-      : {};
+    const existingCache: CachedProjectComponents = fs.existsSync(cacheFilePath)
+      ? (JSON.parse(
+          fs.readFileSync(cacheFilePath, "utf8")
+        ) as CachedProjectComponents)
+      : {
+          detectionStartTimestamp: 0,
+          components: {},
+        };
     const changedAbsoluteFilePaths = absoluteFilePaths.filter(
       (absoluteFilePath) => {
         const entry = workspace.reader.readSync(absoluteFilePath);
         return (
           entry?.kind === "file" &&
-          entry.lastModifiedMillis() > existingCacheLastModified
+          (options.forceRefresh ||
+            entry.lastModifiedMillis() >= existingCache.detectionStartTimestamp)
         );
       }
     );
     const recycledComponents = Object.fromEntries(
-      Object.entries(existingCache).filter(([filePath]) =>
+      Object.entries(existingCache.components).filter(([filePath]) =>
         filePathsSet.has(filePath)
       )
     );
@@ -81,7 +89,11 @@ export function detectComponents(
       }, {});
     if (!options.filePaths) {
       await fs.mkdirp(path.dirname(cacheFilePath));
-      await fs.writeFile(cacheFilePath, JSON.stringify(components));
+      const updatedCache: CachedProjectComponents = {
+        detectionStartTimestamp,
+        components,
+      };
+      await fs.writeFile(cacheFilePath, JSON.stringify(updatedCache));
     }
     return { components };
   });
