@@ -87,6 +87,7 @@ class TypeAnalyzer {
     if (this.printWarnings) {
       const semanticDiagnostics = program.getSemanticDiagnostics();
       let printedSemanticWarningsHeader = false;
+      let lastFileName = "";
       for (const diagnostic of semanticDiagnostics) {
         const messageText =
           typeof diagnostic.messageText === "string"
@@ -101,8 +102,9 @@ class TypeAnalyzer {
           );
           printedSemanticWarningsHeader = true;
         }
-        if (diagnostic.file) {
-          console.warn(`In ${diagnostic.file.fileName}:`);
+        if (diagnostic.file && lastFileName !== diagnostic.file.fileName) {
+          lastFileName = diagnostic.file.fileName;
+          console.warn(`${path.relative(this.rootDirPath, lastFileName)}:`);
         }
         console.warn(messageText);
         this.printedWarnings.add(messageText);
