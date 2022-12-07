@@ -1,18 +1,6 @@
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import type { RPC } from "./rpc";
 
-export const GetInfo: RPC<
-  void,
-  {
-    appInfo: {
-      platform: string;
-      version: string;
-    };
-  }
-> = {
-  path: "get-info",
-};
-
 export const ComputeProps: RPC<
   {
     filePath: string;

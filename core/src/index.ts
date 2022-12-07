@@ -30,14 +30,12 @@ process.on("uncaughtException", (e) => {
 });
 
 export async function createWorkspace({
-  versionCode,
   rootDirPath,
   reader,
   frameworkPlugin,
   logLevel,
   setupEnvironment,
 }: {
-  versionCode: string;
   rootDirPath: string;
   frameworkPlugin: FrameworkPlugin;
   logLevel: vite.LogLevel;
@@ -73,20 +71,6 @@ export async function createWorkspace({
     printWarnings: logLevel === "info",
   });
   const router = new ApiRouter();
-  router.registerRPC(RPCs.GetInfo, async () => {
-    const separatorPosition = versionCode.indexOf("-");
-    if (separatorPosition === -1) {
-      throw new Error(`Unsupported version code format: ${versionCode}`);
-    }
-    const platform = versionCode.substr(0, separatorPosition);
-    const version = versionCode.substr(separatorPosition + 1);
-    return {
-      appInfo: {
-        platform,
-        version,
-      },
-    };
-  });
   router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
     const component = (
       await frameworkPlugin.detectComponents(typeAnalyzer, [

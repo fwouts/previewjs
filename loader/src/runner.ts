@@ -57,12 +57,15 @@ export async function load(options: {
           `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDirPath}`
         );
         return await core.createWorkspace({
-          versionCode,
           logLevel: "info",
           rootDirPath,
           reader,
           frameworkPlugin,
-          setupEnvironment,
+          setupEnvironment: (options) =>
+            setupEnvironment({
+              versionCode,
+              ...options,
+            }),
         });
       });
       // Note: This caches the incompatibility of a workspace (i.e. caching null), which
