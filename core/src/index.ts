@@ -64,10 +64,7 @@ export async function createWorkspace({
     rootDirPath,
     collected,
     specialTypes: frameworkPlugin.specialTypes,
-    tsCompilerOptions: {
-      ...frameworkPlugin.tsCompilerOptions,
-      skipLibCheck: true,
-    },
+    tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
     printWarnings: logLevel === "info",
   });
   const router = new ApiRouter();
