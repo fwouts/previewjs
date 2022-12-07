@@ -88,7 +88,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "vscode:prepublish": "pnpm build",
-    "build": "cd ../.. && pnpm turbo run build --scope=@previewjs/server --no-deps --include-dependencies && cd - && rimraf dist previewjs-1.16.1.vsix && tsc && node esbuild.js && shx cp -rL ../../node_modules/pnpm dist/pnpm && shx cp -rL ../../loader/src/release/* dist/",
+    "build": "cd ../.. && pnpm turbo run build --scope=@previewjs/server --no-deps --include-dependencies && cd integrations/vscode && rimraf dist previewjs-1.16.1.vsix && tsc && node esbuild.js && shx cp -rL ../../node_modules/pnpm dist/pnpm && shx cp -rL ../../loader/src/release/* dist/",
     "build:dev": "cross-env PREVIEWJS_PORT=9316 PREVIEWJS_MODULES_DIR=../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm build",
     "build:dev:pro": "cross-env PREVIEWJS_PORT=9316 PREVIEWJS_MODULES_DIR=../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro pnpm build",
     "dev": "pnpm build:dev && pnpm dev:install",
