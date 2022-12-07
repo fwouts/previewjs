@@ -103,7 +103,7 @@ importers:
   chromeless:
     specifiers:
       '@previewjs/api': ^7.0.0
-      '@previewjs/core': ^13.0.0
+      '@previewjs/core': ^13.0.1
       '@previewjs/iframe': ^3.0.2
       '@previewjs/properties': ^1.0.2
       '@previewjs/vfs': ^1.2.12
@@ -210,7 +210,7 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': ^13.0.0
+      '@previewjs/core': ^13.0.1
       '@previewjs/type-analyzer': ^4.1.0
       '@previewjs/vfs': workspace:*
       typescript: ^4.9.3
@@ -1123,7 +1123,7 @@ importers:
       '@react-navigation/bottom-tabs': ^6
       '@react-navigation/native': ^6
       '@react-navigation/native-stack': ^6
-      '@types/react': ~17.0.21
+      '@types/react': ~17.0.52
       '@types/react-native': ~0.64.12
       expo: ~44.0.0
       expo-asset: ~8.4.4
@@ -1965,7 +1965,7 @@ importers:
       '@playwright/test': ^1.28.1
       '@previewjs/api': ^7.0.0
       '@previewjs/chromeless': ^1.1.2
-      '@previewjs/core': ^13.0.0
+      '@previewjs/core': ^13.0.1
       '@previewjs/iframe': ^3.0.2
       '@previewjs/vfs': ^1.2.12
       '@types/fs-extra': 9.0.13
@@ -6124,7 +6124,7 @@ packages:
       consola: 2.15.3
       crc: 3.8.0
       defu: 4.0.1
-      destr: 1.2.1
+      destr: 1.2.2
       execa: 5.1.1
       exit: 0.1.2
       fs-extra: 9.1.0
@@ -6394,7 +6394,7 @@ packages:
       consola: 2.15.3
       create-require: 1.1.1
       defu: 5.0.1
-      destr: 1.2.1
+      destr: 1.2.2
       dotenv: 9.0.2
       fs-extra: 8.1.0
       git-url-parse: 13.1.0
@@ -18360,7 +18360,6 @@ packages:
 
   /destr/1.2.2:
     resolution: {integrity: sha512-lrbCJwD9saUQrqUfXvl6qoM+QN3W7tLV5pAOs+OqOmopCCz/JkE05MHedJR1xfk4IAnZuJXPVuN5+7jNA2ZCiA==}
-    dev: true
 
   /destroy/1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
@@ -29700,7 +29699,7 @@ packages:
     resolution: {integrity: sha512-YD1oJO9LUzMdmr2sAsVlwQVtEoDCmvuyDwmSWrg2GKFprl3BckP5cmw9rHPunei0lV6Xl4E5t2esT+0trY1xfQ==}
     dependencies:
       defu: 6.1.1
-      destr: 1.2.1
+      destr: 1.2.2
       flat: 5.0.2
     dev: false
 
