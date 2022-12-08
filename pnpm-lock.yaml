@@ -102,10 +102,10 @@ importers:
 
   chromeless:
     specifiers:
-      '@previewjs/api': ^7.0.0
-      '@previewjs/core': ^13.0.2
-      '@previewjs/iframe': ^3.0.2
-      '@previewjs/properties': ^1.0.2
+      '@previewjs/api': ^7.0.1
+      '@previewjs/core': ^14.0.0
+      '@previewjs/iframe': ^3.0.3
+      '@previewjs/properties': ^1.0.3
       '@previewjs/vfs': ^1.2.12
       '@types/express': 4.17.14
       express: ^4.18.2
@@ -153,9 +153,9 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': ^7.0.0
+      '@previewjs/api': ^7.0.1
       '@previewjs/config': ^3.1.2
-      '@previewjs/iframe': ^3.0.2
+      '@previewjs/iframe': ^3.0.3
       '@previewjs/type-analyzer': ^4.1.1
       '@previewjs/vfs': ^1.2.12
       '@rollup/plugin-alias': ^4.0.2
@@ -210,7 +210,7 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': ^13.0.2
+      '@previewjs/core': ^14.0.0
       '@previewjs/type-analyzer': ^4.1.1
       '@previewjs/vfs': workspace:*
       typescript: ^4.9.3
@@ -252,7 +252,7 @@ importers:
       '@playwright/test': 1.28.1
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.6
+      '@previewjs/csf3': ^3.0.7
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/testing': workspace:*
@@ -323,7 +323,7 @@ importers:
       '@playwright/test': 1.28.1
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.6
+      '@previewjs/csf3': ^3.0.7
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/testing': workspace:*
@@ -1393,7 +1393,7 @@ importers:
     specifiers:
       '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.6
+      '@previewjs/csf3': ^3.0.7
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.1
       '@previewjs/vfs': ^1.2.12
@@ -1468,7 +1468,7 @@ importers:
     specifiers:
       '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.6
+      '@previewjs/csf3': ^3.0.7
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.1
       '@previewjs/vfs': ^1.2.12
@@ -1597,7 +1597,7 @@ importers:
       '@nuxt/config': ^2.15.8
       '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.6
+      '@previewjs/csf3': ^3.0.7
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.1
       '@previewjs/vfs': ^1.2.12
@@ -1701,7 +1701,7 @@ importers:
     specifiers:
       '@playwright/test': 1.28.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^3.0.6
+      '@previewjs/csf3': ^3.0.7
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.1
       '@previewjs/vfs': ^1.2.12
@@ -1902,7 +1902,7 @@ importers:
 
   properties:
     specifiers:
-      '@previewjs/serializable-values': ^3.1.3
+      '@previewjs/serializable-values': ^3.1.4
       '@previewjs/type-analyzer': ^4.1.1
       unbuild: 1.0.1
       vitest: 0.25.3
@@ -1963,10 +1963,10 @@ importers:
   testing:
     specifiers:
       '@playwright/test': ^1.28.1
-      '@previewjs/api': ^7.0.0
-      '@previewjs/chromeless': ^1.1.2
-      '@previewjs/core': ^13.0.2
-      '@previewjs/iframe': ^3.0.2
+      '@previewjs/api': ^7.0.1
+      '@previewjs/chromeless': ^1.1.3
+      '@previewjs/core': ^14.0.0
+      '@previewjs/iframe': ^3.0.3
       '@previewjs/vfs': ^1.2.12
       '@types/fs-extra': 9.0.13
       assert-never: ^1.2.1
