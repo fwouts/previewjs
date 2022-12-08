@@ -1,6 +1,6 @@
 /// <reference types="@previewjs/iframe/preview/window" />
 
-import { test } from "@playwright/test";
+import { Page, test } from "@playwright/test";
 import { getPreviewIframe, startPreview } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
@@ -12,6 +12,7 @@ import { FileManager, prepareFileManager } from "./file-manager";
 let port: number;
 
 type TestPreview = Awaited<ReturnType<typeof startPreview>> & {
+  page: Page;
   fileManager: FileManager;
   expectLoggedMessages: LoggedMessagesMatcher;
 };
@@ -73,6 +74,7 @@ export const previewTest = (
       };
       try {
         await testFunction({
+          page,
           fileManager,
           get expectLoggedMessages() {
             return expectLoggedMessages(this.events.get());
