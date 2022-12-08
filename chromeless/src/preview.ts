@@ -33,7 +33,7 @@ export async function startPreview({
   await page.goto(preview.url());
 
   // This callback will be invoked each time a component is done rendering.
-  let onRenderingDone = () => {
+  let onRenderingDone = (_success: boolean) => {
     // No-op by default.
   };
   let variants: Variant[] = [];
@@ -41,7 +41,7 @@ export async function startPreview({
     if (event.kind === "rendering-setup") {
       variants = event.info.variants || [];
     } else if (event.kind === "rendering-done") {
-      onRenderingDone();
+      onRenderingDone(event.success);
     }
   });
 
@@ -148,8 +148,8 @@ export async function startPreview({
         variantKey = propsAssignmentSource.variantKey;
         propsAssignmentSource = `properties = variants?.find(v => v.key === "${variantKey}")?.props || {}`;
       }
-      const donePromise = new Promise<void>((resolve) => {
-        onRenderingDone = resolve;
+      const donePromise = new Promise<void>((resolve, reject) => {
+        onRenderingDone = (success) => (success ? resolve() : reject());
       });
       await waitUntilNetworkIdle(page);
       await page.evaluate(
