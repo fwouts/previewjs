@@ -3,18 +3,12 @@
   "name": "preact-ts",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "dev": "preact watch"
-  },
   "dependencies": {
-    "preact": "^10.10.0",
-    "preact-render-to-string": "^5.2.1",
-    "preact-router": "^3.2.1"
+    "preact": "^10.10.0"
   },
   "devDependencies": {
     "@storybook/csf": "0.0.2--canary.4566f4d.1",
     "@storybook/preact": "^6.5.14",
-    "preact-cli": "^3.4.0",
     "typescript": "^4.5.2"
   }
 }
