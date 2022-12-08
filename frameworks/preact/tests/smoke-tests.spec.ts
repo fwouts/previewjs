@@ -12,7 +12,7 @@ test.describe("smoke tests", () => {
     ["preact-ts", "src/components/app.tsx:App"],
     ["storybook-js", "src/App.jsx:App"],
     ["storybook-ts", "src/stories/Button.stories.tsx:Primary"],
-    ["vite-preact", "src/App.tsx:App"],
+    ["vite-preact", "src/app.tsx:App"],
   ] as const) {
     const appDir = smokeTestApp(appName);
     previewTest([pluginFactory], appDir)(appName, async (preview) => {
