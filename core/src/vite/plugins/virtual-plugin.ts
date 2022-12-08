@@ -109,7 +109,8 @@ export function virtualPlugin(options: {
           // We run an esbuild transform for .js or no extension
           // because it may include JSX. Otherwise, let plugins
           // decide whether to use esbuild or not.
-          moduleExtension === "" || moduleExtension === ".js"
+          !id.includes("__previewjs_internal__") &&
+          (moduleExtension === "" || moduleExtension === ".js")
             ? (
                 await transformWithEsbuild(source, absoluteFilePath, {
                   loader: "tsx",

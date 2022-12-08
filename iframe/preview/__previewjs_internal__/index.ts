@@ -5,6 +5,8 @@ import { setUpLogInterception } from "./logs";
 import { sendMessageFromPreview } from "./messages";
 import { setState } from "./state";
 import { setupViteHmrListener } from "./vite-hmr-listener";
+// @ts-ignore
+import { componentLoader } from "./component-loader.js";
 
 setupViteHmrListener();
 setUpLogInterception();
@@ -27,12 +29,7 @@ async function load({
       defaultPropsSource,
       propsAssignmentSource,
     });
-    const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
-      filePath
-    )}&c=${encodeURIComponent(componentName)}`;
-    const { init, refresh } = await import(
-      /* @vite-ignore */ componentLoaderUrl
-    );
+    const { init, refresh } = await componentLoader(filePath, componentName);
     init({
       componentLoadId: currentComponentLoadId,
       getLatestComponentLoadId: () => componentLoadId,
