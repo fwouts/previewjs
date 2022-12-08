@@ -10,7 +10,10 @@ import type { PackageDependencies } from "./dependencies";
 
 export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
-  create(): Promise<FrameworkPlugin>;
+  create(options: {
+    rootDirPath: string;
+    dependencies: PackageDependencies;
+  }): Promise<FrameworkPlugin>;
 }
 
 export interface FrameworkPlugin {
@@ -18,7 +21,7 @@ export interface FrameworkPlugin {
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;
-  readonly transformReader?: (reader: Reader, rootDirPath: string) => Reader;
+  readonly transformReader?: (reader: Reader) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
   readonly specialTypes?: Record<string, ValueType>;
   readonly viteConfig: () => vite.UserConfig;

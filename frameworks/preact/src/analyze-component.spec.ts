@@ -33,7 +33,10 @@ describe.concurrent("analyzePreactComponent", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await reactFrameworkPlugin.create();
+    frameworkPlugin = await reactFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([

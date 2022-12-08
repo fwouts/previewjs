@@ -21,7 +21,10 @@ describe.concurrent("extractSolidComponents", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    const frameworkPlugin = await solidFrameworkPlugin.create();
+    const frameworkPlugin = await solidFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR,
       reader: createStackedReader([

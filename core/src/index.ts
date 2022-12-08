@@ -16,6 +16,7 @@ import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
+export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   Component,
   ComponentAnalysis,
@@ -56,7 +57,7 @@ export async function createWorkspace({
     );
   }
   if (frameworkPlugin.transformReader) {
-    reader = frameworkPlugin.transformReader(reader, rootDirPath);
+    reader = frameworkPlugin.transformReader(reader);
   }
   const collected: CollectedTypes = {};
   const typeAnalyzer = createTypeAnalyzer({

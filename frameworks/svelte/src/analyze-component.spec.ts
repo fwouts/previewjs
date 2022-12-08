@@ -30,7 +30,10 @@ describe.concurrent("analyze Svelte component", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await svelteFrameworkPlugin.create();
+    frameworkPlugin = await svelteFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createSvelteTypeScriptReader(

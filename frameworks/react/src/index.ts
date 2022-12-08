@@ -15,7 +15,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) >= 16;
   },
-  async create() {
+  async create({ rootDirPath, dependencies }) {
     const previewDirPath = path.join(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -27,7 +27,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
       },
-      transformReader: (reader, rootDirPath) =>
+      transformReader: (reader) =>
         createStackedReader([
           reader,
           createFileSystemReader({
@@ -58,6 +58,21 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
           plugins: [
             reactImportsPlugin(),
             react(),
+            {
+              name: "previewjs:update-react-import",
+              async transform(code, id) {
+                if (!id.endsWith("__previewjs_internal__/renderer/index.tsx")) {
+                  return;
+                }
+                const reactVersion = parseInt(
+                  (await dependencies["react"]?.readInstalledVersion()) || "0"
+                );
+                return code.replace(
+                  /__PREVIEWJS_PLUGIN_REACT_IMPORT_PATH__/g,
+                  reactVersion >= 18 ? "./render-18" : "./render-16"
+                );
+              },
+            },
             {
               name: "previewjs:disable-react-hmr",
               async transform(code, id) {

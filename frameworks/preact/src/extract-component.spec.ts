@@ -25,7 +25,10 @@ describe.concurrent("extractPreactComponents", () => {
       MAIN_FILE,
       "export default () => <div>Hello, World!</div>;"
     );
-    const frameworkPlugin = await reactFrameworkPlugin.create();
+    const frameworkPlugin = await reactFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR,
       reader: createStackedReader([

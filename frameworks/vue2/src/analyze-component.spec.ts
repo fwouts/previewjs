@@ -33,7 +33,10 @@ describe.concurrent("analyze Vue 2 component", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await vue2FrameworkPlugin.create();
+    frameworkPlugin = await vue2FrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(

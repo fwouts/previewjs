@@ -13,7 +13,10 @@ export async function setupFrameworkPlugin({
   const dependencies = await extractPackageDependencies(rootDirPath);
   for (const candidate of frameworkPluginFactories || []) {
     if (await candidate.isCompatible(dependencies)) {
-      return candidate.create();
+      return candidate.create({
+        rootDirPath,
+        dependencies,
+      });
     }
   }
   return null;

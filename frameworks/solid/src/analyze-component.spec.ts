@@ -32,7 +32,10 @@ describe.concurrent("analyzeSolidComponent", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await solidFrameworkPlugin.create();
+    frameworkPlugin = await solidFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([

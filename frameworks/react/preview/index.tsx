@@ -1,10 +1,8 @@
 import type { RendererLoader } from "@previewjs/iframe";
 import React from "react";
-// @ts-ignore Vite is fine with this
-import { version } from "react/package.json";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
-
-const moduleName = parseInt(version) >= 18 ? "./render-18" : "./render-16";
+// @ts-ignore
+import { render } from "__PREVIEWJS_PLUGIN_REACT_IMPORT_PATH__";
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -68,10 +66,6 @@ export const load: RendererLoader = async ({
   return {
     variants,
     render: async (props) => {
-      if (shouldAbortRender()) {
-        return;
-      }
-      const { render } = await import(/* @vite-ignore */ moduleName);
       if (shouldAbortRender()) {
         return;
       }

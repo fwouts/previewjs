@@ -39,8 +39,11 @@ export default {
 </script>
 `
     );
-    const frameworkPlugin = await vue2FrameworkPlugin.create();
     const rootDirPath = path.join(__dirname, "virtual");
+    const frameworkPlugin = await vue2FrameworkPlugin.create({
+      rootDirPath,
+      dependencies: {},
+    });
     const reader = createStackedReader([
       createVueTypeScriptReader(memoryReader),
       createFileSystemReader({
