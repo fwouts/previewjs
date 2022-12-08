@@ -17,7 +17,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 2;
   },
-  async create() {
+  async create({ rootDirPath }) {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { createVuePlugin } = await import("vite-plugin-vue2");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
@@ -26,7 +26,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
-      transformReader: (reader, rootDirPath) =>
+      transformReader: (reader) =>
         createStackedReader([
           createVueTypeScriptReader(reader),
           createFileSystemReader({

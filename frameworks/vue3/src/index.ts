@@ -19,7 +19,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 3;
   },
-  async create() {
+  async create({ rootDirPath }) {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
     const { Parser } = await import("acorn");
@@ -29,7 +29,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
-      transformReader: (reader, rootDirPath) =>
+      transformReader: (reader) =>
         createStackedReader([
           createVueTypeScriptReader(reader),
           createFileSystemReader({
