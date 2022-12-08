@@ -73,7 +73,6 @@ const createSlots = (slots) => {
         return {
           c: si.noop,
           m: function mount(target, anchor) {
-            console.error("FOO", target, ele);
             si.insert(target, ele, anchor);
           },
           d: function destroy(detaching) {
