@@ -23,6 +23,8 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "preact",
+        jsxFactory: "h",
+        jsxFragmentFactory: "Fragment",
       },
       detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
@@ -47,19 +49,10 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
           esbuild: {
             jsx: "automatic",
             jsxImportSource: "preact",
+            jsxFactory: "h",
+            jsxFragment: "fragment",
           },
           plugins: [
-            {
-              name: "previewjs:disable-preact-hmr",
-              async transform(code, id) {
-                if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
-                  return null;
-                }
-                // HMR prevents preview props from being refreshed.
-                // For now, we disable it entirely.
-                return code.replace(/import\.meta/g, "({})");
-              },
-            },
             {
               name: "previewjs:optimize-deps",
               config: () => ({
@@ -69,11 +62,9 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
               }),
             },
           ],
-          define: {
-            "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
-          },
         };
       },
+      incompatibleVitePlugins: ["prefresh", "vite:preact-jsx"],
     };
   },
 };

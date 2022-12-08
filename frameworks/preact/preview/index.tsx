@@ -59,6 +59,8 @@ export const load: RendererLoader = async ({
       if (shouldAbortRender()) {
         return;
       }
+      render(null, container);
+      container.innerHTML = "";
       render(<Renderer {...props} />, container);
       if (shouldAbortRender()) {
         return;
