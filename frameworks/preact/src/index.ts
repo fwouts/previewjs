@@ -23,6 +23,8 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "preact",
+        jsxFactory: "h",
+        jsxFragmentFactory: "Fragment",
       },
       detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
