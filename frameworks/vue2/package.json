@@ -33,14 +33,14 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.0.7",
-    "@previewjs/type-analyzer": "^4.1.1",
-    "@previewjs/vfs": "^1.2.12",
     "@nuxt/config": "^2.15.8",
+    "@previewjs/csf3": "workspace:^3.0.7",
+    "@previewjs/type-analyzer": "workspace:^4.1.1",
+    "@previewjs/vfs": "workspace:^1.2.12",
     "fs-extra": "^11.1.0",
-    "typescript": "^4.9.3",
+    "typescript": "^4.9.4",
     "vite-plugin-vue2": "^2.0.2",
-    "vue": "^2.7.14",
+    "vue": "^2",
     "vue-template-compiler": "^2.7.14"
   },
   "devDependencies": {
@@ -48,8 +48,8 @@
     "@previewjs/core": "workspace:*",
     "@previewjs/testing": "workspace:*",
     "@types/fs-extra": "9.0.13",
-    "unbuild": "1.0.1",
-    "vite": "3.2.5",
-    "vitest": "0.25.3"
+    "unbuild": "1.0.2",
+    "vite": "4.0.0",
+    "vitest": "0.25.6"
   }
 }
