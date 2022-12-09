@@ -1,4 +1,4 @@
-import type { Component } from "@previewjs/core";
+import type { Component, ComponentTypeInfo } from "@previewjs/core";
 import {
   extractCsf3Stories,
   extractDefaultComponent,
@@ -60,39 +60,44 @@ export function extractReactComponents(
   const components: Component[] = [];
   const args = helpers.extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  for (const [name, statement, node] of functions) {
+
+  function extractComponentTypeInfo(
+    node: ts.Node,
+    name: string
+  ): ComponentTypeInfo | null {
     const hasArgs = !!args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    const signature = extractReactComponent(resolver.checker, node);
+    if (storiesDefaultComponent && hasArgs && isExported) {
+      return { kind: "story", associatedComponent: resolvedStoriesComponent };
+    }
+    const signature = extractComponentSignature(resolver.checker, node);
     if (signature) {
+      return {
+        kind: "component",
+        exported: isExported,
+        analyze: async () =>
+          analyzeReactComponent(resolver, absoluteFilePath, name, signature),
+      };
+    }
+    return null;
+  }
+
+  for (const [name, statement, node] of functions) {
+    const info = extractComponentTypeInfo(node, name);
+    if (info) {
       components.push({
         absoluteFilePath,
         name,
         offsets: [[statement.getStart(), statement.getEnd()]],
-        info:
-          storiesDefaultComponent && hasArgs && isExported
-            ? {
-                kind: "story",
-                associatedComponent: resolvedStoriesComponent,
-              }
-            : {
-                kind: "component",
-                exported: isExported,
-                analyze: async () =>
-                  analyzeReactComponent(
-                    resolver,
-                    absoluteFilePath,
-                    name,
-                    signature
-                  ),
-              },
+        info,
       });
     }
   }
+
   return [...components, ...extractCsf3Stories(resolver, sourceFile)];
 }
 
-function extractReactComponent(
+function extractComponentSignature(
   checker: ts.TypeChecker,
   node: ts.Node
 ): ts.Signature | null {

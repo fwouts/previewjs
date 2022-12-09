@@ -215,9 +215,11 @@ export const Primary = () => ({
       {
         name: "Primary",
         info: {
-          // TODO: this should be "story".
-          kind: "component",
-          exported: true,
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "MyComponent",
+          },
         },
       },
     ]);

@@ -1,4 +1,4 @@
-import type { Component, ComponentAnalysis } from "@previewjs/core";
+import type { Component, ComponentTypeInfo } from "@previewjs/core";
 import {
   extractCsf3Stories,
   extractDefaultComponent,
@@ -58,31 +58,46 @@ export function extractVueComponents(
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
-  // TODO: Handle JSX and Storybook stories.
-  const analysis: ComponentAnalysis = {
-    propsType: UNKNOWN_TYPE,
-    types: {},
-  };
-  for (const [name, statement, node] of functions) {
+
+  function extractComponentTypeInfo(
+    node: ts.Node,
+    name: string
+  ): ComponentTypeInfo | null {
     const hasArgs = !!args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    const signature = extractVueComponent(resolver.checker, node, hasArgs);
-    if (signature) {
+    if (storiesDefaultComponent && hasArgs && isExported) {
+      return { kind: "story", associatedComponent: resolvedStoriesComponent };
+    }
+    const type = resolver.checker.getTypeAtLocation(node);
+    for (const callSignature of type.getCallSignatures()) {
+      const returnType = callSignature.getReturnType();
+      if (isJsxElement(returnType)) {
+        return {
+          kind: "component",
+          exported: isExported,
+          analyze: async () => ({
+            // TODO: Handle JSX properties.
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          }),
+        };
+      }
+      if (isExported && returnType.getProperty("template")) {
+        // This is a story.
+        return { kind: "story", associatedComponent: resolvedStoriesComponent };
+      }
+    }
+    return null;
+  }
+
+  for (const [name, statement, node] of functions) {
+    const info = extractComponentTypeInfo(node, name);
+    if (info) {
       components.push({
         absoluteFilePath,
         name,
-        offsets: [[statement.getFullStart(), statement.getEnd()]],
-        info:
-          storiesDefaultComponent && hasArgs && isExported
-            ? {
-                kind: "story",
-                associatedComponent: resolvedStoriesComponent,
-              }
-            : {
-                kind: "component",
-                exported: isExported,
-                analyze: async () => analysis,
-              },
+        offsets: [[statement.getStart(), statement.getEnd()]],
+        info,
       });
     }
   }
@@ -118,26 +133,6 @@ function transformVirtualTsVueFile({
     name = inferComponentNameFromVuePath(absoluteFilePath);
   }
   return { absoluteFilePath, name };
-}
-
-function extractVueComponent(
-  checker: ts.TypeChecker,
-  node: ts.Node,
-  hasArgs: boolean
-): ts.Signature | null {
-  const type = checker.getTypeAtLocation(node);
-  for (const callSignature of type.getCallSignatures()) {
-    const returnType = callSignature.getReturnType();
-    if (isJsxElement(returnType)) {
-      // JSX component.
-      return callSignature;
-    }
-    if (returnType.getProperty("template") || hasArgs) {
-      // This is a story.
-      return callSignature;
-    }
-  }
-  return null;
 }
 
 const jsxElementTypes = new Set(["Element"]);

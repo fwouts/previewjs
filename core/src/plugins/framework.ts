@@ -36,20 +36,22 @@ export interface Component {
   readonly absoluteFilePath: string;
   readonly name: string;
   readonly offsets: Array<[start: number, end: number]>;
-  readonly info:
-    | {
-        kind: "component";
-        readonly exported: boolean;
-        readonly analyze: () => Promise<ComponentAnalysis>;
-      }
-    | {
-        kind: "story";
-        readonly associatedComponent: {
-          readonly absoluteFilePath: string;
-          readonly name: string;
-        } | null;
-      };
+  readonly info: ComponentTypeInfo;
 }
+
+export type ComponentTypeInfo =
+  | {
+      kind: "component";
+      readonly exported: boolean;
+      readonly analyze: () => Promise<ComponentAnalysis>;
+    }
+  | {
+      kind: "story";
+      readonly associatedComponent: {
+        readonly absoluteFilePath: string;
+        readonly name: string;
+      } | null;
+    };
 
 export interface ComponentAnalysis {
   propsType: ValueType;

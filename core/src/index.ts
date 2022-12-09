@@ -20,6 +20,7 @@ export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   Component,
   ComponentAnalysis,
+  ComponentTypeInfo,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";

@@ -215,9 +215,11 @@ export const Primary = () => ({
       {
         name: "Primary",
         info: {
-          // TODO: this should be "story".
-          kind: "component",
-          exported: true,
+          kind: "story",
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "MyComponent",
+          },
         },
       },
     ]);
@@ -249,13 +251,6 @@ Primary.args = {
 `
     );
     expect(extract(STORIES_FILE)).toMatchObject([
-      {
-        name: "Template",
-        info: {
-          kind: "component",
-          exported: false,
-        },
-      },
       {
         name: "Primary",
         info: {
