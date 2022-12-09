@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-svelte",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -33,9 +33,9 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "workspace:^3.0.7",
-    "@previewjs/type-analyzer": "workspace:^4.1.1",
-    "@previewjs/vfs": "workspace:^1.2.12",
+    "@previewjs/csf3": "^3.0.8",
+    "@previewjs/type-analyzer": "^4.1.2",
+    "@previewjs/vfs": "^1.2.13",
     "@sveltejs/vite-plugin-svelte": "^1",
     "fs-extra": "^11.1.0",
     "svelte": "^3.54.0",

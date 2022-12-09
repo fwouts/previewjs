@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-vue3",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -37,9 +37,9 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "workspace:^3.0.7",
-    "@previewjs/type-analyzer": "workspace:^4.1.1",
-    "@previewjs/vfs": "workspace:^1.2.12",
+    "@previewjs/csf3": "^3.0.8",
+    "@previewjs/type-analyzer": "^4.1.2",
+    "@previewjs/vfs": "^1.2.13",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitejs/plugin-vue-jsx": "^3.0.0",
     "@vue/compiler-sfc": "^3.2.45",
