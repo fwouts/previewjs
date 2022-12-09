@@ -95,7 +95,11 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
           },
         ],
       }),
-      incompatibleVitePlugins: ["vite-plugin-svelte-kit"],
+      incompatibleVitePlugins: [
+        "vite-plugin-svelte-kit",
+        "vite-plugin-sveltekit-build",
+        "vite-plugin-sveltekit-middleware",
+      ],
     };
   },
 };
