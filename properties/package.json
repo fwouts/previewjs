@@ -30,11 +30,11 @@
     "test": "vitest --no-threads"
   },
   "dependencies": {
-    "@previewjs/serializable-values": "^3.1.4",
-    "@previewjs/type-analyzer": "^4.1.1"
+    "@previewjs/serializable-values": "workspace:^3.1.4",
+    "@previewjs/type-analyzer": "workspace:^4.1.1"
   },
   "devDependencies": {
-    "unbuild": "1.0.1",
-    "vitest": "0.25.3"
+    "unbuild": "1.0.2",
+    "vitest": "0.25.6"
   }
 }

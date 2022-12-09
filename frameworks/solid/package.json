@@ -39,19 +39,19 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.0.7",
-    "@previewjs/type-analyzer": "^4.1.1",
-    "@previewjs/vfs": "^1.2.12",
-    "typescript": "^4.9.3",
-    "vite-plugin-solid": "^2.4.0"
+    "@previewjs/csf3": "workspace:^3.0.7",
+    "@previewjs/type-analyzer": "workspace:^4.1.1",
+    "@previewjs/vfs": "workspace:^1.2.12",
+    "typescript": "^4.9.4",
+    "vite-plugin-solid": "^2.5.0"
   },
   "devDependencies": {
     "@playwright/test": "1.28.1",
     "@previewjs/core": "workspace:*",
     "@previewjs/testing": "workspace:*",
-    "solid-js": "1.6.2",
-    "unbuild": "1.0.1",
-    "vite": "3.2.5",
-    "vitest": "0.25.3"
+    "solid-js": "1.6.4",
+    "unbuild": "1.0.2",
+    "vite": "4.0.0",
+    "vitest": "0.25.6"
   }
 }

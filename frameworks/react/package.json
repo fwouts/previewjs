@@ -37,11 +37,11 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.0.7",
-    "@previewjs/type-analyzer": "^4.1.1",
-    "@previewjs/vfs": "^1.2.12",
-    "@vitejs/plugin-react": "2.2.0",
-    "typescript": "^4.9.3"
+    "@previewjs/csf3": "workspace:^3.0.7",
+    "@previewjs/type-analyzer": "workspace:^4.1.1",
+    "@previewjs/vfs": "workspace:^1.2.12",
+    "@vitejs/plugin-react": "3.0.0",
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
     "@playwright/test": "1.28.1",
@@ -54,8 +54,8 @@
     "@types/react": "18.0.26",
     "concurrently": "7.6.0",
     "react": "18.2.0",
-    "unbuild": "1.0.1",
-    "vite": "3.2.5",
-    "vitest": "0.25.3"
+    "unbuild": "1.0.2",
+    "vite": "4.0.0",
+    "vitest": "0.25.6"
   }
 }
