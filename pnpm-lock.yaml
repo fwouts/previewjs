@@ -178,7 +178,7 @@ importers:
       typescript: ^4.9.4
       unbuild: 1.0.2
       vite: ^4.0.0
-      vite-tsconfig-paths: ^4.0.1
+      vite-tsconfig-paths: ^3
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
@@ -200,7 +200,7 @@ importers:
       tsconfig-paths: 4.1.1
       typescript: 4.9.4
       vite: 4.0.0_@types+node@18.11.12
-      vite-tsconfig-paths: 4.0.1_csiinktybatgu6zuq6qz2yqhzq
+      vite-tsconfig-paths: 3.6.0_vite@4.0.0
     devDependencies:
       '@rollup/plugin-alias': 4.0.2_rollup@3.7.0
       '@types/express': 4.17.14
@@ -27639,6 +27639,16 @@ packages:
       resolve: 1.22.1
     dev: true
 
+  /recrawl-sync/2.2.3:
+    resolution: {integrity: sha512-vSaTR9t+cpxlskkdUFrsEpnf67kSmPk66yAGT1fZPrDudxQjoMzPgQhSMImQ0pAw5k0NPirefQfhopSjhdUtpQ==}
+    dependencies:
+      '@cush/relative': 1.0.0
+      glob-regex: 0.3.2
+      slash: 3.0.0
+      sucrase: 3.29.0
+      tslib: 1.14.1
+    dev: false
+
   /recrawl/2.2.1:
     resolution: {integrity: sha512-tBdAdiJ1f6Wi8PCI5RTKG/82j3qvTQJTvdPmq3LWLu40FMc0BKLFKzH3SzTJrmpa87qAfFAEhfUraBOZ9cGPXA==}
     dependencies:
@@ -30451,19 +30461,6 @@ packages:
     dependencies:
       typescript: 4.9.4
 
-  /tsconfck/2.0.1_typescript@4.9.4:
-    resolution: {integrity: sha512-/ipap2eecmVBmBlsQLBRbUmUNFwNJV/z2E+X0FPtHNjPwroMZQ7m39RMaCywlCulBheYXgMdUlWDd9rzxwMA0Q==}
-    engines: {node: ^14.13.1 || ^16 || >=18, pnpm: ^7.0.1}
-    hasBin: true
-    peerDependencies:
-      typescript: ^4.3.5
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      typescript: 4.9.4
-    dev: false
-
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
     dependencies:
@@ -31537,18 +31534,18 @@ packages:
       - whiskers
     dev: false
 
-  /vite-tsconfig-paths/4.0.1_csiinktybatgu6zuq6qz2yqhzq:
-    resolution: {integrity: sha512-CQpI+zxo8/CnqsAaM2+Kpsgaj7UEKlM1fMMcm7RZQlcxRd7JwGpsYhrHJo/dIA3lsd7HI4JtSflH4+Ip+Dymkw==}
+  /vite-tsconfig-paths/3.6.0_vite@4.0.0:
+    resolution: {integrity: sha512-UfsPYonxLqPD633X8cWcPFVuYzx/CMNHAjZTasYwX69sXpa4gNmQkR0XCjj82h7zhLGdTWagMjC1qfb9S+zv0A==}
     peerDependencies:
       vite: '>2.0.0-0'
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
-      tsconfck: 2.0.1_typescript@4.9.4
+      recrawl-sync: 2.2.3
+      tsconfig-paths: 4.1.1
       vite: 4.0.0_@types+node@18.11.12
     transitivePeerDependencies:
       - supports-color
-      - typescript
     dev: false
 
   /vite/3.2.5:
