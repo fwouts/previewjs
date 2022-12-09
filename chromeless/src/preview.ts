@@ -159,7 +159,7 @@ export async function startPreview({
           const timeoutSeconds = 10;
           while (
             !window.renderComponent &&
-            Date.now() - waitStart < timeoutSeconds * 100
+            Date.now() - waitStart < timeoutSeconds * 1000
           ) {
             await new Promise((resolve) => setTimeout(resolve, 100));
           }
