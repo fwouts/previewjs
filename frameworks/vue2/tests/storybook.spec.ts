@@ -37,6 +37,10 @@ test.describe.parallel("vue2/storybook", () => {
       "src/Button.stories.js",
       `import Button from './Button.vue';
 
+      export default {
+        component: Button
+      }
+
       export const Primary = () => ({
         components: { Button },
         template: '<Button label="Button" />'
@@ -53,6 +57,10 @@ test.describe.parallel("vue2/storybook", () => {
     await preview.fileManager.update(
       "src/Button.stories.js",
       `import Button from './Button.vue';
+
+      export default {
+        component: Button
+      }
 
       const Template = (args, { argTypes }) => ({
         props: Object.keys(argTypes),
@@ -77,6 +85,10 @@ test.describe.parallel("vue2/storybook", () => {
       "src/Button.stories.js",
       `import Button from './Button.vue';
 
+      export default {
+        component: Button
+      }
+
       const Template = (args, { argTypes }) => ({
         props: Object.keys(argTypes),
         components: { Button },
@@ -100,6 +112,10 @@ test.describe.parallel("vue2/storybook", () => {
       "src/Button.stories.js",
       `import Button from './Button.vue';
 
+      export default {
+        component: Button
+      };
+
       const Template = (args, { argTypes }) => ({
         props: Object.keys(argTypes),
         components: { Button },
@@ -122,23 +138,24 @@ test.describe.parallel("vue2/storybook", () => {
       "src/Button.stories.js",
       `import Button from './Button.vue';
 
+      export default {
+        component: Button,
+        args: {
+          label: "default"
+        }
+      }
+
       const Template = (args, { argTypes }) => ({
         props: Object.keys(argTypes),
         components: { Button },
       });
 
       export const Primary = Template.bind({});
-      Primary.args = {};
-
-      export default {
-        args: {
-          label: "Hello, World!"
-        }
-      };`
+      Primary.args = {};`
     );
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'Hello, World!')]"
+      "xpath=//button[contains(., 'default')]"
     );
   });
 
@@ -148,6 +165,13 @@ test.describe.parallel("vue2/storybook", () => {
       "src/Button.stories.js",
       `import Button from './Button.vue';
 
+      export default {
+        component: Button,
+        args: {
+          label: "default"
+        }
+      }
+
       const Template = (args, { argTypes }) => ({
         props: Object.keys(argTypes),
         components: { Button },
@@ -156,12 +180,6 @@ test.describe.parallel("vue2/storybook", () => {
       export const Primary = Template.bind({});
       Primary.args = {
         label: "explicit"
-      };
-
-      export default {
-        args: {
-          label: "default"
-        }
       };`
     );
     await preview.show("src/Button.stories.js:Primary");
@@ -182,13 +200,13 @@ test.describe.parallel("vue2/storybook", () => {
 
       export const Primary = {
         args: {
-          label: "Hello, World!"
+          label: "explicit"
         }
       };`
     );
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'Hello, World!')]"
+      "xpath=//button[contains(., 'explicit')]"
     );
   });
 
@@ -201,7 +219,7 @@ test.describe.parallel("vue2/storybook", () => {
       export default {
         component: Button,
         args: {
-          label: "Hello, World!"
+          label: "default"
         }
       };
 
@@ -209,7 +227,7 @@ test.describe.parallel("vue2/storybook", () => {
     );
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'Hello, World!')]"
+      "xpath=//button[contains(., 'default')]"
     );
   });
 

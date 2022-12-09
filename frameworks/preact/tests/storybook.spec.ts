@@ -3,9 +3,9 @@ import { previewTest } from "@previewjs/testing";
 import path from "path";
 import pluginFactory from "../src";
 
-const testApp = path.join(__dirname, "apps", "solid");
+const testApp = path.join(__dirname, "apps", "preact-app");
 
-test.describe.parallel("solid/storybook", () => {
+test.describe.parallel("preact/storybook", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders CSF2 story with no args", async (preview) => {
