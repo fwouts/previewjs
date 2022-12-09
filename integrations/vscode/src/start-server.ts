@@ -14,7 +14,12 @@ export async function ensureServerRunning(
   outputChannel: OutputChannel
 ): Promise<Client | null> {
   const client = createClient(`http://localhost:${port}`);
-  await startServer(outputChannel);
+  if (!(await startServer(outputChannel))) {
+    return null;
+  }
+  // Note: we expect startServer().process to exit 1 almost immediately when there is another
+  // server running already (e.g. from another workspace) because of the lock file. This is
+  // fine and working by design.
   const ready = streamServerLogs(outputChannel);
   await ready;
   await client.updateClientStatus({
@@ -24,7 +29,11 @@ export async function ensureServerRunning(
   return client;
 }
 
-async function startServer(outputChannel: OutputChannel): Promise<boolean> {
+// Important: we wrap serverProcess into a Promise so that awaiting startServer()
+// doesn't automatically await the process itself (which may not exit for a long time!).
+async function startServer(outputChannel: OutputChannel): Promise<{
+  serverProcess: execa.ExecaChildProcess<string>;
+} | null> {
   const isWindows = process.platform === "win32";
   let useWsl = false;
   const nodeVersionCommand = "node --version";
@@ -55,7 +64,7 @@ async function startServer(outputChannel: OutputChannel): Promise<boolean> {
   invalidNode: if (checkNodeVersion.kind === "invalid") {
     outputChannel.appendLine(checkNodeVersion.message);
     if (!isWindows) {
-      return false;
+      return null;
     }
     // On Windows, try WSL as well.
     outputChannel.appendLine(`Attempting again with WSL...`);
@@ -75,7 +84,7 @@ async function startServer(outputChannel: OutputChannel): Promise<boolean> {
       break invalidNode;
     }
     outputChannel.appendLine(checkNodeVersionWsl.message);
-    return false;
+    return null;
   }
   outputChannel.appendLine(
     `🚀 Starting Preview.js server${useWsl ? " from WSL" : ""}...`
@@ -84,7 +93,10 @@ async function startServer(outputChannel: OutputChannel): Promise<boolean> {
   const nodeServerCommand = "node --trace-warnings server.js";
   const serverOptions: execa.Options = {
     cwd: __dirname,
-    stdio: "inherit",
+    // https://nodejs.org/api/child_process.html#child_process_options_detached
+    // If we use "inherit", we end up with a "write EPIPE" crash when the child process
+    // tries to log after the parent process exited (even when detached properly).
+    stdio: "ignore",
     env: {
       PREVIEWJS_LOCK_FILE: serverLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
@@ -107,7 +119,7 @@ async function startServer(outputChannel: OutputChannel): Promise<boolean> {
     });
   }
   serverProcess.unref();
-  return true;
+  return { serverProcess };
 }
 
 function streamServerLogs(outputChannel: OutputChannel) {
@@ -123,32 +135,38 @@ function streamServerLogs(outputChannel: OutputChannel) {
       let fd = openSync(logsPath, "a");
       closeSync(fd);
     }
+    const onChangeListener = () => {
+      try {
+        const logsContent = stripAnsi(readFileSync(logsPath, "utf8"));
+        const newLogsLength = logsContent.length;
+        if (newLogsLength < lastKnownLogsLength) {
+          // Log file has been rewritten.
+          outputChannel.append("\n⚠️ Preview.js server was restarted ⚠️\n\n");
+          lastKnownLogsLength = 0;
+        }
+        outputChannel.append(logsContent.slice(lastKnownLogsLength));
+        lastKnownLogsLength = newLogsLength;
+        if (
+          !resolved &&
+          logsContent.includes("READY") &&
+          !logsContent.includes("EXITING")
+        ) {
+          resolve();
+          resolved = true;
+        }
+      } catch (e: any) {
+        // Fine, ignore. It just means log streaming is broken.
+      }
+    };
     watch(
       logsPath,
       {
         persistent: false,
       },
-      () => {
-        try {
-          const logsContent = stripAnsi(readFileSync(logsPath, "utf8"));
-          const newLogsLength = logsContent.length;
-          if (newLogsLength < lastKnownLogsLength) {
-            // Log file has been rewritten.
-            outputChannel.append("\n⚠️ Preview.js server was restarted ⚠️\n\n");
-            lastKnownLogsLength = 0;
-          }
-          outputChannel.append(logsContent.slice(lastKnownLogsLength));
-          lastKnownLogsLength = newLogsLength;
-          // Note: " running on " also appears in "Preview.js daemon server is already running on port 9315".
-          if (!resolved && logsContent.includes(" running on ")) {
-            resolve();
-            resolved = true;
-          }
-        } catch (e: any) {
-          // Fine, ignore. It just means log streaming is broken.
-        }
-      }
+      onChangeListener
     );
+    // Make sure to read the logs immediately!
+    onChangeListener();
   });
   return ready;
 }

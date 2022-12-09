@@ -8,7 +8,9 @@ export interface InfoResponse {
 
 export type KillRequest = Record<never, never>;
 
-export type KillResponse = Record<never, never>;
+export type KillResponse = {
+  pid: number;
+};
 
 export interface UpdateClientStatusRequest {
   clientId: string;

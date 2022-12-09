@@ -32,8 +32,9 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api";
+import { createClient } from "./client";
 
-const AUTOMATIC_SHUTDOWN_DELAY_MILLIS = 5000;
+const AUTOMATIC_SHUTDOWN_DELAY_SECONDS = 60;
 
 const lockFilePath = process.env.PREVIEWJS_LOCK_FILE;
 if (lockFilePath) {
@@ -48,6 +49,7 @@ if (lockFilePath) {
         unlinkSync(lockFilePath);
       } catch {
         // It's possible for several processes to try unlinking at the same time.
+        // For example, a running server that is exiting at the same time.
         // Ignore.
       }
     }
@@ -56,7 +58,15 @@ if (lockFilePath) {
     writeFileSync(lockFilePath, process.pid.toString(10), {
       flag: "wx",
     });
-    exitHook(() => unlinkSync(lockFilePath));
+    exitHook(() => {
+      try {
+        unlinkSync(lockFilePath);
+      } catch {
+        // It's possible for several processes to try unlinking at the same time.
+        // For example, a new server that will replace this one.
+        // Ignore.
+      }
+    });
   } catch {
     console.error(
       `Unable to obtain lock: ${lockFilePath}\nYou can delete this file manually if you wish to override the lock.`
@@ -237,10 +247,14 @@ export async function startServer({
 
   endpoint<InfoRequest, KillResponse>("/previewjs/kill", async () => {
     setTimeout(() => {
-      console.log("Shutting down server because seppuku was requested.");
+      console.log(
+        "EXITING - Shutting down server because seppuku was requested."
+      );
       process.exit(0);
-    }, 0);
-    return {};
+    }, 1000);
+    return {
+      pid: process.pid,
+    };
   });
 
   let shutdownTimer: NodeJS.Timeout | null = null;
@@ -257,10 +271,12 @@ export async function startServer({
       }
       shutdownTimer = setTimeout(() => {
         if (clients.size === 0) {
-          console.log("Shutting down server because no clients are alive.");
+          console.log(
+            `EXITING - Shutting down server because no clients are alive after ${AUTOMATIC_SHUTDOWN_DELAY_SECONDS}s.`
+          );
           process.exit(0);
         }
-      }, AUTOMATIC_SHUTDOWN_DELAY_MILLIS);
+      }, AUTOMATIC_SHUTDOWN_DELAY_SECONDS * 1000);
       return {};
     }
   );
@@ -385,17 +401,35 @@ export async function startServer({
     }
   );
 
-  await new Promise<http.Server>((resolve, reject) => {
-    const server = app
-      .listen(port, () => {
-        resolve(server);
-      })
-      .on("error", async (e: any) => {
-        reject(e);
-      });
+  await new Promise<void>((resolve, reject) => {
+    app.listen(port, resolve).on("error", async (e: any) => {
+      if (e.code !== "EADDRINUSE") {
+        return reject(e);
+      }
+      // There's another server running already on the same port.
+      // Attempt to kill it and try again. This can happen for example
+      // when upgrading from one version to another of Preview.js.
+      const client = createClient(`http://localhost:${port}`);
+      const { pid } = await client.kill();
+      // Wait for server to be killed.
+      let oldServerDead = false;
+      for (let i = 0; !oldServerDead && i < 10; i++) {
+        try {
+          // Test if PID is still running. This will fail if not.
+          process.kill(pid, 0);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        } catch {
+          oldServerDead = true;
+          app.listen(port, resolve).on("error", reject);
+        }
+      }
+      if (!oldServerDead) {
+        reject(new Error(`Unable to kill old server running on port ${port}`));
+      }
+    });
   });
 
   console.log(
-    `Preview.js daemon server is now running on http://localhost:${port}`
+    `READY - Preview.js daemon server is now running at http://localhost:${port}`
   );
 }
