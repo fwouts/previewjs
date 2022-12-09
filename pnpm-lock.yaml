@@ -225,6 +225,32 @@ importers:
       unbuild: 1.0.1
       vitest: 0.25.3
 
+  daemon:
+    specifiers:
+      '@previewjs/api': workspace:*
+      '@previewjs/core': workspace:*
+      '@previewjs/loader': workspace:*
+      '@types/node': 18.11.10
+      exclusive-promises: ^1.0.3
+      exit-hook: ^3.1.2
+      is-wsl: 2.2.0
+      rimraf: 3.0.2
+      ts-node-dev: 2.0.0
+      typescript: 4.9.3
+      unbuild: 1.0.1
+    devDependencies:
+      '@previewjs/api': link:../api
+      '@previewjs/core': link:../core
+      '@previewjs/loader': link:../loader
+      '@types/node': 18.11.10
+      exclusive-promises: 1.0.3
+      exit-hook: 3.1.2
+      is-wsl: 2.2.0
+      rimraf: 3.0.2
+      ts-node-dev: 2.0.0_eoe7put6ewfbqpy6gs36tihw6y
+      typescript: 4.9.3
+      unbuild: 1.0.1
+
   dev-workspace:
     specifiers:
       '@previewjs/app': workspace:*
@@ -1599,7 +1625,7 @@ importers:
       vite: ^3.2.5
     devDependencies:
       '@sveltejs/adapter-auto': 1.0.0-next.90
-      '@sveltejs/kit': 1.0.0-next.576_svelte@3.53.1+vite@3.2.5
+      '@sveltejs/kit': 1.0.0-next.577_svelte@3.53.1+vite@3.2.5
       svelte: 3.53.1
       svelte-check: 2.9.2_svelte@3.53.1
       svelte-preprocess: 4.10.7_7dvewpees4iyn2tkw2qzal77a4
@@ -1624,7 +1650,7 @@ importers:
       '@fontsource/fira-mono': 4.5.10
       '@neoconfetti/svelte': 1.0.0
       '@sveltejs/adapter-auto': 1.0.0-next.90
-      '@sveltejs/kit': 1.0.0-next.576_svelte@3.53.1+vite@3.2.5
+      '@sveltejs/kit': 1.0.0-next.577_svelte@3.53.1+vite@3.2.5
       '@types/cookie': 0.5.1
       svelte: 3.53.1
       svelte-check: 2.9.2_svelte@3.53.1
@@ -1875,14 +1901,14 @@ importers:
 
   integrations/intellij/controller:
     specifiers:
-      '@previewjs/server': workspace:*
+      '@previewjs/daemon': workspace:*
       esbuild: 0.15.18
       rimraf: 3.0.2
       shx: 0.3.4
       ts-node-dev: 2.0.0
       typescript: 4.9.3
     devDependencies:
-      '@previewjs/server': link:../../../server
+      '@previewjs/daemon': link:../../../daemon
       esbuild: 0.15.18
       rimraf: 3.0.2
       shx: 0.3.4
@@ -1891,7 +1917,7 @@ importers:
 
   integrations/vscode:
     specifiers:
-      '@previewjs/server': workspace:*
+      '@previewjs/daemon': workspace:*
       '@types/vscode': 1.71.0
       cross-env: 7.0.3
       esbuild: 0.15.18
@@ -1904,7 +1930,7 @@ importers:
       typescript: 4.9.3
       vsce: 2.15.0
     devDependencies:
-      '@previewjs/server': link:../../server
+      '@previewjs/daemon': link:../../daemon
       '@types/vscode': 1.71.0
       cross-env: 7.0.3
       esbuild: 0.15.18
@@ -1974,32 +2000,6 @@ importers:
       '@types/prettier': 2.7.1
       unbuild: 1.0.1
       vitest: 0.25.3
-
-  server:
-    specifiers:
-      '@previewjs/api': workspace:*
-      '@previewjs/core': workspace:*
-      '@previewjs/loader': workspace:*
-      '@types/node': 18.11.10
-      exclusive-promises: ^1.0.3
-      exit-hook: ^3.1.2
-      is-wsl: 2.2.0
-      rimraf: 3.0.2
-      ts-node-dev: 2.0.0
-      typescript: 4.9.3
-      unbuild: 1.0.1
-    devDependencies:
-      '@previewjs/api': link:../api
-      '@previewjs/core': link:../core
-      '@previewjs/loader': link:../loader
-      '@types/node': 18.11.10
-      exclusive-promises: 1.0.3
-      exit-hook: 3.1.2
-      is-wsl: 2.2.0
-      rimraf: 3.0.2
-      ts-node-dev: 2.0.0_eoe7put6ewfbqpy6gs36tihw6y
-      typescript: 4.9.3
-      unbuild: 1.0.1
 
   testing:
     specifiers:
@@ -6468,7 +6468,7 @@ packages:
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       '@nuxt/schema': /@nuxt/schema-edge/3.0.1-rc.0-27841867.1202b1a_rollup@2.79.1
-      c12: 1.0.1
+      c12: 1.1.0
       consola: 2.15.3
       defu: 6.1.1
       globby: 13.1.2
@@ -6560,7 +6560,7 @@ packages:
     resolution: {integrity: sha512-st93ud76ol+nn+O5ezujtaQF37GsLqdRNnmAY3aFgq/C9j1+/w47R0HaqwQfqnGQj9MP30eT6h5H24Q5fHOEmA==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
-      c12: 1.0.1
+      c12: 1.1.0
       create-require: 1.1.1
       defu: 6.1.1
       jiti: 1.16.0
@@ -11710,7 +11710,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/store': 6.5.13_sfoxds7t5ydpegc3knd667wn6m
       '@types/estree': 0.0.51
-      '@types/node': 16.18.3
+      '@types/node': 16.18.4
       '@types/webpack-env': 1.18.0
       acorn: 7.4.1
       acorn-jsx: 5.3.2_acorn@7.4.1
@@ -11800,7 +11800,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/store': 6.5.13_biqbaboplfbrettd7655fr4n2y
       '@types/estree': 0.0.51
-      '@types/node': 16.18.3
+      '@types/node': 16.18.4
       '@types/webpack-env': 1.18.0
       acorn: 7.4.1
       acorn-jsx: 5.3.2_acorn@7.4.1
@@ -12461,8 +12461,8 @@ packages:
       import-meta-resolve: 2.2.0
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.576_svelte@3.53.1+vite@3.2.5:
-    resolution: {integrity: sha512-EZ70RL/uhIRNfROzK/MxSs+PaqbG5dUyuPpIwovjL8z+aMRcExz2b81lNe1KBxWs0mOFCpEutPnksWa1f26d4g==}
+  /@sveltejs/kit/1.0.0-next.577_svelte@3.53.1+vite@3.2.5:
+    resolution: {integrity: sha512-hQuSGiF87pNNdmIMDwOr8+nMOe/tgtOne4VBpCFb4k0YrFh/5qC/pgWvWXFWeJBRi9/UzmEjGH9gJeJkgtMLmw==}
     engines: {node: '>=16.14'}
     hasBin: true
     requiresBuild: true
@@ -16828,19 +16828,6 @@ packages:
   /bytes/3.1.2:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
-
-  /c12/1.0.1:
-    resolution: {integrity: sha512-EN9Rqix2q9X3PseFkUvRFZ/0fvncF35ZR5nykLDwv4Ml/Q1WYPLkcdqlrczFll2G9t4qmxgM4my3EF3IrRGl5Q==}
-    dependencies:
-      defu: 6.1.1
-      dotenv: 16.0.3
-      gittar: 0.1.1
-      jiti: 1.16.0
-      mlly: 1.0.0
-      pathe: 1.0.0
-      pkg-types: 1.0.1
-      rc9: 2.0.0
-    dev: true
 
   /c12/1.1.0:
     resolution: {integrity: sha512-9KRFWEng+TH8sGST4NNdiKzZGw1Z1CHnPGAmNqAyVP7suluROmBjD8hsiR34f94DdlrvtGvvmiGDsoFXlCBWIw==}

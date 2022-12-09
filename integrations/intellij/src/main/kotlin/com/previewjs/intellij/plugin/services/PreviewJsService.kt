@@ -46,9 +46,9 @@ class PreviewJsSharedService : Disposable {
     private val coroutineScope = CoroutineScope(coroutineContext)
 
     private val plugin = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))!!
-    private val nodeDirPath = plugin.pluginPath.resolve("controller")
+    private val nodeDirPath = plugin.pluginPath.resolve("daemon")
     private val properties = PropertiesComponent.getInstance()
-    private var serverProcess: Process? = null
+    private var daemonProcess: Process? = null
     private var workspaceIds = Collections.synchronizedMap(WeakHashMap<Project, MutableSet<String>>())
 
     @Volatile
@@ -67,8 +67,8 @@ class PreviewJsSharedService : Disposable {
         val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
         for (msg in channel) {
             try {
-                if (serverProcess == null) {
-                    api = runServer(msg.project)
+                if (daemonProcess == null) {
+                    api = startDaemon(msg.project)
                 }
                 openDocsForFirstUsage()
             } catch (e: NodeVersionError) {
@@ -150,14 +150,14 @@ Include the content of the Preview.js logs panel for easier debugging.
         return str.split("\u0007").last().replace("\\e\\[[\\d;]*[^\\d;]".toRegex(), "")
     }
 
-    private suspend fun runServer(project: Project): PreviewJsApi {
+    private suspend fun startDaemon(project: Project): PreviewJsApi {
         val port: Int
         try {
             ServerSocket(0).use { serverSocket ->
                 port = serverSocket.localPort
             }
         } catch (e: IOException) {
-            throw Error("No port is not available to run Preview.js controller")
+            throw Error("No port is not available to run Preview.js daemon")
         }
         val nodeVersionProcess = processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
         var useWsl = false
@@ -184,11 +184,11 @@ Include the content of the Preview.js logs panel for easier debugging.
             .redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
         val process = builder.start()
-        serverProcess = process
-        val serverOutputReader = BufferedReader(InputStreamReader(process.inputStream))
+        daemonProcess = process
+        val daemonOutputReader = BufferedReader(InputStreamReader(process.inputStream))
         thread {
             var line: String? = null
-            while (!disposed && serverOutputReader.readLine().also { line = it } != null) {
+            while (!disposed && daemonOutputReader.readLine().also { line = it } != null) {
                 for (p in workspaceIds.keys + setOf(project)) {
                     if (p.isDisposed) {
                         continue
@@ -213,7 +213,7 @@ Include the content of the Preview.js logs panel for easier debugging.
             // 10 seconds wait in total (100 * 100ms).
             delay(100)
             if (attempts > 100) {
-                throw Error("Preview.js controller failed to start.")
+                throw Error("Preview.js daemon failed to start.")
             }
         }
         return api
@@ -287,7 +287,7 @@ Include the content of the Preview.js logs panel for easier debugging.
     }
 
     override fun dispose() {
-        serverProcess?.let {
+        daemonProcess?.let {
             OSProcessUtil.killProcessTree(it)
         }
         disposed = true

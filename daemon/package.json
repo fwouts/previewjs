@@ -1,5 +1,5 @@
 {
-  "name": "@previewjs/server",
+  "name": "@previewjs/daemon",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -37,7 +37,7 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/server --no-deps --include-dependencies",
+    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "dev": "ts-node-dev --respawn src/main.ts"
   },

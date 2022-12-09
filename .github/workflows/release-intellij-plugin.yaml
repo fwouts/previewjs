@@ -39,8 +39,8 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "11"
-      - name: Build controller
-        run: pnpm turbo run build --scope=@previewjs/intellij-controller --include-dependencies
+      - name: Build daemon
+        run: pnpm turbo run build --scope=@previewjs/intellij-daemon --include-dependencies
       - name: Publish
         run: ./gradlew publishPlugin
         env:

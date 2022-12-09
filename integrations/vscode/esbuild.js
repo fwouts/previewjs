@@ -2,7 +2,7 @@ const path = require("path");
 const { build } = require("esbuild");
 
 build({
-  entryPoints: ["./src/index.ts", "./src/server.ts"],
+  entryPoints: ["./src/index.ts", "./src/daemon.ts"],
   minify: false,
   bundle: true,
   outdir: "./dist",

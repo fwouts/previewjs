@@ -1,4 +1,4 @@
-import { startServer } from "@previewjs/server";
+import { startDaemon } from "@previewjs/daemon";
 import { readFileSync } from "fs";
 
 const { version } = JSON.parse(
@@ -15,7 +15,7 @@ if (!port) {
   throw new Error(`Missing environment variable: PREVIEWJS_PORT`);
 }
 
-startServer({
+startDaemon({
   loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
   packageName,
   versionCode: `vscode-${version}`,

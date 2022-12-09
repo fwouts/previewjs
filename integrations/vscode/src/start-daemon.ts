@@ -1,4 +1,4 @@
-import { Client, createClient } from "@previewjs/server/client";
+import { Client, createClient } from "@previewjs/daemon/client";
 import execa from "execa";
 import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
 import path from "path";
@@ -7,20 +7,20 @@ import type { OutputChannel } from "vscode";
 import { clientId } from "./client-id";
 
 const port = process.env.PREVIEWJS_PORT || "9315";
-const logsPath = path.join(__dirname, "server.log");
-const serverLockFilePath = path.join(__dirname, "process.lock");
+const logsPath = path.join(__dirname, "daemon.log");
+const daemonLockFilePath = path.join(__dirname, "process.lock");
 
-export async function ensureServerRunning(
+export async function ensureDaemonRunning(
   outputChannel: OutputChannel
 ): Promise<Client | null> {
   const client = createClient(`http://localhost:${port}`);
-  if (!(await startServer(outputChannel))) {
+  if (!(await startDaemon(outputChannel))) {
     return null;
   }
-  // Note: we expect startServer().process to exit 1 almost immediately when there is another
-  // server running already (e.g. from another workspace) because of the lock file. This is
+  // Note: we expect startDaemon().process to exit 1 almost immediately when there is another
+  // daemon running already (e.g. from another workspace) because of the lock file. This is
   // fine and working by design.
-  const ready = streamServerLogs(outputChannel);
+  const ready = streamDaemonLogs(outputChannel);
   await ready;
   await client.updateClientStatus({
     clientId,
@@ -29,10 +29,10 @@ export async function ensureServerRunning(
   return client;
 }
 
-// Important: we wrap serverProcess into a Promise so that awaiting startServer()
+// Important: we wrap daemonProcess into a Promise so that awaiting startDaemon()
 // doesn't automatically await the process itself (which may not exit for a long time!).
-async function startServer(outputChannel: OutputChannel): Promise<{
-  serverProcess: execa.ExecaChildProcess<string>;
+async function startDaemon(outputChannel: OutputChannel): Promise<{
+  daemonProcess: execa.ExecaChildProcess<string>;
 } | null> {
   const isWindows = process.platform === "win32";
   let useWsl = false;
@@ -87,42 +87,42 @@ async function startServer(outputChannel: OutputChannel): Promise<{
     return null;
   }
   outputChannel.appendLine(
-    `🚀 Starting Preview.js server${useWsl ? " from WSL" : ""}...`
+    `🚀 Starting Preview.js daemon${useWsl ? " from WSL" : ""}...`
   );
-  outputChannel.appendLine(`Streaming server logs to: ${logsPath}`);
-  const nodeServerCommand = "node --trace-warnings server.js";
-  const serverOptions: execa.Options = {
+  outputChannel.appendLine(`Streaming daemon logs to: ${logsPath}`);
+  const nodeDaemonCommand = "node --trace-warnings daemon.js";
+  const daemonOptions: execa.Options = {
     cwd: __dirname,
     // https://nodejs.org/api/child_process.html#child_process_options_detached
     // If we use "inherit", we end up with a "write EPIPE" crash when the child process
     // tries to log after the parent process exited (even when detached properly).
     stdio: "ignore",
     env: {
-      PREVIEWJS_LOCK_FILE: serverLockFilePath,
+      PREVIEWJS_LOCK_FILE: daemonLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
       PREVIEWJS_PORT: port,
     },
   };
-  let serverProcess: execa.ExecaChildProcess<string>;
+  let daemonProcess: execa.ExecaChildProcess<string>;
   if (useWsl) {
-    serverProcess = execa(
+    daemonProcess = execa(
       "wsl",
-      wslCommandArgs(nodeServerCommand, true),
-      serverOptions
+      wslCommandArgs(nodeDaemonCommand, true),
+      daemonOptions
     );
   } else {
     const [command, commandArgs] =
-      wrapCommandWithShellIfRequired(nodeServerCommand);
-    serverProcess = execa(command, commandArgs, {
-      ...serverOptions,
+      wrapCommandWithShellIfRequired(nodeDaemonCommand);
+    daemonProcess = execa(command, commandArgs, {
+      ...daemonOptions,
       detached: true,
     });
   }
-  serverProcess.unref();
-  return { serverProcess };
+  daemonProcess.unref();
+  return { daemonProcess };
 }
 
-function streamServerLogs(outputChannel: OutputChannel) {
+function streamDaemonLogs(outputChannel: OutputChannel) {
   const ready = new Promise<void>((resolve) => {
     let lastKnownLogsLength = 0;
     let resolved = false;
@@ -141,7 +141,7 @@ function streamServerLogs(outputChannel: OutputChannel) {
         const newLogsLength = logsContent.length;
         if (newLogsLength < lastKnownLogsLength) {
           // Log file has been rewritten.
-          outputChannel.append("\n⚠️ Preview.js server was restarted ⚠️\n\n");
+          outputChannel.append("\n⚠️ Preview.js daemon was restarted ⚠️\n\n");
           lastKnownLogsLength = 0;
         }
         outputChannel.append(logsContent.slice(lastKnownLogsLength));

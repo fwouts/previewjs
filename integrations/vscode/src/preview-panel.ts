@@ -1,4 +1,4 @@
-import type { Client } from "@previewjs/server/client";
+import type { Client } from "@previewjs/daemon/client";
 import vscode, { Uri, WebviewPanel } from "vscode";
 import { ensurePreviewServerStopped } from "./preview-server";
 

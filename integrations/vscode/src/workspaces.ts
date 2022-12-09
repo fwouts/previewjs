@@ -1,4 +1,4 @@
-import type { Client } from "@previewjs/server/client";
+import type { Client } from "@previewjs/daemon/client";
 import path from "path";
 import type vscode from "vscode";
 import type { OutputChannel } from "vscode";

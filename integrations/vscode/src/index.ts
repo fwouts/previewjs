@@ -4,7 +4,7 @@ import { clientId } from "./client-id";
 import { createComponentDetector } from "./component-detector";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
 import { ensurePreviewServerStarted } from "./preview-server";
-import { ensureServerRunning } from "./start-server";
+import { ensureDaemonRunning } from "./start-daemon";
 import { openUsageOnFirstTimeStart } from "./welcome";
 import { createWorkspaceGetter } from "./workspaces";
 
@@ -40,7 +40,7 @@ let dispose = async () => {
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
   const getWorkspaceId = createWorkspaceGetter(outputChannel);
-  const previewjsInitPromise = ensureServerRunning(outputChannel)
+  const previewjsInitPromise = ensureDaemonRunning(outputChannel)
     .catch((e) => {
       outputChannel.appendLine(e.stack);
       return null;

@@ -1,4 +1,4 @@
-import type { AnalyzeFileResponse, Client } from "@previewjs/server/client";
+import type { AnalyzeFileResponse, Client } from "@previewjs/daemon/client";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import type vscode from "vscode";
 import type { createWorkspaceGetter } from "./workspaces";

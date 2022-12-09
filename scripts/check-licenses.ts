@@ -4,7 +4,7 @@ import { inspect } from "util";
 
 const starts = [
   path.join(__dirname, "..", "app"),
-  path.join(__dirname, "..", "integrations", "intellij", "controller"),
+  path.join(__dirname, "..", "integrations", "intellij", "daemon"),
   path.join(__dirname, "..", "integrations", "vscode"),
 ];
 

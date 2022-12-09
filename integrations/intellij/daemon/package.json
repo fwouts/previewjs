@@ -1,5 +1,5 @@
 {
-  "name": "@previewjs/intellij-controller",
+  "name": "@previewjs/intellij-daemon",
   "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
@@ -17,7 +17,7 @@
     "build": "rimraf dist && tsc && node esbuild.js && shx cp -rL ../../../node_modules/pnpm dist/pnpm && shx cp -rL ../../../loader/src/release/* dist/"
   },
   "devDependencies": {
-    "@previewjs/server": "workspace:*",
+    "@previewjs/daemon": "workspace:*",
     "esbuild": "0.15.18",
     "rimraf": "3.0.2",
     "shx": "0.3.4",

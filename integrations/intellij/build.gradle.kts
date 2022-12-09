@@ -80,8 +80,8 @@ tasks {
         project.delete(
             files(buildDir)
         )
-        from(layout.projectDirectory.dir("controller")) {
-            into("${properties("pluginName")}/controller")
+        from(layout.projectDirectory.dir("daemon")) {
+            into("${properties("pluginName")}/daemon")
             include("dist/**")
         }
     }

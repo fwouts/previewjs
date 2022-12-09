@@ -1,4 +1,4 @@
-import { startServer } from ".";
+import { startDaemon } from ".";
 
 const port = parseInt(process.env.PORT || "9100");
 
@@ -14,7 +14,7 @@ if (!versionCode) {
   throw new Error(`Missing environment variable: PREVIEWJS_VERSION_CODE`);
 }
 
-startServer({
+startDaemon({
   loaderInstallDir,
   packageName,
   versionCode,

@@ -1,4 +1,4 @@
-import type { Client } from "@previewjs/server/client";
+import type { Client } from "@previewjs/daemon/client";
 import { exclusivePromiseRunner } from "exclusive-promises";
 
 let currentPreview:
