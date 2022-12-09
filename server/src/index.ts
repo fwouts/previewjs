@@ -173,6 +173,9 @@ export async function startServer({
   }
 
   const app = http.createServer((req, res) => {
+    if (req.headers["origin"]) {
+      return sendPlainTextError(res, 400, `Unsupported browser access`);
+    }
     if (!req.url) {
       throw new Error(`Received request without URL`);
     }
