@@ -142,13 +142,13 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
         const logsContent = stripAnsi(readFileSync(logsPath, "utf8"));
         if (firstRun) {
           firstRun = false;
-          if (logsContent.includes("EXITING")) {
+          if (logsContent.includes("[exit]")) {
             // This is an old log file, wait until the file changes before showing anything.
             waitUntilNotExiting = true;
             return;
           }
         }
-        if (waitUntilNotExiting && logsContent.includes("EXITING")) {
+        if (waitUntilNotExiting && logsContent.includes("[exit]")) {
           return;
         }
         waitUntilNotExiting = false;
@@ -160,7 +160,7 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
         }
         outputChannel.append(logsContent.slice(lastKnownLogsLength));
         lastKnownLogsLength = newLogsLength;
-        if (!resolved && logsContent.includes("READY")) {
+        if (!resolved && logsContent.includes("[ready]")) {
           resolve();
           resolved = true;
         }

@@ -59,7 +59,7 @@ if (lockFilePath) {
       flag: "wx",
     });
     exitHook(() => {
-      console.log("EXITING - Preview.js daemon shutting down");
+      console.log("[exit] Preview.js daemon shutting down");
       try {
         unlinkSync(lockFilePath);
       } catch {
@@ -440,6 +440,6 @@ export async function startDaemon({
   });
 
   console.log(
-    `READY - Preview.js daemon server is now running at http://localhost:${port}`
+    `[ready] Preview.js daemon server is now running at http://localhost:${port}`
   );
 }
