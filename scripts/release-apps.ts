@@ -56,7 +56,7 @@ async function main() {
     ),
     "utf8"
   );
-  console.log(`Running npm install (without esbuild optional deps)...`);
+  console.log(`Running pnpm install...`);
   await execa(
     "../../../node_modules/.bin/pnpm",
     ["install", "--lockfile-only"],
