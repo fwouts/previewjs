@@ -14,7 +14,7 @@
   },
   "homepage": "https://previewjs.com",
   "scripts": {
-    "build": "cd ../.. && pnpm turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies && cd integrations/intellij && rimraf dist && tsc && node esbuild.js && shx cp -rL ../../../node_modules/pnpm dist/pnpm && shx cp -rL ../../../loader/src/release/* dist/"
+    "build": "cd ../../.. && pnpm turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies && cd integrations/intellij/daemon && rimraf dist && tsc && node esbuild.js && shx cp -rL ../../../node_modules/pnpm dist/pnpm && shx cp -rL ../../../loader/src/release/* dist/"
   },
   "devDependencies": {
     "@previewjs/daemon": "workspace:*",
