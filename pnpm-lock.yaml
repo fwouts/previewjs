@@ -1923,7 +1923,7 @@ importers:
       esbuild: 0.16.3
       exclusive-promises: ^1.0.3
       execa: 5.1.1
-      ovsx: 0.7.0
+      ovsx: 0.7.1
       rimraf: 3.0.2
       shx: 0.3.4
       strip-ansi: ^7.0.1
@@ -1936,7 +1936,7 @@ importers:
       esbuild: 0.16.3
       exclusive-promises: 1.0.3
       execa: 5.1.1
-      ovsx: 0.7.0
+      ovsx: 0.7.1
       rimraf: 3.0.2
       shx: 0.3.4
       strip-ansi: 7.0.1
@@ -11127,6 +11127,33 @@ packages:
       '@volar/vue-language-core': 1.0.12
     dev: true
 
+  /@vscode/vsce/2.15.0:
+    resolution: {integrity: sha512-c+qS5KSX4jO3RuGqeNQHqci4+WrcmLxHAwiWTR3PDR6wXzV1fQJxybueUOojXcqvsJR3W2AeROrpf+302ZkTfg==}
+    engines: {node: '>= 14'}
+    hasBin: true
+    dependencies:
+      azure-devops-node-api: 11.2.0
+      chalk: 2.4.2
+      cheerio: 1.0.0-rc.12
+      commander: 6.2.1
+      glob: 7.2.3
+      hosted-git-info: 4.1.0
+      keytar: 7.9.0
+      leven: 3.1.0
+      markdown-it: 12.3.2
+      mime: 1.6.0
+      minimatch: 3.1.2
+      parse-semver: 1.1.1
+      read: 1.0.7
+      semver: 5.7.1
+      tmp: 0.2.1
+      typed-rest-client: 1.8.9
+      url-join: 4.0.1
+      xml2js: 0.4.23
+      yauzl: 2.10.0
+      yazl: 2.5.1
+    dev: true
+
   /@vue/babel-helper-vue-jsx-merge-props/1.4.0:
     resolution: {integrity: sha512-JkqXfCkUDp4PIlFdDQ0TdXoIejMtTHP67/pvxlgeY+u5k3LEdKuWZ3LK6xkxo52uDoABIVyRwqVkfLQJhk7VBA==}
 
@@ -13773,7 +13800,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -24367,17 +24394,17 @@ packages:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
     dev: true
 
-  /ovsx/0.7.0:
-    resolution: {integrity: sha512-60qZsqykZdqkkOQTOduZBvh2dRS1OjeYFG6UGsdQms214B9bbPDlyPUjmxLCy5ts8UYl+E206LOOTz/OfxekeA==}
+  /ovsx/0.7.1:
+    resolution: {integrity: sha512-+izXZcujPH+Amq0vGPl0JTeG3m4z9Lfjh0X2DsCoe6ora1eFp+Y3VoJJfngTGWfK01cBxQumqDZvb6psICtuDA==}
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
+      '@vscode/vsce': 2.15.0
       commander: 6.2.1
       follow-redirects: 1.15.2
       is-ci: 2.0.0
       leven: 3.1.0
       tmp: 0.2.1
-      vsce: 2.15.0
     transitivePeerDependencies:
       - debug
     dev: true
@@ -26628,6 +26655,14 @@ packages:
   /progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
+
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
 
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
