@@ -47,7 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
     })
     .then((p) => {
       if (!p) {
-        outputChannel.appendLine("Preview.js server could not be started.");
+        outputChannel.appendLine("Preview.js daemon could not be started.");
         outputChannel.show();
         return null;
       }
