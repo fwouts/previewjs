@@ -34,7 +34,7 @@ import type {
 } from "./api";
 import { createClient } from "./client";
 
-const AUTOMATIC_SHUTDOWN_DELAY_SECONDS = 60;
+const AUTOMATIC_SHUTDOWN_DELAY_SECONDS = 30;
 
 const lockFilePath = process.env.PREVIEWJS_LOCK_FILE;
 if (lockFilePath) {
@@ -59,6 +59,7 @@ if (lockFilePath) {
       flag: "wx",
     });
     exitHook(() => {
+      console.log("EXITING - Preview.js daemon shutting down");
       try {
         unlinkSync(lockFilePath);
       } catch {
@@ -250,9 +251,7 @@ export async function startDaemon({
 
   endpoint<InfoRequest, KillResponse>("/previewjs/kill", async () => {
     setTimeout(() => {
-      console.log(
-        "EXITING - Shutting down daemon server because seppuku was requested."
-      );
+      console.log("Seppuku was requested. Bye bye.");
       process.exit(0);
     }, 1000);
     return {
@@ -275,7 +274,7 @@ export async function startDaemon({
       shutdownTimer = setTimeout(() => {
         if (clients.size === 0) {
           console.log(
-            `EXITING - Shutting down daemon server because no clients are alive after ${AUTOMATIC_SHUTDOWN_DELAY_SECONDS}s.`
+            `No clients are alive after ${AUTOMATIC_SHUTDOWN_DELAY_SECONDS}s.`
           );
           process.exit(0);
         }
