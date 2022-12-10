@@ -15,6 +15,7 @@ export async function loadModules({
     fs.existsSync(path.join(installDir, "pnpm")) &&
     !fs.existsSync(path.join(installDir, "node_modules"))
   ) {
+    console.log("[install:begin] Running pnpm install...");
     const pnpmProcess = execa.command(
       `cd "${installDir}" && node pnpm/bin/pnpm.cjs install --frozen-lockfile`,
       {
@@ -24,6 +25,7 @@ export async function loadModules({
     pnpmProcess.stdout?.on("data", (chunk) => process.stdout.write(chunk));
     pnpmProcess.stderr?.on("data", (chunk) => process.stderr.write(chunk));
     await pnpmProcess;
+    console.log("[install:end] Done.");
   }
   const coreModule = requireModule("@previewjs/core") as typeof core;
   const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;

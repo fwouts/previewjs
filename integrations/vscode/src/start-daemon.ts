@@ -4,6 +4,7 @@ import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
 import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
+import vscode from "vscode";
 import { clientId } from "./client-id";
 
 const port = process.env.PREVIEWJS_PORT || "9315";
@@ -137,6 +138,7 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
     }
     let firstRun = true;
     let waitUntilNotExiting = false;
+    let resolveInstall: (() => void) | null = null;
     const onChangeListener = () => {
       try {
         const logsContent = stripAnsi(readFileSync(logsPath, "utf8"));
@@ -160,6 +162,31 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
         }
         outputChannel.append(logsContent.slice(lastKnownLogsLength));
         lastKnownLogsLength = newLogsLength;
+        if (logsContent.includes("[install:end]")) {
+          if (resolveInstall) {
+            resolveInstall();
+            resolveInstall = null;
+          }
+        } else if (logsContent.includes("[install:begin]") && !resolveInstall) {
+          const installPromise = new Promise<void>((resolve) => {
+            resolveInstall = resolve;
+          });
+          vscode.window.withProgress(
+            {
+              location: vscode.ProgressLocation.Notification,
+              cancellable: false,
+              title: "⏳ Installing Preview.js dependencies...",
+            },
+            async (progress) => {
+              progress.report({ increment: 0 });
+              await installPromise;
+              progress.report({ increment: 100 });
+              vscode.window.showInformationMessage(
+                "✅ Preview.js dependencies installed"
+              );
+            }
+          );
+        }
         if (!resolved && logsContent.includes("[ready]")) {
           resolve();
           resolved = true;
