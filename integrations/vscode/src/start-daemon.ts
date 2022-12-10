@@ -135,9 +135,23 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
       let fd = openSync(logsPath, "a");
       closeSync(fd);
     }
+    let firstRun = true;
+    let waitUntilNotExiting = false;
     const onChangeListener = () => {
       try {
         const logsContent = stripAnsi(readFileSync(logsPath, "utf8"));
+        if (firstRun) {
+          firstRun = false;
+          if (logsContent.includes("EXITING")) {
+            // This is an old log file, wait until the file changes before showing anything.
+            waitUntilNotExiting = true;
+            return;
+          }
+        }
+        if (waitUntilNotExiting && logsContent.includes("EXITING")) {
+          return;
+        }
+        waitUntilNotExiting = false;
         const newLogsLength = logsContent.length;
         if (newLogsLength < lastKnownLogsLength) {
           // Log file has been rewritten.
@@ -146,11 +160,7 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
         }
         outputChannel.append(logsContent.slice(lastKnownLogsLength));
         lastKnownLogsLength = newLogsLength;
-        if (
-          !resolved &&
-          logsContent.includes("READY") &&
-          !logsContent.includes("EXITING")
-        ) {
+        if (!resolved && logsContent.includes("READY")) {
           resolve();
           resolved = true;
         }
