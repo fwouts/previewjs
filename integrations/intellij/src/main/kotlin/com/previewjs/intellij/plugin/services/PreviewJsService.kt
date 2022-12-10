@@ -31,6 +31,7 @@ import java.net.ServerSocket
 import java.net.SocketTimeoutException
 import java.util.Collections
 import java.util.WeakHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
@@ -45,6 +46,7 @@ class PreviewJsSharedService : Disposable {
     private val coroutineContext = SupervisorJob() + Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext)
 
+    private val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
     private val plugin = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))!!
     private val nodeDirPath = plugin.pluginPath.resolve("daemon")
     private val properties = PropertiesComponent.getInstance()
@@ -64,7 +66,6 @@ class PreviewJsSharedService : Disposable {
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
         var errorCount = 0
-        val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
         for (msg in channel) {
             try {
                 if (daemonProcess == null) {
@@ -186,9 +187,27 @@ Include the content of the Preview.js logs panel for easier debugging.
         val process = builder.start()
         daemonProcess = process
         val daemonOutputReader = BufferedReader(InputStreamReader(process.inputStream))
+        val ready = AtomicBoolean(false)
         thread {
             var line: String? = null
             while (!disposed && daemonOutputReader.readLine().also { line = it } != null) {
+                if (line!!.contains("[install:begin]")) {
+                    notificationGroup.createNotification(
+                        "⏳ Installing Preview.js dependencies...",
+                        NotificationType.INFORMATION
+                    )
+                        .notify(project)
+                }
+                if (line!!.contains("[install:end]")) {
+                    notificationGroup.createNotification(
+                        "✅ Preview.js dependencies installed",
+                        NotificationType.INFORMATION
+                    )
+                        .notify(project)
+                }
+                if (line!!.contains("[ready]")) {
+                    ready.set(true)
+                }
                 for (p in workspaceIds.keys + setOf(project)) {
                     if (p.isDisposed) {
                         continue
@@ -197,26 +216,11 @@ Include the content of the Preview.js logs panel for easier debugging.
                 }
             }
         }
-        val api = api("http://localhost:$port")
-        var attempts = 0
-        while (true) {
-            try {
-                if (api.checkHealth().ready) {
-                    break
-                }
-            } catch (e: ConnectException) {
-                // Wait.
-            } catch (e: SocketTimeoutException) {
-                // Wait.
-            }
-            attempts += 1
-            // 10 seconds wait in total (100 * 100ms).
+        // TODO: Use a more elegant approach, presumably based on coroutines.
+        while (!ready.get()) {
             delay(100)
-            if (attempts > 100) {
-                throw Error("Preview.js daemon failed to start.")
-            }
         }
-        return api
+        return api("http://localhost:$port")
     }
 
     private fun checkNodeVersion(process: Process) {
