@@ -157,7 +157,7 @@ Include the content of the Preview.js logs panel for easier debugging.
                 port = serverSocket.localPort
             }
         } catch (e: IOException) {
-            throw Error("No port is not available to run Preview.js daemon")
+            throw Error("No port is available to run Preview.js daemon")
         }
         val nodeVersionProcess = processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
         var useWsl = false
