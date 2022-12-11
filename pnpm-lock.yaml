@@ -178,7 +178,7 @@ importers:
       typescript: ^4.9.4
       unbuild: 1.0.2
       vite: ^4.0.0
-      vite-tsconfig-paths: ^3
+      vite-tsconfig-paths: ^4
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
@@ -200,7 +200,7 @@ importers:
       tsconfig-paths: 4.1.1
       typescript: 4.9.4
       vite: 4.0.0_@types+node@18.11.12
-      vite-tsconfig-paths: 3.6.0_vite@4.0.0
+      vite-tsconfig-paths: 4.0.2_csiinktybatgu6zuq6qz2yqhzq
     devDependencies:
       '@rollup/plugin-alias': 4.0.2_rollup@3.7.0
       '@types/express': 4.17.14
@@ -13791,7 +13791,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -26651,6 +26651,14 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
 
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
+
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
     peerDependencies:
@@ -27806,16 +27814,6 @@ packages:
     dependencies:
       resolve: 1.22.1
     dev: true
-
-  /recrawl-sync/2.2.3:
-    resolution: {integrity: sha512-vSaTR9t+cpxlskkdUFrsEpnf67kSmPk66yAGT1fZPrDudxQjoMzPgQhSMImQ0pAw5k0NPirefQfhopSjhdUtpQ==}
-    dependencies:
-      '@cush/relative': 1.0.0
-      glob-regex: 0.3.2
-      slash: 3.0.0
-      sucrase: 3.29.0
-      tslib: 1.14.1
-    dev: false
 
   /recrawl/2.2.1:
     resolution: {integrity: sha512-tBdAdiJ1f6Wi8PCI5RTKG/82j3qvTQJTvdPmq3LWLu40FMc0BKLFKzH3SzTJrmpa87qAfFAEhfUraBOZ9cGPXA==}
@@ -30632,6 +30630,19 @@ packages:
     dependencies:
       typescript: 4.9.4
 
+  /tsconfck/2.0.1_typescript@4.9.4:
+    resolution: {integrity: sha512-/ipap2eecmVBmBlsQLBRbUmUNFwNJV/z2E+X0FPtHNjPwroMZQ7m39RMaCywlCulBheYXgMdUlWDd9rzxwMA0Q==}
+    engines: {node: ^14.13.1 || ^16 || >=18, pnpm: ^7.0.1}
+    hasBin: true
+    peerDependencies:
+      typescript: ^4.3.5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.9.4
+    dev: false
+
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
     dependencies:
@@ -31709,18 +31720,18 @@ packages:
       - whiskers
     dev: false
 
-  /vite-tsconfig-paths/3.6.0_vite@4.0.0:
-    resolution: {integrity: sha512-UfsPYonxLqPD633X8cWcPFVuYzx/CMNHAjZTasYwX69sXpa4gNmQkR0XCjj82h7zhLGdTWagMjC1qfb9S+zv0A==}
+  /vite-tsconfig-paths/4.0.2_csiinktybatgu6zuq6qz2yqhzq:
+    resolution: {integrity: sha512-UzU8zwbCQrdUkj/Z0tnh293n4ScRcjJLoS8nPme2iB2FHoU5q8rhilb7AbhLlUC1uv4t6jSzVWnENjPnyGseeQ==}
     peerDependencies:
       vite: '>2.0.0-0'
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
-      recrawl-sync: 2.2.3
-      tsconfig-paths: 4.1.1
+      tsconfck: 2.0.1_typescript@4.9.4
       vite: 4.0.0_@types+node@18.11.12
     transitivePeerDependencies:
       - supports-color
+      - typescript
     dev: false
 
   /vite/3.2.5:
