@@ -64,12 +64,14 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -116,12 +118,14 @@ export const Example = {
         name: "Example",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("label"),
-              value: UNKNOWN,
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("label"),
+                value: UNKNOWN,
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -158,12 +162,14 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -213,12 +219,14 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "default",
@@ -272,12 +280,14 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -331,12 +341,14 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",

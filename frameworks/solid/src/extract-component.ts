@@ -73,7 +73,11 @@ export function extractSolidComponents(
     if (storiesDefaultComponent && storyArgs && isExported) {
       return {
         kind: "story",
-        args: parseSerializableValue(storyArgs),
+        args: {
+          start: storyArgs.getStart(),
+          end: storyArgs.getEnd(),
+          value: parseSerializableValue(storyArgs),
+        },
         associatedComponent: resolvedStoriesComponent,
       };
     }

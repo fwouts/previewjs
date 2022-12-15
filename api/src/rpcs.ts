@@ -46,7 +46,11 @@ export type Component = {
       }
     | {
         kind: "story";
-        args: SerializableValue | null;
+        args: {
+          start: number;
+          end: number;
+          value: SerializableValue;
+        } | null;
         associatedComponent: {
           filePath: string;
           name: string;

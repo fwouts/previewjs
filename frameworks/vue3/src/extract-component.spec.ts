@@ -257,16 +257,18 @@ Primary.args = {
         name: "Primary",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("primary"),
-              value: TRUE,
-            },
-            {
-              key: string("label"),
-              value: string("Button"),
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("primary"),
+                value: TRUE,
+              },
+              {
+                key: string("label"),
+                value: string("Button"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",
@@ -299,12 +301,14 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
-          args: object([
-            {
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
+          args: {
+            value: object([
+              {
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",

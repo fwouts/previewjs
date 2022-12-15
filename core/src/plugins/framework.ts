@@ -48,7 +48,11 @@ export type ComponentTypeInfo =
     }
   | {
       kind: "story";
-      readonly args: SerializableValue | null;
+      readonly args: {
+        start: number;
+        end: number;
+        value: SerializableValue;
+      } | null;
       readonly associatedComponent: {
         readonly absoluteFilePath: string;
         readonly name: string;

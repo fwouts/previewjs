@@ -61,7 +61,13 @@ export function extractCsf3Stories(
         offsets: [[statement.getStart(), statement.getEnd()]],
         info: {
           kind: "story",
-          args: args ? parseSerializableValue(args) : null,
+          args: args
+            ? {
+                start: args.getStart(),
+                end: args.getEnd(),
+                value: parseSerializableValue(args),
+              }
+            : null,
           associatedComponent: resolveComponent(
             resolver.checker,
             storyComponent || defaultComponent
