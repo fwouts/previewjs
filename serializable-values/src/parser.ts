@@ -16,6 +16,7 @@ import {
   string,
   TRUE,
   UNDEFINED,
+  UNKNOWN,
   unknown,
 } from "./serializable-value";
 
@@ -193,13 +194,16 @@ export function parseSerializableValue(
   if (ts.isObjectLiteralExpression(expression)) {
     const entries: SerializableObjectValueEntry[] = [];
     for (const property of expression.properties) {
-      if (!ts.isPropertyAssignment(property)) {
-        return fallbackValue;
-      }
-      if (
-        ts.isIdentifier(property.name) ||
-        ts.isStringLiteral(property.name) ||
-        ts.isNumericLiteral(property.name)
+      if (ts.isShorthandPropertyAssignment(property)) {
+        entries.push({
+          key: string(property.name.text),
+          value: UNKNOWN,
+        });
+      } else if (
+        ts.isPropertyAssignment(property) &&
+        (ts.isIdentifier(property.name) ||
+          ts.isStringLiteral(property.name) ||
+          ts.isNumericLiteral(property.name))
       ) {
         entries.push({
           key: string(property.name.text),

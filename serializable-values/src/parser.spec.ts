@@ -19,6 +19,7 @@ import {
   string,
   TRUE,
   UNDEFINED,
+  UNKNOWN,
   unknown,
 } from "./serializable-value";
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
@@ -160,7 +161,14 @@ describe.concurrent("parseSerializableValue", () => {
         },
       ])
     );
-    checkParsedExpressionIsUnknownWithSource(`{ foo }`);
+    expectParsedExpression(`{ foo }`, false).toEqual(
+      object([
+        {
+          key: string("foo"),
+          value: UNKNOWN,
+        },
+      ])
+    );
     checkParsedExpressionIsUnknownWithSource(`{ ...foo }`);
   });
 
@@ -218,13 +226,15 @@ describe.concurrent("parseSerializableValue", () => {
   });
 });
 
-function expectParsedExpression(expressionSource: string) {
+function expectParsedExpression(expressionSource: string, reversible = true) {
   const parsedValue = parseSerializableValue(parseExpression(expressionSource));
-  expect(parsedValue).toEqual(
-    parseSerializableValue(
-      parseExpression(serializableValueToJavaScript(parsedValue))
-    )
-  );
+  if (reversible) {
+    expect(parsedValue).toEqual(
+      parseSerializableValue(
+        parseExpression(serializableValueToJavaScript(parsedValue))
+      )
+    );
+  }
   return expect(parsedValue);
 }
 
