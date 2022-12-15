@@ -4,6 +4,7 @@ import {
   extractDefaultComponent,
   resolveComponent,
 } from "@previewjs/csf3";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
@@ -63,10 +64,14 @@ export function extractVueComponents(
     node: ts.Node,
     name: string
   ): ComponentTypeInfo | null {
-    const hasArgs = !!args[name];
+    const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    if (storiesDefaultComponent && hasArgs && isExported) {
-      return { kind: "story", associatedComponent: resolvedStoriesComponent };
+    if (storiesDefaultComponent && storyArgs && isExported) {
+      return {
+        kind: "story",
+        args: parseSerializableValue(storyArgs),
+        associatedComponent: resolvedStoriesComponent,
+      };
     }
     const type = resolver.checker.getTypeAtLocation(node);
     for (const callSignature of type.getCallSignatures()) {
@@ -84,7 +89,11 @@ export function extractVueComponents(
       }
       if (isExported && returnType.getProperty("template")) {
         // This is a story.
-        return { kind: "story", associatedComponent: resolvedStoriesComponent };
+        return {
+          kind: "story",
+          args: null,
+          associatedComponent: resolvedStoriesComponent,
+        };
       }
     }
     return null;
@@ -109,6 +118,7 @@ export function extractVueComponents(
         c.info.kind === "story"
           ? {
               kind: "story",
+              args: c.info.args,
               associatedComponent: c.info.associatedComponent
                 ? transformVirtualTsVueFile(c.info.associatedComponent)
                 : null,

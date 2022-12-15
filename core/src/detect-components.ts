@@ -131,6 +131,7 @@ async function detectComponentsCore(
             }
           : {
               kind: "story",
+              args: component.info.args,
               associatedComponent: component.info.associatedComponent
                 ? {
                     filePath: path.relative(

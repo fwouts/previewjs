@@ -4,6 +4,7 @@ import {
   extractDefaultComponent,
   resolveComponent,
 } from "@previewjs/csf3";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
@@ -65,10 +66,14 @@ export function extractReactComponents(
     node: ts.Node,
     name: string
   ): ComponentTypeInfo | null {
-    const hasArgs = !!args[name];
+    const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    if (storiesDefaultComponent && hasArgs && isExported) {
-      return { kind: "story", associatedComponent: resolvedStoriesComponent };
+    if (storiesDefaultComponent && storyArgs && isExported) {
+      return {
+        kind: "story",
+        args: parseSerializableValue(storyArgs),
+        associatedComponent: resolvedStoriesComponent,
+      };
     }
     const signature = extractComponentSignature(resolver.checker, node);
     if (signature) {

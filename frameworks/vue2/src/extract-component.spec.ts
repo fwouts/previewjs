@@ -1,3 +1,4 @@
+import { object, string, TRUE } from "@previewjs/serializable-values";
 import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
@@ -216,6 +217,7 @@ export const Primary = () => ({
         name: "Primary",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",
@@ -253,6 +255,16 @@ Primary.args = {
         name: "Primary",
         info: {
           kind: "story",
+          args: object([
+            {
+              key: string("primary"),
+              value: TRUE,
+            },
+            {
+              key: string("label"),
+              value: string("Button"),
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",
@@ -286,6 +298,12 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          args: object([
+            {
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",
@@ -296,6 +314,7 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",

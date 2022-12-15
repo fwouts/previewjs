@@ -1,4 +1,5 @@
 import type { Component } from "@previewjs/core";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { extractDefaultComponent } from "./extract-default-component";
@@ -39,15 +40,18 @@ export function extractCsf3Stories(
       }
       const name = declaration.name.text;
       let storyComponent: ts.Expression | undefined;
+      let args: ts.Expression | undefined;
       for (const property of declaration.initializer.properties) {
         if (
           ts.isPropertyAssignment(property) &&
-          ts.isIdentifier(property.name) &&
-          property.name.text === "component"
+          ts.isIdentifier(property.name)
         ) {
-          // Yes it is CSF3!
-          storyComponent = property.initializer;
-          break;
+          const propertyName = property.name.text;
+          if (propertyName === "component") {
+            storyComponent = property.initializer;
+          } else if (propertyName === "args") {
+            args = property.initializer;
+          }
         }
       }
 
@@ -57,6 +61,7 @@ export function extractCsf3Stories(
         offsets: [[statement.getStart(), statement.getEnd()]],
         info: {
           kind: "story",
+          args: args ? parseSerializableValue(args) : null,
           associatedComponent: resolveComponent(
             resolver.checker,
             storyComponent || defaultComponent

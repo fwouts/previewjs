@@ -1,3 +1,4 @@
+import type { SerializableValue } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import type { RPC } from "./rpc";
 
@@ -45,6 +46,7 @@ export type Component = {
       }
     | {
         kind: "story";
+        args: SerializableValue | null;
         associatedComponent: {
           filePath: string;
           name: string;

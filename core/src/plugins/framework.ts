@@ -1,3 +1,4 @@
+import type { SerializableValue } from "@previewjs/serializable-values";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -47,6 +48,7 @@ export type ComponentTypeInfo =
     }
   | {
       kind: "story";
+      readonly args: SerializableValue | null;
       readonly associatedComponent: {
         readonly absoluteFilePath: string;
         readonly name: string;

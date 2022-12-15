@@ -1,3 +1,4 @@
+import { object, string, UNKNOWN } from "@previewjs/serializable-values";
 import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
@@ -63,6 +64,12 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          args: object([
+            {
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -74,6 +81,47 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "Button",
+          },
+        },
+      },
+    ]);
+  });
+
+  it("resolves args to UNKNOWN when too complex", () => {
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import { Button } from "./App";
+
+export default {
+  component: Button
+}
+
+const label = "Hello, World!";
+
+export const Example = {
+  args: {
+    label
+  }
+}
+    `
+    );
+    expect(extract(STORIES_FILE)).toMatchObject([
+      {
+        absoluteFilePath: STORIES_FILE,
+        name: "Example",
+        info: {
+          kind: "story",
+          args: object([
+            {
+              key: string("label"),
+              value: UNKNOWN,
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -110,6 +158,12 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          args: object([
+            {
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -121,6 +175,7 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -158,6 +213,12 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          args: object([
+            {
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "default",
@@ -169,6 +230,7 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "default",
@@ -210,6 +272,12 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          args: object([
+            {
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -221,6 +289,7 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -262,6 +331,12 @@ export function NotStory() {}
         name: "Example",
         info: {
           kind: "story",
+          args: object([
+            {
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
@@ -273,6 +348,7 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "Button",
