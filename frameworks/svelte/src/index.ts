@@ -99,6 +99,8 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         "vite-plugin-svelte-kit",
         "vite-plugin-sveltekit-build",
         "vite-plugin-sveltekit-middleware",
+        "vite-plugin-sveltekit-setup",
+        "vite-plugin-sveltekit-compile",
       ],
     };
   },
