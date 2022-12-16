@@ -2,7 +2,7 @@ import type { Component, ComponentTypeInfo } from "@previewjs/core";
 import {
   extractCsf3Stories,
   extractDefaultComponent,
-  resolveComponent,
+  resolveComponent
 } from "@previewjs/csf3";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
@@ -13,6 +13,17 @@ export function extractVueComponents(
   resolver: TypeResolver,
   absoluteFilePath: string
 ): Component[] {
+  if (absoluteFilePath.endsWith('.vue.ts')) {
+    const vueAbsoluteFilePath = stripTsExtension(absoluteFilePath)
+    return [
+      {
+        absoluteFilePath: vueAbsoluteFilePath,
+        name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
+        offsets: 
+      }
+    ]
+  }
+
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -53,9 +64,6 @@ export function extractVueComponents(
   }
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
-  const resolvedStoriesComponent = storiesDefaultComponent
-    ? resolveComponent(resolver.checker, storiesDefaultComponent)
-    : null;
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
@@ -74,7 +82,10 @@ export function extractVueComponents(
           end: storyArgs.getEnd(),
           value: parseSerializableValue(storyArgs),
         },
-        associatedComponent: resolvedStoriesComponent,
+        associatedComponent: extractStoryAssociatedComponent(
+          resolver,
+          storiesDefaultComponent
+        ),
       };
     }
     const type = resolver.checker.getTypeAtLocation(node);
@@ -96,7 +107,9 @@ export function extractVueComponents(
         return {
           kind: "story",
           args: null,
-          associatedComponent: resolvedStoriesComponent,
+          associatedComponent: storiesDefaultComponent
+            ? extractStoryAssociatedComponent(resolver, storiesDefaultComponent)
+            : null,
         };
       }
     }
@@ -115,38 +128,72 @@ export function extractVueComponents(
     }
   }
 
-  return [...components, ...extractCsf3Stories(resolver, sourceFile)].map(
-    (c) => ({
-      ...c,
-      info:
-        c.info.kind === "story"
-          ? {
-              kind: "story",
-              args: c.info.args,
-              associatedComponent: c.info.associatedComponent
-                ? transformVirtualTsVueFile(c.info.associatedComponent)
-                : null,
-            }
-          : c.info,
-    })
-  );
+  return [
+    ...components,
+    ...extractCsf3Stories(
+      resolver,
+      sourceFile,
+      async ({ absoluteFilePath, name }) => {
+        const component = extractVueComponents(resolver, absoluteFilePath).find(
+          (c) => c.name === name
+        );
+        if (component?.info.kind !== "component") {
+          return {
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          };
+        }
+        return component.info.analyze();
+      }
+    ).map((c) => {
+      if (
+        c.info.kind !== "story" ||
+        !c.info.associatedComponent?.absoluteFilePath.endsWith(".vue.ts")
+      ) {
+        return c;
+      }
+      return {
+        ...c,
+        info: {
+          ...c.info,
+          associatedComponent: {
+            ...c.info.associatedComponent,
+            absoluteFilePath: stripTsExtension(absoluteFilePath),
+            name: inferComponentNameFromVuePath(absoluteFilePath),
+          },
+        },
+      };
+    }),
+  ];
 }
 
-function transformVirtualTsVueFile({
-  absoluteFilePath,
-  name,
-}: {
-  absoluteFilePath: string;
-  name: string;
-}) {
-  if (absoluteFilePath.endsWith(".vue.ts")) {
-    absoluteFilePath = absoluteFilePath.substring(
-      0,
-      absoluteFilePath.length - 3
-    );
-    name = inferComponentNameFromVuePath(absoluteFilePath);
-  }
-  return { absoluteFilePath, name };
+function stripTsExtension(filePath: string) {
+  return filePath.substring(
+    0,
+    filePath.length - 3
+  )
+}
+
+function extractStoryAssociatedComponent(
+  resolver: TypeResolver,
+  component: ts.Expression
+) {
+  const resolvedStoriesComponent = resolveComponent(
+    resolver.checker,
+    component
+  );
+  return resolvedStoriesComponent
+    ? {
+        ...resolvedStoriesComponent,
+        analyze: async () => {
+          // TODO: Implement.
+          return {
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          };
+        },
+      }
+    : null;
 }
 
 const jsxElementTypes = new Set(["Element"]);

@@ -1,4 +1,4 @@
-import type { Component } from "@previewjs/core";
+import type { Component, ComponentAnalysis } from "@previewjs/core";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import ts from "typescript";
@@ -7,7 +7,11 @@ import { resolveComponent } from "./resolve-component";
 
 export function extractCsf3Stories(
   resolver: TypeResolver,
-  sourceFile: ts.SourceFile
+  sourceFile: ts.SourceFile,
+  analyzeComponent: (component: {
+    absoluteFilePath: string;
+    name: string;
+  }) => Promise<ComponentAnalysis>
 ): Component[] {
   // Detect if we're dealing with a CSF3 module.
   // In particular, does it have a default export with a "component" property?
@@ -55,6 +59,10 @@ export function extractCsf3Stories(
         }
       }
 
+      const associatedComponent = resolveComponent(
+        resolver.checker,
+        storyComponent || defaultComponent
+      );
       components.push({
         absoluteFilePath: sourceFile.fileName,
         name,
@@ -68,10 +76,12 @@ export function extractCsf3Stories(
                 value: parseSerializableValue(args),
               }
             : null,
-          associatedComponent: resolveComponent(
-            resolver.checker,
-            storyComponent || defaultComponent
-          ),
+          associatedComponent: associatedComponent
+            ? {
+                ...associatedComponent,
+                analyze: () => analyzeComponent(associatedComponent),
+              }
+            : null,
         },
       });
     }

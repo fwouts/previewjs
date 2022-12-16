@@ -1,5 +1,9 @@
 import { object, string, UNKNOWN } from "@previewjs/serializable-values";
-import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import {
+  createTypeAnalyzer,
+  TypeAnalyzer,
+  UNKNOWN_TYPE,
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
@@ -408,6 +412,14 @@ export const NoArgs = {}
 
   function extract(absoluteFilePath: string) {
     const resolver = typeAnalyzer.analyze([absoluteFilePath]);
-    return extractCsf3Stories(resolver, resolver.sourceFile(absoluteFilePath)!);
+    return extractCsf3Stories(
+      resolver,
+      resolver.sourceFile(absoluteFilePath)!,
+      () =>
+        Promise.resolve({
+          propsType: UNKNOWN_TYPE,
+          types: {},
+        })
+    );
   }
 });
