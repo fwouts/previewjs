@@ -26,7 +26,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
         jsxFactory: "h",
         jsxFragmentFactory: "Fragment",
       },
-      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {

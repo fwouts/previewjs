@@ -1,11 +1,8 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import type { Node } from "acorn";
-import fs from "fs-extra";
 import path from "path";
-import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { extractVueComponents } from "./extract-component";
-import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 const vue3FrameworkPlugin: FrameworkPluginFactory = {
@@ -40,35 +37,15 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
             watch: false,
           }),
         ]),
-      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
-        const resolver = typeAnalyzer.analyze(absoluteFilePaths);
+      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+        const resolver = typeAnalyzer.analyze(
+          absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
+        );
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (
-            absoluteFilePath.endsWith(".vue") &&
-            (await fs.pathExists(absoluteFilePath))
-          ) {
-            components.push({
-              absoluteFilePath,
-              name: inferComponentNameFromVuePath(absoluteFilePath),
-              offsets: [
-                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
-              ],
-              info: {
-                kind: "component",
-                exported: true,
-                analyze: async () =>
-                  analyzeVueComponentFromTemplate(
-                    typeAnalyzer,
-                    absoluteFilePath
-                  ),
-              },
-            });
-          } else {
-            components.push(
-              ...extractVueComponents(resolver, absoluteFilePath)
-            );
-          }
+          components.push(
+            ...extractVueComponents(reader, resolver, absoluteFilePath)
+          );
         }
         return components;
       },

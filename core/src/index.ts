@@ -72,7 +72,7 @@ export async function createWorkspace({
   const router = new ApiRouter();
   router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
     const component = (
-      await frameworkPlugin.detectComponents(typeAnalyzer, [
+      await frameworkPlugin.detectComponents(reader, typeAnalyzer, [
         path.join(rootDirPath, filePath),
       ])
     ).find((c) => c.name === componentName);

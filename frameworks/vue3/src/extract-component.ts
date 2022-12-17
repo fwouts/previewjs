@@ -6,13 +6,41 @@ import {
 } from "@previewjs/csf3";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import type { Reader } from "@previewjs/vfs";
 import ts from "typescript";
+import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
 
 export function extractVueComponents(
+  reader: Reader,
   resolver: TypeResolver,
   absoluteFilePath: string
 ): Component[] {
+  const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
+  if (vueAbsoluteFilePath) {
+    const virtualVueTsAbsoluteFilePath = vueAbsoluteFilePath + ".ts";
+    const fileEntry = reader.readSync(vueAbsoluteFilePath);
+    if (fileEntry?.kind !== "file") {
+      return [];
+    }
+    return [
+      {
+        absoluteFilePath: vueAbsoluteFilePath,
+        name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
+        offsets: [[0, fileEntry.size()]],
+        info: {
+          kind: "component",
+          exported: true,
+          analyze: async () =>
+            analyzeVueComponentFromTemplate(
+              resolver,
+              virtualVueTsAbsoluteFilePath
+            ),
+        },
+      },
+    ];
+  }
+
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -130,6 +158,16 @@ export function extractVueComponents(
           : c.info,
     })
   );
+}
+
+function extractVueFilePath(filePath: string) {
+  if (filePath.endsWith(".vue")) {
+    return filePath;
+  }
+  if (filePath.endsWith(".vue.ts")) {
+    return filePath.substring(0, filePath.length - 3);
+  }
+  return null;
 }
 
 function transformVirtualTsVueFile({

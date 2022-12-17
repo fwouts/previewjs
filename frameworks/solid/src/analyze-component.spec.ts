@@ -354,7 +354,9 @@ A.args = {
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.detectComponents(typeAnalyzer, [MAIN_FILE])
+      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
+        MAIN_FILE,
+      ])
     ).find((c) => c.name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

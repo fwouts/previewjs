@@ -21,7 +21,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       transformReader: (reader) => createSvelteTypeScriptReader(reader),
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
-      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           if (
