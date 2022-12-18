@@ -81,9 +81,6 @@ export function extractVueComponents(
   }
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
-  const resolvedStoriesComponent = storiesDefaultComponent
-    ? resolveComponent(resolver.checker, storiesDefaultComponent)
-    : null;
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = helpers.extractArgs(sourceFile);
@@ -102,7 +99,10 @@ export function extractVueComponents(
           end: storyArgs.getEnd(),
           value: parseSerializableValue(storyArgs),
         },
-        associatedComponent: resolvedStoriesComponent,
+        associatedComponent: extractStoryAssociatedComponent(
+          resolver,
+          storiesDefaultComponent
+        ),
       };
     }
     const type = resolver.checker.getTypeAtLocation(node);
@@ -124,7 +124,9 @@ export function extractVueComponents(
         return {
           kind: "story",
           args: null,
-          associatedComponent: resolvedStoriesComponent,
+          associatedComponent: storiesDefaultComponent
+            ? extractStoryAssociatedComponent(resolver, storiesDefaultComponent)
+            : null,
         };
       }
     }
@@ -143,21 +145,49 @@ export function extractVueComponents(
     }
   }
 
-  return [...components, ...extractCsf3Stories(resolver, sourceFile)].map(
-    (c) => ({
-      ...c,
-      info:
-        c.info.kind === "story"
-          ? {
-              kind: "story",
-              args: c.info.args,
-              associatedComponent: c.info.associatedComponent
-                ? transformVirtualTsVueFile(c.info.associatedComponent)
-                : null,
-            }
-          : c.info,
-    })
-  );
+  return [
+    ...components,
+    ...extractCsf3Stories(
+      resolver,
+      sourceFile,
+      async ({ absoluteFilePath, name }) => {
+        const component = extractVueComponents(
+          reader,
+          resolver,
+          absoluteFilePath
+        ).find((c) => c.name === name);
+        if (component?.info.kind !== "component") {
+          return {
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          };
+        }
+        return component.info.analyze();
+      }
+    ).map((c) => {
+      if (
+        c.info.kind !== "story" ||
+        !c.info.associatedComponent?.absoluteFilePath.endsWith(".vue.ts")
+      ) {
+        return c;
+      }
+      return {
+        ...c,
+        info: {
+          ...c.info,
+          associatedComponent: {
+            ...c.info.associatedComponent,
+            absoluteFilePath: stripTsExtension(absoluteFilePath),
+            name: inferComponentNameFromVuePath(absoluteFilePath),
+          },
+        },
+      };
+    }),
+  ];
+}
+
+function stripTsExtension(filePath: string) {
+  return filePath.substring(0, filePath.length - 3);
 }
 
 function extractVueFilePath(filePath: string) {
@@ -170,21 +200,26 @@ function extractVueFilePath(filePath: string) {
   return null;
 }
 
-function transformVirtualTsVueFile({
-  absoluteFilePath,
-  name,
-}: {
-  absoluteFilePath: string;
-  name: string;
-}) {
-  if (absoluteFilePath.endsWith(".vue.ts")) {
-    absoluteFilePath = absoluteFilePath.substring(
-      0,
-      absoluteFilePath.length - 3
-    );
-    name = inferComponentNameFromVuePath(absoluteFilePath);
-  }
-  return { absoluteFilePath, name };
+function extractStoryAssociatedComponent(
+  resolver: TypeResolver,
+  component: ts.Expression
+) {
+  const resolvedStoriesComponent = resolveComponent(
+    resolver.checker,
+    component
+  );
+  return resolvedStoriesComponent
+    ? {
+        ...resolvedStoriesComponent,
+        analyze: async () => {
+          // TODO: Implement.
+          return {
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          };
+        },
+      }
+    : null;
 }
 
 const jsxElementTypes = new Set(["Element"]);
