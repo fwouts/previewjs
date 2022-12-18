@@ -73,7 +73,7 @@ export async function createWorkspace({
   router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
     let analyze: () => Promise<ComponentAnalysis>;
     const component = (
-      await frameworkPlugin.detectComponents(typeAnalyzer, [
+      await frameworkPlugin.detectComponents(reader, typeAnalyzer, [
         path.join(rootDirPath, filePath),
       ])
     ).find((c) => c.name === componentName);

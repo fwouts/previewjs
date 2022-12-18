@@ -89,11 +89,11 @@ class VueTypeScriptReader implements Reader {
 function convertToTypeScript(vueTemplateSource: string, name: string) {
   const parsed = parse(vueTemplateSource);
   if (parsed.descriptor.scriptSetup) {
-    return `import { defineProps } from '@vue/runtime-core';\n${parsed.descriptor.scriptSetup.content}`;
+    return `import { defineProps } from '@vue/runtime-core';\n${parsed.descriptor.scriptSetup.content}\nexport default {}`;
   } else if (parsed.descriptor.script) {
     const lang = parsed.descriptor.script.lang;
     if (lang && !["js", "javascript", "ts", "typescript"].includes(lang)) {
-      return "";
+      return "export default {}";
     }
     const scriptContent = parsed.descriptor.script.content;
     const sourceFile = ts.createSourceFile(
@@ -101,45 +101,47 @@ function convertToTypeScript(vueTemplateSource: string, name: string) {
       scriptContent,
       ts.ScriptTarget.Latest
     );
-    const transformation = ts.transform(sourceFile, [
-      (context) => (sourceFile) => {
-        if (ts.isSourceFile(sourceFile)) {
-          return ts.visitEachChild(
-            sourceFile,
-            (node) => {
-              if (ts.isExportAssignment(node)) {
-                return ts.factory.createVariableStatement(
-                  [],
-                  ts.factory.createVariableDeclarationList(
-                    [
-                      ts.factory.createVariableDeclaration(
-                        "pjs_component",
-                        undefined,
-                        undefined,
-                        ts.factory.createAsExpression(
-                          extractDefineComponentArgument(node.expression),
-                          ts.factory.createTypeReferenceNode("const")
-                        )
-                      ),
-                    ],
-                    ts.NodeFlags.Const
-                  )
-                );
-              }
-              return node;
-            },
-            context
-          );
-        }
-        return sourceFile;
-      },
-    ]);
-    const transformed = ts
-      .createPrinter()
-      .printFile(transformation.transformed[0]!);
-    transformation.dispose();
+    let component: ts.Expression | null = null;
+    for (const node of sourceFile.statements) {
+      if (ts.isExportAssignment(node)) {
+        component = extractDefineComponentArgument(node.expression);
+      }
+    }
+    let pjsComponentDeclaration = "const pjs_component = null;";
+    if (component) {
+      pjsComponentDeclaration = ts
+        .createPrinter()
+        .printFile(
+          ts.factory.createSourceFile(
+            [
+              ts.factory.createVariableStatement(
+                [],
+                ts.factory.createVariableDeclarationList(
+                  [
+                    ts.factory.createVariableDeclaration(
+                      "pjs_component",
+                      undefined,
+                      undefined,
+                      ts.isObjectLiteralExpression(component)
+                        ? ts.factory.createAsExpression(
+                            component,
+                            ts.factory.createTypeReferenceNode("const")
+                          )
+                        : component
+                    ),
+                  ],
+                  ts.NodeFlags.Const
+                )
+              ),
+            ],
+            ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
+            0
+          )
+        );
+    }
     return `
-${transformed}
+${scriptContent}
+${pjsComponentDeclaration}
 
 import type { PropType as PJS_PropType } from "@vue/runtime-core";
 

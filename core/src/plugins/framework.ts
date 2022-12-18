@@ -28,6 +28,7 @@ export interface FrameworkPlugin {
   readonly viteConfig: () => vite.UserConfig;
   readonly incompatibleVitePlugins?: string[];
   readonly detectComponents: (
+    reader: Reader,
     typeAnalyzer: TypeAnalyzer,
     absoluteFilePaths: string[]
   ) => Promise<Component[]>;

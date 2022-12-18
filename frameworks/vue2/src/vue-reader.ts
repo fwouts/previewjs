@@ -88,173 +88,147 @@ class VueTypeScriptReader implements Reader {
 function convertToTypeScript(vueTemplateSource: string, name: string) {
   const parsed = parseComponent(vueTemplateSource);
   const scriptContent = parsed.script?.content;
-  if (!scriptContent) {
-    return "";
-  }
   const lang = parsed.script?.lang;
-  if (lang && !["js", "javascript", "ts", "typescript"].includes(lang)) {
-    return "";
+  if (
+    !scriptContent ||
+    (lang && !["js", "javascript", "ts", "typescript"].includes(lang))
+  ) {
+    return "export default {}";
   }
   const sourceFile = ts.createSourceFile(
     `${name}.vue.ts`,
     scriptContent,
     ts.ScriptTarget.Latest
   );
-  const transformation = ts.transform(sourceFile, [
-    (context) => (sourceFile) => {
-      if (ts.isSourceFile(sourceFile)) {
-        return ts.visitEachChild(
-          sourceFile,
-          (node) => {
-            if (ts.isExportAssignment(node)) {
-              return ts.factory.createVariableStatement(
-                [],
-                ts.factory.createVariableDeclarationList(
-                  [
-                    ts.factory.createVariableDeclaration(
-                      "pjs_component",
-                      undefined,
-                      undefined,
-                      ts.factory.createAsExpression(
-                        node.expression,
-                        ts.factory.createTypeReferenceNode("const")
-                      )
-                    ),
-                  ],
-                  ts.NodeFlags.Const
-                )
-              );
-            }
-            if (
-              ts.isClassDeclaration(node) &&
-              node.modifiers?.find(
-                (m) => m.kind === ts.SyntaxKind.ExportKeyword
-              ) &&
-              node.modifiers?.find(
-                (m) => m.kind === ts.SyntaxKind.DefaultKeyword
-              )
-            ) {
-              // When we encounter a class declaration that uses vue-property-decorator,
-              // we'll transform it into a pjs_component definition.
-              //
-              // For example:
-              //
-              // @Component
-              // export default class Button extends Vue {
-              //   @Prop({ type: String, default: 'default' }) readonly size!: ButtonSize;
-              // }
-              //
-              // will become:
-              //
-              // const pjs_component = {
-              //   props: {
-              //     size: {
-              //       default: "default",
-              //       type: (): Size => { return undefined as any; }
-              //     }
-              //   }
-              // } as const;
-              const extractedProps: ts.PropertyAssignment[] = [];
-              for (const member of node.members) {
-                if (ts.isPropertyDeclaration(member)) {
-                  const [decorator] = ts.canHaveDecorators(member)
-                    ? ts.getDecorators(member) || []
-                    : [];
-                  if (
-                    decorator &&
-                    ts.isCallExpression(decorator.expression) &&
-                    ts.isIdentifier(decorator.expression.expression) &&
-                    decorator.expression.expression.text === "Prop"
-                  ) {
-                    const [options] = decorator.expression.arguments;
-                    if (options && ts.isObjectLiteralExpression(options)) {
-                      if (member.type) {
-                        extractedProps.push(
-                          ts.factory.createPropertyAssignment(
-                            member.name,
-                            ts.factory.createObjectLiteralExpression([
-                              ...options.properties.filter(
-                                (p) =>
-                                  p.name &&
-                                  ts.isIdentifier(p.name) &&
-                                  p.name.text !== "type"
-                              ),
-                              ts.factory.createPropertyAssignment(
-                                "type",
-                                ts.factory.createArrowFunction(
-                                  [],
-                                  [],
-                                  [],
-                                  member.type,
-                                  undefined,
-                                  ts.factory.createBlock([
-                                    ts.factory.createReturnStatement(
-                                      ts.factory.createAsExpression(
-                                        ts.factory.createIdentifier(
-                                          "undefined"
-                                        ),
-                                        ts.factory.createKeywordTypeNode(
-                                          ts.SyntaxKind.AnyKeyword
-                                        )
-                                      )
-                                    ),
-                                  ])
+  let component: ts.Expression | null = null;
+  for (const node of sourceFile.statements) {
+    if (ts.isExportAssignment(node)) {
+      component = node.expression;
+    } else if (
+      ts.isClassDeclaration(node) &&
+      node.modifiers?.find((m) => m.kind === ts.SyntaxKind.ExportKeyword) &&
+      node.modifiers?.find((m) => m.kind === ts.SyntaxKind.DefaultKeyword)
+    ) {
+      // When we encounter a class declaration that uses vue-property-decorator,
+      // we'll transform it into a pjs_component definition.
+      //
+      // For example:
+      //
+      // @Component
+      // export default class Button extends Vue {
+      //   @Prop({ type: String, default: 'default' }) readonly size!: ButtonSize;
+      // }
+      //
+      // will become:
+      //
+      // const pjs_component = {
+      //   props: {
+      //     size: {
+      //       default: "default",
+      //       type: (): Size => { return undefined as any; }
+      //     }
+      //   }
+      // } as const;
+      const extractedProps: ts.PropertyAssignment[] = [];
+      for (const member of node.members) {
+        if (ts.isPropertyDeclaration(member)) {
+          const [decorator] = ts.canHaveDecorators(member)
+            ? ts.getDecorators(member) || []
+            : [];
+          if (
+            decorator &&
+            ts.isCallExpression(decorator.expression) &&
+            ts.isIdentifier(decorator.expression.expression) &&
+            decorator.expression.expression.text === "Prop"
+          ) {
+            const [options] = decorator.expression.arguments;
+            if (options && ts.isObjectLiteralExpression(options)) {
+              if (member.type) {
+                extractedProps.push(
+                  ts.factory.createPropertyAssignment(
+                    member.name,
+                    ts.factory.createObjectLiteralExpression([
+                      ...options.properties.filter(
+                        (p) =>
+                          p.name &&
+                          ts.isIdentifier(p.name) &&
+                          p.name.text !== "type"
+                      ),
+                      ts.factory.createPropertyAssignment(
+                        "type",
+                        ts.factory.createArrowFunction(
+                          [],
+                          [],
+                          [],
+                          member.type,
+                          undefined,
+                          ts.factory.createBlock([
+                            ts.factory.createReturnStatement(
+                              ts.factory.createAsExpression(
+                                ts.factory.createIdentifier("undefined"),
+                                ts.factory.createKeywordTypeNode(
+                                  ts.SyntaxKind.AnyKeyword
                                 )
-                              ),
-                            ])
-                          )
-                        );
-                      } else {
-                        extractedProps.push(
-                          ts.factory.createPropertyAssignment(
-                            member.name,
-                            options
-                          )
-                        );
-                      }
-                    }
-                  }
-                }
+                              )
+                            ),
+                          ])
+                        )
+                      ),
+                    ])
+                  )
+                );
+              } else {
+                extractedProps.push(
+                  ts.factory.createPropertyAssignment(member.name, options)
+                );
               }
-              return ts.factory.createVariableStatement(
-                [],
-                ts.factory.createVariableDeclarationList(
-                  [
-                    ts.factory.createVariableDeclaration(
-                      "pjs_component",
-                      undefined,
-                      undefined,
-                      ts.factory.createAsExpression(
-                        ts.factory.createObjectLiteralExpression([
-                          ts.factory.createPropertyAssignment(
-                            "props",
-                            ts.factory.createObjectLiteralExpression(
-                              extractedProps
-                            )
-                          ),
-                        ]),
-                        ts.factory.createTypeReferenceNode("const")
-                      )
-                    ),
-                  ],
-                  ts.NodeFlags.Const
-                )
-              );
             }
-            return node;
-          },
-          context
-        );
+          }
+        }
       }
-      return sourceFile;
-    },
-  ]);
-  const transformed = ts
-    .createPrinter()
-    .printFile(transformation.transformed[0]!);
-  transformation.dispose();
+      component = ts.factory.createObjectLiteralExpression([
+        ts.factory.createPropertyAssignment(
+          "props",
+          ts.factory.createObjectLiteralExpression(extractedProps)
+        ),
+      ]);
+    }
+  }
+  let pjsComponentDeclaration = "const pjs_component = null;";
+  if (component) {
+    pjsComponentDeclaration = ts
+      .createPrinter()
+      .printFile(
+        ts.factory.createSourceFile(
+          [
+            ts.factory.createVariableStatement(
+              [],
+              ts.factory.createVariableDeclarationList(
+                [
+                  ts.factory.createVariableDeclaration(
+                    "pjs_component",
+                    undefined,
+                    undefined,
+                    ts.isObjectLiteralExpression(component)
+                      ? ts.factory.createAsExpression(
+                          component,
+                          ts.factory.createTypeReferenceNode("const")
+                        )
+                      : component
+                  ),
+                ],
+                ts.NodeFlags.Const
+              )
+            ),
+          ],
+          ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
+          0
+        )
+      );
+  }
   return `
-${transformed}
+${scriptContent}
+${pjsComponentDeclaration}
 
 import type {Prop as PJS_Prop} from 'vue/types/options';
 

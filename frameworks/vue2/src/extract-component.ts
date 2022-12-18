@@ -2,26 +2,43 @@ import type { Component, ComponentTypeInfo } from "@previewjs/core";
 import {
   extractCsf3Stories,
   extractDefaultComponent,
-  resolveComponent
+  resolveComponent,
 } from "@previewjs/csf3";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import type { Reader } from "@previewjs/vfs";
 import ts from "typescript";
+import { analyzeVueComponentFromTemplate } from "./analyze-component";
 import { inferComponentNameFromVuePath } from "./infer-component-name";
 
 export function extractVueComponents(
+  reader: Reader,
   resolver: TypeResolver,
   absoluteFilePath: string
 ): Component[] {
-  if (absoluteFilePath.endsWith('.vue.ts')) {
-    const vueAbsoluteFilePath = stripTsExtension(absoluteFilePath)
+  const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
+  if (vueAbsoluteFilePath) {
+    const virtualVueTsAbsoluteFilePath = vueAbsoluteFilePath + ".ts";
+    const fileEntry = reader.readSync(vueAbsoluteFilePath);
+    if (fileEntry?.kind !== "file") {
+      return [];
+    }
     return [
       {
         absoluteFilePath: vueAbsoluteFilePath,
         name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
-        offsets: 
-      }
-    ]
+        offsets: [[0, fileEntry.size()]],
+        info: {
+          kind: "component",
+          exported: true,
+          analyze: async () =>
+            analyzeVueComponentFromTemplate(
+              resolver,
+              virtualVueTsAbsoluteFilePath
+            ),
+        },
+      },
+    ];
   }
 
   const sourceFile = resolver.sourceFile(absoluteFilePath);
@@ -134,9 +151,11 @@ export function extractVueComponents(
       resolver,
       sourceFile,
       async ({ absoluteFilePath, name }) => {
-        const component = extractVueComponents(resolver, absoluteFilePath).find(
-          (c) => c.name === name
-        );
+        const component = extractVueComponents(
+          reader,
+          resolver,
+          absoluteFilePath
+        ).find((c) => c.name === name);
         if (component?.info.kind !== "component") {
           return {
             propsType: UNKNOWN_TYPE,
@@ -168,12 +187,18 @@ export function extractVueComponents(
 }
 
 function stripTsExtension(filePath: string) {
-  return filePath.substring(
-    0,
-    filePath.length - 3
-  )
+  return filePath.substring(0, filePath.length - 3);
 }
 
+function extractVueFilePath(filePath: string) {
+  if (filePath.endsWith(".vue")) {
+    return filePath;
+  }
+  if (filePath.endsWith(".vue.ts")) {
+    return filePath.substring(0, filePath.length - 3);
+  }
+  return null;
+}
 function extractStoryAssociatedComponent(
   resolver: TypeResolver,
   component: ts.Expression

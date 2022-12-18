@@ -110,6 +110,7 @@ async function detectComponentsCore(
     return components;
   }
   const found = await frameworkPlugin.detectComponents(
+    workspace.reader,
     typeAnalyzer,
     changedAbsoluteFilePaths
   );

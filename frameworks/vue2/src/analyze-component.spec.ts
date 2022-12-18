@@ -20,7 +20,7 @@ import {
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue2FrameworkPlugin from ".";
-import { analyzeVueComponentFromTemplate } from "./analyze-component";
+import { inferComponentNameFromVuePath } from "./infer-component-name";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
@@ -187,6 +187,18 @@ export default class App extends Vue {
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    return analyzeVueComponentFromTemplate(typeAnalyzer, MAIN_FILE);
+    const componentName = inferComponentNameFromVuePath(MAIN_FILE);
+    const component = (
+      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
+        MAIN_FILE,
+      ])
+    ).find((c) => c.name === componentName);
+    if (!component) {
+      throw new Error(`Component ${componentName} not found`);
+    }
+    if (component.info.kind === "story") {
+      throw new Error(`Component ${componentName} is a story`);
+    }
+    return component.info.analyze();
   }
 });

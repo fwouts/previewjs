@@ -331,6 +331,7 @@ export function NotStory() {}
 
   function extract(absoluteFilePath: string) {
     return extractVueComponents(
+      memoryReader,
       typeAnalyzer.analyze([absoluteFilePath]),
       absoluteFilePath
     );
