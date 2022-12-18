@@ -211,13 +211,17 @@ function extractStoryAssociatedComponent(
   return resolvedStoriesComponent
     ? {
         ...resolvedStoriesComponent,
-        analyze: async () => {
-          // TODO: Implement.
-          return {
-            propsType: UNKNOWN_TYPE,
-            types: {},
-          };
-        },
+        analyze: async () =>
+          resolvedStoriesComponent.absoluteFilePath.endsWith(".vue")
+            ? analyzeVueComponentFromTemplate(
+                resolver,
+                resolvedStoriesComponent.absoluteFilePath + ".ts"
+              )
+            : // TODO: Handle JSX properties.
+              {
+                propsType: UNKNOWN_TYPE,
+                types: {},
+              },
       }
     : null;
 }
