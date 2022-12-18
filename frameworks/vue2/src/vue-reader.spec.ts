@@ -35,6 +35,12 @@ export default {
       throw new Error();
     }
     expect(await virtualFile.read()).toEqual(`
+
+export default {
+  name: 'App',
+  props: {}
+}
+
 const pjs_component = {
     name: "App",
     props: {}
@@ -82,6 +88,6 @@ foo
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(``);
+    expect(await virtualFile.read()).toEqual(`export default {}`);
   });
 });
