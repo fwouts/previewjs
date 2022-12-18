@@ -165,7 +165,7 @@ type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props
 type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
 `;
   } else {
-    return "";
+    return "export default {}";
   }
 }
 

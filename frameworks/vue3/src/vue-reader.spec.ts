@@ -43,7 +43,8 @@ import { ref } from 'vue';
 defineProps<{ msg: string }>()
 
 const count = ref(0)
-`);
+
+export default {}`);
   });
 
   it("extracts from normal script", async () => {
@@ -70,7 +71,13 @@ export default defineComponent({
       throw new Error();
     }
     expect(await virtualFile.read()).toEqual(`
-import { defineComponent } from "vue";
+
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'App'
+})
+
 const pjs_component = {
     name: "App"
 } as const;
@@ -118,6 +125,6 @@ foo
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(``);
+    expect(await virtualFile.read()).toEqual(`export default {}`);
   });
 });
