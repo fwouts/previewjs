@@ -296,7 +296,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.0.2
       vite: ^4.0.3
-      vitest: ^0.25.8
+      vitest: ^0.26.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -314,7 +314,7 @@ importers:
       rimraf: 3.0.2
       unbuild: 1.0.2
       vite: 4.0.3
-      vitest: 0.25.8
+      vitest: 0.26.2
 
   frameworks/preact/tests/apps/preact-app:
     specifiers:
@@ -411,7 +411,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.0.2
       vite: ^4.0.3
-      vitest: ^0.25.8
+      vitest: ^0.26.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -432,7 +432,7 @@ importers:
       react: 18.2.0
       unbuild: 1.0.2
       vite: 4.0.3
-      vitest: 0.25.8
+      vitest: 0.26.2
 
   frameworks/react/preview:
     specifiers:
@@ -1476,7 +1476,7 @@ importers:
       unbuild: ^1.0.2
       vite: ^4.0.3
       vite-plugin-solid: ^2.5.0
-      vitest: ^0.25.8
+      vitest: ^0.26.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -1491,7 +1491,7 @@ importers:
       solid-js: 1.6.6
       unbuild: 1.0.2
       vite: 4.0.3
-      vitest: 0.25.8
+      vitest: 0.26.2
 
   frameworks/solid/preview:
     specifiers:
@@ -1555,7 +1555,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.0.2
       vite: ^4.0.3
-      vitest: ^0.25.8
+      vitest: ^0.26.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -1572,7 +1572,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 1.0.2
       vite: 4.0.3
-      vitest: 0.25.8
+      vitest: 0.26.2
 
   frameworks/svelte/preview:
     specifiers:
@@ -1685,7 +1685,7 @@ importers:
       unbuild: ^1.0.2
       vite: ^4.0.3
       vite-plugin-vue2: ^2.0.3
-      vitest: ^0.25.8
+      vitest: ^0.26.2
       vue: ^2.7.14
       vue-template-compiler: ^2.7.14
     dependencies:
@@ -1706,7 +1706,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 1.0.2
       vite: 4.0.3
-      vitest: 0.25.8
+      vitest: 0.26.2
 
   frameworks/vue2/preview:
     specifiers:
@@ -1794,7 +1794,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.0.2
       vite: ^4.0.3
-      vitest: ^0.25.8
+      vitest: ^0.26.2
       vue: ^3.2.45
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -1815,7 +1815,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 1.0.2
       vite: 4.0.3
-      vitest: 0.25.8
+      vitest: 0.26.2
 
   frameworks/vue3/preview:
     specifiers:
@@ -13751,7 +13751,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -26650,6 +26650,14 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
 
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
+
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
     peerDependencies:
@@ -31842,51 +31850,6 @@ packages:
         optional: true
     dependencies:
       vite: 4.0.3
-
-  /vitest/0.25.8:
-    resolution: {integrity: sha512-X75TApG2wZTJn299E/TIYevr4E9/nBo1sUtZzn0Ci5oK8qnpZAZyhwg0qCeMSakGIWtc6oRwcQFyFfW14aOFWg==}
-    engines: {node: '>=v14.16.0'}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@vitest/browser': '*'
-      '@vitest/ui': '*'
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@types/chai': 4.3.4
-      '@types/chai-subset': 1.3.3
-      '@types/node': 18.11.17
-      acorn: 8.8.1
-      acorn-walk: 8.2.0
-      chai: 4.3.7
-      debug: 4.3.4
-      local-pkg: 0.4.2
-      source-map: 0.6.1
-      strip-literal: 1.0.0
-      tinybench: 2.3.1
-      tinypool: 0.3.0
-      tinyspy: 1.0.2
-      vite: 4.0.3_@types+node@18.11.17
-    transitivePeerDependencies:
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
 
   /vitest/0.26.2:
     resolution: {integrity: sha512-Jvqxh6SDy9SsuslkDjts0iDewDIdq4rveEt69YgDuAb1tVDGV0lDepVaeAFraoySWqneJmOt4TngFFNhlw7GfA==}
