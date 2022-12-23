@@ -3,15 +3,15 @@
     "prepare": "rimraf modules && shx mkdir modules && shx cp -rL node_modules/vue modules/vue && shx cp -rL node_modules/@vue modules/@vue"
   },
   "dependencies": {
-    "@vue/shared": "3.2.45",
-    "@vue/reactivity": "3.2.45",
-    "@vue/runtime-core": "3.2.45",
-    "@vue/runtime-dom": "3.2.45",
-    "vue": "3.2.45"
+    "@vue/shared": "^3.2.45",
+    "@vue/reactivity": "^3.2.45",
+    "@vue/runtime-core": "^3.2.45",
+    "@vue/runtime-dom": "^3.2.45",
+    "vue": "^3.2.45"
   },
   "devDependencies": {
     "@previewjs/iframe": "workspace:*",
-    "rimraf": "3.0.2",
-    "shx": "0.3.4"
+    "rimraf": "^3.0.2",
+    "shx": "^0.3.4"
   }
 }
