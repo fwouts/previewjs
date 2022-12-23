@@ -62,7 +62,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -116,7 +118,9 @@ export const Example = {
 }
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -160,7 +164,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -217,7 +223,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -278,7 +286,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -339,7 +349,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -391,7 +403,9 @@ export const Example = {
 export const NoArgs = {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([]);
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([]);
   });
 
   it("ignores objects that look like CSF 3 stories when no default export", () => {
@@ -407,7 +421,9 @@ export const Example = {
 export const NoArgs = {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([]);
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([]);
   });
 
   function extract(absoluteFilePath: string) {

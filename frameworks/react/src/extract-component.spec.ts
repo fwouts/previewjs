@@ -1,5 +1,10 @@
 import { object, string, TRUE } from "@previewjs/serializable-values";
-import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import {
+  createTypeAnalyzer,
+  objectType,
+  STRING_TYPE,
+  TypeAnalyzer,
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
@@ -24,7 +29,7 @@ describe.concurrent("extractReactComponents", () => {
     memoryReader = createMemoryReader();
     memoryReader.updateFile(
       MAIN_FILE,
-      "export default () => <div>Hello, World!</div>;"
+      "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
     const frameworkPlugin = await reactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
@@ -317,7 +322,9 @@ Primary.args = {
 };
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Template",
         info: {
@@ -348,6 +355,17 @@ Primary.args = {
         },
       },
     ]);
+    if (extractedStories[1]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[1].info.associatedComponent?.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   it("detects CSF3 stories", async () => {
@@ -371,7 +389,9 @@ export const NoArgs = {}
 export function NotStory() {}
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Example",
         info: {
@@ -402,6 +422,17 @@ export function NotStory() {}
         },
       },
     ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent?.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   function extract(absoluteFilePath: string) {

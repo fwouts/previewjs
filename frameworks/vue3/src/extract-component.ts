@@ -151,11 +151,14 @@ export function extractVueComponents(
       resolver,
       sourceFile,
       async ({ absoluteFilePath, name }) => {
-        const component = extractVueComponents(
+        const vueComponents = extractVueComponents(
           reader,
           resolver,
           absoluteFilePath
-        ).find((c) => c.name === name);
+        );
+        const component = absoluteFilePath.endsWith(".vue.ts")
+          ? vueComponents[0]
+          : vueComponents.find((c) => c.name === name);
         if (component?.info.kind !== "component") {
           return {
             propsType: UNKNOWN_TYPE,
