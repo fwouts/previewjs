@@ -1,5 +1,9 @@
 import { object, string, UNKNOWN } from "@previewjs/serializable-values";
-import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import {
+  createTypeAnalyzer,
+  TypeAnalyzer,
+  UNKNOWN_TYPE,
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
@@ -58,7 +62,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -112,7 +118,9 @@ export const Example = {
 }
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -156,7 +164,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -213,7 +223,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -274,7 +286,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -335,7 +349,9 @@ export const NoArgs = {}
 export function NotStory() {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         absoluteFilePath: STORIES_FILE,
         name: "Example",
@@ -387,7 +403,9 @@ export const Example = {
 export const NoArgs = {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([]);
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([]);
   });
 
   it("ignores objects that look like CSF 3 stories when no default export", () => {
@@ -403,11 +421,21 @@ export const Example = {
 export const NoArgs = {}
     `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([]);
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([]);
   });
 
   function extract(absoluteFilePath: string) {
     const resolver = typeAnalyzer.analyze([absoluteFilePath]);
-    return extractCsf3Stories(resolver, resolver.sourceFile(absoluteFilePath)!);
+    return extractCsf3Stories(
+      resolver,
+      resolver.sourceFile(absoluteFilePath)!,
+      () =>
+        Promise.resolve({
+          propsType: UNKNOWN_TYPE,
+          types: {},
+        })
+    );
   }
 });

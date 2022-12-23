@@ -1,5 +1,10 @@
 import { object, string, TRUE } from "@previewjs/serializable-values";
-import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import {
+  createTypeAnalyzer,
+  objectType,
+  STRING_TYPE,
+  TypeAnalyzer,
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
@@ -22,6 +27,10 @@ describe.concurrent("extractSolidComponents", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
+    memoryReader.updateFile(
+      MAIN_FILE,
+      "export const Button = ({ label }: { label: string }) => <div>{label}</div>;"
+    );
     const frameworkPlugin = await solidFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
       dependencies: {},
@@ -124,14 +133,6 @@ const ConstantFunction = () => <div>Hello, World!</div>;
 
   it("detects CSF2 stories", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
-      `
-export function Button() {
-  return <div>Hello, World!</div>;
-}
-`
-    );
-    memoryReader.updateFile(
       STORIES_FILE,
       `
 import { Button } from "./App";
@@ -149,7 +150,9 @@ Primary.args = {
 };
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Template",
         info: {
@@ -180,17 +183,20 @@ Primary.args = {
         },
       },
     ]);
+    if (extractedStories[1]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[1].info.associatedComponent?.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   it("detects CSF3 stories", async () => {
-    memoryReader.updateFile(
-      MAIN_FILE,
-      `
-export function Button() {
-  return <div>Hello, World!</div>;
-}
-`
-    );
     memoryReader.updateFile(
       STORIES_FILE,
       `
@@ -208,7 +214,9 @@ export const NoArgs = {}
 export function NotStory() {}
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Example",
         info: {
@@ -239,6 +247,17 @@ export function NotStory() {}
         },
       },
     ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent?.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   function extract(absoluteFilePath: string) {

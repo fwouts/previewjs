@@ -12,7 +12,7 @@ import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
 import { detectComponents } from "./detect-components";
-import type { FrameworkPlugin } from "./plugins/framework";
+import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
@@ -71,6 +71,7 @@ export async function createWorkspace({
   });
   const router = new ApiRouter();
   router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
+    let analyze: () => Promise<ComponentAnalysis>;
     const component = (
       await frameworkPlugin.detectComponents(reader, typeAnalyzer, [
         path.join(rootDirPath, filePath),
@@ -84,15 +85,21 @@ export async function createWorkspace({
         },
       };
     }
-    if (component.info.kind === "story") {
-      return {
-        types: {
-          props: EMPTY_OBJECT_TYPE,
-          all: {},
-        },
-      };
+    if (component.info.kind === "component") {
+      analyze = component.info.analyze;
+    } else {
+      const associatedComponent = component.info.associatedComponent;
+      if (!associatedComponent) {
+        return {
+          types: {
+            props: EMPTY_OBJECT_TYPE,
+            all: {},
+          },
+        };
+      }
+      analyze = associatedComponent.analyze;
     }
-    const result = await component.info.analyze();
+    const result = await analyze();
     return {
       types: {
         props: result.propsType,

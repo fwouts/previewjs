@@ -54,11 +54,14 @@ export type ComponentTypeInfo =
         end: number;
         value: SerializableValue;
       } | null;
-      readonly associatedComponent: {
-        readonly absoluteFilePath: string;
-        readonly name: string;
-      } | null;
+      readonly associatedComponent: StoryAssociatedComponent | null;
     };
+
+export type StoryAssociatedComponent = {
+  readonly absoluteFilePath: string;
+  readonly name: string;
+  readonly analyze: () => Promise<ComponentAnalysis>;
+};
 
 export interface ComponentAnalysis {
   propsType: ValueType;

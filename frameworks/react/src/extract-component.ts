@@ -5,7 +5,7 @@ import {
   resolveComponent,
 } from "@previewjs/csf3";
 import { parseSerializableValue } from "@previewjs/serializable-values";
-import { helpers, TypeResolver } from "@previewjs/type-analyzer";
+import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component";
 
@@ -55,9 +55,6 @@ export function extractReactComponents(
   }
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
-  const resolvedStoriesComponent = storiesDefaultComponent
-    ? resolveComponent(resolver.checker, storiesDefaultComponent)
-    : null;
   const components: Component[] = [];
   const args = helpers.extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
@@ -76,7 +73,10 @@ export function extractReactComponents(
           end: storyArgs.getEnd(),
           value: parseSerializableValue(storyArgs),
         },
-        associatedComponent: resolvedStoriesComponent,
+        associatedComponent: extractStoryAssociatedComponent(
+          resolver,
+          storiesDefaultComponent
+        ),
       };
     }
     const signature = extractComponentSignature(resolver.checker, node);
@@ -103,7 +103,59 @@ export function extractReactComponents(
     }
   }
 
-  return [...components, ...extractCsf3Stories(resolver, sourceFile)];
+  return [
+    ...components,
+    ...extractCsf3Stories(
+      resolver,
+      sourceFile,
+      async ({ absoluteFilePath, name }) => {
+        const component = extractReactComponents(
+          resolver,
+          absoluteFilePath
+        ).find((c) => c.name === name);
+        if (component?.info.kind !== "component") {
+          return {
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          };
+        }
+        return component.info.analyze();
+      }
+    ),
+  ];
+}
+
+function extractStoryAssociatedComponent(
+  resolver: TypeResolver,
+  component: ts.Expression
+) {
+  const resolvedStoriesComponent = resolveComponent(
+    resolver.checker,
+    component
+  );
+  return resolvedStoriesComponent
+    ? {
+        ...resolvedStoriesComponent,
+        analyze: async () => {
+          const signature = extractComponentSignature(
+            resolver.checker,
+            component
+          );
+          if (!signature) {
+            return {
+              propsType: UNKNOWN_TYPE,
+              types: {},
+            };
+          }
+          return analyzeReactComponent(
+            resolver,
+            resolvedStoriesComponent.absoluteFilePath,
+            resolvedStoriesComponent.name,
+            signature
+          );
+        },
+      }
+    : null;
 }
 
 function extractComponentSignature(
