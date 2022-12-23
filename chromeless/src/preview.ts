@@ -139,11 +139,14 @@ export async function startPreview({
       );
       let variantKey: string | null = null;
       if (!propsAssignmentSource) {
-        propsAssignmentSource = generatePropsAssignmentSource(
-          computePropsResponse.types.props,
-          defaultProps.keys,
-          computePropsResponse.types.all
-        );
+        propsAssignmentSource =
+          matchingDetectedComponent.info.kind === "story"
+            ? "properties = {}"
+            : generatePropsAssignmentSource(
+                computePropsResponse.types.props,
+                defaultProps.keys,
+                computePropsResponse.types.all
+              );
       } else if (typeof propsAssignmentSource !== "string") {
         variantKey = propsAssignmentSource.variantKey;
         propsAssignmentSource = `properties = variants?.find(v => v.key === "${variantKey}")?.props || {}`;
