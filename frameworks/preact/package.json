@@ -33,23 +33,23 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.1.1",
-    "@previewjs/serializable-values": "^3.2.0",
-    "@previewjs/type-analyzer": "^4.1.2",
-    "@previewjs/vfs": "^1.2.13",
+    "@previewjs/csf3": "workspace:^3.1.1",
+    "@previewjs/serializable-values": "workspace:^3.2.0",
+    "@previewjs/type-analyzer": "workspace:^4.1.2",
+    "@previewjs/vfs": "workspace:^1.2.13",
     "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@playwright/test": "1.28.1",
+    "@playwright/test": "^1.29.1",
     "@previewjs/api": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@previewjs/iframe": "workspace:*",
     "@previewjs/properties": "workspace:*",
     "@previewjs/testing": "workspace:*",
-    "preact": "10.11.3",
-    "rimraf": "3.0.2",
-    "unbuild": "1.0.2",
-    "vite": "4.0.1",
-    "vitest": "0.25.6"
+    "preact": "^10.11.3",
+    "rimraf": "^3.0.2",
+    "unbuild": "^1.0.2",
+    "vite": "^4.0.3",
+    "vitest": "^0.25.8"
   }
 }

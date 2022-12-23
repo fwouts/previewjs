@@ -37,26 +37,26 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.1.1",
-    "@previewjs/serializable-values": "^3.2.0",
-    "@previewjs/type-analyzer": "^4.1.2",
-    "@previewjs/vfs": "^1.2.13",
-    "@vitejs/plugin-react": "3.0.0",
+    "@previewjs/csf3": "workspace:^3.1.1",
+    "@previewjs/serializable-values": "workspace:^3.2.0",
+    "@previewjs/type-analyzer": "workspace:^4.1.2",
+    "@previewjs/vfs": "workspace:^1.2.13",
+    "@vitejs/plugin-react": "^3.0.0",
     "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@playwright/test": "1.28.1",
+    "@playwright/test": "^1.29.1",
     "@previewjs/api": "workspace:*",
     "@previewjs/core": "workspace:*",
     "@previewjs/iframe": "workspace:*",
     "@previewjs/properties": "workspace:*",
     "@previewjs/testing": "workspace:*",
-    "@types/prop-types": "15.7.5",
-    "@types/react": "18.0.26",
-    "concurrently": "7.6.0",
-    "react": "18.2.0",
-    "unbuild": "1.0.2",
-    "vite": "4.0.1",
-    "vitest": "0.25.6"
+    "@types/prop-types": "^15.7.5",
+    "@types/react": "^18.0.26",
+    "concurrently": "^7.6.0",
+    "react": "^18.2.0",
+    "unbuild": "^1.0.2",
+    "vite": "^4.0.3",
+    "vitest": "^0.25.8"
   }
 }

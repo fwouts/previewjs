@@ -37,10 +37,10 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.1.1",
-    "@previewjs/serializable-values": "^3.2.0",
-    "@previewjs/type-analyzer": "^4.1.2",
-    "@previewjs/vfs": "^1.2.13",
+    "@previewjs/csf3": "workspace:^3.1.1",
+    "@previewjs/serializable-values": "workspace:^3.2.0",
+    "@previewjs/type-analyzer": "workspace:^4.1.2",
+    "@previewjs/vfs": "workspace:^1.2.13",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitejs/plugin-vue-jsx": "^3.0.0",
     "@vue/compiler-sfc": "^3.2.45",
@@ -50,12 +50,12 @@
     "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@playwright/test": "1.28.1",
+    "@playwright/test": "^1.29.1",
     "@previewjs/core": "workspace:*",
     "@previewjs/testing": "workspace:*",
-    "@types/fs-extra": "9.0.13",
-    "unbuild": "1.0.2",
-    "vite": "4.0.1",
-    "vitest": "0.25.6"
+    "@types/fs-extra": "^9.0.13",
+    "unbuild": "^1.0.2",
+    "vite": "^4.0.3",
+    "vitest": "^0.25.8"
   }
 }
