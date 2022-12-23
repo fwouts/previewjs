@@ -48,8 +48,8 @@ importers:
 
   api:
     specifiers:
-      '@previewjs/serializable-values': workspace:^3.2.0
-      '@previewjs/type-analyzer': workspace:^4.1.2
+      '@previewjs/serializable-values': ^3.2.1
+      '@previewjs/type-analyzer': ^4.1.3
       axios: ^1.2.1
       unbuild: ^1.0.2
     dependencies:
@@ -104,11 +104,11 @@ importers:
 
   chromeless:
     specifiers:
-      '@previewjs/api': workspace:^7.1.1
-      '@previewjs/core': workspace:^14.1.1
-      '@previewjs/iframe': workspace:^3.0.4
-      '@previewjs/properties': workspace:^1.0.5
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/api': ^7.1.2
+      '@previewjs/core': ^15.0.0
+      '@previewjs/iframe': ^3.0.5
+      '@previewjs/properties': ^1.0.6
+      '@previewjs/vfs': ^1.2.14
       '@types/express': ^4.17.15
       express: ^4.18.2
       playwright: ^1.29.1
@@ -155,12 +155,12 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': workspace:^7.1.1
-      '@previewjs/config': workspace:^4.0.0
-      '@previewjs/iframe': workspace:^3.0.4
-      '@previewjs/serializable-values': workspace:^3.2.0
-      '@previewjs/type-analyzer': workspace:^4.1.2
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/api': ^7.1.2
+      '@previewjs/config': ^4.0.1
+      '@previewjs/iframe': ^3.0.5
+      '@previewjs/serializable-values': ^3.2.1
+      '@previewjs/type-analyzer': ^4.1.3
+      '@previewjs/vfs': ^1.2.14
       '@rollup/plugin-alias': ^4.0.2
       '@types/express': ^4.17.15
       '@types/fs-extra': ^9.0.13
@@ -214,9 +214,9 @@ importers:
 
   csf3:
     specifiers:
-      '@previewjs/core': workspace:^14.1.1
-      '@previewjs/serializable-values': workspace:^3.2.0
-      '@previewjs/type-analyzer': workspace:^4.1.2
+      '@previewjs/core': ^15.0.0
+      '@previewjs/serializable-values': ^3.2.1
+      '@previewjs/type-analyzer': ^4.1.3
       '@previewjs/vfs': workspace:*
       typescript: ^4.9.4
       unbuild: ^1.0.2
@@ -284,13 +284,13 @@ importers:
       '@playwright/test': ^1.29.1
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': workspace:^3.1.1
+      '@previewjs/csf3': ^3.1.2
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
-      '@previewjs/serializable-values': workspace:^3.2.0
+      '@previewjs/serializable-values': ^3.2.1
       '@previewjs/testing': workspace:*
-      '@previewjs/type-analyzer': workspace:^4.1.2
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/type-analyzer': ^4.1.3
+      '@previewjs/vfs': ^1.2.14
       preact: ^10.11.3
       rimraf: ^3.0.2
       typescript: ^4.9.4
@@ -396,13 +396,13 @@ importers:
       '@playwright/test': ^1.29.1
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': workspace:^3.1.1
+      '@previewjs/csf3': ^3.1.2
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
-      '@previewjs/serializable-values': workspace:^3.2.0
+      '@previewjs/serializable-values': ^3.2.1
       '@previewjs/testing': workspace:*
-      '@previewjs/type-analyzer': workspace:^4.1.2
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/type-analyzer': ^4.1.3
+      '@previewjs/vfs': ^1.2.14
       '@types/prop-types': ^15.7.5
       '@types/react': ^18.0.26
       '@vitejs/plugin-react': ^3.0.0
@@ -1466,11 +1466,11 @@ importers:
     specifiers:
       '@playwright/test': ^1.29.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': workspace:^3.1.1
-      '@previewjs/serializable-values': workspace:^3.2.0
+      '@previewjs/csf3': ^3.1.2
+      '@previewjs/serializable-values': ^3.2.1
       '@previewjs/testing': workspace:*
-      '@previewjs/type-analyzer': workspace:^4.1.2
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/type-analyzer': ^4.1.3
+      '@previewjs/vfs': ^1.2.14
       solid-js: ^1.6.6
       typescript: ^4.9.4
       unbuild: ^1.0.2
@@ -1543,11 +1543,11 @@ importers:
     specifiers:
       '@playwright/test': ^1.29.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': workspace:^3.1.1
-      '@previewjs/serializable-values': workspace:^3.2.0
+      '@previewjs/csf3': ^3.1.2
+      '@previewjs/serializable-values': ^3.2.1
       '@previewjs/testing': workspace:*
-      '@previewjs/type-analyzer': workspace:^4.1.2
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/type-analyzer': ^4.1.3
+      '@previewjs/vfs': ^1.2.14
       '@sveltejs/vite-plugin-svelte': ^1.4.0
       '@types/fs-extra': ^9.0.13
       fs-extra: ^11.1.0
@@ -1674,11 +1674,11 @@ importers:
       '@nuxt/config': ^2.15.8
       '@playwright/test': ^1.29.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': workspace:^3.1.1
-      '@previewjs/serializable-values': workspace:^3.2.0
+      '@previewjs/csf3': ^3.1.2
+      '@previewjs/serializable-values': ^3.2.1
       '@previewjs/testing': workspace:*
-      '@previewjs/type-analyzer': workspace:^4.1.2
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/type-analyzer': ^4.1.3
+      '@previewjs/vfs': ^1.2.14
       '@types/fs-extra': ^9.0.13
       fs-extra: ^11.1.0
       typescript: ^4.9.4
@@ -1780,11 +1780,11 @@ importers:
     specifiers:
       '@playwright/test': ^1.29.1
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': workspace:^3.1.1
-      '@previewjs/serializable-values': workspace:^3.2.0
+      '@previewjs/csf3': ^3.1.2
+      '@previewjs/serializable-values': ^3.2.1
       '@previewjs/testing': workspace:*
-      '@previewjs/type-analyzer': workspace:^4.1.2
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/type-analyzer': ^4.1.3
+      '@previewjs/vfs': ^1.2.14
       '@types/fs-extra': ^9.0.13
       '@vitejs/plugin-vue': ^4.0.0
       '@vitejs/plugin-vue-jsx': ^3.0.0
@@ -1983,8 +1983,8 @@ importers:
 
   properties:
     specifiers:
-      '@previewjs/serializable-values': workspace:^3.2.0
-      '@previewjs/type-analyzer': workspace:^4.1.2
+      '@previewjs/serializable-values': ^3.2.1
+      '@previewjs/type-analyzer': ^4.1.3
       unbuild: ^1.0.2
       vitest: ^0.26.2
     dependencies:
@@ -1997,7 +1997,7 @@ importers:
   serializable-values:
     specifiers:
       '@faker-js/faker': ^7.6.0
-      '@previewjs/type-analyzer': workspace:^4.1.2
+      '@previewjs/type-analyzer': ^4.1.3
       '@types/prettier': ^2.7.2
       assert-never: ^1.2.1
       prettier: ^2.8.1
@@ -2018,11 +2018,11 @@ importers:
   testing:
     specifiers:
       '@playwright/test': ^1.29.1
-      '@previewjs/api': workspace:^7.1.1
-      '@previewjs/chromeless': workspace:^1.1.5
-      '@previewjs/core': workspace:^14.1.1
-      '@previewjs/iframe': workspace:^3.0.4
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/api': ^7.1.2
+      '@previewjs/chromeless': ^1.1.6
+      '@previewjs/core': ^15.0.0
+      '@previewjs/iframe': ^3.0.5
+      '@previewjs/vfs': ^1.2.14
       '@types/fs-extra': ^9.0.13
       assert-never: ^1.2.1
       fs-extra: ^11.1.0
@@ -2050,7 +2050,7 @@ importers:
 
   type-analyzer:
     specifiers:
-      '@previewjs/vfs': workspace:^1.2.13
+      '@previewjs/vfs': ^1.2.14
       '@types/lodash': ^4.14.191
       '@types/prettier': ^2.7.2
       assert-never: ^1.2.1
