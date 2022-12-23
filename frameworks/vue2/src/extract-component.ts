@@ -171,14 +171,19 @@ export function extractVueComponents(
       ) {
         return c;
       }
+      const associatedComponentVueAbsoluteFilePath = stripTsExtension(
+        c.info.associatedComponent.absoluteFilePath
+      );
       return {
         ...c,
         info: {
           ...c.info,
           associatedComponent: {
             ...c.info.associatedComponent,
-            absoluteFilePath: stripTsExtension(absoluteFilePath),
-            name: inferComponentNameFromVuePath(absoluteFilePath),
+            absoluteFilePath: associatedComponentVueAbsoluteFilePath,
+            name: inferComponentNameFromVuePath(
+              associatedComponentVueAbsoluteFilePath
+            ),
           },
         },
       };
@@ -208,22 +213,30 @@ function extractStoryAssociatedComponent(
     resolver.checker,
     component
   );
-  return resolvedStoriesComponent
-    ? {
-        ...resolvedStoriesComponent,
-        analyze: async () =>
-          resolvedStoriesComponent.absoluteFilePath.endsWith(".vue")
-            ? analyzeVueComponentFromTemplate(
-                resolver,
-                resolvedStoriesComponent.absoluteFilePath + ".ts"
-              )
-            : // TODO: Handle JSX properties.
-              {
-                propsType: UNKNOWN_TYPE,
-                types: {},
-              },
-      }
-    : null;
+  if (!resolvedStoriesComponent) {
+    return null;
+  }
+  const vueAbsoluteFilePath = extractVueFilePath(
+    resolvedStoriesComponent.absoluteFilePath
+  );
+  if (vueAbsoluteFilePath) {
+    return {
+      absoluteFilePath: vueAbsoluteFilePath,
+      name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
+      analyze: async () =>
+        analyzeVueComponentFromTemplate(resolver, vueAbsoluteFilePath + ".ts"),
+    };
+  } else {
+    return {
+      ...resolvedStoriesComponent,
+      analyze: async () =>
+        // TODO: Handle JSX properties.
+        ({
+          propsType: UNKNOWN_TYPE,
+          types: {},
+        }),
+    };
+  }
 }
 
 const jsxElementTypes = new Set(["Element"]);
