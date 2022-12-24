@@ -6,6 +6,7 @@ import path from "path";
 import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
+import type { Component } from "./plugins/framework";
 
 type ProjectComponents = RPCs.DetectComponentsResponse["components"];
 
@@ -119,31 +120,40 @@ async function detectComponentsCore(
       .relative(workspace.rootDirPath, component.absoluteFilePath)
       .replace(/\\/g, "/");
     const fileComponents = (components[filePath] ||= []);
-    const [start, end] = component.offsets[0]!;
-    fileComponents.push({
-      name: component.name,
-      start,
-      end,
-      info:
-        component.info.kind === "component"
-          ? {
-              kind: "component",
-              exported: component.info.exported,
-            }
-          : {
-              kind: "story",
-              args: component.info.args,
-              associatedComponent: component.info.associatedComponent
-                ? {
-                    filePath: path.relative(
-                      workspace.rootDirPath,
-                      component.info.associatedComponent.absoluteFilePath
-                    ),
-                    name: component.info.associatedComponent.name,
-                  }
-                : null,
-            },
-    });
+    fileComponents.push(
+      detectedComponentToApiComponent(workspace.rootDirPath, component)
+    );
   }
   return components;
+}
+
+export function detectedComponentToApiComponent(
+  rootDirPath: string,
+  component: Component
+): RPCs.Component {
+  const [start, end] = component.offsets[0]!;
+  return {
+    name: component.name,
+    start,
+    end,
+    info:
+      component.info.kind === "component"
+        ? {
+            kind: "component",
+            exported: component.info.exported,
+          }
+        : {
+            kind: "story",
+            args: component.info.args,
+            associatedComponent: component.info.associatedComponent
+              ? {
+                  filePath: path.relative(
+                    rootDirPath,
+                    component.info.associatedComponent.absoluteFilePath
+                  ),
+                  name: component.info.associatedComponent.name,
+                }
+              : null,
+          },
+  };
 }

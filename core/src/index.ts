@@ -3,7 +3,6 @@ import {
   CollectedTypes,
   createTypeAnalyzer,
   EMPTY_OBJECT_TYPE,
-  UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
@@ -11,7 +10,10 @@ import fs from "fs-extra";
 import getPort from "get-port";
 import path from "path";
 import type * as vite from "vite";
-import { detectComponents } from "./detect-components";
+import {
+  detectComponents,
+  detectedComponentToApiComponent,
+} from "./detect-components";
 import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
@@ -78,12 +80,7 @@ export async function createWorkspace({
       ])
     ).find((c) => c.name === componentName);
     if (!component) {
-      return {
-        types: {
-          props: UNKNOWN_TYPE,
-          all: {},
-        },
-      };
+      throw new Error(`Component ${componentName} not detected in ${filePath}`);
     }
     if (component.info.kind === "component") {
       analyze = component.info.analyze;
@@ -91,6 +88,7 @@ export async function createWorkspace({
       const associatedComponent = component.info.associatedComponent;
       if (!associatedComponent) {
         return {
+          component: detectedComponentToApiComponent(rootDirPath, component),
           types: {
             props: EMPTY_OBJECT_TYPE,
             all: {},
@@ -101,6 +99,7 @@ export async function createWorkspace({
     }
     const result = await analyze();
     return {
+      component: detectedComponentToApiComponent(rootDirPath, component),
       types: {
         props: result.propsType,
         all: result.types,

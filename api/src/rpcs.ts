@@ -13,6 +13,7 @@ export const ComputeProps: RPC<
 };
 
 export type ComputePropsResponse = {
+  component: Component;
   types: {
     props: ValueType;
     all: CollectedTypes;
