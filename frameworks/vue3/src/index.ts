@@ -18,7 +18,6 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
   async create({ rootDirPath }) {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
-    const { Parser } = await import("acorn");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
