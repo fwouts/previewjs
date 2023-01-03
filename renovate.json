@@ -23,7 +23,7 @@
     "@types/vscode",
     "vscode"
   ],
-  "ignorePaths": ["loader/src/release/**"],
+  "ignorePaths": ["frameworks/**/apps/**", "loader/src/release/**"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
