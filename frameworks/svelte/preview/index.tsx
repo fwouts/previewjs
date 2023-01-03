@@ -16,7 +16,6 @@ export const load: RendererLoader = async ({
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   const Component = componentModule.default;
   return {
-    variants: [],
     render: async (props) => {
       if (shouldAbortRender()) {
         return;

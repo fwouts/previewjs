@@ -22,28 +22,4 @@ test.describe.parallel("vue3/jsx", () => {
       "xpath=//button[contains(., 'a button')]"
     );
   });
-
-  test("renders JSX component with previews", async (preview) => {
-    await preview.fileManager.update(
-      "src/Button.jsx",
-      `export const Button = (props) => {
-        return <button>
-          {props.label || "a button"}
-        </button>
-      }
-
-      Button.previews = {
-        default: {
-          label: "Hello, World!"
-        }
-      }`
-    );
-    await preview.show(
-      "src/Button.jsx:Button",
-      `properties = variants[0].props`
-    );
-    await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'Hello, World!')]"
-    );
-  });
 });

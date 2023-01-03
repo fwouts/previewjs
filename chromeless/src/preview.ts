@@ -1,6 +1,5 @@
 import { RPCs } from "@previewjs/api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
-import type { Variant } from "@previewjs/iframe";
 import {
   generateDefaultProps,
   generatePropsAssignmentSource,
@@ -36,11 +35,8 @@ export async function startPreview({
   let onRenderingDone = () => {
     // No-op by default.
   };
-  let variants: Variant[] = [];
   const events = await setupPreviewEventListener(page, (event) => {
-    if (event.kind === "rendering-setup") {
-      variants = event.info.variants || [];
-    } else if (event.kind === "rendering-done") {
+    if (event.kind === "rendering-done") {
       onRenderingDone();
     }
   });
@@ -108,10 +104,7 @@ export async function startPreview({
         });
       },
     },
-    async show(
-      componentId: string,
-      propsAssignmentSource?: string | { variantKey: string }
-    ) {
+    async show(componentId: string, propsAssignmentSource?: string) {
       const filePath = componentId.split(":")[0]!;
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
@@ -137,7 +130,6 @@ export async function startPreview({
         computePropsResponse.types.props,
         computePropsResponse.types.all
       );
-      let variantKey: string | null = null;
       if (!propsAssignmentSource) {
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
@@ -147,9 +139,6 @@ export async function startPreview({
                 defaultProps.keys,
                 computePropsResponse.types.all
               );
-      } else if (typeof propsAssignmentSource !== "string") {
-        variantKey = propsAssignmentSource.variantKey;
-        propsAssignmentSource = `properties = variants?.find(v => v.key === "${variantKey}")?.props || {}`;
       }
       const donePromise = new Promise<void>((resolve) => {
         onRenderingDone = resolve;
@@ -180,13 +169,6 @@ export async function startPreview({
         }
       );
       await donePromise;
-      if (variantKey && !variants.find((v) => v.key === variantKey)) {
-        throw new Error(
-          `No variant with key: ${variantKey}. Available variants: ${
-            variants.map((v) => v.key).join(", ") || "none"
-          }`
-        );
-      }
       await waitUntilNetworkIdle(page);
     },
     async stop() {

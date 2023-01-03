@@ -90,19 +90,7 @@ export const load: RendererLoader = async ({
       components: { ...decorated.components, story: component },
     };
   }, RenderComponent);
-  const previews =
-    typeof RenderComponent.previews === "function"
-      ? RenderComponent.previews()
-      : RenderComponent.previews || {};
-  const variants = Object.entries(previews).map(([key, props]) => {
-    return {
-      key,
-      label: key,
-      props,
-    };
-  });
   return {
-    variants,
     render: async (props) => {
       if (shouldAbortRender()) {
         return;

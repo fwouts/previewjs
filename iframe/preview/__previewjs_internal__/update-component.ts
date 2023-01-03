@@ -38,7 +38,7 @@ export async function updateComponent({
     sendMessageFromPreview({
       kind: "before-render",
     });
-    const { variants, render } = await load({
+    const { render } = await load({
       wrapperModule,
       wrapperName,
       componentFilePath,
@@ -58,8 +58,6 @@ export async function updateComponent({
       kind: "rendering-setup",
       filePath: componentFilePath,
       componentName,
-      // Note: we must remove `props` since it may not be serialisable.
-      variants: variants?.map(({ key, label }) => ({ key, label })),
     });
     const props = transformFunctions(
       {
