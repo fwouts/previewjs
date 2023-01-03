@@ -99,9 +99,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "rendering-setup":
         listener({
           kind: "rendering-setup",
-          info: {
-            variants: data.variants,
-          },
         });
         break;
       case "rendering-success":
@@ -218,9 +215,6 @@ export type BeforeRender = {
 
 export type RenderingSetup = {
   kind: "rendering-setup";
-  info: {
-    variants?: Variant[];
-  };
 };
 
 export interface RenderingDone {
@@ -248,11 +242,6 @@ export interface FileChanged {
   path: string;
 }
 
-export interface Variant {
-  key: string;
-  label: string;
-}
-
 export type RendererLoader = (options: {
   wrapperModule: any;
   wrapperName?: string;
@@ -262,10 +251,5 @@ export type RendererLoader = (options: {
   renderId: number;
   shouldAbortRender: () => boolean;
 }) => Promise<{
-  variants?: Array<
-    Variant & {
-      props: any;
-    }
-  >;
   render: (props: any) => Promise<void>;
 }>;

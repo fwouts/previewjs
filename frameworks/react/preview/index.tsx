@@ -27,15 +27,6 @@ export const load: RendererLoader = async ({
     ...(ComponentOrStory.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
-  const variants = (ComponentOrStory.__previewjs_variants || []).map(
-    (variant) => {
-      return {
-        key: variant.key,
-        label: variant.label,
-        props: variant.props,
-      };
-    }
-  );
   const RenderComponent = isStoryModule
     ? typeof ComponentOrStory === "function"
       ? ComponentOrStory
@@ -64,7 +55,6 @@ export const load: RendererLoader = async ({
     );
   };
   return {
-    variants,
     render: async (props) => {
       if (shouldAbortRender()) {
         return;

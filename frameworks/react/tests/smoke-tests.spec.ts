@@ -34,7 +34,6 @@ test.describe.parallel("smoke tests", () => {
     ["cra-ts", "src/App.tsx:App"],
     ["cra-ts-react16", "src/App.tsx:App"],
     ["cra-ts-react18", "src/App.tsx:App"],
-    ["custom-preview", "src/App.tsx:App"],
     ["imported-types", "src/App.tsx:App"],
     ["material-ui", "src/App.tsx:App"],
     ["nextjs-11", "pages/index.tsx:App"],
