@@ -9,6 +9,7 @@ test.describe.parallel("smoke tests", () => {
   for (const [appName, componentId] of [
     ["nuxt2-app", "pages/index.vue:index"],
     ["vue2-app", "src/App.vue:App"],
+    ["vue2-storybook", "src/stories/Button.stories.js:Primary"],
   ] as const) {
     const appDir = smokeTestApp(appName);
     previewTest([pluginFactory], appDir)(appName, async (preview) => {

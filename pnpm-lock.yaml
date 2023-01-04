@@ -1754,6 +1754,19 @@ importers:
       '@vue/cli-service': 5.0.8_xkcetcj6hv4sgyq4i5psilihte
       vue-template-compiler: 2.7.14
 
+  frameworks/vue2/tests/apps/vue2-storybook:
+    specifiers:
+      '@vue/cli-plugin-babel': ~5.0.8
+      '@vue/cli-service': ~5.0.8
+      vue: ^2.7.14
+      vue-template-compiler: ^2.7.14
+    dependencies:
+      vue: 2.7.14
+    devDependencies:
+      '@vue/cli-plugin-babel': 5.0.8_jgtid2kttez32lmh2k7ifkwceu
+      '@vue/cli-service': 5.0.8_xkcetcj6hv4sgyq4i5psilihte
+      vue-template-compiler: 2.7.14
+
   frameworks/vue3:
     specifiers:
       '@playwright/test': ^1.29.1
@@ -10183,12 +10196,12 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.4.10
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
 
   /@types/eslint/8.4.10:
     resolution: {integrity: sha512-Sl/HOqN8NKPmhWo2VBEPm0nvHnu2LL3v9vKo8MEq0EtbJ4eVzGPl41VNPvn5E1i5poMk4/XD8UriLHpJvEP/Nw==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
 
   /@types/estree/0.0.39:
@@ -10199,7 +10212,6 @@ packages:
 
   /@types/estree/1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
-    dev: true
 
   /@types/etag/1.8.0:
     resolution: {integrity: sha512-EdSN0x+Y0/lBv7YAb8IU4Jgm6DWM+Bqtz7o5qozl96fzaqdqbdfHS5qjdpFeIv7xQ8jSLyjMMNShgYtMajEHyQ==}
