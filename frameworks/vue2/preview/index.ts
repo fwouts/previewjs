@@ -31,44 +31,32 @@ export const load: RendererLoader = async ({
   };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
-  if (ComponentOrStory.render) {
+  if (ComponentOrStory.render || ComponentOrStory.name === "VueComponent") {
     // Vue or JSX component. Nothing to do.
   } else {
     // Storybook story, either CSF2 or CSF3.
-    storybookCheck: if (typeof ComponentOrStory === "function") {
+    if (typeof ComponentOrStory === "function") {
       // CSF2 story.
-      let maybeCsf2StoryComponent;
-      try {
-        maybeCsf2StoryComponent = ComponentOrStory(defaultProps, {
-          argTypes: defaultProps,
-        });
-      } catch (e) {
-        // Not a CSF2 story. Nothing to do.
-        break storybookCheck;
-      }
-      if (
-        !maybeCsf2StoryComponent ||
-        (!maybeCsf2StoryComponent?.components &&
-          !maybeCsf2StoryComponent?.template)
-      ) {
-        // Vue or JSX component. Nothing to do.
-      } else {
-        // This looks a lot like a CSF2 story. It must be one.
-        const csf2StoryComponent = maybeCsf2StoryComponent;
-        storyDecorators.push(...(csf2StoryComponent.decorators || []));
-        if (csf2StoryComponent.template) {
-          RenderComponent = csf2StoryComponent;
-        } else {
-          RenderComponent = Object.values(
-            csf2StoryComponent.components || {}
-          )[0];
-          if (!RenderComponent) {
+      RenderComponent = {
+        functional: true,
+        render: (h, data) => {
+          const storyReturnValue = ComponentOrStory(data.props, {
+            argTypes: data.props,
+          });
+          if (storyReturnValue.template) {
+            return h(storyReturnValue, data);
+          }
+          const component =
+            Object.values(storyReturnValue.components || {})[0] ||
+            componentModule.default?.component;
+          if (!component) {
             throw new Error(
               "Encountered a story with no template or components"
             );
           }
-        }
-      }
+          return h(component, data);
+        },
+      };
     } else {
       // CSF3 story.
       const csf3Story = ComponentOrStory;
@@ -95,15 +83,21 @@ export const load: RendererLoader = async ({
       if (shouldAbortRender()) {
         return;
       }
-      await render((h, props) => {
-        const Wrapped = h(Decorated, {
+      await render(
+        {
+          functional: true,
+          render: (h, data) => {
+            const Wrapped = h(Decorated, data);
+            return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
+          },
+        },
+        {
           props: {
             ...defaultProps,
             ...props,
           },
-        });
-        return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
-      }, props);
+        }
+      );
     },
   };
 };
@@ -112,7 +106,7 @@ const root = document.getElementById("root");
 let app: Vue | null = null;
 
 // TODO: Type Renderer properly.
-async function render<P>(Renderer: any, props: P) {
+async function render<P>(Renderer: any, data: P) {
   if (app) {
     app.$destroy();
     app = null;
@@ -120,11 +114,8 @@ async function render<P>(Renderer: any, props: P) {
   if (!Renderer) {
     return;
   }
-  if (Renderer.functional) {
-    Renderer = Renderer.render;
-  }
   app = new Vue({
-    render: (h) => Renderer(h, props),
+    render: (h) => h(Renderer, data),
   }).$mount();
   while (root.firstChild) {
     root.removeChild(root.firstChild);
