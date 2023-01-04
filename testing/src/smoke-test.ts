@@ -26,13 +26,16 @@ export function smokeTests({
           await preview.show(componentId);
           await preview.iframe.waitForSelector("#ready");
           const fileExt = path.extname(filePath);
+          const filePrefix = filePath.substring(
+            0,
+            filePath.length - fileExt.length
+          );
           await preview.iframe.takeScreenshot(
             path.join(
               appDir,
-              `${filePath.substring(
-                0,
-                filePath.length - fileExt.length
-              )}_${componentName}_screenshot_${process.platform}.png`
+              `${filePrefix}${
+                filePrefix.endsWith(componentName) ? "" : `_${componentName}`
+              }_screenshot_${process.platform}.png`
             )
           );
         }
