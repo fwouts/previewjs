@@ -17,7 +17,8 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
   },
   async create({ rootDirPath }) {
     const { loadNuxtConfig } = await import("@nuxt/config");
-    const { createVuePlugin } = await import("vite-plugin-vue2");
+    const { default: vue2Plugin } = await import("@vitejs/plugin-vue2");
+    const { default: vue2JsxPlugin } = await import("@vitejs/plugin-vue2-jsx");
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -56,9 +57,8 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           },
           plugins: [
-            createVuePlugin({
-              jsx: true,
-            }),
+            vue2Plugin(),
+            vue2JsxPlugin(),
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
@@ -136,6 +136,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
       esbuild: {
         jsxFactory: "h",
       },
+      incompatibleVitePlugins: ["vite-plugin-vue2"],
     };
   },
 };
