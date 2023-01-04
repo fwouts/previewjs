@@ -18,8 +18,19 @@ test.describe("smoke tests", () => {
     previewTest([pluginFactory], appDir)(appName, async (preview) => {
       await preview.show(componentId);
       await preview.iframe.waitForSelector("#ready");
+      const [filePath, componentName] = componentId.split(":") as [
+        string,
+        string
+      ];
+      const fileExt = path.extname(filePath);
       await preview.iframe.takeScreenshot(
-        path.join(appDir, `__screenshot__${process.platform}.png`)
+        path.join(
+          appDir,
+          `${filePath.substring(
+            0,
+            filePath.length - fileExt.length
+          )}_${componentName}_screenshot_${process.platform}.png`
+        )
       );
     });
   }
