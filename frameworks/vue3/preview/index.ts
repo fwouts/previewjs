@@ -31,11 +31,10 @@ export const load: RendererLoader = async ({
   };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
-  console.error("ComponentOrStory", ComponentOrStory);
   if (ComponentOrStory.render) {
     // Vue component. Nothing to do.
   } else {
-    // Storybook story, either CSF2 or CSF3.
+    // JSX or Storybook story, either CSF2 or CSF3.
     if (typeof ComponentOrStory === "function") {
       RenderComponent = (props) => {
         const storyReturnValue = ComponentOrStory(props);
