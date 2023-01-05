@@ -79,7 +79,7 @@ importers:
       fs-extra: ^11.1.0
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
     dependencies:
       express: 4.18.2
     devDependencies:
@@ -100,7 +100,7 @@ importers:
       fs-extra: 11.1.0
       typescript: 4.9.4
       unbuild: 1.0.2
-      vite: 4.0.3_@types+node@18.11.18
+      vite: 4.0.4_@types+node@18.11.18
 
   chromeless:
     specifiers:
@@ -115,7 +115,7 @@ importers:
       rimraf: ^3.0.2
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/core': link:../core
@@ -129,17 +129,17 @@ importers:
       rimraf: 3.0.2
       typescript: 4.9.4
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
 
   config:
     specifiers:
       '@types/node': ^18.11.18
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
     devDependencies:
       '@types/node': 18.11.18
       unbuild: 1.0.2
-      vite: 4.0.3_@types+node@18.11.18
+      vite: 4.0.4_@types+node@18.11.18
 
   config-helpers/nextjs:
     specifiers:
@@ -180,7 +180,7 @@ importers:
       tsconfig-paths: ^4.1.1
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
       vite-tsconfig-paths: ^3.6.0
     dependencies:
       '@previewjs/api': link:../api
@@ -203,8 +203,8 @@ importers:
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
       tsconfig-paths: 4.1.1
       typescript: 4.9.4
-      vite: 4.0.3_@types+node@18.11.18
-      vite-tsconfig-paths: 3.6.0_vite@4.0.3
+      vite: 4.0.4_@types+node@18.11.18
+      vite-tsconfig-paths: 3.6.0_vite@4.0.4
     devDependencies:
       '@rollup/plugin-alias': 4.0.2_rollup@3.8.1
       '@types/express': 4.17.15
@@ -295,7 +295,7 @@ importers:
       rimraf: ^3.0.2
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
       vitest: ^0.26.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -313,7 +313,7 @@ importers:
       preact: 10.11.3
       rimraf: 3.0.2
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
       vitest: 0.26.2
 
   frameworks/preact/tests/apps/preact-app:
@@ -410,14 +410,14 @@ importers:
       react: ^18.2.0
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
       vitest: ^0.26.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-react': 3.0.0_vite@4.0.3
+      '@vitejs/plugin-react': 3.0.0_vite@4.0.4
       typescript: 4.9.4
     devDependencies:
       '@playwright/test': 1.29.1
@@ -431,7 +431,7 @@ importers:
       concurrently: 7.6.0
       react: 18.2.0
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
       vitest: 0.26.2
 
   frameworks/react/preview:
@@ -1452,7 +1452,7 @@ importers:
       solid-js: ^1.6.6
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
       vite-plugin-solid: ^2.5.0
       vitest: ^0.26.2
     dependencies:
@@ -1461,14 +1461,14 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       typescript: 4.9.4
-      vite-plugin-solid: 2.5.0_solid-js@1.6.6+vite@4.0.3
+      vite-plugin-solid: 2.5.0_solid-js@1.6.6+vite@4.0.4
     devDependencies:
       '@playwright/test': 1.29.1
       '@previewjs/core': link:../../core
       '@previewjs/testing': link:../../testing
       solid-js: 1.6.6
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
       vitest: 0.26.2
 
   frameworks/solid/preview:
@@ -1532,14 +1532,14 @@ importers:
       svelte: ^3.55.0
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
       vitest: ^0.26.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@sveltejs/vite-plugin-svelte': 1.4.0_svelte@3.55.0+vite@4.0.3
+      '@sveltejs/vite-plugin-svelte': 1.4.0_svelte@3.55.0+vite@4.0.4
       fs-extra: 11.1.0
       svelte: 3.55.0
       typescript: 4.9.4
@@ -1549,7 +1549,7 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 9.0.13
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
       vitest: 0.26.2
 
   frameworks/svelte/preview:
@@ -1663,7 +1663,7 @@ importers:
       fs-extra: ^11.1.0
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
       vitest: ^0.26.2
       vue: ^2.7.14
       vue-template-compiler: ^2.7.14
@@ -1673,8 +1673,8 @@ importers:
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue2': 2.2.0_vite@4.0.3+vue@2.7.14
-      '@vitejs/plugin-vue2-jsx': 1.1.0_p3piggplvqdoigwehsnyhjmqxi
+      '@vitejs/plugin-vue2': 2.2.0_vite@4.0.4+vue@2.7.14
+      '@vitejs/plugin-vue2-jsx': 1.1.0_iplge4e3llilsqmcilmhlkqz7q
       fs-extra: 11.1.0
       typescript: 4.9.4
       vue: 2.7.14
@@ -1685,7 +1685,7 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 9.0.13
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
       vitest: 0.26.2
 
   frameworks/vue2/preview:
@@ -1785,7 +1785,7 @@ importers:
       fs-extra: ^11.1.0
       typescript: ^4.9.4
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
       vitest: ^0.26.2
       vue: ^3.2.45
     dependencies:
@@ -1793,8 +1793,8 @@ importers:
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue': 4.0.0_vite@4.0.3+vue@3.2.45
-      '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.0.3+vue@3.2.45
+      '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
+      '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.0.4+vue@3.2.45
       '@vue/compiler-sfc': 3.2.45
       fs-extra: 11.1.0
       typescript: 4.9.4
@@ -1805,7 +1805,7 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 9.0.13
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
       vitest: 0.26.2
 
   frameworks/vue3/preview:
@@ -1871,10 +1871,10 @@ importers:
   iframe:
     specifiers:
       unbuild: ^1.0.2
-      vite: ^4.0.3
+      vite: ^4.0.4
     devDependencies:
       unbuild: 1.0.2
-      vite: 4.0.3
+      vite: 4.0.4
 
   integrations/cli:
     specifiers:
@@ -4025,26 +4025,10 @@ packages:
     dev: true
     optional: true
 
-  /@esbuild/android-arm/0.16.10:
-    resolution: {integrity: sha512-RmJjQTRrO6VwUWDrzTBLmV4OJZTarYsiepLGlF2rYTVB701hSorPywPGvP6d8HCuuRibyXa5JX4s3jN2kHEtjQ==}
-    engines: {node: '>=12'}
-    cpu: [arm]
-    os: [android]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/android-arm/0.16.14:
     resolution: {integrity: sha512-u0rITLxFIeYAvtJXBQNhNuV4YZe+MD1YvIWT7Nicj8hZAtRVZk2PgNH6KclcKDVHz1ChLKXRfX7d7tkbQBUfrg==}
     engines: {node: '>=12'}
     cpu: [arm]
-    os: [android]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/android-arm64/0.16.10:
-    resolution: {integrity: sha512-47Y+NwVKTldTlDhSgJHZ/RpvBQMUDG7eKihqaF/u6g7s0ZPz4J1vy8A3rwnnUOF2CuDn7w7Gj/QcMoWz3U3SJw==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
     os: [android]
     requiresBuild: true
     optional: true
@@ -4057,14 +4041,6 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/android-x64/0.16.10:
-    resolution: {integrity: sha512-C4PfnrBMcuAcOurQzpF1tTtZz94IXO5JmICJJ3NFJRHbXXsQUg9RFG45KvydKqtFfBaFLCHpduUkUfXwIvGnRg==}
-    engines: {node: '>=12'}
-    cpu: [x64]
-    os: [android]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/android-x64/0.16.14:
     resolution: {integrity: sha512-jir51K4J0K5Rt0KOcippjSNdOl7akKDVz5I6yrqdk4/m9y+rldGptQUF7qU4YpX8U61LtR+w2Tu2Ph+K/UaJOw==}
     engines: {node: '>=12'}
@@ -4073,26 +4049,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/darwin-arm64/0.16.10:
-    resolution: {integrity: sha512-bH/bpFwldyOKdi9HSLCLhhKeVgRYr9KblchwXgY2NeUHBB/BzTUHtUSBgGBmpydB1/4E37m+ggXXfSrnD7/E7g==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/darwin-arm64/0.16.14:
     resolution: {integrity: sha512-vrlaP81IuwPaw1fyX8fHCmivP3Gr73ojVEZy+oWJLAiZVcG8o8Phwun/XDnYIFUHxIoUnMFEpg9o38MIvlw8zw==}
     engines: {node: '>=12'}
     cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/darwin-x64/0.16.10:
-    resolution: {integrity: sha512-OXt7ijoLuy+AjDSKQWu+KdDFMBbdeaL6wtgMKtDUXKWHiAMKHan5+R1QAG6HD4+K0nnOvEJXKHeA9QhXNAjOTQ==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [darwin]
     requiresBuild: true
     optional: true
@@ -4105,26 +4065,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/freebsd-arm64/0.16.10:
-    resolution: {integrity: sha512-shSQX/3GHuspE3Uxtq5kcFG/zqC+VuMnJkqV7LczO41cIe6CQaXHD3QdMLA4ziRq/m0vZo7JdterlgbmgNIAlQ==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [freebsd]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/freebsd-arm64/0.16.14:
     resolution: {integrity: sha512-xRM1RQsazSvL42BNa5XC7ytD4ZDp0ZyJcH7aB0SlYUcHexJUKiDNKR7dlRVlpt6W0DvoRPU2nWK/9/QWS4u2fw==}
     engines: {node: '>=12'}
     cpu: [arm64]
-    os: [freebsd]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/freebsd-x64/0.16.10:
-    resolution: {integrity: sha512-5YVc1zdeaJGASijZmTzSO4h6uKzsQGG3pkjI6fuXvolhm3hVRhZwnHJkforaZLmzvNv5Tb7a3QL2FAVmrgySIA==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [freebsd]
     requiresBuild: true
     optional: true
@@ -4137,14 +4081,6 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/linux-arm/0.16.10:
-    resolution: {integrity: sha512-c360287ZWI2miBnvIj23bPyVctgzeMT2kQKR+x94pVqIN44h3GF8VMEs1SFPH1UgyDr3yBbx3vowDS1SVhyVhA==}
-    engines: {node: '>=12'}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/linux-arm/0.16.14:
     resolution: {integrity: sha512-X6xULug66ulrr4IzrW7qq+eq9n4MtEyagdWvj4o4cmWr+JXOT47atjpDF9j5M2zHY0UQBmqnHhwl+tXpkpIb2w==}
     engines: {node: '>=12'}
@@ -4153,26 +4089,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/linux-arm64/0.16.10:
-    resolution: {integrity: sha512-2aqeNVxIaRfPcIaMZIFoblLh588sWyCbmj1HHCCs9WmeNWm+EIN0SmvsmPvTa/TsNZFKnxTcvkX2eszTcCqIrA==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/linux-arm64/0.16.14:
     resolution: {integrity: sha512-TLh2OcbBUQcMYRH4GbiDkDZfZ4t1A3GgmeXY27dHSI6xrU7IkO00MGBiJySmEV6sH3Wa6pAN6UtaVL0DwkGW4Q==}
     engines: {node: '>=12'}
     cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/linux-ia32/0.16.10:
-    resolution: {integrity: sha512-sqMIEWeyrLGU7J5RB5fTkLRIFwsgsQ7ieWXlDLEmC2HblPYGb3AucD7inw2OrKFpRPKsec1l+lssiM3+NV5aOw==}
-    engines: {node: '>=12'}
-    cpu: [ia32]
     os: [linux]
     requiresBuild: true
     optional: true
@@ -4203,26 +4123,10 @@ packages:
     dev: true
     optional: true
 
-  /@esbuild/linux-loong64/0.16.10:
-    resolution: {integrity: sha512-O7Pd5hLEtTg37NC73pfhUOGTjx/+aXu5YoSq3ahCxcN7Bcr2F47mv+kG5t840thnsEzrv0oB70+LJu3gUgchvg==}
-    engines: {node: '>=12'}
-    cpu: [loong64]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/linux-loong64/0.16.14:
     resolution: {integrity: sha512-udz/aEHTcuHP+xdWOJmZ5C9RQXHfZd/EhCnTi1Hfay37zH3lBxn/fNs85LA9HlsniFw2zccgcbrrTMKk7Cn1Qg==}
     engines: {node: '>=12'}
     cpu: [loong64]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/linux-mips64el/0.16.10:
-    resolution: {integrity: sha512-FN8mZOH7531iPHM0kaFhAOqqNHoAb6r/YHW2ZIxNi0a85UBi2DO4Vuyn7t1p4UN8a4LoAnLOT1PqNgHkgBJgbA==}
-    engines: {node: '>=12'}
-    cpu: [mips64el]
     os: [linux]
     requiresBuild: true
     optional: true
@@ -4235,26 +4139,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/linux-ppc64/0.16.10:
-    resolution: {integrity: sha512-Dg9RiqdvHOAWnOKIOTsIx8dFX9EDlY2IbPEY7YFzchrCiTZmMkD7jWA9UdZbNUygPjdmQBVPRCrLydReFlX9yg==}
-    engines: {node: '>=12'}
-    cpu: [ppc64]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/linux-ppc64/0.16.14:
     resolution: {integrity: sha512-kclKxvZvX5YhykwlJ/K9ljiY4THe5vXubXpWmr7q3Zu3WxKnUe1VOZmhkEZlqtnJx31GHPEV4SIG95IqTdfgfg==}
     engines: {node: '>=12'}
     cpu: [ppc64]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/linux-riscv64/0.16.10:
-    resolution: {integrity: sha512-XMqtpjwzbmlar0BJIxmzu/RZ7EWlfVfH68Vadrva0Wj5UKOdKvqskuev2jY2oPV3aoQUyXwnMbMrFmloO2GfAw==}
-    engines: {node: '>=12'}
-    cpu: [riscv64]
     os: [linux]
     requiresBuild: true
     optional: true
@@ -4267,26 +4155,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/linux-s390x/0.16.10:
-    resolution: {integrity: sha512-fu7XtnoeRNFMx8DjK3gPWpFBDM2u5ba+FYwg27SjMJwKvJr4bDyKz5c+FLXLUSSAkMAt/UL+cUbEbra+rYtUgw==}
-    engines: {node: '>=12'}
-    cpu: [s390x]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/linux-s390x/0.16.14:
     resolution: {integrity: sha512-++fw3P4fQk9nqvdzbANRqimKspL8pDCnSpXomyhV7V/ISha/BZIYvZwLBWVKp9CVWKwWPJ4ktsezuLIvlJRHqA==}
     engines: {node: '>=12'}
     cpu: [s390x]
-    os: [linux]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/linux-x64/0.16.10:
-    resolution: {integrity: sha512-61lcjVC/RldNNMUzQQdyCWjCxp9YLEQgIxErxU9XluX7juBdGKb0pvddS0vPNuCvotRbzijZ1pzII+26haWzbA==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [linux]
     requiresBuild: true
     optional: true
@@ -4299,27 +4171,11 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/netbsd-x64/0.16.10:
-    resolution: {integrity: sha512-JeZXCX3viSA9j4HqSoygjssdqYdfHd6yCFWyfSekLbz4Ef+D2EjvsN02ZQPwYl5a5gg/ehdHgegHhlfOFP0HCA==}
-    engines: {node: '>=12'}
-    cpu: [x64]
-    os: [netbsd]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/netbsd-x64/0.16.14:
     resolution: {integrity: sha512-U06pfx8P5CqyoPNfqIJmnf+5/r4mJ1S62G4zE6eOjS59naQcxi6GnscUCPH3b+hRG0qdKoGX49RAyiqW+M9aSw==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [netbsd]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/openbsd-x64/0.16.10:
-    resolution: {integrity: sha512-3qpxQKuEVIIg8SebpXsp82OBrqjPV/OwNWmG+TnZDr3VGyChNnGMHccC1xkbxCHDQNnnXjxhMQNyHmdFJbmbRA==}
-    engines: {node: '>=12'}
-    cpu: [x64]
-    os: [openbsd]
     requiresBuild: true
     optional: true
 
@@ -4331,27 +4187,11 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/sunos-x64/0.16.10:
-    resolution: {integrity: sha512-z+q0xZ+et/7etz7WoMyXTHZ1rB8PMSNp/FOqURLJLOPb3GWJ2aj4oCqFCjPwEbW1rsT7JPpxeH/DwGAWk/I1Bg==}
-    engines: {node: '>=12'}
-    cpu: [x64]
-    os: [sunos]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/sunos-x64/0.16.14:
     resolution: {integrity: sha512-2iI7D34uTbDn/TaSiUbEHz+fUa8KbN90vX5yYqo12QGpu6T8Jl+kxODsWuMCwoTVlqUpwfPV22nBbFPME9OPtw==}
     engines: {node: '>=12'}
     cpu: [x64]
     os: [sunos]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/win32-arm64/0.16.10:
-    resolution: {integrity: sha512-+YYu5sbQ9npkNT9Dec+tn1F/kjg6SMgr6bfi/6FpXYZvCRfu2YFPZGb+3x8K30s8eRxFpoG4sGhiSUkr1xbHEw==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [win32]
     requiresBuild: true
     optional: true
 
@@ -4363,26 +4203,10 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@esbuild/win32-ia32/0.16.10:
-    resolution: {integrity: sha512-Aw7Fupk7XNehR1ftHGYwUteyJ2q+em/aE+fVU3YMTBN2V5A7Z4aVCSV+SvCp9HIIHZavPFBpbdP3VfjQpdf6Xg==}
-    engines: {node: '>=12'}
-    cpu: [ia32]
-    os: [win32]
-    requiresBuild: true
-    optional: true
-
   /@esbuild/win32-ia32/0.16.14:
     resolution: {integrity: sha512-z06t5zqk8ak0Xom5HG81z2iOQ1hNWYsFQp3sczVLVx+dctWdgl80tNRyTbwjaFfui2vFO12dfE3trCTvA+HO4g==}
     engines: {node: '>=12'}
     cpu: [ia32]
-    os: [win32]
-    requiresBuild: true
-    optional: true
-
-  /@esbuild/win32-x64/0.16.10:
-    resolution: {integrity: sha512-qddWullt3sC1EIpfHvCRBq3H4g3L86DZpD6n8k2XFjFVyp01D++uNbN1hT/JRsHxTbyyemZcpwL5aRlJwc/zFw==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [win32]
     requiresBuild: true
     optional: true
@@ -6588,8 +6412,8 @@ packages:
     dependencies:
       '@nuxt/kit': /@nuxt/kit-edge/3.0.1-rc.0-27857531.faf2607_rollup@3.8.1
       '@rollup/plugin-replace': 5.0.2_rollup@3.8.1
-      '@vitejs/plugin-vue': 4.0.0_vite@4.0.3+vue@3.2.45
-      '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.0.3+vue@3.2.45
+      '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
+      '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.0.4+vue@3.2.45
       autoprefixer: 10.4.13_postcss@8.4.20
       chokidar: 3.5.3
       cssnano: 5.1.14_postcss@8.4.20
@@ -6615,9 +6439,9 @@ packages:
       rollup-plugin-visualizer: 5.8.3_rollup@3.8.1
       ufo: 1.0.1
       unplugin: 1.0.1
-      vite: 4.0.3
+      vite: 4.0.4
       vite-node: 0.25.8
-      vite-plugin-checker: 0.5.3_vite@4.0.3
+      vite-plugin-checker: 0.5.3_vite@4.0.4
       vue: 3.2.45
       vue-bundle-renderer: 1.0.0
     transitivePeerDependencies:
@@ -10084,6 +9908,26 @@ packages:
       vitefu: 0.2.4_vite@4.0.3
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@sveltejs/vite-plugin-svelte/1.4.0_svelte@3.55.0+vite@4.0.4:
+    resolution: {integrity: sha512-6QupI/jemMfK+yI2pMtJcu5iO2gtgTfcBdGwMZZt+lgbFELhszbDl6Qjh000HgAV8+XUA+8EY8DusOFk8WhOIg==}
+    engines: {node: ^14.18.0 || >= 16}
+    peerDependencies:
+      svelte: ^3.44.0
+      vite: ^3.0.0
+    dependencies:
+      debug: 4.3.4
+      deepmerge: 4.2.2
+      kleur: 4.1.5
+      magic-string: 0.26.7
+      svelte: 3.55.0
+      svelte-hmr: 0.15.1_svelte@3.55.0
+      vite: 4.0.4
+      vitefu: 0.2.4_vite@4.0.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@sveltejs/vite-plugin-svelte/2.0.2_svelte@3.55.0+vite@4.0.3:
     resolution: {integrity: sha512-xCEan0/NNpQuL0l5aS42FjwQ6wwskdxC3pW1OeFtEKNZwRg7Evro9lac9HesGP6TdFsTv2xMes5ASQVKbCacxg==}
@@ -11315,8 +11159,25 @@ packages:
       vite: 4.0.3
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
-  /@vitejs/plugin-vue-jsx/3.0.0_vite@4.0.3+vue@3.2.45:
+  /@vitejs/plugin-react/3.0.0_vite@4.0.4:
+    resolution: {integrity: sha512-1mvyPc0xYW5G8CHQvJIJXLoMjl5Ct3q2g5Y2s6Ccfgwm45y48LBvsla7az+GkkAtYikWQ4Lxqcsq5RHLcZgtNQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.0.0
+    dependencies:
+      '@babel/core': 7.20.7
+      '@babel/plugin-transform-react-jsx-self': 7.18.6_@babel+core@7.20.7
+      '@babel/plugin-transform-react-jsx-source': 7.19.6_@babel+core@7.20.7
+      magic-string: 0.27.0
+      react-refresh: 0.14.0
+      vite: 4.0.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@vitejs/plugin-vue-jsx/3.0.0_vite@4.0.4+vue@3.2.45:
     resolution: {integrity: sha512-vurkuzgac5SYuxd2HUZqAFAWGTF10diKBwJNbCvnWijNZfXd+7jMtqjPFbGt7idOJUn584fP1Ar9j/GN2jQ3Ew==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -11326,7 +11187,7 @@ packages:
       '@babel/core': 7.20.7
       '@babel/plugin-transform-typescript': 7.20.7_@babel+core@7.20.7
       '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.20.7
-      vite: 4.0.3
+      vite: 4.0.4
       vue: 3.2.45
     transitivePeerDependencies:
       - supports-color
@@ -11340,8 +11201,19 @@ packages:
     dependencies:
       vite: 4.0.3
       vue: 3.2.45
+    dev: true
 
-  /@vitejs/plugin-vue2-jsx/1.1.0_p3piggplvqdoigwehsnyhjmqxi:
+  /@vitejs/plugin-vue/4.0.0_vite@4.0.4+vue@3.2.45:
+    resolution: {integrity: sha512-e0X4jErIxAB5oLtDqbHvHpJe/uWNkdpYV83AOG2xo2tEVSzCzewgJMtREZM30wXnM5ls90hxiOtAuVU6H5JgbA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.0.0
+      vue: ^3.2.25
+    dependencies:
+      vite: 4.0.4
+      vue: 3.2.45
+
+  /@vitejs/plugin-vue2-jsx/1.1.0_iplge4e3llilsqmcilmhlkqz7q:
     resolution: {integrity: sha512-Mxg24oJVGXlu33p4fx1nHgG7jW+beK7cK1Xb6IP6tAPXrZ9N/mldFPKKhftBsITgOIKXzHeldKY6iOGEttzjEQ==}
     engines: {node: '>=14.18.0'}
     peerDependencies:
@@ -11353,21 +11225,21 @@ packages:
       '@babel/plugin-transform-typescript': 7.20.7_@babel+core@7.20.7
       '@rollup/pluginutils': 5.0.2_rollup@3.8.1
       '@vue/babel-preset-jsx': 1.4.0_qmjjnmkndvfo77554ya2p26uuu
-      vite: 4.0.3
+      vite: 4.0.4
       vue: 2.7.14
     transitivePeerDependencies:
       - rollup
       - supports-color
     dev: false
 
-  /@vitejs/plugin-vue2/2.2.0_vite@4.0.3+vue@2.7.14:
+  /@vitejs/plugin-vue2/2.2.0_vite@4.0.4+vue@2.7.14:
     resolution: {integrity: sha512-1km7zEuZ/9QRPvzXSjikbTYGQPG86Mq1baktpC4sXqsXlb02HQKfi+fl8qVS703JM7cgm24Ga9j+RwKmvFn90A==}
     engines: {node: ^14.18.0 || >= 16.0.0}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0
       vue: ^2.7.0-0
     dependencies:
-      vite: 4.0.3
+      vite: 4.0.4
       vue: 2.7.14
     dev: false
 
@@ -17421,35 +17293,6 @@ packages:
       esbuild-windows-64: 0.15.18
       esbuild-windows-arm64: 0.15.18
     dev: true
-
-  /esbuild/0.16.10:
-    resolution: {integrity: sha512-z5dIViHoVnw2l+NCJ3zj5behdXjYvXne9gL18OOivCadXDUhyDkeSvEtLcGVAJW2fNmh33TDUpsi704XYlDodw==}
-    engines: {node: '>=12'}
-    hasBin: true
-    requiresBuild: true
-    optionalDependencies:
-      '@esbuild/android-arm': 0.16.10
-      '@esbuild/android-arm64': 0.16.10
-      '@esbuild/android-x64': 0.16.10
-      '@esbuild/darwin-arm64': 0.16.10
-      '@esbuild/darwin-x64': 0.16.10
-      '@esbuild/freebsd-arm64': 0.16.10
-      '@esbuild/freebsd-x64': 0.16.10
-      '@esbuild/linux-arm': 0.16.10
-      '@esbuild/linux-arm64': 0.16.10
-      '@esbuild/linux-ia32': 0.16.10
-      '@esbuild/linux-loong64': 0.16.10
-      '@esbuild/linux-mips64el': 0.16.10
-      '@esbuild/linux-ppc64': 0.16.10
-      '@esbuild/linux-riscv64': 0.16.10
-      '@esbuild/linux-s390x': 0.16.10
-      '@esbuild/linux-x64': 0.16.10
-      '@esbuild/netbsd-x64': 0.16.10
-      '@esbuild/openbsd-x64': 0.16.10
-      '@esbuild/sunos-x64': 0.16.10
-      '@esbuild/win32-arm64': 0.16.10
-      '@esbuild/win32-ia32': 0.16.10
-      '@esbuild/win32-x64': 0.16.10
 
   /esbuild/0.16.14:
     resolution: {integrity: sha512-6xAn3O6ZZyoxZAEkwfI9hw4cEqSr/o1ViJtnkvImVkblmUN65Md04o0S/7H1WNu1XGf1Cjij/on7VO4psIYjkw==}
@@ -31768,7 +31611,7 @@ packages:
       pathe: 0.2.0
       source-map: 0.6.1
       source-map-support: 0.5.21
-      vite: 4.0.3
+      vite: 4.0.4
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -31789,7 +31632,7 @@ packages:
       pathe: 0.2.0
       source-map: 0.6.1
       source-map-support: 0.5.21
-      vite: 4.0.3_@types+node@18.11.18
+      vite: 4.0.4_@types+node@18.11.18
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -31800,7 +31643,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-checker/0.5.3_vite@4.0.3:
+  /vite-plugin-checker/0.5.3_vite@4.0.4:
     resolution: {integrity: sha512-upPESKsQTypC2S7LPjxu9HknOymNSToAAHTYSFHb0at5GKLcN1QGMAR5Hb+7KqZclGMVniXAj7QdhZv+fTx83Q==}
     engines: {node: '>=14.16'}
     peerDependencies:
@@ -31839,7 +31682,7 @@ packages:
       npm-run-path: 4.0.1
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
-      vite: 4.0.3
+      vite: 4.0.4
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.8
@@ -31872,6 +31715,25 @@ packages:
       vitefu: 0.2.4_vite@4.0.3
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /vite-plugin-solid/2.5.0_solid-js@1.6.6+vite@4.0.4:
+    resolution: {integrity: sha512-VneGd3RyFJvwaiffsqgymeMaofn0IzQLPwDzafTV2f1agoWeeJlk5VrI5WqT9BTtLe69vNNbCJWqLhHr9fOdDw==}
+    peerDependencies:
+      solid-js: ^1.3.17 || ^1.4.0 || ^1.5.0 || ^1.6.0
+      vite: ^3.0.0 || ^4.0.0
+    dependencies:
+      '@babel/core': 7.20.7
+      '@babel/preset-typescript': 7.18.6_@babel+core@7.20.7
+      babel-preset-solid: 1.6.6_@babel+core@7.20.7
+      merge-anything: 5.1.4
+      solid-js: 1.6.6
+      solid-refresh: 0.4.1_solid-js@1.6.6
+      vite: 4.0.4
+      vitefu: 0.2.4_vite@4.0.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /vite-plugin-svgr/2.4.0_vite@4.0.3:
     resolution: {integrity: sha512-q+mJJol6ThvqkkJvvVFEndI4EaKIjSI0I3jNFgSoC9fXAz1M7kYTVUin8fhUsFojFDKZ9VHKtX6NXNaOLpbsHA==}
@@ -31886,7 +31748,7 @@ packages:
       - supports-color
     dev: true
 
-  /vite-tsconfig-paths/3.6.0_vite@4.0.3:
+  /vite-tsconfig-paths/3.6.0_vite@4.0.4:
     resolution: {integrity: sha512-UfsPYonxLqPD633X8cWcPFVuYzx/CMNHAjZTasYwX69sXpa4gNmQkR0XCjj82h7zhLGdTWagMjC1qfb9S+zv0A==}
     peerDependencies:
       vite: '>2.0.0-0'
@@ -31895,7 +31757,7 @@ packages:
       globrex: 0.1.2
       recrawl-sync: 2.2.3
       tsconfig-paths: 4.1.1
-      vite: 4.0.3_@types+node@18.11.18
+      vite: 4.0.4_@types+node@18.11.18
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -31931,9 +31793,42 @@ packages:
       rollup: 3.8.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
 
-  /vite/4.0.3_@types+node@18.11.18:
-    resolution: {integrity: sha512-HvuNv1RdE7deIfQb8mPk51UKjqptO/4RXZ5yXSAvurd5xOckwS/gg8h9Tky3uSbnjYTgUm0hVCet1cyhKd73ZA==}
+  /vite/4.0.4:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      esbuild: 0.16.14
+      postcss: 8.4.20
+      resolve: 1.22.1
+      rollup: 3.8.1
+    optionalDependencies:
+      fsevents: 2.3.2
+
+  /vite/4.0.4_@types+node@18.11.18:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -31958,7 +31853,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.11.18
-      esbuild: 0.16.10
+      esbuild: 0.16.14
       postcss: 8.4.20
       resolve: 1.22.1
       rollup: 3.8.1
@@ -31974,6 +31869,18 @@ packages:
         optional: true
     dependencies:
       vite: 4.0.3
+    dev: true
+
+  /vitefu/0.2.4_vite@4.0.4:
+    resolution: {integrity: sha512-fanAXjSaf9xXtOOeno8wZXIhgia+CZury481LsDaV++lSvcU2R9Ch2bPh3PYFyoHW+w9LqAeYRISVQjUIew14g==}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      vite: 4.0.4
+    dev: false
 
   /vitest/0.26.2:
     resolution: {integrity: sha512-Jvqxh6SDy9SsuslkDjts0iDewDIdq4rveEt69YgDuAb1tVDGV0lDepVaeAFraoySWqneJmOt4TngFFNhlw7GfA==}
@@ -32010,7 +31917,7 @@ packages:
       tinybench: 2.3.1
       tinypool: 0.3.0
       tinyspy: 1.0.2
-      vite: 4.0.3_@types+node@18.11.18
+      vite: 4.0.4_@types+node@18.11.18
       vite-node: 0.26.2_@types+node@18.11.18
     transitivePeerDependencies:
       - less
