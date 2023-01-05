@@ -45,7 +45,7 @@ export const load: RendererLoader = async ({
         } else {
           // JSX
           // @ts-ignore
-          return h(ComponentOrStory, props);
+          return storyReturnValue;
         }
       };
     } else {
