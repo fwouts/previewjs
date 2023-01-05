@@ -44,7 +44,6 @@ export const load: RendererLoader = async ({
           return h(storyReturnValue, props);
         } else {
           // JSX
-          // @ts-ignore
           return storyReturnValue;
         }
       };
