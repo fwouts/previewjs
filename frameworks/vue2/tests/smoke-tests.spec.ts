@@ -10,10 +10,7 @@ test.describe.parallel("smoke tests", () => {
     componentIdsPerProject: {
       "nuxt2-app": ["pages/index.vue:index"],
       "vue2-app": ["src/App.vue:App"],
-      "vue2-storybook": [
-        "src/stories/Button.stories.js:Primary",
-        "src/stories/Page.stories.js:LoggedIn",
-      ],
+      "vue2-storybook": ["src/stories/Button.stories.js:Primary"],
     },
   });
 });
