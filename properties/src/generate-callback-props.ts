@@ -9,11 +9,9 @@ import {
 } from "@previewjs/type-analyzer";
 
 /**
- * Generates props that will be set on a component even if no props are specified.
- *
- * In particular, this is useful for callbacks like `onClick` which don't need to be set explicitly.
+ * Generates top-level callbacks props, so callbacks such as `onClick` don't need to be set explicitly.
  */
-export function generateDefaultProps(
+export function generateCallbackProps(
   propsType: ValueType,
   types: CollectedTypes
 ): {

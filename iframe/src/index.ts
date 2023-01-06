@@ -19,7 +19,7 @@ export interface LoadComponentOptions {
   filePath: string;
   componentName: string;
   propsAssignmentSource: string;
-  defaultPropsSource: string;
+  autogenCallbackPropsSource: string;
 }
 
 class PreviewIframeControllerImpl implements PreviewIframeController {

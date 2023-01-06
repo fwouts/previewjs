@@ -3,7 +3,7 @@ import { createController, PreviewEvent } from "@previewjs/iframe";
 export type Component = {
   filePath: string;
   componentName: string;
-  defaultPropsSource: string;
+  autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 };
 

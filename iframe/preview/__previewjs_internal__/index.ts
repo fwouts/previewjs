@@ -18,7 +18,7 @@ let componentLoadId = 0;
 async function load({
   filePath,
   componentName,
-  defaultPropsSource,
+  autogenCallbackPropsSource,
   propsAssignmentSource,
 }: RenderMessage) {
   const currentComponentLoadId = ++componentLoadId;
@@ -26,7 +26,7 @@ async function load({
     setState({
       filePath,
       componentName,
-      defaultPropsSource,
+      autogenCallbackPropsSource,
       propsAssignmentSource,
     });
     const { init, refresh } = await componentLoader(filePath, componentName);

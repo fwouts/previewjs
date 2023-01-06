@@ -1,7 +1,7 @@
 import { createAxiosApi, RPCs } from "@previewjs/api";
 import { createController } from "@previewjs/iframe";
 import {
-  generateDefaultProps,
+  generateCallbackProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
 
@@ -42,7 +42,7 @@ async function onUrlChanged() {
     filePath,
     componentName,
   });
-  const defaultProps = generateDefaultProps(
+  const autogenCallbackProps = generateCallbackProps(
     computePropsResponse.types.props,
     computePropsResponse.types.all
   );
@@ -51,9 +51,9 @@ async function onUrlChanged() {
     componentName,
     propsAssignmentSource: generatePropsAssignmentSource(
       computePropsResponse.types.props,
-      defaultProps.keys,
+      autogenCallbackProps.keys,
       computePropsResponse.types.all
     ),
-    defaultPropsSource: defaultProps.source,
+    autogenCallbackPropsSource: autogenCallbackProps.source,
   });
 }

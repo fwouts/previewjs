@@ -50,8 +50,8 @@ export async function updateComponent({
     if (shouldAbortRender()) {
       return;
     }
-    let defaultProps = {};
-    eval(`defaultProps = ${currentState.defaultPropsSource};`);
+    let autogenCallbackProps = {};
+    eval(`autogenCallbackProps = ${currentState.autogenCallbackPropsSource};`);
     let properties = {};
     eval(`${currentState.propsAssignmentSource};`);
     sendMessageFromPreview({
@@ -61,7 +61,7 @@ export async function updateComponent({
     });
     const props = transformFunctions(
       {
-        ...defaultProps,
+        ...autogenCallbackProps,
         ...properties,
       },
       []

@@ -57,6 +57,6 @@ export interface RenderMessage {
   kind: "render";
   filePath: string;
   componentName: string;
-  defaultPropsSource: string;
+  autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 }

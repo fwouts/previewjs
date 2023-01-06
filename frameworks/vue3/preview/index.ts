@@ -25,7 +25,7 @@ export const load: RendererLoader = async ({
       throw new Error(`No component named '${componentName}'`);
     }
   }
-  let defaultProps = {
+  let autogenCallbackProps = {
     ...componentModule.default?.args,
     ...ComponentOrStory.args,
   };
@@ -81,7 +81,7 @@ export const load: RendererLoader = async ({
             : // @ts-ignore
               h(Decorated, props),
         {
-          ...defaultProps,
+          ...autogenCallbackProps,
           ...props,
         }
       );

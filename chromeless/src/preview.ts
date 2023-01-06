@@ -1,7 +1,7 @@
 import { RPCs } from "@previewjs/api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import {
-  generateDefaultProps,
+  generateCallbackProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
 import type { Reader } from "@previewjs/vfs";
@@ -126,7 +126,7 @@ export async function startPreview({
         RPCs.ComputeProps,
         component
       );
-      const defaultProps = generateDefaultProps(
+      const autogenCallbackProps = generateCallbackProps(
         computePropsResponse.types.props,
         computePropsResponse.types.all
       );
@@ -136,7 +136,7 @@ export async function startPreview({
             ? "properties = {}"
             : generatePropsAssignmentSource(
                 computePropsResponse.types.props,
-                defaultProps.keys,
+                autogenCallbackProps.keys,
                 computePropsResponse.types.all
               );
       }
@@ -164,7 +164,7 @@ export async function startPreview({
         },
         {
           ...component,
-          defaultPropsSource: defaultProps.source,
+          autogenCallbackPropsSource: autogenCallbackProps.source,
           propsAssignmentSource,
         }
       );
