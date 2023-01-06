@@ -50,12 +50,12 @@ importers:
     specifiers:
       '@previewjs/serializable-values': ^3.2.1
       '@previewjs/type-analyzer': ^4.1.3
-      axios: ^1.2.1
+      axios: ^1.2.2
       unbuild: ^1.0.2
     dependencies:
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
-      axios: 1.2.1
+      axios: 1.2.2
     devDependencies:
       unbuild: 1.0.2
 
@@ -166,7 +166,7 @@ importers:
       '@types/fs-extra': ^9.0.13
       acorn: ^8.8.1
       assert-never: ^1.2.1
-      axios: ^1.2.1
+      axios: ^1.2.2
       exclusive-promises: ^1.0.3
       express: ^4.18.2
       fs-extra: ^11.1.0
@@ -191,7 +191,7 @@ importers:
       '@previewjs/vfs': link:../vfs
       acorn: 8.8.1
       assert-never: 1.2.1
-      axios: 1.2.1
+      axios: 1.2.2
       exclusive-promises: 1.0.3
       express: 4.18.2
       fs-extra: 11.1.0
@@ -13094,8 +13094,8 @@ packages:
       - debug
     dev: true
 
-  /axios/1.2.1:
-    resolution: {integrity: sha512-I88cFiGu9ryt/tfVEi4kX2SITsvDddTajXTOFmt2uK1ZVA8LytjtdeyefdQWEf5PU8w+4SSJDoYnggflB5tW4A==}
+  /axios/1.2.2:
+    resolution: {integrity: sha512-bz/J4gS2S3I7mpN/YZfGFTqhXTYzRho8Ay38w2otuuDR322KzFIWm/4W2K6gIwvWaws5n+mnb7D1lN9uD+QH6Q==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
@@ -13941,7 +13941,7 @@ packages:
       mississippi: 3.0.0
       mkdirp: 0.5.6
       move-concurrently: 1.0.1
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 2.7.1
       ssri: 6.0.2
       unique-filename: 1.1.1
@@ -26704,16 +26704,6 @@ packages:
     peerDependenciesMeta:
       bluebird:
         optional: true
-
-  /promise-inflight/1.0.1_bluebird@3.7.2:
-    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
-    peerDependencies:
-      bluebird: '*'
-    peerDependenciesMeta:
-      bluebird:
-        optional: true
-    dependencies:
-      bluebird: 3.7.2
 
   /promise-polyfill/8.2.3:
     resolution: {integrity: sha512-Og0+jCRQetV84U8wVjMNccfGCnMQ9mGs9Hv78QFe+pSDD3gWTpz0y+1QCuxy5d/vBFuZ3iwP2eycAkvqIMPmWg==}
