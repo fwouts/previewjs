@@ -54,19 +54,17 @@ export async function updateComponent({
     eval(`autogenCallbackProps = ${currentState.autogenCallbackPropsSource};`);
     let properties = {};
     eval(`${currentState.propsAssignmentSource};`);
+    const invocationProps = properties;
     sendMessageFromPreview({
       kind: "rendering-setup",
       filePath: componentFilePath,
       componentName,
     });
-    const props = transformFunctions(
-      {
-        ...autogenCallbackProps,
-        ...properties,
-      },
-      []
-    );
-    await render(props);
+    await render((presetProps = {}) => ({
+      ...transformFunctions(autogenCallbackProps, []),
+      ...transformFunctions(presetProps, []),
+      ...transformFunctions(invocationProps, []),
+    }));
     if (shouldAbortRender()) {
       return;
     }
@@ -85,7 +83,7 @@ export async function updateComponent({
  * Ensures that any call to a function within objects and arrays is automatically intercepted
  * and shown to the user.
  */
-function transformFunctions(value: unknown, path: string[]): unknown {
+function transformFunctions(value: any, path: string[]): any {
   if (value && typeof value === "object") {
     if (Array.isArray(value)) {
       // Array.

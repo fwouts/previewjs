@@ -36,32 +36,31 @@ export const load: RendererLoader = async ({
         componentModule.default?.component ||
         ComponentOrStory
     : ComponentOrStory;
-  const Renderer = (props) => {
-    return (
-      <ErrorBoundary key={renderId} renderId={renderId}>
-        <Wrapper>
-          {decorators.reduce(
-            (component, decorator) => () => decorator(component),
-            () => (
-              <RenderComponent
-                {...componentModule.default?.args}
-                {...ComponentOrStory.args}
-                {...props}
-              />
-            )
-          )()}
-        </Wrapper>
-      </ErrorBoundary>
-    );
-  };
   return {
-    render: async (props) => {
+    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
       if (shouldAbortRender()) {
         return;
       }
       render(null, container);
       container.innerHTML = "";
-      render(<Renderer {...props} />, container);
+      render(
+        <ErrorBoundary key={renderId} renderId={renderId}>
+          <Wrapper>
+            {decorators.reduce(
+              (component, decorator) => () => decorator(component),
+              () => (
+                <RenderComponent
+                  {...getProps({
+                    ...componentModule.default?.args,
+                    ...ComponentOrStory.args,
+                  })}
+                />
+              )
+            )()}
+          </Wrapper>
+        </ErrorBoundary>,
+        container
+      );
       if (shouldAbortRender()) {
         return;
       }

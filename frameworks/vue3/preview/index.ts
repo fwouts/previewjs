@@ -1,5 +1,7 @@
 import type { RendererLoader } from "@previewjs/iframe";
-import { App, createApp, FunctionalComponent } from "vue";
+import { App, createApp } from "vue";
+
+let app: App | null = null;
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -25,10 +27,6 @@ export const load: RendererLoader = async ({
       throw new Error(`No component named '${componentName}'`);
     }
   }
-  let defaultProps = {
-    ...componentModule.default?.args,
-    ...ComponentOrStory.args,
-  };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
   if (ComponentOrStory.render) {
@@ -69,38 +67,27 @@ export const load: RendererLoader = async ({
     };
   }, RenderComponent);
   return {
-    render: async (props) => {
+    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
       if (shouldAbortRender()) {
         return;
       }
-      await render(
-        (props) =>
-          Wrapper
-            ? // @ts-ignore
-              h(Wrapper, null, () => h(Decorated, props))
-            : // @ts-ignore
-              h(Decorated, props),
-        {
-          ...defaultProps,
-          ...props,
-        }
-      );
+      if (app) {
+        app.unmount();
+        app = null;
+      }
+      const props = getProps({
+        ...componentModule.default?.args,
+        ...ComponentOrStory.args,
+      });
+      app = createApp(() => {
+        // @ts-ignore
+        const decoratedNode = h(Decorated, props);
+        return Wrapper
+          ? // @ts-ignore
+            h(Wrapper, null, () => decoratedNode)
+          : decoratedNode;
+      }, {});
+      app.mount("#root");
     },
   };
 };
-
-let app: App | null = null;
-export async function render<P extends Record<string, unknown>>(
-  Renderer: FunctionalComponent<P>,
-  props: P
-) {
-  if (app) {
-    app.unmount();
-    app = null;
-  }
-  if (!Renderer) {
-    return;
-  }
-  app = createApp(Renderer, props || {});
-  app.mount("#root");
-}

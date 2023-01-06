@@ -16,7 +16,7 @@ export const load: RendererLoader = async ({
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   const Component = componentModule.default;
   return {
-    render: async (props) => {
+    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
       if (shouldAbortRender()) {
         return;
       }
@@ -25,6 +25,9 @@ export const load: RendererLoader = async ({
         currentElement = null;
       }
       root.innerHTML = "";
+      const props = getProps({
+        // TODO: Pass Storybook args.
+      });
       currentElement = Wrapper
         ? new Wrapper({
             target: root,

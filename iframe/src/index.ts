@@ -251,5 +251,7 @@ export type RendererLoader = (options: {
   renderId: number;
   shouldAbortRender: () => boolean;
 }) => Promise<{
-  render: (props: any) => Promise<void>;
+  render: (
+    getProps: (presetProps?: any) => Record<string, any>
+  ) => Promise<void>;
 }>;

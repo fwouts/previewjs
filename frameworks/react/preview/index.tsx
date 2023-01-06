@@ -42,24 +42,24 @@ export const load: RendererLoader = async ({
         <Wrapper>
           {decorators.reduce(
             (component, decorator) => () => decorator(component),
-            () => (
-              <RenderComponent
-                {...componentModule.default?.args}
-                {...ComponentOrStory.args}
-                {...props}
-              />
-            )
+            () => <RenderComponent {...props} />
           )()}
         </Wrapper>
       </ErrorBoundary>
     );
   };
   return {
-    render: async (props) => {
+    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
       if (shouldAbortRender()) {
         return;
       }
-      await render(Renderer, props);
+      await render(
+        Renderer,
+        getProps({
+          ...componentModule.default?.args,
+          ...ComponentOrStory.args,
+        })
+      );
       if (shouldAbortRender()) {
         return;
       }

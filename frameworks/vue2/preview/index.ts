@@ -1,6 +1,9 @@
 import type { RendererLoader } from "@previewjs/iframe";
 import Vue from "vue";
 
+const root = document.getElementById("root");
+let app: Vue | null = null;
+
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
@@ -25,10 +28,6 @@ export const load: RendererLoader = async ({
       throw new Error(`No component named '${componentName}'`);
     }
   }
-  let defaultProps = {
-    ...componentModule.default?.args,
-    ...ComponentOrStory.args,
-  };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
   if (ComponentOrStory.render || ComponentOrStory.name === "VueComponent") {
@@ -79,46 +78,36 @@ export const load: RendererLoader = async ({
     };
   }, RenderComponent);
   return {
-    render: async (props) => {
+    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
       if (shouldAbortRender()) {
         return;
       }
-      await render(
-        {
-          functional: true,
-          render: (h, data) => {
-            const Wrapped = h(Decorated, data);
-            return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
-          },
-        },
-        {
-          props: {
-            ...defaultProps,
-            ...props,
-          },
-        }
-      );
+      if (app) {
+        app.$destroy();
+        app = null;
+      }
+      app = new Vue({
+        render: (h) =>
+          h(
+            {
+              functional: true,
+              render: (h, data) => {
+                const Wrapped = h(Decorated, data);
+                return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
+              },
+            },
+            {
+              props: getProps({
+                ...componentModule.default?.args,
+                ...ComponentOrStory.args,
+              }),
+            }
+          ),
+      }).$mount();
+      while (root.firstChild) {
+        root.removeChild(root.firstChild);
+      }
+      root.appendChild(app.$el);
     },
   };
 };
-
-const root = document.getElementById("root");
-let app: Vue | null = null;
-
-// TODO: Type Renderer properly.
-async function render<P>(Renderer: any, data: P) {
-  if (app) {
-    app.$destroy();
-    app = null;
-  }
-  if (!Renderer) {
-    return;
-  }
-  app = new Vue({
-    render: (h) => h(Renderer, data),
-  }).$mount();
-  while (root.firstChild) {
-    root.removeChild(root.firstChild);
-  }
-  root.appendChild(app.$el);
-}
