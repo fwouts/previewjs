@@ -23,7 +23,7 @@ on:
       - "!integrations/**"
 
 jobs:
-  core-tests:
+  vite-ecosystem-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
