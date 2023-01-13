@@ -10,6 +10,7 @@ test.describe.parallel("smoke tests", () => {
     componentIdsPerProject: {
       "solid-js": ["src/SolidApp.jsx:default"],
       "solid-ts": ["src/App.tsx:App"],
+      "solidstart-bare-ssr": ["src/components/Counter.tsx:default"],
     },
   });
 });

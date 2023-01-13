@@ -59,6 +59,11 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
           },
         };
       },
+      incompatibleVitePlugins: [
+        "solid-start-file-system-router",
+        "solid-start-inline-server-modules",
+        "solid-start-server",
+      ],
     };
   },
 };
