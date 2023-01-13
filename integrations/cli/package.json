@@ -24,15 +24,15 @@
     "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
-    "@previewjs/api": "workspace:*",
-    "@previewjs/loader": "workspace:*",
+    "@previewjs/api": "*",
+    "@previewjs/loader": "*",
     "@types/node": "^18.11.18",
     "chalk": "^5.2.0",
-    "commander": "^9.4.1",
+    "commander": "^9.5.0",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.16.14",
+    "esbuild": "^0.16.17",
     "open": "^8.4.0",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.0.4",
     "shx": "^0.3.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4"

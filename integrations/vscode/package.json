@@ -94,14 +94,14 @@
     "dev:install": "pnpm vsce package --no-dependencies && code --install-extension previewjs-1.17.0.vsix --force"
   },
   "devDependencies": {
-    "@previewjs/daemon": "workspace:*",
+    "@previewjs/daemon": "*",
     "@types/vscode": "^1.74.0",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.16.14",
+    "esbuild": "^0.16.17",
     "exclusive-promises": "^1.0.3",
     "execa": "^5.1.1",
-    "ovsx": "^0.7.1",
-    "rimraf": "^3.0.2",
+    "ovsx": "^0.8.0",
+    "rimraf": "^4.0.4",
     "shx": "^0.3.4",
     "strip-ansi": "^7.0.1",
     "typescript": "^4.9.4",
