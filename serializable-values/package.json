@@ -25,7 +25,7 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/serializable-values --no-deps --include-dependencies",
+    "prepublish": "cd .. && turbo run build --scope=@previewjs/serializable-values --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest --no-threads"
   },

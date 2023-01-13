@@ -18,7 +18,7 @@
     "check-licenses": "ts-node scripts/check-licenses.ts",
     "release-apps": "ts-node scripts/release-apps.ts",
     "release-components": "ts-node scripts/release-components.ts",
-    "vscode:build:dev": "cd ./integrations/vscode && pnpm build:dev",
+    "vscode:build:dev": "cd ./integrations/vscode && build:dev",
     "lint": "eslint --max-warnings 0 '**/*.ts' '**/*.tsx'",
     "vite-ecosystem-ci:build": "turbo build --filter=@previewjs/config-helper-nextjs",
     "vite-ecosystem-ci:before-test": "cd testing && playwright install",

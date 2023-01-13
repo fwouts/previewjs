@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
+    "prepublish": "cd .. && turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest --no-threads",
     "e2e-test": "playwright test"

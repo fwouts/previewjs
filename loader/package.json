@@ -33,7 +33,7 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/loader --no-deps --include-dependencies",
+    "prepublish": "cd .. && turbo run build --scope=@previewjs/loader --no-deps --include-dependencies",
     "build": "rimraf dist && tsc"
   },
   "devDependencies": {

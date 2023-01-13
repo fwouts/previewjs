@@ -26,7 +26,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
+    "prepublish": "cd .. && turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
     "build": "tsc && unbuild"
   },
   "devDependencies": {

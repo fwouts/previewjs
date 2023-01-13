@@ -37,7 +37,7 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies",
+    "prepublish": "cd .. && turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "dev": "ts-node-dev --respawn src/main.ts"
   },

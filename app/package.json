@@ -23,8 +23,8 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
-    "build": "tsc && unbuild && pnpm tsc -p client/tsconfig.json && vite build client",
+    "prepublish": "cd .. && turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
+    "build": "tsc && unbuild && tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client"
   },
   "dependencies": {
