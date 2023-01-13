@@ -1,6 +1,10 @@
 import type { RendererLoader } from "@previewjs/iframe";
-import { JSX } from "solid-js/jsx-runtime";
 import * as Solid from "solid-js/web";
+
+const container = document.getElementById("root");
+let detachFn: () => void = () => {
+  // This function will be replaced by the real one when the component is loaded.
+};
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -33,37 +37,28 @@ export const load: RendererLoader = async ({
         componentModule.default?.component ||
         ComponentOrStory
     : ComponentOrStory;
-  const Renderer = (props) => {
-    const effectiveProps = {
-      ...componentModule.default?.args,
-      ...ComponentOrStory.args,
-      ...props,
-    };
-    return (
-      <Wrapper>
-        {decorators.reduce(
-          (component, decorator) => () => decorator(component),
-          () => <RenderComponent {...effectiveProps} />
-        )()}
-      </Wrapper>
-    );
-  };
   return {
-    render: (props) => {
+    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
       if (shouldAbortRender()) {
         return;
       }
-      return render(Renderer, props);
+      detachFn();
+      container.innerHTML = "";
+      const props = getProps({
+        ...componentModule.default?.args,
+        ...ComponentOrStory.args,
+      });
+      detachFn = Solid.render(
+        () => (
+          <Wrapper>
+            {decorators.reduce(
+              (component, decorator) => () => decorator(component),
+              () => <RenderComponent {...props} />
+            )()}
+          </Wrapper>
+        ),
+        container
+      );
     },
   };
 };
-
-const container = document.getElementById("root");
-let detachFn: () => void = () => {
-  // This function will be replaced by the real one when the component is loaded.
-};
-async function render<P>(Renderer: (props: P) => JSX.Element, props: P) {
-  detachFn();
-  container.innerHTML = "";
-  detachFn = Solid.render(() => Renderer(props), container);
-}
