@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
+    "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest --no-threads",
     "e2e-test": "playwright test"
