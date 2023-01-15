@@ -27,154 +27,154 @@ jobs:
       - name: Update NPM token
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
       - run: |
-        cd api
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd api
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd app
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd app
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd chromeless
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd chromeless
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd config
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd config
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd config-helpers/nextjs
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd config-helpers/nextjs
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd core
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd core
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd csf3
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd csf3
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd iframe
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd iframe
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd frameworks/preact
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd frameworks/preact
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd frameworks/react
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd frameworks/react
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd frameworks/solid
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd frameworks/solid
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd frameworks/svelte
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd frameworks/svelte
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd frameworks/vue2
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd frameworks/vue2
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd frameworks/vue3
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd frameworks/vue3
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd properties
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd properties
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd serializable-values
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd serializable-values
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd testing
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd testing
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd type-analyzer
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd type-analyzer
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
       - run: |
-        cd vfs
-        if ! pnpm publish --no-git-checks --access public 2>error.log; then
-          if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
-            cat error.log >&2
-            exit 1
+          cd vfs
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if ! grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              cat error.log >&2
+              exit 1
+            fi
           fi
-        fi
