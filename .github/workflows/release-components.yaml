@@ -27,154 +27,116 @@ jobs:
       - name: Update NPM token
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
       - id: checkApiVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./api/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./api
       - id: checkAppVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./app/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./app
       - id: checkChromelessVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./chromeless/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./chromeless
       - id: checkConfigVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./config/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./config
       - id: checkConfigHelperNextjsVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./config-helpers/nextjs/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./config-helpers/nextjs
       - id: checkCoreVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./core/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./core
       - id: checkCsf3Version
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./csf3/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./csf3
       - id: checkIframeVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./iframe/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./iframe
       - id: checkPluginPreactVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./frameworks/preact/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./frameworks/preact
       - id: checkPluginReactVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./frameworks/react/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./frameworks/react
       - id: checkPluginSolidVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./frameworks/solid/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./frameworks/solid
       - id: checkPluginSvelteVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./frameworks/svelte/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./frameworks/svelte
       - id: checkPluginVue2Version
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./frameworks/vue2/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./frameworks/vue2
       - id: checkPluginVue3Version
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./frameworks/vue3/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./frameworks/vue3
       - id: checkPropertiesVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./properties/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./properties
       - id: checkSerializableValuesVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./serializable-values/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./serializable-values
       - id: checkTestingVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./testing/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./testing
       - id: checkTypeAnalyzerVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./type-analyzer/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ./type-analyzer
       - id: checkVfsVersion
-        uses: EndBug/version-check@v2.1.1
+        uses: PostHog/check-package-version@v2
         with:
-          diff-search: true
-          file-name: ./vfs/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkApiVersion.outputs.changed == 'true'
+          path: ./vfs
+      - if: steps.checkApiVersion.outputs.is-new-version
         run: cd api && pnpm publish --no-git-checks --access public
-      - if: steps.checkAppVersion.outputs.changed == 'true'
+      - if: steps.checkAppVersion.outputs.is-new-version
         run: cd app && pnpm publish --no-git-checks --access public
-      - if: steps.checkChromelessVersion.outputs.changed == 'true'
+      - if: steps.checkChromelessVersion.outputs.is-new-version
         run: cd chromeless && pnpm publish --no-git-checks --access public
-      - if: steps.checkConfigVersion.outputs.changed == 'true'
+      - if: steps.checkConfigVersion.outputs.is-new-version
         run: cd config && pnpm publish --no-git-checks --access public
-      - if: steps.checkConfigHelperNextjsVersion.outputs.changed == 'true'
+      - if: steps.checkConfigHelperNextjsVersion.outputs.is-new-version
         run: cd config-helpers/nextjs && pnpm publish --no-git-checks --access public
-      - if: steps.checkCoreVersion.outputs.changed == 'true'
+      - if: steps.checkCoreVersion.outputs.is-new-version
         run: cd core && pnpm publish --no-git-checks --access public
-      - if: steps.checkCsf3Version.outputs.changed == 'true'
+      - if: steps.checkCsf3Version.outputs.is-new-version
         run: cd csf3 && pnpm publish --no-git-checks --access public
-      - if: steps.checkIframeVersion.outputs.changed == 'true'
+      - if: steps.checkIframeVersion.outputs.is-new-version
         run: cd iframe && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginPreactVersion.outputs.changed == 'true'
+      - if: steps.checkPluginPreactVersion.outputs.is-new-version
         run: cd frameworks/preact && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginReactVersion.outputs.changed == 'true'
+      - if: steps.checkPluginReactVersion.outputs.is-new-version
         run: cd frameworks/react && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginSolidVersion.outputs.changed == 'true'
+      - if: steps.checkPluginSolidVersion.outputs.is-new-version
         run: cd frameworks/solid && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginSvelteVersion.outputs.changed == 'true'
+      - if: steps.checkPluginSvelteVersion.outputs.is-new-version
         run: cd frameworks/svelte && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginVue2Version.outputs.changed == 'true'
+      - if: steps.checkPluginVue2Version.outputs.is-new-version
         run: cd frameworks/vue2 && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginVue3Version.outputs.changed == 'true'
+      - if: steps.checkPluginVue3Version.outputs.is-new-version
         run: cd frameworks/vue3 && pnpm publish --no-git-checks --access public
-      - if: steps.checkPropertiesVersion.outputs.changed == 'true'
+      - if: steps.checkPropertiesVersion.outputs.is-new-version
         run: cd properties && pnpm publish --no-git-checks --access public
-      - if: steps.checkSerializableValuesVersion.outputs.changed == 'true'
+      - if: steps.checkSerializableValuesVersion.outputs.is-new-version
         run: cd serializable-values && pnpm publish --no-git-checks --access public
-      - if: steps.checkTestingVersion.outputs.changed == 'true'
+      - if: steps.checkTestingVersion.outputs.is-new-version
         run: cd testing && pnpm publish --no-git-checks --access public
-      - if: steps.checkTypeAnalyzerVersion.outputs.changed == 'true'
+      - if: steps.checkTypeAnalyzerVersion.outputs.is-new-version
         run: cd type-analyzer && pnpm publish --no-git-checks --access public
-      - if: steps.checkVfsVersion.outputs.changed == 'true'
+      - if: steps.checkVfsVersion.outputs.is-new-version
         run: cd vfs && pnpm publish --no-git-checks --access public
