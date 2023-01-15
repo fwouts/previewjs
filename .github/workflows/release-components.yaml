@@ -3,7 +3,7 @@ name: Release Components
 on:
   push:
     branches:
-      - fix-release
+      - main
 
 jobs:
   release:
