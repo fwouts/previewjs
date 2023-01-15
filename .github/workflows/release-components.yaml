@@ -1,5 +1,9 @@
 name: Release Components
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -26,117 +30,212 @@ jobs:
             - args: [--filter=\!./frameworks/\*/tests/apps/\*]
       - name: Update NPM token
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      - id: checkApiVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./api
-      - id: checkAppVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./app
-      - id: checkChromelessVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./chromeless
-      - id: checkConfigVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./config
-      - id: checkConfigHelperNextjsVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./config-helpers/nextjs
-      - id: checkCoreVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./core
-      - id: checkCsf3Version
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./csf3
-      - id: checkIframeVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./iframe
-      - id: checkPluginPreactVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./frameworks/preact
-      - id: checkPluginReactVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./frameworks/react
-      - id: checkPluginSolidVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./frameworks/solid
-      - id: checkPluginSvelteVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./frameworks/svelte
-      - id: checkPluginVue2Version
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./frameworks/vue2
-      - id: checkPluginVue3Version
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./frameworks/vue3
-      - id: checkPropertiesVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./properties
-      - id: checkSerializableValuesVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./serializable-values
-      - id: checkTestingVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./testing
-      - id: checkTypeAnalyzerVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./type-analyzer
-      - id: checkVfsVersion
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./vfs
-      - if: steps.checkApiVersion.outputs.is-new-version
-        run: cd api && pnpm publish --no-git-checks --access public
-      - if: steps.checkAppVersion.outputs.is-new-version
-        run: cd app && pnpm publish --no-git-checks --access public
-      - if: steps.checkChromelessVersion.outputs.is-new-version
-        run: cd chromeless && pnpm publish --no-git-checks --access public
-      - if: steps.checkConfigVersion.outputs.is-new-version
-        run: cd config && pnpm publish --no-git-checks --access public
-      - if: steps.checkConfigHelperNextjsVersion.outputs.is-new-version
-        run: cd config-helpers/nextjs && pnpm publish --no-git-checks --access public
-      - if: steps.checkCoreVersion.outputs.is-new-version
-        run: cd core && pnpm publish --no-git-checks --access public
-      - if: steps.checkCsf3Version.outputs.is-new-version
-        run: cd csf3 && pnpm publish --no-git-checks --access public
-      - if: steps.checkIframeVersion.outputs.is-new-version
-        run: cd iframe && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginPreactVersion.outputs.is-new-version
-        run: cd frameworks/preact && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginReactVersion.outputs.is-new-version
-        run: cd frameworks/react && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginSolidVersion.outputs.is-new-version
-        run: cd frameworks/solid && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginSvelteVersion.outputs.is-new-version
-        run: cd frameworks/svelte && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginVue2Version.outputs.is-new-version
-        run: cd frameworks/vue2 && pnpm publish --no-git-checks --access public
-      - if: steps.checkPluginVue3Version.outputs.is-new-version
-        run: cd frameworks/vue3 && pnpm publish --no-git-checks --access public
-      - if: steps.checkPropertiesVersion.outputs.is-new-version
-        run: cd properties && pnpm publish --no-git-checks --access public
-      - if: steps.checkSerializableValuesVersion.outputs.is-new-version
-        run: cd serializable-values && pnpm publish --no-git-checks --access public
-      - if: steps.checkTestingVersion.outputs.is-new-version
-        run: cd testing && pnpm publish --no-git-checks --access public
-      - if: steps.checkTypeAnalyzerVersion.outputs.is-new-version
-        run: cd type-analyzer && pnpm publish --no-git-checks --access public
-      - if: steps.checkVfsVersion.outputs.is-new-version
-        run: cd vfs && pnpm publish --no-git-checks --access public
+      - run: |
+          cd api
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd app
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd chromeless
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd config
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd config-helpers/nextjs
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd core
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd csf3
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd iframe
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd frameworks/preact
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd frameworks/react
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd frameworks/solid
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd frameworks/svelte
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd frameworks/vue2
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd frameworks/vue3
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd properties
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd serializable-values
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd testing
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd type-analyzer
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd vfs
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
