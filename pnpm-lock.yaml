@@ -20,7 +20,7 @@ importers:
       execa: ^5.1.1
       inquirer: ^8.2.5
       license-checker: ^25.0.1
-      prettier: ^2.8.2
+      prettier: ^2.8.3
       ts-node: ^10.9.1
       turbo: ~1.6
       typescript: ^4.9.4
@@ -39,7 +39,7 @@ importers:
       execa: 5.1.1
       inquirer: 8.2.5
       license-checker: 25.0.1
-      prettier: 2.8.2
+      prettier: 2.8.3
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
       turbo: 1.6.3
       typescript: 4.9.4
@@ -2018,7 +2018,7 @@ importers:
       '@previewjs/type-analyzer': ^4.1.4
       '@types/prettier': ^2.7.2
       assert-never: ^1.2.1
-      prettier: ^2.8.2
+      prettier: ^2.8.3
       typescript: ^4.9.4
       unbuild: ^1.0.2
       vitest: ^0.27.1
@@ -2026,7 +2026,7 @@ importers:
       '@faker-js/faker': 7.6.0
       '@previewjs/type-analyzer': link:../type-analyzer
       assert-never: 1.2.1
-      prettier: 2.8.2
+      prettier: 2.8.3
       typescript: 4.9.4
     devDependencies:
       '@types/prettier': 2.7.2
@@ -2073,14 +2073,14 @@ importers:
       '@types/prettier': ^2.7.2
       assert-never: ^1.2.1
       lodash: ^4.17.21
-      prettier: ^2.8.2
+      prettier: ^2.8.3
       typescript: ^4.9.4
       unbuild: ^1.0.2
       vitest: ^0.27.1
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
-      prettier: 2.8.2
+      prettier: 2.8.3
       typescript: 4.9.4
     devDependencies:
       '@types/lodash': 4.14.191
@@ -11970,7 +11970,7 @@ packages:
       source-map: 0.6.1
       vue-template-es2015-compiler: 1.9.1
     optionalDependencies:
-      prettier: 2.8.2
+      prettier: 2.8.3
     transitivePeerDependencies:
       - arc-templates
       - atpl
@@ -12039,7 +12039,7 @@ packages:
       source-map: 0.6.1
       vue-template-es2015-compiler: 1.9.1
     optionalDependencies:
-      prettier: 2.8.2
+      prettier: 2.8.3
     transitivePeerDependencies:
       - arc-templates
       - atpl
@@ -13899,7 +13899,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -26542,8 +26542,8 @@ packages:
     hasBin: true
     dev: true
 
-  /prettier/2.8.2:
-    resolution: {integrity: sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==}
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
 
@@ -26644,6 +26644,14 @@ packages:
   /progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
+
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
 
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
