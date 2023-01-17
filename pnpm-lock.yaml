@@ -218,7 +218,7 @@ importers:
       '@previewjs/vfs': '*'
       typescript: ^4.9.4
       unbuild: ^1.1.1
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@previewjs/core': link:../core
       '@previewjs/serializable-values': link:../serializable-values
@@ -227,7 +227,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 1.1.1
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   daemon:
     specifiers:
@@ -294,7 +294,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.1.1
       vite: ^4.0.4
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -312,7 +312,7 @@ importers:
       rimraf: 3.0.2
       unbuild: 1.1.1
       vite: 4.0.4
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   frameworks/preact/tests/apps/preact-app:
     specifiers:
@@ -409,7 +409,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.1.1
       vite: ^4.0.4
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -430,7 +430,7 @@ importers:
       react: 18.2.0
       unbuild: 1.1.1
       vite: 4.0.4
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   frameworks/react/preview:
     specifiers:
@@ -1452,7 +1452,7 @@ importers:
       unbuild: ^1.1.1
       vite: ^4.0.4
       vite-plugin-solid: ^2.5.0
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -1467,7 +1467,7 @@ importers:
       solid-js: 1.6.9
       unbuild: 1.1.1
       vite: 4.0.4
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   frameworks/solid/preview:
     specifiers:
@@ -1558,7 +1558,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.1.1
       vite: ^4.0.4
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
@@ -1575,7 +1575,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 1.1.1
       vite: 4.0.4
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   frameworks/svelte/preview:
     specifiers:
@@ -1689,7 +1689,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.1.1
       vite: ^4.0.4
-      vitest: ^0.27.1
+      vitest: ^0.27.2
       vue: ^2.7.14
       vue-template-compiler: ^2.7.14
     dependencies:
@@ -1711,7 +1711,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 1.1.1
       vite: 4.0.4
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   frameworks/vue2/preview:
     specifiers:
@@ -1811,7 +1811,7 @@ importers:
       typescript: ^4.9.4
       unbuild: ^1.1.1
       vite: ^4.0.4
-      vitest: ^0.27.1
+      vitest: ^0.27.2
       vue: ^3.2.45
     dependencies:
       '@previewjs/csf3': link:../../csf3
@@ -1831,7 +1831,7 @@ importers:
       '@types/fs-extra': 9.0.13
       unbuild: 1.1.1
       vite: 4.0.4
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   frameworks/vue3/preview:
     specifiers:
@@ -2004,13 +2004,13 @@ importers:
       '@previewjs/serializable-values': ^3.2.2
       '@previewjs/type-analyzer': ^4.1.4
       unbuild: ^1.1.1
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
     devDependencies:
       unbuild: 1.1.1
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   serializable-values:
     specifiers:
@@ -2021,7 +2021,7 @@ importers:
       prettier: ^2.8.3
       typescript: ^4.9.4
       unbuild: ^1.1.1
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@faker-js/faker': 7.6.0
       '@previewjs/type-analyzer': link:../type-analyzer
@@ -2031,7 +2031,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.2
       unbuild: 1.1.1
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   testing:
     specifiers:
@@ -2076,7 +2076,7 @@ importers:
       prettier: ^2.8.3
       typescript: ^4.9.4
       unbuild: ^1.1.1
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
@@ -2087,7 +2087,7 @@ importers:
       '@types/prettier': 2.7.2
       lodash: 4.17.21
       unbuild: 1.1.1
-      vitest: 0.27.1
+      vitest: 0.27.2
 
   vfs:
     specifiers:
@@ -2096,7 +2096,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^11.1.0
       unbuild: ^1.1.1
-      vitest: ^0.27.1
+      vitest: ^0.27.2
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -2104,7 +2104,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.1
-      vitest: 0.27.1
+      vitest: 0.27.2
 
 packages:
 
@@ -31938,8 +31938,8 @@ packages:
       - terser
     dev: true
 
-  /vite-node/0.27.1_@types+node@18.11.18:
-    resolution: {integrity: sha512-d6+ue/3NzsfndWaPbYh/bFkHbmAWfDXI4B874zRx+WREnG6CUHUbBC8lKaRYZjeR6gCPN5m1aVNNRXBYICA9XA==}
+  /vite-node/0.27.2_@types+node@18.11.18:
+    resolution: {integrity: sha512-IDwuVhslF10qCnWOGJui7/2KksAOBHi+UbVo6Pqt4f5lgn+kS2sVvYDsETRG5PSuslisGB5CFGvb9I6FQgymBQ==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     dependencies:
@@ -32211,8 +32211,8 @@ packages:
     dependencies:
       vite: 4.0.4
 
-  /vitest/0.27.1:
-    resolution: {integrity: sha512-1sIpQ1DVFTEn7c1ici1XHcVfdU4nKiBmPtPAtGKJJJLuJjojTv/OHGgcf69P57alM4ty8V4NMv+7Yoi5Cxqx9g==}
+  /vitest/0.27.2:
+    resolution: {integrity: sha512-y7tdsL2uaQy+KF18AlmNHZe29ukyFytlxrpSTwwmgLE2XHR/aPucJP9FLjWoqjgqFlXzRAjHlFJLU+HDyI/OsA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -32249,7 +32249,7 @@ packages:
       tinypool: 0.3.0
       tinyspy: 1.0.2
       vite: 4.0.4_@types+node@18.11.18
-      vite-node: 0.27.1_@types+node@18.11.18
+      vite-node: 0.27.2_@types+node@18.11.18
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
