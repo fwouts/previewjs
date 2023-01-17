@@ -58,7 +58,7 @@ async function main() {
   );
   console.log(`Running pnpm install...`);
   await execa(
-    "../../../node_modules/.bin/pnpm",
+    "../../../loader/node_modules/.bin/pnpm",
     ["install", "--lockfile-only"],
     {
       cwd: releaseDirPath,
