@@ -121,7 +121,6 @@ export async function activate(context: vscode.ExtensionContext) {
   if (config.get("previewjs.livePreview", true)) {
     vscode.workspace.onDidChangeTextDocument(async (e) => {
       await updateDocument(e.document);
-      componentDetector.invalidateCache(e.document);
     });
     vscode.workspace.onDidSaveTextDocument(async (e) => {
       await updateDocument(e, true);
@@ -180,8 +179,6 @@ export async function activate(context: vscode.ExtensionContext) {
           const offset = editor?.selection.active
             ? document.offsetAt(editor.selection.active)
             : 0;
-          // Make sure we get fresh results.
-          componentDetector.invalidateCache(document);
           const components = await componentDetector.getComponents(document);
           const component =
             components.find((c) => offset >= c.start && offset <= c.end) ||
