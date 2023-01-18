@@ -48,12 +48,12 @@ importers:
     specifiers:
       '@previewjs/serializable-values': ^3.2.2
       '@previewjs/type-analyzer': ^4.1.4
-      axios: ^1.2.2
+      axios: ^1.2.3
       unbuild: ^1.1.1
     dependencies:
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
-      axios: 1.2.2
+      axios: 1.2.3
     devDependencies:
       unbuild: 1.1.1
 
@@ -164,7 +164,7 @@ importers:
       '@types/fs-extra': ^11.0.1
       acorn: ^8.8.1
       assert-never: ^1.2.1
-      axios: ^1.2.2
+      axios: ^1.2.3
       exclusive-promises: ^1.0.3
       express: ^4.18.2
       fs-extra: ^11.1.0
@@ -189,7 +189,7 @@ importers:
       '@previewjs/vfs': link:../vfs
       acorn: 8.8.1
       assert-never: 1.2.1
-      axios: 1.2.2
+      axios: 1.2.3
       exclusive-promises: 1.0.3
       express: 4.18.2
       fs-extra: 11.1.0
@@ -13264,8 +13264,8 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /axios/1.2.2:
-    resolution: {integrity: sha512-bz/J4gS2S3I7mpN/YZfGFTqhXTYzRho8Ay38w2otuuDR322KzFIWm/4W2K6gIwvWaws5n+mnb7D1lN9uD+QH6Q==}
+  /axios/1.2.3:
+    resolution: {integrity: sha512-pdDkMYJeuXLZ6Xj/Q5J3Phpe+jbGdsSzlQaFVkMQzRUL05+6+tetX8TV3p4HrU4kzuO9bt+io/yGQxuyxA/xcw==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
@@ -14123,7 +14123,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -26898,6 +26898,14 @@ packages:
   /progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
+
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
 
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
