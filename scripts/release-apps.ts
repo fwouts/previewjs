@@ -57,6 +57,7 @@ async function main() {
     "utf8"
   );
   console.log(`Running pnpm install...`);
+  await fs.promises.unlink(path.join(releaseDirPath, "pnpm-lock.yaml"));
   await execa(
     "../../../loader/node_modules/.bin/pnpm",
     ["install", "--lockfile-only"],
