@@ -105,7 +105,15 @@ function formatValue(value: any) {
   if (typeof value === "string") {
     return value;
   }
-  const formatted = inspect(value) as string;
+  const formatted = inspect(value);
+  if (typeof formatted !== "string") {
+    // This can happen in rare cases e.g. toString() not actually returning a string.
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return "[Unable to represent value as string]";
+    }
+  }
   if (formatted.at(0) === "[" && formatted.at(-1) === "]") {
     return formatted.substring(1, formatted.length - 1);
   }
