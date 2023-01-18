@@ -4,7 +4,7 @@ importers:
 
   .:
     specifiers:
-      '@previewjs/core': 15.1.1
+      '@previewjs/core': 15.1.2
       '@previewjs/plugin-preact': 2.0.1
       '@previewjs/plugin-react': 8.0.1
       '@previewjs/plugin-solid': 5.0.1
@@ -14,7 +14,7 @@ importers:
       '@previewjs/pro': 1.8.7
       '@previewjs/vfs': 1.2.15
     dependencies:
-      '@previewjs/core': 15.1.1_@types+node@18.11.12
+      '@previewjs/core': 15.1.2_@types+node@18.11.12
       '@previewjs/plugin-preact': 2.0.1_@types+node@18.11.12
       '@previewjs/plugin-react': 8.0.1_fniaxw6arzsaxu5yhs6ifxxzxa
       '@previewjs/plugin-solid': 5.0.1_wgh54ukygag4vwc57sewnjv6ne
@@ -775,12 +775,12 @@ packages:
     resolution: {integrity: sha512-zrKS5XRvM5Bq16Hf+l4mqCyVmHcqCac1/3Yw0/X8mopKxpZJeKorDKFen6H0RgoF+BdMY/gYU4+z3UhnbKoChg==}
     dev: false
 
-  /@previewjs/core/15.1.1_@types+node@18.11.12:
-    resolution: {integrity: sha512-MT7fjjgWFakjBk/mpIslj6x1jbq0PMQQcQ4sEjx/9a6SefLPtDapQU0PTY4NgJqTbFFmR+YjPUNfe4vzz3fEfA==}
+  /@previewjs/core/15.1.2_@types+node@18.11.12:
+    resolution: {integrity: sha512-2UYOhe4pIaOrKs1pVCi6s/TkYdVzlLnGR/G7L+3oXXaq0MIGTUpTa6qMob/XB1/OqfhyY6Vz5zhF7kQ24RVh+g==}
     dependencies:
       '@previewjs/api': 7.2.1
       '@previewjs/config': 4.0.2
-      '@previewjs/iframe': 4.0.0
+      '@previewjs/iframe': 4.0.1
       '@previewjs/serializable-values': 3.2.2
       '@previewjs/type-analyzer': 4.1.4
       '@previewjs/vfs': 1.2.15
@@ -816,7 +816,7 @@ packages:
   /@previewjs/csf3/3.1.3_@types+node@18.11.12:
     resolution: {integrity: sha512-amHgbVK6AP8udtjtuK+ln0yr8D0ksH4jEThGZDFJ8qMQO5GHdd7+x03tJToGz0z8JTOSwEYdKs/Aw2QGq+Paqw==}
     dependencies:
-      '@previewjs/core': 15.1.1_@types+node@18.11.12
+      '@previewjs/core': 15.1.2_@types+node@18.11.12
       '@previewjs/serializable-values': 3.2.2
       '@previewjs/type-analyzer': 4.1.4
       typescript: 4.9.4
@@ -833,8 +833,8 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/iframe/4.0.0:
-    resolution: {integrity: sha512-1g9aRZ+XFG/+YclXolu/cOPgA2HRe5jQCaJuaHbyVOkSJF+rg2lQbfX66K4iQleXC9fSDCS31LudvJMdPxoRKg==}
+  /@previewjs/iframe/4.0.1:
+    resolution: {integrity: sha512-mBY/YPPehFeW++haNrBIiyZotnCenxR4HyVUFXzWGSHL9jQHfkeNhWfgzlIMgUC1W5qVGX63OTyk29t/rDagwg==}
     dev: false
 
   /@previewjs/plugin-preact/2.0.1_@types+node@18.11.12:
@@ -989,7 +989,7 @@ packages:
   /@previewjs/pro/1.8.7_@types+node@18.11.12:
     resolution: {integrity: sha512-e+QUCL0q2KveniDmxhbWCoChnXbTvdVCMWWGC9zeuGbF993rMUNA7RQArOQef0RMgYiUn3WyRafWeV5bV9AWLg==}
     dependencies:
-      '@previewjs/core': 15.1.1_@types+node@18.11.12
+      '@previewjs/core': 15.1.2_@types+node@18.11.12
       env-paths: 2.2.1
       express: 4.18.2
       fs-extra: 11.1.0
