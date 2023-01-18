@@ -36,7 +36,7 @@ jobs:
             - args: [--filter=\!./frameworks/\*/tests/apps/\*]
       - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --include-dependencies
       - name: Extract version from package.json
-        uses: sergeysova/jq-action@v2.2.1
+        uses: sergeysova/jq-action@v2.3.0
         id: version
         with:
           cmd: "jq .version integrations/vscode/package.json -r"
