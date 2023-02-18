@@ -57,11 +57,14 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           },
           plugins: [
-            ...configuredPlugins.filter(
-              (plugin) => plugin.name !== "vite-plugin-vue2"
-            ),
-            vue2Plugin(),
-            vue2JsxPlugin(),
+            // TODO: Add vite-plugin-vue2 test app.
+            ...configuredPlugins,
+            configuredPlugins.find((plugin) => plugin.name.includes("vue2"))
+              ? null
+              : vue2Plugin(),
+            configuredPlugins.find((plugin) => plugin.name.includes("jsx"))
+              ? null
+              : vue2JsxPlugin(),
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {

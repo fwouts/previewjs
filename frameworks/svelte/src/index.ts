@@ -70,7 +70,9 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
               plugin.name !== "vite-plugin-sveltekit-setup" &&
               plugin.name !== "vite-plugin-sveltekit-compile"
           ),
-          svelte(),
+          configuredPlugins.find((plugin) => plugin.name.includes("svelte"))
+            ? null
+            : svelte(),
           {
             name: "previewjs:fake-sveltekit-client",
             transform(code, id) {
