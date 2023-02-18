@@ -57,7 +57,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
                 }
                 // HMR prevents preview props from being refreshed.
                 // For now, we disable it entirely.
-                return code.replace(/import\.meta\.hot/g, "({})");
+                return code.replace(/import\.meta\.hot/g, "false");
               },
             },
           ],

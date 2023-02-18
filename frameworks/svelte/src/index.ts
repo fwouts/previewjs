@@ -100,7 +100,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
               if (!id.endsWith(".svelte")) {
                 return null;
               }
-              return code.replace(/import\.meta\.hot/g, "({})");
+              return code.replace(/import\.meta\.hot/g, "false");
             },
           },
         ],
