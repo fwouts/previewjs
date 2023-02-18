@@ -136,18 +136,11 @@ export class ViteManager {
       this.options.rootDirPath
     );
     const defaultLogger = vite.createLogger(this.options.logLevel);
-    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig();
-    const projectVitePlugins = await excludePlugins(
-      new Set(this.options.frameworkPlugin.incompatibleVitePlugins),
-      [
+    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig(
+      await flattenPlugins([
         ...(existingViteConfig?.config.plugins || []),
         ...(this.options.config.vite?.plugins || []),
-      ]
-    );
-    // Use Preview.js framework plugins unless they're already provided by the project.
-    const frameworkVitePlugins = await excludePlugins(
-      await extractPluginNames(projectVitePlugins),
-      frameworkPluginViteConfig.plugins || []
+      ])
     );
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       // @ts-expect-error
@@ -176,8 +169,7 @@ export class ViteManager {
       }),
       cssModulesWithoutSuffixPlugin(),
       componentLoaderPlugin(this.options),
-      projectVitePlugins,
-      frameworkVitePlugins,
+      frameworkPluginViteConfig.plugins,
     ];
 
     // We need to patch handleHotUpdate() in every plugin because, by
@@ -360,27 +352,7 @@ function viteAliasToRollupAliasEntries(alias?: vite.AliasOptions) {
   }
 }
 
-async function extractPluginNames(
-  pluginOptions: vite.PluginOption[]
-): Promise<Set<string>> {
-  const names = new Set<string>();
-  for (const pluginOption of await Promise.all(pluginOptions)) {
-    if (!pluginOption) {
-      continue;
-    }
-    if (Array.isArray(pluginOption)) {
-      for (const name of await extractPluginNames(pluginOption)) {
-        names.add(name);
-      }
-    } else {
-      names.add(pluginOption.name);
-    }
-  }
-  return names;
-}
-
-async function excludePlugins(
-  excludePluginNames: Set<string>,
+async function flattenPlugins(
   pluginOptions: vite.PluginOption[]
 ): Promise<vite.Plugin[]> {
   const plugins: vite.Plugin[] = [];
@@ -389,8 +361,8 @@ async function excludePlugins(
       continue;
     }
     if (Array.isArray(pluginOption)) {
-      plugins.push(...(await excludePlugins(excludePluginNames, pluginOption)));
-    } else if (!excludePluginNames.has(pluginOption.name)) {
+      plugins.push(...(await flattenPlugins(pluginOption)));
+    } else {
       plugins.push(pluginOption);
     }
   }

@@ -50,7 +50,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => ({
+      viteConfig: (configuredPlugins) => ({
         define: {
           __SVELTEKIT_DEV__: "false",
           __SVELTEKIT_APP_VERSION_POLL_INTERVAL__: "0",
@@ -62,6 +62,14 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
           },
         },
         plugins: [
+          ...configuredPlugins.filter(
+            (plugin) =>
+              plugin.name !== "vite-plugin-svelte-kit" &&
+              plugin.name !== "vite-plugin-sveltekit-build" &&
+              plugin.name !== "vite-plugin-sveltekit-middleware" &&
+              plugin.name !== "vite-plugin-sveltekit-setup" &&
+              plugin.name !== "vite-plugin-sveltekit-compile"
+          ),
           svelte(),
           {
             name: "previewjs:fake-sveltekit-client",
@@ -90,18 +98,11 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
               if (!id.endsWith(".svelte")) {
                 return null;
               }
-              return code.replace(/import\.meta/g, "({})");
+              return code.replace(/import\.meta\.hot/g, "({})");
             },
           },
         ],
       }),
-      incompatibleVitePlugins: [
-        "vite-plugin-svelte-kit",
-        "vite-plugin-sveltekit-build",
-        "vite-plugin-sveltekit-middleware",
-        "vite-plugin-sveltekit-setup",
-        "vite-plugin-sveltekit-compile",
-      ],
     };
   },
 };

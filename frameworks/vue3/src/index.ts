@@ -47,9 +47,10 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         return {
           plugins: [
+            ...configuredPlugins,
             createVuePlugin(),
             vueJsxPlugin(),
             {

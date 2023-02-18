@@ -25,8 +25,7 @@ export interface FrameworkPlugin {
   readonly transformReader?: (reader: Reader) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
   readonly specialTypes?: Record<string, ValueType>;
-  readonly viteConfig: () => vite.UserConfig;
-  readonly incompatibleVitePlugins?: string[];
+  readonly viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
   readonly detectComponents: (
     reader: Reader,
     typeAnalyzer: TypeAnalyzer,

@@ -48,7 +48,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         let rootDirPath: string;
         return {
           resolve: {
@@ -57,6 +57,9 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           },
           plugins: [
+            ...configuredPlugins.filter(
+              (plugin) => plugin.name !== "vite-plugin-vue2"
+            ),
             vue2Plugin(),
             vue2JsxPlugin(),
             {
@@ -133,10 +136,6 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
           ],
         };
       },
-      esbuild: {
-        jsxFactory: "h",
-      },
-      incompatibleVitePlugins: ["vite-plugin-vue2"],
     };
   },
 };

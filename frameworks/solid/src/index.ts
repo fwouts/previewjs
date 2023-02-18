@@ -37,9 +37,15 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         return {
           plugins: [
+            ...configuredPlugins.filter(
+              (plugin) =>
+                plugin.name !== "solid-start-file-system-router" &&
+                plugin.name !== "solid-start-inline-server-modules" &&
+                plugin.name !== "solid-start-server"
+            ),
             vitePluginSolid() as Plugin,
             optimizeSolidDepsPlugin(),
             {
@@ -50,7 +56,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
                 }
                 // HMR prevents preview props from being refreshed.
                 // For now, we disable it entirely.
-                return code.replace(/import\.meta/g, "({})");
+                return code.replace(/import\.meta\.hot/g, "({})");
               },
             },
           ],
@@ -59,11 +65,6 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
           },
         };
       },
-      incompatibleVitePlugins: [
-        "solid-start-file-system-router",
-        "solid-start-inline-server-modules",
-        "solid-start-server",
-      ],
     };
   },
 };

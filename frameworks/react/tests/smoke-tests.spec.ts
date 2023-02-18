@@ -43,6 +43,7 @@ test.describe.parallel("smoke tests", () => {
       "react-native-web-app": ["App.tsx:App"],
       "storybook-js": ["src/App.jsx:App"],
       "vite-tailwind": ["src/App.tsx:App"],
+      "vite-ts-react-swc": ["src/App.tsx:App"],
       "vite-vanilla-extract": ["src/App.tsx:App"],
       "vite-with-svgr": ["src/App.tsx:App"],
       "vite-without-svgr": ["src/App.tsx:App"],
