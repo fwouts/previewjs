@@ -20,7 +20,7 @@ test.describe.parallel("react/error handling", () => {
           with: "<p",
         });
         await preview.expectLoggedMessages.toMatch([
-          "App.tsx: Unexpected token (24:15)",
+          `App.tsx:24:15: ERROR: Expected ">" but found "<"`,
           "Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.",
         ]);
         // The component should still be shown.
@@ -175,7 +175,7 @@ test.describe.parallel("react/error handling", () => {
           }`
         );
         await preview.expectLoggedMessages.toMatch([
-          "App.tsx: Unexpected token (2:29)",
+          `App.tsx:2:30: ERROR: Unexpected "/"`,
           "Failed to reload /src/App.tsx.",
         ]);
         await preview.fileManager.update(
@@ -199,7 +199,7 @@ test.describe.parallel("react/error handling", () => {
           }`
         );
         await preview.expectLoggedMessages.toMatch([
-          `App.tsx: Unexpected token, expected "jsxTagEnd"`,
+          `App.tsx:4:12: ERROR: Expected ">" but found "<"`,
           "Failed to reload /src/App.tsx.",
         ]);
         await preview.fileManager.update(
@@ -225,9 +225,11 @@ test.describe.parallel("react/error handling", () => {
         );
         await preview.expectLoggedMessages.toMatch([
           "Error: Expected error",
-          "Error: Expected error",
-          "React will try to recreate this component tree from scratch using the error boundary you provided",
-          ...(reactVersion === 18 ? ["Error: Expected error"] : []),
+          "The above error occurred in the <ErrorBoundary> component:",
+          "ReferenceError: React is not defined",
+          ...(reactVersion === 18
+            ? ["Error: Expected error"]
+            : ["The above error occurred in the <App> component"]),
         ]);
         await preview.fileManager.update(
           "src/App.tsx",
