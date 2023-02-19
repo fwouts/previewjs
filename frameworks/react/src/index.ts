@@ -13,7 +13,14 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     if (!version) {
       return false;
     }
-    return parseInt(version) >= 16;
+    const [major, minor] = version.split(".").map((n) => parseInt(n)) as [
+      number,
+      number
+    ];
+    if (isNaN(major) || isNaN(minor)) {
+      return false;
+    }
+    return major >= 17 || (major === 16 && minor >= 14);
   },
   async create({ rootDirPath, dependencies }) {
     const previewDirPath = path.join(__dirname, "..", "preview");
