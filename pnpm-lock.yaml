@@ -233,7 +233,7 @@ importers:
     specifiers:
       '@previewjs/api': ^7.2.1
       '@previewjs/core': ^15.1.2
-      '@previewjs/loader': ^2.7.0
+      '@previewjs/loader': ^0.1.2
       '@types/node': ^18.14.0
       exclusive-promises: ^1.0.3
       exit-hook: ^3.2.0
@@ -245,7 +245,7 @@ importers:
     devDependencies:
       '@previewjs/api': link:../api
       '@previewjs/core': link:../core
-      '@previewjs/loader': link:../loader
+      '@previewjs/loader': 0.1.2
       '@types/node': 18.14.0
       exclusive-promises: 1.0.3
       exit-hook: 3.2.0
@@ -1923,7 +1923,7 @@ importers:
   integrations/cli:
     specifiers:
       '@previewjs/api': ^7.2.1
-      '@previewjs/loader': ^2.7.0
+      '@previewjs/loader': ^0.1.2
       '@types/node': ^18.14.0
       chalk: ^5.2.0
       commander: ^10.0.0
@@ -1936,7 +1936,7 @@ importers:
       typescript: ^4.9.5
     devDependencies:
       '@previewjs/api': link:../../api
-      '@previewjs/loader': link:../../loader
+      '@previewjs/loader': 0.1.2
       '@types/node': 18.14.0
       chalk: 5.2.0
       commander: 10.0.0
@@ -7203,6 +7203,10 @@ packages:
       '@prefresh/utils': 1.1.3
       preact: 10.12.1
       webpack: 4.46.0
+    dev: true
+
+  /@previewjs/loader/0.1.2:
+    resolution: {integrity: sha512-JRhspngxFl5b+ENd/NQjSuYI7OfDiuob3qGAqlgrFvJfMwXoxYMGN1lDt/xfRbTtoNvvHb5wr9X6uZLix8ZEHg==}
     dev: true
 
   /@react-native-community/cli-clean/9.2.1:
@@ -14400,7 +14404,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -27151,6 +27155,14 @@ packages:
   /progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
+
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
 
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
