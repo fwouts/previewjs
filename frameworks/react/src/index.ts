@@ -48,7 +48,10 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
+        const hasReactPlugin = configuredPlugins.find((plugin) =>
+          plugin.name.startsWith("vite:react-")
+        );
         return {
           resolve: {
             alias: {
@@ -57,7 +60,8 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
           },
           plugins: [
             reactImportsPlugin(),
-            react(),
+            ...configuredPlugins,
+            ...(!hasReactPlugin ? [react()] : []),
             {
               name: "previewjs:update-react-import",
               async transform(code, id) {
@@ -81,7 +85,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
                 }
                 // HMR prevents preview props from being refreshed.
                 // For now, we disable it entirely.
-                return code.replace(/import\.meta/g, "({})");
+                return code.replace(/import\.meta\.hot/g, "false");
               },
             },
           ],

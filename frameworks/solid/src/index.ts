@@ -1,7 +1,6 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
-import type { Plugin } from "vite";
 import vitePluginSolid from "vite-plugin-solid";
 import { extractSolidComponents } from "./extract-component";
 import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin";
@@ -37,10 +36,18 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         return {
           plugins: [
-            vitePluginSolid() as Plugin,
+            ...configuredPlugins.filter(
+              (plugin) =>
+                plugin.name !== "solid-start-file-system-router" &&
+                plugin.name !== "solid-start-inline-server-modules" &&
+                plugin.name !== "solid-start-server"
+            ),
+            configuredPlugins.find((plugin) => plugin.name.includes("solid"))
+              ? null
+              : vitePluginSolid(),
             optimizeSolidDepsPlugin(),
             {
               name: "previewjs:disable-solid-hmr",
@@ -50,7 +57,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
                 }
                 // HMR prevents preview props from being refreshed.
                 // For now, we disable it entirely.
-                return code.replace(/import\.meta/g, "({})");
+                return code.replace(/import\.meta\.hot/g, "false");
               },
             },
           ],
@@ -59,11 +66,6 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
           },
         };
       },
-      incompatibleVitePlugins: [
-        "solid-start-file-system-router",
-        "solid-start-inline-server-modules",
-        "solid-start-server",
-      ],
     };
   },
 };

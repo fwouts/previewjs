@@ -36,7 +36,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         return {
           resolve: {
             alias: {
@@ -53,6 +53,10 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
             jsxFragment: "fragment",
           },
           plugins: [
+            ...configuredPlugins.filter(
+              (plugin) =>
+                plugin.name !== "prefresh" && plugin.name !== "vite:preact-jsx"
+            ),
             {
               name: "previewjs:optimize-deps",
               config: () => ({
@@ -64,7 +68,6 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
           ],
         };
       },
-      incompatibleVitePlugins: ["prefresh", "vite:preact-jsx"],
     };
   },
 };

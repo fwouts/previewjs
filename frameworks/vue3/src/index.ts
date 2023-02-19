@@ -47,11 +47,16 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         return {
           plugins: [
-            createVuePlugin(),
-            vueJsxPlugin(),
+            ...configuredPlugins,
+            configuredPlugins.find((plugin) => plugin.name === "vite:vue")
+              ? null
+              : createVuePlugin(),
+            configuredPlugins.find((plugin) => plugin.name.includes("jsx"))
+              ? null
+              : vueJsxPlugin(),
             {
               name: "previewjs:disable-vue-hmr",
               async transform(code, id) {
