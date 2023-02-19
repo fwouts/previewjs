@@ -58,13 +58,9 @@ async function main() {
   );
   console.log(`Running pnpm install...`);
   await fs.promises.unlink(path.join(releaseDirPath, "pnpm-lock.yaml"));
-  await execa(
-    "../../../loader/node_modules/.bin/pnpm",
-    ["install", "--lockfile-only"],
-    {
-      cwd: releaseDirPath,
-    }
-  );
+  await execa("pnpm", ["install", "--lockfile-only"], {
+    cwd: releaseDirPath,
+  });
   await execa("git", ["add", "."]);
   if (!(await isGitClean())) {
     await execa("git", ["commit", "-m", `release: update loader dependencies`]);
