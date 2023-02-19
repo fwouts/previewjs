@@ -49,7 +49,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
         return components;
       },
       viteConfig: (configuredPlugins) => {
-        const hasReactPlugin = configuredPlugins.filter((plugin) =>
+        const hasReactPlugin = configuredPlugins.find((plugin) =>
           plugin.name.startsWith("vite:react-")
         );
         return {
