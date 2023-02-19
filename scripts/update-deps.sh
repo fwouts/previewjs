@@ -5,7 +5,7 @@ set -e
 pnpm --filter "!./dev-workspace" --filter "!./frameworks/**/*" -r update !env-paths !get-port !globby !execa !inquirer !@types/inquirer !@types/vscode !vite-tsconfig-paths !turbo --latest
 
 # Update all other dependencies within their range.
-pnpm --filter "!./dev-workspace" -r update
+pnpm --filter "!./dev-workspace" -r update !@types/vscode
 
 # Revert changes from "major.minor" to "major.minor".
 LC_ALL=C && LANG=C && find . -type f | grep -v node_modules | grep -v .run | xargs sed -i '' 's/"/"/g'
