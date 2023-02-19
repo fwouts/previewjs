@@ -3,10 +3,10 @@
     "prepare": "rimraf modules && shx mkdir modules && shx cp -rL node_modules/vue modules/vue && shx rm -rf modules/vue/packages/compiler-sfc/test"
   },
   "dependencies": {
-    "vue": "^3.2.45"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@previewjs/iframe": "*",
+    "@previewjs/iframe": "^4.0.1",
     "rimraf": "^3.0.2",
     "shx": "^0.3.4"
   }
