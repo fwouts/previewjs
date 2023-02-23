@@ -43,6 +43,7 @@ import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
 import java.util.Timer
 import java.util.TimerTask
+import java.util.WeakHashMap
 import javax.swing.ImageIcon
 import kotlin.concurrent.schedule
 
@@ -63,6 +64,8 @@ class ProjectService(private val project: Project) : Disposable {
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var currentPreviewWorkspaceId: String? = null
+
+    private var fileComponents = mutableMapOf<String, List<AnalyzedFileComponent>>()
 
     init {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(
@@ -112,11 +115,8 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    fun showConsole() {
-        app.invokeLater {
-            getOrCreateConsole()
-            this.consoleToolWindow?.show()
-        }
+    fun getComponents(filePath: String): List<AnalyzedFileComponent> {
+        return fileComponents[filePath] ?: emptyList()
     }
 
     fun printToConsole(text: String) {
@@ -149,7 +149,6 @@ class ProjectService(private val project: Project) : Disposable {
         if (!JS_EXTENSIONS.contains(file.extension)) {
             return
         }
-        val fileEditors = editorManager.getEditors(file)
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
             val components = api.analyzeFile(
@@ -158,64 +157,15 @@ class ProjectService(private val project: Project) : Disposable {
                     absoluteFilePath = file.path,
                 )
             ).components
+
             app.invokeLater(
                 Runnable {
-                    updateComponentHints(file, fileEditors, components)
+                    fileComponents[file.path] = components
                 }
             )
         }, {
             "Warning: unable to find components in ${file.path}"
         })
-    }
-
-    private fun updateComponentHints(
-        file: VirtualFile,
-        fileEditors: Array<FileEditor>,
-        components: List<AnalyzedFileComponent>
-    ) {
-        for (fileEditor in fileEditors) {
-            if (fileEditor is TextEditor) {
-                val editor = fileEditor.editor
-                if (editor is EditorImpl) {
-                    val presentationFactory = PresentationFactory(editor)
-                    val offsets = HashSet<Int>()
-                    for (component in components) {
-                        offsets.add(component.start)
-                    }
-                    val existingBlockByOffset = HashMap<Int, Inlay<*>>()
-                    for (block in editor.inlayModel.getBlockElementsInRange(0, Int.MAX_VALUE)) {
-                        if (offsets.contains(block.offset)) {
-                            existingBlockByOffset[block.offset] = block
-                        } else {
-                            Disposer.dispose(block)
-                        }
-                    }
-                    for (component in components) {
-                        val existingBlock = existingBlockByOffset[component.start]
-                        if (existingBlock == null) {
-                            editor.inlayModel.addBlockElement(
-                                component.start,
-                                false,
-                                true,
-                                INLAY_PRIORITY,
-                                InlineInlayRenderer(
-                                    listOf(
-                                        HorizontalConstrainedPresentation(
-                                            RecursivelyUpdatingRootPresentation(
-                                                presentationFactory.referenceOnHover(
-                                                    presentationFactory.text("Open ${component.componentName} in Preview.js")
-                                                ) { _, _ -> openPreview(file.path, component.componentId) }
-                                            ),
-                                            HorizontalConstraints(INLAY_PRIORITY, false)
-                                        )
-                                    )
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun openPreview(absoluteFilePath: String, componentId: String) {

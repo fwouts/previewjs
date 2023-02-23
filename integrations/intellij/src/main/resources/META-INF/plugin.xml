@@ -18,6 +18,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.previewjs.intellij.plugin.services.ProjectService"/>
         <notificationGroup id="Preview.js" displayType="BALLOON" />
+        <codeInsight.inlayProvider language="JavaScript" implementationClass="com.previewjs.intellij.plugin.InlayProvider" />
     </extensions>
 
     <applicationListeners>
