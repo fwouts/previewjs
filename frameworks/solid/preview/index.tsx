@@ -1,4 +1,4 @@
-import type { GetPropsOptions, RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import * as Solid from "solid-js/web";
 
 const container = document.getElementById("root");
@@ -38,9 +38,7 @@ export const load: RendererLoader = async ({
         ComponentOrStory
     : ComponentOrStory;
   return {
-    render: async (
-      getProps: (options: GetPropsOptions) => Record<string, any>
-    ) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }

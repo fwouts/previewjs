@@ -1,4 +1,4 @@
-import type { GetPropsOptions, RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import React from "react";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 // @ts-ignore
@@ -49,9 +49,7 @@ export const load: RendererLoader = async ({
     );
   };
   return {
-    render: async (
-      getProps: (options: GetPropsOptions) => Record<string, any>
-    ) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }

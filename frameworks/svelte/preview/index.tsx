@@ -1,4 +1,4 @@
-import type { GetPropsOptions, RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import { SvelteComponent } from "svelte";
 import * as si from "svelte/internal";
 
@@ -16,9 +16,7 @@ export const load: RendererLoader = async ({
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   const Component = componentModule.default;
   return {
-    render: async (
-      getProps: (options: GetPropsOptions) => Record<string, any>
-    ) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
