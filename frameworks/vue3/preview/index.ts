@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import { App, createApp } from "vue";
 
 let app: App | null = null;
@@ -67,7 +67,7 @@ export const load: RendererLoader = async ({
     };
   }, RenderComponent);
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
@@ -76,8 +76,8 @@ export const load: RendererLoader = async ({
         app = null;
       }
       const props = getProps({
-        ...componentModule.default?.args,
-        ...ComponentOrStory.args,
+        presetGlobalProps: componentModule.default?.args || {},
+        presetProps: ComponentOrStory.args || {},
       });
       app = createApp(() => {
         // @ts-ignore

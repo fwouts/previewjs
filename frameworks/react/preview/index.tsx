@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import React from "react";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 // @ts-ignore
@@ -49,15 +49,15 @@ export const load: RendererLoader = async ({
     );
   };
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
       await render(
         Renderer,
         getProps({
-          ...componentModule.default?.args,
-          ...ComponentOrStory.args,
+          presetGlobalProps: componentModule.default?.args || {},
+          presetProps: ComponentOrStory.args || {},
         })
       );
       if (shouldAbortRender()) {

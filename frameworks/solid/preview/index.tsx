@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import * as Solid from "solid-js/web";
 
 const container = document.getElementById("root");
@@ -38,15 +38,15 @@ export const load: RendererLoader = async ({
         ComponentOrStory
     : ComponentOrStory;
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
       detachFn();
       container.innerHTML = "";
       const props = getProps({
-        ...componentModule.default?.args,
-        ...ComponentOrStory.args,
+        presetGlobalProps: componentModule.default?.args || {},
+        presetProps: ComponentOrStory.args || {},
       });
       detachFn = Solid.render(
         () => (
