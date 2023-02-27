@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsOptions, RendererLoader } from "@previewjs/iframe";
 import { Fragment, render } from "preact";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
@@ -37,7 +37,9 @@ export const load: RendererLoader = async ({
         ComponentOrStory
     : ComponentOrStory;
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (
+      getProps: (options: GetPropsOptions) => Record<string, any>
+    ) => {
       if (shouldAbortRender()) {
         return;
       }
@@ -51,8 +53,8 @@ export const load: RendererLoader = async ({
               () => (
                 <RenderComponent
                   {...getProps({
-                    ...componentModule.default?.args,
-                    ...ComponentOrStory.args,
+                    presetGlobalProps: componentModule.default?.args || {},
+                    presetProps: ComponentOrStory.args || {},
                   })}
                 />
               )

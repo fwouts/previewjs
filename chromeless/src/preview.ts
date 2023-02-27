@@ -133,7 +133,7 @@ export async function startPreview({
       if (!propsAssignmentSource) {
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
-            ? "properties = {}"
+            ? "properties = null"
             : generatePropsAssignmentSource(
                 computePropsResponse.types.props,
                 autogenCallbackProps.keys,

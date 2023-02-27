@@ -1,4 +1,4 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsOptions, RendererLoader } from "@previewjs/iframe";
 import { SvelteComponent } from "svelte";
 import * as si from "svelte/internal";
 
@@ -16,7 +16,9 @@ export const load: RendererLoader = async ({
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   const Component = componentModule.default;
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (
+      getProps: (options: GetPropsOptions) => Record<string, any>
+    ) => {
       if (shouldAbortRender()) {
         return;
       }
@@ -27,6 +29,8 @@ export const load: RendererLoader = async ({
       root.innerHTML = "";
       const props = getProps({
         // TODO: Pass Storybook args.
+        presetGlobalProps: {},
+        presetProps: {},
       });
       currentElement = Wrapper
         ? new Wrapper({

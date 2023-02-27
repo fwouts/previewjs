@@ -252,6 +252,11 @@ export type RendererLoader = (options: {
   shouldAbortRender: () => boolean;
 }) => Promise<{
   render: (
-    getProps: (presetProps?: any) => Record<string, any>
+    getProps: (options: GetPropsOptions) => Record<string, any>
   ) => Promise<void>;
 }>;
+
+export type GetPropsOptions = {
+  presetGlobalProps: any;
+  presetProps: any;
+};

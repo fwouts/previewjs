@@ -60,10 +60,10 @@ export async function updateComponent({
       filePath: componentFilePath,
       componentName,
     });
-    await render((presetProps = {}) => ({
+    await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),
-      ...transformFunctions(presetProps, []),
-      ...transformFunctions(invocationProps, []),
+      ...transformFunctions(presetGlobalProps, []),
+      ...transformFunctions(invocationProps || presetProps, []),
     }));
     if (shouldAbortRender()) {
       return;
