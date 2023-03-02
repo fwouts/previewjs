@@ -350,7 +350,7 @@ export async function startDaemon({
           results.push({
             componentName: component.name,
             componentId: generateComponentId({
-              currentFilePath: filePath,
+              filePath,
               name: component.name,
             }),
             start: component.start,

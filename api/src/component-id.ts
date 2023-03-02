@@ -1,9 +1,6 @@
 export function generateComponentId(options: {
-  currentFilePath: string,
-  siblingFileName?: string,
-  name: string,
+  filePath: string;
+  name: string;
 }) {
-  return `${options.currentFilePath.replace(/\\/g, "/")}:${
-    options.siblingFileName ? `${options.siblingFileName}/` : ""
-  }${options.name}`;
+  return `${options.filePath.replace(/\\/g, "/")}:${options.name}`;
 }
