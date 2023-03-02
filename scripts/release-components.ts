@@ -145,6 +145,7 @@ async function main() {
   }
 
   const releasedPackages: string[] = [];
+  const forceReleasePackages: Record<string, Set<string>> = {};
   while (Object.entries(localDependencies).length > 0) {
     const nextPackageWithoutDeps = Object.entries(localDependencies).find(
       ([_, deps]) => deps.size === 0
@@ -164,9 +165,17 @@ async function main() {
     const dependents = Object.entries(localDependencies)
       .filter(([_, deps]) => deps.has(scopedName))
       .map(([name]) => name);
-    const released = await preparePackageRelease(packageInfo, dependents);
+    const released = await preparePackageRelease(
+      packageInfo,
+      dependents,
+      forceReleasePackages[scopedName]
+    );
     if (released) {
-      releasedPackages.push(released);
+      releasedPackages.push(released.versionedPackageName);
+      for (const packageName of released.impactedPackageNames) {
+        forceReleasePackages[packageName] ||= new Set();
+        forceReleasePackages[packageName]?.add(released.versionedPackageName);
+      }
     }
     for (const deps of Object.values(localDependencies)) {
       deps.delete(scopedName);
@@ -190,8 +199,9 @@ async function main() {
 
 async function preparePackageRelease(
   packageInfo: Package,
-  dependents: string[]
-): Promise<string | null> {
+  dependents: string[],
+  majorDependencyUpdates: Set<string> | null = null
+) {
   const packageName = `@previewjs/${packageInfo.name}`;
   const packageJson = getPackageJson(`${packageInfo.dirPath}/package.json`);
   const { version: currentVersion } = await packageJson.read();
@@ -202,12 +212,18 @@ async function preparePackageRelease(
     packageInfo.dirPath,
     ...(packageInfo.additionalChangelogPath || []),
   ]);
-  if (!changelog) {
+  if (!changelog && !majorDependencyUpdates) {
     console.log(`There is nothing to release.\n`);
     return null;
   }
   const prompt = inquirer.createPromptModule();
-  console.log(`You are about to release the following:\n${changelog}`);
+  console.log(`You are about to release the following:`);
+  if (majorDependencyUpdates) {
+    for (const dependency of majorDependencyUpdates) {
+      console.log(`- major dependency update: ${dependency}`);
+    }
+  }
+  console.log(changelog);
   const { shouldRelease } = await prompt({
     name: "shouldRelease",
     type: "confirm",
@@ -217,6 +233,7 @@ async function preparePackageRelease(
     return null;
   }
   const version = await incrementVersion(currentVersion);
+  const isMajorUpdate = version.endsWith(".0.0");
   await packageJson.updateVersion(version);
   for (const dependent of dependents) {
     const depPackageInfo = packages.find((p) => p.name === dependent);
@@ -227,7 +244,10 @@ async function preparePackageRelease(
       `${depPackageInfo.dirPath}/package.json`
     ).updateDependency(packageName, version);
   }
-  return `${packageName}@v${version}`;
+  return {
+    versionedPackageName: `${packageName}@v${version}`,
+    impactedPackageNames: isMajorUpdate ? dependents : [],
+  };
 }
 
 main().catch((e) => {
