@@ -17,7 +17,7 @@
     "build": "cd ../../.. && turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies && cd integrations/intellij/daemon && rimraf dist && tsc && node esbuild.js && shx cp -rL ../../../loader/node_modules/pnpm dist/pnpm && shx cp -rL ../../../loader/src/release/* dist/"
   },
   "devDependencies": {
-    "@previewjs/daemon": "*",
+    "@previewjs/daemon": "workspace:*",
     "esbuild": "^0.17.10",
     "rimraf": "^4.1.2",
     "shx": "^0.3.4",

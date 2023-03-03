@@ -24,8 +24,8 @@
     "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
-    "@previewjs/api": "^7.2.1",
-    "@previewjs/loader": "^2.7.0",
+    "@previewjs/api": "workspace:*",
+    "@previewjs/loader": "workspace:*",
     "@types/node": "^18.14.1",
     "chalk": "^5.2.0",
     "commander": "^10.0.0",

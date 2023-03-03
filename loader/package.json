@@ -37,8 +37,8 @@
     "build": "rimraf dist && tsc"
   },
   "devDependencies": {
-    "@previewjs/core": "^15.1.2",
-    "@previewjs/vfs": "^1.2.15",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/vfs": "workspace:*",
     "@types/fs-extra": "^11.0.1",
     "@types/proper-lockfile": "^4.1.2",
     "exclusive-promises": "^1.0.3",
