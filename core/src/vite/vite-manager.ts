@@ -214,7 +214,6 @@ export class ViteManager {
       root: this.options.rootDirPath,
       base: "/preview/",
       server: {
-        ...existingViteConfig?.config.server,
         middlewareMode: true,
         hmr: {
           overlay: false,
