@@ -207,7 +207,6 @@ export class ViteManager {
       })
     );
     const viteServerPromise = vite.createServer({
-      ...existingViteConfig?.config,
       ...frameworkPluginViteConfig,
       ...existingViteConfig?.config,
       ...this.options.config.vite,
