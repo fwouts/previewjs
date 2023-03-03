@@ -66,6 +66,14 @@ export function extractReactComponents(
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
     if (storiesDefaultComponent && storyArgs && isExported) {
+      const associatedComponent = extractStoryAssociatedComponent(
+        resolver,
+        storiesDefaultComponent
+      );
+      if (!associatedComponent) {
+        // No detected associated component, give up.
+        return null;
+      }
       return {
         kind: "story",
         args: {
@@ -73,10 +81,7 @@ export function extractReactComponents(
           end: storyArgs.getEnd(),
           value: parseSerializableValue(storyArgs),
         },
-        associatedComponent: extractStoryAssociatedComponent(
-          resolver,
-          storiesDefaultComponent
-        ),
+        associatedComponent,
       };
     }
     const signature = extractComponentSignature(resolver.checker, node);

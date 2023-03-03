@@ -92,6 +92,14 @@ export function extractVueComponents(
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
     if (storiesDefaultComponent && storyArgs && isExported) {
+      const associatedComponent = extractStoryAssociatedComponent(
+        resolver,
+        storiesDefaultComponent
+      );
+      if (!associatedComponent) {
+        // No detected associated component, give up.
+        return null;
+      }
       return {
         kind: "story",
         args: {
@@ -99,10 +107,7 @@ export function extractVueComponents(
           end: storyArgs.getEnd(),
           value: parseSerializableValue(storyArgs),
         },
-        associatedComponent: extractStoryAssociatedComponent(
-          resolver,
-          storiesDefaultComponent
-        ),
+        associatedComponent,
       };
     }
     const type = resolver.checker.getTypeAtLocation(node);
@@ -119,14 +124,24 @@ export function extractVueComponents(
           }),
         };
       }
-      if (isExported && returnType.getProperty("template")) {
+      if (
+        storiesDefaultComponent &&
+        isExported &&
+        returnType.getProperty("template")
+      ) {
         // This is a story.
+        const associatedComponent = extractStoryAssociatedComponent(
+          resolver,
+          storiesDefaultComponent
+        );
+        if (!associatedComponent) {
+          // No detected associated component, give up.
+          return null;
+        }
         return {
           kind: "story",
           args: null,
-          associatedComponent: storiesDefaultComponent
-            ? extractStoryAssociatedComponent(resolver, storiesDefaultComponent)
-            : null,
+          associatedComponent,
         };
       }
     }
@@ -170,7 +185,7 @@ export function extractVueComponents(
     ).map((c) => {
       if (
         c.info.kind !== "story" ||
-        !c.info.associatedComponent?.absoluteFilePath.endsWith(".vue.ts")
+        !c.info.associatedComponent.absoluteFilePath.endsWith(".vue.ts")
       ) {
         return c;
       }

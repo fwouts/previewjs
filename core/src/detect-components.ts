@@ -145,15 +145,13 @@ export function detectedComponentToApiComponent(
         : {
             kind: "story",
             args: component.info.args,
-            associatedComponent: component.info.associatedComponent
-              ? {
-                  filePath: path.relative(
-                    rootDirPath,
-                    component.info.associatedComponent.absoluteFilePath
-                  ),
-                  name: component.info.associatedComponent.name,
-                }
-              : null,
+            associatedComponent: {
+              filePath: path.relative(
+                rootDirPath,
+                component.info.associatedComponent.absoluteFilePath
+              ),
+              name: component.info.associatedComponent.name,
+            },
           },
   };
 }

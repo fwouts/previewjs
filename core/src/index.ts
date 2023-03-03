@@ -1,9 +1,5 @@
 import { RequestOf, ResponseOf, RPC, RPCs } from "@previewjs/api";
-import {
-  CollectedTypes,
-  createTypeAnalyzer,
-  EMPTY_OBJECT_TYPE,
-} from "@previewjs/type-analyzer";
+import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
@@ -85,17 +81,7 @@ export async function createWorkspace({
     if (component.info.kind === "component") {
       analyze = component.info.analyze;
     } else {
-      const associatedComponent = component.info.associatedComponent;
-      if (!associatedComponent) {
-        return {
-          component: detectedComponentToApiComponent(rootDirPath, component),
-          types: {
-            props: EMPTY_OBJECT_TYPE,
-            all: {},
-          },
-        };
-      }
-      analyze = associatedComponent.analyze;
+      analyze = component.info.associatedComponent.analyze;
     }
     const result = await analyze();
     return {

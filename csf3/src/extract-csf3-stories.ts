@@ -63,6 +63,10 @@ export function extractCsf3Stories(
         resolver.checker,
         storyComponent || defaultComponent
       );
+      if (!associatedComponent) {
+        // No detected associated component, give up.
+        continue;
+      }
       components.push({
         absoluteFilePath: sourceFile.fileName,
         name,
@@ -76,12 +80,10 @@ export function extractCsf3Stories(
                 value: parseSerializableValue(args),
               }
             : null,
-          associatedComponent: associatedComponent
-            ? {
-                ...associatedComponent,
-                analyze: () => analyzeComponent(associatedComponent),
-              }
-            : null,
+          associatedComponent: {
+            ...associatedComponent,
+            analyze: () => analyzeComponent(associatedComponent),
+          },
         },
       });
     }
