@@ -55,6 +55,6 @@ export type Component = {
         associatedComponent: {
           filePath: string;
           name: string;
-        } | null;
+        };
       };
 };

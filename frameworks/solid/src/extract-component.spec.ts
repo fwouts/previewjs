@@ -187,7 +187,7 @@ Primary.args = {
       throw new Error();
     }
     expect(
-      await extractedStories[1].info.associatedComponent?.analyze()
+      await extractedStories[1].info.associatedComponent.analyze()
     ).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
@@ -251,7 +251,7 @@ export function NotStory() {}
       throw new Error();
     }
     expect(
-      await extractedStories[0].info.associatedComponent?.analyze()
+      await extractedStories[0].info.associatedComponent.analyze()
     ).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
