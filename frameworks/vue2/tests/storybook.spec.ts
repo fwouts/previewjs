@@ -262,6 +262,10 @@ test.describe.parallel("vue2/storybook", () => {
       "src/Button.stories.js",
       `import Button from './Button.vue';
 
+      export default {
+        component: Button
+      }
+
       export const Primary = () => ({
         components: { Button },
         template: '<Button label="Button" />'
