@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && turbo run build --scope=@previewjs/serializable-values --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",

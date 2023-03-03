@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && turbo run build --scope=@previewjs/vfs --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest"
   },
   "dependencies": {
     "assert-never": "^1.2.1",
