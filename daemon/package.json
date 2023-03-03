@@ -42,9 +42,9 @@
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
-    "@previewjs/api": "^7.2.1",
-    "@previewjs/core": "^15.1.2",
-    "@previewjs/loader": "^2.7.0",
+    "@previewjs/api": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/loader": "workspace:*",
     "@types/node": "^18.14.1",
     "exclusive-promises": "^1.0.3",
     "exit-hook": "^3.2.0",

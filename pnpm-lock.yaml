@@ -59,16 +59,16 @@ importers:
 
   app:
     specifiers:
-      '@previewjs/api': ^7.2.1
-      '@previewjs/core': ^15.1.2
-      '@previewjs/iframe': ^4.0.1
-      '@previewjs/plugin-preact': ^2.0.1
-      '@previewjs/plugin-react': ^8.0.1
-      '@previewjs/plugin-solid': ^5.0.1
-      '@previewjs/plugin-svelte': ^3.0.1
-      '@previewjs/plugin-vue2': ^7.0.1
-      '@previewjs/plugin-vue3': ^7.0.1
-      '@previewjs/properties': ^1.0.7
+      '@previewjs/api': workspace:*
+      '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
+      '@previewjs/plugin-preact': workspace:*
+      '@previewjs/plugin-react': workspace:*
+      '@previewjs/plugin-solid': workspace:*
+      '@previewjs/plugin-svelte': workspace:*
+      '@previewjs/plugin-vue2': workspace:*
+      '@previewjs/plugin-vue3': workspace:*
+      '@previewjs/properties': workspace:*
       '@types/express': ^4.17.17
       '@types/fs-extra': ^11.0.1
       '@types/node': ^18.14.1
@@ -82,8 +82,8 @@ importers:
       express: 4.18.2
     devDependencies:
       '@previewjs/api': link:../api
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/core': link:../core
+      '@previewjs/iframe': link:../iframe
       '@previewjs/plugin-preact': link:../frameworks/preact
       '@previewjs/plugin-react': link:../frameworks/react
       '@previewjs/plugin-solid': link:../frameworks/solid
@@ -215,7 +215,7 @@ importers:
       '@previewjs/core': ^16.0.0
       '@previewjs/serializable-values': ^3.2.3
       '@previewjs/type-analyzer': ^4.1.5
-      '@previewjs/vfs': ^1.2.15
+      '@previewjs/vfs': workspace:*
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vitest: ^0.28.5
@@ -231,9 +231,9 @@ importers:
 
   daemon:
     specifiers:
-      '@previewjs/api': ^7.2.1
-      '@previewjs/core': ^15.1.2
-      '@previewjs/loader': ^2.7.0
+      '@previewjs/api': workspace:*
+      '@previewjs/core': workspace:*
+      '@previewjs/loader': workspace:*
       '@types/node': ^18.14.1
       exclusive-promises: ^1.0.3
       exit-hook: ^3.2.0
@@ -244,7 +244,7 @@ importers:
       unbuild: ^1.1.2
     devDependencies:
       '@previewjs/api': link:../api
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
+      '@previewjs/core': link:../core
       '@previewjs/loader': link:../loader
       '@types/node': 18.14.1
       exclusive-promises: 1.0.3
@@ -257,14 +257,14 @@ importers:
 
   dev-workspace:
     specifiers:
-      '@previewjs/app': '*'
-      '@previewjs/core': '*'
-      '@previewjs/plugin-preact': '*'
-      '@previewjs/plugin-react': '*'
-      '@previewjs/plugin-solid': '*'
-      '@previewjs/plugin-svelte': '*'
-      '@previewjs/plugin-vue2': '*'
-      '@previewjs/plugin-vue3': '*'
+      '@previewjs/app': workspace:*
+      '@previewjs/core': workspace:*
+      '@previewjs/plugin-preact': workspace:*
+      '@previewjs/plugin-react': workspace:*
+      '@previewjs/plugin-solid': workspace:*
+      '@previewjs/plugin-svelte': workspace:*
+      '@previewjs/plugin-vue2': workspace:*
+      '@previewjs/plugin-vue3': workspace:*
       '@previewjs/vfs': '*'
     dependencies:
       '@previewjs/app': link:../app
@@ -280,13 +280,13 @@ importers:
   frameworks/preact:
     specifiers:
       '@playwright/test': ^1.30.0
-      '@previewjs/api': ^7.2.1
-      '@previewjs/core': ^15.1.2
+      '@previewjs/api': workspace:*
+      '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.1.5
-      '@previewjs/iframe': ^4.0.1
-      '@previewjs/properties': ^1.0.7
+      '@previewjs/iframe': workspace:*
+      '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^3.2.3
-      '@previewjs/testing': ^2.0.0
+      '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.5
       '@previewjs/vfs': ^1.2.16
       preact: ^10.13.0
@@ -304,14 +304,14 @@ importers:
     devDependencies:
       '@playwright/test': 1.30.0
       '@previewjs/api': link:../../api
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/properties': link:../../properties
-      '@previewjs/testing': 2.1.0_@types+node@18.14.1
+      '@previewjs/testing': link:../../testing
       preact: 10.13.0
       rimraf: 3.0.2
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitest: 0.27.3
 
   frameworks/preact/tests/apps/preact-app:
@@ -392,13 +392,13 @@ importers:
   frameworks/react:
     specifiers:
       '@playwright/test': ^1.30.0
-      '@previewjs/api': ^7.2.1
-      '@previewjs/core': ^15.1.2
+      '@previewjs/api': workspace:*
+      '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.1.5
-      '@previewjs/iframe': ^4.0.1
-      '@previewjs/properties': ^1.0.7
+      '@previewjs/iframe': workspace:*
+      '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^3.2.3
-      '@previewjs/testing': ^2.0.0
+      '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.5
       '@previewjs/vfs': ^1.2.16
       '@types/prop-types': ^15.7.5
@@ -420,21 +420,21 @@ importers:
     devDependencies:
       '@playwright/test': 1.30.0
       '@previewjs/api': link:../../api
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/properties': link:../../properties
-      '@previewjs/testing': 2.1.0_@types+node@18.14.1
+      '@previewjs/testing': link:../../testing
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.28
       concurrently: 7.6.0
       react: 18.2.0
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitest: 0.27.3
 
   frameworks/react/preview:
     specifiers:
-      '@previewjs/iframe': ^4.0.1
+      '@previewjs/iframe': workspace:*
       '@types/prop-types': ^15.7.5
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
@@ -445,14 +445,14 @@ importers:
       '@types/react': 18.0.28
       '@types/react-dom': 18.0.11
     devDependencies:
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/iframe': link:../../../iframe
       rimraf: 3.0.2
       shx: 0.3.4
 
   frameworks/react/tests/apps/aliases:
     specifiers:
       '@babel/core': ^7.20.12
-      '@previewjs/config': ^4.0.2
+      '@previewjs/config': workspace:*
       '@types/node': ^18.14.0
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
@@ -558,8 +558,8 @@ importers:
 
   frameworks/react/tests/apps/cra-custom-svgr:
     specifiers:
-      '@previewjs/config': ^4.0.2
-      '@previewjs/plugin-react': ^8.0.1
+      '@previewjs/config': workspace:*
+      '@previewjs/plugin-react': workspace:*
       '@types/node': ^18.14.0
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
@@ -893,8 +893,8 @@ importers:
 
   frameworks/react/tests/apps/cra-svgr:
     specifiers:
-      '@previewjs/config': ^4.0.2
-      '@previewjs/plugin-react': ^8.0.1
+      '@previewjs/config': workspace:*
+      '@previewjs/plugin-react': workspace:*
       '@types/node': ^18.14.0
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
@@ -1109,7 +1109,7 @@ importers:
   frameworks/react/tests/apps/nextjs-11:
     specifiers:
       '@babel/core': ^7.20.12
-      '@previewjs/config-helper-nextjs': ^1.0.5
+      '@previewjs/config-helper-nextjs': workspace:*
       '@types/react': ^18.0.28
       next: ^11.1.4
       react: ^18.2.0
@@ -1128,7 +1128,7 @@ importers:
   frameworks/react/tests/apps/nextjs-12:
     specifiers:
       '@babel/core': ^7.20.12
-      '@previewjs/config-helper-nextjs': ^1.0.5
+      '@previewjs/config-helper-nextjs': workspace:*
       '@types/react': ^18.0.28
       next: ^12.3.4
       react: ^18.2.0
@@ -1146,7 +1146,7 @@ importers:
 
   frameworks/react/tests/apps/nextjs-13:
     specifiers:
-      '@previewjs/config-helper-nextjs': ^1.0.5
+      '@previewjs/config-helper-nextjs': workspace:*
       '@types/node': ^18.14.0
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
@@ -1155,7 +1155,6 @@ importers:
       react-dom: ^18.2.0
       typescript: ^4.9.5
     dependencies:
-      '@previewjs/config-helper-nextjs': link:../../../../../config-helpers/nextjs
       '@types/node': 18.14.0
       '@types/react': 18.0.28
       '@types/react-dom': 18.0.11
@@ -1163,6 +1162,8 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       typescript: 4.9.5
+    devDependencies:
+      '@previewjs/config-helper-nextjs': link:../../../../../config-helpers/nextjs
 
   frameworks/react/tests/apps/react-native-web-app:
     specifiers:
@@ -1350,7 +1351,7 @@ importers:
 
   frameworks/react/tests/apps/vite-vanilla-extract:
     specifiers:
-      '@previewjs/config': ^4.0.2
+      '@previewjs/config': workspace:*
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
       '@vanilla-extract/css': ^1.9.5
@@ -1460,10 +1461,10 @@ importers:
   frameworks/solid:
     specifiers:
       '@playwright/test': ^1.30.0
-      '@previewjs/core': ^15.1.2
+      '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.1.5
       '@previewjs/serializable-values': ^3.2.3
-      '@previewjs/testing': ^2.0.0
+      '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.5
       '@previewjs/vfs': ^1.2.16
       solid-js: ^1.6.11
@@ -1481,11 +1482,11 @@ importers:
       vite-plugin-solid: 2.5.0_solid-js@1.6.11+vite@4.1.4
     devDependencies:
       '@playwright/test': 1.30.0
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/testing': 2.1.0_@types+node@18.14.1
+      '@previewjs/core': link:../../core
+      '@previewjs/testing': link:../../testing
       solid-js: 1.6.11
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitest: 0.27.3
 
   frameworks/solid/preview:
@@ -1499,7 +1500,7 @@ importers:
 
   frameworks/solid/tests/apps/solid:
     specifiers:
-      '@previewjs/plugin-solid': ^5.0.1
+      '@previewjs/plugin-solid': workspace:*
       solid-js: ^1.6.11
       vite: ^4.1.2
       vite-plugin-solid: ^2.5.0
@@ -1564,10 +1565,10 @@ importers:
   frameworks/svelte:
     specifiers:
       '@playwright/test': ^1.30.0
-      '@previewjs/core': ^15.1.2
+      '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.1.5
       '@previewjs/serializable-values': ^3.2.3
-      '@previewjs/testing': ^2.0.0
+      '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.5
       '@previewjs/vfs': ^1.2.16
       '@sveltejs/vite-plugin-svelte': ^1.4.0
@@ -1589,11 +1590,11 @@ importers:
       typescript: 4.9.5
     devDependencies:
       '@playwright/test': 1.30.0
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/testing': 2.1.0_@types+node@18.14.1
+      '@previewjs/core': link:../../core
+      '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitest: 0.27.3
 
   frameworks/svelte/preview:
@@ -1695,10 +1696,10 @@ importers:
     specifiers:
       '@nuxt/config': ^2.16.0
       '@playwright/test': ^1.30.0
-      '@previewjs/core': ^15.1.2
+      '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.1.5
       '@previewjs/serializable-values': ^3.2.3
-      '@previewjs/testing': ^2.0.0
+      '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.5
       '@previewjs/vfs': ^1.2.16
       '@types/fs-extra': ^11.0.1
@@ -1725,23 +1726,23 @@ importers:
       vue-template-compiler: 2.7.14
     devDependencies:
       '@playwright/test': 1.30.0
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/testing': 2.1.0_@types+node@18.14.1
+      '@previewjs/core': link:../../core
+      '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitest: 0.27.3
 
   frameworks/vue2/preview:
     specifiers:
-      '@previewjs/iframe': ^4.0.1
+      '@previewjs/iframe': workspace:*
       rimraf: ^3.0.2
       shx: ^0.3.4
       vue: ^3.2.47
     dependencies:
       vue: 3.2.47
     devDependencies:
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/iframe': link:../../../iframe
       rimraf: 3.0.2
       shx: 0.3.4
 
@@ -1816,10 +1817,10 @@ importers:
   frameworks/vue3:
     specifiers:
       '@playwright/test': ^1.30.0
-      '@previewjs/core': ^15.1.2
+      '@previewjs/core': workspace:*
       '@previewjs/csf3': ^3.1.5
       '@previewjs/serializable-values': ^3.2.3
-      '@previewjs/testing': ^2.0.0
+      '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^4.1.5
       '@previewjs/vfs': ^1.2.16
       '@types/fs-extra': ^11.0.1
@@ -1845,16 +1846,16 @@ importers:
       vue: 3.2.47
     devDependencies:
       '@playwright/test': 1.30.0
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/testing': 2.1.0_@types+node@18.14.1
+      '@previewjs/core': link:../../core
+      '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitest: 0.27.3
 
   frameworks/vue3/preview:
     specifiers:
-      '@previewjs/iframe': ^4.0.1
+      '@previewjs/iframe': workspace:*
       '@vue/reactivity': ^3.2.47
       '@vue/runtime-core': ^3.2.47
       '@vue/runtime-dom': ^3.2.47
@@ -1869,7 +1870,7 @@ importers:
       '@vue/shared': 3.2.47
       vue: 3.2.47
     devDependencies:
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/iframe': link:../../../iframe
       rimraf: 3.0.2
       shx: 0.3.4
 
@@ -1884,7 +1885,7 @@ importers:
 
   frameworks/vue3/tests/apps/vue3:
     specifiers:
-      '@previewjs/plugin-vue3': ^7.0.1
+      '@previewjs/plugin-vue3': workspace:*
       '@vitejs/plugin-vue': ^4.0.0
       vite: ^4.1.2
       vue: ^3.2.47
@@ -1922,8 +1923,8 @@ importers:
 
   integrations/cli:
     specifiers:
-      '@previewjs/api': ^7.2.1
-      '@previewjs/loader': ^2.7.0
+      '@previewjs/api': workspace:*
+      '@previewjs/loader': workspace:*
       '@types/node': ^18.14.1
       chalk: ^5.2.0
       commander: ^10.0.0
@@ -1950,7 +1951,7 @@ importers:
 
   integrations/intellij/daemon:
     specifiers:
-      '@previewjs/daemon': '*'
+      '@previewjs/daemon': workspace:*
       esbuild: ^0.17.10
       rimraf: ^4.1.2
       shx: ^0.3.4
@@ -1966,7 +1967,7 @@ importers:
 
   integrations/vscode:
     specifiers:
-      '@previewjs/daemon': '*'
+      '@previewjs/daemon': workspace:*
       '@types/vscode': ^1.71.2
       cross-env: ^7.0.3
       esbuild: ^0.17.10
@@ -1994,8 +1995,8 @@ importers:
 
   loader:
     specifiers:
-      '@previewjs/core': ^15.1.2
-      '@previewjs/vfs': ^1.2.15
+      '@previewjs/core': workspace:*
+      '@previewjs/vfs': workspace:*
       '@types/fs-extra': ^11.0.1
       '@types/proper-lockfile': ^4.1.2
       exclusive-promises: ^1.0.3
@@ -2006,7 +2007,7 @@ importers:
       rimraf: ^4.1.2
       typescript: ^4.9.5
     devDependencies:
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
+      '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
       '@types/fs-extra': 11.0.1
       '@types/proper-lockfile': 4.1.2
@@ -4072,6 +4073,7 @@ packages:
 
   /@cush/relative/1.0.0:
     resolution: {integrity: sha512-RpfLEtTlyIxeNPGKcokS+p3BZII/Q3bYxryFRglh5H3A3T8q9fsLYm72VYAMEOOIBLEa8o93kFLiBDUWKrwXZA==}
+    dev: false
 
   /@date-io/core/1.3.13:
     resolution: {integrity: sha512-AlEKV7TxjeK+jxWVKcCFrfYAk8spX9aCyiToFIiLPtfQbsjmRGLIhb5VZgptQcJdHtLXo7+m0DuurwFgUToQuA==}
@@ -5222,6 +5224,7 @@ packages:
   /@faker-js/faker/7.6.0:
     resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: false
 
   /@fontsource/fira-mono/4.5.10:
     resolution: {integrity: sha512-bxUnRP8xptGRo8YXeY073DSpfK74XpSb0ZyRNpHV9WvLnJ7TwPOjZll8hTMin7zLC6iOp59pDZ8EQDj1gzgAQQ==}
@@ -7536,147 +7539,8 @@ packages:
       webpack: 4.46.0
     dev: true
 
-  /@previewjs/api/7.2.2:
-    resolution: {integrity: sha512-RdsEuwGWnZRXz46yUEqB1fP9hUVYMu90N944GkiJswuesY38mtU6Y10pUFGviTbKpufADDiGq1jNmcs2RcUq9A==}
-    dependencies:
-      '@previewjs/serializable-values': 3.2.3
-      '@previewjs/type-analyzer': 4.1.5
-      axios: 1.3.4
-    transitivePeerDependencies:
-      - debug
-    dev: true
-
-  /@previewjs/chromeless/2.0.2_@types+node@18.14.1:
-    resolution: {integrity: sha512-knhP0tEHZkaEUft4L0TjKfb4UoOJlUL679ja9Ld6YzDi7hP3tO85sqeEA7Vp1REuLEYE2D22C6rqALlOvQMRNg==}
-    dependencies:
-      '@previewjs/api': 7.2.2
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/iframe': 5.0.0
-      '@previewjs/properties': 1.0.8
-      '@previewjs/vfs': 1.2.16
-      express: 4.18.2
-      playwright: 1.30.0
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - debug
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
-
-  /@previewjs/config/4.0.3:
-    resolution: {integrity: sha512-ZlaTxWvABVrorJT18LZBdsUfuE7E9fgYj+QQOQlxrSbs3IDc1I/bZapN7/iPJyCnjvqXS50EtOy/V0GnYeCbng==}
-    dev: true
-
-  /@previewjs/core/15.1.4_@types+node@18.14.1:
-    resolution: {integrity: sha512-VqpGbM1sLp1h5IDaKzV9UmpTnzVWR+XlSJPUzEIkdMW0BsE3RIKpVT8NUfbuAzm4pDTfDp2mN/6+6s6kOx3Iqg==}
-    dependencies:
-      '@previewjs/api': 7.2.2
-      '@previewjs/config': 4.0.3
-      '@previewjs/iframe': 5.0.0
-      '@previewjs/serializable-values': 3.2.3
-      '@previewjs/type-analyzer': 4.1.5
-      '@previewjs/vfs': 1.2.16
-      acorn: 8.8.2
-      assert-never: 1.2.1
-      axios: 1.3.4
-      exclusive-promises: 1.0.3
-      express: 4.18.2
-      fs-extra: 11.1.0
-      get-port: 5.1.1
-      globby: 11.1.0
-      http-terminator: 3.2.0
-      recrawl: 2.2.1
-      rollup-plugin-friendly-type-imports: 1.0.3
-      ts-node: 10.9.1_uayvamxqnl5yeiojjysxwopmsy
-      tsconfig-paths: 4.1.2
-      typescript: 4.9.5
-      vite: 4.1.4_@types+node@18.14.1
-      vite-tsconfig-paths: 3.6.0_vite@4.1.4
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - debug
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
-
   /@previewjs/iframe/4.0.2:
     resolution: {integrity: sha512-lj2SYC4IJ0NToQ98zdmgOQcnI+RpuO3ZlMrwMamcvISeUNRLQS6UBpx5uYOJoYQ2og8dCAvZ1KTXBdGiUEEq1w==}
-    dev: true
-
-  /@previewjs/iframe/5.0.0:
-    resolution: {integrity: sha512-h3qnV6fl5AlYAiCY0IbS2bVS2W9LhQwZ2/hxQN8+UQKhLiGF64TS1e0HSOGcVfzhuNF3as5ACmfxY1pG5Ureaw==}
-    dev: true
-
-  /@previewjs/properties/1.0.8:
-    resolution: {integrity: sha512-i8WuuqQYzfnpkn9QeLZ0qFTbojdYSoxiAFyvtmTMO7/if42E4i8+eBS6Art/dUvt6aYzZ584lLzjWUHRW5olOQ==}
-    dependencies:
-      '@previewjs/serializable-values': 3.2.3
-      '@previewjs/type-analyzer': 4.1.5
-    dev: true
-
-  /@previewjs/serializable-values/3.2.3:
-    resolution: {integrity: sha512-mETHe0JXLgwRUU4u4+g3XiXmYd6VuzvPgUGBUetRxTcXNCf10SNa5aPC+0yUTnc2NIRJbTEH8Vp63fobROMy0w==}
-    dependencies:
-      '@faker-js/faker': 7.6.0
-      '@previewjs/type-analyzer': 4.1.5
-      assert-never: 1.2.1
-      prettier: 2.8.4
-      typescript: 4.9.5
-    dev: true
-
-  /@previewjs/testing/2.1.0_@types+node@18.14.1:
-    resolution: {integrity: sha512-unAcwLjgeEaIlHb8GXIumgc6JaMQU3mxa7KGp7rICf8IWEpDfQhhlHWej55mdhSZcZQ/qDeeBl6bUfhJqZ7RKA==}
-    dependencies:
-      '@playwright/test': 1.30.0
-      '@previewjs/api': 7.2.2
-      '@previewjs/chromeless': 2.0.2_@types+node@18.14.1
-      '@previewjs/core': 15.1.4_@types+node@18.14.1
-      '@previewjs/iframe': 5.0.0
-      '@previewjs/vfs': 1.2.16
-      assert-never: 1.2.1
-      fs-extra: 11.1.0
-      get-port: 5.1.1
-      playwright: 1.30.0
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - debug
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
-
-  /@previewjs/type-analyzer/4.1.5:
-    resolution: {integrity: sha512-hwStMtIgrncASDROaaCuN9UwkXhLtk8S8V3VjnbQQxJTEY66aAoDPq1hH/tGw0ApHNyLGpKX3yq8LHvMDJ8IMA==}
-    dependencies:
-      '@previewjs/vfs': 1.2.16
-      assert-never: 1.2.1
-      prettier: 2.8.4
-      typescript: 4.9.5
-    dev: true
-
-  /@previewjs/vfs/1.2.16:
-    resolution: {integrity: sha512-nRKhlI4lUVxcEpxJ4Jk9VI8RN9z5zBy1IqGb+9pM3LxSWfqoPkrkhSV2gPy5PjrJ83vRYMDO+x9WCrelGX8pmg==}
-    dependencies:
-      assert-never: 1.2.1
-      chokidar: 3.5.3
-      fs-extra: 11.1.0
     dev: true
 
   /@react-native-community/cli-clean/9.2.1:
@@ -10760,7 +10624,7 @@ packages:
       magic-string: 0.26.7
       svelte: 3.55.1
       svelte-hmr: 0.15.1_svelte@3.55.1
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitefu: 0.2.4_vite@4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -12096,7 +11960,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.19.6_@babel+core@7.20.12
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -12127,7 +11991,7 @@ packages:
       '@babel/core': 7.20.12
       '@babel/plugin-transform-typescript': 7.20.13_@babel+core@7.20.12
       '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.20.12
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vue: 3.2.47
     transitivePeerDependencies:
       - supports-color
@@ -12162,7 +12026,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vue: 3.2.47
     dev: false
 
@@ -12178,7 +12042,7 @@ packages:
       '@babel/plugin-transform-typescript': 7.20.13_@babel+core@7.20.12
       '@rollup/pluginutils': 5.0.2_rollup@3.17.1
       '@vue/babel-preset-jsx': 1.4.0_sa6x3fc5lhsjsjpqbn4jnq5fk4
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vue: 2.7.14
     transitivePeerDependencies:
       - rollup
@@ -12192,7 +12056,7 @@ packages:
       vite: ^3.0.0 || ^4.0.0
       vue: ^2.7.0-0
     dependencies:
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vue: 2.7.14
     dev: false
 
@@ -14077,6 +13941,7 @@ packages:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
+    dev: false
 
   /axobject-query/3.1.1:
     resolution: {integrity: sha512-goKlv8DZrK9hUh975fnHzhNIO4jUnFCfv/dszV5VwUGDFjI6vQ2VwoyjYjYNEbBE8AH87TduWP5uyDR1D+Iteg==}
@@ -14598,6 +14463,7 @@ packages:
 
   /boolean/3.2.0:
     resolution: {integrity: sha512-d0II/GO9uf9lfUHH2BQsjxzRJZBdsjgsBiW4BvhWk/3qoKwQFjIDVN19PfX8F2D/r9PCMTtLWjYVCFrpeYUzsw==}
+    dev: false
 
   /boxen/5.1.2:
     resolution: {integrity: sha512-9gYgQKXx+1nP8mP7CzFyaUARhg7D3n1dF/FnErWmu9l6JvGpNUN278h0aSb+QjoiKSWG+iZ3uHrcqk0qrY9RQQ==}
@@ -14926,7 +14792,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -17216,6 +17082,7 @@ packages:
   /delay/5.0.0:
     resolution: {integrity: sha512-ReEBKkIfe4ya47wlPYf/gu5ib6yUG0/Aez0JQZQz94kiWtRQvZIQbTiehsnwHvLSWJnQdhVeqYue7Id1dKr0qw==}
     engines: {node: '>=10'}
+    dev: false
 
   /delayed-stream/1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
@@ -19228,6 +19095,7 @@ packages:
       deepmerge: 4.3.0
       rfdc: 1.3.0
       string-similarity: 4.0.4
+    dev: false
 
   /fast-levenshtein/2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
@@ -19241,6 +19109,7 @@ packages:
     engines: {node: '>=10.0'}
     dependencies:
       boolean: 3.2.0
+    dev: false
 
   /fastq/1.15.0:
     resolution: {integrity: sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==}
@@ -19806,6 +19675,7 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
+    dev: false
 
   /formdata-polyfill/4.0.10:
     resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
@@ -20152,6 +20022,7 @@ packages:
 
   /glob-regex/0.3.2:
     resolution: {integrity: sha512-m5blUd3/OqDTWwzBBtWBPrGlAzatRywHameHeekAZyZrskYouOGdNB8T/q6JucucvJXtOuyHIn0/Yia7iDasDw==}
+    dev: false
 
   /glob-to-regexp/0.3.0:
     resolution: {integrity: sha512-Iozmtbqv0noj0uDDqoL0zNq0VBEfK2YFoMAZoxJe4cwphvLR+JskfF30QhXHOR4m3KrE6NLRYw+U9MRXvifyig==}
@@ -20180,6 +20051,7 @@ packages:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
+    dev: false
 
   /glob/7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
@@ -20977,6 +20849,7 @@ packages:
       p-wait-for: 3.2.0
       roarr: 7.14.2
       type-fest: 2.19.0
+    dev: false
 
   /https-browserify/1.0.0:
     resolution: {integrity: sha512-J+FkSdyD+0mA0N+81tMotaRMfSL9SGi+xpD3T6YApKsc3bGSXJlfXri3VyFOeYkfLRQisDk1W+jIFFKBeUBbBg==}
@@ -25560,6 +25433,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       p-timeout: 3.2.0
+    dev: false
 
   /package-json/6.5.0:
     resolution: {integrity: sha512-k3bdm2n25tkyxcjSKzB5x8kfVxlMdgsbPr0GkZcwHsLpba6cBjqCt1KlcChKEvxHIcTB1FVMuwoijZ26xex5MQ==}
@@ -25942,6 +25816,7 @@ packages:
     requiresBuild: true
     dependencies:
       playwright-core: 1.30.0
+    dev: false
 
   /please-upgrade-node/3.2.0:
     resolution: {integrity: sha512-gQR3WpIgNIKwBMVLkpMUeR3e1/E1y42bqDQZfql+kDeXd8COYfM8PQA4X6y7a8u9Ua9FHmsrrmirW2vHs45hWg==}
@@ -27706,6 +27581,14 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
 
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
+
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
     peerDependencies:
@@ -27791,6 +27674,7 @@ packages:
 
   /proxy-from-env/1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
 
   /prr/1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
@@ -28841,6 +28725,7 @@ packages:
       slash: 3.0.0
       sucrase: 3.29.0
       tslib: 1.14.1
+    dev: false
 
   /recrawl/2.2.1:
     resolution: {integrity: sha512-tBdAdiJ1f6Wi8PCI5RTKG/82j3qvTQJTvdPmq3LWLu40FMc0BKLFKzH3SzTJrmpa87qAfFAEhfUraBOZ9cGPXA==}
@@ -28849,6 +28734,7 @@ packages:
       glob-regex: 0.3.2
       slash: 3.0.0
       tslib: 1.14.1
+    dev: false
 
   /recursive-readdir/2.2.3:
     resolution: {integrity: sha512-8HrF5ZsXk5FAH9dgsx3BlUer73nIhuj+9OrQwEbLTPOBzGkL1lsFCR01am+v+0m2Cmbs1nP12hLDl5FA7EszKA==}
@@ -29280,6 +29166,7 @@ packages:
 
   /rfdc/1.3.0:
     resolution: {integrity: sha512-V2hovdzFbOi77/WajaSMXk2OLm+xNIeQdMMuB7icj7bk6zi2F8GGAxigcnDFpJHbNyNcgyJDiP+8nOrY5cZGrA==}
+    dev: false
 
   /rgb-regex/1.0.1:
     resolution: {integrity: sha512-gDK5mkALDFER2YLqH6imYvK6g02gpNGM4ILDZ472EwWfXZnC2ZEpoB2ECXTyOVUKuk/bPJZMzwQPBYICzP+D3w==}
@@ -29352,6 +29239,7 @@ packages:
       globalthis: 1.0.3
       safe-stable-stringify: 2.4.2
       semver-compare: 1.0.0
+    dev: false
 
   /rollup-plugin-dts/5.2.0_jinfllkx2ccsnmnejpvioxomcm:
     resolution: {integrity: sha512-B68T/haEu2MKcz4kNUhXB8/h5sq4gpplHAJIYNHbh8cp4ZkvzDvNca/11KQdFrB9ZeKucegQIotzo5T0JUtM8w==}
@@ -29371,6 +29259,7 @@ packages:
     resolution: {integrity: sha512-1QTndk+2vkq0U+uizQersReRh/zyu5fgfE+NeCGxjBE9l89K2erVoAT3TbdGk12iK2QI7X6N+m6jYKqIaSWY9A==}
     dependencies:
       typescript: 4.9.5
+    dev: false
 
   /rollup-plugin-terser/7.0.2_rollup@2.79.1:
     resolution: {integrity: sha512-w3iIaU4OxcF52UUXiZNsNeuXIMDvFrr+ZXK6bFZ0Q60qyVfq4uLptoS4bbq3paG3x216eQllFZX7zt6TIImguQ==}
@@ -29495,6 +29384,7 @@ packages:
   /safe-stable-stringify/2.4.2:
     resolution: {integrity: sha512-gMxvPJYhP0O9n2pvcfYfIuYgbledAOJFcqRThtPRmjscaipiwcwPPKLytpVzMkG2HAN87Qmo2d4PtGiri1dSLA==}
     engines: {node: '>=10'}
+    dev: false
 
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
@@ -30563,6 +30453,7 @@ packages:
 
   /string-similarity/4.0.4:
     resolution: {integrity: sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==}
+    dev: false
 
   /string-width/2.1.1:
     resolution: {integrity: sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==}
@@ -30960,6 +30851,7 @@ packages:
       mz: 2.7.0
       pirates: 4.0.5
       ts-interface-checker: 0.1.13
+    dev: false
 
   /sudo-prompt/8.2.5:
     resolution: {integrity: sha512-rlBo3HU/1zAJUrkY6jNxDOC9eVYliG6nS4JA8u8KAshITd07tafMc/Br7xQwCSseXwJ2iCcHCE8SNWX3q8Z+kw==}
@@ -31677,6 +31569,7 @@ packages:
 
   /ts-interface-checker/0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+    dev: false
 
   /ts-loader/8.4.0_jypdqs5l5do4bnun6egkabnn2m:
     resolution: {integrity: sha512-6nFY3IZ2//mrPc+ImY3hNWx1vCHyEhl6V+wLmL4CZcm6g1CqX7UKrkc6y0i4FwcfOhxyMPCfaEvh20f4r9GNpw==}
@@ -31821,6 +31714,7 @@ packages:
       json5: 2.2.3
       minimist: 1.2.8
       strip-bom: 3.0.0
+    dev: false
 
   /tsconfig/7.0.0:
     resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
@@ -32925,7 +32819,7 @@ packages:
       merge-anything: 5.1.4
       solid-js: 1.6.11
       solid-refresh: 0.4.3_solid-js@1.6.11
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
       vitefu: 0.2.4_vite@4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -32956,6 +32850,7 @@ packages:
       vite: 4.1.4_@types+node@18.14.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /vite/3.2.5_@types+node@18.14.0:
     resolution: {integrity: sha512-4mVEpXpSOgrssFZAOmGIr85wPHKvaDAcXqxVxVRZhljkJOMZi1ibLibzjLHzJvcok8BMguLc7g1W6W/GqZbLdQ==}
@@ -33087,7 +32982,6 @@ packages:
       rollup: 3.17.1
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vite/4.1.4_@types+node@18.14.1:
     resolution: {integrity: sha512-3knk/HsbSTKEin43zHu7jTwYWv81f8kgAL99G5NWBcA1LKvtvcVAC4JjBH1arBunO9kQka+1oGbrMKOjk4ZrBg==}
@@ -33151,7 +33045,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.1.4_@types+node@18.14.1
+      vite: 4.1.4
     dev: false
 
   /vitest/0.27.3:
