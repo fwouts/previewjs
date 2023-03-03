@@ -11,6 +11,17 @@
         "--extensionDevelopmentPath=${workspaceFolder}/integrations/vscode"
       ],
       "preLaunchTask": "build"
+    },
+    {
+      "name": "VS Code Extension (Pro)",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}/integrations/vscode"
+      ],
+      "preLaunchTask": "build:pro"
     }
   ]
 }
