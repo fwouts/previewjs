@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && turbo run build --scope=@previewjs/type-analyzer --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest"
   },
   "dependencies": {
     "@previewjs/vfs": "^1.2.16",
@@ -40,6 +40,6 @@
     "@types/prettier": "^2.7.2",
     "lodash": "^4.17.21",
     "unbuild": "^1.1.2",
-    "vitest": "^0.28.5"
+    "vitest": "^0.29.2"
   }
 }

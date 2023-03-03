@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && turbo run build --scope=@previewjs/properties --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest"
   },
   "dependencies": {
     "@previewjs/serializable-values": "^3.2.3",
@@ -35,6 +35,6 @@
   },
   "devDependencies": {
     "unbuild": "^1.1.2",
-    "vitest": "^0.28.5"
+    "vitest": "^0.29.2"
   }
 }

@@ -27,7 +27,7 @@
   "scripts": {
     "prepublish": "cd .. && turbo run build --scope=@previewjs/csf3 --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest"
   },
   "dependencies": {
     "@previewjs/core": "^17.0.0",
@@ -38,6 +38,6 @@
   "devDependencies": {
     "@previewjs/vfs": "workspace:*",
     "unbuild": "^1.1.2",
-    "vitest": "^0.28.5"
+    "vitest": "^0.29.2"
   }
 }
