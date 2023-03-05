@@ -4,8 +4,6 @@ import path from "path";
 
 export async function findFiles(rootDirPath: string, pattern: string) {
   const gitRootPath = await findGitRoot(rootDirPath);
-
-  console.log("A", path.relative(gitRootPath, rootDirPath));
   const relativePath = path.relative(gitRootPath, rootDirPath);
   const relativePrefix = relativePath ? relativePath + path.sep : "";
   const files: string[] = await globby(relativePrefix + pattern, {
@@ -24,14 +22,21 @@ export async function findFiles(rootDirPath: string, pattern: string) {
   );
 }
 
-async function findGitRoot(dirPath: string): Promise<string> {
-  if (await fs.exists(path.join(dirPath, ".git"))) {
-    return dirPath;
-  } else {
-    const parentDirPath = path.dirname(dirPath);
-    if (!parentDirPath || parentDirPath === dirPath) {
+async function findGitRoot(
+  dirPath: string,
+  fallback = dirPath
+): Promise<string> {
+  try {
+    if (await fs.exists(path.join(dirPath, ".git"))) {
       return dirPath;
+    } else {
+      const parentDirPath = path.dirname(dirPath);
+      if (!parentDirPath || parentDirPath === dirPath) {
+        return fallback;
+      }
+      return findGitRoot(parentDirPath, fallback);
     }
-    return findGitRoot(parentDirPath);
+  } catch {
+    return fallback;
   }
 }
