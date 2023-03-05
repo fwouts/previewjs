@@ -24,7 +24,7 @@ export async function findFiles(rootDirPath: string, pattern: string) {
   );
 }
 
-async function findGitRoot(dirPath: string) {
+async function findGitRoot(dirPath: string): Promise<string> {
   if (await fs.exists(path.join(dirPath, ".git"))) {
     return dirPath;
   } else {
