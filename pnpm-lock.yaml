@@ -180,6 +180,7 @@ importers:
       unbuild: ^1.1.2
       vite: ^4.1.4
       vite-tsconfig-paths: ^3.6.0
+      vitest: ^0.29.2
     dependencies:
       '@previewjs/api': link:../api
       '@previewjs/config': link:../config
@@ -209,6 +210,7 @@ importers:
       '@types/fs-extra': 11.0.1
       shx: 0.3.4
       unbuild: 1.1.2
+      vitest: 0.29.2
 
   csf3:
     specifiers:
@@ -10061,7 +10063,7 @@ packages:
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.10_xsftmjzvfioxqs4ify53ibh7ay
       '@storybook/node-logger': 6.5.16
       '@storybook/react': 6.5.16_spm6bti6gb7pqjefn37miz563y
-      '@storybook/react-docgen-typescript-plugin': 1.0.2--canary.7.391457fcf6c823971cf02d8e74dbf8e242872b26.0_hhrrucqyg4eysmfpujvov2ym5u
+      '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.cd77847.0_hhrrucqyg4eysmfpujvov2ym5u
       '@types/babel__core': 7.20.0
       babel-plugin-react-docgen: 4.2.1
       pnp-webpack-plugin: 1.7.0_typescript@4.9.5
@@ -10132,8 +10134,8 @@ packages:
       util-deprecate: 1.0.2
     dev: true
 
-  /@storybook/react-docgen-typescript-plugin/1.0.2--canary.7.391457fcf6c823971cf02d8e74dbf8e242872b26.0_hhrrucqyg4eysmfpujvov2ym5u:
-    resolution: {integrity: sha512-QDa+qccIygDjdfg6Z/CjPWlNY5ia+oFvy8pK5XCGsNXCpTfVL8gbGa63tonCUeNxqioWLOpysUGsyHR+t4uzPg==}
+  /@storybook/react-docgen-typescript-plugin/1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0_hhrrucqyg4eysmfpujvov2ym5u:
+    resolution: {integrity: sha512-eVg3BxlOm2P+chijHBTByr90IZVUtgRW56qEOLX7xlww2NBuKrcavBlcmn+HH7GIUktquWkMPtvy6e0W0NgA5w==}
     peerDependencies:
       typescript: '>= 3.x'
       webpack: '>= 4'
@@ -10151,10 +10153,10 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/react-docgen-typescript-plugin/1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0_hhrrucqyg4eysmfpujvov2ym5u:
-    resolution: {integrity: sha512-eVg3BxlOm2P+chijHBTByr90IZVUtgRW56qEOLX7xlww2NBuKrcavBlcmn+HH7GIUktquWkMPtvy6e0W0NgA5w==}
+  /@storybook/react-docgen-typescript-plugin/1.0.6--canary.9.cd77847.0_hhrrucqyg4eysmfpujvov2ym5u:
+    resolution: {integrity: sha512-I4oBYmnUCX5IsrZhg+ST72dubSIV4wdwY+SfqJiJ3NHvDpdb240ZjdHAmjIy/yJh5rh42Fl4jbG8Tr4SzwV53Q==}
     peerDependencies:
-      typescript: '>= 3.x'
+      typescript: '>= 4.x'
       webpack: '>= 4'
     dependencies:
       debug: 4.3.4
@@ -14823,7 +14825,7 @@ packages:
       mississippi: 3.0.0
       mkdirp: 0.5.6
       move-concurrently: 1.0.1
-      promise-inflight: 1.0.1
+      promise-inflight: 1.0.1_bluebird@3.7.2
       rimraf: 2.7.1
       ssri: 6.0.2
       unique-filename: 1.1.1
@@ -14846,7 +14848,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1
+      promise-inflight: 1.0.1_bluebird@3.7.2
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -27726,13 +27728,15 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
 
-  /promise-inflight/1.0.1:
+  /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
     peerDependencies:
       bluebird: '*'
     peerDependenciesMeta:
       bluebird:
         optional: true
+    dependencies:
+      bluebird: 3.7.2
 
   /promise-polyfill/8.3.0:
     resolution: {integrity: sha512-H5oELycFml5yto/atYqmjyigJoAo3+OXwolYiH7OfQuYlAqhxNvTfiNMbV9hsC6Yp83yE5r2KTVmtrG6R9i6Pg==}
