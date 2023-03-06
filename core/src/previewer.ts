@@ -15,6 +15,7 @@ import type express from "express";
 import path from "path";
 import type * as vite from "vite";
 import { getCacheDir } from "./caching";
+import { FILES_REQUIRING_REDETECTION } from "./detect-components";
 import { findFiles } from "./find-files";
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
@@ -48,16 +49,11 @@ const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
 
 const FILES_REQUIRING_RESTART = new Set([
   PREVIEW_CONFIG_NAME,
-  "jsconfig.json",
-  "tsconfig.json",
-  "package.json",
-  "package-lock.json",
-  "pnpm-lock.yaml",
-  "vite.config.js",
-  "vite.config.ts",
-  "yarn.lock",
+  ...FILES_REQUIRING_REDETECTION,
   ...POSTCSS_CONFIG_FILE,
   ...GLOBAL_CSS_FILE,
+  "vite.config.js",
+  "vite.config.ts",
 ]);
 
 const SHUTDOWN_CHECK_INTERVAL = 3000;
