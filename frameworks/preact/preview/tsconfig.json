@@ -2,13 +2,11 @@
   "compilerOptions": {
     "target": "es2020",
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": [
-      "preact"
-    ]
+    "types": ["preact"]
   }
 }

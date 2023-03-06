@@ -2,7 +2,7 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2019", "DOM"],
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "rootDir": ".",
     "outDir": "dist",
     "declaration": true

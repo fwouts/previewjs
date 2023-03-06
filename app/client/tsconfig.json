@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable"],
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "jsx": "react-jsx",
     "noEmit": true
   },
