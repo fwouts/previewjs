@@ -3,9 +3,10 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import ts from "typescript";
-import { extractReactComponents } from "./extract-component";
-import { reactImportsPlugin } from "./react-js-imports-plugin";
-import { REACT_SPECIAL_TYPES } from "./special-types";
+import url from "url";
+import { extractReactComponents } from "./extract-component.js";
+import { reactImportsPlugin } from "./react-js-imports-plugin.js";
+import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
 const reactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -23,6 +24,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     return major >= 17 || (major === 16 && minor >= 14);
   },
   async create({ rootDirPath, dependencies }) {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.join(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -68,10 +70,15 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
           plugins: [
             reactImportsPlugin(),
             ...configuredPlugins,
-            ...(!hasReactPlugin ? [react()] : []),
+            ...(!hasReactPlugin
+              ? [
+                  // @ts-ignore
+                  react(),
+                ]
+              : []),
             {
               name: "previewjs:update-react-import",
-              async transform(code, id) {
+              async transform(code: string, id: string) {
                 if (!id.endsWith("__previewjs_internal__/renderer/index.tsx")) {
                   return;
                 }
@@ -86,7 +93,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
             },
             {
               name: "previewjs:disable-react-hmr",
-              async transform(code, id) {
+              async transform(code: string, id: string) {
                 if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
                   return null;
                 }

@@ -7,7 +7,7 @@ import {
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { analyzeReactComponent } from "./analyze-component";
+import { analyzeReactComponent } from "./analyze-component.js";
 
 export function extractReactComponents(
   resolver: TypeResolver,

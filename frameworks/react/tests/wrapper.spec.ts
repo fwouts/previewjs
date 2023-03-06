@@ -1,8 +1,11 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
-import { reactVersions } from "./react-versions";
+import url from "url";
+import pluginFactory from "../src/index.js";
+import { reactVersions } from "./react-versions.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const WRAPPER_SOURCE = `import { ReactNode } from "react";
 export const Wrapper = ({ children }: { children: ReactNode }) => {

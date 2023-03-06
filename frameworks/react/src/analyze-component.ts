@@ -11,7 +11,7 @@ import {
   ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { detectPropTypes } from "./prop-types";
+import { detectPropTypes } from "./prop-types.js";
 
 export function analyzeReactComponent(
   typeResolver: TypeResolver,

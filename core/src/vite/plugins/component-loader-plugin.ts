@@ -1,5 +1,5 @@
 import type { PreviewConfig } from "@previewjs/config";
-import { pathExistsSync } from "fs-extra";
+import fs from "fs-extra";
 import path from "path";
 import { URLSearchParams } from "url";
 import type { Plugin } from "vite";
@@ -64,7 +64,7 @@ export async function refresh() {
   const shouldAbortRender = () => renderId !== (getLatestComponentLoadId() + "-" + refreshId);
   let loadingError = null;
   ${
-    wrapper && pathExistsSync(path.join(rootDirPath, wrapper.path))
+    wrapper && fs.pathExistsSync(path.join(rootDirPath, wrapper.path))
       ? `
   let wrapperModulePromise;
   if (import.meta.hot.data.preloadedWrapperModule) {

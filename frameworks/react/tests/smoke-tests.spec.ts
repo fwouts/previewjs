@@ -1,7 +1,10 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { smokeTests } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 test.describe.parallel("smoke tests", () => {
   smokeTests({

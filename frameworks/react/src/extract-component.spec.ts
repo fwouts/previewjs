@@ -13,10 +13,12 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import reactFrameworkPlugin from ".";
-import { extractReactComponents } from "./extract-component";
+import { extractReactComponents } from "./extract-component.js";
+import reactFrameworkPlugin from "./index.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
 const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");

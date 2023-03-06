@@ -1,7 +1,10 @@
 import fs from "fs-extra";
+import { createRequire } from "module";
 import path from "path";
 import type { PackageDependencies } from "./dependencies";
 import type { FrameworkPluginFactory } from "./framework";
+
+const require = createRequire(import.meta.url);
 
 export async function setupFrameworkPlugin({
   rootDirPath,
