@@ -1,10 +1,15 @@
+import fs from "fs-extra";
 import globby from "globby";
+import path from "path";
 
 export async function findFiles(rootDirPath: string, pattern: string) {
-  const files: string[] = await globby(pattern, {
+  const gitRootPath = await findGitRoot(rootDirPath);
+  const relativePath = path.relative(gitRootPath, rootDirPath);
+  const relativePrefix = relativePath ? relativePath + path.sep : "";
+  const files: string[] = await globby(relativePrefix + pattern, {
     gitignore: true,
     ignore: ["**/node_modules/**"],
-    cwd: rootDirPath,
+    cwd: gitRootPath,
     absolute: true,
     followSymbolicLinks: false,
   });
@@ -15,4 +20,23 @@ export async function findFiles(rootDirPath: string, pattern: string) {
   return files.filter((f) =>
     f.startsWith(rootDirPath.replace(/\\/g, "/") + "/")
   );
+}
+
+async function findGitRoot(
+  dirPath: string,
+  fallback = dirPath
+): Promise<string> {
+  try {
+    if (await fs.exists(path.join(dirPath, ".git"))) {
+      return dirPath;
+    } else {
+      const parentDirPath = path.dirname(dirPath);
+      if (!parentDirPath || parentDirPath === dirPath) {
+        return fallback;
+      }
+      return findGitRoot(parentDirPath, fallback);
+    }
+  } catch {
+    return fallback;
+  }
 }

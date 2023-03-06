@@ -26,7 +26,8 @@
   },
   "scripts": {
     "prepublish": "cd .. && turbo run build --scope=@previewjs/core --no-deps --include-dependencies",
-    "build": "tsc && unbuild"
+    "build": "tsc && unbuild",
+    "test": "vitest"
   },
   "dependencies": {
     "@previewjs/api": "^8.0.0",
@@ -57,6 +58,7 @@
     "@types/express": "^4.17.17",
     "@types/fs-extra": "^11.0.1",
     "shx": "^0.3.4",
-    "unbuild": "^1.1.2"
+    "unbuild": "^1.1.2",
+    "vitest": "^0.29.2"
   }
 }
