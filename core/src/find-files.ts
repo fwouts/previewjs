@@ -1,5 +1,5 @@
 import fs from "fs-extra";
-import globby from "globby";
+import { globby } from "globby";
 import path from "path";
 
 export async function findFiles(rootDirPath: string, pattern: string) {
