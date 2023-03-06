@@ -20,15 +20,14 @@ export function duplicateProjectForTesting(testProjectDirPath: string) {
     tmpDir,
     `${path.basename(testProjectDirPath)}-${process.pid}`
   );
-  // Hack because Windows tests fail in CI.
+  // TODO: Remove this hack because Windows tests fail in CI
+  // presumably because of different drives.
   if (rootDirPath.startsWith("C:\\Users\\RUNNER~")) {
     rootDirPath = rootDirPath.replace(
       /C:\\Users\\RUNNER~\d+/g,
       "D:\\a\\previewjs"
     );
   }
-  console.error("TEST PROJECT DIR PATH", testProjectDirPath);
-  console.error("ROOT DIR PATH", rootDirPath);
   mkdirpSync(rootDirPath);
   sync(testProjectDirPath, rootDirPath);
   return rootDirPath;
