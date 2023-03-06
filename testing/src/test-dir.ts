@@ -1,3 +1,4 @@
+import { realpathSync } from "fs";
 import {
   copyFileSync,
   lstatSync,
@@ -10,15 +11,23 @@ import {
   symlinkSync,
   unlinkSync,
 } from "fs-extra";
+import os from "os";
 import path from "path";
 
 export function duplicateProjectForTesting(testProjectDirPath: string) {
-  const rootDirPath = path.join(
-    testProjectDirPath,
-    "..",
-    "_tmp_",
+  const tmpDir = realpathSync(os.tmpdir());
+  let rootDirPath = path.join(
+    tmpDir,
     `${path.basename(testProjectDirPath)}-${process.pid}`
   );
+  // TODO: Remove this hack because Windows tests fail in CI
+  // presumably because of different drives.
+  if (rootDirPath.startsWith("C:\\Users\\RUNNER~")) {
+    rootDirPath = rootDirPath.replace(
+      /C:\\Users\\RUNNER~\d+/g,
+      "D:\\a\\previewjs"
+    );
+  }
   mkdirpSync(rootDirPath);
   sync(testProjectDirPath, rootDirPath);
   return rootDirPath;
