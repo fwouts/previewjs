@@ -15,14 +15,18 @@ import os from "os";
 import path from "path";
 
 export function duplicateProjectForTesting(testProjectDirPath: string) {
-  const tmpDir = os.tmpdir();
-  const tmpDirResolved = realpathSync(tmpDir);
-  console.error("TMP DIR", tmpDir);
-  console.error("TMP DIR RESOLVED", tmpDirResolved);
-  const rootDirPath = path.join(
-    tmpDirResolved,
+  const tmpDir = realpathSync(os.tmpdir());
+  let rootDirPath = path.join(
+    tmpDir,
     `${path.basename(testProjectDirPath)}-${process.pid}`
   );
+  // Hack because Windows tests fail in CI.
+  if (rootDirPath.startsWith("C:\\Users\\RUNNER~")) {
+    rootDirPath = rootDirPath.replace(
+      /C:\\Users\\RUNNER~\d+/g,
+      "D:\\a\\previewjs"
+    );
+  }
   console.error("TEST PROJECT DIR PATH", testProjectDirPath);
   console.error("ROOT DIR PATH", rootDirPath);
   mkdirpSync(rootDirPath);
