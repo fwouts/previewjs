@@ -179,11 +179,11 @@ async function detectionMinimalTimestamp(rootDirPath: string) {
   const nodeModulesPath = path.join(rootDirPath, "node_modules");
   let lastModifiedMillis = 0;
   if (await fs.pathExists(nodeModulesPath)) {
-    // Find the latest subdirectory.
+    // Find the latest subdirectory or symlink (important for pnpm).
     for (const subdirectory of await fs.readdir(nodeModulesPath)) {
       const subdirectoryPath = path.join(nodeModulesPath, subdirectory);
-      const stat = await fs.stat(subdirectoryPath);
-      if (await stat.isDirectory()) {
+      const stat = await fs.lstat(subdirectoryPath);
+      if (stat.isDirectory() || stat.isSymbolicLink()) {
         lastModifiedMillis = Math.max(lastModifiedMillis, stat.mtimeMs);
       }
     }
