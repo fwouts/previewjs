@@ -6,7 +6,7 @@ import { findFiles } from "./find-files";
 
 describe("find files", () => {
   test("ignores git-ignored files", async () => {
-    const dirPath = path.join(os.tmpdir(), await fs.mkdtemp("find-files-test"));
+    const dirPath = path.join(await fs.mkdtemp(os.tmpdir() + path.sep));
     await fs.mkdirp(path.join(dirPath, ".git"));
     await fs.writeFile(
       path.join(dirPath, ".gitignore"),
