@@ -1,3 +1,4 @@
+import { realpathSync } from "fs";
 import {
   copyFileSync,
   lstatSync,
@@ -10,13 +11,12 @@ import {
   symlinkSync,
   unlinkSync,
 } from "fs-extra";
+import os from "os";
 import path from "path";
 
 export function duplicateProjectForTesting(testProjectDirPath: string) {
   const rootDirPath = path.join(
-    testProjectDirPath,
-    "..",
-    "_tmp_",
+    realpathSync(os.tmpdir()),
     `${path.basename(testProjectDirPath)}-${process.pid}`
   );
   mkdirpSync(rootDirPath);
