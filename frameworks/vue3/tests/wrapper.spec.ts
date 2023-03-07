@@ -1,7 +1,8 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
 const WRAPPER_SOURCE = `<template>
   <div class="wrapped">
@@ -10,6 +11,7 @@ const WRAPPER_SOURCE = `<template>
 </template>
 `;
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "vue3");
 
 test.describe.parallel("vue3/wrapper", () => {

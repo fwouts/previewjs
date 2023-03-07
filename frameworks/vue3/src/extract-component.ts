@@ -8,8 +8,8 @@ import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import ts from "typescript";
-import { analyzeVueComponentFromTemplate } from "./analyze-component";
-import { inferComponentNameFromVuePath } from "./infer-component-name";
+import { analyzeVueComponentFromTemplate } from "./analyze-component.js";
+import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
 export function extractVueComponents(
   reader: Reader,

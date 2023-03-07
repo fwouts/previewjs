@@ -15,7 +15,7 @@ import {
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import vue2FrameworkPlugin from ".";
-import { extractVueComponents } from "./extract-component";
+import { extractVueComponents } from "./extract-component.js";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 const ROOT_DIR = path.join(__dirname, "virtual");

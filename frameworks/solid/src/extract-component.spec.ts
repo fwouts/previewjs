@@ -15,7 +15,7 @@ import {
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import solidFrameworkPlugin from ".";
-import { extractSolidComponents } from "./extract-component";
+import { extractSolidComponents } from "./extract-component.js";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");

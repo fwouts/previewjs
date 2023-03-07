@@ -5,14 +5,13 @@ import url from "url";
 import pluginFactory from "../src/index.js";
 import { reactVersions } from "./react-versions.js";
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
 const WRAPPER_SOURCE = `import { ReactNode } from "react";
 export const Wrapper = ({ children }: { children: ReactNode }) => {
   return <div className="wrapped">{children}</div>;
 };
 `;
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
 

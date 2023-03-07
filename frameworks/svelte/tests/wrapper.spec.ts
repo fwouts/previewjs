@@ -1,13 +1,15 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
 const WRAPPER_SOURCE = `<div class="wrapped">
   <slot />
 </div>
 `;
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "svelte");
 
 test.describe.parallel("svelte/wrapper", () => {

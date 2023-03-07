@@ -4,9 +4,8 @@ import path from "path";
 import url from "url";
 import pluginFactory from "../src/index.js";
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
 test.describe.parallel("smoke tests", () => {
+  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   smokeTests({
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
