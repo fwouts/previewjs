@@ -5,6 +5,7 @@ build({
   entryPoints: ["./src/index.ts", "./src/daemon.ts"],
   minify: false,
   bundle: true,
+  format: "cjs", // VS Code does not support ESM extensions
   outdir: "./dist",
   external: ["vscode"],
   platform: "node",

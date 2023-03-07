@@ -4,6 +4,7 @@ build({
   entryPoints: ["./src/main.ts"],
   minify: false,
   bundle: true,
+  format: "esm",
   outfile: "./dist/main.js",
   platform: "node",
   define: {

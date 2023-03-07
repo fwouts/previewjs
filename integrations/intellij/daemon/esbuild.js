@@ -1,7 +1,9 @@
-const { build } = require("esbuild");
-const { readFileSync } = require("fs");
-const path = require("path");
+import { build } from "esbuild";
+import { readFileSync } from "fs";
+import path from "path";
+import url from "url";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const gradlePropertiesContent = readFileSync(
   path.join(__dirname, "..", "gradle.properties"),
   "utf8"
@@ -19,6 +21,7 @@ build({
   entryPoints: ["./src/main.ts"],
   minify: false,
   bundle: true,
+  format: "esm",
   outfile: "./dist/main.js",
   platform: "node",
   define: {

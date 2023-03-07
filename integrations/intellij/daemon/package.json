@@ -13,6 +13,7 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
+  "type": "module",
   "scripts": {
     "build": "cd ../../.. && turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies && cd integrations/intellij/daemon && rimraf dist && tsc && node esbuild.js && shx cp -rL ../../../loader/node_modules/pnpm dist/pnpm && shx cp -rL ../../../loader/src/release/* dist/"
   },
