@@ -1,6 +1,7 @@
 import depcheck from "depcheck";
 import execa from "execa";
 import path from "path";
+import url from "url";
 import { inspect } from "util";
 
 const globalIgnores = [
@@ -31,6 +32,7 @@ const localIgnores: Record<string, string[]> = {
 };
 
 async function main() {
+  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   const rootDir = path.join(__dirname, "..");
   const json = execa.commandSync("pnpm -r la --json").stdout;
   const workspaces = JSON.parse(json);
