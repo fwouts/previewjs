@@ -8,6 +8,15 @@ import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
 import type { Component } from "./plugins/framework";
 
+export const FILES_REQUIRING_REDETECTION = new Set([
+  "jsconfig.json",
+  "tsconfig.json",
+  "package.json",
+  "package-lock.json",
+  "pnpm-lock.yaml",
+  "yarn.lock",
+]);
+
 type ProjectComponents = RPCs.DetectComponentsResponse["components"];
 
 type CachedProjectComponents = {
@@ -49,7 +58,7 @@ export function detectComponents(
           .replace(/\\/g, "/")
       )
     );
-    const existingCache: CachedProjectComponents = fs.existsSync(cacheFilePath)
+    let existingCache: CachedProjectComponents = fs.existsSync(cacheFilePath)
       ? (JSON.parse(
           fs.readFileSync(cacheFilePath, "utf8")
         ) as CachedProjectComponents)
@@ -57,6 +66,16 @@ export function detectComponents(
           detectionStartTimestamp: 0,
           components: {},
         };
+    if (
+      existingCache.detectionStartTimestamp <
+      (await detectionMinimalTimestamp(workspace.rootDirPath))
+    ) {
+      // Cache cannot be used as it was generated before detection-impacted files were updated.
+      existingCache = {
+        detectionStartTimestamp: 0,
+        components: {},
+      };
+    }
     const changedAbsoluteFilePaths = absoluteFilePaths.filter(
       (absoluteFilePath) => {
         const entry = workspace.reader.readSync(absoluteFilePath);
@@ -154,4 +173,27 @@ export function detectedComponentToApiComponent(
             },
           },
   };
+}
+
+async function detectionMinimalTimestamp(rootDirPath: string) {
+  const nodeModulesPath = path.join(rootDirPath, "node_modules");
+  let lastModifiedMillis = 0;
+  if (await fs.pathExists(nodeModulesPath)) {
+    // Find the latest subdirectory or symlink (important for pnpm).
+    for (const subdirectory of await fs.readdir(nodeModulesPath)) {
+      const subdirectoryPath = path.join(nodeModulesPath, subdirectory);
+      const stat = await fs.lstat(subdirectoryPath);
+      if (stat.isDirectory() || stat.isSymbolicLink()) {
+        lastModifiedMillis = Math.max(lastModifiedMillis, stat.mtimeMs);
+      }
+    }
+  }
+  for (const f of FILES_REQUIRING_REDETECTION) {
+    const filePath = path.join(rootDirPath, f);
+    if (await fs.pathExists(filePath)) {
+      const stat = await fs.stat(filePath);
+      lastModifiedMillis = Math.max(lastModifiedMillis, stat.mtimeMs);
+    }
+  }
+  return lastModifiedMillis;
 }
