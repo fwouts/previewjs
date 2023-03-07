@@ -1,5 +1,4 @@
-const path = require("path");
-const { build } = require("esbuild");
+import { build } from "esbuild";
 
 build({
   entryPoints: ["./src/main.ts"],

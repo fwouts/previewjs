@@ -5,7 +5,9 @@ import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
 import open from "open";
+import url from "url";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
 );

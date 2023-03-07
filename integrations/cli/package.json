@@ -14,14 +14,15 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
+  "type": "module",
   "bin": {
     "previewjs": "dist/main.js"
   },
   "scripts": {
     "prepublish": "cd ../.. && turbo run build --scope=@previewjs/cli --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && node esbuild.js && shx cp -rL ../../loader/node_modules/pnpm dist/pnpm && shx cp -rL ../../loader/src/release/* dist/",
-    "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app ts-node-dev --respawn src/main.ts",
-    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
+    "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app nodemon --exec ts-node-esm src/main.ts",
+    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro nodemon --exec ts-node-esm src/main.ts"
   },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
@@ -31,10 +32,11 @@
     "commander": "^10.0.0",
     "cross-env": "^7.0.3",
     "esbuild": "^0.17.11",
+    "nodemon": "^2.0.21",
     "open": "^8.4.2",
     "rimraf": "^4.2.0",
     "shx": "^0.3.4",
-    "ts-node-dev": "^2.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
   "engines": {
