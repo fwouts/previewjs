@@ -1,0 +1,22 @@
+{
+  "name": "react-test-app-wrapper-custom-esm",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "react-scripts start"
+  },
+  "dependencies": {
+    "@types/node": "^18.14.6",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@previewjs/config": "^4.0.2"
+  }
+}
