@@ -9,8 +9,6 @@ const globalIgnores = [
   "@typescript-eslint/parser",
   "autoprefixer",
   "eslint-config-prettier",
-  "eslint-plugin-react",
-  "eslint-plugin-react-hooks",
   "postcss",
   "tailwindcss",
   "tsc && unbuild",
