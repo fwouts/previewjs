@@ -1,8 +1,11 @@
-import test, { expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
-import { reactVersions } from "./react-versions";
+import url from "url";
+import pluginFactory from "../src/index.js";
+import { reactVersions } from "./react-versions.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);

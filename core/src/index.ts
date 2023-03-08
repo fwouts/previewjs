@@ -4,6 +4,7 @@ import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
 import getPort from "get-port";
+import { createRequire } from "module";
 import path from "path";
 import type * as vite from "vite";
 import {
@@ -24,6 +25,8 @@ export type {
 } from "./plugins/framework";
 export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 export type { SetupPreviewEnvironment } from "./preview-env";
+
+const require = createRequire(import.meta.url);
 
 process.on("uncaughtException", (e) => {
   console.error("Uncaught Exception:", e);

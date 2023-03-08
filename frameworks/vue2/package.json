@@ -15,17 +15,9 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
     "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "tsc && unbuild",
@@ -46,7 +38,7 @@
     "vue-template-compiler": "^2.7.14"
   },
   "devDependencies": {
-    "@playwright/test": "^1.31.2",
+    "@playwright/test": "~1.29.2",
     "@previewjs/core": "workspace:*",
     "@previewjs/testing": "workspace:*",
     "@types/fs-extra": "^11.0.1",

@@ -19,9 +19,9 @@ import type {
   UpdateClientStatusResponse,
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
-} from "./api";
+} from "./api.js";
 import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
-export * from "./api";
+export * from "./api.js";
 
 export function createClient(baseUrl: string): Client {
   const locking = exclusivePromiseRunner();

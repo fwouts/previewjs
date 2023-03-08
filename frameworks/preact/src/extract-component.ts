@@ -7,7 +7,7 @@ import {
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { analyzePreactComponent } from "./analyze-component";
+import { analyzePreactComponent } from "./analyze-component.js";
 
 export function extractPreactComponents(
   resolver: TypeResolver,

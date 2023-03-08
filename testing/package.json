@@ -14,22 +14,15 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
     "prepublish": "cd .. && turbo run build --scope=@previewjs/testing --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && unbuild"
   },
   "dependencies": {
-    "@playwright/test": "^1.31.2",
+    "@playwright/test": "~1.29.2",
     "@previewjs/api": "^8.0.0",
     "@previewjs/chromeless": "^3.0.1",
     "@previewjs/core": "^17.0.0",
@@ -38,7 +31,7 @@
     "assert-never": "^1.2.1",
     "fs-extra": "^11.1.0",
     "get-port": "^5.1.1",
-    "playwright": "^1.31.2"
+    "playwright": "~1.29.2"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",

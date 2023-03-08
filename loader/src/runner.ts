@@ -1,6 +1,6 @@
 import type * as core from "@previewjs/core";
 import { exclusivePromiseRunner } from "exclusive-promises";
-import { loadModules } from "./modules";
+import { loadModules } from "./modules.js";
 
 const locking = exclusivePromiseRunner();
 

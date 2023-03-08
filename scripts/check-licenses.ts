@@ -1,7 +1,9 @@
 import checker from "license-checker";
 import path from "path";
+import url from "url";
 import { inspect } from "util";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const starts = [
   path.join(__dirname, "..", "app"),
   path.join(__dirname, "..", "integrations", "intellij", "daemon"),

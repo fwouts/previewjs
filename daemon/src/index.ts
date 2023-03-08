@@ -31,8 +31,8 @@ import type {
   UpdateClientStatusResponse,
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
-} from "./api";
-import { createClient } from "./client";
+} from "./api.js";
+import { createClient } from "./client.js";
 
 const AUTOMATIC_SHUTDOWN_DELAY_SECONDS = 30;
 

@@ -1,7 +1,8 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
 const WRAPPER_SOURCE = `import { ReactNode } from "react";
 export const Wrapper = ({ children }: { children: ReactNode }) => {
@@ -9,6 +10,7 @@ export const Wrapper = ({ children }: { children: ReactNode }) => {
 };
 `;
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "solid");
 
 test.describe.parallel("solid/wrapper", () => {

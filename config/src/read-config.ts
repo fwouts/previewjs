@@ -1,6 +1,9 @@
 import fs from "fs";
+import { createRequire } from "module";
 import path from "path";
 import type { PreviewConfig } from "./config";
+
+const require = createRequire(import.meta.url);
 
 export const PREVIEW_CONFIG_NAME = "preview.config.js";
 

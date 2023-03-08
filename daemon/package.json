@@ -13,18 +13,15 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "type": "commonjs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     },
     "./client": {
-      "require": "./dist/client.cjs",
       "import": "./dist/client.mjs",
       "types": "./dist/client.d.ts"
     }

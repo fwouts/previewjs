@@ -143,8 +143,7 @@ export class ViteManager {
       ])
     );
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
-      // @ts-expect-error
-      viteTsconfigPaths.default({
+      viteTsconfigPaths({
         root: this.options.rootDirPath,
         projects: validTypeScriptFilePaths,
       }),

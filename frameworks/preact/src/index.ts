@@ -1,8 +1,9 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
-import { extractPreactComponents } from "./extract-component";
-import { PREACT_SPECIAL_TYPES } from "./special-types";
+import url from "url";
+import { extractPreactComponents } from "./extract-component.js";
+import { PREACT_SPECIAL_TYPES } from "./special-types.js";
 
 const preactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -13,6 +14,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
     return parseInt(version) >= 10;
   },
   async create() {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,

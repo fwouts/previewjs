@@ -17,7 +17,7 @@ import {
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import svelteFrameworkPlugin from ".";
-import { analyzeSvelteComponentFromSFC } from "./analyze-component";
+import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");

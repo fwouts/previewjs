@@ -17,17 +17,9 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
     "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-solid --no-deps --include-dependencies",
     "build": "tsc && unbuild",
@@ -43,7 +35,7 @@
     "vite-plugin-solid": "^2.6.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.31.2",
+    "@playwright/test": "~1.29.2",
     "@previewjs/core": "workspace:*",
     "@previewjs/testing": "workspace:*",
     "solid-js": "^1.6.12",

@@ -19,10 +19,12 @@ import {
   Writer,
 } from "@previewjs/vfs";
 import path from "path";
+import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import reactFrameworkPlugin from ".";
-import { PREACT_SPECIAL_TYPES } from "./special-types";
+import { PREACT_SPECIAL_TYPES } from "./special-types.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 

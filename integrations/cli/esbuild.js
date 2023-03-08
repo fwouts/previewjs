@@ -1,10 +1,10 @@
-const path = require("path");
-const { build } = require("esbuild");
+import { build } from "esbuild";
 
 build({
   entryPoints: ["./src/main.ts"],
   minify: false,
   bundle: true,
+  format: "esm",
   outfile: "./dist/main.js",
   platform: "node",
   define: {

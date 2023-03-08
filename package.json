@@ -13,11 +13,12 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
+  "type": "module",
   "scripts": {
-    "check-deps": "ts-node scripts/check-deps.ts",
-    "check-licenses": "ts-node scripts/check-licenses.ts",
-    "release-apps": "ts-node scripts/release-apps.ts",
-    "release-components": "ts-node scripts/release-components.ts",
+    "check-deps": "ts-node-esm scripts/check-deps.ts",
+    "check-licenses": "ts-node-esm scripts/check-licenses.ts",
+    "release-apps": "ts-node-esm scripts/release-apps.ts",
+    "release-components": "ts-node-esm scripts/release-components.ts",
     "vscode:build:dev": "cd ./integrations/vscode && pnpm build:dev",
     "vscode:build:dev:pro": "cd ./integrations/vscode && pnpm build:dev:pro",
     "lint": "eslint --max-warnings 0 '**/*.ts' '**/*.tsx'",

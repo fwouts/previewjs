@@ -20,7 +20,7 @@ import {
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import solidFrameworkPlugin from ".";
-import { SOLID_SPECIAL_TYPES } from "./special-types";
+import { SOLID_SPECIAL_TYPES } from "./special-types.js";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
