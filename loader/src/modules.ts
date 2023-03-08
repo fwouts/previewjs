@@ -1,6 +1,6 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
-import execa from "execa";
+import { execaCommand } from "execa";
 import fs from "fs";
 import path from "path";
 
@@ -16,7 +16,7 @@ export async function loadModules({
     !fs.existsSync(path.join(installDir, "node_modules"))
   ) {
     console.log("[install:begin] Running pnpm install...");
-    const pnpmProcess = execa.command(
+    const pnpmProcess = execaCommand(
       `cd "${installDir}" && node pnpm/bin/pnpm.cjs install --frozen-lockfile`,
       {
         shell: true,

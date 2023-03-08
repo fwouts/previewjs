@@ -1,4 +1,4 @@
-import execa from "execa";
+import { execa } from "execa";
 
 export async function gitChangelog(packageName: string, dirPaths: string[]) {
   const { stdout } = await execa("git", [

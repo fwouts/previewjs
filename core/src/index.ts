@@ -3,7 +3,7 @@ import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
-import getPort from "get-port";
+import getPort, { portNumbers } from "get-port";
 import { createRequire } from "module";
 import path from "path";
 import type * as vite from "vite";
@@ -138,7 +138,7 @@ export async function createWorkspace({
           return (
             port ||
             (await getPort({
-              port: getPort.makeRange(3140, 4000),
+              port: portNumbers(3140, 4000),
             }))
           );
         });
