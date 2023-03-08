@@ -53,7 +53,7 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
         throw new Error(
           `Encountered unexpected logged messages.\nUnmatched: ${inspect(
             remainingLogEvents
-          )}`
+          )}\n\nFull list: ${inspect(logEvents)}`
         );
       }
     },

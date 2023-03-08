@@ -231,7 +231,19 @@ export class ViteManager {
       customLogger: {
         info: defaultLogger.info,
         warn: defaultLogger.warn,
-        error: defaultLogger.error,
+        error: (msg, options) => {
+          if (!msg.startsWith("\x1B[31mInternal server error")) {
+            // Note: we only send errors through WebSocket when they're not already sent by Vite automatically.
+            this.viteServer?.ws.send({
+              type: "error",
+              err: {
+                message: msg,
+                stack: "",
+              },
+            });
+          }
+          defaultLogger.error(msg, options);
+        },
         warnOnce: defaultLogger.warnOnce,
         clearScreen: () => {
           // Do nothing.
