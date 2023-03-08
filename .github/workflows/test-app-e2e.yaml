@@ -28,17 +28,17 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        os: [ubuntu-20.04, macos-11, windows-2022]
+        os: [ubuntu-22.04, macos-11, windows-2022]
         group: [1, 2, 3]
         include:
           - node-version: 16.x
-            os: ubuntu-latest
+            os: ubuntu-22.04
             group: 1
           - node-version: 16.x
-            os: ubuntu-latest
+            os: ubuntu-22.04
             group: 2
           - node-version: 16.x
-            os: ubuntu-latest
+            os: ubuntu-22.04
             group: 3
     steps:
       - uses: actions/checkout@v3
@@ -81,7 +81,7 @@ jobs:
               git push origin ${{ github.head_ref }}
             fi
           fi
-        if: ${{ github.ref != 'refs/heads/main' && matrix.os == 'ubuntu-20.04' }}
+        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' }}
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
@@ -102,4 +102,4 @@ jobs:
             })
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
-        if: ${{ github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-20.04' }}
+        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '18.x' }}
