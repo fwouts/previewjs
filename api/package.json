@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/api",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -22,8 +22,8 @@
     "build": "tsc && unbuild"
   },
   "dependencies": {
-    "@previewjs/serializable-values": "^3.2.3",
-    "@previewjs/type-analyzer": "^4.1.5",
+    "@previewjs/serializable-values": "^4.0.0",
+    "@previewjs/type-analyzer": "^5.0.0",
     "axios": "^1.3.4"
   },
   "devDependencies": {
