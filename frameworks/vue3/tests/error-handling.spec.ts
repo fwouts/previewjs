@@ -52,7 +52,6 @@ test.describe.parallel("vue3/error handling", () => {
     });
     await preview.expectLoggedMessages.toMatch([
       "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
-      "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
       "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
     ]);
     await preview.fileManager.update("src/App.vue", {
