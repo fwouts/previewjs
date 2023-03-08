@@ -23,7 +23,7 @@ export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
     const required = isModule
       ? await import(rpConfigPath)
       : require(rpConfigPath);
-    config = required.module || required;
+    config = required.module || required.default || required;
   }
   return {
     alias: {},
