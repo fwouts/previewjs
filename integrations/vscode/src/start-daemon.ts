@@ -1,5 +1,5 @@
 import { Client, createClient } from "@previewjs/daemon/client";
-import execa from "execa";
+import { execa, ExecaChildProcess, ExecaReturnValue, Options } from "execa";
 import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
 import path from "path";
 import stripAnsi from "strip-ansi";
@@ -33,7 +33,7 @@ export async function ensureDaemonRunning(
 // Important: we wrap daemonProcess into a Promise so that awaiting startDaemon()
 // doesn't automatically await the process itself (which may not exit for a long time!).
 async function startDaemon(outputChannel: OutputChannel): Promise<{
-  daemonProcess: execa.ExecaChildProcess<string>;
+  daemonProcess: ExecaChildProcess<string>;
 } | null> {
   const isWindows = process.platform === "win32";
   let useWsl = false;
@@ -92,7 +92,7 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
   );
   outputChannel.appendLine(`Streaming daemon logs to: ${logsPath}`);
   const nodeDaemonCommand = "node --trace-warnings daemon.js";
-  const daemonOptions: execa.Options = {
+  const daemonOptions: Options = {
     cwd: __dirname,
     // https://nodejs.org/api/child_process.html#child_process_options_detached
     // If we use "inherit", we end up with a "write EPIPE" crash when the child process
@@ -104,7 +104,7 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
       PREVIEWJS_PORT: port,
     },
   };
-  let daemonProcess: execa.ExecaChildProcess<string>;
+  let daemonProcess: ExecaChildProcess<string>;
   if (useWsl) {
     daemonProcess = execa(
       "wsl",
@@ -208,7 +208,7 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
   return ready;
 }
 
-function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
+function checkNodeVersionResult(result: ExecaReturnValue<string>):
   | {
       kind: "valid";
     }

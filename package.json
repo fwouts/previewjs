@@ -27,7 +27,7 @@
     "vite-ecosystem-ci:test": "export ONLY_REACT_VERSION=18 && turbo e2e-test --filter=@previewjs/plugin-react -- --retries=3 --workers=2"
   },
   "devDependencies": {
-    "@types/inquirer": "^8.2.6",
+    "@types/inquirer": "^9.0.3",
     "@types/license-checker": "^25.0.3",
     "@types/node": "^18.14.6",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
@@ -36,8 +36,8 @@
     "depcheck": "^1.4.3",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.7.0",
-    "execa": "^5.1.1",
-    "inquirer": "^8.2.5",
+    "execa": "^7.0.0",
+    "inquirer": "^9.1.4",
     "license-checker": "^25.0.1",
     "prettier": "^2.8.4",
     "ts-node": "^10.9.1",
