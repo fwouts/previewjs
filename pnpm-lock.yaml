@@ -1731,7 +1731,7 @@ importers:
       unbuild: ^1.1.2
       vite: ^4.1.4
       vitest: ^0.29.2
-      vue: ^2.7.14
+      vue: ^3.2.47
       vue-template-compiler: ^2.7.14
     dependencies:
       '@nuxt/config': 2.16.0
@@ -1739,11 +1739,11 @@ importers:
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      '@vitejs/plugin-vue2': 2.2.0_vite@4.1.4+vue@2.7.14
-      '@vitejs/plugin-vue2-jsx': 1.1.0_qfo22i4ycyfrwld2zpwxpz724m
+      '@vitejs/plugin-vue2': 2.2.0_vite@4.1.4+vue@3.2.47
+      '@vitejs/plugin-vue2-jsx': 1.1.0_jctga3te25nljea5vri7f6t5kq
       fs-extra: 11.1.0
       typescript: 4.9.5
-      vue: 2.7.14
+      vue: 3.2.47
       vue-template-compiler: 2.7.14
     devDependencies:
       '@playwright/test': 1.29.2
@@ -12077,7 +12077,7 @@ packages:
       vite: 4.1.4
       vue: 3.2.47
 
-  /@vitejs/plugin-vue2-jsx/1.1.0_qfo22i4ycyfrwld2zpwxpz724m:
+  /@vitejs/plugin-vue2-jsx/1.1.0_jctga3te25nljea5vri7f6t5kq:
     resolution: {integrity: sha512-Mxg24oJVGXlu33p4fx1nHgG7jW+beK7cK1Xb6IP6tAPXrZ9N/mldFPKKhftBsITgOIKXzHeldKY6iOGEttzjEQ==}
     engines: {node: '>=14.18.0'}
     peerDependencies:
@@ -12088,15 +12088,15 @@ packages:
       '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.21.0
       '@babel/plugin-transform-typescript': 7.21.0_@babel+core@7.21.0
       '@rollup/pluginutils': 5.0.2_rollup@3.18.0
-      '@vue/babel-preset-jsx': 1.4.0_qipave72ixbnicgglqgy4excba
+      '@vue/babel-preset-jsx': 1.4.0_wsglhzocxeqeughab3nmclicb4
       vite: 4.1.4
-      vue: 2.7.14
+      vue: 3.2.47
     transitivePeerDependencies:
       - rollup
       - supports-color
     dev: false
 
-  /@vitejs/plugin-vue2/2.2.0_vite@4.1.4+vue@2.7.14:
+  /@vitejs/plugin-vue2/2.2.0_vite@4.1.4+vue@3.2.47:
     resolution: {integrity: sha512-1km7zEuZ/9QRPvzXSjikbTYGQPG86Mq1baktpC4sXqsXlb02HQKfi+fl8qVS703JM7cgm24Ga9j+RwKmvFn90A==}
     engines: {node: ^14.18.0 || >= 16.0.0}
     peerDependencies:
@@ -12104,7 +12104,7 @@ packages:
       vue: ^2.7.0-0
     dependencies:
       vite: 4.1.4
-      vue: 2.7.14
+      vue: 3.2.47
     dev: false
 
   /@vitest/expect/0.29.2:
@@ -12379,7 +12379,6 @@ packages:
       '@vue/babel-sugar-v-model': 1.4.0_@babel+core@7.21.0
       '@vue/babel-sugar-v-on': 1.4.0_@babel+core@7.21.0
       vue: 3.2.47
-    dev: true
 
   /@vue/babel-sugar-composition-api-inject-h/1.4.0_@babel+core@7.21.0:
     resolution: {integrity: sha512-VQq6zEddJHctnG4w3TfmlVp5FzDavUSut/DwR0xVoe/mJKXyMcsIibL42wPntozITEoY90aBV0/1d2KjxHU52g==}
