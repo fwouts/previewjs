@@ -288,7 +288,7 @@ importers:
       '@previewjs/type-analyzer': ^4.1.5
       '@previewjs/vfs': ^1.2.16
       preact: ^10.13.0
-      rimraf: ^3.0.2
+      rimraf: ^4.3.1
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.1.4
@@ -307,7 +307,7 @@ importers:
       '@previewjs/properties': link:../../properties
       '@previewjs/testing': link:../../testing
       preact: 10.13.0
-      rimraf: 3.0.2
+      rimraf: 4.3.1
       unbuild: 1.1.2
       vite: 4.1.4
       vitest: 0.29.2
@@ -436,7 +436,7 @@ importers:
       '@types/prop-types': ^15.7.5
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
-      rimraf: ^3.0.2
+      rimraf: ^4.3.1
       shx: ^0.3.4
     dependencies:
       '@types/prop-types': 15.7.5
@@ -444,7 +444,7 @@ importers:
       '@types/react-dom': 18.0.11
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
-      rimraf: 3.0.2
+      rimraf: 4.3.1
       shx: 0.3.4
 
   frameworks/react/tests/apps/aliases:
@@ -1734,14 +1734,14 @@ importers:
   frameworks/vue2/preview:
     specifiers:
       '@previewjs/iframe': workspace:*
-      rimraf: ^3.0.2
+      rimraf: ^4.3.1
       shx: ^0.3.4
       vue: ^3.2.47
     dependencies:
       vue: 3.2.47
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
-      rimraf: 3.0.2
+      rimraf: 4.3.1
       shx: 0.3.4
 
   frameworks/vue2/tests/apps/nuxt2-app:
@@ -1858,7 +1858,7 @@ importers:
       '@vue/runtime-core': ^3.2.47
       '@vue/runtime-dom': ^3.2.47
       '@vue/shared': ^3.2.47
-      rimraf: ^3.0.2
+      rimraf: ^4.3.1
       shx: ^0.3.4
       vue: ^3.2.47
     dependencies:
@@ -1869,7 +1869,7 @@ importers:
       vue: 3.2.47
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
-      rimraf: 3.0.2
+      rimraf: 4.3.1
       shx: 0.3.4
 
   frameworks/vue3/tests/apps/nuxt3-app:
