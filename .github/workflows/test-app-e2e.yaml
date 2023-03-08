@@ -81,7 +81,7 @@ jobs:
               git push origin ${{ github.head_ref }}
             fi
           fi
-        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' }}
+        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
@@ -102,4 +102,4 @@ jobs:
             })
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
-        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '18.x' }}
+        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
