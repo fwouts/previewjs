@@ -34,22 +34,22 @@ jobs:
           # Important: Node 14 version must match minimum checked
           # for CLI package.json, as well as IntelliJ and VS Code
           # node --version checks.
-          - node-version: 14.18.0
+          - node-version: 14.x
             os: ubuntu-latest
             group: 1
-          - node-version: 14.18.0
+          - node-version: 14.x
             os: ubuntu-latest
             group: 2
-          - node-version: 14.18.0
+          - node-version: 14.x
             os: ubuntu-latest
             group: 3
-          - node-version: 16.19.1
+          - node-version: 16.x
             os: ubuntu-latest
             group: 1
-          - node-version: 16.19.1
+          - node-version: 16.x
             os: ubuntu-latest
             group: 2
-          - node-version: 16.19.1
+          - node-version: 16.x
             os: ubuntu-latest
             group: 3
     steps:
