@@ -141,6 +141,7 @@ test.describe.parallel("react/error handling", () => {
         });
         await preview.show("src/App.tsx:App");
         await preview.expectLoggedMessages.toMatch([
+          "Failed to load url /src/App-missing.css (resolved id: /src/App-missing.css)",
           "Failed to fetch dynamically imported module",
           "Failed to fetch dynamically imported module",
         ]);
@@ -159,6 +160,7 @@ test.describe.parallel("react/error handling", () => {
           with: "App-missing.css",
         });
         await preview.expectLoggedMessages.toMatch([
+          "Failed to load url /src/App-missing.css (resolved id: /src/App-missing.css)",
           "Failed to reload /src/App.tsx.",
         ]);
         await preview.fileManager.update("src/App.tsx", {
@@ -302,6 +304,16 @@ test.describe.parallel("react/error handling", () => {
           with: " {",
         });
         await preview.iframe.waitForSelector(".App");
+      });
+
+      test("fails correctly when encountering missing CSS", async (preview) => {
+        await preview.fileManager.remove("src/App.css");
+        await preview.show("src/App.tsx:App");
+        await preview.expectLoggedMessages.toMatch([
+          "Failed to load url /src/App.css (resolved id: /src/App.css)",
+          "Failed to fetch dynamically imported module",
+          "Failed to fetch dynamically imported module",
+        ]);
       });
     });
   }
