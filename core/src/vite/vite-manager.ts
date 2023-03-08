@@ -233,6 +233,7 @@ export class ViteManager {
         warn: defaultLogger.warn,
         error: (msg, options) => {
           if (!msg.startsWith("\x1B[31mInternal server error")) {
+            // Note: we only send errors through WebSocket when they're not already sent by Vite automatically.
             this.viteServer?.ws.send({
               type: "error",
               err: {
