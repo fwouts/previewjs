@@ -1435,6 +1435,29 @@ importers:
       '@babel/core': 7.21.0
       '@previewjs/config': link:../../../../../config
 
+  frameworks/react/tests/apps/wrapper-custom-esm:
+    specifiers:
+      '@babel/core': ^7.21.0
+      '@previewjs/config': ^4.0.2
+      '@types/node': ^18.14.6
+      '@types/react': ^18.0.28
+      '@types/react-dom': ^18.0.11
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      react-scripts: ^5.0.1
+      typescript: ^4.9.5
+    dependencies:
+      '@types/node': 18.14.6
+      '@types/react': 18.0.28
+      '@types/react-dom': 18.0.11
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-scripts: 5.0.1_ttstqpwd5x4n2qlxnjlizm3yxq
+      typescript: 4.9.5
+    devDependencies:
+      '@babel/core': 7.21.0
+      '@previewjs/config': link:../../../../../config
+
   frameworks/react/tests/apps/wrapper-default:
     specifiers:
       '@babel/core': ^7.21.0
@@ -11183,7 +11206,7 @@ packages:
   /@types/eslint/8.21.1:
     resolution: {integrity: sha512-rc9K8ZpVjNcLs8Fp0dkozd5Pt2Apk1glO4Vgz8ix1u6yFByxfqo5Yavpy65o+93TAe24jr7v+eSBtFLvOQtCRQ==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
 
   /@types/estree/0.0.39:
