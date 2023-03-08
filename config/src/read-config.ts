@@ -1,6 +1,7 @@
 import fs from "fs";
 import { createRequire } from "module";
 import path from "path";
+import url from "url";
 import type { PreviewConfig } from "./config";
 
 const require = createRequire(import.meta.url);
@@ -21,7 +22,7 @@ export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
     // Delete any existing cache so we reload the config fresh.
     delete require.cache[require.resolve(rpConfigPath)];
     const required = isModule
-      ? await import(rpConfigPath)
+      ? await import(url.pathToFileURL(rpConfigPath).toString())
       : require(rpConfigPath);
     config = required.module || required.default || required;
   }
