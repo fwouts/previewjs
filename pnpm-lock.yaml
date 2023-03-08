@@ -2002,7 +2002,7 @@ importers:
       exclusive-promises: ^1.0.3
       execa: ^7.0.0
       fs-extra: ^11.1.0
-      pnpm: ^7.29.0
+      pnpm: ^7.29.1
       proper-lockfile: ^4.1.2
       rimraf: ^4.2.0
       typescript: ^4.9.5
@@ -2014,7 +2014,7 @@ importers:
       exclusive-promises: 1.0.3
       execa: 7.0.0
       fs-extra: 11.1.0
-      pnpm: 7.29.0
+      pnpm: 7.29.1
       proper-lockfile: 4.1.2
       rimraf: 4.3.0
       typescript: 4.9.5
@@ -19370,6 +19370,7 @@ packages:
 
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
 
   /filelist/1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
@@ -26154,8 +26155,8 @@ packages:
       - typescript
     dev: true
 
-  /pnpm/7.29.0:
-    resolution: {integrity: sha512-SyJGcUK7gmLSJYjspL6iVOR9CS7ARYA7K0JmJkjn+MMxEJBUwzc0XdPBNwh5q8dxs+iR2ZQBalmI1lI24GRVOA==}
+  /pnpm/7.29.1:
+    resolution: {integrity: sha512-dn+65B2XpMIin7sQZvBIJ2Zyx8Z7LK95qyAvgEPE8qXkWYL/LuwpfMfK9Muc7+zNnpPwiQgtGEsxgOtuabFibQ==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: true
