@@ -3,10 +3,10 @@ import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
 import { inspect } from "util";
-import { assertCleanGit } from "./clean-git";
-import { gitChangelog } from "./git-changelog";
-import { incrementVersion } from "./increment-version";
-import { getPackageJson } from "./package-json";
+import { assertCleanGit } from "./clean-git.js";
+import { gitChangelog } from "./git-changelog.js";
+import { incrementVersion } from "./increment-version.js";
+import { getPackageJson } from "./package-json.js";
 
 type Package = {
   name: string;
