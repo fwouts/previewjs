@@ -16,25 +16,47 @@ async function main() {
   console.log(
     `About to update loader bundle with @previewjs/pro v${previewjsProVersion}.`
   );
-  const { version: coreVersion } = await import("../core/package.json");
-  const { version: vfsVersion } = await import("../vfs/package.json");
+  const { version: coreVersion } = await import("../core/package.json", {
+    assert: { type: "json" },
+  });
+  const { version: vfsVersion } = await import("../vfs/package.json", {
+    assert: { type: "json" },
+  });
   const { version: preactPluginVersion } = await import(
-    "../frameworks/preact/package.json"
+    "../frameworks/preact/package.json",
+    {
+      assert: { type: "json" },
+    }
   );
   const { version: reactPluginVersion } = await import(
-    "../frameworks/react/package.json"
+    "../frameworks/react/package.json",
+    {
+      assert: { type: "json" },
+    }
   );
   const { version: solidPluginVersion } = await import(
-    "../frameworks/solid/package.json"
+    "../frameworks/solid/package.json",
+    {
+      assert: { type: "json" },
+    }
   );
   const { version: sveltePluginVersion } = await import(
-    "../frameworks/svelte/package.json"
+    "../frameworks/svelte/package.json",
+    {
+      assert: { type: "json" },
+    }
   );
   const { version: vue2PluginVersion } = await import(
-    "../frameworks/vue2/package.json"
+    "../frameworks/vue2/package.json",
+    {
+      assert: { type: "json" },
+    }
   );
   const { version: vue3PluginVersion } = await import(
-    "../frameworks/vue3/package.json"
+    "../frameworks/vue3/package.json",
+    {
+      assert: { type: "json" },
+    }
   );
   const releaseDirPath = path.join(__dirname, "..", "loader", "src", "release");
   await fs.promises.writeFile(

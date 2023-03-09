@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist",
-    "moduleResolution": "nodenext"
+    "outDir": "dist"
   },
   "include": ["src", "tests"],
   "exclude": ["node_modules", "tests/apps"]
