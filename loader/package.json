@@ -23,12 +23,18 @@
     },
     "./runner": {
       "default": "./dist/runner.js"
+    },
+    "./setup": {
+      "default": "./dist/setup.js"
     }
   },
   "typesVersions": {
     "*": {
       "runner": [
         "./dist/runner.d.ts"
+      ],
+      "setup": [
+        "./dist/setup.d.ts"
       ]
     }
   },
