@@ -106,7 +106,7 @@ importers:
       '@types/express': ^4.17.17
       express: ^4.18.2
       playwright: ~1.29.2
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.1.4
@@ -120,7 +120,7 @@ importers:
       playwright: 1.29.2
     devDependencies:
       '@types/express': 4.17.17
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       typescript: 4.9.5
       unbuild: 1.1.2
       vite: 4.1.4
@@ -236,7 +236,7 @@ importers:
       exclusive-promises: ^1.0.3
       exit-hook: ^3.2.0
       is-wsl: ^2.2.0
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       ts-node-dev: ^2.0.0
       typescript: ^4.9.5
       unbuild: ^1.1.2
@@ -248,7 +248,7 @@ importers:
       exclusive-promises: 1.0.3
       exit-hook: 3.2.0
       is-wsl: 2.2.0
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       ts-node-dev: 2.0.0_alpjt73dvgv6kni625hu7f2l4m
       typescript: 4.9.5
       unbuild: 1.1.2
@@ -288,7 +288,7 @@ importers:
       '@previewjs/type-analyzer': ^5.0.0
       '@previewjs/vfs': ^2.0.0
       preact: ^10.13.0
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.1.4
@@ -307,7 +307,7 @@ importers:
       '@previewjs/properties': link:../../properties
       '@previewjs/testing': link:../../testing
       preact: 10.13.0
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       unbuild: 1.1.2
       vite: 4.1.4
       vitest: 0.29.2
@@ -436,7 +436,7 @@ importers:
       '@types/prop-types': ^15.7.5
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       shx: ^0.3.4
     dependencies:
       '@types/prop-types': 15.7.5
@@ -444,7 +444,7 @@ importers:
       '@types/react-dom': 18.0.11
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       shx: 0.3.4
 
   frameworks/react/tests/apps/aliases:
@@ -1757,14 +1757,14 @@ importers:
   frameworks/vue2/preview:
     specifiers:
       '@previewjs/iframe': workspace:*
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       shx: ^0.3.4
       vue: ^3.2.47
     dependencies:
       vue: 3.2.47
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       shx: 0.3.4
 
   frameworks/vue2/tests/apps/nuxt2-app:
@@ -1881,7 +1881,7 @@ importers:
       '@vue/runtime-core': ^3.2.47
       '@vue/runtime-dom': ^3.2.47
       '@vue/shared': ^3.2.47
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       shx: ^0.3.4
       vue: ^3.2.47
     dependencies:
@@ -1892,7 +1892,7 @@ importers:
       vue: 3.2.47
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       shx: 0.3.4
 
   frameworks/vue3/tests/apps/nuxt3-app:
@@ -1953,7 +1953,7 @@ importers:
       esbuild: ^0.17.11
       nodemon: ^2.0.21
       open: ^8.4.2
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       ts-node: ^10.9.1
       typescript: ^4.9.5
     devDependencies:
@@ -1966,7 +1966,7 @@ importers:
       esbuild: 0.17.11
       nodemon: 2.0.21
       open: 8.4.2
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       ts-node: 10.9.1_alpjt73dvgv6kni625hu7f2l4m
       typescript: 4.9.5
 
@@ -1975,14 +1975,14 @@ importers:
       '@previewjs/daemon': workspace:*
       '@previewjs/loader': workspace:*
       esbuild: ^0.17.11
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       ts-node-dev: ^2.0.0
       typescript: ^4.9.5
     devDependencies:
       '@previewjs/daemon': link:../../../daemon
       '@previewjs/loader': link:../../../loader
       esbuild: 0.17.11
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       ts-node-dev: 2.0.0_alpjt73dvgv6kni625hu7f2l4m
       typescript: 4.9.5
 
@@ -1996,7 +1996,7 @@ importers:
       exclusive-promises: ^1.0.3
       execa: ^7.0.0
       ovsx: ^0.8.0
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       strip-ansi: ^7.0.1
       typescript: ^4.9.5
       vsce: ^2.15.0
@@ -2009,7 +2009,7 @@ importers:
       exclusive-promises: 1.0.3
       execa: 7.0.0
       ovsx: 0.8.0
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       strip-ansi: 7.0.1
       typescript: 4.9.5
       vsce: 2.15.0
@@ -2025,7 +2025,7 @@ importers:
       fs-extra: ^11.1.0
       pnpm: ^7.29.1
       proper-lockfile: ^4.1.2
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       typescript: ^4.9.5
     devDependencies:
       '@previewjs/core': link:../core
@@ -2037,7 +2037,7 @@ importers:
       fs-extra: 11.1.0
       pnpm: 7.29.1
       proper-lockfile: 4.1.2
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       typescript: 4.9.5
 
   properties:
@@ -2087,7 +2087,7 @@ importers:
       fs-extra: ^11.1.0
       get-port: ^6.1.2
       playwright: ~1.29.2
-      rimraf: ^4.3.1
+      rimraf: ^4.4.0
       typescript: ^4.9.5
       unbuild: ^1.1.2
     dependencies:
@@ -2103,7 +2103,7 @@ importers:
       playwright: 1.29.2
     devDependencies:
       '@types/fs-extra': 11.0.1
-      rimraf: 4.3.1
+      rimraf: 4.4.0
       typescript: 4.9.5
       unbuild: 1.1.2
 
@@ -29600,8 +29600,8 @@ packages:
     dependencies:
       glob: 7.2.3
 
-  /rimraf/4.3.1:
-    resolution: {integrity: sha512-GfHJHBzFQra23IxDzIdBqhOWfbtdgS1/dCHrDy+yvhpoJY5TdwdT28oWaHWfRpKFDLd3GZnGTx6Mlt4+anbsxQ==}
+  /rimraf/4.4.0:
+    resolution: {integrity: sha512-X36S+qpCUR0HjXlkDe4NAOhS//aHH0Z+h8Ckf2auGJk3PTnx5rLmrHkwNdbVQuCSUhOyFrlRvFEllZOYE+yZGQ==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
