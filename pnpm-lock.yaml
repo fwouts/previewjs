@@ -287,7 +287,7 @@ importers:
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^5.0.0
       '@previewjs/vfs': ^2.0.0
-      preact: ^10.13.0
+      preact: ^10.13.1
       rimraf: ^4.4.0
       typescript: ^4.9.5
       unbuild: ^1.1.2
@@ -306,7 +306,7 @@ importers:
       '@previewjs/iframe': link:../../iframe
       '@previewjs/properties': link:../../properties
       '@previewjs/testing': link:../../testing
-      preact: 10.13.0
+      preact: 10.13.1
       rimraf: 4.4.0
       unbuild: 1.1.2
       vite: 4.1.4
@@ -27796,6 +27796,10 @@ packages:
 
   /preact/10.13.0:
     resolution: {integrity: sha512-ERdIdUpR6doqdaSIh80hvzebHB7O6JxycOhyzAeLEchqOq/4yueslQbfnPwXaNhAYacFTyCclhwkEbOumT0tHw==}
+
+  /preact/10.13.1:
+    resolution: {integrity: sha512-KyoXVDU5OqTpG9LXlB3+y639JAGzl8JSBXLn1J9HTSB3gbKcuInga7bZnXLlxmK94ntTs1EFeZp0lrja2AuBYQ==}
+    dev: true
 
   /prebuild-install/7.1.1:
     resolution: {integrity: sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==}
