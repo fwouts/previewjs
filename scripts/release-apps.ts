@@ -9,8 +9,9 @@ import { gitChangelog } from "./git-changelog.js";
 import { incrementVersion } from "./increment-version.js";
 import { getPackageJson } from "./package-json.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+
 async function main() {
-  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   await assertCleanGit();
 
   console.log(
