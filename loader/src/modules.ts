@@ -3,6 +3,7 @@ import type * as vfs from "@previewjs/vfs";
 import { execaCommand } from "execa";
 import fs from "fs";
 import path from "path";
+import url from "url";
 
 export async function loadModules({
   installDir,
@@ -45,7 +46,11 @@ export async function loadModules({
     try {
       const module = await import(
         // TODO: Remove the hardcoded subpath.
-        path.join(installDir, "node_modules", name, "dist", "index.mjs")
+        url
+          .pathToFileURL(
+            path.join(installDir, "node_modules", name, "dist", "index.mjs")
+          )
+          .toString()
       );
       return module.default || module;
     } catch (e) {
