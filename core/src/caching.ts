@@ -15,6 +15,6 @@ export function getCacheDir(rootDirPath: string) {
       `v${version}`
     );
   } catch (e) {
-    throw new Error(`Unable to detect @previewjs/core version.`);
+    throw new Error(`Unable to detect @previewjs/core version.\n${e}`);
   }
 }
