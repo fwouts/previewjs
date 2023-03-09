@@ -13,11 +13,16 @@ export async function copyLoader(destPath: string, type: "cjs" | "esm") {
   );
   const {
     default: { dependencies },
-  } = await import(path.join(__dirname, "../src/release/package.json"), {
-    assert: {
-      type: "json",
-    },
-  });
+  } = await import(
+    url
+      .pathToFileURL(path.join(__dirname, "../src/release/package.json"))
+      .toString(),
+    {
+      assert: {
+        type: "json",
+      },
+    }
+  );
   await fs.writeFile(
     path.join(destPath, "package.json"),
     JSON.stringify(
