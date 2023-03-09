@@ -277,6 +277,56 @@ export default () => {
     expect(extract(MAIN_FILE)).toMatchObject([]);
   });
 
+  it("detects CSF1 stories", async () => {
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./App";
+
+export default {
+  component: Button
+}
+
+export const Primary = () => <Button primary label="Button" />;
+
+export const NotStory = (props) => <Button {...props} />;
+`
+    );
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
+      {
+        name: "Primary",
+        info: {
+          kind: "story",
+          args: null,
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+      {
+        name: "NotStory",
+        info: {
+          kind: "component",
+          exported: true,
+        },
+      },
+    ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
+  });
+
   it("detects CSF2 stories", async () => {
     memoryReader.updateFile(
       STORIES_FILE,
