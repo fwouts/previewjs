@@ -52,8 +52,15 @@ export function createClient(baseUrl: string): Client {
               responseData += data;
             });
             res.on("end", () => {
-              const response = JSON.parse(responseData);
-              resolve(response);
+              try {
+                const response = JSON.parse(responseData);
+                resolve(response);
+              } catch (e) {
+                console.error(
+                  "Unexpected invalid JSON in response:\n",
+                  responseData
+                );
+              }
             });
           }
         );

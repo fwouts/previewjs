@@ -19,12 +19,17 @@ export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
       const { type } = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
       isModule = type === "module";
     }
-    // Delete any existing cache so we reload the config fresh.
-    delete require.cache[require.resolve(rpConfigPath)];
-    const required = isModule
-      ? await import(url.pathToFileURL(rpConfigPath).toString())
-      : require(rpConfigPath);
-    config = required.module || required.default || required;
+    if (isModule) {
+      const module = await import(
+        url.pathToFileURL(rpConfigPath).toString() + `?t=${Date.now()}`
+      );
+      return module.default;
+    } else {
+      // Delete any existing cache so we reload the config fresh.
+      delete require.cache[require.resolve(rpConfigPath)];
+      const required = require(rpConfigPath);
+      return required.module || required;
+    }
   }
   return {
     alias: {},

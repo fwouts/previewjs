@@ -207,11 +207,11 @@ export async function startDaemon({
         .then((responseBody) => sendJsonResponse(res, responseBody))
         .catch((e) => {
           if (e instanceof NotFoundError) {
-            console.error(`404 in endpoint ${path}:`);
+            console.error(`404 in endpoint ${req.url}:`);
             console.error(e);
             sendPlainTextError(res, 404, e.message || "Not Found");
           } else {
-            console.error(`500 in endpoint ${path}:`);
+            console.error(`500 in endpoint ${req.url}:`);
             console.error(e);
             sendPlainTextError(res, 500, e.message || "Internal Error");
           }
