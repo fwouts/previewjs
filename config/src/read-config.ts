@@ -9,9 +9,9 @@ const require = createRequire(import.meta.url);
 export const PREVIEW_CONFIG_NAME = "preview.config.js";
 
 export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
-  const rpConfigPath = path.join(rootDirPath, PREVIEW_CONFIG_NAME);
+  const configPath = path.join(rootDirPath, PREVIEW_CONFIG_NAME);
   let config: Partial<PreviewConfig> = {};
-  const configFileExists = fs.existsSync(rpConfigPath);
+  const configFileExists = fs.existsSync(configPath);
   if (configFileExists) {
     let isModule = false;
     const packageJsonPath = path.join(rootDirPath, "package.json");
@@ -20,19 +20,15 @@ export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
       isModule = type === "module";
     }
     try {
-      if (isModule) {
-        const module = await import(
-          url.pathToFileURL(rpConfigPath).toString() + `?t=${Date.now()}`
-        );
-        return module.default;
-      } else {
-        // Delete any existing cache so we reload the config fresh.
-        delete require.cache[require.resolve(rpConfigPath)];
-        const required = require(rpConfigPath);
-        return required.module || required;
-      }
+      return await loadModule(configPath, isModule);
     } catch (e) {
-      throw new Error(`Unable to read preview.config.js:\n${e}`);
+      // Try again but with the other type of module.
+      try {
+        return await loadModule(configPath, !isModule);
+      } catch {
+        // Throw the original error if not working.
+        throw new Error(`Unable to read preview.config.js:\n${e}`);
+      }
     }
   }
   return {
@@ -40,4 +36,18 @@ export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
     publicDir: "public",
     ...config,
   };
+}
+
+async function loadModule(configPath: string, asModule: boolean) {
+  if (asModule) {
+    const module = await import(
+      url.pathToFileURL(configPath).toString() + `?t=${Date.now()}`
+    );
+    return module.default;
+  } else {
+    // Delete any existing cache so we reload the config fresh.
+    delete require.cache[require.resolve(configPath)];
+    const required = require(configPath);
+    return required.module || required;
+  }
 }

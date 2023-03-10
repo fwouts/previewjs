@@ -101,7 +101,11 @@ if (logFilePath) {
     process.stdout.write.bind(process.stdout)
   );
   process.on("uncaughtException", (e) => {
-    console.error(e);
+    console.error("Encountered an uncaught exception", e);
+    process.exit(1);
+  });
+  process.on("unhandledRejection", (e) => {
+    console.error("Encountered an unhandled promise", e);
     process.exit(1);
   });
 }

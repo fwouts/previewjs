@@ -3,6 +3,7 @@ import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
 import express from "express";
 import fs from "fs-extra";
+import { escape } from "html-escaper";
 import type { Server } from "http";
 import path from "path";
 import { recrawl } from "recrawl";
@@ -37,21 +38,48 @@ export class ViteManager {
   ) {
     const router = express.Router();
     router.get("/preview/", async (req, res) => {
-      await this.viteStartupPromise;
-      const template = await fs.readFile(
-        this.options.shadowHtmlFilePath,
-        "utf-8"
-      );
-      if (!this.viteServer) {
-        res.status(404).end(`Vite is not running.`);
-        return;
-      }
-      res
-        .status(200)
-        .set({ "Content-Type": "text/html" })
-        .end(
-          await this.viteServer.transformIndexHtml(req.originalUrl, template)
+      try {
+        const template = await fs.readFile(
+          this.options.shadowHtmlFilePath,
+          "utf-8"
         );
+        await this.viteStartupPromise;
+        if (!this.viteServer) {
+          res.status(404).end(`Uh-Oh! Vite server is not running.`);
+          return;
+        }
+        res
+          .status(200)
+          .set({ "Content-Type": "text/html" })
+          .end(
+            await this.viteServer.transformIndexHtml(req.originalUrl, template)
+          );
+      } catch (e: any) {
+        res
+          .status(500)
+          .set({ "Content-Type": "text/html" })
+          .end(
+            `<html>
+              <head>
+                <style>
+                  body {
+                    background: #FCA5A5
+                  }
+                  pre {
+                    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+                    monospace;
+                    font-size: 12px;
+                    line-height: 1.5em;
+                    color: #7F1D1D;
+                  }
+                </style>
+              </head>
+              <body>
+                <pre>${escape(`${e}` || "An unknown error has occurred")}</pre>
+              </body>
+            </html>`
+          );
+      }
     });
     router.use("/ping", async (req, res) => {
       this.lastPingTimestamp = Date.now();
