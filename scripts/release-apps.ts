@@ -62,7 +62,6 @@ async function main() {
     path.join(releaseDirPath, "package.json"),
     JSON.stringify(
       {
-        type: "module",
         dependencies: {
           "@previewjs/core": coreVersion,
           "@previewjs/plugin-preact": preactPluginVersion,
