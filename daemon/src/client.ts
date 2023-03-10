@@ -56,9 +56,8 @@ export function createClient(baseUrl: string): Client {
                 const response = JSON.parse(responseData);
                 resolve(response);
               } catch (e) {
-                console.error(
-                  "Unexpected invalid JSON in response:\n",
-                  responseData
+                reject(
+                  new Error(`Request to ${path} failed:\n${responseData}`)
                 );
               }
             });
