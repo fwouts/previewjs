@@ -52,8 +52,14 @@ export function createClient(baseUrl: string): Client {
               responseData += data;
             });
             res.on("end", () => {
-              const response = JSON.parse(responseData);
-              resolve(response);
+              try {
+                const response = JSON.parse(responseData);
+                resolve(response);
+              } catch (e) {
+                reject(
+                  new Error(`Request to ${path} failed:\n${responseData}`)
+                );
+              }
             });
           }
         );

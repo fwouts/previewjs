@@ -102,7 +102,10 @@ export class Previewer {
     ]);
   }
 
-  async start(allocatePort: () => Promise<number>) {
+  async start(
+    allocatePort: () => Promise<number>,
+    options: { restarting?: boolean } = {}
+  ) {
     let port: number;
     const statusBeforeStart = this.status;
     switch (statusBeforeStart.kind) {
@@ -135,11 +138,11 @@ export class Previewer {
             kind: "stopped",
           };
         }
-        await this.start(async () => port);
+        await this.start(async () => port, options);
         break;
       case "stopped":
         port = await allocatePort();
-        await this.startFromStopped(port);
+        await this.startFromStopped(port, options);
         break;
       default:
         throw assertNever(statusBeforeStart);
@@ -147,7 +150,10 @@ export class Previewer {
     return port;
   }
 
-  private async startFromStopped(port: number) {
+  private async startFromStopped(
+    port: number,
+    { restarting }: { restarting?: boolean } = {}
+  ) {
     this.status = {
       kind: "starting",
       port,
@@ -176,12 +182,17 @@ export class Previewer {
             },
           ],
         });
-        if (this.transformingReader.observe) {
-          this.disposeObserver = await this.transformingReader.observe(
-            this.options.rootDirPath
-          );
+        if (!restarting) {
+          // When we restart, we must not stop the file observer otherwise a crash while restarting
+          // (e.g. due to an incomplete preview.config.js) would mean that we stop listening altogether,
+          // and we will never know to restart.
+          if (this.transformingReader.observe) {
+            this.disposeObserver = await this.transformingReader.observe(
+              this.options.rootDirPath
+            );
+          }
+          this.transformingReader.listeners.add(this.onFileChangeListener);
         }
-        this.transformingReader.listeners.add(this.onFileChangeListener);
         this.viteManager = new ViteManager({
           rootDirPath: this.options.rootDirPath,
           shadowHtmlFilePath: path.join(
@@ -226,10 +237,17 @@ export class Previewer {
   async stop(
     options: {
       onceUnused?: boolean;
+      restarting?: boolean;
     } = {}
   ) {
     if (this.status.kind === "starting") {
-      await this.status.promise;
+      try {
+        await this.status.promise;
+      } catch {
+        this.status = {
+          kind: "stopped",
+        };
+      }
     }
     if (this.status.kind !== "started") {
       return;
@@ -241,7 +259,7 @@ export class Previewer {
         }, SHUTDOWN_CHECK_INTERVAL);
       }
     } else {
-      await this.stopNow();
+      await this.stopNow(options);
     }
   }
 
@@ -258,21 +276,27 @@ export class Previewer {
     return true;
   }
 
-  private async stopNow() {
+  private async stopNow({
+    restarting,
+  }: {
+    restarting?: boolean;
+  } = {}) {
     if (this.status.kind === "starting") {
       await this.status.promise;
     }
     if (this.status.kind !== "started") {
       return;
     }
-    this.transformingReader.listeners.remove(this.onFileChangeListener);
     this.status = {
       kind: "stopping",
       port: this.status.port,
       promise: (async () => {
-        if (this.disposeObserver) {
-          await this.disposeObserver();
-          this.disposeObserver = null;
+        if (!restarting) {
+          this.transformingReader.listeners.remove(this.onFileChangeListener);
+          if (this.disposeObserver) {
+            await this.disposeObserver();
+            this.disposeObserver = null;
+          }
         }
         if (this.viteManager) {
           await this.viteManager.stop();
@@ -309,9 +333,11 @@ export class Previewer {
           const port = this.status.port;
           // Packages were updated. Restart.
           console.log("New dependencies were detected. Restarting...");
-          this.stop()
+          this.stop({
+            restarting: true,
+          })
             .then(async () => {
-              await this.start(async () => port);
+              await this.start(async () => port, { restarting: true });
             })
             .catch(console.error);
         }
