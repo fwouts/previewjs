@@ -11,7 +11,7 @@ importers:
       '@previewjs/plugin-svelte': 4.0.0
       '@previewjs/plugin-vue2': 8.0.0
       '@previewjs/plugin-vue3': 8.0.0
-      '@previewjs/pro': 1.10.2
+      '@previewjs/pro': 1.10.3
       '@previewjs/vfs': 2.0.0
     dependencies:
       '@previewjs/core': 18.0.1_@types+node@18.15.0
@@ -21,7 +21,7 @@ importers:
       '@previewjs/plugin-svelte': 4.0.0_rw326ryverkxoaxvunft7os7zm
       '@previewjs/plugin-vue2': 8.0.0_rw326ryverkxoaxvunft7os7zm
       '@previewjs/plugin-vue3': 8.0.0_rw326ryverkxoaxvunft7os7zm
-      '@previewjs/pro': 1.10.2_@types+node@18.15.0
+      '@previewjs/pro': 1.10.3_@types+node@18.15.0
       '@previewjs/vfs': 2.0.0
 
 packages:
@@ -687,7 +687,7 @@ packages:
     resolution: {integrity: sha512-9r1AdFbgXHEjjPaiAm/QB4zsvBr6rOvFvE68yr58JtcxV/PP8rXH0IvQyaZObvyO1WMhH1Jcc0llhKziSrKmuw==}
     dependencies:
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       axios: 1.3.4
     transitivePeerDependencies:
       - debug
@@ -704,7 +704,7 @@ packages:
       '@previewjs/config': 5.0.1
       '@previewjs/iframe': 7.0.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       '@previewjs/vfs': 2.0.0
       acorn: 8.8.2
       assert-never: 1.2.1
@@ -741,7 +741,7 @@ packages:
     dependencies:
       '@previewjs/core': 18.0.1_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       typescript: 4.9.5
     transitivePeerDependencies:
       - '@swc/core'
@@ -765,7 +765,7 @@ packages:
     dependencies:
       '@previewjs/csf3': 4.0.0_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       '@previewjs/vfs': 2.0.0
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -786,7 +786,7 @@ packages:
     dependencies:
       '@previewjs/csf3': 4.0.0_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       '@previewjs/vfs': 2.0.0
       '@vitejs/plugin-react': 3.1.0_vite@4.1.4
       typescript: 4.9.5
@@ -809,7 +809,7 @@ packages:
     dependencies:
       '@previewjs/csf3': 4.0.0_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       '@previewjs/vfs': 2.0.0
       typescript: 4.9.5
       vite-plugin-solid: 2.6.1_solid-js@1.6.13+vite@4.1.4
@@ -833,7 +833,7 @@ packages:
     dependencies:
       '@previewjs/csf3': 4.0.0_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       '@previewjs/vfs': 2.0.0
       '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.56.0+vite@4.1.4
       fs-extra: 11.1.0
@@ -859,7 +859,7 @@ packages:
       '@nuxt/config': 2.16.0
       '@previewjs/csf3': 4.0.0_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       '@previewjs/vfs': 2.0.0
       '@vitejs/plugin-vue2': 2.2.0_vite@4.1.4+vue@2.7.14
       '@vitejs/plugin-vue2-jsx': 1.1.0_vite@4.1.4+vue@2.7.14
@@ -887,7 +887,7 @@ packages:
     dependencies:
       '@previewjs/csf3': 4.0.0_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       '@previewjs/vfs': 2.0.0
       '@vitejs/plugin-vue': 4.0.0_vite@4.1.4+vue@3.2.47
       '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.1.4+vue@3.2.47
@@ -909,8 +909,8 @@ packages:
       - vite
     dev: false
 
-  /@previewjs/pro/1.10.2_@types+node@18.15.0:
-    resolution: {integrity: sha512-bCp6Aoyz6TwqQsREtrLuo4IJ1A1pmt7Y15ZIVaG0Q1yJk3EeBF+jqT2qrDdTeBGD/d3qOFzr8iWD3x3+eAu/qw==}
+  /@previewjs/pro/1.10.3_@types+node@18.15.0:
+    resolution: {integrity: sha512-AS2DjCvC9dprZHVlm8AzO2xW1NyIpdR7Yj7OeORBHco/b+01au+rpPhEXmFUFoC0n1LEIpHK9Ev6U2LvUKM76w==}
     dependencies:
       '@previewjs/core': 18.0.1_@types+node@18.15.0
       '@previewjs/serializable-values': 4.0.0
@@ -936,14 +936,14 @@ packages:
     resolution: {integrity: sha512-qW/s0dQJjaAfJI4oU4RLbFtuFGHkpXrC5nvzYBJMlg7H2Qm2mwdbBU69VP+Ra8deJ9TqumFCsdcg548GSElygw==}
     dependencies:
       '@faker-js/faker': 7.6.0
-      '@previewjs/type-analyzer': 5.0.0
+      '@previewjs/type-analyzer': 5.0.1
       assert-never: 1.2.1
       prettier: 2.8.4
       typescript: 4.9.5
     dev: false
 
-  /@previewjs/type-analyzer/5.0.0:
-    resolution: {integrity: sha512-ppdR17tLVs18M/V2mhv+95LmLi+AJpcugeDv6ECmUDaT3D7Di/t/bDj10AOiix029HOkucLHEwMvhzPdr675OA==}
+  /@previewjs/type-analyzer/5.0.1:
+    resolution: {integrity: sha512-ip/OIOdyCCAdlgUQMq/hTxS6r69XtV1OWJXGLVtEer4/NXQSNYbMgzVHpiAQFWqoJdtPMmEobhjZHrm5mjYLxg==}
     dependencies:
       '@previewjs/vfs': 2.0.0
       assert-never: 1.2.1
@@ -1478,7 +1478,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001464
-      electron-to-chromium: 1.4.327
+      electron-to-chromium: 1.4.328
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: false
@@ -1689,8 +1689,8 @@ packages:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: false
 
-  /electron-to-chromium/1.4.327:
-    resolution: {integrity: sha512-DIk2H4g/3ZhjgiABJjVdQvUdMlSABOsjeCm6gmUzIdKxAuFrGiJ8QXMm3i09grZdDBMC/d8MELMrdwYRC0+YHg==}
+  /electron-to-chromium/1.4.328:
+    resolution: {integrity: sha512-DE9tTy2PNmy1v55AZAO542ui+MLC2cvINMK4P2LXGsJdput/ThVG9t+QGecPuAZZSgC8XoI+Jh9M1OG9IoNSCw==}
     dev: false
 
   /encodeurl/1.0.2:
@@ -2560,8 +2560,8 @@ packages:
       typescript: 4.9.5
     dev: false
 
-  /rollup/3.19.0:
-    resolution: {integrity: sha512-xZzJZlH9Ca6cosfdNGPwl2z7Pby8dTi9TrYLPeg6/j7aUoDOhBd706tCUFvbiBj45h/cS7z/a4gS8xd5Yg0jBw==}
+  /rollup/3.19.1:
+    resolution: {integrity: sha512-lAbrdN7neYCg/8WaoWn/ckzCtz+jr70GFfYdlf50OF7387HTg+wiuiqJRFYawwSPpqfqDNYqK7smY/ks2iAudg==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -2978,7 +2978,7 @@ packages:
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
-      rollup: 3.19.0
+      rollup: 3.19.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: false
