@@ -280,4 +280,27 @@ describe("generateTypeDeclarations", () => {
       };"
     `);
   });
+
+  test("reserved type names", () => {
+    expect(
+      generateTypeDeclarations(["/foo.tsx:default"], {
+        "/foo.tsx:default": {
+          type: namedType("T"),
+          parameters: { T: namedType("/foo.tsx:for") },
+        },
+        "/foo.tsx:for": {
+          type: objectType({
+            foo: STRING_TYPE,
+          }),
+          parameters: {},
+        },
+      })
+    ).toMatchInlineSnapshot(`
+      "type default_2<T = for_2> = T;
+
+      type for_2 = {
+        [\\"foo\\"]: string;
+      };"
+    `);
+  });
 });
