@@ -5,7 +5,6 @@ import { createComponentDetector } from "./component-detector";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
 import { ensurePreviewServerStarted } from "./preview-server";
 import { ensureDaemonRunning } from "./start-daemon";
-import { openUsageOnFirstTimeStart } from "./welcome";
 import { createWorkspaceGetter } from "./workspaces";
 
 const codeLensLanguages = [
@@ -88,8 +87,6 @@ export async function activate(context: vscode.ExtensionContext) {
     });
     outputChannel.dispose();
   };
-
-  await openUsageOnFirstTimeStart(context);
 
   vscode.window.onDidChangeActiveTextEditor(async (e) => {
     const components = await componentDetector.getComponents(e?.document);

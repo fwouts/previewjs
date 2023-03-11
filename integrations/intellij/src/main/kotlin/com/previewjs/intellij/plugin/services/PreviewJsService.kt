@@ -1,9 +1,7 @@
 package com.previewjs.intellij.plugin.services
 
 import com.intellij.execution.process.OSProcessUtil
-import com.intellij.ide.BrowserUtil
 import com.intellij.ide.plugins.PluginManagerCore
-import com.intellij.ide.util.PropertiesComponent
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
@@ -37,17 +35,12 @@ const val PACKAGE_NAME = "@previewjs/pro"
 
 @Service
 class PreviewJsSharedService : Disposable {
-    companion object {
-        const val SHOWED_WELCOME_SCREEN_KEY = "com.previewjs.showed-welcome-screen"
-    }
-
     private val coroutineContext = SupervisorJob() + Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext)
 
     private val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
     private val plugin = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))!!
     private val nodeDirPath = plugin.pluginPath.resolve("daemon")
-    private val properties = PropertiesComponent.getInstance()
     private var daemonProcess: Process? = null
     private var workspaceIds = Collections.synchronizedMap(WeakHashMap<Project, MutableSet<String>>())
 
@@ -69,7 +62,6 @@ class PreviewJsSharedService : Disposable {
                 if (daemonProcess == null) {
                     api = startDaemon(msg.project)
                 }
-                openDocsForFirstUsage()
             } catch (e: NodeVersionError) {
                 notificationGroup.createNotification(
                     "Incompatible Node.js version",
@@ -119,13 +111,6 @@ Include the content of the Preview.js logs panel for easier debugging.
     ) {
         coroutineScope.launch {
             actor.send(Message(project, fn, getErrorMessage))
-        }
-    }
-
-    private fun openDocsForFirstUsage() {
-        if (properties.getValue(SHOWED_WELCOME_SCREEN_KEY) != "1") {
-            properties.setValue(SHOWED_WELCOME_SCREEN_KEY, "1")
-            BrowserUtil.browse("https://previewjs.com/docs")
         }
     }
 
