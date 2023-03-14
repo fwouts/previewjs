@@ -36,7 +36,7 @@ let dispose = async () => {
   // Do nothing.
 };
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate() {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
   const getWorkspaceId = createWorkspaceGetter(outputChannel);
   const previewjsInitPromise = ensureDaemonRunning(outputChannel)
