@@ -1,4 +1,6 @@
 export type SerializableValue =
+  | SerializableIdentifierValue
+  | SerializableIndexedValue
   | SerializableArrayValue
   | SerializableBooleanValue
   | SerializableFunctionValue
@@ -11,6 +13,35 @@ export type SerializableValue =
   | SerializableStringValue
   | SerializableUndefinedValue
   | SerializableUnknownValue;
+
+export type SerializableIdentifierValue = {
+  kind: "identifier";
+  name: string;
+};
+
+export function identifier(name: string): SerializableIdentifierValue {
+  return {
+    kind: "identifier",
+    name,
+  };
+}
+
+export type SerializableIndexedValue = {
+  kind: "indexed";
+  value: SerializableValue;
+  index: SerializableValue;
+};
+
+export function indexed(
+  value: SerializableValue,
+  index: SerializableValue
+): SerializableIndexedValue {
+  return {
+    kind: "indexed",
+    value,
+    index,
+  };
+}
 
 export type SerializableArrayValue = {
   kind: "array";

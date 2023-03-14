@@ -5,6 +5,8 @@ import {
   EMPTY_SET,
   FALSE,
   fn,
+  identifier,
+  indexed,
   map,
   NULL,
   number,
@@ -25,6 +27,37 @@ export function parseSerializableValue(
 ): SerializableValue {
   const fallbackValue = unknown(expression.getText());
 
+  // undefined
+  if (
+    expression.kind === ts.SyntaxKind.UndefinedKeyword ||
+    (ts.isIdentifier(expression) && expression.text === "undefined")
+  ) {
+    return UNDEFINED;
+  }
+
+  // foo
+  if (ts.isIdentifier(expression)) {
+    return identifier(expression.text);
+  }
+
+  // foo.bar
+  if (ts.isPropertyAccessExpression(expression)) {
+    return indexed(
+      parseSerializableValue(expression.expression),
+      ts.isIdentifier(expression.name)
+        ? string(expression.name.text)
+        : unknown(expression.name.getText())
+    );
+  }
+
+  // foo["bar"]
+  if (ts.isElementAccessExpression(expression)) {
+    return indexed(
+      parseSerializableValue(expression.expression),
+      parseSerializableValue(expression.argumentExpression)
+    );
+  }
+
   // (...)
   if (ts.isParenthesizedExpression(expression)) {
     return parseSerializableValue(expression.expression);
@@ -43,14 +76,6 @@ export function parseSerializableValue(
   // false
   if (expression.kind === ts.SyntaxKind.FalseKeyword) {
     return FALSE;
-  }
-
-  // undefined
-  if (
-    expression.kind === ts.SyntaxKind.UndefinedKeyword ||
-    (ts.isIdentifier(expression) && expression.text === "undefined")
-  ) {
-    return UNDEFINED;
   }
 
   // 123
