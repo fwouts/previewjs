@@ -212,25 +212,6 @@ importers:
       unbuild: 1.1.2
       vitest: 0.29.2
 
-  csf3:
-    specifiers:
-      '@previewjs/core': ^18.0.1
-      '@previewjs/serializable-values': ^4.0.0
-      '@previewjs/type-analyzer': ^5.0.1
-      '@previewjs/vfs': workspace:*
-      typescript: ^4.9.5
-      unbuild: ^1.1.2
-      vitest: ^0.29.2
-    dependencies:
-      '@previewjs/core': link:../core
-      '@previewjs/serializable-values': link:../serializable-values
-      '@previewjs/type-analyzer': link:../type-analyzer
-      typescript: 4.9.5
-    devDependencies:
-      '@previewjs/vfs': link:../vfs
-      unbuild: 1.1.2
-      vitest: 0.29.2
-
   daemon:
     specifiers:
       '@previewjs/api': workspace:*
@@ -284,10 +265,10 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^4.0.0
+      '@previewjs/storybook-helpers': workspace:*
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^5.0.1
       '@previewjs/vfs': ^2.0.0
@@ -298,7 +279,6 @@ importers:
       vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
-      '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -309,6 +289,7 @@ importers:
       '@previewjs/core': link:../../core
       '@previewjs/iframe': link:../../iframe
       '@previewjs/properties': link:../../properties
+      '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/testing': link:../../testing
       preact: 10.13.1
       rimraf: 4.4.0
@@ -396,10 +377,10 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^4.0.0
+      '@previewjs/storybook-helpers': workspace:*
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^5.0.1
       '@previewjs/vfs': ^2.0.0
@@ -413,7 +394,6 @@ importers:
       vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
-      '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -425,6 +405,7 @@ importers:
       '@previewjs/core': link:../../core
       '@previewjs/iframe': link:../../iframe
       '@previewjs/properties': link:../../properties
+      '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/testing': link:../../testing
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.28
@@ -1487,8 +1468,8 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
+      '@previewjs/storybook-helpers': workspace:*
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^5.0.1
       '@previewjs/vfs': ^2.0.0
@@ -1499,7 +1480,6 @@ importers:
       vite-plugin-solid: ^2.6.1
       vitest: ^0.29.2
     dependencies:
-      '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -1508,6 +1488,7 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/testing': link:../../testing
       solid-js: 1.6.13
       unbuild: 1.1.2
@@ -1591,8 +1572,8 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
+      '@previewjs/storybook-helpers': workspace:*
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^5.0.1
       '@previewjs/vfs': ^2.0.0
@@ -1605,7 +1586,6 @@ importers:
       vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
-      '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -1616,6 +1596,7 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
@@ -1722,8 +1703,8 @@ importers:
       '@nuxt/config': ^2.16.0
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
+      '@previewjs/storybook-helpers': workspace:*
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^5.0.1
       '@previewjs/vfs': ^2.0.0
@@ -1739,7 +1720,6 @@ importers:
       vue-template-compiler: ^2.7.14
     dependencies:
       '@nuxt/config': 2.16.0
-      '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -1752,6 +1732,7 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
@@ -1843,8 +1824,8 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
+      '@previewjs/storybook-helpers': workspace:*
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^5.0.1
       '@previewjs/vfs': ^2.0.0
@@ -1859,7 +1840,6 @@ importers:
       vitest: ^0.29.2
       vue: ^3.2.47
     dependencies:
-      '@previewjs/csf3': link:../../csf3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
@@ -1872,6 +1852,7 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
@@ -2075,6 +2056,25 @@ importers:
       typescript: 4.9.5
     devDependencies:
       '@types/prettier': 2.7.2
+      unbuild: 1.1.2
+      vitest: 0.29.2
+
+  storybook-helpers:
+    specifiers:
+      '@previewjs/core': ^18.0.1
+      '@previewjs/serializable-values': ^4.0.0
+      '@previewjs/type-analyzer': ^5.0.1
+      '@previewjs/vfs': workspace:*
+      typescript: ^4.9.5
+      unbuild: ^1.1.2
+      vitest: ^0.29.2
+    dependencies:
+      '@previewjs/core': link:../core
+      '@previewjs/serializable-values': link:../serializable-values
+      '@previewjs/type-analyzer': link:../type-analyzer
+      typescript: 4.9.5
+    devDependencies:
+      '@previewjs/vfs': link:../vfs
       unbuild: 1.1.2
       vitest: 0.29.2
 
@@ -11516,7 +11516,7 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.1
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
 
   /@types/eslint/8.21.1:
     resolution: {integrity: sha512-rc9K8ZpVjNcLs8Fp0dkozd5Pt2Apk1glO4Vgz8ix1u6yFByxfqo5Yavpy65o+93TAe24jr7v+eSBtFLvOQtCRQ==}

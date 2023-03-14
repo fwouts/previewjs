@@ -48,11 +48,6 @@ const packages: Package[] = [
     tagName: "config-helpers/nextjs",
   },
   {
-    name: "csf3",
-    dirPath: "csf3",
-    tagName: "csf3",
-  },
-  {
     name: "iframe",
     dirPath: "iframe",
     tagName: "iframe",
