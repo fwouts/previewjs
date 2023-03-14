@@ -15,7 +15,7 @@ importers:
       depcheck: ^1.4.3
       eslint: ^8.36.0
       eslint-config-prettier: ^8.7.0
-      execa: ^7.1.0
+      execa: ^7.1.1
       inquirer: ^9.1.4
       license-checker: ^25.0.1
       prettier: ^2.8.4
@@ -32,7 +32,7 @@ importers:
       depcheck: 1.4.3
       eslint: 8.36.0
       eslint-config-prettier: 8.7.0_eslint@8.36.0
-      execa: 7.1.0
+      execa: 7.1.1
       inquirer: 9.1.4
       license-checker: 25.0.1
       prettier: 2.8.4
@@ -1991,7 +1991,7 @@ importers:
       cross-env: ^7.0.3
       esbuild: ^0.17.11
       exclusive-promises: ^1.0.3
-      execa: ^7.1.0
+      execa: ^7.1.1
       ovsx: ^0.8.0
       rimraf: ^4.4.0
       strip-ansi: ^7.0.1
@@ -2004,7 +2004,7 @@ importers:
       cross-env: 7.0.3
       esbuild: 0.17.11
       exclusive-promises: 1.0.3
-      execa: 7.1.0
+      execa: 7.1.1
       ovsx: 0.8.0
       rimraf: 4.4.0
       strip-ansi: 7.0.1
@@ -2018,7 +2018,7 @@ importers:
       '@types/fs-extra': ^11.0.1
       '@types/proper-lockfile': ^4.1.2
       exclusive-promises: ^1.0.3
-      execa: ^7.1.0
+      execa: ^7.1.1
       fs-extra: ^11.1.0
       pnpm: ^7.29.1
       proper-lockfile: ^4.1.2
@@ -2030,7 +2030,7 @@ importers:
       '@types/fs-extra': 11.0.1
       '@types/proper-lockfile': 4.1.2
       exclusive-promises: 1.0.3
-      execa: 7.1.0
+      execa: 7.1.1
       fs-extra: 11.1.0
       pnpm: 7.29.1
       proper-lockfile: 4.1.2
@@ -19274,8 +19274,8 @@ packages:
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
 
-  /execa/7.1.0:
-    resolution: {integrity: sha512-T6nIJO3LHxUZ6ahVRaxXz9WLEruXLqdcluA+UuTptXmLM7nDAn9lx9IfkxPyzEL21583qSt4RmL44pO71EHaJQ==}
+  /execa/7.1.1:
+    resolution: {integrity: sha512-wH0eMf/UXckdUYnO21+HDztteVv05rq2GXksxT4fCGeHkBhw1DROXh40wcjMcRqDOWE7iPJ4n3M7e2+YFP+76Q==}
     engines: {node: ^14.18.0 || ^16.14.0 || >=18.0.0}
     dependencies:
       cross-spawn: 7.0.3
