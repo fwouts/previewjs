@@ -10,7 +10,7 @@ import {
   functionType,
   NODE_TYPE,
   TypeAnalyzer,
-} from "@previewjs/type-analyzer/src";
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
