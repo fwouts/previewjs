@@ -47,6 +47,14 @@ describe.concurrent("extractArgs", () => {
     typeAnalyzer.dispose();
   });
 
+  test("no args", async () => {
+    expect(
+      extractArgsFromSource(`
+      export const Foo = () => {};
+    `)
+    ).toEqual({});
+  });
+
   test("empty args", async () => {
     expect(
       extractArgsFromSource(`
