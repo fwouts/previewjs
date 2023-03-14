@@ -120,6 +120,7 @@ export function parseSerializableValue(
               return fallbackValue;
             }
             entries.push({
+              kind: "key",
               key: parseSerializableValue(element.elements[0]!),
               value: parseSerializableValue(element.elements[1]!),
             });
@@ -194,19 +195,29 @@ export function parseSerializableValue(
   if (ts.isObjectLiteralExpression(expression)) {
     const entries: SerializableObjectValueEntry[] = [];
     for (const property of expression.properties) {
+      property;
       if (ts.isShorthandPropertyAssignment(property)) {
         entries.push({
+          kind: "key",
           key: string(property.name.text),
           value: UNKNOWN,
         });
-      } else if (
-        ts.isPropertyAssignment(property) &&
-        (ts.isIdentifier(property.name) ||
+      } else if (ts.isPropertyAssignment(property)) {
+        let key: SerializableValue;
+        if (
+          ts.isIdentifier(property.name) ||
           ts.isStringLiteral(property.name) ||
-          ts.isNumericLiteral(property.name))
-      ) {
+          ts.isNumericLiteral(property.name)
+        ) {
+          key = string(property.name.text);
+        } else if (ts.isComputedPropertyName(property.name)) {
+          key = parseSerializableValue(property.name.expression);
+        } else {
+          return fallbackValue;
+        }
         entries.push({
-          key: string(property.name.text),
+          kind: "key",
+          key,
           value: parseSerializableValue(property.initializer),
         });
       } else {

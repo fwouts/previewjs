@@ -63,11 +63,17 @@ function serializableValueToUnformattedJavaScript(
       let text = "";
       text += "{\n";
       for (const entry of value.entries) {
-        text += `${
-          entry.key.kind === "string"
-            ? JSON.stringify(entry.key.value)
-            : `[${serializableValueToUnformattedJavaScript(entry.key)}]`
-        }: ${serializableValueToUnformattedJavaScript(entry.value)},\n`;
+        if (entry.kind === "key") {
+          text += `${
+            entry.key.kind === "string"
+              ? JSON.stringify(entry.key.value)
+              : `[${serializableValueToUnformattedJavaScript(entry.key)}]`
+          }: ${serializableValueToUnformattedJavaScript(entry.value)},\n`;
+        } else if (entry.kind === "spread") {
+          text += `...${serializableValueToJavaScript(entry.value)},\n`;
+        } else {
+          throw assertNever(entry);
+        }
       }
       text += "\n}";
       return text;

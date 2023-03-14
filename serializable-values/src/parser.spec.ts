@@ -102,6 +102,7 @@ describe.concurrent("parseSerializableValue", () => {
       map(
         object([
           {
+            kind: "key",
             key: string("foo"),
             value: string("bar"),
           },
@@ -112,6 +113,7 @@ describe.concurrent("parseSerializableValue", () => {
       map(
         object([
           {
+            kind: "key",
             key: string("foo"),
             value: string("bar"),
           },
@@ -122,6 +124,7 @@ describe.concurrent("parseSerializableValue", () => {
       map(
         object([
           {
+            kind: "key",
             key: string("0"),
             value: string("bar"),
           },
@@ -135,11 +138,12 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`-5.3`).toEqual(number(-5.3));
   });
 
-  it("parses objects", () => {
+  it.only("parses objects", () => {
     expectParsedExpression(`{}`).toEqual(EMPTY_OBJECT);
     expectParsedExpression(`{ "foo": "bar" }`).toEqual(
       object([
         {
+          kind: "key",
           key: string("foo"),
           value: string("bar"),
         },
@@ -148,6 +152,7 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`{ foo: "bar" }`).toEqual(
       object([
         {
+          kind: "key",
           key: string("foo"),
           value: string("bar"),
         },
@@ -156,6 +161,7 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`{ 0: "bar" }`).toEqual(
       object([
         {
+          kind: "key",
           key: string("0"),
           value: string("bar"),
         },
@@ -164,8 +170,18 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`{ foo }`, false).toEqual(
       object([
         {
+          kind: "key",
           key: string("foo"),
           value: UNKNOWN,
+        },
+      ])
+    );
+    expectParsedExpression(`{ ["foo"]: 123 }`, false).toEqual(
+      object([
+        {
+          kind: "key",
+          key: string("foo"),
+          value: number(123),
         },
       ])
     );

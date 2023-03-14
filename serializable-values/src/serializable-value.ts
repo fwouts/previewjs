@@ -87,10 +87,16 @@ export type SerializableObjectValue = {
   entries: SerializableObjectValueEntry[];
 };
 
-export type SerializableObjectValueEntry = {
-  key: SerializableValue;
-  value: SerializableValue;
-};
+export type SerializableObjectValueEntry =
+  | {
+      kind: "key";
+      key: SerializableValue;
+      value: SerializableValue;
+    }
+  | {
+      kind: "spread";
+      value: SerializableValue;
+    };
 
 export function object(
   entries: SerializableObjectValueEntry[]
