@@ -1,6 +1,7 @@
 import type { Component, ComponentTypeInfo } from "@previewjs/core";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
+  extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
   resolveComponent,
@@ -83,7 +84,7 @@ export function extractVueComponents(
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  const args = helpers.extractArgs(sourceFile);
+  const args = extractArgs(sourceFile);
 
   function extractComponentTypeInfo(
     node: ts.Node,
