@@ -2113,6 +2113,7 @@ importers:
 
   type-analyzer:
     specifiers:
+      '@previewjs/serializable-values': ^4.0.0
       '@previewjs/vfs': ^2.0.0
       '@types/lodash': ^4.14.191
       '@types/prettier': ^2.7.2
@@ -2123,6 +2124,7 @@ importers:
       unbuild: ^1.1.2
       vitest: ^0.29.2
     dependencies:
+      '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
       prettier: 2.8.4
