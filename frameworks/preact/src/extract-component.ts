@@ -1,10 +1,11 @@
 import type { Component, ComponentTypeInfo } from "@previewjs/core";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
+  extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
   resolveComponent,
-} from "@previewjs/csf3";
-import { parseSerializableValue } from "@previewjs/serializable-values";
+} from "@previewjs/storybook-helpers";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzePreactComponent } from "./analyze-component.js";
@@ -56,7 +57,7 @@ export function extractPreactComponents(
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
   const components: Component[] = [];
-  const args = helpers.extractArgs(sourceFile);
+  const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
   function extractComponentTypeInfo(

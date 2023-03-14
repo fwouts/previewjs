@@ -1,6 +1,6 @@
 {
-  "name": "@previewjs/csf3",
-  "version": "4.0.0",
+  "name": "@previewjs/storybook-helpers",
+  "version": "1.0.0",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -18,7 +18,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/csf3 --no-deps --include-dependencies",
+    "prepublish": "cd .. && turbo run build --scope=@previewjs/storybook-helpers --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest"
   },

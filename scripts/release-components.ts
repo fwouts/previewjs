@@ -48,11 +48,6 @@ const packages: Package[] = [
     tagName: "config-helpers/nextjs",
   },
   {
-    name: "csf3",
-    dirPath: "csf3",
-    tagName: "csf3",
-  },
-  {
     name: "iframe",
     dirPath: "iframe",
     tagName: "iframe",
@@ -96,6 +91,11 @@ const packages: Package[] = [
     name: "serializable-values",
     dirPath: "serializable-values",
     tagName: "serializable-values",
+  },
+  {
+    name: "storybook-helpers",
+    dirPath: "storybook-helpers",
+    tagName: "storybook-helpers",
   },
   {
     name: "testing",
