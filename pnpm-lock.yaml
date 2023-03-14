@@ -2042,12 +2042,14 @@ importers:
       '@previewjs/serializable-values': ^4.0.0
       '@previewjs/type-analyzer': ^5.0.1
       unbuild: ^1.1.2
+      vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
     devDependencies:
       unbuild: 1.1.2
+      vite: 4.1.4
       vitest: 0.29.2
 
   serializable-values:
@@ -2059,6 +2061,7 @@ importers:
       prettier: ^2.8.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
+      vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
       '@faker-js/faker': 7.6.0
@@ -2069,6 +2072,7 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.2
       unbuild: 1.1.2
+      vite: 4.1.4
       vitest: 0.29.2
 
   storybook-helpers:
@@ -2079,6 +2083,7 @@ importers:
       '@previewjs/vfs': workspace:*
       typescript: ^4.9.5
       unbuild: ^1.1.2
+      vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
       '@previewjs/core': link:../core
@@ -2088,6 +2093,7 @@ importers:
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 1.1.2
+      vite: 4.1.4
       vitest: 0.29.2
 
   testing:
@@ -2133,6 +2139,7 @@ importers:
       prettier: ^2.8.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
+      vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
       '@previewjs/vfs': link:../vfs
@@ -2144,6 +2151,7 @@ importers:
       '@types/prettier': 2.7.2
       lodash: 4.17.21
       unbuild: 1.1.2
+      vite: 4.1.4
       vitest: 0.29.2
 
   vfs:
@@ -2153,6 +2161,7 @@ importers:
       chokidar: ^3.5.3
       fs-extra: ^11.1.0
       unbuild: ^1.1.2
+      vite: ^4.1.4
       vitest: ^0.29.2
     dependencies:
       assert-never: 1.2.1
@@ -2161,6 +2170,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
+      vite: 4.1.4
       vitest: 0.29.2
 
 packages:
