@@ -6,6 +6,12 @@ import {
   string,
 } from "@previewjs/serializable-values";
 import {
+  createTypeAnalyzer,
+  functionType,
+  NODE_TYPE,
+  TypeAnalyzer,
+} from "@previewjs/type-analyzer/src";
+import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
@@ -14,8 +20,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { createTypeAnalyzer, functionType, NODE_TYPE, TypeAnalyzer } from "..";
-import { extractArgs } from "./args";
+import { extractArgs } from "./extract-args";
 
 describe.concurrent("extractArgs", () => {
   let memoryReader: Reader & Writer;
