@@ -185,7 +185,23 @@ describe.concurrent("parseSerializableValue", () => {
         },
       ])
     );
-    checkParsedExpressionIsUnknownWithSource(`{ ...foo }`);
+    expectParsedExpression(`{ ...123 }`, false).toEqual(
+      object([
+        {
+          kind: "spread",
+          value: number(123),
+        },
+      ])
+    );
+    expectParsedExpression(`{ ...foo.args }`, false).toEqual(
+      object([
+        {
+          kind: "spread",
+          value: unknown("foo.args"),
+        },
+      ])
+    );
+    checkParsedExpressionIsUnknownWithSource(`{ foo() {} }`);
   });
 
   it("parses promises", () => {

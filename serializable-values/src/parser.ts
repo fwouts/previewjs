@@ -203,16 +203,8 @@ export function parseSerializableValue(
           value: UNKNOWN,
         });
       } else if (ts.isPropertyAssignment(property)) {
-        let key: SerializableValue;
-        if (
-          ts.isIdentifier(property.name) ||
-          ts.isStringLiteral(property.name) ||
-          ts.isNumericLiteral(property.name)
-        ) {
-          key = string(property.name.text);
-        } else if (ts.isComputedPropertyName(property.name)) {
-          key = parseSerializableValue(property.name.expression);
-        } else {
+        const key = extractKeyFromPropertyName(property.name);
+        if (key.kind === "unknown") {
           return fallbackValue;
         }
         entries.push({
@@ -220,8 +212,28 @@ export function parseSerializableValue(
           key,
           value: parseSerializableValue(property.initializer),
         });
+      } else if (ts.isSpreadAssignment(property)) {
+        entries.push({
+          kind: "spread",
+          value: property.name
+            ? // TODO: Property access off property.expression.
+              UNKNOWN
+            : parseSerializableValue(property.expression),
+        });
       } else {
         return fallbackValue;
+        // } else if (ts.isFunctionLike(property)) {
+        //   const key = extractKeyFromPropertyName(property.name)
+        //   if (key.kind === 'unknown') {
+        //     return fallbackValue
+        //   }
+        //   entries.push({
+        //     kind: "key",
+        //     key,
+        //     value: parseSerializableValue(property.)
+        //   });
+        // } else {
+        //   throw assertNever(property);
       }
     }
     return object(entries);
@@ -275,4 +287,19 @@ export function parseSerializableValue(
   }
 
   return fallbackValue;
+}
+
+function extractKeyFromPropertyName(
+  propertyName: ts.PropertyName
+): SerializableValue {
+  if (
+    ts.isIdentifier(propertyName) ||
+    ts.isStringLiteral(propertyName) ||
+    ts.isNumericLiteral(propertyName)
+  ) {
+    return string(propertyName.text);
+  } else if (ts.isComputedPropertyName(propertyName)) {
+    return parseSerializableValue(propertyName.expression);
+  }
+  return UNKNOWN;
 }
