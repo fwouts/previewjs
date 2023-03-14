@@ -1,10 +1,11 @@
 import type { Component, ComponentTypeInfo } from "@previewjs/core";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
+  extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
   resolveComponent,
-} from "@previewjs/csf3";
-import { parseSerializableValue } from "@previewjs/serializable-values";
+} from "@previewjs/storybook-helpers";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import ts from "typescript";
@@ -83,7 +84,7 @@ export function extractVueComponents(
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  const args = helpers.extractArgs(sourceFile);
+  const args = extractArgs(sourceFile);
 
   function extractComponentTypeInfo(
     node: ts.Node,
