@@ -32,15 +32,6 @@ function serializableValueToUnformattedJavaScript(
   value: SerializableValue
 ): string {
   switch (value.kind) {
-    case "identifier":
-      return value.name;
-    case "indexed": {
-      const indexed = serializableValueToJavaScript(value.value);
-      return value.index.kind === "string" &&
-        value.index.value.match(/^[a-zA-Z_$][a-zA-Z0-9_$]*$/)
-        ? `${indexed}.${value.index.value}`
-        : `${indexed}[${serializableValueToJavaScript(value.index)}]`;
-    }
     case "array":
       return `[${value.items
         .map((item) => serializableValueToUnformattedJavaScript(item))

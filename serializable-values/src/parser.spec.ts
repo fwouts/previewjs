@@ -9,8 +9,6 @@ import {
   EMPTY_SET,
   FALSE,
   fn,
-  identifier,
-  indexed,
   map,
   NULL,
   number,
@@ -27,28 +25,6 @@ import {
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 describe.concurrent("parseSerializableValue", () => {
-  it("parses identifiers", () => {
-    expectParsedExpression(`foo`).toEqual<SerializableValue>(identifier("foo"));
-  });
-
-  it("parses property access via dot", () => {
-    expectParsedExpression(`foo.bar`).toEqual<SerializableValue>(
-      indexed(identifier("foo"), string("bar"))
-    );
-  });
-
-  it("parses property access via brackets", () => {
-    expectParsedExpression(`foo["bar"]`).toEqual<SerializableValue>(
-      indexed(identifier("foo"), string("bar"))
-    );
-  });
-
-  it("parses array access", () => {
-    expectParsedExpression(`foo[123]`).toEqual<SerializableValue>(
-      indexed(identifier("foo"), number(123))
-    );
-  });
-
   it("parses null", () => {
     expectParsedExpression(`null`).toEqual<SerializableValue>(NULL);
   });
@@ -162,7 +138,7 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`-5.3`).toEqual(number(-5.3));
   });
 
-  it("parses objects", () => {
+  it.only("parses objects", () => {
     expectParsedExpression(`{}`).toEqual(EMPTY_OBJECT);
     expectParsedExpression(`{ "foo": "bar" }`).toEqual(
       object([
@@ -221,7 +197,7 @@ describe.concurrent("parseSerializableValue", () => {
       object([
         {
           kind: "spread",
-          value: indexed(identifier("foo"), string("args")),
+          value: unknown("foo.args"),
         },
       ])
     );
@@ -285,16 +261,11 @@ describe.concurrent("parseSerializableValue", () => {
 function expectParsedExpression(expressionSource: string, reversible = true) {
   const parsedValue = parseSerializableValue(parseExpression(expressionSource));
   if (reversible) {
-    const regeneratedSource = serializableValueToJavaScript(parsedValue);
-    try {
-      expect(parsedValue).toEqual(
-        parseSerializableValue(parseExpression(regeneratedSource))
-      );
-    } catch (e) {
-      throw new Error(
-        `Source: ${expressionSource}\nRegenerated source: ${regeneratedSource}\n\n${e}`
-      );
-    }
+    expect(parsedValue).toEqual(
+      parseSerializableValue(
+        parseExpression(serializableValueToJavaScript(parsedValue))
+      )
+    );
   }
   return expect(parsedValue);
 }

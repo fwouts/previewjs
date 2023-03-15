@@ -1,11 +1,10 @@
 import {
   EMPTY_OBJECT,
-  identifier,
-  indexed,
   number,
   object,
   parseSerializableValue,
   string,
+  unknown,
 } from "@previewjs/serializable-values";
 import {
   createTypeAnalyzer,
@@ -104,7 +103,7 @@ describe.concurrent("extractArgs", () => {
 
       export const Foo = () => {};
       Foo.args = {
-        ...Bar.args,
+        ...Bar,
         age: 35,
         gender: "neutral"
       };
@@ -125,7 +124,7 @@ describe.concurrent("extractArgs", () => {
       Foo: object([
         {
           kind: "spread",
-          value: indexed(identifier("Bar"), string("args")),
+          value: unknown("Bar.args"),
         },
         {
           kind: "key",
