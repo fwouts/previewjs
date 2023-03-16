@@ -1,10 +1,13 @@
 import type * as vite from "vite";
 
-export function embedPropsAssignmentSource(): vite.Plugin {
+export function localEval(): vite.Plugin {
   return {
-    name: "previewjs:embed-invocation-source",
+    name: "previewjs:local-eval",
     transform: (code, id) => {
-      // TODO: Only do this if a specific query param is there?
+      const params = new URLSearchParams(id.split("?")[1] || "");
+      if (params.get("local_eval") !== "1") {
+        return;
+      }
       return (
         code +
         `

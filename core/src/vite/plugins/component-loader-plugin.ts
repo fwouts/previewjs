@@ -44,7 +44,7 @@ function generateComponentLoaderModule(
   if (filePath === null || componentName === null) {
     throw new Error(`Invalid use of ${COMPONENT_LOADER_MODULE} module`);
   }
-  const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
+  const componentModuleId = `/${filePath.replace(/\\/g, "/")}?local_eval=1`;
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
 

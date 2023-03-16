@@ -26,6 +26,8 @@ export function virtualPlugin(options: {
       if (id.startsWith(VIRTUAL_PREFIX)) {
         id = id.slice(VIRTUAL_PREFIX.length);
       }
+      // Remove query params.
+      id = id.split("?", 2)[0]!;
       const extension = path.extname(id);
       let absoluteId;
       if (path.isAbsolute(id)) {

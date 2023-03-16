@@ -15,8 +15,8 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
-import { embedPropsAssignmentSource } from "./plugins/embed-props-assignment-source";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
+import { localEval } from "./plugins/local-eval";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
@@ -185,7 +185,7 @@ export class ViteManager {
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
-      embedPropsAssignmentSource(),
+      localEval(),
       exportToplevelPlugin(),
       fakeExportedTypesPlugin({
         readFile: (absoluteFilePath) =>
@@ -364,8 +364,20 @@ export class ViteManager {
     if (!this.viteServer) {
       return;
     }
+    const invalidateList: string[] = [absoluteFilePath];
+    if (this.viteServer?.moduleGraph) {
+      for (const id of this.viteServer.moduleGraph.idToModuleMap.keys()) {
+        if (id.startsWith(absoluteFilePath + "?")) {
+          invalidateList.push(id);
+        }
+      }
+    }
+    console.error("INVALIDATE", invalidateList);
+    this.viteServer.moduleGraph.onFileChange(absoluteFilePath);
     for (const onChange of this.viteServer.watcher.listeners("change")) {
-      onChange(absoluteFilePath);
+      for (const id of invalidateList) {
+        onChange(id);
+      }
     }
   }
 
