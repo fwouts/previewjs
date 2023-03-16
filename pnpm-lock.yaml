@@ -265,7 +265,6 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^4.0.0
@@ -280,7 +279,6 @@ importers:
       vite: ^4.1.4
       vitest: ^0.29.3
     dependencies:
-      '@previewjs/csf3': 4.0.0_@types+node@18.15.3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -296,7 +294,7 @@ importers:
       preact: 10.13.1
       rimraf: 4.4.0
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitest: 0.29.3
 
   frameworks/preact/tests/apps/preact-app:
@@ -379,7 +377,6 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^4.0.0
@@ -397,7 +394,6 @@ importers:
       vite: ^4.1.4
       vitest: ^0.29.3
     dependencies:
-      '@previewjs/csf3': 4.0.0_@types+node@18.15.3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -416,7 +412,7 @@ importers:
       concurrently: 7.6.0
       react: 18.2.0
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitest: 0.29.3
 
   frameworks/react/preview:
@@ -1472,7 +1468,6 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
       '@previewjs/storybook-helpers': ^1.0.0
       '@previewjs/testing': workspace:*
@@ -1485,7 +1480,6 @@ importers:
       vite-plugin-solid: ^2.6.1
       vitest: ^0.29.3
     dependencies:
-      '@previewjs/csf3': 4.0.0_@types+node@18.15.3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -1498,7 +1492,7 @@ importers:
       '@previewjs/testing': link:../../testing
       solid-js: 1.6.14
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitest: 0.29.3
 
   frameworks/solid/preview:
@@ -1578,7 +1572,6 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
       '@previewjs/storybook-helpers': ^1.0.0
       '@previewjs/testing': workspace:*
@@ -1593,7 +1586,6 @@ importers:
       vite: ^4.1.4
       vitest: ^0.29.3
     dependencies:
-      '@previewjs/csf3': 4.0.0_@types+node@18.15.3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -1608,7 +1600,7 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitest: 0.29.3
 
   frameworks/svelte/preview:
@@ -1711,7 +1703,6 @@ importers:
       '@nuxt/config': ^2.16.0
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
       '@previewjs/storybook-helpers': ^1.0.0
       '@previewjs/testing': workspace:*
@@ -1729,7 +1720,6 @@ importers:
       vue-template-compiler: ^2.7.14
     dependencies:
       '@nuxt/config': 2.16.0
-      '@previewjs/csf3': 4.0.0_@types+node@18.15.3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -1746,7 +1736,7 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitest: 0.29.3
 
   frameworks/vue2/preview:
@@ -1834,7 +1824,6 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
-      '@previewjs/csf3': ^4.0.0
       '@previewjs/serializable-values': ^4.0.0
       '@previewjs/storybook-helpers': ^1.0.0
       '@previewjs/testing': workspace:*
@@ -1851,7 +1840,6 @@ importers:
       vitest: ^0.29.3
       vue: ^3.2.47
     dependencies:
-      '@previewjs/csf3': 4.0.0_@types+node@18.15.3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -1868,7 +1856,7 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitest: 0.29.3
 
   frameworks/vue3/preview:
@@ -7797,23 +7785,9 @@ packages:
       - debug
     dev: true
 
-  /@previewjs/api/9.0.0:
-    resolution: {integrity: sha512-9r1AdFbgXHEjjPaiAm/QB4zsvBr6rOvFvE68yr58JtcxV/PP8rXH0IvQyaZObvyO1WMhH1Jcc0llhKziSrKmuw==}
-    dependencies:
-      '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.1
-      axios: 1.3.4
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
   /@previewjs/config/4.0.3:
     resolution: {integrity: sha512-ZlaTxWvABVrorJT18LZBdsUfuE7E9fgYj+QQOQlxrSbs3IDc1I/bZapN7/iPJyCnjvqXS50EtOy/V0GnYeCbng==}
     dev: true
-
-  /@previewjs/config/5.0.1:
-    resolution: {integrity: sha512-6Q2McjyjwnTZqv6OLxryM0t6DEvQhMpFpDV/6Ej1TSEbze4fM+/0RZl6EyykpBe0Tu+hYqVsvx9N8hQU4Azy+Q==}
-    dev: false
 
   /@previewjs/core/17.0.0_@types+node@18.15.3:
     resolution: {integrity: sha512-cR8wb4JROP4uc7aTZUzO6FOoLnlYQMEVZ9DKL2pD2N0/WkyZPcrL+sTNKGDd22dVJKTV2d/Qn3inSHFd4OX6Bg==}
@@ -7853,45 +7827,6 @@ packages:
       - terser
     dev: true
 
-  /@previewjs/core/18.0.1_@types+node@18.15.3:
-    resolution: {integrity: sha512-pjjAgMNsmp/05THTssIpf6Xs1Gcu8qdoIH+wQZzE81tjiJpmkZt9DeQjvQp5h8va7njO/jyUJAyYzdXj2SXGnQ==}
-    dependencies:
-      '@previewjs/api': 9.0.0
-      '@previewjs/config': 5.0.1
-      '@previewjs/iframe': 7.0.0
-      '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.1
-      '@previewjs/vfs': 2.0.0
-      acorn: 8.8.2
-      assert-never: 1.2.1
-      axios: 1.3.4
-      exclusive-promises: 1.0.3
-      express: 4.18.2
-      fs-extra: 11.1.0
-      get-port: 6.1.2
-      globby: 13.1.3
-      html-escaper: 3.0.3
-      http-terminator: 3.2.0
-      recrawl: 2.2.1
-      rollup-plugin-friendly-type-imports: 1.0.3
-      ts-node: 10.9.1_cbfmry4sbbh4vatmdrsmatfg5a
-      tsconfig-paths: 4.1.2
-      typescript: 4.9.5
-      vite: 4.1.4_@types+node@18.15.3
-      vite-tsconfig-paths: 3.6.0_vite@4.1.4
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - debug
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: false
-
   /@previewjs/csf3/3.1.6_@types+node@18.15.3:
     resolution: {integrity: sha512-rXaf8YTGbPQQg0bwVfJPFbugLlP9qx/NRqEjjdAZSrjvnEvbw4R9L9A/sNfVd+QIbB9zYOj0Bb3vdao2tkIrtg==}
     dependencies:
@@ -7912,26 +7847,6 @@ packages:
       - terser
     dev: true
 
-  /@previewjs/csf3/4.0.0_@types+node@18.15.3:
-    resolution: {integrity: sha512-0kg62sYPE0BUshXV0G42ZaemmbtiY0fIuNLVtD6pJPMKwfAL67dCpny4Uom0Ppk9HAretoFVZHDNG+Rtpx9/pg==}
-    dependencies:
-      '@previewjs/core': 18.0.1_@types+node@18.15.3
-      '@previewjs/serializable-values': 4.0.0
-      '@previewjs/type-analyzer': 5.0.1
-      typescript: 4.9.5
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - debug
-      - less
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: false
-
   /@previewjs/iframe/4.0.2:
     resolution: {integrity: sha512-lj2SYC4IJ0NToQ98zdmgOQcnI+RpuO3ZlMrwMamcvISeUNRLQS6UBpx5uYOJoYQ2og8dCAvZ1KTXBdGiUEEq1w==}
     dev: true
@@ -7939,10 +7854,6 @@ packages:
   /@previewjs/iframe/6.0.0:
     resolution: {integrity: sha512-3fZ1U+WAMIwoer6M1c03UnB9TCsdvya7QUKUArfWttFDRmA6mmNX7Hhp0R1U6f5Odw0/KjgZB/4OAjgKLV5hQQ==}
     dev: true
-
-  /@previewjs/iframe/7.0.0:
-    resolution: {integrity: sha512-QDQ6TYfEemdq2aCwF0a+S32deAqEYifBqHJg5K5Z1zRApY7lILyam1v2meU4R6fWXspnFEAUVqoUuuP/cN11ng==}
-    dev: false
 
   /@previewjs/plugin-preact/2.0.5_@types+node@18.15.3:
     resolution: {integrity: sha512-EVqtR+srGEFAhnkBhliuxMqxs5gRL4GJpP6Pd9zMDu1w9T46u0K4hskRaMcW+ALx5yEwTixGR6iVDC2JbZtLlQ==}
@@ -7998,16 +7909,6 @@ packages:
       typescript: 4.9.5
     dev: true
 
-  /@previewjs/serializable-values/4.0.0:
-    resolution: {integrity: sha512-qW/s0dQJjaAfJI4oU4RLbFtuFGHkpXrC5nvzYBJMlg7H2Qm2mwdbBU69VP+Ra8deJ9TqumFCsdcg548GSElygw==}
-    dependencies:
-      '@faker-js/faker': 7.6.0
-      '@previewjs/type-analyzer': 5.0.1
-      assert-never: 1.2.1
-      prettier: 2.8.4
-      typescript: 4.9.5
-    dev: false
-
   /@previewjs/type-analyzer/4.1.5:
     resolution: {integrity: sha512-hwStMtIgrncASDROaaCuN9UwkXhLtk8S8V3VjnbQQxJTEY66aAoDPq1hH/tGw0ApHNyLGpKX3yq8LHvMDJ8IMA==}
     dependencies:
@@ -8017,15 +7918,6 @@ packages:
       typescript: 4.9.5
     dev: true
 
-  /@previewjs/type-analyzer/5.0.1:
-    resolution: {integrity: sha512-ip/OIOdyCCAdlgUQMq/hTxS6r69XtV1OWJXGLVtEer4/NXQSNYbMgzVHpiAQFWqoJdtPMmEobhjZHrm5mjYLxg==}
-    dependencies:
-      '@previewjs/vfs': 2.0.0
-      assert-never: 1.2.1
-      prettier: 2.8.4
-      typescript: 4.9.5
-    dev: false
-
   /@previewjs/vfs/1.2.16:
     resolution: {integrity: sha512-nRKhlI4lUVxcEpxJ4Jk9VI8RN9z5zBy1IqGb+9pM3LxSWfqoPkrkhSV2gPy5PjrJ83vRYMDO+x9WCrelGX8pmg==}
     dependencies:
@@ -8033,14 +7925,6 @@ packages:
       chokidar: 3.5.3
       fs-extra: 11.1.0
     dev: true
-
-  /@previewjs/vfs/2.0.0:
-    resolution: {integrity: sha512-BwAwWzW0Nah54uKjXzOi0l9peEpA4f5iTIZH1c1HH0uxRND9f5Iv9aJAUsQRpnqJ7//eFDDQBSoTxtiFVXSQtQ==}
-    dependencies:
-      assert-never: 1.2.1
-      chokidar: 3.5.3
-      fs-extra: 11.1.0
-    dev: false
 
   /@react-native-community/cli-clean/9.2.1:
     resolution: {integrity: sha512-dyNWFrqRe31UEvNO+OFWmQ4hmqA07bR9Ief/6NnGwx67IO9q83D5PEAf/o96ML6jhSbDwCmpPKhPwwBbsyM3mQ==}
@@ -11142,7 +11026,7 @@ packages:
       magic-string: 0.29.0
       svelte: 3.56.0
       svelte-hmr: 0.15.1_svelte@3.56.0
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitefu: 0.2.4_vite@4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -12525,7 +12409,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.19.6_@babel+core@7.21.0
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
     transitivePeerDependencies:
       - supports-color
 
@@ -12555,7 +12439,7 @@ packages:
       '@babel/core': 7.21.0
       '@babel/plugin-transform-typescript': 7.21.0_@babel+core@7.21.0
       '@vue/babel-plugin-jsx': 1.1.1_@babel+core@7.21.0
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vue: 3.2.47
     transitivePeerDependencies:
       - supports-color
@@ -12579,7 +12463,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vue: 3.2.47
 
   /@vitejs/plugin-vue2-jsx/1.1.0_qfo22i4ycyfrwld2zpwxpz724m:
@@ -12594,7 +12478,7 @@ packages:
       '@babel/plugin-transform-typescript': 7.21.0_@babel+core@7.21.0
       '@rollup/pluginutils': 5.0.2_rollup@3.18.0
       '@vue/babel-preset-jsx': 1.4.0_qipave72ixbnicgglqgy4excba
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vue: 2.7.14
     transitivePeerDependencies:
       - rollup
@@ -12608,7 +12492,7 @@ packages:
       vite: ^3.0.0 || ^4.0.0
       vue: ^2.7.0-0
     dependencies:
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vue: 2.7.14
     dev: false
 
@@ -33629,7 +33513,7 @@ packages:
       merge-anything: 5.1.4
       solid-js: 1.6.14
       solid-refresh: 0.5.1_solid-js@1.6.14
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
       vitefu: 0.2.4_vite@4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -33758,7 +33642,6 @@ packages:
       rollup: 3.18.0
     optionalDependencies:
       fsevents: 2.3.2
-    dev: true
 
   /vite/4.1.4_@types+node@18.15.3:
     resolution: {integrity: sha512-3knk/HsbSTKEin43zHu7jTwYWv81f8kgAL99G5NWBcA1LKvtvcVAC4JjBH1arBunO9kQka+1oGbrMKOjk4ZrBg==}
@@ -33811,7 +33694,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.1.4_@types+node@18.15.3
+      vite: 4.1.4
 
   /vitest/0.29.3:
     resolution: {integrity: sha512-muMsbXnZsrzDGiyqf/09BKQsGeUxxlyLeLK/sFFM4EXdURPQRv8y7dco32DXaRORYP0bvyN19C835dT23mL0ow==}
