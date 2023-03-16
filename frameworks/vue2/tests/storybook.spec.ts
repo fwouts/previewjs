@@ -108,6 +108,42 @@ test.describe.parallel("vue2/storybook", () => {
     );
   });
 
+  test("renders templated CSF2 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update("src/Button.vue", buttonVueSource);
+    await preview.fileManager.update(
+      "src/Button.stories.js",
+      `import Button from './Button.vue';
+
+      export default {
+        component: Button
+      }
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      const Template = (args, { argTypes }) => ({
+        props: Object.keys(argTypes),
+        components: { Button },
+        template: '<Button v-bind="$props" />',
+      });
+
+      export const Primary = Template.bind({});
+      Primary.args = {
+        label: "label",
+      };`
+    );
+    await preview.show(
+      "src/Button.stories.js:Primary",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
+    );
+  });
+
   test("renders CSF2 story with implicit template", async (preview) => {
     await preview.fileManager.update("src/Button.vue", buttonVueSource);
     await preview.fileManager.update(
@@ -209,6 +245,37 @@ test.describe.parallel("vue2/storybook", () => {
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+  });
+
+  test("renders CSF3 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update("src/Button.vue", buttonVueSource);
+    await preview.fileManager.update(
+      "src/Button.stories.js",
+      `import Button from './Button.vue';
+
+      export default {
+        component: Button
+      };
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      export const Primary = {
+        args: {
+          label: "label"
+        }
+      };`
+    );
+    await preview.show(
+      "src/Button.stories.js:Primary",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
     );
   });
 

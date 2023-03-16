@@ -47,6 +47,35 @@ test.describe.parallel("solid/storybook", () => {
     );
   });
 
+  test("renders CSF2 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update(
+      "src/Button.tsx",
+      `const Button = ({ label }) => <button>{label}</button>;
+
+      export default {
+        component: Button
+      };
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      export const ButtonStory = Button.bind({});
+      ButtonStory.args = {
+        label: "label"
+      };`
+    );
+    await preview.show(
+      "src/Button.tsx:ButtonStory",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
+    );
+  });
+
   test("renders CSF2 story with default args", async (preview) => {
     await preview.fileManager.update(
       "src/Button.tsx",
@@ -108,6 +137,36 @@ test.describe.parallel("solid/storybook", () => {
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+  });
+
+  test("renders CSF3 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update(
+      "src/Button.tsx",
+      `const Button = ({ label }) => <button>{label}</button>;
+
+      export default {
+        component: Button
+      }
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      export const ButtonStory = {
+        args: {
+          label: "label"
+        }
+      }`
+    );
+    await preview.show(
+      "src/Button.tsx:ButtonStory",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
     );
   });
 
