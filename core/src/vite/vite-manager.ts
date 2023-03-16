@@ -15,6 +15,7 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
+import { embedPropsAssignmentSource } from "./plugins/embed-props-assignment-source";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
@@ -184,6 +185,7 @@ export class ViteManager {
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
+      embedPropsAssignmentSource(),
       exportToplevelPlugin(),
       fakeExportedTypesPlugin({
         readFile: (absoluteFilePath) =>

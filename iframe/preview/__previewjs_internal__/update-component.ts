@@ -1,6 +1,5 @@
 import type { RendererLoader } from "../../src";
 import { sendMessageFromPreview } from "./messages";
-import { getState } from "./state";
 
 export async function updateComponent({
   wrapperModule,
@@ -23,8 +22,7 @@ export async function updateComponent({
   loadingError: string | null;
   load: RendererLoader;
 }) {
-  const currentState = getState();
-  if (!currentState || shouldAbortRender()) {
+  if (shouldAbortRender()) {
     return;
   }
   try {
@@ -50,11 +48,13 @@ export async function updateComponent({
     if (shouldAbortRender()) {
       return;
     }
-    let autogenCallbackProps = {};
-    eval(`autogenCallbackProps = ${currentState.autogenCallbackPropsSource};`);
-    let properties = {};
-    eval(`${currentState.propsAssignmentSource};`);
-    const invocationProps = properties;
+    const { autogenCallbackProps, invocationProps } =
+      componentModule?.PreviewJsProps
+        ? componentModule.PreviewJsProps()
+        : {
+            autogenCallbackProps: {},
+            invocationProps: {},
+          };
     sendMessageFromPreview({
       kind: "rendering-setup",
       filePath: componentFilePath,

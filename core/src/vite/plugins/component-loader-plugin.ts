@@ -41,10 +41,23 @@ function generateComponentLoaderModule(
 ): string {
   const filePath = urlParams.get("p");
   const componentName = urlParams.get("c");
-  if (filePath === null || componentName === null) {
+  const autogenCallbackPropsSource = urlParams.get("a");
+  const propsAssignmentSource = urlParams.get("s");
+  if (
+    filePath === null ||
+    componentName === null ||
+    autogenCallbackPropsSource === null ||
+    propsAssignmentSource === null
+  ) {
     throw new Error(`Invalid use of ${COMPONENT_LOADER_MODULE} module`);
   }
-  const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
+  // TODO: Do we need to clear cache anywhere?
+  const componentModuleId = `/${filePath.replace(
+    /\\/g,
+    "/"
+  )}?a=${encodeURIComponent(autogenCallbackPropsSource)}&s=${encodeURIComponent(
+    propsAssignmentSource
+  )}`;
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
 
