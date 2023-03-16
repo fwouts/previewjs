@@ -193,6 +193,14 @@ describe.concurrent("parseSerializableValue", () => {
         },
       ])
     );
+    expectParsedExpression(`{ ...foo }`, false).toEqual(
+      object([
+        {
+          kind: "spread",
+          value: unknown("foo"),
+        },
+      ])
+    );
     expectParsedExpression(`{ ...foo.args }`, false).toEqual(
       object([
         {
