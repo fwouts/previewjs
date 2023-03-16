@@ -12,6 +12,8 @@ export function exportToplevelPlugin(): vite.Plugin {
       if (id.indexOf(`/node_modules/`) !== -1) {
         return null;
       }
+      // Remove query params.
+      id = id.split("?", 2)[0]!;
       const extension = path.extname(id);
       if (!jsExtensions.has(extension)) {
         return null;

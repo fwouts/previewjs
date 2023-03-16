@@ -16,6 +16,7 @@ import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
+import { localEval } from "./plugins/local-eval";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
@@ -184,6 +185,7 @@ export class ViteManager {
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
+      localEval(),
       exportToplevelPlugin(),
       fakeExportedTypesPlugin({
         readFile: (absoluteFilePath) =>
