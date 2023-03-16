@@ -138,7 +138,7 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`-5.3`).toEqual(number(-5.3));
   });
 
-  it.only("parses objects", () => {
+  it("parses objects", () => {
     expectParsedExpression(`{}`).toEqual(EMPTY_OBJECT);
     expectParsedExpression(`{ "foo": "bar" }`).toEqual(
       object([
