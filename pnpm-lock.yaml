@@ -99,8 +99,8 @@ importers:
   chromeless:
     specifiers:
       '@previewjs/api': ^9.0.1
-      '@previewjs/core': ^18.0.2
-      '@previewjs/iframe': ^7.0.0
+      '@previewjs/core': ^19.0.0
+      '@previewjs/iframe': ^8.0.0
       '@previewjs/properties': ^2.0.1
       '@previewjs/vfs': ^2.0.0
       '@types/express': ^4.17.17
@@ -151,7 +151,7 @@ importers:
     specifiers:
       '@previewjs/api': ^9.0.1
       '@previewjs/config': ^5.0.1
-      '@previewjs/iframe': ^7.0.0
+      '@previewjs/iframe': ^8.0.0
       '@previewjs/serializable-values': ^5.0.0
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': ^2.0.0
@@ -268,7 +268,7 @@ importers:
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^5.0.0
-      '@previewjs/storybook-helpers': ^1.0.1
+      '@previewjs/storybook-helpers': ^1.0.2
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': ^2.0.0
@@ -380,7 +380,7 @@ importers:
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
       '@previewjs/serializable-values': ^5.0.0
-      '@previewjs/storybook-helpers': ^1.0.1
+      '@previewjs/storybook-helpers': ^1.0.2
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': ^2.0.0
@@ -1469,7 +1469,7 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
       '@previewjs/serializable-values': ^5.0.0
-      '@previewjs/storybook-helpers': ^1.0.1
+      '@previewjs/storybook-helpers': ^1.0.2
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': ^2.0.0
@@ -1573,7 +1573,7 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
       '@previewjs/serializable-values': ^5.0.0
-      '@previewjs/storybook-helpers': ^1.0.1
+      '@previewjs/storybook-helpers': ^1.0.2
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': ^2.0.0
@@ -1704,7 +1704,7 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
       '@previewjs/serializable-values': ^5.0.0
-      '@previewjs/storybook-helpers': ^1.0.1
+      '@previewjs/storybook-helpers': ^1.0.2
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': ^2.0.0
@@ -1825,7 +1825,7 @@ importers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
       '@previewjs/serializable-values': ^5.0.0
-      '@previewjs/storybook-helpers': ^1.0.1
+      '@previewjs/storybook-helpers': ^1.0.2
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': ^2.0.0
@@ -2065,7 +2065,7 @@ importers:
 
   storybook-helpers:
     specifiers:
-      '@previewjs/core': ^18.0.2
+      '@previewjs/core': ^19.0.0
       '@previewjs/serializable-values': ^5.0.0
       '@previewjs/type-analyzer': ^6.0.0
       '@previewjs/vfs': workspace:*
@@ -2088,9 +2088,9 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/api': ^9.0.1
-      '@previewjs/chromeless': ^4.0.1
-      '@previewjs/core': ^18.0.2
-      '@previewjs/iframe': ^7.0.0
+      '@previewjs/chromeless': ^4.0.2
+      '@previewjs/core': ^19.0.0
+      '@previewjs/iframe': ^8.0.0
       '@previewjs/vfs': ^2.0.0
       '@types/fs-extra': ^11.0.1
       assert-never: ^1.2.1
