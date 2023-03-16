@@ -50,11 +50,11 @@ export async function updateComponent({
     if (shouldAbortRender()) {
       return;
     }
-    let autogenCallbackProps = {};
-    eval(`autogenCallbackProps = ${currentState.autogenCallbackPropsSource};`);
-    let properties = {};
-    eval(`${currentState.propsAssignmentSource};`);
-    const invocationProps = properties;
+    const { autogenCallbackProps, properties } =
+      await componentModule.PreviewJsEvaluateLocally(
+        currentState.autogenCallbackPropsSource,
+        currentState.propsAssignmentSource
+      );
     sendMessageFromPreview({
       kind: "rendering-setup",
       filePath: componentFilePath,
@@ -63,7 +63,7 @@ export async function updateComponent({
     await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),
       ...transformFunctions(presetGlobalProps, []),
-      ...transformFunctions(invocationProps || presetProps, []),
+      ...transformFunctions(properties || presetProps, []),
     }));
     if (shouldAbortRender()) {
       return;

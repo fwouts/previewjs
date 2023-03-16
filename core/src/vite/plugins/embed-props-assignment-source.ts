@@ -4,18 +4,15 @@ export function embedPropsAssignmentSource(): vite.Plugin {
   return {
     name: "previewjs:embed-invocation-source",
     transform: (code, id) => {
-      const urlParams = new URLSearchParams(id.split("?")[1] || "");
-      const autogenCallbackPropsSource = urlParams.get("a");
-      const propsAssignmentSource = urlParams.get("s");
-      if (!autogenCallbackPropsSource || !propsAssignmentSource) {
-        return;
-      }
+      // TODO: Only do this if a specific query param is there?
       return (
         code +
         `
-export const PreviewJsProps = () => {
-  const autogenCallbackProps = ${autogenCallbackPropsSource};
-  const ${propsAssignmentSource};
+export const PreviewJsEvaluateLocally = async (autogenCallbackPropsSource, propsAssignmentSource) => {
+  let autogenCallbackProps = {};
+  eval(\`autogenCallbackProps = \${autogenCallbackPropsSource};\`);
+  let properties = {};
+  eval(\`\${propsAssignmentSource};\`);
   return { autogenCallbackProps, properties };
 }
 `
