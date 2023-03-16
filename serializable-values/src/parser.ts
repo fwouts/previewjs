@@ -1,3 +1,4 @@
+import assertNever from "assert-never";
 import ts from "typescript";
 import {
   array,
@@ -220,20 +221,11 @@ export function parseSerializableValue(
               UNKNOWN
             : parseSerializableValue(property.expression),
         });
-      } else {
+      } else if (ts.isFunctionLike(property)) {
+        // TODO: Handle this better, e.g. { foo() { ... } }
         return fallbackValue;
-        // } else if (ts.isFunctionLike(property)) {
-        //   const key = extractKeyFromPropertyName(property.name)
-        //   if (key.kind === 'unknown') {
-        //     return fallbackValue
-        //   }
-        //   entries.push({
-        //     kind: "key",
-        //     key,
-        //     value: parseSerializableValue(property.)
-        //   });
-        // } else {
-        //   throw assertNever(property);
+      } else {
+        throw assertNever(property);
       }
     }
     return object(entries);
