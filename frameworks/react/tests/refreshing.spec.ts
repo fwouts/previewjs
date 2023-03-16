@@ -39,7 +39,7 @@ for (const reactVersion of reactVersions()) {
       });
 
       for (const inMemoryOnly of [false, true]) {
-        test.only(`updates top-level component after file change (inMemoryOnly=${inMemoryOnly})`, async (preview) => {
+        test(`updates top-level component after file change (inMemoryOnly=${inMemoryOnly})`, async (preview) => {
           await preview.show("src/App.tsx:App");
           await preview.iframe.waitForSelector(".App");
           await preview.fileManager.update(

@@ -364,20 +364,8 @@ export class ViteManager {
     if (!this.viteServer) {
       return;
     }
-    const invalidateList: string[] = [absoluteFilePath];
-    if (this.viteServer?.moduleGraph) {
-      for (const id of this.viteServer.moduleGraph.idToModuleMap.keys()) {
-        if (id.startsWith(absoluteFilePath + "?")) {
-          invalidateList.push(id);
-        }
-      }
-    }
-    console.error("INVALIDATE", invalidateList);
-    this.viteServer.moduleGraph.onFileChange(absoluteFilePath);
     for (const onChange of this.viteServer.watcher.listeners("change")) {
-      for (const id of invalidateList) {
-        onChange(id);
-      }
+      onChange(absoluteFilePath);
     }
   }
 
