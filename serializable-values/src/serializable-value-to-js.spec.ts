@@ -55,6 +55,7 @@ describe("serializableValueToJavaScript", () => {
         map(
           object([
             {
+              kind: "key",
               key: string("foo"),
               value: number(123),
             },
@@ -94,6 +95,7 @@ describe("serializableValueToJavaScript", () => {
       serializableValueToJavaScript(
         object([
           {
+            kind: "key",
             key: string("foo"),
             value: number(123),
           },

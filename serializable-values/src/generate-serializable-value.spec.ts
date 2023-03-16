@@ -43,6 +43,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "foo",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "foo",
@@ -73,6 +74,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "foo",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "foo",
@@ -110,6 +112,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "child",
             },
+            "kind": "key",
             "value": {
               "entries": [],
               "kind": "object",
@@ -120,6 +123,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "union",
             },
+            "kind": "key",
             "value": {
               "kind": "boolean",
               "value": false,
@@ -155,6 +159,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "foo",
             },
+            "kind": "key",
             "value": {
               "kind": "function",
               "returnValue": {
@@ -189,6 +194,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "target",
             },
+            "kind": "key",
             "value": {
               "entries": [],
               "kind": "object",
@@ -199,6 +205,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "friends",
             },
+            "kind": "key",
             "value": {
               "kind": "function",
               "returnValue": {
@@ -273,6 +280,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "nullType",
             },
+            "kind": "key",
             "value": {
               "kind": "null",
             },
@@ -282,6 +290,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "booleanType",
             },
+            "kind": "key",
             "value": {
               "kind": "boolean",
               "value": false,
@@ -292,6 +301,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "stringType",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "stringType",
@@ -302,6 +312,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "numberType",
             },
+            "kind": "key",
             "value": {
               "kind": "number",
               "value": 0,
@@ -312,6 +323,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "reactNodeType",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "reactNodeType",
@@ -322,6 +334,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "numberLiteral",
             },
+            "kind": "key",
             "value": {
               "kind": "number",
               "value": 123,
@@ -332,6 +345,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "stringLiteral",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "foo",
@@ -342,6 +356,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "trueLiteral",
             },
+            "kind": "key",
             "value": {
               "kind": "boolean",
               "value": true,
@@ -352,6 +367,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "falseLiteral",
             },
+            "kind": "key",
             "value": {
               "kind": "boolean",
               "value": false,
@@ -362,6 +378,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "stringEnumType",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "A",
@@ -372,6 +389,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "numberEnumType",
             },
+            "kind": "key",
             "value": {
               "kind": "number",
               "value": 3,
@@ -382,6 +400,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "arrayType",
             },
+            "kind": "key",
             "value": {
               "items": [
                 {
@@ -397,6 +416,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "setType",
             },
+            "kind": "key",
             "value": {
               "kind": "set",
               "values": {
@@ -415,6 +435,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "tupleType",
             },
+            "kind": "key",
             "value": {
               "items": [
                 {
@@ -434,6 +455,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "recordType",
             },
+            "kind": "key",
             "value": {
               "entries": [],
               "kind": "object",
@@ -444,6 +466,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "unionType",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "unionType",
@@ -454,6 +477,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "intersectionType",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "intersectionType",
@@ -464,6 +488,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "functionType",
             },
+            "kind": "key",
             "value": {
               "kind": "function",
               "returnValue": {
@@ -477,6 +502,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "promiseType",
             },
+            "kind": "key",
             "value": {
               "kind": "promise",
               "value": {
@@ -490,6 +516,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "namedType",
             },
+            "kind": "key",
             "value": {
               "entries": [
                 {
@@ -497,6 +524,7 @@ describe("generateSerializableValue", () => {
                     "kind": "string",
                     "value": "bar",
                   },
+                  "kind": "key",
                   "value": {
                     "kind": "function",
                     "returnValue": {
@@ -539,6 +567,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "a",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "a",
@@ -549,6 +578,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "e",
             },
+            "kind": "key",
             "value": {
               "kind": "string",
               "value": "e",
@@ -615,6 +645,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "t",
             },
+            "kind": "key",
             "value": {
               "kind": "number",
               "value": 0,
@@ -625,6 +656,7 @@ describe("generateSerializableValue", () => {
               "kind": "string",
               "value": "s",
             },
+            "kind": "key",
             "value": {
               "kind": "number",
               "value": 0,

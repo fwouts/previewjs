@@ -102,6 +102,7 @@ describe.concurrent("parseSerializableValue", () => {
       map(
         object([
           {
+            kind: "key",
             key: string("foo"),
             value: string("bar"),
           },
@@ -112,6 +113,7 @@ describe.concurrent("parseSerializableValue", () => {
       map(
         object([
           {
+            kind: "key",
             key: string("foo"),
             value: string("bar"),
           },
@@ -122,6 +124,7 @@ describe.concurrent("parseSerializableValue", () => {
       map(
         object([
           {
+            kind: "key",
             key: string("0"),
             value: string("bar"),
           },
@@ -140,6 +143,7 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`{ "foo": "bar" }`).toEqual(
       object([
         {
+          kind: "key",
           key: string("foo"),
           value: string("bar"),
         },
@@ -148,6 +152,7 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`{ foo: "bar" }`).toEqual(
       object([
         {
+          kind: "key",
           key: string("foo"),
           value: string("bar"),
         },
@@ -156,6 +161,7 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`{ 0: "bar" }`).toEqual(
       object([
         {
+          kind: "key",
           key: string("0"),
           value: string("bar"),
         },
@@ -164,12 +170,38 @@ describe.concurrent("parseSerializableValue", () => {
     expectParsedExpression(`{ foo }`, false).toEqual(
       object([
         {
+          kind: "key",
           key: string("foo"),
           value: UNKNOWN,
         },
       ])
     );
-    checkParsedExpressionIsUnknownWithSource(`{ ...foo }`);
+    expectParsedExpression(`{ ["foo"]: 123 }`, false).toEqual(
+      object([
+        {
+          kind: "key",
+          key: string("foo"),
+          value: number(123),
+        },
+      ])
+    );
+    expectParsedExpression(`{ ...123 }`, false).toEqual(
+      object([
+        {
+          kind: "spread",
+          value: number(123),
+        },
+      ])
+    );
+    expectParsedExpression(`{ ...foo.args }`, false).toEqual(
+      object([
+        {
+          kind: "spread",
+          value: unknown("foo.args"),
+        },
+      ])
+    );
+    checkParsedExpressionIsUnknownWithSource(`{ foo() {} }`);
   });
 
   it("parses promises", () => {

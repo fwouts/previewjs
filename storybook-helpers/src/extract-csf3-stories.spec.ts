@@ -73,6 +73,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },
@@ -129,6 +130,7 @@ export const Example = {
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: UNKNOWN,
               },
@@ -175,6 +177,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },
@@ -234,6 +237,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },
@@ -297,6 +301,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },
@@ -360,6 +365,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },

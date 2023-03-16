@@ -155,6 +155,7 @@ function _generateSerializableValue(
           continue;
         }
         entries.push({
+          kind: "key",
           key: string(propName),
           value: propValue,
         });
@@ -336,6 +337,7 @@ function generateRecordValue(
       isFunctionReturnValue
     );
     entries.push({
+      kind: "key",
       key,
       value,
     });

@@ -4,6 +4,7 @@ import {
   object,
   parseSerializableValue,
   string,
+  unknown,
 } from "@previewjs/serializable-values";
 import {
   createTypeAnalyzer,
@@ -78,12 +79,62 @@ describe.concurrent("extractArgs", () => {
     ).toEqual({
       Foo: object([
         {
+          kind: "key",
           key: string("name"),
           value: string("foo"),
         },
         {
+          kind: "key",
           key: string("age"),
           value: number(31),
+        },
+      ]),
+    });
+  });
+
+  test("spread args", async () => {
+    expect(
+      extractArgsFromSource(`
+      export const Bar = () = {};
+      Bar.args = {
+        name: "foo",
+        age: 31
+      }
+
+      export const Foo = () => {};
+      Foo.args = {
+        ...Bar.args,
+        age: 35,
+        gender: "neutral"
+      };
+    `)
+    ).toEqual({
+      Bar: object([
+        {
+          kind: "key",
+          key: string("name"),
+          value: string("foo"),
+        },
+        {
+          kind: "key",
+          key: string("age"),
+          value: number(31),
+        },
+      ]),
+      Foo: object([
+        {
+          kind: "spread",
+          value: unknown("Bar.args"),
+        },
+        {
+          kind: "key",
+          key: string("age"),
+          value: number(35),
+        },
+        {
+          kind: "key",
+          key: string("gender"),
+          value: string("neutral"),
         },
       ]),
     });

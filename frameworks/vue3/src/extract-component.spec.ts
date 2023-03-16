@@ -280,10 +280,12 @@ Primary.args = {
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("primary"),
                 value: TRUE,
               },
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Button"),
               },
@@ -336,6 +338,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },

@@ -1,3 +1,4 @@
+import assertNever from "assert-never";
 import ts from "typescript";
 import {
   array,
@@ -120,6 +121,7 @@ export function parseSerializableValue(
               return fallbackValue;
             }
             entries.push({
+              kind: "key",
               key: parseSerializableValue(element.elements[0]!),
               value: parseSerializableValue(element.elements[1]!),
             });
@@ -194,23 +196,36 @@ export function parseSerializableValue(
   if (ts.isObjectLiteralExpression(expression)) {
     const entries: SerializableObjectValueEntry[] = [];
     for (const property of expression.properties) {
+      property;
       if (ts.isShorthandPropertyAssignment(property)) {
         entries.push({
+          kind: "key",
           key: string(property.name.text),
           value: UNKNOWN,
         });
-      } else if (
-        ts.isPropertyAssignment(property) &&
-        (ts.isIdentifier(property.name) ||
-          ts.isStringLiteral(property.name) ||
-          ts.isNumericLiteral(property.name))
-      ) {
+      } else if (ts.isPropertyAssignment(property)) {
+        const key = extractKeyFromPropertyName(property.name);
+        if (key.kind === "unknown") {
+          return fallbackValue;
+        }
         entries.push({
-          key: string(property.name.text),
+          kind: "key",
+          key,
           value: parseSerializableValue(property.initializer),
         });
-      } else {
+      } else if (ts.isSpreadAssignment(property)) {
+        entries.push({
+          kind: "spread",
+          value: property.name
+            ? // TODO: Property access off property.expression.
+              UNKNOWN
+            : parseSerializableValue(property.expression),
+        });
+      } else if (ts.isFunctionLike(property)) {
+        // TODO: Handle this better, e.g. { foo() { ... } }
         return fallbackValue;
+      } else {
+        throw assertNever(property);
       }
     }
     return object(entries);
@@ -264,4 +279,19 @@ export function parseSerializableValue(
   }
 
   return fallbackValue;
+}
+
+function extractKeyFromPropertyName(
+  propertyName: ts.PropertyName
+): SerializableValue {
+  if (
+    ts.isIdentifier(propertyName) ||
+    ts.isStringLiteral(propertyName) ||
+    ts.isNumericLiteral(propertyName)
+  ) {
+    return string(propertyName.text);
+  } else if (ts.isComputedPropertyName(propertyName)) {
+    return parseSerializableValue(propertyName.expression);
+  }
+  return UNKNOWN;
 }
