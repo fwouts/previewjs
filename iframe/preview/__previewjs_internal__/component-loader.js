@@ -1,13 +1,6 @@
-export async function componentLoader(
-  filePath,
-  componentName,
-  autogenCallbackPropsSource,
-  propsAssignmentSource
-) {
+export async function componentLoader(filePath, componentName) {
   const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
     filePath
-  )}&c=${encodeURIComponent(componentName)}&a=${encodeURIComponent(
-    autogenCallbackPropsSource
-  )}&s=${encodeURIComponent(propsAssignmentSource)}`;
+  )}&c=${encodeURIComponent(componentName)}`;
   return await import(/* @vite-ignore */ componentLoaderUrl);
 }

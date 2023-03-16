@@ -3,10 +3,10 @@ import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
 import { sendMessageFromPreview } from "./messages";
+import { setState } from "./state";
 import { setupViteHmrListener } from "./vite-hmr-listener";
 // @ts-ignore
 import { componentLoader } from "./component-loader.js";
-import { setState } from "./state";
 
 setupViteHmrListener();
 setUpLogInterception();
@@ -29,12 +29,7 @@ async function load({
       autogenCallbackPropsSource,
       propsAssignmentSource,
     });
-    const { init, refresh } = await componentLoader(
-      filePath,
-      componentName,
-      autogenCallbackPropsSource,
-      propsAssignmentSource
-    );
+    const { init, refresh } = await componentLoader(filePath, componentName);
     init({
       componentLoadId: currentComponentLoadId,
       getLatestComponentLoadId: () => componentLoadId,

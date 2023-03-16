@@ -68,14 +68,7 @@ export function setupViteHmrListener() {
         const params = new URLSearchParams(update.path.split("?")[1] || "");
         const p = params.get("p");
         const c = params.get("c");
-        const a = params.get("a");
-        const s = params.get("s");
-        if (
-          p !== state.filePath ||
-          c !== state.componentName ||
-          a !== state.autogenCallbackPropsSource ||
-          s !== state.propsAssignmentSource
-        ) {
+        if (p !== state.filePath || c !== state.componentName) {
           // Ignore old updates to /@component-loader.js, which are not needed
           // and may fail (e.g. if they import a file that no longer exists).
           return false;
