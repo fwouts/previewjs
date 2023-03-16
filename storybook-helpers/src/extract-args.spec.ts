@@ -103,7 +103,7 @@ describe.concurrent("extractArgs", () => {
 
       export const Foo = () => {};
       Foo.args = {
-        ...Bar,
+        ...Bar.args,
         age: 35,
         gender: "neutral"
       };
