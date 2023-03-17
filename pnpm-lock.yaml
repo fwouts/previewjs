@@ -1626,16 +1626,16 @@ importers:
       svelte-check: ^2.10.3
       svelte-preprocess: ^4.10.7
       tslib: ^2.5.0
-      typescript: ^5.0.2
+      typescript: ^4.9.5
       vite: ^4.1.4
     devDependencies:
       '@sveltejs/vite-plugin-svelte': 1.4.0_svelte@3.55.1+vite@4.1.4
       '@tsconfig/svelte': 3.0.0
       svelte: 3.55.1
       svelte-check: 2.10.3_svelte@3.55.1
-      svelte-preprocess: 4.10.7_l6gh7invo235md22ird7wlz7xq
+      svelte-preprocess: 4.10.7_4x7phaipmicbaooxtnresslofa
       tslib: 2.5.0
-      typescript: 5.0.2
+      typescript: 4.9.5
       vite: 4.1.4
 
   frameworks/svelte/tests/apps/svelte-app:
@@ -1646,16 +1646,16 @@ importers:
       svelte-check: ^2.10.3
       svelte-preprocess: ^4.10.7
       tslib: ^2.5.0
-      typescript: ^5.0.2
+      typescript: ^4.9.5
       vite: ^4.1.4
     devDependencies:
       '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.55.1+vite@4.1.4
       '@tsconfig/svelte': 3.0.0
       svelte: 3.55.1
       svelte-check: 2.10.3_svelte@3.55.1
-      svelte-preprocess: 4.10.7_l6gh7invo235md22ird7wlz7xq
+      svelte-preprocess: 4.10.7_4x7phaipmicbaooxtnresslofa
       tslib: 2.5.0
-      typescript: 5.0.2
+      typescript: 4.9.5
       vite: 4.1.4
 
   frameworks/svelte/tests/apps/sveltekit-app:
@@ -1666,16 +1666,16 @@ importers:
       svelte-check: ^2.10.3
       svelte-preprocess: ^4.10.7
       tslib: ^2.5.0
-      typescript: ^5.0.2
+      typescript: ^4.9.5
       vite: ^4.1.4
     devDependencies:
       '@sveltejs/adapter-auto': 1.0.3_@sveltejs+kit@1.10.0
       '@sveltejs/kit': 1.10.0_svelte@3.55.1+vite@4.1.4
       svelte: 3.55.1
       svelte-check: 2.10.3_svelte@3.55.1
-      svelte-preprocess: 4.10.7_l6gh7invo235md22ird7wlz7xq
+      svelte-preprocess: 4.10.7_4x7phaipmicbaooxtnresslofa
       tslib: 2.5.0
-      typescript: 5.0.2
+      typescript: 4.9.5
       vite: 4.1.4
 
   frameworks/svelte/tests/apps/sveltekit-demo:
@@ -1689,7 +1689,7 @@ importers:
       svelte-check: ^2.10.3
       svelte-preprocess: ^4.10.7
       tslib: ^2.5.0
-      typescript: ^5.0.2
+      typescript: ^4.9.5
       vite: ^4.1.4
     devDependencies:
       '@fontsource/fira-mono': 4.5.10
@@ -1699,9 +1699,9 @@ importers:
       '@types/cookie': 0.5.1
       svelte: 3.55.1
       svelte-check: 2.10.3_svelte@3.55.1
-      svelte-preprocess: 4.10.7_l6gh7invo235md22ird7wlz7xq
+      svelte-preprocess: 4.10.7_4x7phaipmicbaooxtnresslofa
       tslib: 2.5.0
-      typescript: 5.0.2
+      typescript: 4.9.5
       vite: 4.1.4
 
   frameworks/vue2:
@@ -14405,7 +14405,7 @@ packages:
   /axios/0.25.0_debug@4.3.4:
     resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
-      follow-redirects: 1.15.2_debug@4.3.4
+      follow-redirects: 1.15.2
     transitivePeerDependencies:
       - debug
 
@@ -15291,7 +15291,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1
+      promise-inflight: 1.0.1_bluebird@3.7.2
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -19938,6 +19938,7 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4
+    dev: true
 
   /fontfaceobserver/2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
@@ -26522,7 +26523,7 @@ packages:
     resolution: {integrity: sha512-2Rb3vm+EXble/sMXNSu6eoBx8e79gKqhNq9F5ZWW6ERNCTE/Q0wQNne5541tE5vKjfM8hpNCYL+LGc1YTfI0dg==}
     engines: {node: '>=6'}
     dependencies:
-      ts-pnp: 1.2.0_typescript@4.6.4
+      ts-pnp: 1.2.0_typescript@5.0.2
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -28240,14 +28241,6 @@ packages:
   /progress/2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
-
-  /promise-inflight/1.0.1:
-    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
-    peerDependencies:
-      bluebird: '*'
-    peerDependenciesMeta:
-      bluebird:
-        optional: true
 
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
@@ -31658,6 +31651,57 @@ packages:
       svelte: 3.57.0
     dev: false
 
+  /svelte-preprocess/4.10.7_4x7phaipmicbaooxtnresslofa:
+    resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}
+    engines: {node: '>= 9.11.2'}
+    requiresBuild: true
+    peerDependencies:
+      '@babel/core': ^7.10.2
+      coffeescript: ^2.5.1
+      less: ^3.11.3 || ^4.0.0
+      node-sass: '*'
+      postcss: ^7 || ^8
+      postcss-load-config: ^2.1.0 || ^3.0.0 || ^4.0.0
+      pug: ^3.0.0
+      sass: ^1.26.8
+      stylus: ^0.55.0
+      sugarss: ^2.0.0
+      svelte: ^3.23.0
+      typescript: ^3.9.5 || ^4.0.0
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      coffeescript:
+        optional: true
+      less:
+        optional: true
+      node-sass:
+        optional: true
+      postcss:
+        optional: true
+      postcss-load-config:
+        optional: true
+      pug:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@types/pug': 2.0.6
+      '@types/sass': 1.45.0
+      detect-indent: 6.1.0
+      magic-string: 0.25.9
+      sorcery: 0.10.0
+      strip-indent: 3.0.0
+      svelte: 3.55.1
+      typescript: 4.9.5
+    dev: true
+
   /svelte-preprocess/4.10.7_l6gh7invo235md22ird7wlz7xq:
     resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}
     engines: {node: '>= 9.11.2'}
@@ -32459,18 +32503,6 @@ packages:
     dependencies:
       typescript: 4.2.4
     dev: false
-
-  /ts-pnp/1.2.0_typescript@4.6.4:
-    resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
-    engines: {node: '>=6'}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      typescript: 4.6.4
-    dev: true
 
   /ts-pnp/1.2.0_typescript@5.0.2:
     resolution: {integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==}
