@@ -1706,7 +1706,7 @@ importers:
 
   frameworks/vue2:
     specifiers:
-      '@nuxt/config': ^2.16.0
+      '@nuxt/config': ^2.16.3
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
       '@previewjs/serializable-values': ^5.0.0
@@ -1725,7 +1725,7 @@ importers:
       vue: ^2.7.14
       vue-template-compiler: ^2.7.14
     dependencies:
-      '@nuxt/config': 2.16.0
+      '@nuxt/config': 2.16.3
       '@previewjs/serializable-values': link:../../serializable-values
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
@@ -7076,10 +7076,11 @@ packages:
       vue-template-compiler: 2.7.14
     dev: false
 
-  /@nuxt/config/2.16.0:
-    resolution: {integrity: sha512-ysi9G4C0tW0dFyvDyejO3/ldvBQi0CzksaUtXhYatbQxcd/FqoXVf/yQplFKat1T2gnmYj/qFZRu2WhlD21OmA==}
+  /@nuxt/config/2.16.2:
+    resolution: {integrity: sha512-4bQF9Pgj9NN06/fOAUnPFJ4JPBAr66GTO+xsPkbo5/UpR8UGzFLrUztIyuKEi1dHynEL0b+W4Lem/+GuxE5L2g==}
+    engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
-      '@nuxt/utils': 2.16.0
+      '@nuxt/utils': 2.16.2
       consola: 2.15.3
       defu: 6.1.2
       destr: 1.2.2
@@ -7090,11 +7091,11 @@ packages:
       ufo: 1.1.1
     dev: false
 
-  /@nuxt/config/2.16.2:
-    resolution: {integrity: sha512-4bQF9Pgj9NN06/fOAUnPFJ4JPBAr66GTO+xsPkbo5/UpR8UGzFLrUztIyuKEi1dHynEL0b+W4Lem/+GuxE5L2g==}
+  /@nuxt/config/2.16.3:
+    resolution: {integrity: sha512-hBvr5/b5CS6UdXPgB8q/jvQHS0Bprf+b0hknL6ks4EkxhtNKM1Et3a0s3V3Gh/odLkkJ9yrtihFF+CymzBm6ew==}
     engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
-      '@nuxt/utils': 2.16.2
+      '@nuxt/utils': 2.16.3
       consola: 2.15.3
       defu: 6.1.2
       destr: 1.2.2
@@ -7163,7 +7164,7 @@ packages:
       globby: 13.1.3
       hash-sum: 2.0.0
       ignore: 5.2.4
-      jiti: 1.17.2
+      jiti: 1.18.2
       knitwork: 1.0.0
       lodash.template: 4.5.0
       mlly: 1.1.1
@@ -7190,7 +7191,7 @@ packages:
       globby: 13.1.3
       hash-sum: 2.0.0
       ignore: 5.2.4
-      jiti: 1.17.2
+      jiti: 1.18.2
       knitwork: 1.0.0
       lodash.template: 4.5.0
       mlly: 1.1.1
@@ -7280,7 +7281,7 @@ packages:
       create-require: 1.1.1
       defu: 6.1.2
       hookable: 5.4.2
-      jiti: 1.17.2
+      jiti: 1.18.2
       pathe: 1.1.0
       pkg-types: 1.0.2
       postcss-import-resolver: 2.0.0
@@ -7302,7 +7303,7 @@ packages:
       create-require: 1.1.1
       defu: 6.1.2
       hookable: 5.4.2
-      jiti: 1.17.2
+      jiti: 1.18.2
       pathe: 1.1.0
       pkg-types: 1.0.2
       postcss-import-resolver: 2.0.0
@@ -7378,7 +7379,7 @@ packages:
       fs-extra: 8.1.0
       git-url-parse: 13.1.0
       inquirer: 7.3.3
-      jiti: 1.17.2
+      jiti: 1.18.2
       nanoid: 3.3.4
       node-fetch: 2.6.9
       parse-git-config: 3.0.0
@@ -7404,7 +7405,7 @@ packages:
       git-url-parse: 13.1.0
       inquirer: 9.1.4
       is-docker: 3.0.0
-      jiti: 1.17.2
+      jiti: 1.18.2
       mri: 1.2.0
       nanoid: 4.0.1
       node-fetch: 3.3.0
@@ -7465,14 +7466,15 @@ packages:
     resolution: {integrity: sha512-PjVETP7+iZXAs5Q8O4ivl4t6qjWZMZqwiTVogUXHoHGZZcw7GZW3u3tzfYfE1HbzyYJfr236IXqQ02MeR8Fz2w==}
     dev: true
 
-  /@nuxt/utils/2.16.0:
-    resolution: {integrity: sha512-/6eLMKYn/hFr17HNtcgIHaO1rKqrSfGxABPQCikLIpq/hRcXz0tCQHgwLfG9nEzFyY7fzulPIICjRB9EEEe3tA==}
+  /@nuxt/utils/2.16.2:
+    resolution: {integrity: sha512-6gskrxXpO3Dc3W0FBp0RQ8DetlLk1bgGzuAYlGRTH+RBvQ1bD9YHvsA7vZKn0DVwYtCK0GFZV+Y/55A+8tQ+Hg==}
+    engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       consola: 2.15.3
       create-require: 1.1.1
       fs-extra: 10.1.0
       hash-sum: 2.0.0
-      jiti: 1.17.2
+      jiti: 1.18.2
       lodash: 4.17.21
       proper-lockfile: 4.1.2
       semver: 7.3.8
@@ -7482,15 +7484,15 @@ packages:
       ufo: 1.1.1
     dev: false
 
-  /@nuxt/utils/2.16.2:
-    resolution: {integrity: sha512-6gskrxXpO3Dc3W0FBp0RQ8DetlLk1bgGzuAYlGRTH+RBvQ1bD9YHvsA7vZKn0DVwYtCK0GFZV+Y/55A+8tQ+Hg==}
+  /@nuxt/utils/2.16.3:
+    resolution: {integrity: sha512-M0W1v4gZDMXyt1MnCoDijIvoV7Xu8NwdbHqWB9gyxIGvoycjNmWWu6yT4LkymZx2c2JUxWTVp6VoUKUWW5P46Q==}
     engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       consola: 2.15.3
       create-require: 1.1.1
       fs-extra: 10.1.0
       hash-sum: 2.0.0
-      jiti: 1.17.2
+      jiti: 1.18.2
       lodash: 4.17.21
       proper-lockfile: 4.1.2
       semver: 7.3.8
@@ -24365,6 +24367,11 @@ packages:
   /jiti/1.17.2:
     resolution: {integrity: sha512-Xf0nU8+8wuiQpLcqdb2HRyHqYwGk2Pd+F7kstyp20ZuqTyCmB9dqpX2NxaxFc1kovraa2bG6c1RL3W7XfapiZg==}
     hasBin: true
+    dev: true
+
+  /jiti/1.18.2:
+    resolution: {integrity: sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==}
+    hasBin: true
 
   /joi/17.8.3:
     resolution: {integrity: sha512-q5Fn6Tj/jR8PfrLrx4fpGH4v9qM6o+vDUfD4/3vxxyg34OmKcNqYZ1qn2mpLza96S8tL0p0rIw2gOZX+/cTg9w==}
@@ -26123,7 +26130,7 @@ packages:
       esbuild: 0.17.12
       fs-extra: 11.1.0
       globby: 13.1.3
-      jiti: 1.17.2
+      jiti: 1.18.2
       mri: 1.2.0
       pathe: 1.1.0
       typescript: 4.9.5
@@ -26565,7 +26572,7 @@ packages:
       hookable: 5.4.2
       http-proxy: 1.18.1
       is-primitive: 3.0.1
-      jiti: 1.17.2
+      jiti: 1.18.2
       klona: 2.0.6
       knitwork: 1.0.0
       listhen: 1.0.3
