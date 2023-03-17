@@ -4,9 +4,9 @@ import {
   functionType,
   maybeOptionalType,
   unionType,
-  ValueType,
   VOID_TYPE,
 } from "./definitions";
+import type { ValueType } from "./definitions";
 
 export function computeUnion(types: ValueType[]): ValueType {
   let hasVoid = false;

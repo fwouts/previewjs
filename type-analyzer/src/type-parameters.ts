@@ -5,14 +5,13 @@ import {
   mapType,
   objectType,
   optionalType,
-  ParameterizableType,
   promiseType,
   recordType,
   setType,
   tupleType,
   UNKNOWN_TYPE,
-  ValueType,
 } from "./definitions";
+import type { ParameterizableType, ValueType } from "./definitions";
 import { computeIntersection } from "./intersection";
 import { computeUnion } from "./union";
 
