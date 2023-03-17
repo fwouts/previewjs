@@ -1,14 +1,14 @@
-import {
+import { ReaderListeners } from "@previewjs/vfs";
+import { parse } from "@vue/compiler-sfc";
+import path from "path";
+import ts from "typescript";
+import type {
   Directory,
   DirectorySync,
   File,
   FileSync,
   Reader,
-  ReaderListeners,
 } from "@previewjs/vfs";
-import { parse } from "@vue/compiler-sfc";
-import path from "path";
-import ts from "typescript";
 
 /**
  * Returns a reader that returns a virtual TypeScript file

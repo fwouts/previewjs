@@ -1,5 +1,6 @@
 import type { Client } from "@previewjs/daemon/client";
-import vscode, { Uri, WebviewPanel } from "vscode";
+import vscode from "vscode";
+import type { WebviewPanel } from "vscode";
 import { ensurePreviewServerStopped } from "./preview-server";
 
 let previewPanel: WebviewPanel | null = null;
@@ -21,7 +22,7 @@ export function updatePreviewPanel(
     );
     previewPanel.webview.onDidReceiveMessage((message) => {
       if (message.command === "open-browser") {
-        vscode.env.openExternal(Uri.parse(message.url));
+        vscode.env.openExternal(vscode.Uri.parse(message.url));
       }
     });
     previewPanel.onDidDispose(() => {

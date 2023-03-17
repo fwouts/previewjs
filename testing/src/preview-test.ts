@@ -1,12 +1,15 @@
 /// <reference types="@previewjs/iframe/preview/window" />
 
-import { Page, test } from "@playwright/test";
+import { test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { getPreviewIframe, startPreview } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
 import type playwright from "playwright";
-import { expectLoggedMessages, LoggedMessagesMatcher } from "./events";
-import { FileManager, prepareFileManager } from "./file-manager";
+import { expectLoggedMessages } from "./events";
+import type { LoggedMessagesMatcher } from "./events";
+import { prepareFileManager } from "./file-manager";
+import type { FileManager } from "./file-manager";
 
 // Port allocated for the duration of the process.
 let port: number;

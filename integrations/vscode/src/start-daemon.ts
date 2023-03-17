@@ -1,5 +1,7 @@
-import { Client, createClient } from "@previewjs/daemon/client";
-import { execa, ExecaChildProcess, ExecaReturnValue, Options } from "execa";
+import { createClient } from "@previewjs/daemon/client";
+import type { Client } from "@previewjs/daemon/client";
+import { execa } from "execa";
+import type { ExecaChildProcess, ExecaReturnValue, Options } from "execa";
 import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
 import path from "path";
 import stripAnsi from "strip-ansi";

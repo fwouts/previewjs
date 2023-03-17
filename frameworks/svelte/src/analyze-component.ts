@@ -1,11 +1,10 @@
 import type { ComponentAnalysis } from "@previewjs/core";
 import {
-  CollectedTypes,
   maybeOptionalType,
   objectType,
   TypeAnalyzer,
-  ValueType,
 } from "@previewjs/type-analyzer";
+import type { ValueType, CollectedTypes } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function analyzeSvelteComponentFromSFC(

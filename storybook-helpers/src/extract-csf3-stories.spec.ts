@@ -1,16 +1,12 @@
 import { object, string, UNKNOWN } from "@previewjs/serializable-values";
-import {
-  createTypeAnalyzer,
-  TypeAnalyzer,
-  UNKNOWN_TYPE,
-} from "@previewjs/type-analyzer";
+import { createTypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { extractCsf3Stories } from "./extract-csf3-stories";

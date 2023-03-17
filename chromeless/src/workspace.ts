@@ -1,9 +1,7 @@
-import {
-  createWorkspace,
-  FrameworkPluginFactory,
-  setupFrameworkPlugin,
-} from "@previewjs/core";
-import { createFileSystemReader, Reader } from "@previewjs/vfs";
+import { createWorkspace, setupFrameworkPlugin } from "@previewjs/core";
+import type { FrameworkPluginFactory } from "@previewjs/core";
+import { createFileSystemReader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import path from "path";
 import url from "url";

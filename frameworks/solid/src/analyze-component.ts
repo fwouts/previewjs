@@ -1,13 +1,12 @@
 import type { ComponentAnalysis } from "@previewjs/core";
 import {
-  CollectedTypes,
   dereferenceType,
   EMPTY_OBJECT_TYPE,
   objectType,
   TypeResolver,
   UNKNOWN_TYPE,
-  ValueType,
 } from "@previewjs/type-analyzer";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function analyzeSolidComponent(

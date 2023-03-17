@@ -11,14 +11,16 @@ import {
   number,
   object,
   promise,
-  SerializableObjectValueEntry,
-  SerializableValue,
   set,
   string,
   TRUE,
   UNDEFINED,
   UNKNOWN,
   unknown,
+} from "./serializable-value";
+import type {
+  SerializableObjectValueEntry,
+  SerializableValue,
 } from "./serializable-value";
 
 export function parseSerializableValue(

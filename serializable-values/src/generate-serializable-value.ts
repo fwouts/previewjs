@@ -1,10 +1,8 @@
 import { faker } from "@faker-js/faker";
-import {
+import { arrayType, dereferenceType, isValid } from "@previewjs/type-analyzer";
+import type {
   ArrayType,
-  arrayType,
   CollectedTypes,
-  dereferenceType,
-  isValid,
   RecordType,
   ValueType,
 } from "@previewjs/type-analyzer";
@@ -21,14 +19,16 @@ import {
   number,
   object,
   promise,
-  SerializableArrayValue,
-  SerializableObjectValue,
-  SerializableObjectValueEntry,
-  SerializableValue,
   set,
   string,
   TRUE,
   UNDEFINED,
+} from "./serializable-value";
+import type {
+  SerializableArrayValue,
+  SerializableObjectValue,
+  SerializableObjectValueEntry,
+  SerializableValue,
 } from "./serializable-value";
 
 /**

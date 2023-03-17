@@ -1,4 +1,5 @@
-import { functionType, NODE_TYPE, ValueType } from "@previewjs/type-analyzer";
+import { functionType, NODE_TYPE } from "@previewjs/type-analyzer";
+import type { ValueType } from "@previewjs/type-analyzer";
 
 export const SOLID_SPECIAL_TYPES: Record<string, ValueType> = {
   Component: functionType(NODE_TYPE),

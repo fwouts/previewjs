@@ -14,7 +14,6 @@ import {
   number,
   object,
   promise,
-  SerializableValue,
   set,
   string,
   TRUE,
@@ -22,6 +21,7 @@ import {
   UNKNOWN,
   unknown,
 } from "./serializable-value";
+import type { SerializableValue } from "./serializable-value";
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 describe.concurrent("parseSerializableValue", () => {

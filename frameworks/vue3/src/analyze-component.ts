@@ -1,13 +1,12 @@
 import type { ComponentAnalysis } from "@previewjs/core";
 import {
-  CollectedTypes,
   objectType,
   optionalType,
   TypeResolver,
   UNKNOWN_TYPE,
-  ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 
 export function analyzeVueComponentFromTemplate(
   resolver: TypeResolver,

@@ -1,5 +1,7 @@
-import { RequestOf, ResponseOf, RPC, RPCs } from "@previewjs/api";
-import { CollectedTypes, createTypeAnalyzer } from "@previewjs/type-analyzer";
+import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
+import { RPCs } from "@previewjs/api";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
+import type { CollectedTypes } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";

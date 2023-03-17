@@ -11,9 +11,8 @@ import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import svelteFrameworkPlugin from ".";

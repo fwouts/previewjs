@@ -1,14 +1,7 @@
-import {
-  PreviewConfig,
-  PREVIEW_CONFIG_NAME,
-  readConfig,
-} from "@previewjs/config";
-import {
-  createFileSystemReader,
-  createStackedReader,
-  Reader,
-  ReaderListenerInfo,
-} from "@previewjs/vfs";
+import { PREVIEW_CONFIG_NAME, readConfig } from "@previewjs/config";
+import type { PreviewConfig } from "@previewjs/config";
+import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
+import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
 import type express from "express";
