@@ -1837,7 +1837,7 @@ importers:
       '@previewjs/vfs': ^2.0.0
       '@types/fs-extra': ^11.0.1
       '@vitejs/plugin-vue': ^4.1.0
-      '@vitejs/plugin-vue-jsx': ^3.0.0
+      '@vitejs/plugin-vue-jsx': ^3.0.1
       '@vue/compiler-sfc': ^3.2.47
       fs-extra: ^11.1.0
       typescript: ^5.0.2
@@ -1851,7 +1851,7 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       '@vitejs/plugin-vue': 4.1.0_vite@4.2.0+vue@3.2.47
-      '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.2.0+vue@3.2.47
+      '@vitejs/plugin-vue-jsx': 3.0.1_vite@4.2.0+vue@3.2.47
       '@vue/compiler-sfc': 3.2.47
       fs-extra: 11.1.0
       typescript: 5.0.2
@@ -7509,7 +7509,7 @@ packages:
       '@nuxt/kit': /@nuxt/kit-edge/3.0.1-rc.0-27857531.faf2607_rollup@3.18.0
       '@rollup/plugin-replace': 5.0.2_rollup@3.18.0
       '@vitejs/plugin-vue': 4.1.0_vite@4.0.4+vue@3.2.47
-      '@vitejs/plugin-vue-jsx': 3.0.0_vite@4.0.4+vue@3.2.47
+      '@vitejs/plugin-vue-jsx': 3.0.1_vite@4.0.4+vue@3.2.47
       autoprefixer: 10.4.13_postcss@8.4.21
       chokidar: 3.5.3
       cssnano: 5.1.15_postcss@8.4.21
@@ -13682,8 +13682,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@vitejs/plugin-vue-jsx/3.0.0_vite@4.0.4+vue@3.2.47:
-    resolution: {integrity: sha512-vurkuzgac5SYuxd2HUZqAFAWGTF10diKBwJNbCvnWijNZfXd+7jMtqjPFbGt7idOJUn584fP1Ar9j/GN2jQ3Ew==}
+  /@vitejs/plugin-vue-jsx/3.0.1_vite@4.0.4+vue@3.2.47:
+    resolution: {integrity: sha512-+Jb7ggL48FSPS1uhPnJbJwWa9Sr90vQ+d0InW+AhBM22n+cfuYqJZDckBc+W3QSHe1WDvewMZfa4wZOtk5pRgw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
@@ -13698,8 +13698,8 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-vue-jsx/3.0.0_vite@4.2.0+vue@3.2.47:
-    resolution: {integrity: sha512-vurkuzgac5SYuxd2HUZqAFAWGTF10diKBwJNbCvnWijNZfXd+7jMtqjPFbGt7idOJUn584fP1Ar9j/GN2jQ3Ew==}
+  /@vitejs/plugin-vue-jsx/3.0.1_vite@4.2.0+vue@3.2.47:
+    resolution: {integrity: sha512-+Jb7ggL48FSPS1uhPnJbJwWa9Sr90vQ+d0InW+AhBM22n+cfuYqJZDckBc+W3QSHe1WDvewMZfa4wZOtk5pRgw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
