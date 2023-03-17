@@ -475,6 +475,8 @@ class TypeResolver {
         }
         let propertyTsType: ts.Type | undefined;
         if (
+          property.valueDeclaration &&
+          ts.canHaveModifiers(property.valueDeclaration) &&
           property.valueDeclaration?.modifiers?.find(
             (m) =>
               m.kind === ts.SyntaxKind.PrivateKeyword ||

@@ -24,9 +24,11 @@ export function extractExportedNames(
       continue;
     }
     const hasExportModifier =
-      statement.modifiers?.find(
-        (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword
-      ) || false;
+      (ts.canHaveModifiers(statement) &&
+        statement.modifiers?.find(
+          (modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword
+        )) ||
+      false;
     if (ts.isVariableStatement(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (!ts.isIdentifier(declaration.name)) {
