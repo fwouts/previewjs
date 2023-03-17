@@ -5,7 +5,6 @@ import {
   ANY_TYPE,
   arrayType,
   BOOLEAN_TYPE,
-  CollectedTypes,
   EMPTY_OBJECT_TYPE,
   enumType,
   functionType,
@@ -17,15 +16,18 @@ import {
   NULL_TYPE,
   NUMBER_TYPE,
   objectType,
-  ParameterizableType,
   promiseType,
   recordType,
   setType,
   STRING_TYPE,
   tupleType,
   UNKNOWN_TYPE,
-  ValueType,
   VOID_TYPE,
+} from "./definitions";
+import type {
+  CollectedTypes,
+  ParameterizableType,
+  ValueType,
 } from "./definitions";
 import { computeIntersection } from "./intersection";
 import { stripUnusedTypes } from "./strip-unused-types";

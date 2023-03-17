@@ -1,11 +1,6 @@
 import assertNever from "assert-never";
-import {
-  CollectedTypes,
-  EMPTY_OBJECT_TYPE,
-  optionalType,
-  UNKNOWN_TYPE,
-  ValueType,
-} from "./definitions";
+import { EMPTY_OBJECT_TYPE, optionalType, UNKNOWN_TYPE } from "./definitions";
+import type { CollectedTypes, ValueType } from "./definitions";
 import { computeIntersection } from "./intersection";
 import { evaluateType } from "./type-parameters";
 import { computeUnion } from "./union";

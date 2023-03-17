@@ -1,13 +1,13 @@
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import type { TypeAnalyzer } from ".";
 import {
   ANY_TYPE,
   arrayType,
@@ -29,7 +29,6 @@ import {
   setType,
   STRING_TYPE,
   tupleType,
-  TypeAnalyzer,
   unionType,
   UNKNOWN_TYPE,
   VOID_TYPE,

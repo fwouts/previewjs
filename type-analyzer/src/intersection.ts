@@ -1,10 +1,6 @@
 import isEqual from "lodash/isEqual";
-import {
-  functionType,
-  intersectionType,
-  ValueType,
-  VOID_TYPE,
-} from "./definitions";
+import { functionType, intersectionType, VOID_TYPE } from "./definitions";
+import type { ValueType } from "./definitions";
 
 export function computeIntersection(types: ValueType[]): ValueType {
   types = types.filter((type, i) => {
