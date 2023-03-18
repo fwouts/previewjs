@@ -182,14 +182,17 @@ describe("serializableValueToJavaScript", () => {
     expect(serializableValueToJavaScript(unknown("foo"))).toMatchInlineSnapshot(
       '"foo"'
     );
+    expect(
+      serializableValueToJavaScript(unknown("foo bar"))
+    ).toMatchInlineSnapshot('"foo bar"');
     expect(serializableValueToJavaScript(unknown("new"))).toMatchInlineSnapshot(
-      '"{}"'
+      '"new"'
     );
     expect(serializableValueToJavaScript(unknown("'"))).toMatchInlineSnapshot(
-      '"{}"'
+      '"\'"'
     );
     expect(serializableValueToJavaScript(unknown(""))).toMatchInlineSnapshot(
-      '"{}"'
+      '""'
     );
   });
 });

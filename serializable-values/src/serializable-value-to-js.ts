@@ -100,16 +100,8 @@ function serializableValueToUnformattedJavaScript(
       return JSON.stringify(value.value);
     case "undefined":
       return "undefined";
-    case "unknown": {
-      const source = value.source ?? "{}";
-      try {
-        formatExpression(source);
-        // It didn't throw? Cool, that must be good to return.
-        return source;
-      } catch {
-        return "{}";
-      }
-    }
+    case "unknown":
+      return value.source ?? "{}";
     default:
       throw assertNever(value);
   }
