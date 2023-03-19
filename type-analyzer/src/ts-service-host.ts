@@ -62,7 +62,7 @@ export function typescriptServiceHost(options: {
         ...options.tsCompilerOptions,
       };
     },
-    getDefaultLibFileName: ts.getDefaultLibFilePath,
+    getDefaultLibFileName: ts.getDefaultLibFileName,
     fileExists: (absoluteFilePath) =>
       options.reader.readSync(absoluteFilePath)?.kind === "file",
     directoryExists: (directoryName) =>
