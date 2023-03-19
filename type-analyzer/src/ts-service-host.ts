@@ -62,7 +62,7 @@ export function typescriptServiceHost(options: {
         ...options.tsCompilerOptions,
       };
     },
-    getDefaultLibFileName: ts.sys ? ts.getDefaultLibFileName : () => "lib.d.ts",
+    getDefaultLibFileName: ts.getDefaultLibFilePath,
     fileExists: (absoluteFilePath) =>
       options.reader.readSync(absoluteFilePath)?.kind === "file",
     directoryExists: (directoryName) =>
