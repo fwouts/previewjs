@@ -5,14 +5,7 @@ import type { SerializableValue } from "./serializable-value";
 export function serializableValueToJavaScript(
   value: SerializableValue
 ): string {
-  let expression = serializableValueToUnformattedJavaScript(value);
-  try {
-    expression = formatExpression(expression);
-  } catch {
-    // This can be expected e.g. when code is in the middle of being typed.
-    // Example: Promise.reject(new|)
-  }
-  return expression;
+  return formatExpression(serializableValueToUnformattedJavaScript(value));
 }
 
 function serializableValueToUnformattedJavaScript(
