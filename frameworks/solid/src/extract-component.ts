@@ -6,7 +6,7 @@ import {
   extractDefaultComponent,
   resolveComponent,
 } from "@previewjs/storybook-helpers";
-import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component.js";
 
