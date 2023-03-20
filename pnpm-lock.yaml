@@ -21,13 +21,13 @@ importers:
       prettier: ^2.8.4
       ts-node: ^10.9.1
       turbo: ^1.8.3
-      typescript: ^4.9.5
+      typescript: ^5.0.2
     devDependencies:
       '@types/inquirer': 9.0.3
       '@types/license-checker': 25.0.3
       '@types/node': 18.15.3
-      '@typescript-eslint/eslint-plugin': 5.55.0_342y7v4tc7ytrrysmit6jo4wri
-      '@typescript-eslint/parser': 5.55.0_vgl77cfdswitgr47lm5swmv43m
+      '@typescript-eslint/eslint-plugin': 5.55.0_qsnvknysi52qtaxqdyqyohkcku
+      '@typescript-eslint/parser': 5.55.0_j4766f7ecgqbon3u7zlxn5zszu
       assert-never: 1.2.1
       depcheck: 1.4.3
       eslint: 8.36.0
@@ -36,23 +36,23 @@ importers:
       inquirer: 9.1.5
       license-checker: 25.0.1
       prettier: 2.8.4
-      ts-node: 10.9.1_cbfmry4sbbh4vatmdrsmatfg5a
+      ts-node: 10.9.1_sxidjv3cojnrggmso45tj7hldi
       turbo: 1.8.3
-      typescript: 4.9.5
+      typescript: 5.0.2
 
   api:
     specifiers:
       '@previewjs/serializable-values': ^5.0.1
       '@previewjs/type-analyzer': ^6.0.4
       axios: ^1.3.4
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
     dependencies:
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
       axios: 1.3.4
     devDependencies:
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
 
   app:
@@ -73,7 +73,7 @@ importers:
       cross-env: ^7.0.3
       express: ^4.18.2
       fs-extra: ^11.1.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
     dependencies:
@@ -94,7 +94,7 @@ importers:
       '@types/node': 18.15.3
       cross-env: 7.0.3
       fs-extra: 11.1.0
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
       vite: 4.2.0_@types+node@18.15.3
 
@@ -109,7 +109,7 @@ importers:
       express: ^4.18.2
       playwright: ~1.29.2
       rimraf: ^4.4.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
     dependencies:
@@ -123,19 +123,19 @@ importers:
     devDependencies:
       '@types/express': 4.17.17
       rimraf: 4.4.0
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
       vite: 4.2.0
 
   config:
     specifiers:
       '@types/node': ^18.15.3
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
     devDependencies:
       '@types/node': 18.15.3
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
       vite: 4.2.0_@types+node@18.15.3
 
@@ -144,13 +144,13 @@ importers:
       '@types/react': ^18.0.28
       next: ^13.2.4
       react: ^18.2.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
     devDependencies:
       '@types/react': 18.0.28
       next: 13.2.4_6m24vuloj5ihw4zc5lbsktc4fu
       react: 18.2.0
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
 
   core:
@@ -180,7 +180,7 @@ importers:
       shx: ^0.3.4
       ts-node: ^10.9.1
       tsconfig-paths: ^4.1.2
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vite-tsconfig-paths: ^3.6.0
@@ -204,9 +204,9 @@ importers:
       http-terminator: 3.2.0
       recrawl: 2.2.1
       rollup-plugin-friendly-type-imports: 1.0.3
-      ts-node: 10.9.1_cbfmry4sbbh4vatmdrsmatfg5a
+      ts-node: 10.9.1_sxidjv3cojnrggmso45tj7hldi
       tsconfig-paths: 4.1.2
-      typescript: 4.9.5
+      typescript: 5.0.2
       vite: 4.2.0_@types+node@18.15.3
       vite-tsconfig-paths: 3.6.0_vite@4.2.0
     devDependencies:
@@ -229,7 +229,7 @@ importers:
       is-wsl: ^2.2.0
       rimraf: ^4.4.0
       ts-node-dev: ^2.0.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
     devDependencies:
       '@previewjs/api': link:../api
@@ -240,8 +240,8 @@ importers:
       exit-hook: 3.2.0
       is-wsl: 2.2.0
       rimraf: 4.4.0
-      ts-node-dev: 2.0.0_cbfmry4sbbh4vatmdrsmatfg5a
-      typescript: 4.9.5
+      ts-node-dev: 2.0.0_sxidjv3cojnrggmso45tj7hldi
+      typescript: 5.0.2
       unbuild: 1.1.2
 
   dev-workspace:
@@ -280,7 +280,7 @@ importers:
       '@previewjs/vfs': ^2.0.1
       preact: ^10.13.1
       rimraf: ^4.4.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -289,7 +289,7 @@ importers:
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      typescript: 4.9.5
+      typescript: 5.0.2
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/api': link:../../api
@@ -395,7 +395,7 @@ importers:
       '@vitejs/plugin-react': ^3.1.0
       concurrently: ^7.6.0
       react: ^18.2.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -405,7 +405,7 @@ importers:
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
       '@vitejs/plugin-react': 3.1.0_vite@4.2.0
-      typescript: 4.9.5
+      typescript: 5.0.2
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/api': link:../../api
@@ -1480,7 +1480,7 @@ importers:
       '@previewjs/type-analyzer': ^6.0.4
       '@previewjs/vfs': ^2.0.1
       solid-js: ^1.6.15
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vite-plugin-solid: ^2.6.1
@@ -1490,7 +1490,7 @@ importers:
       '@previewjs/storybook-helpers': link:../../storybook-helpers
       '@previewjs/type-analyzer': link:../../type-analyzer
       '@previewjs/vfs': link:../../vfs
-      typescript: 4.9.5
+      typescript: 5.0.2
       vite-plugin-solid: 2.6.1_solid-js@1.6.15+vite@4.2.0
     devDependencies:
       '@playwright/test': 1.29.2
@@ -1587,7 +1587,7 @@ importers:
       '@types/fs-extra': ^11.0.1
       fs-extra: ^11.1.0
       svelte: ^3.57.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -1599,7 +1599,7 @@ importers:
       '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.57.0+vite@4.2.0
       fs-extra: 11.1.0
       svelte: 3.57.0
-      typescript: 4.9.5
+      typescript: 5.0.2
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
@@ -1718,7 +1718,7 @@ importers:
       '@vitejs/plugin-vue2': ^2.2.0
       '@vitejs/plugin-vue2-jsx': ^1.1.0
       fs-extra: ^11.1.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -1733,7 +1733,7 @@ importers:
       '@vitejs/plugin-vue2': 2.2.0_vite@4.2.0+vue@2.7.14
       '@vitejs/plugin-vue2-jsx': 1.1.0_7kpbn5dxoij3qg7uznorvettde
       fs-extra: 11.1.0
-      typescript: 4.9.5
+      typescript: 5.0.2
       vue: 2.7.14
       vue-template-compiler: 2.7.14
     devDependencies:
@@ -1840,7 +1840,7 @@ importers:
       '@vitejs/plugin-vue-jsx': ^3.0.1
       '@vue/compiler-sfc': ^3.2.47
       fs-extra: ^11.1.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -1854,7 +1854,7 @@ importers:
       '@vitejs/plugin-vue-jsx': 3.0.1_vite@4.2.0+vue@3.2.47
       '@vue/compiler-sfc': 3.2.47
       fs-extra: 11.1.0
-      typescript: 4.9.5
+      typescript: 5.0.2
       vue: 3.2.47
     devDependencies:
       '@playwright/test': 1.29.2
@@ -1927,11 +1927,11 @@ importers:
 
   iframe:
     specifiers:
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
     devDependencies:
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
       vite: 4.2.0
 
@@ -1948,7 +1948,7 @@ importers:
       open: ^8.4.2
       rimraf: ^4.4.0
       ts-node: ^10.9.1
-      typescript: ^4.9.5
+      typescript: ^5.0.2
     devDependencies:
       '@previewjs/api': link:../../api
       '@previewjs/loader': link:../../loader
@@ -1960,8 +1960,8 @@ importers:
       nodemon: 2.0.21
       open: 8.4.2
       rimraf: 4.4.0
-      ts-node: 10.9.1_cbfmry4sbbh4vatmdrsmatfg5a
-      typescript: 4.9.5
+      ts-node: 10.9.1_sxidjv3cojnrggmso45tj7hldi
+      typescript: 5.0.2
 
   integrations/intellij/daemon:
     specifiers:
@@ -1970,14 +1970,14 @@ importers:
       esbuild: ^0.17.12
       rimraf: ^4.4.0
       ts-node-dev: ^2.0.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
     devDependencies:
       '@previewjs/daemon': link:../../../daemon
       '@previewjs/loader': link:../../../loader
       esbuild: 0.17.12
       rimraf: 4.4.0
-      ts-node-dev: 2.0.0_cbfmry4sbbh4vatmdrsmatfg5a
-      typescript: 4.9.5
+      ts-node-dev: 2.0.0_sxidjv3cojnrggmso45tj7hldi
+      typescript: 5.0.2
 
   integrations/vscode:
     specifiers:
@@ -1991,7 +1991,7 @@ importers:
       ovsx: ^0.8.0
       rimraf: ^4.4.0
       strip-ansi: ^7.0.1
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       vsce: ^2.15.0
     devDependencies:
       '@previewjs/daemon': link:../../daemon
@@ -2004,7 +2004,7 @@ importers:
       ovsx: 0.8.0
       rimraf: 4.4.0
       strip-ansi: 7.0.1
-      typescript: 4.9.5
+      typescript: 5.0.2
       vsce: 2.15.0
 
   loader:
@@ -2019,7 +2019,7 @@ importers:
       pnpm: ^7.30.0
       proper-lockfile: ^4.1.2
       rimraf: ^4.4.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
     devDependencies:
       '@previewjs/core': link:../core
       '@previewjs/vfs': link:../vfs
@@ -2031,13 +2031,13 @@ importers:
       pnpm: 7.30.0
       proper-lockfile: 4.1.2
       rimraf: 4.4.0
-      typescript: 4.9.5
+      typescript: 5.0.2
 
   properties:
     specifiers:
       '@previewjs/serializable-values': ^5.0.1
       '@previewjs/type-analyzer': ^6.0.4
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -2045,7 +2045,7 @@ importers:
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
     devDependencies:
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
       vite: 4.2.0
       vitest: 0.29.3
@@ -2057,7 +2057,7 @@ importers:
       '@types/prettier': ^2.7.2
       assert-never: ^1.2.1
       prettier: ^2.8.4
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -2066,7 +2066,7 @@ importers:
       '@previewjs/type-analyzer': link:../type-analyzer
       assert-never: 1.2.1
       prettier: 2.8.4
-      typescript: 4.9.5
+      typescript: 5.0.2
     devDependencies:
       '@types/prettier': 2.7.2
       unbuild: 1.1.2
@@ -2079,7 +2079,7 @@ importers:
       '@previewjs/serializable-values': ^5.0.1
       '@previewjs/type-analyzer': ^6.0.4
       '@previewjs/vfs': workspace:*
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -2087,7 +2087,7 @@ importers:
       '@previewjs/core': link:../core
       '@previewjs/serializable-values': link:../serializable-values
       '@previewjs/type-analyzer': link:../type-analyzer
-      typescript: 4.9.5
+      typescript: 5.0.2
     devDependencies:
       '@previewjs/vfs': link:../vfs
       unbuild: 1.1.2
@@ -2108,7 +2108,7 @@ importers:
       get-port: ^6.1.2
       playwright: ~1.29.2
       rimraf: ^4.4.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
     dependencies:
       '@playwright/test': 1.29.2
@@ -2124,7 +2124,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 11.0.1
       rimraf: 4.4.0
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
 
   type-analyzer:
@@ -2135,7 +2135,7 @@ importers:
       assert-never: ^1.2.1
       lodash: ^4.17.21
       prettier: ^2.8.4
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -2143,7 +2143,7 @@ importers:
       '@previewjs/vfs': link:../vfs
       assert-never: 1.2.1
       prettier: 2.8.4
-      typescript: 4.9.5
+      typescript: 5.0.2
     devDependencies:
       '@types/lodash': 4.14.191
       '@types/prettier': 2.7.2
@@ -2158,7 +2158,7 @@ importers:
       assert-never: ^1.2.1
       chokidar: ^3.5.3
       fs-extra: ^11.1.0
-      typescript: ^4.9.5
+      typescript: ^5.0.2
       unbuild: ^1.1.2
       vite: ^4.2.0
       vitest: ^0.29.3
@@ -2168,7 +2168,7 @@ importers:
       fs-extra: 11.1.0
     devDependencies:
       '@types/fs-extra': 11.0.1
-      typescript: 4.9.5
+      typescript: 5.0.2
       unbuild: 1.1.2
       vite: 4.2.0
       vitest: 0.29.3
@@ -12296,6 +12296,34 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@typescript-eslint/eslint-plugin/5.55.0_qsnvknysi52qtaxqdyqyohkcku:
+    resolution: {integrity: sha512-IZGc50rtbjk+xp5YQoJvmMPmJEYoC53SiKPXyqWfv15XoD2Y5Kju6zN0DwlmaGJp1Iw33JsWJcQ7nw0lGCGjVg==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      '@typescript-eslint/parser': ^5.0.0
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@eslint-community/regexpp': 4.4.0
+      '@typescript-eslint/parser': 5.55.0_j4766f7ecgqbon3u7zlxn5zszu
+      '@typescript-eslint/scope-manager': 5.55.0
+      '@typescript-eslint/type-utils': 5.55.0_j4766f7ecgqbon3u7zlxn5zszu
+      '@typescript-eslint/utils': 5.55.0_j4766f7ecgqbon3u7zlxn5zszu
+      debug: 4.3.4
+      eslint: 8.36.0
+      grapheme-splitter: 1.0.4
+      ignore: 5.2.4
+      natural-compare-lite: 1.4.0
+      semver: 7.3.8
+      tsutils: 3.21.0_typescript@5.0.2
+      typescript: 5.0.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/experimental-utils/5.54.1_vgl77cfdswitgr47lm5swmv43m:
     resolution: {integrity: sha512-oqSc2Gr4TL/2M0XRJ9abA1o3Wf1cFJTNqWq0kjdStIIvgMQGZ3TSaFFJ2Cvy3Fgqi9UfDZ8u5idbACssIIyHaw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -12307,6 +12335,26 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - typescript
+
+  /@typescript-eslint/parser/5.55.0_j4766f7ecgqbon3u7zlxn5zszu:
+    resolution: {integrity: sha512-ppvmeF7hvdhUUZWSd2EEWfzcFkjJzgNQzVST22nzg958CR+sphy8A6K7LXQZd6V75m1VKjp+J4g/PCEfSCmzhw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/scope-manager': 5.55.0
+      '@typescript-eslint/types': 5.55.0
+      '@typescript-eslint/typescript-estree': 5.55.0_typescript@5.0.2
+      debug: 4.3.4
+      eslint: 8.36.0
+      typescript: 5.0.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /@typescript-eslint/parser/5.55.0_vgl77cfdswitgr47lm5swmv43m:
     resolution: {integrity: sha512-ppvmeF7hvdhUUZWSd2EEWfzcFkjJzgNQzVST22nzg958CR+sphy8A6K7LXQZd6V75m1VKjp+J4g/PCEfSCmzhw==}
@@ -12340,6 +12388,26 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.55.0
       '@typescript-eslint/visitor-keys': 5.55.0
+
+  /@typescript-eslint/type-utils/5.55.0_j4766f7ecgqbon3u7zlxn5zszu:
+    resolution: {integrity: sha512-ObqxBgHIXj8rBNm0yh8oORFrICcJuZPZTqtAFh0oZQyr5DnAHZWfyw54RwpEEH+fD8suZaI0YxvWu5tYE/WswA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: '*'
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/typescript-estree': 5.55.0_typescript@5.0.2
+      '@typescript-eslint/utils': 5.55.0_j4766f7ecgqbon3u7zlxn5zszu
+      debug: 4.3.4
+      eslint: 8.36.0
+      tsutils: 3.21.0_typescript@5.0.2
+      typescript: 5.0.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /@typescript-eslint/type-utils/5.55.0_vgl77cfdswitgr47lm5swmv43m:
     resolution: {integrity: sha512-ObqxBgHIXj8rBNm0yh8oORFrICcJuZPZTqtAFh0oZQyr5DnAHZWfyw54RwpEEH+fD8suZaI0YxvWu5tYE/WswA==}
@@ -12408,6 +12476,27 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@typescript-eslint/typescript-estree/5.55.0_typescript@5.0.2:
+    resolution: {integrity: sha512-I7X4A9ovA8gdpWMpr7b1BN9eEbvlEtWhQvpxp/yogt48fy9Lj3iE3ild/1H3jKBBIYj5YYJmS2+9ystVhC7eaQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/types': 5.55.0
+      '@typescript-eslint/visitor-keys': 5.55.0
+      debug: 4.3.4
+      globby: 11.1.0
+      is-glob: 4.0.3
+      semver: 7.3.8
+      tsutils: 3.21.0_typescript@5.0.2
+      typescript: 5.0.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@typescript-eslint/utils/5.54.1_vgl77cfdswitgr47lm5swmv43m:
     resolution: {integrity: sha512-IY5dyQM8XD1zfDe5X8jegX6r2EVU5o/WJnLu/znLPWCBF7KNGC+adacXnt5jEYS9JixDcoccI6CvE4RCjHMzCQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -12426,6 +12515,26 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - typescript
+
+  /@typescript-eslint/utils/5.55.0_j4766f7ecgqbon3u7zlxn5zszu:
+    resolution: {integrity: sha512-FkW+i2pQKcpDC3AY6DU54yl8Lfl14FVGYDgBTyGKB75cCwV3KpkpTMFi9d9j2WAJ4271LR2HeC5SEWF/CZmmfw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+    dependencies:
+      '@eslint-community/eslint-utils': 4.2.0_eslint@8.36.0
+      '@types/json-schema': 7.0.11
+      '@types/semver': 7.3.13
+      '@typescript-eslint/scope-manager': 5.55.0
+      '@typescript-eslint/types': 5.55.0
+      '@typescript-eslint/typescript-estree': 5.55.0_typescript@5.0.2
+      eslint: 8.36.0
+      eslint-scope: 5.1.1
+      semver: 7.3.8
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: true
 
   /@typescript-eslint/utils/5.55.0_vgl77cfdswitgr47lm5swmv43m:
     resolution: {integrity: sha512-FkW+i2pQKcpDC3AY6DU54yl8Lfl14FVGYDgBTyGKB75cCwV3KpkpTMFi9d9j2WAJ4271LR2HeC5SEWF/CZmmfw==}
@@ -32568,7 +32677,7 @@ packages:
       webpack: 5.75.0
     dev: true
 
-  /ts-node-dev/2.0.0_cbfmry4sbbh4vatmdrsmatfg5a:
+  /ts-node-dev/2.0.0_sxidjv3cojnrggmso45tj7hldi:
     resolution: {integrity: sha512-ywMrhCfH6M75yftYvrvNarLEY+SUXtUvU8/0Z6llrHQVBx12GiFk5sStF8UdfE/yfzk9IAq7O5EEbTQsxlBI8w==}
     engines: {node: '>=0.8.0'}
     hasBin: true
@@ -32587,9 +32696,9 @@ packages:
       rimraf: 2.7.1
       source-map-support: 0.5.21
       tree-kill: 1.2.2
-      ts-node: 10.9.1_cbfmry4sbbh4vatmdrsmatfg5a
+      ts-node: 10.9.1_sxidjv3cojnrggmso45tj7hldi
       tsconfig: 7.0.0
-      typescript: 4.9.5
+      typescript: 5.0.2
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -32654,6 +32763,37 @@ packages:
       diff: 4.0.2
       make-error: 1.3.6
       typescript: 4.9.5
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    dev: true
+
+  /ts-node/10.9.1_sxidjv3cojnrggmso45tj7hldi:
+    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.9
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
+      '@types/node': 18.15.3
+      acorn: 8.8.2
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.0.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
@@ -32736,6 +32876,16 @@ packages:
     dependencies:
       tslib: 1.14.1
       typescript: 4.9.5
+
+  /tsutils/3.21.0_typescript@5.0.2:
+    resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
+    engines: {node: '>= 6'}
+    peerDependencies:
+      typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
+    dependencies:
+      tslib: 1.14.1
+      typescript: 5.0.2
+    dev: true
 
   /tty-browserify/0.0.0:
     resolution: {integrity: sha512-JVa5ijo+j/sOoHGjw0sxw734b1LhBkQ3bvUGNdxnVXDCX81Yx7TFgnZygxrIIWn23hbfTaMYLwRmAxFyDuFmIw==}
@@ -32926,6 +33076,11 @@ packages:
   /typescript/4.9.5:
     resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
     engines: {node: '>=4.2.0'}
+    hasBin: true
+
+  /typescript/5.0.2:
+    resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}
+    engines: {node: '>=12.20'}
     hasBin: true
 
   /ua-parser-js/0.7.34:
