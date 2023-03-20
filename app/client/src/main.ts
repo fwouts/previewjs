@@ -9,8 +9,8 @@ const iframe = document.getElementById("root") as HTMLIFrameElement;
 const rpcApi = createAxiosApi("/api/");
 const iframeController = createController({
   getIframe: () => iframe,
-  listener: () => {
-    // No-op.
+  listener: (event) => {
+    console.log(event);
   },
 });
 
