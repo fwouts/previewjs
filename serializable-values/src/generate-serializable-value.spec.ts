@@ -162,7 +162,10 @@ describe("generateSerializableValue", () => {
             "kind": "key",
             "value": {
               "kind": "function",
-              "source": "() => ({})",
+              "source": "() => {
+        console.log(\\"foo invoked\\");
+        return {};
+      }",
             },
           },
         ],
@@ -205,7 +208,10 @@ describe("generateSerializableValue", () => {
             "kind": "key",
             "value": {
               "kind": "function",
-              "source": "() => []",
+              "source": "() => {
+        console.log(\\"friends invoked\\");
+        return [];
+      }",
             },
           },
         ],
@@ -485,7 +491,10 @@ describe("generateSerializableValue", () => {
             "kind": "key",
             "value": {
               "kind": "function",
-              "source": "() => \\"functionType\\"",
+              "source": "() => {
+        console.log(\\"functionType invoked\\");
+        return \\"functionType\\";
+      }",
             },
           },
           {
@@ -518,7 +527,10 @@ describe("generateSerializableValue", () => {
                   "kind": "key",
                   "value": {
                     "kind": "function",
-                    "source": "() => \\"bar\\"",
+                    "source": "() => {
+        console.log(\\"bar invoked\\");
+        return \\"bar\\";
+      }",
                   },
                 },
               ],
