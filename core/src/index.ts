@@ -1,7 +1,7 @@
 import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
 import { RPCs } from "@previewjs/api";
-import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { CollectedTypes } from "@previewjs/type-analyzer";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
@@ -75,13 +75,20 @@ export async function createWorkspace({
   const router = new ApiRouter();
   router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
     let analyze: () => Promise<ComponentAnalysis>;
-    const component = (
-      await frameworkPlugin.detectComponents(reader, typeAnalyzer, [
-        path.join(rootDirPath, filePath),
-      ])
-    ).find((c) => c.name === componentName);
+    const components = await frameworkPlugin.detectComponents(
+      reader,
+      typeAnalyzer,
+      [path.join(rootDirPath, filePath)]
+    );
+    const component = components.find((c) => c.name === componentName);
     if (!component) {
-      throw new Error(`Component ${componentName} not detected in ${filePath}`);
+      throw new Error(
+        `Component ${componentName} not detected in ${filePath}. Found: ${
+          components.length === 0
+            ? "none"
+            : components.map((c) => c.name).join(", ")
+        }.`
+      );
     }
     if (component.info.kind === "component") {
       analyze = component.info.analyze;
