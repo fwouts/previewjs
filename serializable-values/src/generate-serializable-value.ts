@@ -218,23 +218,30 @@ function _generateSerializableValue(
         random,
         isFunctionReturnValue
       );
-    case "function":
-      return fn(
-        isFunctionReturnValue
-          ? `() => {}`
-          : formatExpression(
-              `() => (${serializableValueToJavaScript(
-                _generateSerializableValue(
-                  type.returnType,
-                  collected,
-                  fieldName,
-                  rejectTypeNames,
-                  random,
-                  true
-                )
-              )})`
-            )
+    case "function": {
+      if (isFunctionReturnValue) {
+        // Do not generate complex functions within functions.
+        return fn(`() => {}`);
+      }
+      const returnValue = serializableValueToJavaScript(
+        _generateSerializableValue(
+          type.returnType,
+          collected,
+          fieldName,
+          rejectTypeNames,
+          random,
+          true
+        )
       );
+      return fn(
+        formatExpression(
+          `() => {
+            console.log(${JSON.stringify(fieldName + " invoked")});
+            ${returnValue === "undefined" ? "" : `return ${returnValue};`}
+          }`
+        )
+      );
+    }
     case "optional":
       if (random && Math.random() < 0.5) {
         return _generateSerializableValue(

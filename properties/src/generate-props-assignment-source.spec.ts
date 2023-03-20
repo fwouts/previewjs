@@ -156,10 +156,16 @@ describe("generatePropsAssignmentSource", () => {
         recordType: {},
         unionType: \\"unionType\\",
         intersectionType: \\"intersectionType\\",
-        functionType: () => \\"functionType\\",
+        functionType: () => {
+          console.log(\\"functionType invoked\\");
+          return \\"functionType\\";
+        },
         promiseType: Promise.reject(),
         namedType: {
-          bar: () => \\"bar\\"
+          bar: () => {
+            console.log(\\"bar invoked\\");
+            return \\"bar\\";
+          }
         }
       };"
     `);

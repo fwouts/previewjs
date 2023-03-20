@@ -36,6 +36,12 @@ for (const reactVersion of reactVersions()) {
             path: "onClick",
             type: "fn",
           },
+          {
+            kind: "log-message",
+            level: "log",
+            timestamp: expect.anything(),
+            message: "onClick invoked",
+          },
         ]);
       });
 

@@ -33,6 +33,12 @@ test.describe.parallel("solid/action logs", () => {
         path: "onClick",
         type: "fn",
       },
+      {
+        kind: "log-message",
+        level: "log",
+        timestamp: expect.anything(),
+        message: "onClick invoked",
+      },
     ]);
   });
 
