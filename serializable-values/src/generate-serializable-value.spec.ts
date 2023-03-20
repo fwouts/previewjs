@@ -257,6 +257,10 @@ describe("generateSerializableValue", () => {
             unionType: unionType([STRING_TYPE, NUMBER_TYPE]),
             intersectionType: intersectionType([STRING_TYPE, NUMBER_TYPE]),
             functionType: functionType(STRING_TYPE),
+            voidFunctionType: functionType(VOID_TYPE),
+            voidUnionFunctionType: functionType(
+              unionType([VOID_TYPE, NUMBER_TYPE])
+            ),
             promiseType: promiseType(STRING_TYPE),
             namedType: namedType("/foo.tsx:Bar"),
           }),
@@ -494,6 +498,32 @@ describe("generateSerializableValue", () => {
               "source": "() => {
         console.log(\\"functionType invoked\\");
         return \\"functionType\\";
+      }",
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "voidFunctionType",
+            },
+            "kind": "key",
+            "value": {
+              "kind": "function",
+              "source": "() => {
+        console.log(\\"voidFunctionType invoked\\");
+      }",
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
+              "value": "voidUnionFunctionType",
+            },
+            "kind": "key",
+            "value": {
+              "kind": "function",
+              "source": "() => {
+        console.log(\\"voidUnionFunctionType invoked\\");
       }",
             },
           },
