@@ -1,27 +1,27 @@
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { parseSerializableValue } from "./parser";
+import type { SerializableValue } from "./serializable-value";
 import {
-  array,
   EMPTY_ARRAY,
   EMPTY_MAP,
   EMPTY_OBJECT,
   EMPTY_SET,
   FALSE,
+  NULL,
+  TRUE,
+  UNDEFINED,
+  UNKNOWN,
+  array,
   fn,
   map,
-  NULL,
   number,
   object,
   promise,
   set,
   string,
-  TRUE,
-  UNDEFINED,
-  UNKNOWN,
   unknown,
 } from "./serializable-value";
-import type { SerializableValue } from "./serializable-value";
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 describe.concurrent("parseSerializableValue", () => {
@@ -46,54 +46,105 @@ describe.concurrent("parseSerializableValue", () => {
   });
 
   it("parses arrow expression functions", () => {
-    expectParsedExpression(`() => 123`).toEqual(fn(number(123)));
-    checkParsedExpressionIsUnknownWithSource(`(a) => a`);
+    expectParsedExpression(`() => 123`).toEqual(fn(`() => 123`));
+    expectParsedExpression(`(a) => a`).toEqual(fn(`(a) => a`));
   });
 
   it("parses arrow block functions", () => {
     expectParsedExpression(`() => {
-      return;
-    }`).toEqual(fn(UNDEFINED));
+  return;
+}`).toEqual(
+      fn(`() => {
+  return;
+}`)
+    );
     expectParsedExpression(`() => {
-      return 123;
-    }`).toEqual(fn(number(123)));
-    checkParsedExpressionIsUnknownWithSource(`() => {
+  return 123;
+}`).toEqual(
+      fn(`() => {
+  return 123;
+}`)
+    );
+    expectParsedExpression(`() => {
   console.log("foo");
   return 123;
-}`);
-    checkParsedExpressionIsUnknownWithSource(`(a) => {
+}`).toEqual(
+      fn(`() => {
+  console.log("foo");
+  return 123;
+}`)
+    );
+    expectParsedExpression(`(a) => {
   console.log("foo");
   if (a) {
     return 123;
   } else {
     return 456;
   }
-}`);
-    checkParsedExpressionIsUnknownWithSource(`(a) => {
-  return a;
-}`);
-    checkParsedExpressionIsUnknownWithSource(`() => {
+}`).toEqual(
+      fn(`(a) => {
   console.log("foo");
-}`);
+  if (a) {
+    return 123;
+  } else {
+    return 456;
+  }
+}`)
+    );
+    expectParsedExpression(`(a) => {
+  return a;
+}`).toEqual(
+      fn(`(a) => {
+  return a;
+}`)
+    );
+    expectParsedExpression(`() => {
+  console.log("foo");
+}`).toEqual(
+      fn(`() => {
+  console.log("foo");
+}`)
+    );
   });
 
   it("parses classic functions", () => {
     expectParsedExpression(`function () {
-      return;
-    }`).toEqual(fn(UNDEFINED));
+  return;
+}`).toEqual(
+      fn(`function () {
+  return;
+}`)
+    );
     expectParsedExpression(`function () {
-      return 123;
-    }`).toEqual(fn(number(123)));
-    checkParsedExpressionIsUnknownWithSource(`function () {
+  return 123;
+}`).toEqual(
+      fn(`function () {
+  return 123;
+}`)
+    );
+    expectParsedExpression(`function () {
   console.log("foo");
   return 123;
-}`);
-    checkParsedExpressionIsUnknownWithSource(`function (a) {
-  return a;
-}`);
-    checkParsedExpressionIsUnknownWithSource(`function () {
+}`).toEqual(
+      fn(`function () {
   console.log("foo");
-}`);
+  return 123;
+}`)
+    );
+    expectParsedExpression(`function (a) {
+  return a;
+}`).toEqual(
+      fn(`function (a) {
+  return a;
+}`)
+    );
+    expectParsedExpression(`function () {
+  console.log("foo");
+}`).toEqual(
+      fn(`function () {
+  console.log("foo");
+}`)
+    );
   });
 
   it("parses maps", () => {

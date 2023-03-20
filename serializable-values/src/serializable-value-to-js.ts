@@ -1,6 +1,5 @@
 import assertNever from "assert-never";
-import prettier from "prettier";
-import parserBabel from "prettier/parser-babel.js";
+import { formatExpression } from "./format-expression";
 import type { SerializableValue } from "./serializable-value";
 
 export function serializableValueToJavaScript(
@@ -16,18 +15,6 @@ export function serializableValueToJavaScript(
   return expression;
 }
 
-function formatExpression(expressionSource: string) {
-  const formattedStatement = prettier
-    .format(`value = ${expressionSource}`, {
-      parser: "babel",
-      plugins: [parserBabel],
-      filepath: "component.js",
-      trailingComma: "none",
-    })
-    .trim();
-  return formattedStatement.replace(/^value = ((.|\s)*);$/m, "$1");
-}
-
 function serializableValueToUnformattedJavaScript(
   value: SerializableValue
 ): string {
@@ -39,11 +26,7 @@ function serializableValueToUnformattedJavaScript(
     case "boolean":
       return value.value ? "true" : "false";
     case "function":
-      return `() => ${
-        value.returnValue.kind === "undefined"
-          ? "{}"
-          : `(${serializableValueToUnformattedJavaScript(value.returnValue)})`
-      }`;
+      return value.source;
     case "map":
       return `new Map(${
         value.values.entries.length > 0

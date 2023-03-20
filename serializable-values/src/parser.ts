@@ -1,5 +1,9 @@
 import assertNever from "assert-never";
 import ts from "typescript";
+import type {
+  SerializableObjectValueEntry,
+  SerializableValue,
+} from "./serializable-value";
 import {
   array,
   EMPTY_MAP,
@@ -17,10 +21,6 @@ import {
   UNDEFINED,
   UNKNOWN,
   unknown,
-} from "./serializable-value";
-import type {
-  SerializableObjectValueEntry,
-  SerializableValue,
 } from "./serializable-value";
 
 export function parseSerializableValue(
@@ -234,50 +234,13 @@ export function parseSerializableValue(
   }
 
   // () => 123
-  if (ts.isArrowFunction(expression) && expression.parameters.length === 0) {
-    if (ts.isBlock(expression.body)) {
-      const statements = expression.body.statements;
-      if (statements.length === 0) {
-        return fn(UNDEFINED);
-      } else if (statements.length === 1) {
-        const returnStatement = statements[0]!;
-        if (!ts.isReturnStatement(returnStatement)) {
-          return fallbackValue;
-        }
-        return fn(
-          returnStatement.expression
-            ? parseSerializableValue(returnStatement.expression)
-            : UNDEFINED
-        );
-      } else {
-        return fallbackValue;
-      }
-    } else {
-      return fn(parseSerializableValue(expression.body));
-    }
+  if (ts.isArrowFunction(expression)) {
+    return fn(expression.getText());
   }
 
   // function() { return 123 }
-  if (
-    ts.isFunctionExpression(expression) &&
-    expression.parameters.length === 0
-  ) {
-    const statements = expression.body.statements;
-    if (statements.length === 0) {
-      return fn(UNDEFINED);
-    } else if (statements.length === 1) {
-      const returnStatement = statements[0]!;
-      if (!ts.isReturnStatement(returnStatement)) {
-        return fallbackValue;
-      }
-      return fn(
-        returnStatement.expression
-          ? parseSerializableValue(returnStatement.expression)
-          : UNDEFINED
-      );
-    } else {
-      return fallbackValue;
-    }
+  if (ts.isFunctionExpression(expression)) {
+    return fn(expression.getText());
   }
 
   return fallbackValue;
