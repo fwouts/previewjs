@@ -1,25 +1,26 @@
 import assertNever from "assert-never";
 import ts from "typescript";
+import { formatExpression } from "./format-expression";
 import type {
   SerializableObjectValueEntry,
   SerializableValue,
 } from "./serializable-value";
 import {
-  array,
   EMPTY_MAP,
   EMPTY_SET,
   FALSE,
+  NULL,
+  TRUE,
+  UNDEFINED,
+  UNKNOWN,
+  array,
   fn,
   map,
-  NULL,
   number,
   object,
   promise,
   set,
   string,
-  TRUE,
-  UNDEFINED,
-  UNKNOWN,
   unknown,
 } from "./serializable-value";
 
@@ -233,14 +234,10 @@ export function parseSerializableValue(
     return object(entries);
   }
 
-  // () => 123
-  if (ts.isArrowFunction(expression)) {
-    return fn(expression.getText());
-  }
-
-  // function() { return 123 }
-  if (ts.isFunctionExpression(expression)) {
-    return fn(expression.getText());
+  // arrow function: () => 123
+  // function expression: function() { return 123 }
+  if (ts.isArrowFunction(expression) || ts.isFunctionExpression(expression)) {
+    return fn(formatExpression(expression.getText()));
   }
 
   return fallbackValue;
