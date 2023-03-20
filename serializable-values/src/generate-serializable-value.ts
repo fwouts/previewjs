@@ -237,7 +237,7 @@ function _generateSerializableValue(
         formatExpression(
           `() => {
             console.log(${JSON.stringify(fieldName + " invoked")});
-            ${returnValue ? `return ${returnValue};` : ""}
+            ${returnValue === "undefined" ? "" : `return ${returnValue};`}
           }`
         )
       );
