@@ -44,13 +44,13 @@ export const TRUE = boolean(true);
 
 export type SerializableFunctionValue = {
   kind: "function";
-  returnValue: SerializableValue;
+  source: string; // Example: "() => 123" or "function foo(a, b) { return a + b; }"
 };
 
-export function fn(returnValue: SerializableValue): SerializableFunctionValue {
+export function fn(source: string): SerializableFunctionValue {
   return {
     kind: "function",
-    returnValue,
+    source,
   };
 }
 

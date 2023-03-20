@@ -162,10 +162,7 @@ describe("generateSerializableValue", () => {
             "kind": "key",
             "value": {
               "kind": "function",
-              "returnValue": {
-                "entries": [],
-                "kind": "object",
-              },
+              "source": "() => ({})",
             },
           },
         ],
@@ -208,10 +205,7 @@ describe("generateSerializableValue", () => {
             "kind": "key",
             "value": {
               "kind": "function",
-              "returnValue": {
-                "items": [],
-                "kind": "array",
-              },
+              "source": "() => []",
             },
           },
         ],
@@ -491,10 +485,7 @@ describe("generateSerializableValue", () => {
             "kind": "key",
             "value": {
               "kind": "function",
-              "returnValue": {
-                "kind": "string",
-                "value": "functionType",
-              },
+              "source": "() => \\"functionType\\"",
             },
           },
           {
@@ -527,10 +518,7 @@ describe("generateSerializableValue", () => {
                   "kind": "key",
                   "value": {
                     "kind": "function",
-                    "returnValue": {
-                      "kind": "string",
-                      "value": "bar",
-                    },
+                    "source": "() => \\"bar\\"",
                   },
                 },
               ],

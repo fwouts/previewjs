@@ -1,26 +1,27 @@
 import assertNever from "assert-never";
 import ts from "typescript";
+import { formatExpression } from "./format-expression";
+import type {
+  SerializableObjectValueEntry,
+  SerializableValue,
+} from "./serializable-value";
 import {
-  array,
   EMPTY_MAP,
   EMPTY_SET,
   FALSE,
+  NULL,
+  TRUE,
+  UNDEFINED,
+  UNKNOWN,
+  array,
   fn,
   map,
-  NULL,
   number,
   object,
   promise,
   set,
   string,
-  TRUE,
-  UNDEFINED,
-  UNKNOWN,
   unknown,
-} from "./serializable-value";
-import type {
-  SerializableObjectValueEntry,
-  SerializableValue,
 } from "./serializable-value";
 
 export function parseSerializableValue(
@@ -233,51 +234,10 @@ export function parseSerializableValue(
     return object(entries);
   }
 
-  // () => 123
-  if (ts.isArrowFunction(expression) && expression.parameters.length === 0) {
-    if (ts.isBlock(expression.body)) {
-      const statements = expression.body.statements;
-      if (statements.length === 0) {
-        return fn(UNDEFINED);
-      } else if (statements.length === 1) {
-        const returnStatement = statements[0]!;
-        if (!ts.isReturnStatement(returnStatement)) {
-          return fallbackValue;
-        }
-        return fn(
-          returnStatement.expression
-            ? parseSerializableValue(returnStatement.expression)
-            : UNDEFINED
-        );
-      } else {
-        return fallbackValue;
-      }
-    } else {
-      return fn(parseSerializableValue(expression.body));
-    }
-  }
-
-  // function() { return 123 }
-  if (
-    ts.isFunctionExpression(expression) &&
-    expression.parameters.length === 0
-  ) {
-    const statements = expression.body.statements;
-    if (statements.length === 0) {
-      return fn(UNDEFINED);
-    } else if (statements.length === 1) {
-      const returnStatement = statements[0]!;
-      if (!ts.isReturnStatement(returnStatement)) {
-        return fallbackValue;
-      }
-      return fn(
-        returnStatement.expression
-          ? parseSerializableValue(returnStatement.expression)
-          : UNDEFINED
-      );
-    } else {
-      return fallbackValue;
-    }
+  // arrow function: () => 123
+  // function expression: function() { return 123 }
+  if (ts.isArrowFunction(expression) || ts.isFunctionExpression(expression)) {
+    return fn(formatExpression(expression.getText()));
   }
 
   return fallbackValue;

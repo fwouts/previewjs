@@ -1,22 +1,22 @@
 import { describe, expect, test } from "vitest";
 import {
-  array,
   EMPTY_MAP,
   EMPTY_OBJECT,
   EMPTY_SET,
   FALSE,
+  NULL,
+  TRUE,
+  UNDEFINED,
+  UNKNOWN,
+  array,
   fn,
   map,
-  NULL,
   number,
   object,
   promise,
   set,
   string,
-  TRUE,
-  UNDEFINED,
   unknown,
-  UNKNOWN,
 } from "./serializable-value";
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
@@ -38,12 +38,20 @@ describe("serializableValueToJavaScript", () => {
   });
 
   test("function", () => {
-    expect(serializableValueToJavaScript(fn(UNDEFINED))).toMatchInlineSnapshot(
-      '"() => {}"'
-    );
-    expect(serializableValueToJavaScript(fn(number(0)))).toMatchInlineSnapshot(
-      '"() => 0"'
-    );
+    expect(
+      serializableValueToJavaScript(fn("() => { return foo; }"))
+    ).toMatchInlineSnapshot(`
+      "() => {
+        return foo;
+      }"
+    `);
+    expect(
+      serializableValueToJavaScript(fn("function foo(a, b) { return a + b; }"))
+    ).toMatchInlineSnapshot(`
+      "function foo(a, b) {
+        return a + b;
+      }"
+    `);
   });
 
   test("map", () => {

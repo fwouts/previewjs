@@ -1,35 +1,35 @@
 import { faker } from "@faker-js/faker";
-import { arrayType, dereferenceType, isValid } from "@previewjs/type-analyzer";
 import type {
   ArrayType,
   CollectedTypes,
   RecordType,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { assertNever } from "assert-never";
+import { arrayType, dereferenceType, isValid } from "@previewjs/type-analyzer";
+import assertNever from "assert-never";
+import { formatExpression } from "./format-expression";
 import { isValidPropName } from "./prop-name";
 import {
-  array,
   EMPTY_ARRAY,
   EMPTY_OBJECT,
   FALSE,
+  NULL,
+  SerializableArrayValue,
+  SerializableObjectValue,
+  SerializableObjectValueEntry,
+  SerializableValue,
+  TRUE,
+  UNDEFINED,
+  array,
   fn,
   map,
-  NULL,
   number,
   object,
   promise,
   set,
   string,
-  TRUE,
-  UNDEFINED,
 } from "./serializable-value";
-import type {
-  SerializableArrayValue,
-  SerializableObjectValue,
-  SerializableObjectValueEntry,
-  SerializableValue,
-} from "./serializable-value";
+import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 /**
  * Generates a valid value for the given type.
@@ -221,14 +221,18 @@ function _generateSerializableValue(
     case "function":
       return fn(
         isFunctionReturnValue
-          ? UNDEFINED
-          : _generateSerializableValue(
-              type.returnType,
-              collected,
-              fieldName,
-              rejectTypeNames,
-              random,
-              true
+          ? `() => {}`
+          : formatExpression(
+              `() => (${serializableValueToJavaScript(
+                _generateSerializableValue(
+                  type.returnType,
+                  collected,
+                  fieldName,
+                  rejectTypeNames,
+                  random,
+                  true
+                )
+              )})`
             )
       );
     case "optional":
