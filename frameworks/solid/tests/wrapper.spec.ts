@@ -4,8 +4,8 @@ import path from "path";
 import url from "url";
 import pluginFactory from "../src/index.js";
 
-const WRAPPER_SOURCE = `import { ReactNode } from "react";
-export const Wrapper = ({ children }: { children: ReactNode }) => {
+const WRAPPER_SOURCE = `import { ParentComponent } from "solid-js";
+export const Wrapper: ParentComponent = ({ children }) => {
   return <div class="wrapped">{children}</div>;
 };
 `;
@@ -27,6 +27,7 @@ test.describe.parallel("solid/wrapper", () => {
       WRAPPER_SOURCE
     );
     await preview.iframe.waitForSelector(".wrapped");
+    await preview.iframe.waitForSelector(".App");
   });
 
   test("refreshes when wrapper is updated", async (preview) => {
@@ -40,11 +41,13 @@ test.describe.parallel("solid/wrapper", () => {
       WRAPPER_SOURCE
     );
     await preview.iframe.waitForSelector(".wrapped");
+    await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update("__previewjs__/Wrapper.tsx", {
       replace: /wrapped/g,
       with: "wrapped-modified",
     });
     await preview.iframe.waitForSelector(".wrapped-modified");
+    await preview.iframe.waitForSelector(".App");
   });
 
   test("refreshes when wrapper is removed", async (preview) => {
@@ -58,9 +61,11 @@ test.describe.parallel("solid/wrapper", () => {
       WRAPPER_SOURCE
     );
     await preview.iframe.waitForSelector(".wrapped");
+    await preview.iframe.waitForSelector(".App");
     await preview.fileManager.remove("__previewjs__/Wrapper.tsx");
     await preview.iframe.waitForSelector(".wrapped", {
       state: "hidden",
     });
+    await preview.iframe.waitForSelector(".App");
   });
 });
