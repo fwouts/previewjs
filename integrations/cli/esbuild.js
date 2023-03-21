@@ -18,7 +18,7 @@ try {
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+var __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 `.trim(),
     },
     define: {

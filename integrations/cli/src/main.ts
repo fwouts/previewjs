@@ -7,9 +7,7 @@ import { readFileSync } from "fs";
 import open from "open";
 import url from "url";
 
-// Note: we use "var" because other packages may also define it.
-// eslint-disable-next-line no-var
-var __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
 );
