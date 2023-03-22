@@ -34,7 +34,9 @@ test.describe.parallel("solid/error handling", () => {
             return <div>{logo}</div>;
           }`
     );
-    await preview.show("src/App.tsx:App");
+    await preview.show("src/App.tsx:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to fetch dynamically imported module",
@@ -86,7 +88,9 @@ test.describe.parallel("solid/error handling", () => {
             return <div>{logo}</div>;
           }`
     );
-    await preview.show("src/App.tsx:App");
+    await preview.show("src/App.tsx:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to fetch dynamically imported module",
@@ -134,7 +138,9 @@ test.describe.parallel("solid/error handling", () => {
       replace: "App.css",
       with: "App-missing.css",
     });
-    await preview.show("src/App.tsx:App");
+    await preview.show("src/App.tsx:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
       "Failed to load url /src/App-missing.css (resolved id: /src/App-missing.css)",
       "Failed to fetch dynamically imported module",

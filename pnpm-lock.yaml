@@ -110,7 +110,7 @@ importers:
       buble: ^0.20.0
       express: ^4.18.2
       playwright: ~1.29.2
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -126,7 +126,7 @@ importers:
     devDependencies:
       '@types/buble': 0.20.1
       '@types/express': 4.17.17
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       typescript: 4.9.5
       unbuild: 1.1.2
       vite: 4.2.1
@@ -231,7 +231,7 @@ importers:
       exclusive-promises: ^1.0.3
       exit-hook: ^3.2.0
       is-wsl: ^2.2.0
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       ts-node-dev: ^2.0.0
       typescript: ^4.9.5
       unbuild: ^1.1.2
@@ -243,7 +243,7 @@ importers:
       exclusive-promises: 1.0.3
       exit-hook: 3.2.0
       is-wsl: 2.2.0
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       ts-node-dev: 2.0.0_345kigqis4fipgyy5xb3ndshmq
       typescript: 4.9.5
       unbuild: 1.1.2
@@ -283,7 +283,7 @@ importers:
       '@previewjs/type-analyzer': ^6.0.6
       '@previewjs/vfs': ^2.0.2
       preact: ^10.13.1
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -302,7 +302,7 @@ importers:
       '@previewjs/properties': link:../../properties
       '@previewjs/testing': link:../../testing
       preact: 10.13.1
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
@@ -396,9 +396,12 @@ importers:
       '@previewjs/vfs': ^2.0.2
       '@types/prop-types': ^15.7.5
       '@types/react': ^18.0.28
+      '@types/react-dom': ^18.0.11
       '@vitejs/plugin-react': ^3.1.0
       concurrently: ^7.6.0
       react: ^18.2.0
+      rimraf: ^4.4.1
+      shx: ^0.3.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -419,28 +422,14 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.28
+      '@types/react-dom': 18.0.11
       concurrently: 7.6.0
       react: 18.2.0
+      rimraf: 4.4.1
+      shx: 0.3.4
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/react/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      '@types/prop-types': ^15.7.5
-      '@types/react': ^18.0.28
-      '@types/react-dom': ^18.0.11
-      rimraf: ^4.4.0
-      shx: ^0.3.4
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/react': 18.0.28
-      '@types/react-dom': 18.0.11
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.4.0
-      shx: 0.3.4
 
   frameworks/react/tests/apps/aliases:
     specifiers:
@@ -1478,6 +1467,7 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1499,20 +1489,12 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       solid-js: 1.6.15
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/solid/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      solid-js: ^1.6.15
-    dependencies:
-      solid-js: 1.6.15
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
 
   frameworks/solid/tests/apps/solid:
     specifiers:
@@ -1582,6 +1564,7 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1607,20 +1590,12 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/svelte/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      svelte: ^3.57.0
-    dependencies:
-      svelte: 3.57.0
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
 
   frameworks/svelte/tests/apps/svelte:
     specifiers:
@@ -1713,6 +1688,7 @@ importers:
       '@nuxt/config': ^2.16.3
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1722,6 +1698,8 @@ importers:
       '@vitejs/plugin-vue2': ^2.2.0
       '@vitejs/plugin-vue2-jsx': ^1.1.0
       fs-extra: ^11.1.1
+      rimraf: ^4.4.1
+      shx: ^0.3.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -1743,24 +1721,14 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
+      rimraf: 4.4.1
+      shx: 0.3.4
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/vue2/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      rimraf: ^4.4.0
-      shx: ^0.3.4
-      vue: ^2.7.14
-    dependencies:
-      vue: 2.7.14
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.4.0
-      shx: 0.3.4
 
   frameworks/vue2/tests/apps/nuxt2-app:
     specifiers:
@@ -1834,6 +1802,7 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1843,7 +1812,13 @@ importers:
       '@vitejs/plugin-vue': ^4.1.0
       '@vitejs/plugin-vue-jsx': ^3.0.1
       '@vue/compiler-sfc': ^3.2.47
+      '@vue/reactivity': ^3.2.47
+      '@vue/runtime-core': ^3.2.47
+      '@vue/runtime-dom': ^3.2.47
+      '@vue/shared': ^3.2.47
       fs-extra: ^11.1.1
+      rimraf: ^4.4.1
+      shx: ^0.3.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -1863,32 +1838,18 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
-      unbuild: 1.1.2
-      vite: 4.2.1
-      vitest: 0.29.7
-
-  frameworks/vue3/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      '@vue/reactivity': ^3.2.47
-      '@vue/runtime-core': ^3.2.47
-      '@vue/runtime-dom': ^3.2.47
-      '@vue/shared': ^3.2.47
-      rimraf: ^4.4.0
-      shx: ^0.3.4
-      vue: ^3.2.47
-    dependencies:
       '@vue/reactivity': 3.2.47
       '@vue/runtime-core': 3.2.47
       '@vue/runtime-dom': 3.2.47
       '@vue/shared': 3.2.47
-      vue: 3.2.47
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       shx: 0.3.4
+      unbuild: 1.1.2
+      vite: 4.2.1
+      vitest: 0.29.7
 
   frameworks/vue3/tests/apps/nuxt3-app:
     specifiers:
@@ -1948,9 +1909,9 @@ importers:
       commander: ^10.0.0
       cross-env: ^7.0.3
       esbuild: ^0.17.12
-      nodemon: ^2.0.21
+      nodemon: ^2.0.22
       open: ^9.0.0
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       ts-node: ^10.9.1
       typescript: ^4.9.5
     devDependencies:
@@ -1961,9 +1922,9 @@ importers:
       commander: 10.0.0
       cross-env: 7.0.3
       esbuild: 0.17.12
-      nodemon: 2.0.21
+      nodemon: 2.0.22
       open: 9.0.0
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       ts-node: 10.9.1_345kigqis4fipgyy5xb3ndshmq
       typescript: 4.9.5
 
@@ -1972,14 +1933,14 @@ importers:
       '@previewjs/daemon': workspace:*
       '@previewjs/loader': workspace:*
       esbuild: ^0.17.12
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       ts-node-dev: ^2.0.0
       typescript: ^4.9.5
     devDependencies:
       '@previewjs/daemon': link:../../../daemon
       '@previewjs/loader': link:../../../loader
       esbuild: 0.17.12
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       ts-node-dev: 2.0.0_345kigqis4fipgyy5xb3ndshmq
       typescript: 4.9.5
 
@@ -1993,7 +1954,7 @@ importers:
       exclusive-promises: ^1.0.3
       execa: ^7.1.1
       ovsx: ^0.8.0
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       strip-ansi: ^7.0.1
       typescript: ^4.9.5
       vsce: ^2.15.0
@@ -2006,7 +1967,7 @@ importers:
       exclusive-promises: 1.0.3
       execa: 7.1.1
       ovsx: 0.8.0
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       strip-ansi: 7.0.1
       typescript: 4.9.5
       vsce: 2.15.0
@@ -2022,7 +1983,7 @@ importers:
       fs-extra: ^11.1.1
       pnpm: ^7.30.0
       proper-lockfile: ^4.1.2
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       typescript: ^4.9.5
     devDependencies:
       '@previewjs/core': link:../core
@@ -2034,7 +1995,7 @@ importers:
       fs-extra: 11.1.1
       pnpm: 7.30.0
       proper-lockfile: 4.1.2
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       typescript: 4.9.5
 
   properties:
@@ -2111,7 +2072,7 @@ importers:
       fs-extra: ^11.1.1
       get-port: ^6.1.2
       playwright: ~1.29.2
-      rimraf: ^4.4.0
+      rimraf: ^4.4.1
       typescript: ^4.9.5
       unbuild: ^1.1.2
     dependencies:
@@ -2127,7 +2088,7 @@ importers:
       playwright: 1.29.2
     devDependencies:
       '@types/fs-extra': 11.0.1
-      rimraf: 4.4.0
+      rimraf: 4.4.1
       typescript: 4.9.5
       unbuild: 1.1.2
 
@@ -25680,8 +25641,8 @@ packages:
     engines: {node: '>=0.12.0'}
     dev: false
 
-  /nodemon/2.0.21:
-    resolution: {integrity: sha512-djN/n2549DUtY33S7o1djRCd7dEm0kBnj9c7S9XVXqRUbuggN1MZH/Nqa+5RFQr63Fbefq37nFXAE9VU86yL1A==}
+  /nodemon/2.0.22:
+    resolution: {integrity: sha512-B8YqaKMmyuCO7BowF1Z1/mkPqLk6cs/l63Ojtd6otKjMx47Dq1utxfRxcavH1I7VSaL8n5BUaoutadnsX3AAVQ==}
     engines: {node: '>=8.10.0'}
     hasBin: true
     dependencies:
@@ -30281,8 +30242,8 @@ packages:
     dependencies:
       glob: 7.2.3
 
-  /rimraf/4.4.0:
-    resolution: {integrity: sha512-X36S+qpCUR0HjXlkDe4NAOhS//aHH0Z+h8Ckf2auGJk3PTnx5rLmrHkwNdbVQuCSUhOyFrlRvFEllZOYE+yZGQ==}
+  /rimraf/4.4.1:
+    resolution: {integrity: sha512-Gk8NlF062+T9CqNGn6h4tls3k6T1+/nXdOcSZVikNVtlRdYpA7wRJJMoXmuvOnLW844rPjdQ7JgXCYM6PPC/og==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:

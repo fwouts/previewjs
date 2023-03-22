@@ -31,7 +31,9 @@ test.describe.parallel("vue3/error handling", () => {
       replace: "components/HelloWorld.vue",
       with: "components/Broken.vue",
     });
-    await preview.show("src/App.vue:App");
+    await preview.show("src/App.vue:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
       "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
       "Failed to fetch dynamically imported module",
@@ -67,7 +69,9 @@ test.describe.parallel("vue3/error handling", () => {
       replace: "#app {",
       with: " BROKEN",
     });
-    await preview.show("src/App.vue:App");
+    await preview.show("src/App.vue:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
       "App.vue:3:3: Unknown word",
       "App.vue:3:3: Unknown word",
