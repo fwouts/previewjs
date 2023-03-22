@@ -19,6 +19,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "prepare": "rimraf preview/types && shx mkdir preview/types && shx cp -rL node_modules/@types/react preview/types/react && shx cp -rL node_modules/@types/prop-types preview/types/prop-types",
     "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest",
@@ -41,8 +42,11 @@
     "@previewjs/testing": "workspace:*",
     "@types/prop-types": "^15.7.5",
     "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "concurrently": "^7.6.0",
     "react": "^18.2.0",
+    "rimraf": "^4.4.0",
+    "shx": "^0.3.4",
     "unbuild": "^1.1.2",
     "vite": "^4.2.1",
     "vitest": "^0.29.7"

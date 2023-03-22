@@ -19,6 +19,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "prepare": "rimraf preview/modules && shx mkdir preview/modules && shx cp -rL node_modules/vue preview/modules/vue && shx rm -rf preview/modules/vue/packages/compiler-sfc/test",
     "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest",
@@ -40,8 +41,11 @@
   "devDependencies": {
     "@playwright/test": "~1.29.2",
     "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
     "@previewjs/testing": "workspace:*",
     "@types/fs-extra": "^11.0.1",
+    "rimraf": "^4.4.0",
+    "shx": "^0.3.4",
     "unbuild": "^1.1.2",
     "vite": "^4.2.1",
     "vitest": "^0.29.7"
