@@ -1,12 +1,12 @@
 import type { ComponentAnalysis } from "@previewjs/core";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import {
+  maybeOptionalType,
   objectType,
-  optionalType,
   TypeResolver,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 
 export function analyzeVueComponentFromTemplate(
   resolver: TypeResolver,
@@ -128,9 +128,10 @@ function extractDefinePropsFromExpression(
           Object.entries(definePropsType.type.fields).map(
             ([fieldKey, fieldType]) => [
               fieldKey,
-              fieldsWithDefaultValue.has(fieldKey)
-                ? optionalType(fieldType)
-                : fieldType,
+              maybeOptionalType(
+                fieldType,
+                fieldsWithDefaultValue.has(fieldKey)
+              ),
             ]
           )
         )

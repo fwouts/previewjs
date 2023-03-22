@@ -212,9 +212,12 @@ export function optionalType(type: ValueType): OptionalType {
   };
 }
 export function maybeOptionalType(
-  type: ValueType,
+  type: ValueType | OptionalType,
   optional: boolean
 ): ValueType | OptionalType {
+  if (type.kind === "optional") {
+    return type;
+  }
   if (optional) {
     return optionalType(type);
   }
