@@ -75,7 +75,12 @@ export function isValid(
       }
       for (const [propName, propType] of Object.entries(type.fields)) {
         const propValue = value[propName];
-        if (!isValid(propType, collected, propValue)) {
+        if (propType.kind === "optional" && value === undefined) {
+          return true;
+        }
+        const nonOptionalPropType =
+          propType.kind === "optional" ? propType.type : propType;
+        if (!isValid(nonOptionalPropType, collected, propValue)) {
           return false;
         }
       }
@@ -122,8 +127,6 @@ export function isValid(
       return true;
     case "function":
       return typeof value === "function";
-    case "optional":
-      return value === undefined || isValid(type.type, collected, value);
     case "promise":
       return value && typeof value === "object" && "then" in value;
     case "name": {

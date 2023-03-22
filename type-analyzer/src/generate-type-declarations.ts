@@ -143,13 +143,13 @@ function generateTypeScriptType(
                       ? collected[propType.name]?.type || propType
                       : propType;
                   const optional =
-                    resolvedPropType.kind === "optional" ||
+                    propType.kind === "optional" ||
                     resolvedPropType.kind === "any" ||
                     resolvedPropType.kind === "unknown";
                   return `["${propName.replace(/"/g, '\\"')}"]${
                     optional ? "?" : ""
                   }: ${generateTypeScriptType(
-                    propType,
+                    propType.kind === "optional" ? propType.type : propType,
                     collected,
                     typeNameMapping,
                     usedTypes
@@ -212,13 +212,6 @@ function generateTypeScriptType(
         typeNameMapping,
         usedTypes
       )})`;
-    case "optional":
-      return `${generateTypeScriptType(
-        type.type,
-        collected,
-        typeNameMapping,
-        usedTypes
-      )} | undefined`;
     case "promise":
       return `Promise<${generateTypeScriptType(
         type.type,

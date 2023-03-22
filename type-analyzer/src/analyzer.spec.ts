@@ -10,8 +10,14 @@ import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import type { TypeAnalyzer } from ".";
 import {
   ANY_TYPE,
-  arrayType,
   BOOLEAN_TYPE,
+  NODE_TYPE,
+  NULL_TYPE,
+  NUMBER_TYPE,
+  STRING_TYPE,
+  UNKNOWN_TYPE,
+  VOID_TYPE,
+  arrayType,
   createTypeAnalyzer,
   enumType,
   functionType,
@@ -19,19 +25,13 @@ import {
   literalType,
   mapType,
   namedType,
-  NODE_TYPE,
-  NULL_TYPE,
-  NUMBER_TYPE,
   objectType,
   optionalType,
   promiseType,
   recordType,
   setType,
-  STRING_TYPE,
   tupleType,
   unionType,
-  UNKNOWN_TYPE,
-  VOID_TYPE,
 } from ".";
 
 describe.concurrent("TypeAnalyzer", () => {
@@ -596,7 +596,7 @@ type B = {
       namedType("main.ts:A"),
       {
         "main.ts:A": {
-          type: optionalType(namedType("main.ts:B")),
+          type: unionType([VOID_TYPE, namedType("main.ts:B")]),
           parameters: {},
         },
         "main.ts:B": {
@@ -625,7 +625,7 @@ type B = {
       namedType("main.ts:A"),
       {
         "main.ts:A": {
-          type: optionalType(namedType("main.ts:B")),
+          type: unionType([VOID_TYPE, namedType("main.ts:B")]),
           parameters: {},
         },
         "main.ts:B": {
@@ -665,7 +665,7 @@ foo: string;
       namedType("main.ts:A"),
       {
         "main.ts:A": {
-          type: optionalType(unionType([NULL_TYPE, namedType("main.ts:B")])),
+          type: unionType([VOID_TYPE, NULL_TYPE, namedType("main.ts:B")]),
           parameters: {},
         },
         "main.ts:B": {

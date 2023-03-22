@@ -1,6 +1,13 @@
 import isEqual from "lodash/isEqual";
-import { functionType, intersectionType, VOID_TYPE } from "./definitions";
-import type { ValueType } from "./definitions";
+import {
+  functionType,
+  intersectionType,
+  maybeOptionalType,
+  OptionalType,
+  unionType,
+  ValueType,
+  VOID_TYPE,
+} from "./definitions";
 
 export function computeIntersection(types: ValueType[]): ValueType {
   types = types.filter((type, i) => {
@@ -44,13 +51,23 @@ export function computeIntersection(types: ValueType[]): ValueType {
         if (intersectWith.kind !== "object") {
           return defaultIntersection;
         }
-        const intersectingFields: Array<[string, ValueType]> = [];
+        const intersectingFields: Array<[string, ValueType | OptionalType]> =
+          [];
         for (const fieldName of new Set([
           ...Object.keys(evolvingType.fields),
           ...Object.keys(intersectWith.fields),
         ])) {
-          const evolvingFieldType = evolvingType.fields[fieldName];
-          const intersectingFieldType = intersectWith.fields[fieldName];
+          const maybeOptionalEvolvingFieldType = evolvingType.fields[fieldName];
+          const maybeOptionalIntersectingFieldType =
+            intersectWith.fields[fieldName];
+          const evolvingFieldType =
+            maybeOptionalEvolvingFieldType?.kind === "optional"
+              ? unionType([VOID_TYPE, maybeOptionalEvolvingFieldType.type])
+              : maybeOptionalEvolvingFieldType;
+          const intersectingFieldType =
+            maybeOptionalIntersectingFieldType?.kind === "optional"
+              ? unionType([VOID_TYPE, maybeOptionalIntersectingFieldType.type])
+              : maybeOptionalIntersectingFieldType;
           const fieldType =
             evolvingFieldType && intersectingFieldType
               ? computeIntersection([evolvingFieldType, intersectingFieldType])
@@ -62,7 +79,7 @@ export function computeIntersection(types: ValueType[]): ValueType {
               `Could not compute type of intersection field ${fieldName}`
             );
           }
-          intersectingFields.push([fieldName, fieldType]);
+          intersectingFields.push([fieldName, maybeOptionalType(fieldType)]);
         }
         evolvingType = {
           kind: "object",

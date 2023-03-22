@@ -34,7 +34,7 @@ export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
         return;
       case "object":
         for (const fieldType of Object.values(type.fields)) {
-          visitType(fieldType);
+          visitType(fieldType.kind === "optional" ? fieldType.type : fieldType);
         }
         return;
       case "map":
@@ -46,7 +46,6 @@ export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
         visitType(type.returnType);
         return;
       case "promise":
-      case "optional":
         visitType(type.type);
         return;
       case "union":
