@@ -1,5 +1,5 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
-import { Fragment, render } from "preact";
+import { Fragment, createElement, render } from "preact";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
 const container = document.getElementById("root")!;
@@ -74,5 +74,6 @@ export const load: RendererLoader = async ({
         throw errorBoundary.state.error;
       }
     },
+    jsxFactory: createElement,
   };
 };

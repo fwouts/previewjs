@@ -1,5 +1,6 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import type { JSX } from "solid-js";
+import h from "solid-js/h";
 import * as Solid from "solid-js/web";
 
 const container = document.getElementById("root")!;
@@ -61,5 +62,6 @@ export const load: RendererLoader = async ({
         container
       );
     },
+    jsxFactory: h,
   };
 };
