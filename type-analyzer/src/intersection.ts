@@ -2,6 +2,8 @@ import isEqual from "lodash/isEqual";
 import {
   functionType,
   intersectionType,
+  maybeOptionalType,
+  OptionalType,
   unionType,
   ValueType,
   VOID_TYPE,
@@ -49,7 +51,8 @@ export function computeIntersection(types: ValueType[]): ValueType {
         if (intersectWith.kind !== "object") {
           return defaultIntersection;
         }
-        const intersectingFields: Array<[string, ValueType]> = [];
+        const intersectingFields: Array<[string, ValueType | OptionalType]> =
+          [];
         for (const fieldName of new Set([
           ...Object.keys(evolvingType.fields),
           ...Object.keys(intersectWith.fields),
@@ -76,7 +79,7 @@ export function computeIntersection(types: ValueType[]): ValueType {
               `Could not compute type of intersection field ${fieldName}`
             );
           }
-          intersectingFields.push([fieldName, fieldType]);
+          intersectingFields.push([fieldName, maybeOptionalType(fieldType)]);
         }
         evolvingType = {
           kind: "object",

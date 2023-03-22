@@ -213,13 +213,21 @@ export function optionalType(type: ValueType): OptionalType {
 }
 export function maybeOptionalType(
   type: ValueType | OptionalType,
-  optional: boolean
+  optional = false
 ): ValueType | OptionalType {
   if (type.kind === "optional") {
     return type;
   }
   if (optional) {
     return optionalType(type);
+  }
+  if (type.kind === "union") {
+    const hasVoid = type.types.findIndex((t) => t.kind === "void");
+    if (hasVoid !== -1) {
+      return optionalType(
+        unionType(type.types.filter((t) => t.kind !== "void"))
+      );
+    }
   }
   return type;
 }
