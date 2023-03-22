@@ -35,9 +35,28 @@ export async function startPreview({
   let onRenderingDone = () => {
     // No-op by default.
   };
+  let onRenderingError = (_e: any) => {
+    // No-op by default.
+  };
+  let failOnErrorLog = false;
+  let lastErrorLog: string | null = null;
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
-      onRenderingDone();
+      if (event.success) {
+        onRenderingDone();
+      } else {
+        if (lastErrorLog) {
+          onRenderingError(new Error(lastErrorLog));
+        } else {
+          // The error log should be coming straight after.
+          failOnErrorLog = true;
+        }
+      }
+    } else if (event.kind === "log-message" && event.level === "error") {
+      lastErrorLog = event.message;
+      if (failOnErrorLog) {
+        onRenderingError(new Error(event.message));
+      }
     }
   });
 
@@ -140,8 +159,9 @@ export async function startPreview({
                 computePropsResponse.types.all
               );
       }
-      const donePromise = new Promise<void>((resolve) => {
+      const donePromise = new Promise<void>((resolve, reject) => {
         onRenderingDone = resolve;
+        onRenderingError = reject;
       });
       await waitUntilNetworkIdle(page);
       await page.evaluate(
