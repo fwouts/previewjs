@@ -39,20 +39,24 @@ export async function startPreview({
     // No-op by default.
   };
   let failOnErrorLog = false;
+  let lastErrorLog: string | null = null;
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
       if (event.success) {
         onRenderingDone();
       } else {
-        // Ignore as there will also be an error log message.
-        failOnErrorLog = true;
+        if (lastErrorLog) {
+          onRenderingError(new Error(lastErrorLog));
+        } else {
+          // The error log should be coming straight after.
+          failOnErrorLog = true;
+        }
       }
-    } else if (
-      failOnErrorLog &&
-      event.kind === "log-message" &&
-      event.level === "error"
-    ) {
-      onRenderingError(new Error(event.message));
+    } else if (event.kind === "log-message" && event.level === "error") {
+      lastErrorLog = event.message;
+      if (failOnErrorLog) {
+        onRenderingError(new Error(event.message));
+      }
     }
   });
 
