@@ -5,6 +5,7 @@ import {
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
 import type { Reader } from "@previewjs/vfs";
+import { transform } from "buble";
 import type playwright from "playwright";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
@@ -149,7 +150,12 @@ export async function startPreview({
         computePropsResponse.types.props,
         computePropsResponse.types.all
       );
-      if (!propsAssignmentSource) {
+      if (propsAssignmentSource) {
+        // Transform JSX if required.
+        propsAssignmentSource = transform(propsAssignmentSource, {
+          jsx: "__jsxFactory__",
+        }).code;
+      } else {
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
             ? "properties = null"
