@@ -3,7 +3,7 @@ import { SvelteComponent } from "svelte";
 import * as si from "svelte/internal";
 
 const root = document.getElementById("root")!;
-let currentElement = null;
+let currentElement: any = null;
 
 // TODO: Support Storybook.
 export const load: RendererLoader = async ({
@@ -49,24 +49,24 @@ export const load: RendererLoader = async ({
 };
 
 // Source: https://github.com/sveltejs/svelte/issues/2588#issuecomment-828578980
-const createSlots = (slots) => {
-  const svelteSlots = {};
+const createSlots = (slots: Record<string, any>) => {
+  const svelteSlots: Record<string, any> = {};
 
   for (const slotName in slots) {
     svelteSlots[slotName] = [createSlotFn(slots[slotName])];
   }
 
-  function createSlotFn([ele, props = {}]) {
+  function createSlotFn([ele, props = {}]: any) {
     if (si.is_function(ele) && ele.prototype instanceof SvelteComponent) {
-      let component;
+      let component: any;
       return function () {
         return {
           c: si.noop,
-          m(target, anchor) {
+          m(target: any, anchor: any) {
             component = new ele({ target, props });
             si.mount_component(component, target, anchor, null);
           },
-          d(detaching) {
+          d(detaching: any) {
             si.destroy_component(component, detaching);
           },
           l: si.noop,
@@ -76,10 +76,10 @@ const createSlots = (slots) => {
       return function () {
         return {
           c: si.noop,
-          m: function mount(target, anchor) {
+          m: function mount(target: any, anchor: any) {
             si.insert(target, ele, anchor);
           },
-          d: function destroy(detaching) {
+          d: function destroy(detaching: any) {
             if (detaching) {
               si.detach(ele);
             }

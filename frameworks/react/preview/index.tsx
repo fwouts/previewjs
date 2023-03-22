@@ -36,7 +36,7 @@ export const load: RendererLoader = async ({
         componentModule.default?.component ||
         ComponentOrStory
     : ComponentOrStory;
-  const Renderer = (props) => {
+  const Renderer = (props: any) => {
     return (
       <ErrorBoundary key={renderId} renderId={renderId}>
         <Wrapper>

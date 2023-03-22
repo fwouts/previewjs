@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "dist"
+    "jsx": "preserve",
+    "jsxImportSource": "preact",
+    "noEmit": true
   },
-  "include": ["src", "tests"],
+  "include": ["preview", "src", "tests"],
   "exclude": ["node_modules", "tests/apps"]
 }

@@ -1503,12 +1503,12 @@ importers:
 
   frameworks/solid/preview:
     specifiers:
-      '@previewjs/iframe': ^4.0.1
+      '@previewjs/iframe': workspace:*
       solid-js: ^1.6.15
     dependencies:
       solid-js: 1.6.15
     devDependencies:
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/iframe': link:../../../iframe
 
   frameworks/solid/tests/apps/solid:
     specifiers:
@@ -1611,12 +1611,12 @@ importers:
 
   frameworks/svelte/preview:
     specifiers:
-      '@previewjs/iframe': ^4.0.1
+      '@previewjs/iframe': workspace:*
       svelte: ^3.57.0
     dependencies:
       svelte: 3.57.0
     devDependencies:
-      '@previewjs/iframe': 4.0.2
+      '@previewjs/iframe': link:../../../iframe
 
   frameworks/svelte/tests/apps/svelte:
     specifiers:
@@ -1750,9 +1750,9 @@ importers:
       '@previewjs/iframe': workspace:*
       rimraf: ^4.4.0
       shx: ^0.3.4
-      vue: ^3.2.47
+      vue: ^2.7.14
     dependencies:
-      vue: 3.2.47
+      vue: 2.7.14
     devDependencies:
       '@previewjs/iframe': link:../../../iframe
       rimraf: 4.4.0
@@ -8057,10 +8057,6 @@ packages:
       - sugarss
       - supports-color
       - terser
-    dev: true
-
-  /@previewjs/iframe/4.0.2:
-    resolution: {integrity: sha512-lj2SYC4IJ0NToQ98zdmgOQcnI+RpuO3ZlMrwMamcvISeUNRLQS6UBpx5uYOJoYQ2og8dCAvZ1KTXBdGiUEEq1w==}
     dev: true
 
   /@previewjs/iframe/6.0.0:

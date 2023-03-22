@@ -1,7 +1,7 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import Vue from "vue";
 
-const root = document.getElementById("root");
+const root = document.getElementById("root")!;
 let app: Vue | null = null;
 
 export const load: RendererLoader = async ({
@@ -38,7 +38,7 @@ export const load: RendererLoader = async ({
       // CSF2 story.
       RenderComponent = {
         functional: true,
-        render: (h, data) => {
+        render: (h: any, data: any) => {
           const storyReturnValue = ComponentOrStory(data.props, {
             argTypes: data.props,
           });
@@ -91,7 +91,7 @@ export const load: RendererLoader = async ({
           h(
             {
               functional: true,
-              render: (h, data) => {
+              render: (h: any, data: any) => {
                 const Wrapped = h(Decorated, data);
                 return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
               },
