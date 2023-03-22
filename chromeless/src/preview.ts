@@ -41,7 +41,13 @@ export async function startPreview({
   };
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
-      onRenderingDone();
+      if (event.success) {
+        onRenderingDone();
+      } else {
+        // Ignore as there will also be an error log message.
+      }
+    } else if (event.kind === "log-message" && event.level === "error") {
+      onRenderingError(new Error(event.message));
     }
   });
 
@@ -149,8 +155,9 @@ export async function startPreview({
                 computePropsResponse.types.all
               );
       }
-      const donePromise = new Promise<void>((resolve) => {
+      const donePromise = new Promise<void>((resolve, reject) => {
         onRenderingDone = resolve;
+        onRenderingError = reject;
       });
       await waitUntilNetworkIdle(page);
       await page.evaluate(
