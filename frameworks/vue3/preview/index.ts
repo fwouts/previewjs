@@ -34,7 +34,7 @@ export const load: RendererLoader = async ({
   } else {
     // JSX or Storybook story, either CSF2 or CSF3.
     if (typeof ComponentOrStory === "function") {
-      RenderComponent = (props) => {
+      RenderComponent = (props: any) => {
         const storyReturnValue = ComponentOrStory(props);
         if (storyReturnValue.template) {
           // CSF2 story.

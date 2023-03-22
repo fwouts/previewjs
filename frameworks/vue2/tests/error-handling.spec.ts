@@ -25,15 +25,14 @@ test.describe.parallel("vue2/error handling", () => {
     await preview.iframe.waitForSelector("#app");
   });
 
-  // TODO: Check if it's possible to make this test pass.
-  // Currently, it doesn't reload when App.vue is fixed.
-  test.skip("fails correctly when encountering broken module imports before update", async (preview) => {
+  test("fails correctly when encountering broken module imports before update", async (preview) => {
     await preview.fileManager.update("src/App.vue", {
       replace: "components/HelloWorld.vue",
       with: "components/Broken.vue",
     });
     await preview.show("src/App.vue:App");
     await preview.expectLoggedMessages.toMatch([
+      "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -62,15 +61,15 @@ test.describe.parallel("vue2/error handling", () => {
     await preview.iframe.waitForSelector(".hello");
   });
 
-  // TODO: Check if it's possible to make this test pass.
-  // Currently, it doesn't reload when App.vue is fixed.
-  test.skip("fails correctly when encountering broken CSS before update", async (preview) => {
+  test("fails correctly when encountering broken CSS before update", async (preview) => {
     await preview.fileManager.update("src/App.vue", {
       replace: "#app {",
       with: " BROKEN",
     });
     await preview.show("src/App.vue:App");
     await preview.expectLoggedMessages.toMatch([
+      "App.vue:3:3: Unknown word",
+      "App.vue:3:3: Unknown word",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);

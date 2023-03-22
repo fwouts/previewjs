@@ -2,7 +2,7 @@ import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import { Fragment, render } from "preact";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
-const container = document.getElementById("root");
+const container = document.getElementById("root")!;
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -41,10 +41,9 @@ export const load: RendererLoader = async ({
       if (shouldAbortRender()) {
         return;
       }
-      render(null, container);
       container.innerHTML = "";
       render(
-        <ErrorBoundary key={renderId} renderId={renderId}>
+        <ErrorBoundary renderId={renderId}>
           <Wrapper>
             {decorators.reduce(
               (component, decorator) => () => decorator(component),

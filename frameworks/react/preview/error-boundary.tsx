@@ -38,10 +38,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps> {
     return { error };
   }
 
-  componentDidCatch(_error, _errorInfo) {
-    // Do nothing, it will be shown already in the logs.
-  }
-
   render() {
     if (this.state.error) {
       return <></>;
