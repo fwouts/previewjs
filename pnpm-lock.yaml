@@ -392,9 +392,12 @@ importers:
       '@previewjs/vfs': ^2.0.2
       '@types/prop-types': ^15.7.5
       '@types/react': ^18.0.28
+      '@types/react-dom': ^18.0.11
       '@vitejs/plugin-react': ^3.1.0
       concurrently: ^7.6.0
       react: ^18.2.0
+      rimraf: ^4.4.0
+      shx: ^0.3.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -415,28 +418,14 @@ importers:
       '@previewjs/testing': link:../../testing
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.28
+      '@types/react-dom': 18.0.11
       concurrently: 7.6.0
       react: 18.2.0
+      rimraf: 4.4.0
+      shx: 0.3.4
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/react/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      '@types/prop-types': ^15.7.5
-      '@types/react': ^18.0.28
-      '@types/react-dom': ^18.0.11
-      rimraf: ^4.4.0
-      shx: ^0.3.4
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/react': 18.0.28
-      '@types/react-dom': 18.0.11
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.4.0
-      shx: 0.3.4
 
   frameworks/react/tests/apps/aliases:
     specifiers:
@@ -1474,6 +1463,7 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1495,20 +1485,12 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       solid-js: 1.6.15
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/solid/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      solid-js: ^1.6.15
-    dependencies:
-      solid-js: 1.6.15
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
 
   frameworks/solid/tests/apps/solid:
     specifiers:
@@ -1578,6 +1560,7 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1603,20 +1586,12 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/svelte/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      svelte: ^3.57.0
-    dependencies:
-      svelte: 3.57.0
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
 
   frameworks/svelte/tests/apps/svelte:
     specifiers:
@@ -1709,6 +1684,7 @@ importers:
       '@nuxt/config': ^2.16.3
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1718,6 +1694,8 @@ importers:
       '@vitejs/plugin-vue2': ^2.2.0
       '@vitejs/plugin-vue2-jsx': ^1.1.0
       fs-extra: ^11.1.1
+      rimraf: ^4.4.0
+      shx: ^0.3.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -1739,24 +1717,14 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
+      rimraf: 4.4.0
+      shx: 0.3.4
       unbuild: 1.1.2
       vite: 4.2.1
       vitest: 0.29.7
-
-  frameworks/vue2/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      rimraf: ^4.4.0
-      shx: ^0.3.4
-      vue: ^2.7.14
-    dependencies:
-      vue: 2.7.14
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
-      rimraf: 4.4.0
-      shx: 0.3.4
 
   frameworks/vue2/tests/apps/nuxt2-app:
     specifiers:
@@ -1830,6 +1798,7 @@ importers:
     specifiers:
       '@playwright/test': ~1.29.2
       '@previewjs/core': workspace:*
+      '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
       '@previewjs/storybook-helpers': ^1.0.4
       '@previewjs/testing': workspace:*
@@ -1839,7 +1808,13 @@ importers:
       '@vitejs/plugin-vue': ^4.1.0
       '@vitejs/plugin-vue-jsx': ^3.0.1
       '@vue/compiler-sfc': ^3.2.47
+      '@vue/reactivity': ^3.2.47
+      '@vue/runtime-core': ^3.2.47
+      '@vue/runtime-dom': ^3.2.47
+      '@vue/shared': ^3.2.47
       fs-extra: ^11.1.1
+      rimraf: ^4.4.0
+      shx: ^0.3.4
       typescript: ^4.9.5
       unbuild: ^1.1.2
       vite: ^4.2.1
@@ -1859,32 +1834,18 @@ importers:
     devDependencies:
       '@playwright/test': 1.29.2
       '@previewjs/core': link:../../core
+      '@previewjs/iframe': link:../../iframe
       '@previewjs/testing': link:../../testing
       '@types/fs-extra': 11.0.1
-      unbuild: 1.1.2
-      vite: 4.2.1
-      vitest: 0.29.7
-
-  frameworks/vue3/preview:
-    specifiers:
-      '@previewjs/iframe': workspace:*
-      '@vue/reactivity': ^3.2.47
-      '@vue/runtime-core': ^3.2.47
-      '@vue/runtime-dom': ^3.2.47
-      '@vue/shared': ^3.2.47
-      rimraf: ^4.4.0
-      shx: ^0.3.4
-      vue: ^3.2.47
-    dependencies:
       '@vue/reactivity': 3.2.47
       '@vue/runtime-core': 3.2.47
       '@vue/runtime-dom': 3.2.47
       '@vue/shared': 3.2.47
-      vue: 3.2.47
-    devDependencies:
-      '@previewjs/iframe': link:../../../iframe
       rimraf: 4.4.0
       shx: 0.3.4
+      unbuild: 1.1.2
+      vite: 4.2.1
+      vitest: 0.29.7
 
   frameworks/vue3/tests/apps/nuxt3-app:
     specifiers:
