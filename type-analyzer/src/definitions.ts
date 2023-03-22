@@ -19,7 +19,6 @@ export type ValueType =
   | UnionType
   | IntersectionType
   | FunctionType
-  | OptionalType
   | PromiseType
   | NamedType;
 
@@ -87,10 +86,10 @@ export function enumType(options: {
 
 export interface ObjectType {
   kind: "object";
-  fields: { [fieldName: string]: ValueType };
+  fields: { [fieldName: string]: ValueType | OptionalType };
 }
 export function objectType(fields: {
-  [fieldName: string]: ValueType;
+  [fieldName: string]: ValueType | OptionalType;
 }): ObjectType {
   return {
     kind: "object",
@@ -207,23 +206,28 @@ export interface OptionalType {
   type: ValueType;
 }
 export function optionalType(type: ValueType): OptionalType {
-  if (type.kind === "optional") {
-    return type;
-  }
   return {
     kind: "optional",
     type,
   };
 }
 export function maybeOptionalType(
-  type: ValueType,
-  optional: boolean
-): ValueType {
+  type: ValueType | OptionalType,
+  optional = false
+): ValueType | OptionalType {
   if (type.kind === "optional") {
     return type;
   }
   if (optional) {
     return optionalType(type);
+  }
+  if (type.kind === "union") {
+    const hasVoid = type.types.findIndex((t) => t.kind === "void");
+    if (hasVoid !== -1) {
+      return optionalType(
+        unionType(type.types.filter((t) => t.kind !== "void"))
+      );
+    }
   }
   return type;
 }

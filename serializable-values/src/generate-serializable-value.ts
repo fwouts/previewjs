@@ -140,8 +140,13 @@ function _generateSerializableValue(
     case "object": {
       const entries: SerializableObjectValueEntry[] = [];
       for (const [propName, propType] of Object.entries(type.fields)) {
+        let nonOptionalPropType =
+          propType.kind === "optional" ? propType.type : propType;
+        if (propType.kind === "optional" && (!random || Math.random() < 0.5)) {
+          continue;
+        }
         const propValue = _generateSerializableValue(
-          propType,
+          nonOptionalPropType,
           collected,
           propName,
           rejectTypeNames,
@@ -242,18 +247,6 @@ function _generateSerializableValue(
         )
       );
     }
-    case "optional":
-      if (random && Math.random() < 0.5) {
-        return _generateSerializableValue(
-          type.type,
-          collected,
-          fieldName,
-          rejectTypeNames,
-          random,
-          isFunctionReturnValue
-        );
-      }
-      return UNDEFINED;
     case "promise": {
       return promise({
         type: "reject",

@@ -1,27 +1,27 @@
 import { describe, expect, test } from "vitest";
 import {
   ANY_TYPE,
-  arrayType,
   BOOLEAN_TYPE,
+  NEVER_TYPE,
+  NODE_TYPE,
+  NULL_TYPE,
+  NUMBER_TYPE,
+  STRING_TYPE,
+  UNKNOWN_TYPE,
+  VOID_TYPE,
+  arrayType,
   enumType,
   functionType,
   intersectionType,
   literalType,
   namedType,
-  NEVER_TYPE,
-  NODE_TYPE,
-  NULL_TYPE,
-  NUMBER_TYPE,
   objectType,
   optionalType,
   promiseType,
   recordType,
   setType,
-  STRING_TYPE,
   tupleType,
   unionType,
-  UNKNOWN_TYPE,
-  VOID_TYPE,
 } from "./definitions";
 import { generateTypeDeclarations } from "./generate-type-declarations";
 
@@ -69,7 +69,7 @@ describe("generateTypeDeclarations", () => {
       })
     ).toMatchInlineSnapshot(`
       "type Foo = {
-        [\\"child\\"]?: Foo | undefined;
+        [\\"child\\"]?: Foo;
         [\\"children\\"]: Array<Foo>;
       };"
     `);
@@ -85,7 +85,7 @@ describe("generateTypeDeclarations", () => {
           parameters: {},
         },
         "/foo.tsx:Fn": {
-          type: functionType(optionalType(namedType("/foo.tsx:Fn"))),
+          type: functionType(unionType([VOID_TYPE, namedType("/foo.tsx:Fn")])),
           parameters: {},
         },
       })
@@ -94,7 +94,7 @@ describe("generateTypeDeclarations", () => {
         [\\"foo\\"]: Fn;
       };
 
-      type Fn = (...params: any[]) => Fn | undefined;"
+      type Fn = (...params: any[]) => void | Fn;"
     `);
   });
 
@@ -234,11 +234,11 @@ describe("generateTypeDeclarations", () => {
     ).toMatchInlineSnapshot(`
       "type Foo = {
         [\\"a\\"]: string;
-        [\\"b\\"]?: string | undefined;
+        [\\"b\\"]?: string;
         [\\"c\\"]?: any;
         [\\"d\\"]?: unknown;
         [\\"e\\"]: string;
-        [\\"f\\"]?: string | undefined;
+        [\\"f\\"]?: string;
       };"
     `);
   });

@@ -26,6 +26,9 @@ export function generateCallbackProps(
   let text = "";
   text += "{";
   for (const [propertyName, propertyType] of Object.entries(propsType.fields)) {
+    if (propertyType.kind === "optional") {
+      continue;
+    }
     const resolvedPropertyType = resolveType(propertyType);
     if (resolvedPropertyType.kind === "function") {
       propKeys.add(propertyName);
