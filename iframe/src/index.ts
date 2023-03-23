@@ -252,6 +252,9 @@ export type RendererLoader = (options: {
   shouldAbortRender: () => boolean;
 }) => Promise<{
   render: (getProps: GetPropsFn) => Promise<void>;
+  // Note: we use `any` here because it depends on the framework.
+  // This will be null if JSX isn't supported.
+  jsxFactory: ((type: any, props: any, ...children: any[]) => any) | null;
 }>;
 
 export type GetPropsFn = (options: {

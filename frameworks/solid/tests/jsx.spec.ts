@@ -5,9 +5,9 @@ import url from "url";
 import pluginFactory from "../src/index.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const testApp = path.join(__dirname, "apps", "vue3");
+const testApp = path.join(__dirname, "apps", "solid");
 
-test.describe.parallel("vue3/jsx", () => {
+test.describe.parallel("solid/jsx", () => {
   const test = previewTest([pluginFactory], testApp);
 
   test("renders JSX component", async (preview) => {
@@ -52,9 +52,9 @@ test.describe.parallel("vue3/jsx", () => {
         return <button>
           {props.children}
         </button>
-      };
+      }
 
-      const Other = () => <div>Other!</div>;`
+      const Other = () => <div>Other</div>;`
     );
     await preview.show(
       "src/Button.jsx:Button",
@@ -63,7 +63,7 @@ test.describe.parallel("vue3/jsx", () => {
       }`
     );
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'Other!')]"
+      "xpath=//button[contains(., 'Other')]"
     );
   });
 });

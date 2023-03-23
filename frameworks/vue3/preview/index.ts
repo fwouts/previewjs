@@ -89,5 +89,7 @@ export const load: RendererLoader = async ({
       }, {});
       app.mount("#root");
     },
+    // @ts-ignore
+    jsxFactory: h,
   };
 };

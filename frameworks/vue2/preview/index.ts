@@ -109,5 +109,8 @@ export const load: RendererLoader = async ({
       }
       root.appendChild(app.$el);
     },
+    // While Vue 2 exposes h(), it can only be used when a component is already being rendered.
+    // This makes the approach of invoking jsxFactory prior to rendering the component unfeasible.
+    jsxFactory: null,
   };
 };

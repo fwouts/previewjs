@@ -45,6 +45,7 @@ export const load: RendererLoader = async ({
             props,
           });
     },
+    jsxFactory: null,
   };
 };
 

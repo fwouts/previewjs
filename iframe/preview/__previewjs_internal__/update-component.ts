@@ -38,7 +38,7 @@ export async function updateComponent({
     sendMessageFromPreview({
       kind: "before-render",
     });
-    const { render } = await load({
+    const { render, jsxFactory } = await load({
       wrapperModule,
       wrapperName,
       componentFilePath,
@@ -53,7 +53,8 @@ export async function updateComponent({
     const { autogenCallbackProps, properties } =
       await componentModule.PreviewJsEvaluateLocally(
         currentState.autogenCallbackPropsSource,
-        currentState.propsAssignmentSource
+        currentState.propsAssignmentSource,
+        jsxFactory
       );
     sendMessageFromPreview({
       kind: "rendering-setup",

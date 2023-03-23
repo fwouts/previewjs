@@ -6,6 +6,7 @@ import {
 } from "@previewjs/properties";
 import type { Reader } from "@previewjs/vfs";
 import type playwright from "playwright";
+import ts from "typescript";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
 import { createChromelessWorkspace } from "./workspace";
@@ -149,7 +150,22 @@ export async function startPreview({
         computePropsResponse.types.props,
         computePropsResponse.types.all
       );
-      if (!propsAssignmentSource) {
+      if (propsAssignmentSource) {
+        // Transform JSX if required.
+        try {
+          propsAssignmentSource = ts.transpileModule(propsAssignmentSource, {
+            compilerOptions: {
+              target: ts.ScriptTarget.ES2022,
+              jsx: ts.JsxEmit.React,
+              jsxFactory: "__jsxFactory__",
+            },
+          }).outputText;
+        } catch (e) {
+          throw new Error(
+            `Error transforming source:\n${propsAssignmentSource}\n\n${e}`
+          );
+        }
+      } else {
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
             ? "properties = null"

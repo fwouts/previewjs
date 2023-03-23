@@ -74,5 +74,6 @@ export const load: RendererLoader = async ({
         throw errorBoundary.state.error;
       }
     },
+    jsxFactory: React.createElement,
   };
 };
