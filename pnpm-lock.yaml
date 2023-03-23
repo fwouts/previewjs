@@ -107,7 +107,7 @@ importers:
       '@previewjs/vfs': ^2.0.2
       '@types/express': ^4.17.17
       express: ^4.18.2
-      playwright: ~1.32.0
+      playwright: ^1.32.0
       rimraf: ^4.4.1
       typescript: ^4.9.5
       unbuild: ^1.1.2
@@ -268,7 +268,7 @@ importers:
 
   frameworks/preact:
     specifiers:
-      '@playwright/test': ~1.32.0
+      '@playwright/test': ^1.32.0
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
@@ -380,7 +380,7 @@ importers:
 
   frameworks/react:
     specifiers:
-      '@playwright/test': ~1.32.0
+      '@playwright/test': ^1.32.0
       '@previewjs/api': workspace:*
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
@@ -1461,7 +1461,7 @@ importers:
 
   frameworks/solid:
     specifiers:
-      '@playwright/test': ~1.32.0
+      '@playwright/test': ^1.32.0
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
@@ -1558,7 +1558,7 @@ importers:
 
   frameworks/svelte:
     specifiers:
-      '@playwright/test': ~1.32.0
+      '@playwright/test': ^1.32.0
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
@@ -1682,7 +1682,7 @@ importers:
   frameworks/vue2:
     specifiers:
       '@nuxt/config': ^2.16.3
-      '@playwright/test': ~1.32.0
+      '@playwright/test': ^1.32.0
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
@@ -1796,7 +1796,7 @@ importers:
 
   frameworks/vue3:
     specifiers:
-      '@playwright/test': ~1.32.0
+      '@playwright/test': ^1.32.0
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
       '@previewjs/serializable-values': ^5.1.0
@@ -2057,7 +2057,7 @@ importers:
 
   testing:
     specifiers:
-      '@playwright/test': ~1.32.0
+      '@playwright/test': ^1.32.0
       '@previewjs/api': ^9.0.3
       '@previewjs/chromeless': ^4.0.4
       '@previewjs/core': ^19.0.2
@@ -2067,7 +2067,7 @@ importers:
       assert-never: ^1.2.1
       fs-extra: ^11.1.1
       get-port: ^6.1.2
-      playwright: ~1.32.0
+      playwright: ^1.32.0
       rimraf: ^4.4.1
       typescript: ^4.9.5
       unbuild: ^1.1.2
