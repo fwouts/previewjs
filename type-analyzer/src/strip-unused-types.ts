@@ -1,9 +1,14 @@
 import assertNever from "assert-never";
 import type { CollectedTypes, ValueType } from "./definitions";
 
-export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
+export function stripUnusedTypes(
+  collected: CollectedTypes,
+  types: ValueType[]
+) {
   const visitedTypeNames = new Set<string>();
-  visitType(type);
+  for (const type of types) {
+    visitType(type);
+  }
   return Object.fromEntries(
     Object.entries(collected).filter(([name]) => visitedTypeNames.has(name))
   );

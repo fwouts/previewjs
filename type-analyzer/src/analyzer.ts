@@ -152,7 +152,7 @@ class TypeResolver {
     const resolved = this.resolveTypeInternal(type);
     return {
       type: resolved,
-      collected: stripUnusedTypes(this.collected, resolved),
+      collected: stripUnusedTypes(this.collected, [resolved]),
     };
   }
 
