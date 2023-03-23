@@ -1,14 +1,14 @@
 import type { ComponentAnalysis } from "@previewjs/core";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import {
-  dereferenceType,
   EMPTY_OBJECT_TYPE,
-  maybeOptionalType,
-  objectType,
   OptionalType,
-  stripUnusedTypes,
   TypeResolver,
   UNKNOWN_TYPE,
+  dereferenceType,
+  maybeOptionalType,
+  objectType,
+  stripUnusedTypes,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 import { detectPropTypes } from "./prop-types.js";
@@ -157,6 +157,6 @@ function computePropsTypeFromPropTypes(
   const resolved = objectType(fields);
   return {
     type: resolved,
-    collected: stripUnusedTypes(collected, resolved),
+    collected: stripUnusedTypes(collected, [resolved]),
   };
 }
