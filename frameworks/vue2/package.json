@@ -20,7 +20,6 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "prepare": "rimraf preview/modules && shx mkdir preview/modules && shx cp -rL node_modules/vue preview/modules/vue && shx rm -rf preview/modules/vue/packages/compiler-sfc/test",
-    "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest",
     "e2e-test": "playwright test"

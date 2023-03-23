@@ -39,7 +39,6 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/loader --no-deps --include-dependencies",
     "build": "rimraf dist && tsc"
   },
   "devDependencies": {

@@ -17,7 +17,6 @@
   "type": "module",
   "main": "./dist/index.mjs",
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/app --no-deps --include-dependencies",
     "build": "tsc && unbuild && tsc -p client/tsconfig.json && vite build client",
     "client:dev": "vite client"
   },

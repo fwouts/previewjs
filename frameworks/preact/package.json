@@ -19,7 +19,6 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-preact --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest",
     "e2e-test": "playwright test"

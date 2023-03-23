@@ -30,6 +30,7 @@ jobs:
             - args: [--filter=\!./frameworks/\*/tests/apps/\*]
       - name: Update NPM token
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - run: pnpm turbo build
       - run: |
           cd api
           if ! pnpm publish --no-git-checks --access public 2>error.log; then

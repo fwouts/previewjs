@@ -18,7 +18,6 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/type-analyzer --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "test": "vitest"
   },

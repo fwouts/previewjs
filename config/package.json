@@ -19,7 +19,6 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
     "build": "tsc && unbuild"
   },
   "devDependencies": {

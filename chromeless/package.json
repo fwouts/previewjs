@@ -18,7 +18,6 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/chromeless --no-deps --include-dependencies",
     "build": "rimraf dist && tsc && unbuild && vite build client"
   },
   "dependencies": {
