@@ -5,8 +5,8 @@ import {
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
 import type { Reader } from "@previewjs/vfs";
-import { transform } from "buble";
 import type playwright from "playwright";
+import ts from "typescript";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
 import { createChromelessWorkspace } from "./workspace";
@@ -152,9 +152,18 @@ export async function startPreview({
       );
       if (propsAssignmentSource) {
         // Transform JSX if required.
-        propsAssignmentSource = transform(propsAssignmentSource, {
-          jsx: "__jsxFactory__",
-        }).code;
+        try {
+          propsAssignmentSource = ts.transpileModule(propsAssignmentSource, {
+            compilerOptions: {
+              jsx: ts.JsxEmit.React,
+              jsxFactory: "__jsxFactory__",
+            },
+          }).outputText;
+        } catch (e) {
+          throw new Error(
+            `Error transforming source:\n${propsAssignmentSource}\n\n${e}`
+          );
+        }
       } else {
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
