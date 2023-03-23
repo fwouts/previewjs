@@ -39,20 +39,20 @@ async function onUrlChanged() {
   const [filePath, componentName] = componentId.split(":") as [string, string];
   iframeController.resetIframe();
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
-    filePath,
-    componentName,
+    componentIds: [componentId],
   });
+  const propsType = computePropsResponse.components[componentId]!.props;
   const autogenCallbackProps = generateCallbackProps(
-    computePropsResponse.types.props,
-    computePropsResponse.types.all
+    propsType,
+    computePropsResponse.types
   );
   iframeController.loadComponent({
     filePath,
     componentName,
     propsAssignmentSource: generatePropsAssignmentSource(
-      computePropsResponse.types.props,
+      propsType,
       autogenCallbackProps.keys,
-      computePropsResponse.types.all
+      computePropsResponse.types
     ),
     autogenCallbackPropsSource: autogenCallbackProps.source,
   });
