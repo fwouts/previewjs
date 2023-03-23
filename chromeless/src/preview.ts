@@ -155,6 +155,7 @@ export async function startPreview({
         try {
           propsAssignmentSource = ts.transpileModule(propsAssignmentSource, {
             compilerOptions: {
+              target: ts.ScriptTarget.ES2022,
               jsx: ts.JsxEmit.React,
               jsxFactory: "__jsxFactory__",
             },
