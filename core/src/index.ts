@@ -1,5 +1,11 @@
-import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
-import { RPCs } from "@previewjs/api";
+import {
+  decodeComponentId,
+  generateComponentId,
+  RequestOf,
+  ResponseOf,
+  RPC,
+  RPCs,
+} from "@previewjs/api";
 import type { CollectedTypes } from "@previewjs/type-analyzer";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
@@ -73,22 +79,32 @@ export async function createWorkspace({
     printWarnings: logLevel === "info",
   });
   const router = new ApiRouter();
-  router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
+  router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     let analyze: () => Promise<ComponentAnalysis>;
     const components = await frameworkPlugin.detectComponents(
       reader,
       typeAnalyzer,
-      [path.join(rootDirPath, filePath)]
+      [
+        ...new Set(
+          componentIds.map((c) =>
+            path.join(rootDirPath, decodeComponentId(c).filePath)
+          )
+        ),
+      ]
     );
-    const component = components.find((c) => c.name === componentName);
-    if (!component) {
-      throw new Error(
-        `Component ${componentName} not detected in ${filePath}. Found: ${
-          components.length === 0
-            ? "none"
-            : components.map((c) => c.name).join(", ")
-        }.`
-      );
+    const componentIdToComponent = Object.fromEntries(
+      components.map((c) => [
+        generateComponentId({
+          filePath: path.relative(rootDirPath, c.absoluteFilePath),
+          name: c.name,
+        }),
+      ])
+    );
+    for (const componentId of componentIds) {
+      if (!componentIdToComponent[componentId]) {
+        const { filePath, name } = decodeComponentId(componentId);
+        throw new Error(`Component ${name} not detected in ${filePath}.`);
+      }
     }
     if (component.info.kind === "component") {
       analyze = component.info.analyze;
