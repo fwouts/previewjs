@@ -142,13 +142,13 @@ export async function startPreview({
         componentName: matchingDetectedComponent.name,
         filePath,
       };
-      const computePropsResponse = await workspace.localRpc(
-        RPCs.ComputeProps,
-        component
-      );
+      const computePropsResponse = await workspace.localRpc(RPCs.ComputeProps, {
+        componentIds: [componentId],
+      });
+      const propsType = computePropsResponse.components[componentId]!.props;
       const autogenCallbackProps = generateCallbackProps(
-        computePropsResponse.types.props,
-        computePropsResponse.types.all
+        propsType,
+        computePropsResponse.types
       );
       if (propsAssignmentSource) {
         // Transform JSX if required.
@@ -170,9 +170,9 @@ export async function startPreview({
           matchingDetectedComponent.info.kind === "story"
             ? "properties = null"
             : generatePropsAssignmentSource(
-                computePropsResponse.types.props,
+                propsType,
                 autogenCallbackProps.keys,
-                computePropsResponse.types.all
+                computePropsResponse.types
               );
       }
       const donePromise = new Promise<void>((resolve, reject) => {
