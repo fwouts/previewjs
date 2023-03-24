@@ -94,6 +94,12 @@ function transformFunctions(value: any, path: string[]): any {
     }
     if (value.constructor === Object) {
       // Plain object (i.e. not Set or Map or any class instance).
+      if (value.$$typeof) {
+        // This is likely a React component, e.g. instantiated in a JSX expression.
+        // We don't want to show an action invoked when the JSX function is invoked,
+        // so skip it.
+        return value;
+      }
       return Object.fromEntries(
         Object.entries(value).map(([k, v]) => [
           k,
