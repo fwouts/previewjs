@@ -1,21 +1,21 @@
 import assertNever from "assert-never";
 import ts from "typescript";
 import { formatExpression } from "./format-expression";
-import type {
-  SerializableObjectValueEntry,
-  SerializableValue,
-} from "./serializable-value";
 import {
   EMPTY_MAP,
+  EMPTY_OBJECT,
   EMPTY_SET,
   FALSE,
   NULL,
+  SerializableObjectValueEntry,
+  SerializableValue,
   TRUE,
   UNDEFINED,
   UNKNOWN,
   array,
   fn,
   map,
+  node,
   number,
   object,
   promise,
@@ -240,7 +240,89 @@ export function parseSerializableValue(
     return fn(formatExpression(expression.getText()));
   }
 
+  if (ts.isJsxElement(expression)) {
+    return node(
+      expression.openingElement.tagName.getText(),
+      object(extractPropertiesFromJsxElement(expression.openingElement)),
+      extractChildrenFromJsxElement(expression)
+    );
+  }
+
+  if (ts.isJsxSelfClosingElement(expression)) {
+    return node(
+      expression.tagName.getText(),
+      object(extractPropertiesFromJsxElement(expression)),
+      null
+    );
+  }
+
+  if (ts.isJsxFragment(expression)) {
+    return node("", EMPTY_OBJECT, extractChildrenFromJsxElement(expression));
+  }
+
   return fallbackValue;
+}
+
+function extractPropertiesFromJsxElement(
+  element: ts.JsxOpeningElement | ts.JsxSelfClosingElement
+) {
+  const objectEntries: SerializableObjectValueEntry[] = [];
+  for (const property of element.attributes.properties) {
+    if (ts.isJsxSpreadAttribute(property)) {
+      objectEntries.push({
+        kind: "spread",
+        value: parseSerializableValue(property.expression),
+      });
+    } else {
+      let value: SerializableValue;
+      if (!property.initializer) {
+        // A JSX attribute without a value means "true".
+        value = TRUE;
+      } else if (ts.isJsxExpression(property.initializer)) {
+        value = property.initializer.expression
+          ? parseSerializableValue(property.initializer.expression)
+          : unknown("");
+      } else {
+        value = parseSerializableValue(property.initializer);
+      }
+      objectEntries.push({
+        kind: "key",
+        key: string(property.name.text),
+        value,
+      });
+    }
+  }
+  return objectEntries;
+}
+
+function extractChildrenFromJsxElement(
+  element: ts.JsxElement | ts.JsxFragment
+) {
+  const children: SerializableValue[] = [];
+  for (const child of element.children) {
+    if (ts.isJsxText(child)) {
+      if (child.containsOnlyTriviaWhiteSpaces) {
+        continue;
+      }
+      // TODO: Double check that unescaping is done correctly if needed.
+      children.push(
+        string(
+          // Note: we don't want to trim pure whitespace strings (typically separators).
+          child.text.trim().length === 0 ? child.text : child.text.trim()
+        )
+      );
+    } else if (ts.isJsxExpression(child)) {
+      if (child.expression) {
+        children.push(parseSerializableValue(child.expression));
+      } else {
+        // Example: {/* this is just a comment without any expression */}
+        children.push(unknown(""));
+      }
+    } else {
+      children.push(parseSerializableValue(child));
+    }
+  }
+  return children;
 }
 
 function extractKeyFromPropertyName(

@@ -232,6 +232,7 @@ describe("generateSerializableValue", () => {
             nullType: NULL_TYPE,
             booleanType: BOOLEAN_TYPE,
             stringType: STRING_TYPE,
+            nodeType: NODE_TYPE,
             numberType: NUMBER_TYPE,
             reactNodeType: NODE_TYPE,
             numberLiteral: literalType(123),
@@ -314,6 +315,27 @@ describe("generateSerializableValue", () => {
           {
             "key": {
               "kind": "string",
+              "value": "nodeType",
+            },
+            "kind": "key",
+            "value": {
+              "children": [
+                {
+                  "kind": "string",
+                  "value": "nodeType",
+                },
+              ],
+              "kind": "node",
+              "props": {
+                "entries": [],
+                "kind": "object",
+              },
+              "tag": "div",
+            },
+          },
+          {
+            "key": {
+              "kind": "string",
               "value": "numberType",
             },
             "kind": "key",
@@ -329,8 +351,18 @@ describe("generateSerializableValue", () => {
             },
             "kind": "key",
             "value": {
-              "kind": "string",
-              "value": "reactNodeType",
+              "children": [
+                {
+                  "kind": "string",
+                  "value": "reactNodeType",
+                },
+              ],
+              "kind": "node",
+              "props": {
+                "entries": [],
+                "kind": "object",
+              },
+              "tag": "div",
             },
           },
           {
