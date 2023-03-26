@@ -20,9 +20,9 @@ export function localEval(): vite.Plugin {
         `
 export const PreviewJsEvaluateLocally = async (autogenCallbackPropsSource, propsAssignmentSource, __jsxFactory__) => {
   let autogenCallbackProps = {};
-  eval(\`autogenCallbackProps = \${autogenCallbackPropsSource};\`);
+  eval(autogenCallbackPropsSource);
   let properties = {};
-  eval(\`\${propsAssignmentSource};\`);
+  eval(propsAssignmentSource);
   return { autogenCallbackProps, properties };
 }
 `

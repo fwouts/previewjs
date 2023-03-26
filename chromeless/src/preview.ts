@@ -185,8 +185,10 @@ export async function startPreview({
         },
         {
           ...component,
-          autogenCallbackPropsSource: transpile(autogenCallbackProps.source),
-          propsAssignmentSource: transpile(propsAssignmentSource),
+          autogenCallbackPropsSource: transpile(
+            `autogenCallbackProps = ${autogenCallbackProps.source}`
+          ),
+          propsAssignmentSource: transpile(propsAssignmentSource!),
         }
       );
       await donePromise;
