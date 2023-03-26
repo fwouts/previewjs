@@ -1,3 +1,3 @@
 <template>
-  <div id="ready">Hello from Nuxt 3!</div>
+  <div id="ready">Hello from Nuxt 3 RC!</div>
 </template>
