@@ -1,7 +1,7 @@
+import { AssertionError } from "assert";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { parseSerializableValue } from "./parser";
-import type { SerializableValue } from "./serializable-value";
 import {
   EMPTY_ARRAY,
   EMPTY_MAP,
@@ -9,12 +9,14 @@ import {
   EMPTY_SET,
   FALSE,
   NULL,
+  SerializableValue,
   TRUE,
   UNDEFINED,
   UNKNOWN,
   array,
   fn,
   map,
+  node,
   number,
   object,
   promise,
@@ -315,16 +317,91 @@ describe.concurrent("parseSerializableValue", () => {
   it("parses undefined", () => {
     expectParsedExpression(`undefined`).toEqual(UNDEFINED);
   });
+
+  it("parses JSX", () => {
+    expectParsedExpression(`<></>`).toEqual(node("", EMPTY_OBJECT, []));
+    expectParsedExpression(`<><div>foo</div></>`).toEqual(
+      node("", EMPTY_OBJECT, [node("div", EMPTY_OBJECT, [string("foo")])])
+    );
+    expectParsedExpression(`<><div>foo{bar}baz</div></>`).toEqual(
+      node("", EMPTY_OBJECT, [
+        node("div", EMPTY_OBJECT, [
+          string("foo"),
+          unknown("bar"),
+          string("baz"),
+        ]),
+      ])
+    );
+    expectParsedExpression(`<><div>{foo}{" "}{baz}</div></>`).toEqual(
+      node("", EMPTY_OBJECT, [
+        node("div", EMPTY_OBJECT, [
+          unknown("foo"),
+          string(" "),
+          unknown("baz"),
+        ]),
+      ])
+    );
+    expectParsedExpression(`<div></div>`).toEqual(
+      node("div", EMPTY_OBJECT, [])
+    );
+    expectParsedExpression(
+      `<div foo bar="str" baz={123} obj={{a: "b"}} {...qux}></div>`
+    ).toEqual(
+      node(
+        "div",
+        object([
+          {
+            kind: "key",
+            key: string("foo"),
+            value: TRUE,
+          },
+          {
+            kind: "key",
+            key: string("bar"),
+            value: string("str"),
+          },
+          {
+            kind: "key",
+            key: string("baz"),
+            value: number(123),
+          },
+          {
+            kind: "key",
+            key: string("obj"),
+            value: object([
+              { kind: "key", key: string("a"), value: string("b") },
+            ]),
+          },
+          {
+            kind: "spread",
+            value: unknown("qux"),
+          },
+        ]),
+        []
+      )
+    );
+    expectParsedExpression(`<div>hello '"world\\" &lt;</div>`).toEqual(
+      node("div", EMPTY_OBJECT, [string(`hello '"world\\" &lt;`)])
+    );
+  });
 });
 
 function expectParsedExpression(expressionSource: string, reversible = true) {
   const parsedValue = parseSerializableValue(parseExpression(expressionSource));
   if (reversible) {
-    expect(parsedValue).toEqual(
-      parseSerializableValue(
-        parseExpression(serializableValueToJavaScript(parsedValue))
-      )
+    const regeneratedSource = serializableValueToJavaScript(parsedValue);
+    const reparsedValue = parseSerializableValue(
+      parseExpression(regeneratedSource)
     );
+    try {
+      expect(parsedValue).toEqual(reparsedValue);
+    } catch (e) {
+      throw new AssertionError({
+        actual: [regeneratedSource, reparsedValue],
+        expected: [expressionSource, parsedValue],
+        message: "Expected the same source to be regenerated",
+      });
+    }
   }
   return expect(parsedValue);
 }

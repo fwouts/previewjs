@@ -3,6 +3,7 @@ export type SerializableValue =
   | SerializableBooleanValue
   | SerializableFunctionValue
   | SerializableMapValue
+  | SerializableNodeValue
   | SerializableNullValue
   | SerializableNumberValue
   | SerializableObjectValue
@@ -63,6 +64,26 @@ export function map(values: SerializableObjectValue): SerializableMapValue {
   return {
     kind: "map",
     values,
+  };
+}
+
+export type SerializableNodeValue = {
+  kind: "node";
+  tag: string;
+  props: SerializableObjectValue;
+  children: SerializableValue[] | null;
+};
+
+export function node(
+  tag: string,
+  props: SerializableObjectValue,
+  children: SerializableValue[] | null = null
+): SerializableNodeValue {
+  return {
+    kind: "node",
+    tag,
+    props,
+    children,
   };
 }
 

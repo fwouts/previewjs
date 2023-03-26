@@ -150,22 +150,7 @@ export async function startPreview({
         propsType,
         computePropsResponse.types
       );
-      if (propsAssignmentSource) {
-        // Transform JSX if required.
-        try {
-          propsAssignmentSource = ts.transpileModule(propsAssignmentSource, {
-            compilerOptions: {
-              target: ts.ScriptTarget.ES2022,
-              jsx: ts.JsxEmit.React,
-              jsxFactory: "__jsxFactory__",
-            },
-          }).outputText;
-        } catch (e) {
-          throw new Error(
-            `Error transforming source:\n${propsAssignmentSource}\n\n${e}`
-          );
-        }
-      } else {
+      if (!propsAssignmentSource) {
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
             ? "properties = null"
@@ -200,8 +185,10 @@ export async function startPreview({
         },
         {
           ...component,
-          autogenCallbackPropsSource: autogenCallbackProps.source,
-          propsAssignmentSource,
+          autogenCallbackPropsSource: transpile(
+            `autogenCallbackProps = ${autogenCallbackProps.source}`
+          ),
+          propsAssignmentSource: transpile(propsAssignmentSource!),
         }
       );
       await donePromise;
@@ -212,6 +199,21 @@ export async function startPreview({
       await workspace.dispose();
     },
   };
+}
+
+function transpile(source: string) {
+  // Transform JSX if required.
+  try {
+    return ts.transpileModule(source, {
+      compilerOptions: {
+        target: ts.ScriptTarget.ES2022,
+        jsx: ts.JsxEmit.React,
+        jsxFactory: "__jsxFactory__",
+      },
+    }).outputText;
+  } catch (e) {
+    throw new Error(`Error transforming source:\n${source}\n\n${e}`);
+  }
 }
 
 async function waitUntilNetworkIdle(page: playwright.Page) {

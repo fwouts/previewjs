@@ -1,6 +1,10 @@
 import assertNever from "assert-never";
 import { formatExpression } from "./format-expression";
-import type { SerializableValue } from "./serializable-value";
+import {
+  SerializableObjectValue,
+  SerializableValue,
+  object,
+} from "./serializable-value";
 
 export function serializableValueToJavaScript(
   value: SerializableValue
@@ -28,6 +32,24 @@ function serializableValueToUnformattedJavaScript(
             )})`
           : ""
       })`;
+    case "node":
+      return value.children
+        ? `<${value.tag} ${unformattedJsxProps(value.props)}>${value.children
+            .map((child) => {
+              if (
+                child.kind === "string" &&
+                // Whitespaces aren't safe to inline.
+                child.value.trim() === child.value
+              ) {
+                return child.value;
+              } else if (child.kind === "node") {
+                return serializableValueToJavaScript(child);
+              } else {
+                return `{${serializableValueToJavaScript(child)}}`;
+              }
+            })
+            .join("\n")}</${value.tag}>`
+        : `<${value.tag} ${unformattedJsxProps(value.props)} />`;
     case "null":
       return "null";
     case "number":
@@ -81,4 +103,24 @@ function serializableValueToUnformattedJavaScript(
     default:
       throw assertNever(value);
   }
+}
+
+function unformattedJsxProps(props: SerializableObjectValue): string {
+  const attributes: string[] = [];
+  for (const prop of props.entries) {
+    if (prop.kind === "spread") {
+      attributes.push(`{...(${serializableValueToJavaScript(prop.value)})}`);
+    } else if (prop.key.kind !== "string") {
+      attributes.push(`...(${serializableValueToJavaScript(object([prop]))})`);
+    } else if (prop.value.kind === "boolean" && prop.value.value === true) {
+      attributes.push(`${prop.key.value}`);
+    } else if (prop.value.kind === "string") {
+      attributes.push(`${prop.key.value}=${JSON.stringify(prop.value.value)}`);
+    } else {
+      attributes.push(
+        `${prop.key.value}={${serializableValueToJavaScript(prop.value)}}`
+      );
+    }
+  }
+  return attributes.join("\n");
 }

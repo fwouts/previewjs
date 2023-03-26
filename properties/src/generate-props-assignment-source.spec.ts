@@ -144,7 +144,7 @@ describe("generatePropsAssignmentSource", () => {
         booleanType: false,
         stringType: \\"stringType\\",
         numberType: 0,
-        reactNodeType: \\"reactNodeType\\",
+        reactNodeType: <div>reactNodeType</div>,
         numberLiteral: 123,
         stringLiteral: \\"foo\\",
         trueLiteral: true,

@@ -1,11 +1,14 @@
 import { faker } from "@faker-js/faker";
-import type {
+import {
   ArrayType,
   CollectedTypes,
   RecordType,
+  STRING_TYPE,
   ValueType,
+  arrayType,
+  dereferenceType,
+  isValid,
 } from "@previewjs/type-analyzer";
-import { arrayType, dereferenceType, isValid } from "@previewjs/type-analyzer";
 import assertNever from "assert-never";
 import { formatExpression } from "./format-expression";
 import { isValidPropName } from "./prop-name";
@@ -23,6 +26,7 @@ import {
   array,
   fn,
   map,
+  node,
   number,
   object,
   promise,
@@ -78,10 +82,20 @@ function _generateSerializableValue(
     case "boolean":
       return random && Math.random() < 0.5 ? TRUE : FALSE;
     case "string":
-    case "node":
       return string(
         random ? faker.lorem.words(generateRandomInteger(0, 10)) : fieldName
       );
+    case "node":
+      return node("div", EMPTY_OBJECT, [
+        _generateSerializableValue(
+          STRING_TYPE,
+          collected,
+          fieldName,
+          rejectTypeNames,
+          random,
+          isFunctionReturnValue
+        ),
+      ]);
     case "number":
       return number(random ? generateRandomInteger() : 0);
     case "literal":
