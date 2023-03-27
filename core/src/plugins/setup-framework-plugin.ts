@@ -53,9 +53,7 @@ async function extractPackageDependencies(
         }
         const readInstalledVersion = async () => {
           try {
-            const moduleEntryPath = require.resolve(name, {
-              paths: [rootDirPath],
-            });
+            const moduleEntryPath = findModuleEntryPath(name, rootDirPath);
             let packagePath = moduleEntryPath;
             let packageJsonPath: string | null = null;
             while (packagePath !== path.dirname(packagePath)) {
@@ -96,4 +94,28 @@ async function extractPackageDependencies(
       }
     )
   );
+}
+
+function findModuleEntryPath(name: string, rootDirPath: string): string {
+  try {
+    return require.resolve(name, {
+      paths: [rootDirPath],
+    });
+  } catch (e: any) {
+    if (e.code === "ERR_PACKAGE_PATH_NOT_EXPORTED") {
+      // When this occurs, the error conveniently includes the package path we're precisely trying to extract.
+      //
+      // Note: this could break in future Node versions.
+      //
+      // Example:
+      // Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: No "exports" main defined in .../nuxt-app/node_modules/nuxt/package.json
+      const potentialMatch = (e.message as string).match(
+        /No "exports" main defined in (.*)(\/|\\)package\.json/
+      );
+      if (potentialMatch) {
+        return potentialMatch[1]!;
+      }
+    }
+    throw e;
+  }
 }

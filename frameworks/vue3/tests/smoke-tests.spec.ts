@@ -10,6 +10,7 @@ test.describe.parallel("smoke tests", () => {
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
     componentIdsPerProject: {
+      "nuxt-app": ["app.vue:app"],
       "nuxt3-app": ["app.vue:app"],
       "vue3-app": ["src/App.vue:App"],
     },
