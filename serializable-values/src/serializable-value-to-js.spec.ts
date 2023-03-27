@@ -103,13 +103,11 @@ describe("serializableValueToJavaScript", () => {
         node("A", EMPTY_OBJECT, [string("foo"), unknown("bar"), string("baz")])
       )
     ).toMatchInlineSnapshot(`
-      "
-        <A>
-          foo
-          {bar}
-          baz
-        </A>
-      "
+      "<A>
+        foo
+        {bar}
+        baz
+      </A>"
     `);
     expect(
       serializableValueToJavaScript(
@@ -120,11 +118,9 @@ describe("serializableValueToJavaScript", () => {
         ])
       )
     ).toMatchInlineSnapshot(`
-      "
-        <A>
-          <b>Hello</b> <i>World</i>
-        </A>
-      "
+      "<A>
+        <b>Hello</b> <i>World</i>
+      </A>"
     `);
     expect(
       serializableValueToJavaScript(
@@ -141,13 +137,11 @@ describe("serializableValueToJavaScript", () => {
         node("A", EMPTY_OBJECT, [string("foo"), string("   "), string("bar")])
       )
     ).toMatchInlineSnapshot(`
-      "
-        <A>
-          foo
-          {\\"   \\"}
-          bar
-        </A>
-      "
+      "<A>
+        foo
+        {\\"   \\"}
+        bar
+      </A>"
     `);
     const complexProps = object([
       {
@@ -193,47 +187,7 @@ describe("serializableValueToJavaScript", () => {
     ]);
     expect(serializableValueToJavaScript(node("A", complexProps)))
       .toMatchInlineSnapshot(`
-        "
-          <A
-            {...{
-              str: \\"foo\\"
-            }}
-            str=\\"bar\\"
-            num={123}
-            positive
-            negative={false}
-            obj={{}}
-            func={() => {
-              /* function source */
-            }}
-          />
-        "
-      `);
-    expect(serializableValueToJavaScript(node("A", complexProps, [])))
-      .toMatchInlineSnapshot(`
-        "
-          <A
-            {...{
-              str: \\"foo\\"
-            }}
-            str=\\"bar\\"
-            num={123}
-            positive
-            negative={false}
-            obj={{}}
-            func={() => {
-              /* function source */
-            }}
-          ></A>
-        "
-      `);
-    expect(
-      serializableValueToJavaScript(
-        node("A", complexProps, [node("div", EMPTY_OBJECT)])
-      )
-    ).toMatchInlineSnapshot(`
-      "
-        <A
+        "<A
           {...{
             str: \\"foo\\"
           }}
@@ -245,10 +199,44 @@ describe("serializableValueToJavaScript", () => {
           func={() => {
             /* function source */
           }}
-        >
-          <div />
-        </A>
-      "
+        />"
+      `);
+    expect(serializableValueToJavaScript(node("A", complexProps, [])))
+      .toMatchInlineSnapshot(`
+        "<A
+          {...{
+            str: \\"foo\\"
+          }}
+          str=\\"bar\\"
+          num={123}
+          positive
+          negative={false}
+          obj={{}}
+          func={() => {
+            /* function source */
+          }}
+        ></A>"
+      `);
+    expect(
+      serializableValueToJavaScript(
+        node("A", complexProps, [node("div", EMPTY_OBJECT)])
+      )
+    ).toMatchInlineSnapshot(`
+      "<A
+        {...{
+          str: \\"foo\\"
+        }}
+        str=\\"bar\\"
+        num={123}
+        positive
+        negative={false}
+        obj={{}}
+        func={() => {
+          /* function source */
+        }}
+      >
+        <div />
+      </A>"
     `);
   });
 
