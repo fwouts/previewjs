@@ -32,7 +32,7 @@ export function computeIntersection(types: ValueType[]): ValueType {
   if (identical) {
     return evolvingType;
   }
-  const defaultIntersection = intersectionType(types);
+  const defaultIntersection = intersectionType(types, { skipOptimize: true });
   switch (evolvingType.kind) {
     case "function": {
       const returnTypes = [evolvingType.returnType];

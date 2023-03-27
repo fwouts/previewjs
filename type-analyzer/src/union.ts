@@ -31,7 +31,7 @@ export function computeUnion(types: ValueType[]): ValueType {
       ),
     ]);
   }
-  const defaultUnion = unionType(types);
+  const defaultUnion = unionType(types, { skipOptimize: true });
   switch (evolvingType.kind) {
     case "function": {
       const returnTypes = [evolvingType.returnType];

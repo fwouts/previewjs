@@ -1,3 +1,6 @@
+import { computeIntersection } from "./intersection";
+import { computeUnion } from "./union";
+
 export type ValueType =
   | AnyType
   | UnknownType
@@ -161,7 +164,13 @@ export interface UnionType {
   kind: "union";
   types: ValueType[];
 }
-export function unionType(types: ValueType[]): ValueType {
+export function unionType(
+  types: ValueType[],
+  { skipOptimize }: { skipOptimize?: boolean } = {}
+): ValueType {
+  if (!skipOptimize) {
+    return computeUnion(types);
+  }
   if (types.length === 0) {
     return NEVER_TYPE;
   }
@@ -178,7 +187,13 @@ export interface IntersectionType {
   kind: "intersection";
   types: ValueType[];
 }
-export function intersectionType(types: ValueType[]): ValueType {
+export function intersectionType(
+  types: ValueType[],
+  { skipOptimize }: { skipOptimize?: boolean } = {}
+): ValueType {
+  if (!skipOptimize) {
+    return computeIntersection(types);
+  }
   if (types.length === 0) {
     return ANY_TYPE;
   }
