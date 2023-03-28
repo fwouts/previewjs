@@ -4,6 +4,7 @@ import {
   generateCallbackProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
+import ts from "typescript";
 
 const iframe = document.getElementById("root") as HTMLIFrameElement;
 const rpcApi = createAxiosApi("/api/");
@@ -49,11 +50,30 @@ async function onUrlChanged() {
   iframeController.loadComponent({
     filePath,
     componentName,
-    propsAssignmentSource: generatePropsAssignmentSource(
-      propsType,
-      autogenCallbackProps.keys,
-      computePropsResponse.types
+    propsAssignmentSource: transpile(
+      generatePropsAssignmentSource(
+        propsType,
+        autogenCallbackProps.keys,
+        computePropsResponse.types
+      )
     ),
-    autogenCallbackPropsSource: autogenCallbackProps.source,
+    autogenCallbackPropsSource: transpile(
+      `autogenCallbackProps = ${autogenCallbackProps.source}`
+    ),
   });
+}
+
+function transpile(source: string) {
+  // Transform JSX if required.
+  try {
+    return ts.transpileModule(source, {
+      compilerOptions: {
+        target: ts.ScriptTarget.ES2022,
+        jsx: ts.JsxEmit.React,
+        jsxFactory: "__jsxFactory__",
+      },
+    }).outputText;
+  } catch (e) {
+    throw new Error(`Error transforming source:\n${source}\n\n${e}`);
+  }
 }
