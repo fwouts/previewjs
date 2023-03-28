@@ -1,17 +1,14 @@
-import type { Client } from "@previewjs/daemon/client";
 import vscode from "vscode";
-import type { WebviewPanel } from "vscode";
 import { ensurePreviewServerStopped } from "./preview-server";
-
-let previewPanel: WebviewPanel | null = null;
+import { PreviewJsState } from "./state";
 
 export function updatePreviewPanel(
-  client: Client,
+  state: PreviewJsState,
   previewBaseUrl: string,
   componentId: string
 ) {
-  if (!previewPanel) {
-    previewPanel = vscode.window.createWebviewPanel(
+  if (!state.previewPanel) {
+    state.previewPanel = vscode.window.createWebviewPanel(
       "preview", // Identifies the type of the webview. Used internally
       "Preview", // Title of the panel displayed to the user
       vscode.ViewColumn.Two, // Editor column to show the new webview panel in.
@@ -20,16 +17,16 @@ export function updatePreviewPanel(
         retainContextWhenHidden: true,
       }
     );
-    previewPanel.webview.onDidReceiveMessage((message) => {
+    state.previewPanel.webview.onDidReceiveMessage((message) => {
       if (message.command === "open-browser") {
         vscode.env.openExternal(vscode.Uri.parse(message.url));
       }
     });
-    previewPanel.onDidDispose(() => {
-      previewPanel = null;
-      ensurePreviewServerStopped(client).catch(console.error);
+    state.previewPanel.onDidDispose(() => {
+      state.previewPanel = null;
+      ensurePreviewServerStopped(state).catch(console.error);
     });
-    previewPanel.webview.html = `<!DOCTYPE html>
+    state.previewPanel.webview.html = `<!DOCTYPE html>
   <html>
     <head>
       <style>
@@ -78,18 +75,18 @@ export function updatePreviewPanel(
     </body>
   </html>`;
   } else {
-    previewPanel.webview.postMessage({
+    state.previewPanel.webview.postMessage({
       kind: "navigate",
       previewBaseUrl,
       componentId,
     });
   }
-  previewPanel.reveal(vscode.ViewColumn.Beside, true);
+  state.previewPanel.reveal(vscode.ViewColumn.Beside, true);
 }
 
-export function closePreviewPanel() {
-  if (previewPanel) {
-    previewPanel.dispose();
-    previewPanel = null;
+export function closePreviewPanel(state: PreviewJsState) {
+  if (state.previewPanel) {
+    state.previewPanel.dispose();
+    state.previewPanel = null;
   }
 }

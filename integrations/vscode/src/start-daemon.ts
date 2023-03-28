@@ -1,8 +1,15 @@
-import { createClient } from "@previewjs/daemon/client";
 import type { Client } from "@previewjs/daemon/client";
-import { execa } from "execa";
+import { createClient } from "@previewjs/daemon/client";
 import type { ExecaChildProcess, ExecaReturnValue, Options } from "execa";
-import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
+import { execa } from "execa";
+import {
+  FSWatcher,
+  closeSync,
+  openSync,
+  readFileSync,
+  utimesSync,
+  watch,
+} from "fs";
 import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
@@ -11,11 +18,15 @@ import { clientId } from "./client-id";
 
 const port = process.env.PREVIEWJS_PORT || "9315";
 const logsPath = path.join(__dirname, "daemon.log");
-const daemonLockFilePath = path.join(__dirname, "process.lock");
+
+export const daemonLockFilePath = path.join(__dirname, "process.lock");
 
 export async function ensureDaemonRunning(
   outputChannel: OutputChannel
-): Promise<Client | null> {
+): Promise<{
+  client: Client;
+  watcher: FSWatcher;
+} | null> {
   const client = createClient(`http://localhost:${port}`);
   if (!(await startDaemon(outputChannel))) {
     return null;
@@ -24,12 +35,15 @@ export async function ensureDaemonRunning(
   // daemon running already (e.g. from another workspace) because of the lock file. This is
   // fine and working by design.
   const ready = streamDaemonLogs(outputChannel);
-  await ready;
+  const watcher = await ready;
   await client.updateClientStatus({
     clientId,
     alive: true,
   });
-  return client;
+  return {
+    client,
+    watcher,
+  };
 }
 
 // Important: we wrap daemonProcess into a Promise so that awaiting startDaemon()
@@ -125,8 +139,8 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
   return { daemonProcess };
 }
 
-function streamDaemonLogs(outputChannel: OutputChannel) {
-  const ready = new Promise<void>((resolve) => {
+function streamDaemonLogs(outputChannel: OutputChannel): Promise<FSWatcher> {
+  const ready = new Promise<FSWatcher>((resolve) => {
     let lastKnownLogsLength = 0;
     let resolved = false;
     // Ensure file exists before watching.
@@ -190,14 +204,14 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
           );
         }
         if (!resolved && logsContent.includes("[ready]")) {
-          resolve();
+          resolve(watcher);
           resolved = true;
         }
       } catch (e: any) {
         // Fine, ignore. It just means log streaming is broken.
       }
     };
-    watch(
+    const watcher = watch(
       logsPath,
       {
         persistent: false,

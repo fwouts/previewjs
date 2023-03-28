@@ -1,45 +1,38 @@
-import type { Client } from "@previewjs/daemon/client";
 import { exclusivePromiseRunner } from "exclusive-promises";
-
-let currentPreview:
-  | {
-      workspaceId: string;
-      url: string;
-    }
-  | undefined = undefined;
+import { PreviewJsState } from "./state";
 
 const locking = exclusivePromiseRunner();
 export async function ensurePreviewServerStarted(
-  client: Client,
+  state: PreviewJsState,
   workspaceId: string
 ) {
   return locking(async () => {
-    if (currentPreview?.workspaceId !== workspaceId) {
-      if (currentPreview) {
-        await client.stopPreview({
-          workspaceId: currentPreview.workspaceId,
+    if (state.currentPreview?.workspaceId !== workspaceId) {
+      if (state.currentPreview) {
+        await state.client.stopPreview({
+          workspaceId: state.currentPreview.workspaceId,
         });
       }
-      const { url } = await client.startPreview({
+      const { url } = await state.client.startPreview({
         workspaceId,
       });
-      currentPreview = {
+      state.currentPreview = {
         workspaceId,
         url,
       };
     }
-    return currentPreview;
+    return state.currentPreview;
   });
 }
 
-export async function ensurePreviewServerStopped(client: Client) {
+export async function ensurePreviewServerStopped(state: PreviewJsState) {
   return locking(async () => {
-    if (!currentPreview) {
+    if (!state.currentPreview) {
       return;
     }
-    await client.stopPreview({
-      workspaceId: currentPreview.workspaceId,
+    await state.client.stopPreview({
+      workspaceId: state.currentPreview.workspaceId,
     });
-    currentPreview = undefined;
+    state.currentPreview = null;
   });
 }

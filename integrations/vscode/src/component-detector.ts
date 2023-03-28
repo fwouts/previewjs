@@ -1,33 +1,29 @@
 import type { AnalyzeFileResponse, Client } from "@previewjs/daemon/client";
 import type vscode from "vscode";
-import type { createWorkspaceGetter } from "./workspaces";
+import { WorkspaceGetter } from "./workspaces";
 
 export function createComponentDetector(
-  previewjsInitPromise: Promise<Client | null>,
-  getWorkspaceId: ReturnType<typeof createWorkspaceGetter>
-) {
-  async function getComponents(
+  client: Client,
+  getWorkspaceId: WorkspaceGetter
+): ComponentDetector {
+  return async function (
     document?: vscode.TextDocument
   ): Promise<AnalyzeFileResponse["components"]> {
     if (!document || !document.fileName) {
       return [];
     }
-    const previewjsClient = await previewjsInitPromise;
-    if (!previewjsClient) {
-      return [];
-    }
-    const workspaceId = await getWorkspaceId(previewjsClient, document);
+    const workspaceId = await getWorkspaceId(document);
     if (!workspaceId) {
       return [];
     }
-    const { components } = await previewjsClient.analyzeFile({
+    const { components } = await client.analyzeFile({
       workspaceId,
       absoluteFilePath: document.fileName,
     });
     return components;
-  }
-
-  return {
-    getComponents,
   };
 }
+
+export type ComponentDetector = (
+  document?: vscode.TextDocument
+) => Promise<AnalyzeFileResponse["components"]>;
