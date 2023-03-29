@@ -110,9 +110,12 @@ export class ViteManager {
     // Find valid tsconfig.json files.
     //
     // Useful when the project may contain some invalid files.
-    const typeScriptConfigFilePaths = await findFiles(
+    const typeScriptConfigAbsoluteFilePaths = await findFiles(
       this.options.rootDirPath,
-      "{js|ts}config.json"
+      "{js,ts}config.json"
+    );
+    const typeScriptConfigFilePaths = typeScriptConfigAbsoluteFilePaths.map(
+      (p) => path.relative(this.options.rootDirPath, p)
     );
     const validTypeScriptFilePaths: string[] = [];
     for (const configFilePath of typeScriptConfigFilePaths) {
