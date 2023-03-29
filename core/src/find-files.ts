@@ -1,11 +1,11 @@
 import fs from "fs-extra";
+import { globby } from "globby";
 import path from "path";
 
 export async function findFiles(rootDirPath: string, pattern: string) {
   const gitRootPath = await findGitRoot(rootDirPath);
   const relativePath = path.relative(gitRootPath, rootDirPath);
   const relativePrefix = relativePath ? relativePath + path.sep : "";
-  const { globby } = await import("globby");
   const files: string[] = await globby(relativePrefix + pattern, {
     gitignore: true,
     ignore: ["**/node_modules/**"],
