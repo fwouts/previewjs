@@ -6,12 +6,12 @@ import fs from "fs-extra";
 import { escape } from "html-escaper";
 import type { Server } from "http";
 import path from "path";
-import { recrawl } from "recrawl";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
+import { findFiles } from "../find-files";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
@@ -110,10 +110,13 @@ export class ViteManager {
     // Find valid tsconfig.json files.
     //
     // Useful when the project may contain some invalid files.
-    const typeScriptConfigFilePaths = await recrawl({
-      only: ["jsconfig.json", "tsconfig.json"],
-      skip: ["node_modules", ".git"],
-    })(this.options.rootDirPath);
+    const typeScriptConfigAbsoluteFilePaths = await findFiles(
+      this.options.rootDirPath,
+      "{js,ts}config.json"
+    );
+    const typeScriptConfigFilePaths = typeScriptConfigAbsoluteFilePaths.map(
+      (p) => path.relative(this.options.rootDirPath, p)
+    );
     const validTypeScriptFilePaths: string[] = [];
     for (const configFilePath of typeScriptConfigFilePaths) {
       try {
