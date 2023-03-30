@@ -278,7 +278,7 @@ importers:
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
-      preact: ^10.13.1
+      preact: ^10.13.2
       rimraf: ^4.4.1
       typescript: ^4.9.5
       unbuild: ^1.1.2
@@ -297,7 +297,7 @@ importers:
       '@previewjs/iframe': link:../../iframe
       '@previewjs/properties': link:../../properties
       '@previewjs/testing': link:../../testing
-      preact: 10.13.1
+      preact: 10.13.2
       rimraf: 4.4.1
       unbuild: 1.1.2
       vite: 4.2.1
@@ -28629,8 +28629,8 @@ packages:
   /preact/10.13.0:
     resolution: {integrity: sha512-ERdIdUpR6doqdaSIh80hvzebHB7O6JxycOhyzAeLEchqOq/4yueslQbfnPwXaNhAYacFTyCclhwkEbOumT0tHw==}
 
-  /preact/10.13.1:
-    resolution: {integrity: sha512-KyoXVDU5OqTpG9LXlB3+y639JAGzl8JSBXLn1J9HTSB3gbKcuInga7bZnXLlxmK94ntTs1EFeZp0lrja2AuBYQ==}
+  /preact/10.13.2:
+    resolution: {integrity: sha512-q44QFLhOhty2Bd0Y46fnYW0gD/cbVM9dUVtNTDKPcdXSMA7jfY+Jpd6rk3GB0lcQss0z5s/6CmVP0Z/hV+g6pw==}
     dev: true
 
   /prebuild-install/7.1.1:
@@ -34048,7 +34048,7 @@ packages:
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
-      mlly: 1.1.1
+      mlly: 1.2.0
       pathe: 1.1.0
       picocolors: 1.0.0
       vite: 4.2.1
