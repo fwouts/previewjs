@@ -4,6 +4,7 @@ import { Button as Button1 } from "button1";
 import { Button as Button2 } from "button2";
 import { Button as Button3 } from "components/Button";
 import logoUrl, { ReactComponent as Logo } from "images/logo.svg";
+import React from "react";
 import { AppProps } from "./Proxy";
 
 function App(props: AppProps) {
@@ -13,7 +14,7 @@ function App(props: AppProps) {
         <Logo className="App-logo" />
         <img src={logoUrl} className="App-logo" alt="logo" />
         <p>
-          Foo! <code>src/App.tsx</code> and save to reload.
+          Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <Button1 />
         <Button2 />
