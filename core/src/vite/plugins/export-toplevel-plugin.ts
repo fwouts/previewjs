@@ -71,7 +71,7 @@ export function findTopLevelEntityNames(source: string): string[] {
       }
     }
   }
-  return topLevelEntityNames;
+  return [...new Set(topLevelEntityNames)];
 }
 
 function addIfIdentifier(array: string[], id?: Node) {

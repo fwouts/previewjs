@@ -27,7 +27,7 @@ describe("exportToplevelPlugin", () => {
           
         }
         
-        export default Qux;`
+        export default Foo;`
       )
     ).toMatchInlineSnapshot(`
       [
@@ -37,7 +37,6 @@ describe("exportToplevelPlugin", () => {
         "Fooooo",
         "Bar",
         "f",
-        "Qux",
       ]
     `);
     expect(
