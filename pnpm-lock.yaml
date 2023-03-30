@@ -42,7 +42,7 @@ importers:
 
   api:
     specifiers:
-      '@previewjs/serializable-values': ^6.0.1
+      '@previewjs/serializable-values': ^6.0.2
       '@previewjs/type-analyzer': ^7.3.0
       axios: ^1.3.4
       typescript: ^4.9.5
@@ -100,10 +100,10 @@ importers:
 
   chromeless:
     specifiers:
-      '@previewjs/api': ^10.0.1
-      '@previewjs/core': ^19.3.0
+      '@previewjs/api': ^10.0.2
+      '@previewjs/core': ^19.4.0
       '@previewjs/iframe': ^8.1.1
-      '@previewjs/properties': ^2.2.0
+      '@previewjs/properties': ^2.2.1
       '@previewjs/vfs': ^2.0.4
       '@types/express': ^4.17.17
       express: ^4.18.2
@@ -155,10 +155,10 @@ importers:
 
   core:
     specifiers:
-      '@previewjs/api': ^10.0.1
+      '@previewjs/api': ^10.0.2
       '@previewjs/config': ^4.9.8
       '@previewjs/iframe': ^8.1.1
-      '@previewjs/serializable-values': ^6.0.1
+      '@previewjs/serializable-values': ^6.0.2
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
       '@rollup/plugin-alias': ^4.0.3
@@ -271,8 +271,8 @@ importers:
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
-      '@previewjs/serializable-values': ^6.0.1
-      '@previewjs/storybook-helpers': ^1.0.7
+      '@previewjs/serializable-values': ^6.0.2
+      '@previewjs/storybook-helpers': ^1.0.8
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
@@ -380,8 +380,8 @@ importers:
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
       '@previewjs/properties': workspace:*
-      '@previewjs/serializable-values': ^6.0.1
-      '@previewjs/storybook-helpers': ^1.0.7
+      '@previewjs/serializable-values': ^6.0.2
+      '@previewjs/storybook-helpers': ^1.0.8
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
@@ -1446,8 +1446,8 @@ importers:
       '@playwright/test': ^1.32.1
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
-      '@previewjs/serializable-values': ^6.0.1
-      '@previewjs/storybook-helpers': ^1.0.7
+      '@previewjs/serializable-values': ^6.0.2
+      '@previewjs/storybook-helpers': ^1.0.8
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
@@ -1541,8 +1541,8 @@ importers:
       '@playwright/test': ^1.32.1
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
-      '@previewjs/serializable-values': ^6.0.1
-      '@previewjs/storybook-helpers': ^1.0.7
+      '@previewjs/serializable-values': ^6.0.2
+      '@previewjs/storybook-helpers': ^1.0.8
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
@@ -1665,8 +1665,8 @@ importers:
       '@playwright/test': ^1.32.1
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
-      '@previewjs/serializable-values': ^6.0.1
-      '@previewjs/storybook-helpers': ^1.0.7
+      '@previewjs/serializable-values': ^6.0.2
+      '@previewjs/storybook-helpers': ^1.0.8
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
@@ -1779,8 +1779,8 @@ importers:
       '@playwright/test': ^1.32.1
       '@previewjs/core': workspace:*
       '@previewjs/iframe': workspace:*
-      '@previewjs/serializable-values': ^6.0.1
-      '@previewjs/storybook-helpers': ^1.0.7
+      '@previewjs/serializable-values': ^6.0.2
+      '@previewjs/storybook-helpers': ^1.0.8
       '@previewjs/testing': workspace:*
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': ^2.0.4
@@ -1983,7 +1983,7 @@ importers:
 
   properties:
     specifiers:
-      '@previewjs/serializable-values': ^6.0.1
+      '@previewjs/serializable-values': ^6.0.2
       '@previewjs/type-analyzer': ^7.3.0
       typescript: ^4.9.5
       unbuild: ^1.1.2
@@ -2023,8 +2023,8 @@ importers:
 
   storybook-helpers:
     specifiers:
-      '@previewjs/core': ^19.3.0
-      '@previewjs/serializable-values': ^6.0.1
+      '@previewjs/core': ^19.4.0
+      '@previewjs/serializable-values': ^6.0.2
       '@previewjs/type-analyzer': ^7.3.0
       '@previewjs/vfs': workspace:*
       typescript: ^4.9.5
@@ -2045,9 +2045,9 @@ importers:
   testing:
     specifiers:
       '@playwright/test': ^1.32.1
-      '@previewjs/api': ^10.0.1
+      '@previewjs/api': ^10.0.2
       '@previewjs/chromeless': ^4.1.2
-      '@previewjs/core': ^19.3.0
+      '@previewjs/core': ^19.4.0
       '@previewjs/iframe': ^8.1.1
       '@previewjs/vfs': ^2.0.4
       '@types/fs-extra': ^11.0.1
