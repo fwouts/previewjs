@@ -1,4 +1,5 @@
 import { Node, Parser } from "acorn";
+import jsx from "acorn-jsx";
 import path from "path";
 import type * as vite from "vite";
 
@@ -18,27 +19,26 @@ export function exportToplevelPlugin(): vite.Plugin {
       if (!jsExtensions.has(extension)) {
         return null;
       }
-      const topLevelEntityNames = findTopLevelEntityNames(id, code);
-      return `${code};
+      try {
+        const topLevelEntityNames = findTopLevelEntityNames(code);
+        return `${code};
           export {
           ${topLevelEntityNames
             .map((c) => `${c} as __previewjs__${c},`)
             .join("")}
         }`;
+      } catch (e) {
+        throw new Error(`Unable to parse ${id}: ${e}`);
+      }
     },
   };
 }
 
-function findTopLevelEntityNames(filePath: string, source: string): string[] {
-  let parsed: Node;
-  try {
-    parsed = Parser.parse(source, {
-      ecmaVersion: "latest",
-      sourceType: "module",
-    });
-  } catch (e) {
-    throw new Error(`Unable to parse ${filePath} with Acorn: ${e}`);
-  }
+export function findTopLevelEntityNames(source: string): string[] {
+  const parsed = Parser.extend(jsx()).parse(source, {
+    ecmaVersion: "latest",
+    sourceType: "module",
+  });
   const topLevelEntityNames: string[] = [];
   // Note: acorn doesn't provide detailed typings.
   for (const statement of (parsed as any).body || []) {
@@ -56,8 +56,8 @@ function findTopLevelEntityNames(filePath: string, source: string): string[] {
       addIfIdentifier(topLevelEntityNames, statement.id);
     }
     if (statement.type === "ExportDefaultDeclaration") {
-      if (statement.declaration?.id) {
-        addIfIdentifier(topLevelEntityNames, statement.declaration.id);
+      if (statement.declaration) {
+        addIfIdentifier(topLevelEntityNames, statement.declaration);
       }
     }
     if (statement.type === "ExportNamedDeclaration") {
