@@ -56,8 +56,8 @@ export function findTopLevelEntityNames(source: string): string[] {
       addIfIdentifier(topLevelEntityNames, statement.id);
     }
     if (statement.type === "ExportDefaultDeclaration") {
-      if (statement.declaration) {
-        addIfIdentifier(topLevelEntityNames, statement.declaration);
+      if (statement.declaration?.id) {
+        addIfIdentifier(topLevelEntityNames, statement.declaration.id);
       }
     }
     if (statement.type === "ExportNamedDeclaration") {

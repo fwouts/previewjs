@@ -26,8 +26,10 @@ describe("exportToplevelPlugin", () => {
         function f() {
           
         }
-        
-        export default Foo;`
+
+        export default function g() {
+          
+        }`
       )
     ).toMatchInlineSnapshot(`
       [
@@ -37,6 +39,7 @@ describe("exportToplevelPlugin", () => {
         "Fooooo",
         "Bar",
         "f",
+        "g",
       ]
     `);
     expect(
