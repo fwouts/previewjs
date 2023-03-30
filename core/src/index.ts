@@ -6,7 +6,11 @@ import {
   RPC,
   RPCs,
 } from "@previewjs/api";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type {
+  CollectedTypes,
+  TypeAnalyzer,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
@@ -180,6 +184,7 @@ export async function createWorkspace({
   const workspace: Workspace = {
     rootDirPath,
     reader,
+    typeAnalyzer,
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -245,6 +250,7 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
+  typeAnalyzer: TypeAnalyzer;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
