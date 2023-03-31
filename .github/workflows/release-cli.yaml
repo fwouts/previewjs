@@ -36,6 +36,7 @@ jobs:
         with:
           run_install: |
             - args: [--filter=\!./frameworks/\*/tests/apps/\*]
+      - run: pnpm turbo build --filter="./integrations/cli"
       - name: Extract version from package.json
         uses: sergeysova/jq-action@v2.3.0
         id: version
