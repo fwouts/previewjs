@@ -1895,7 +1895,7 @@ importers:
       cross-env: ^7.0.3
       esbuild: ^0.17.14
       nodemon: ^2.0.22
-      open: ^9.0.0
+      open: ^9.1.0
       rimraf: ^4.4.1
       ts-node: ^10.9.1
       typescript: ^4.9.5
@@ -1908,7 +1908,7 @@ importers:
       cross-env: 7.0.3
       esbuild: 0.17.14
       nodemon: 2.0.22
-      open: 9.0.0
+      open: 9.1.0
       rimraf: 4.4.1
       ts-node: 10.9.1_o6avl3oodj6mwqsx3rm2wfkgv4
       typescript: 4.9.5
@@ -17023,14 +17023,6 @@ packages:
       - encoding
     dev: false
 
-  /cross-spawn-async/2.2.5:
-    resolution: {integrity: sha512-snteb3aVrxYYOX9e8BabYFK9WhCDhTlw1YQktfTthBogxri4/2r9U2nQc0ffY73ZAxezDc+U8gvHAeU1wy1ubQ==}
-    deprecated: cross-spawn no longer requires a build toolchain, use it instead
-    dependencies:
-      lru-cache: 4.1.5
-      which: 1.3.1
-    dev: true
-
   /cross-spawn-promise/0.10.2:
     resolution: {integrity: sha512-74PXJf6DYaab2klRS+D+9qxKJL1Weo3/ao9OPoH6NFzxtINSa/HE2mcyAPu1fpEmRTPD4Gdmpg3xEXQSgI8lpg==}
     engines: {node: '>=4'}
@@ -17799,14 +17791,14 @@ packages:
       untildify: 4.0.0
     dev: true
 
-  /default-browser/3.1.0:
-    resolution: {integrity: sha512-SOHecvSoairSAWxEHP/0qcsld/KtI3DargfEuELQDyHIYmS2EMgdGhHOTC1GxaYr+NLUV6kDroeiSBfnNHnn8w==}
-    engines: {node: '>=12'}
+  /default-browser/4.0.0:
+    resolution: {integrity: sha512-wX5pXO1+BrhMkSbROFsyxUm0i/cJEScyNhA4PPxc41ICuv05ZZB/MX28s8aZx6xjmatvebIapF6hLEKEcpneUA==}
+    engines: {node: '>=14.16'}
     dependencies:
       bundle-name: 3.0.0
       default-browser-id: 3.0.0
-      execa: 5.1.1
-      xdg-default-browser: 2.1.0
+      execa: 7.1.1
+      titleize: 3.0.0
     dev: true
 
   /default-gateway/4.2.0:
@@ -19530,17 +19522,6 @@ packages:
 
   /exec-sh/0.3.6:
     resolution: {integrity: sha512-nQn+hI3yp+oD0huYhKwvYI32+JFeq+XkNcD1GAo3Y/MjxsfVGmrrzrnzjWiNY6f+pUCP440fThsFh5gZrRAU/w==}
-    dev: true
-
-  /execa/0.2.2:
-    resolution: {integrity: sha512-zmBGzLd3nhA/NB9P7VLoceAO6vyYPftvl809Vjwe5U2fYI9tYWbeKqP3wZlAw9WS+znnkogf/bhSU+Gcn2NbkQ==}
-    engines: {node: '>=0.12'}
-    dependencies:
-      cross-spawn-async: 2.2.5
-      npm-run-path: 1.0.0
-      object-assign: 4.1.1
-      path-key: 1.0.0
-      strip-eof: 1.0.0
     dev: true
 
   /execa/1.0.0:
@@ -25886,13 +25867,6 @@ packages:
       validate-npm-package-name: 3.0.0
     dev: false
 
-  /npm-run-path/1.0.0:
-    resolution: {integrity: sha512-PrGAi1SLlqNvKN5uGBjIgnrTb8fl0Jz0a3JJmeMcGnIBh7UE9Gc4zsAMlwDajOMg2b1OgP6UPvoLUboTmMZPFA==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      path-key: 1.0.0
-    dev: true
-
   /npm-run-path/2.0.2:
     resolution: {integrity: sha512-lJxZYlT4DW/bRUtFh1MQIWqmLwQfAxnqWG4HhEdjMlkrJYnJn0Jrr2u3mgxqaWsdiBc76TYkTG/mhrnYTuzfHw==}
     engines: {node: '>=4'}
@@ -26382,11 +26356,11 @@ packages:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
-  /open/9.0.0:
-    resolution: {integrity: sha512-yerrN5WPzgwuE3T6rxAkT1UuMLDzs4Szpug7hy9s4gru3iOTnaU0yKc1AYOVYrBzvykce5gUdr9RPNB4R+Zc/A==}
+  /open/9.1.0:
+    resolution: {integrity: sha512-OS+QTnw1/4vrf+9hh1jc1jnYjzSG4ttTBB8UxOwAnInG3Uo4ssetzC1ihqaIHjLJnA5GGlRl6QlZXOTQhRBUvg==}
     engines: {node: '>=14.16'}
     dependencies:
-      default-browser: 3.1.0
+      default-browser: 4.0.0
       define-lazy-prop: 3.0.0
       is-inside-container: 1.0.0
       is-wsl: 2.2.0
@@ -26827,11 +26801,6 @@ packages:
   /path-is-absolute/1.0.1:
     resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==}
     engines: {node: '>=0.10.0'}
-
-  /path-key/1.0.0:
-    resolution: {integrity: sha512-T3hWy7tyXlk3QvPFnT+o2tmXRzU4GkitkUWLp/WZ0S/FXd7XMx176tRurgTvHTNMJOQzTcesHNpBqetH86mQ9g==}
-    engines: {node: '>=0.10.0'}
-    dev: true
 
   /path-key/2.0.1:
     resolution: {integrity: sha512-fEHGKCSmUSDPv4uoj8AlD+joPlq3peND+HRYyxFz4KPw4z926S/b8rIuFs2FYJg3BwsxJf6A9/3eIdLaYC+9Dw==}
@@ -32703,9 +32672,9 @@ packages:
     engines: {node: '>=14.0.0'}
     dev: true
 
-  /titleize/1.0.1:
-    resolution: {integrity: sha512-rUwGDruKq1gX+FFHbTl5qjI7teVO7eOe+C8IcQ7QT+1BK3eEUXJqbZcBOeaRP4FwSC/C1A5jDoIVta0nIQ9yew==}
-    engines: {node: '>=0.10.0'}
+  /titleize/3.0.0:
+    resolution: {integrity: sha512-KxVu8EYHDPBdUYdKZdKtU2aj2XfEx9AfjXxE/Aj0vT06w2icA09Vus1rh6eSu1y01akYg6BjIK/hxyLJINoMLQ==}
+    engines: {node: '>=12'}
     dev: true
 
   /tmp/0.0.33:
@@ -35970,14 +35939,6 @@ packages:
   /xdg-basedir/4.0.0:
     resolution: {integrity: sha512-PSNhEJDejZYV7h50BohL09Er9VaIefr2LMAf3OEmpCkjOi34eYyQYAXUTjEQtZJTKcF0E2UKTh+osDLsgNim9Q==}
     engines: {node: '>=8'}
-    dev: true
-
-  /xdg-default-browser/2.1.0:
-    resolution: {integrity: sha512-HY4G725+IDQr16N8XOjAms5qJGArdJaWIuC7Q7A8UXIwj2mifqnPXephazyL7sIkQPvmEoPX3E0v2yFv6hQUNg==}
-    engines: {node: '>=4'}
-    dependencies:
-      execa: 0.2.2
-      titleize: 1.0.1
     dev: true
 
   /xml-js/1.6.11:
