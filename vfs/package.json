@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/vfs",
-  "version": "1.2.16",
+  "version": "2.0.4",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -14,29 +14,23 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/vfs --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest"
   },
   "dependencies": {
     "assert-never": "^1.2.1",
     "chokidar": "^3.5.3",
-    "fs-extra": "^11.1.0"
+    "fs-extra": "^11.1.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "unbuild": "^1.1.2",
-    "vitest": "^0.28.5"
+    "typescript": "^4.9.5",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1",
+    "vitest": "^0.29.8"
   }
 }

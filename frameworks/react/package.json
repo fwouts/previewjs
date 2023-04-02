@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-react",
-  "version": "8.0.2",
+  "version": "9.2.3",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -15,44 +15,39 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-react --no-deps --include-dependencies",
+    "prepare": "rimraf preview/types && shx mkdir preview/types && shx cp -rL node_modules/@types/react preview/types/react && shx cp -rL node_modules/@types/prop-types preview/types/prop-types",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads",
+    "test": "vitest",
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.1.4",
-    "@previewjs/serializable-values": "^3.2.3",
-    "@previewjs/type-analyzer": "^4.1.5",
-    "@previewjs/vfs": "^1.2.16",
+    "@previewjs/serializable-values": "^6.0.2",
+    "@previewjs/storybook-helpers": "^1.0.8",
+    "@previewjs/type-analyzer": "^7.3.0",
+    "@previewjs/vfs": "^2.0.4",
     "@vitejs/plugin-react": "^3.1.0",
     "typescript": "^4.9.5"
   },
   "devDependencies": {
-    "@playwright/test": "^1.30.0",
-    "@previewjs/api": "^7.2.1",
-    "@previewjs/core": "^15.1.2",
-    "@previewjs/iframe": "^4.0.1",
-    "@previewjs/properties": "^1.0.7",
-    "@previewjs/testing": "^2.0.0",
+    "@playwright/test": "^1.32.1",
+    "@previewjs/api": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/properties": "workspace:*",
+    "@previewjs/testing": "workspace:*",
     "@types/prop-types": "^15.7.5",
-    "@types/react": "^18.0.28",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
     "concurrently": "^7.6.0",
     "react": "^18.2.0",
-    "unbuild": "^1.1.2",
-    "vite": "^4.1.2",
-    "vitest": "^0.27.3"
+    "rimraf": "^4.4.1",
+    "shx": "^0.3.4",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1",
+    "vitest": "^0.29.8"
   }
 }

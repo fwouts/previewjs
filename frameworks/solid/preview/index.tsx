@@ -1,7 +1,9 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
+import type { JSX } from "solid-js";
+import h from "solid-js/h";
 import * as Solid from "solid-js/web";
 
-const container = document.getElementById("root");
+const container = document.getElementById("root")!;
 let detachFn: () => void = () => {
   // This function will be replaced by the real one when the component is loaded.
 };
@@ -16,7 +18,7 @@ export const load: RendererLoader = async ({
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
-    (({ children }) => <>{children}</>);
+    (({ children }: { children: JSX.Element }) => <>{children}</>);
   const ComponentOrStory =
     componentModule[
       componentName === "default" ? "default" : `__previewjs__${componentName}`
@@ -38,15 +40,15 @@ export const load: RendererLoader = async ({
         ComponentOrStory
     : ComponentOrStory;
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
       detachFn();
       container.innerHTML = "";
       const props = getProps({
-        ...componentModule.default?.args,
-        ...ComponentOrStory.args,
+        presetGlobalProps: componentModule.default?.args || {},
+        presetProps: ComponentOrStory.args || {},
       });
       detachFn = Solid.render(
         () => (
@@ -60,5 +62,6 @@ export const load: RendererLoader = async ({
         container
       );
     },
+    jsxFactory: h,
   };
 };

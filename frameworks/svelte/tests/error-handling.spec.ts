@@ -1,8 +1,10 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "svelte");
 
 test.describe.parallel("svelte/error handling", () => {
@@ -26,8 +28,11 @@ test.describe.parallel("svelte/error handling", () => {
       replace: "lib/Counter.svelte",
       with: "lib/Broken.svelte",
     });
-    await preview.show("src/App.svelte:App");
+    await preview.show("src/App.svelte:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
+      "Failed to load url /src/lib/Broken.svelte (resolved id: /src/lib/Broken.svelte)",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -46,6 +51,7 @@ test.describe.parallel("svelte/error handling", () => {
       with: "lib/Broken.svelte",
     });
     await preview.expectLoggedMessages.toMatch([
+      "Failed to load url /src/lib/Broken.svelte (resolved id: /src/lib/Broken.svelte)",
       "Failed to reload /src/App.svelte. This could be due to syntax errors or importing non-existent modules.",
     ]);
     await preview.fileManager.update("src/App.svelte", {

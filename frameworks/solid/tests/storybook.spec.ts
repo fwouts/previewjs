@@ -1,8 +1,10 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "solid");
 
 test.describe.parallel("solid/storybook", () => {
@@ -42,6 +44,35 @@ test.describe.parallel("solid/storybook", () => {
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+  });
+
+  test("renders CSF2 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update(
+      "src/Button.tsx",
+      `const Button = ({ label }) => <button>{label}</button>;
+
+      export default {
+        component: Button
+      };
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      export const ButtonStory = Button.bind({});
+      ButtonStory.args = {
+        label: "label"
+      };`
+    );
+    await preview.show(
+      "src/Button.tsx:ButtonStory",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
     );
   });
 
@@ -109,6 +140,36 @@ test.describe.parallel("solid/storybook", () => {
     );
   });
 
+  test("renders CSF3 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update(
+      "src/Button.tsx",
+      `const Button = ({ label }) => <button>{label}</button>;
+
+      export default {
+        component: Button
+      }
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      export const ButtonStory = {
+        args: {
+          label: "label"
+        }
+      }`
+    );
+    await preview.show(
+      "src/Button.tsx:ButtonStory",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
+    );
+  });
+
   test("renders CSF3 story with default args", async (preview) => {
     await preview.fileManager.update(
       "src/Button.tsx",
@@ -159,7 +220,7 @@ test.describe.parallel("solid/storybook", () => {
       `const Button = ({ label }) => <button>{label}</button>;
 
           export default {
-            component: () => <div>foo</div>
+            component: Button
           };
 
           export const ButtonStory = {

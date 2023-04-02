@@ -1,9 +1,5 @@
-import {
-  arrayType,
-  functionType,
-  NODE_TYPE,
-  ValueType,
-} from "@previewjs/type-analyzer";
+import { arrayType, functionType, NODE_TYPE } from "@previewjs/type-analyzer";
+import type { ValueType } from "@previewjs/type-analyzer";
 
 export const PREACT_SPECIAL_TYPES: Record<string, ValueType> = {
   Component: NODE_TYPE,

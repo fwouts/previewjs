@@ -9,14 +9,15 @@ import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
+import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import reactFrameworkPlugin from ".";
-import { extractReactComponents } from "./extract-component";
+import { extractReactComponents } from "./extract-component.js";
+import reactFrameworkPlugin from "./index.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
 const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
@@ -303,6 +304,56 @@ export default () => {
     expect(extract(MAIN_FILE)).toMatchObject([]);
   });
 
+  it("detects CSF1 stories", async () => {
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./App";
+
+export default {
+  component: Button
+}
+
+export const Primary = () => <Button primary label="Button" />;
+
+export const NotStory = (props) => <Button {...props} />;
+`
+    );
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
+      {
+        name: "Primary",
+        info: {
+          kind: "story",
+          args: null,
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+      {
+        name: "NotStory",
+        info: {
+          kind: "component",
+          exported: true,
+        },
+      },
+    ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
+  });
+
   it("detects CSF2 stories", async () => {
     memoryReader.updateFile(
       STORIES_FILE,
@@ -339,10 +390,12 @@ Primary.args = {
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("primary"),
                 value: TRUE,
               },
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Button"),
               },
@@ -359,7 +412,7 @@ Primary.args = {
       throw new Error();
     }
     expect(
-      await extractedStories[1].info.associatedComponent?.analyze()
+      await extractedStories[1].info.associatedComponent.analyze()
     ).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
@@ -399,6 +452,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },
@@ -426,7 +480,7 @@ export function NotStory() {}
       throw new Error();
     }
     expect(
-      await extractedStories[0].info.associatedComponent?.analyze()
+      await extractedStories[0].info.associatedComponent.analyze()
     ).toEqual({
       propsType: objectType({
         label: STRING_TYPE,

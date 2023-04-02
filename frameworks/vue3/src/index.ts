@@ -1,8 +1,9 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
-import { extractVueComponents } from "./extract-component";
-import { createVueTypeScriptReader } from "./vue-reader";
+import url from "url";
+import { extractVueComponents } from "./extract-component.js";
+import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const vue3FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -18,6 +19,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
   async create({ rootDirPath }) {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,

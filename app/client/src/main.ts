@@ -4,13 +4,14 @@ import {
   generateCallbackProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
+import ts from "typescript";
 
 const iframe = document.getElementById("root") as HTMLIFrameElement;
 const rpcApi = createAxiosApi("/api/");
 const iframeController = createController({
   getIframe: () => iframe,
-  listener: () => {
-    // No-op.
+  listener: (event) => {
+    console.log(event);
   },
 });
 
@@ -39,21 +40,40 @@ async function onUrlChanged() {
   const [filePath, componentName] = componentId.split(":") as [string, string];
   iframeController.resetIframe();
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
-    filePath,
-    componentName,
+    componentIds: [componentId],
   });
+  const propsType = computePropsResponse.components[componentId]!.props;
   const autogenCallbackProps = generateCallbackProps(
-    computePropsResponse.types.props,
-    computePropsResponse.types.all
+    propsType,
+    computePropsResponse.types
   );
   iframeController.loadComponent({
     filePath,
     componentName,
-    propsAssignmentSource: generatePropsAssignmentSource(
-      computePropsResponse.types.props,
-      autogenCallbackProps.keys,
-      computePropsResponse.types.all
+    propsAssignmentSource: transpile(
+      generatePropsAssignmentSource(
+        propsType,
+        autogenCallbackProps.keys,
+        computePropsResponse.types
+      )
     ),
-    autogenCallbackPropsSource: autogenCallbackProps.source,
+    autogenCallbackPropsSource: transpile(
+      `autogenCallbackProps = ${autogenCallbackProps.source}`
+    ),
   });
+}
+
+function transpile(source: string) {
+  // Transform JSX if required.
+  try {
+    return ts.transpileModule(source, {
+      compilerOptions: {
+        target: ts.ScriptTarget.ES2022,
+        jsx: ts.JsxEmit.React,
+        jsxFactory: "__jsxFactory__",
+      },
+    }).outputText;
+  } catch (e) {
+    throw new Error(`Error transforming source:\n${source}\n\n${e}`);
+  }
 }

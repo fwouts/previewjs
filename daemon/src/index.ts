@@ -31,8 +31,8 @@ import type {
   UpdateClientStatusResponse,
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
-} from "./api";
-import { createClient } from "./client";
+} from "./api.js";
+import { createClient } from "./client.js";
 
 const AUTOMATIC_SHUTDOWN_DELAY_SECONDS = 30;
 
@@ -101,7 +101,11 @@ if (logFilePath) {
     process.stdout.write.bind(process.stdout)
   );
   process.on("uncaughtException", (e) => {
-    console.error(e);
+    console.error("Encountered an uncaught exception", e);
+    process.exit(1);
+  });
+  process.on("unhandledRejection", (e) => {
+    console.error("Encountered an unhandled promise", e);
     process.exit(1);
   });
 }
@@ -207,11 +211,11 @@ export async function startDaemon({
         .then((responseBody) => sendJsonResponse(res, responseBody))
         .catch((e) => {
           if (e instanceof NotFoundError) {
-            console.error(`404 in endpoint ${path}:`);
+            console.error(`404 in endpoint ${req.url}:`);
             console.error(e);
             sendPlainTextError(res, 404, e.message || "Not Found");
           } else {
-            console.error(`500 in endpoint ${path}:`);
+            console.error(`500 in endpoint ${req.url}:`);
             console.error(e);
             sendPlainTextError(res, 500, e.message || "Internal Error");
           }
@@ -350,7 +354,7 @@ export async function startDaemon({
           results.push({
             componentName: component.name,
             componentId: generateComponentId({
-              currentFilePath: filePath,
+              filePath,
               name: component.name,
             }),
             start: component.start,

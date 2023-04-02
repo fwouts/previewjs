@@ -22,14 +22,19 @@ export function prepareFileManager({
 }) {
   const rootDirPath = duplicateProjectForTesting(testProjectDirPath);
   const memoryReader = createMemoryReader();
-  const reader = createStackedReader([
-    memoryReader,
-    createFileSystemReader({
-      watch: true,
-    }),
-  ]);
+  const fsReader = createFileSystemReader({
+    watch: true,
+  });
+  const reader = createStackedReader([memoryReader, fsReader]);
   let lastDiskWriteMillis = 0;
   const fileManager: FileManager = {
+    read: async (f, { inMemoryOnly } = {}) => {
+      const entry = await (inMemoryOnly ? memoryReader : fsReader).read(f);
+      if (entry?.kind !== "file") {
+        throw new Error(`Not a file: ${f}`);
+      }
+      return entry.read();
+    },
     update: async (f, content, { inMemoryOnly } = {}) => {
       await onBeforeFileUpdated();
       if (!inMemoryOnly) {
@@ -80,6 +85,12 @@ export function prepareFileManager({
 }
 
 export interface FileManager {
+  read(
+    filePath: string,
+    options?: {
+      inMemoryOnly?: boolean;
+    }
+  ): Promise<string>;
   update(
     filePath: string,
     content:

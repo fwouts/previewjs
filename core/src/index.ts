@@ -1,19 +1,25 @@
-import { RequestOf, ResponseOf, RPC, RPCs } from "@previewjs/api";
 import {
+  decodeComponentId,
+  generateComponentId,
+  RequestOf,
+  ResponseOf,
+  RPC,
+  RPCs,
+} from "@previewjs/api";
+import type {
   CollectedTypes,
-  createTypeAnalyzer,
-  EMPTY_OBJECT_TYPE,
+  TypeAnalyzer,
+  ValueType,
 } from "@previewjs/type-analyzer";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
-import getPort from "get-port";
+import getPort, { portNumbers } from "get-port";
+import { createRequire } from "module";
 import path from "path";
 import type * as vite from "vite";
-import {
-  detectComponents,
-  detectedComponentToApiComponent,
-} from "./detect-components";
+import { detectComponents } from "./detect-components";
 import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
@@ -28,6 +34,8 @@ export type {
 } from "./plugins/framework";
 export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 export type { SetupPreviewEnvironment } from "./preview-env";
+
+const require = createRequire(import.meta.url);
 
 process.on("uncaughtException", (e) => {
   console.error("Uncaught Exception:", e);
@@ -72,38 +80,72 @@ export async function createWorkspace({
     printWarnings: logLevel === "info",
   });
   const router = new ApiRouter();
-  router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
+  router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     let analyze: () => Promise<ComponentAnalysis>;
-    const component = (
-      await frameworkPlugin.detectComponents(reader, typeAnalyzer, [
-        path.join(rootDirPath, filePath),
+    const detectedComponents = await frameworkPlugin.detectComponents(
+      reader,
+      typeAnalyzer,
+      [
+        ...new Set(
+          componentIds.map((c) =>
+            path.join(rootDirPath, decodeComponentId(c).filePath)
+          )
+        ),
+      ]
+    );
+    const componentIdToDetectedComponent = Object.fromEntries(
+      detectedComponents.map((c) => [
+        generateComponentId({
+          filePath: path.relative(rootDirPath, c.absoluteFilePath),
+          name: c.name,
+        }),
+        c,
       ])
-    ).find((c) => c.name === componentName);
-    if (!component) {
-      throw new Error(`Component ${componentName} not detected in ${filePath}`);
-    }
-    if (component.info.kind === "component") {
-      analyze = component.info.analyze;
-    } else {
-      const associatedComponent = component.info.associatedComponent;
-      if (!associatedComponent) {
-        return {
-          component: detectedComponentToApiComponent(rootDirPath, component),
-          types: {
-            props: EMPTY_OBJECT_TYPE,
-            all: {},
-          },
-        };
+    );
+    const components: {
+      [componentId: string]: {
+        info: RPCs.ComponentInfo;
+        props: ValueType;
+      };
+    } = {};
+    let types: CollectedTypes = {};
+    for (const componentId of componentIds) {
+      const component = componentIdToDetectedComponent[componentId];
+      if (!component) {
+        const { filePath, name } = decodeComponentId(componentId);
+        throw new Error(`Component ${name} not detected in ${filePath}.`);
       }
-      analyze = associatedComponent.analyze;
+      if (component.info.kind === "component") {
+        analyze = component.info.analyze;
+      } else {
+        analyze = component.info.associatedComponent.analyze;
+      }
+      const { propsType: props, types: componentTypes } = await analyze();
+      components[componentId] = {
+        info:
+          component.info.kind === "component"
+            ? {
+                kind: "component",
+                exported: component.info.exported,
+              }
+            : {
+                kind: "story",
+                args: component.info.args,
+                associatedComponent: {
+                  filePath: path.relative(
+                    rootDirPath,
+                    component.info.associatedComponent.absoluteFilePath
+                  ),
+                  name: component.info.associatedComponent.name,
+                },
+              },
+        props,
+      };
+      types = { ...types, ...componentTypes };
     }
-    const result = await analyze();
     return {
-      component: detectedComponentToApiComponent(rootDirPath, component),
-      types: {
-        props: result.propsType,
-        all: result.types,
-      },
+      components,
+      types,
     };
   });
   router.registerRPC(RPCs.DetectComponents, (options) =>
@@ -142,6 +184,7 @@ export async function createWorkspace({
   const workspace: Workspace = {
     rootDirPath,
     reader,
+    typeAnalyzer,
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -149,7 +192,7 @@ export async function createWorkspace({
           return (
             port ||
             (await getPort({
-              port: getPort.makeRange(3140, 4000),
+              port: portNumbers(3140, 4000),
             }))
           );
         });
@@ -207,6 +250,7 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
+  typeAnalyzer: TypeAnalyzer;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };

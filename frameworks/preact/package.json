@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-preact",
-  "version": "2.0.2",
+  "version": "3.2.3",
   "license": "MIT",
   "author": {
     "name": "Klemen Slavič",
@@ -15,41 +15,32 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-preact --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads",
+    "test": "vitest",
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.1.4",
-    "@previewjs/serializable-values": "^3.2.3",
-    "@previewjs/type-analyzer": "^4.1.5",
-    "@previewjs/vfs": "^1.2.16",
+    "@previewjs/serializable-values": "^6.0.2",
+    "@previewjs/storybook-helpers": "^1.0.8",
+    "@previewjs/type-analyzer": "^7.3.0",
+    "@previewjs/vfs": "^2.0.4",
     "typescript": "^4.9.5"
   },
   "devDependencies": {
-    "@playwright/test": "^1.30.0",
-    "@previewjs/api": "^7.2.1",
-    "@previewjs/core": "^15.1.2",
-    "@previewjs/iframe": "^4.0.1",
-    "@previewjs/properties": "^1.0.7",
-    "@previewjs/testing": "^2.0.0",
-    "preact": "^10.12.1",
-    "rimraf": "^3.0.2",
-    "unbuild": "^1.1.2",
-    "vite": "^4.1.2",
-    "vitest": "^0.27.3"
+    "@playwright/test": "^1.32.1",
+    "@previewjs/api": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/properties": "workspace:*",
+    "@previewjs/testing": "workspace:*",
+    "preact": "^10.13.2",
+    "rimraf": "^4.4.1",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1",
+    "vitest": "^0.29.8"
   }
 }

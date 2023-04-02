@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-solid",
-  "version": "5.0.2",
+  "version": "6.2.3",
   "description": "SolidJS plugin for Preview.js enabling instant preview of SolidJS components and stories",
   "info": "A framework plugin for Preview.js that enables instant preview and update-as-you-type of SolidJS components and stories with auto-generated properties, so you can iterate on any component without ever leaving your IDE",
   "license": "MIT",
@@ -17,38 +17,30 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "prepublish": "cd ../.. && turbo run build --scope=@previewjs/plugin-solid --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads",
+    "test": "vitest",
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.1.4",
-    "@previewjs/serializable-values": "^3.2.3",
-    "@previewjs/type-analyzer": "^4.1.5",
-    "@previewjs/vfs": "^1.2.16",
+    "@previewjs/serializable-values": "^6.0.2",
+    "@previewjs/storybook-helpers": "^1.0.8",
+    "@previewjs/type-analyzer": "^7.3.0",
+    "@previewjs/vfs": "^2.0.4",
     "typescript": "^4.9.5",
-    "vite-plugin-solid": "^2.5.0"
+    "vite-plugin-solid": "^2.6.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.30.0",
-    "@previewjs/core": "^15.1.2",
-    "@previewjs/testing": "^2.0.0",
-    "solid-js": "^1.6.11",
-    "unbuild": "^1.1.2",
-    "vite": "^4.1.2",
-    "vitest": "^0.27.3"
+    "@playwright/test": "^1.32.1",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/testing": "workspace:*",
+    "solid-js": "^1.6.15",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1",
+    "vitest": "^0.29.8"
   }
 }

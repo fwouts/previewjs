@@ -1,6 +1,15 @@
-import { Client, createClient } from "@previewjs/daemon/client";
-import execa from "execa";
-import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
+import type { Client } from "@previewjs/daemon/client";
+import { createClient } from "@previewjs/daemon/client";
+import type { ExecaChildProcess, ExecaReturnValue, Options } from "execa";
+import { execa } from "execa";
+import {
+  FSWatcher,
+  closeSync,
+  openSync,
+  readFileSync,
+  utimesSync,
+  watch,
+} from "fs";
 import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
@@ -9,11 +18,15 @@ import { clientId } from "./client-id";
 
 const port = process.env.PREVIEWJS_PORT || "9315";
 const logsPath = path.join(__dirname, "daemon.log");
-const daemonLockFilePath = path.join(__dirname, "process.lock");
+
+export const daemonLockFilePath = path.join(__dirname, "process.lock");
 
 export async function ensureDaemonRunning(
   outputChannel: OutputChannel
-): Promise<Client | null> {
+): Promise<{
+  client: Client;
+  watcher: FSWatcher;
+} | null> {
   const client = createClient(`http://localhost:${port}`);
   if (!(await startDaemon(outputChannel))) {
     return null;
@@ -22,18 +35,21 @@ export async function ensureDaemonRunning(
   // daemon running already (e.g. from another workspace) because of the lock file. This is
   // fine and working by design.
   const ready = streamDaemonLogs(outputChannel);
-  await ready;
+  const watcher = await ready;
   await client.updateClientStatus({
     clientId,
     alive: true,
   });
-  return client;
+  return {
+    client,
+    watcher,
+  };
 }
 
 // Important: we wrap daemonProcess into a Promise so that awaiting startDaemon()
 // doesn't automatically await the process itself (which may not exit for a long time!).
 async function startDaemon(outputChannel: OutputChannel): Promise<{
-  daemonProcess: execa.ExecaChildProcess<string>;
+  daemonProcess: ExecaChildProcess<string>;
 } | null> {
   const isWindows = process.platform === "win32";
   let useWsl = false;
@@ -92,7 +108,7 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
   );
   outputChannel.appendLine(`Streaming daemon logs to: ${logsPath}`);
   const nodeDaemonCommand = "node --trace-warnings daemon.js";
-  const daemonOptions: execa.Options = {
+  const daemonOptions: Options = {
     cwd: __dirname,
     // https://nodejs.org/api/child_process.html#child_process_options_detached
     // If we use "inherit", we end up with a "write EPIPE" crash when the child process
@@ -104,7 +120,7 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
       PREVIEWJS_PORT: port,
     },
   };
-  let daemonProcess: execa.ExecaChildProcess<string>;
+  let daemonProcess: ExecaChildProcess<string>;
   if (useWsl) {
     daemonProcess = execa(
       "wsl",
@@ -123,8 +139,8 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
   return { daemonProcess };
 }
 
-function streamDaemonLogs(outputChannel: OutputChannel) {
-  const ready = new Promise<void>((resolve) => {
+function streamDaemonLogs(outputChannel: OutputChannel): Promise<FSWatcher> {
+  const ready = new Promise<FSWatcher>((resolve) => {
     let lastKnownLogsLength = 0;
     let resolved = false;
     // Ensure file exists before watching.
@@ -188,14 +204,14 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
           );
         }
         if (!resolved && logsContent.includes("[ready]")) {
-          resolve();
+          resolve(watcher);
           resolved = true;
         }
       } catch (e: any) {
         // Fine, ignore. It just means log streaming is broken.
       }
     };
-    watch(
+    const watcher = watch(
       logsPath,
       {
         persistent: false,
@@ -208,7 +224,7 @@ function streamDaemonLogs(outputChannel: OutputChannel) {
   return ready;
 }
 
-function checkNodeVersionResult(result: execa.ExecaReturnValue<string>):
+function checkNodeVersionResult(result: ExecaReturnValue<string>):
   | {
       kind: "valid";
     }

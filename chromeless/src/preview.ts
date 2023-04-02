@@ -6,6 +6,7 @@ import {
 } from "@previewjs/properties";
 import type { Reader } from "@previewjs/vfs";
 import type playwright from "playwright";
+import ts from "typescript";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
 import { createChromelessWorkspace } from "./workspace";
@@ -35,9 +36,28 @@ export async function startPreview({
   let onRenderingDone = () => {
     // No-op by default.
   };
+  let onRenderingError = (_e: any) => {
+    // No-op by default.
+  };
+  let failOnErrorLog = false;
+  let lastErrorLog: string | null = null;
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
-      onRenderingDone();
+      if (event.success) {
+        onRenderingDone();
+      } else {
+        if (lastErrorLog) {
+          onRenderingError(new Error(lastErrorLog));
+        } else {
+          // The error log should be coming straight after.
+          failOnErrorLog = true;
+        }
+      }
+    } else if (event.kind === "log-message" && event.level === "error") {
+      lastErrorLog = event.message;
+      if (failOnErrorLog) {
+        onRenderingError(new Error(event.message));
+      }
     }
   });
 
@@ -122,26 +142,27 @@ export async function startPreview({
         componentName: matchingDetectedComponent.name,
         filePath,
       };
-      const computePropsResponse = await workspace.localRpc(
-        RPCs.ComputeProps,
-        component
-      );
+      const computePropsResponse = await workspace.localRpc(RPCs.ComputeProps, {
+        componentIds: [componentId],
+      });
+      const propsType = computePropsResponse.components[componentId]!.props;
       const autogenCallbackProps = generateCallbackProps(
-        computePropsResponse.types.props,
-        computePropsResponse.types.all
+        propsType,
+        computePropsResponse.types
       );
       if (!propsAssignmentSource) {
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
-            ? "properties = {}"
+            ? "properties = null"
             : generatePropsAssignmentSource(
-                computePropsResponse.types.props,
+                propsType,
                 autogenCallbackProps.keys,
-                computePropsResponse.types.all
+                computePropsResponse.types
               );
       }
-      const donePromise = new Promise<void>((resolve) => {
+      const donePromise = new Promise<void>((resolve, reject) => {
         onRenderingDone = resolve;
+        onRenderingError = reject;
       });
       await waitUntilNetworkIdle(page);
       await page.evaluate(
@@ -164,8 +185,10 @@ export async function startPreview({
         },
         {
           ...component,
-          autogenCallbackPropsSource: autogenCallbackProps.source,
-          propsAssignmentSource,
+          autogenCallbackPropsSource: transpile(
+            `autogenCallbackProps = ${autogenCallbackProps.source}`
+          ),
+          propsAssignmentSource: transpile(propsAssignmentSource!),
         }
       );
       await donePromise;
@@ -176,6 +199,21 @@ export async function startPreview({
       await workspace.dispose();
     },
   };
+}
+
+function transpile(source: string) {
+  // Transform JSX if required.
+  try {
+    return ts.transpileModule(source, {
+      compilerOptions: {
+        target: ts.ScriptTarget.ES2022,
+        jsx: ts.JsxEmit.React,
+        jsxFactory: "__jsxFactory__",
+      },
+    }).outputText;
+  } catch (e) {
+    throw new Error(`Error transforming source:\n${source}\n\n${e}`);
+  }
 }
 
 async function waitUntilNetworkIdle(page: playwright.Page) {

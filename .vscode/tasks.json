@@ -12,6 +12,16 @@
       },
       "problemMatcher": ["$tsc"],
       "group": "build"
+    },
+    {
+      "label": "build:pro",
+      "type": "npm",
+      "script": "vscode:build:dev:pro",
+      "presentation": {
+        "reveal": "never"
+      },
+      "problemMatcher": ["$tsc"],
+      "group": "build"
     }
   ]
 }

@@ -1,15 +1,16 @@
 import type { Component, ComponentTypeInfo } from "@previewjs/core";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
+  extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
   resolveComponent,
-} from "@previewjs/csf3";
-import { parseSerializableValue } from "@previewjs/serializable-values";
+} from "@previewjs/storybook-helpers";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import ts from "typescript";
-import { analyzeVueComponentFromTemplate } from "./analyze-component";
-import { inferComponentNameFromVuePath } from "./infer-component-name";
+import { analyzeVueComponentFromTemplate } from "./analyze-component.js";
+import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
 export function extractVueComponents(
   reader: Reader,
@@ -83,7 +84,7 @@ export function extractVueComponents(
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  const args = helpers.extractArgs(sourceFile);
+  const args = extractArgs(sourceFile);
 
   function extractComponentTypeInfo(
     node: ts.Node,
@@ -92,6 +93,14 @@ export function extractVueComponents(
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
     if (storiesDefaultComponent && storyArgs && isExported) {
+      const associatedComponent = extractStoryAssociatedComponent(
+        resolver,
+        storiesDefaultComponent
+      );
+      if (!associatedComponent) {
+        // No detected associated component, give up.
+        return null;
+      }
       return {
         kind: "story",
         args: {
@@ -99,10 +108,7 @@ export function extractVueComponents(
           end: storyArgs.getEnd(),
           value: parseSerializableValue(storyArgs),
         },
-        associatedComponent: extractStoryAssociatedComponent(
-          resolver,
-          storiesDefaultComponent
-        ),
+        associatedComponent,
       };
     }
     const type = resolver.checker.getTypeAtLocation(node);
@@ -119,14 +125,24 @@ export function extractVueComponents(
           }),
         };
       }
-      if (isExported && returnType.getProperty("template")) {
+      if (
+        storiesDefaultComponent &&
+        isExported &&
+        returnType.getProperty("template")
+      ) {
         // This is a story.
+        const associatedComponent = extractStoryAssociatedComponent(
+          resolver,
+          storiesDefaultComponent
+        );
+        if (!associatedComponent) {
+          // No detected associated component, give up.
+          return null;
+        }
         return {
           kind: "story",
           args: null,
-          associatedComponent: storiesDefaultComponent
-            ? extractStoryAssociatedComponent(resolver, storiesDefaultComponent)
-            : null,
+          associatedComponent,
         };
       }
     }
@@ -170,7 +186,7 @@ export function extractVueComponents(
     ).map((c) => {
       if (
         c.info.kind !== "story" ||
-        !c.info.associatedComponent?.absoluteFilePath.endsWith(".vue.ts")
+        !c.info.associatedComponent.absoluteFilePath.endsWith(".vue.ts")
       ) {
         return c;
       }

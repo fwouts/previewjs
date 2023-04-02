@@ -9,13 +9,12 @@ import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import vue3FrameworkPlugin from ".";
-import { extractVueComponents } from "./extract-component";
+import { extractVueComponents } from "./extract-component.js";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
@@ -237,7 +236,7 @@ export const Primary = () => ({
       throw new Error();
     }
     expect(
-      await extractedStories[0].info.associatedComponent?.analyze()
+      await extractedStories[0].info.associatedComponent.analyze()
     ).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
@@ -280,10 +279,12 @@ Primary.args = {
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("primary"),
                 value: TRUE,
               },
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Button"),
               },
@@ -300,7 +301,7 @@ Primary.args = {
       throw new Error();
     }
     expect(
-      await extractedStories[0].info.associatedComponent?.analyze()
+      await extractedStories[0].info.associatedComponent.analyze()
     ).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
@@ -336,6 +337,7 @@ export function NotStory() {}
           args: {
             value: object([
               {
+                kind: "key",
                 key: string("label"),
                 value: string("Hello, World!"),
               },
@@ -363,7 +365,7 @@ export function NotStory() {}
       throw new Error();
     }
     expect(
-      await extractedStories[0].info.associatedComponent?.analyze()
+      await extractedStories[0].info.associatedComponent.analyze()
     ).toEqual({
       propsType: objectType({
         label: STRING_TYPE,

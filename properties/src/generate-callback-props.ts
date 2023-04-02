@@ -2,11 +2,8 @@ import {
   generateSerializableValue,
   serializableValueToJavaScript,
 } from "@previewjs/serializable-values";
-import {
-  CollectedTypes,
-  evaluateType,
-  ValueType,
-} from "@previewjs/type-analyzer";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import { evaluateType } from "@previewjs/type-analyzer";
 
 /**
  * Generates top-level callbacks props, so callbacks such as `onClick` don't need to be set explicitly.
@@ -29,6 +26,9 @@ export function generateCallbackProps(
   let text = "";
   text += "{";
   for (const [propertyName, propertyType] of Object.entries(propsType.fields)) {
+    if (propertyType.kind === "optional") {
+      continue;
+    }
     const resolvedPropertyType = resolveType(propertyType);
     if (resolvedPropertyType.kind === "function") {
       propKeys.add(propertyName);
@@ -36,7 +36,9 @@ export function generateCallbackProps(
         /"/g,
         '\\"'
       )}": ${serializableValueToJavaScript(
-        generateSerializableValue(resolvedPropertyType, types)
+        generateSerializableValue(resolvedPropertyType, types, {
+          fieldName: propertyName,
+        })
       )},`;
     }
   }

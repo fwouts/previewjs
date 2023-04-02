@@ -1,8 +1,9 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
-import execa from "execa";
+import { execaCommand } from "execa";
 import fs from "fs";
 import path from "path";
+import url from "url";
 
 export async function loadModules({
   installDir,
@@ -16,7 +17,7 @@ export async function loadModules({
     !fs.existsSync(path.join(installDir, "node_modules"))
   ) {
     console.log("[install:begin] Running pnpm install...");
-    const pnpmProcess = execa.command(
+    const pnpmProcess = execaCommand(
       `cd "${installDir}" && node pnpm/bin/pnpm.cjs install --frozen-lockfile`,
       {
         shell: true,
@@ -27,24 +28,31 @@ export async function loadModules({
     await pnpmProcess;
     console.log("[install:end] Done.");
   }
-  const coreModule = requireModule("@previewjs/core") as typeof core;
-  const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;
-  const setupEnvironment: core.SetupPreviewEnvironment =
-    requireModule(packageName);
+  const coreModule: typeof core = await importModule("@previewjs/core");
+  const vfsModule: typeof vfs = await importModule("@previewjs/vfs");
+  const setupEnvironment: core.SetupPreviewEnvironment = await importModule(
+    packageName
+  );
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
-    requireModule("@previewjs/plugin-preact"),
-    requireModule("@previewjs/plugin-react"),
-    requireModule("@previewjs/plugin-solid"),
-    requireModule("@previewjs/plugin-svelte"),
-    requireModule("@previewjs/plugin-vue2"),
-    requireModule("@previewjs/plugin-vue3"),
+    await importModule("@previewjs/plugin-preact"),
+    await importModule("@previewjs/plugin-react"),
+    await importModule("@previewjs/plugin-solid"),
+    await importModule("@previewjs/plugin-svelte"),
+    await importModule("@previewjs/plugin-vue2"),
+    await importModule("@previewjs/plugin-vue3"),
   ];
 
-  function requireModule(name: string) {
+  async function importModule(name: string) {
     try {
-      return require(require.resolve(name, {
-        paths: [installDir],
-      }));
+      const module = await import(
+        // TODO: Remove the hardcoded subpath.
+        url
+          .pathToFileURL(
+            path.join(installDir, "node_modules", name, "dist", "index.mjs")
+          )
+          .toString()
+      );
+      return module.default || module;
     } catch (e) {
       console.error(`Unable to load ${name} from ${installDir}`, e);
       throw e;

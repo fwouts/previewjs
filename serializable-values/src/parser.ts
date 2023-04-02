@@ -1,22 +1,26 @@
+import assertNever from "assert-never";
 import ts from "typescript";
+import { formatExpression } from "./format-expression";
 import {
-  array,
   EMPTY_MAP,
+  EMPTY_OBJECT,
   EMPTY_SET,
   FALSE,
-  fn,
-  map,
   NULL,
-  number,
-  object,
-  promise,
   SerializableObjectValueEntry,
   SerializableValue,
-  set,
-  string,
   TRUE,
   UNDEFINED,
   UNKNOWN,
+  array,
+  fn,
+  map,
+  node,
+  number,
+  object,
+  promise,
+  set,
+  string,
   unknown,
 } from "./serializable-value";
 
@@ -120,6 +124,7 @@ export function parseSerializableValue(
               return fallbackValue;
             }
             entries.push({
+              kind: "key",
               key: parseSerializableValue(element.elements[0]!),
               value: parseSerializableValue(element.elements[1]!),
             });
@@ -194,74 +199,143 @@ export function parseSerializableValue(
   if (ts.isObjectLiteralExpression(expression)) {
     const entries: SerializableObjectValueEntry[] = [];
     for (const property of expression.properties) {
+      property;
       if (ts.isShorthandPropertyAssignment(property)) {
         entries.push({
+          kind: "key",
           key: string(property.name.text),
           value: UNKNOWN,
         });
-      } else if (
-        ts.isPropertyAssignment(property) &&
-        (ts.isIdentifier(property.name) ||
-          ts.isStringLiteral(property.name) ||
-          ts.isNumericLiteral(property.name))
-      ) {
+      } else if (ts.isPropertyAssignment(property)) {
+        const key = extractKeyFromPropertyName(property.name);
+        if (key.kind === "unknown") {
+          return fallbackValue;
+        }
         entries.push({
-          key: string(property.name.text),
+          kind: "key",
+          key,
           value: parseSerializableValue(property.initializer),
         });
-      } else {
+      } else if (ts.isSpreadAssignment(property)) {
+        entries.push({
+          kind: "spread",
+          value: property.name
+            ? // TODO: Property access off property.expression.
+              UNKNOWN
+            : parseSerializableValue(property.expression),
+        });
+      } else if (ts.isFunctionLike(property)) {
+        // TODO: Handle this better, e.g. { foo() { ... } }
         return fallbackValue;
+      } else {
+        throw assertNever(property);
       }
     }
     return object(entries);
   }
 
-  // () => 123
-  if (ts.isArrowFunction(expression) && expression.parameters.length === 0) {
-    if (ts.isBlock(expression.body)) {
-      const statements = expression.body.statements;
-      if (statements.length === 0) {
-        return fn(UNDEFINED);
-      } else if (statements.length === 1) {
-        const returnStatement = statements[0]!;
-        if (!ts.isReturnStatement(returnStatement)) {
-          return fallbackValue;
-        }
-        return fn(
-          returnStatement.expression
-            ? parseSerializableValue(returnStatement.expression)
-            : UNDEFINED
-        );
-      } else {
-        return fallbackValue;
-      }
-    } else {
-      return fn(parseSerializableValue(expression.body));
-    }
+  // arrow function: () => 123
+  // function expression: function() { return 123 }
+  if (ts.isArrowFunction(expression) || ts.isFunctionExpression(expression)) {
+    return fn(formatExpression(expression.getText()));
   }
 
-  // function() { return 123 }
-  if (
-    ts.isFunctionExpression(expression) &&
-    expression.parameters.length === 0
-  ) {
-    const statements = expression.body.statements;
-    if (statements.length === 0) {
-      return fn(UNDEFINED);
-    } else if (statements.length === 1) {
-      const returnStatement = statements[0]!;
-      if (!ts.isReturnStatement(returnStatement)) {
-        return fallbackValue;
-      }
-      return fn(
-        returnStatement.expression
-          ? parseSerializableValue(returnStatement.expression)
-          : UNDEFINED
-      );
-    } else {
-      return fallbackValue;
-    }
+  if (ts.isJsxElement(expression)) {
+    return node(
+      expression.openingElement.tagName.getText(),
+      object(extractPropertiesFromJsxElement(expression.openingElement)),
+      extractChildrenFromJsxElement(expression)
+    );
+  }
+
+  if (ts.isJsxSelfClosingElement(expression)) {
+    return node(
+      expression.tagName.getText(),
+      object(extractPropertiesFromJsxElement(expression)),
+      null
+    );
+  }
+
+  if (ts.isJsxFragment(expression)) {
+    return node("", EMPTY_OBJECT, extractChildrenFromJsxElement(expression));
   }
 
   return fallbackValue;
+}
+
+function extractPropertiesFromJsxElement(
+  element: ts.JsxOpeningElement | ts.JsxSelfClosingElement
+) {
+  const objectEntries: SerializableObjectValueEntry[] = [];
+  for (const property of element.attributes.properties) {
+    if (ts.isJsxSpreadAttribute(property)) {
+      objectEntries.push({
+        kind: "spread",
+        value: parseSerializableValue(property.expression),
+      });
+    } else {
+      let value: SerializableValue;
+      if (!property.initializer) {
+        // A JSX attribute without a value means "true".
+        value = TRUE;
+      } else if (ts.isJsxExpression(property.initializer)) {
+        value = property.initializer.expression
+          ? parseSerializableValue(property.initializer.expression)
+          : unknown("");
+      } else {
+        value = parseSerializableValue(property.initializer);
+      }
+      objectEntries.push({
+        kind: "key",
+        key: string(property.name.text),
+        value,
+      });
+    }
+  }
+  return objectEntries;
+}
+
+function extractChildrenFromJsxElement(
+  element: ts.JsxElement | ts.JsxFragment
+) {
+  const children: SerializableValue[] = [];
+  for (const child of element.children) {
+    if (ts.isJsxText(child)) {
+      if (child.containsOnlyTriviaWhiteSpaces) {
+        continue;
+      }
+      // TODO: Double check that unescaping is done correctly if needed.
+      children.push(
+        string(
+          // Note: we don't want to trim pure whitespace strings (typically separators).
+          child.text.trim().length === 0 ? child.text : child.text.trim()
+        )
+      );
+    } else if (ts.isJsxExpression(child)) {
+      if (child.expression) {
+        children.push(parseSerializableValue(child.expression));
+      } else {
+        // Example: {/* this is just a comment without any expression */}
+        children.push(unknown(""));
+      }
+    } else {
+      children.push(parseSerializableValue(child));
+    }
+  }
+  return children;
+}
+
+function extractKeyFromPropertyName(
+  propertyName: ts.PropertyName
+): SerializableValue {
+  if (
+    ts.isIdentifier(propertyName) ||
+    ts.isStringLiteral(propertyName) ||
+    ts.isNumericLiteral(propertyName)
+  ) {
+    return string(propertyName.text);
+  } else if (ts.isComputedPropertyName(propertyName)) {
+    return parseSerializableValue(propertyName.expression);
+  }
+  return UNKNOWN;
 }

@@ -1,7 +1,8 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
 const WRAPPER_SOURCE = `import { ComponentChildren } from "preact";
 export const Wrapper = ({ children }: { children: ComponentChildren }) => {
@@ -10,6 +11,7 @@ export const Wrapper = ({ children }: { children: ComponentChildren }) => {
 `;
 
 test.describe.parallel("preact/wrapper", () => {
+  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   const test = previewTest(
     [pluginFactory],
     path.join(__dirname, "apps", "preact-app")

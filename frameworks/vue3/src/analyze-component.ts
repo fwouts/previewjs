@@ -1,11 +1,10 @@
 import type { ComponentAnalysis } from "@previewjs/core";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import {
-  CollectedTypes,
+  maybeOptionalType,
   objectType,
-  optionalType,
   TypeResolver,
   UNKNOWN_TYPE,
-  ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -129,9 +128,10 @@ function extractDefinePropsFromExpression(
           Object.entries(definePropsType.type.fields).map(
             ([fieldKey, fieldType]) => [
               fieldKey,
-              fieldsWithDefaultValue.has(fieldKey)
-                ? optionalType(fieldType)
-                : fieldType,
+              maybeOptionalType(
+                fieldType,
+                fieldsWithDefaultValue.has(fieldKey)
+              ),
             ]
           )
         )

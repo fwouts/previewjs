@@ -1,0 +1,36 @@
+{
+  "name": "@previewjs/storybook-helpers",
+  "version": "1.0.8",
+  "license": "MIT",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && unbuild",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@previewjs/core": "^19.4.3",
+    "@previewjs/serializable-values": "^6.0.2",
+    "@previewjs/type-analyzer": "^7.3.0",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@previewjs/vfs": "workspace:*",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1",
+    "vitest": "^0.29.8"
+  }
+}

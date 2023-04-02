@@ -1,9 +1,11 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { smokeTests } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
 test.describe.parallel("smoke tests", () => {
+  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   smokeTests({
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
@@ -48,6 +50,7 @@ test.describe.parallel("smoke tests", () => {
       "vite-with-svgr": ["src/App.tsx:App"],
       "vite-without-svgr": ["src/App.tsx:App"],
       "wrapper-custom": ["src/App.tsx:App"],
+      "wrapper-custom-esm": ["src/App.tsx:App"],
       "wrapper-default": ["src/App.tsx:App"],
     },
   });

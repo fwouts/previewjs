@@ -1,8 +1,11 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
-import { reactVersions } from "./react-versions";
+import url from "url";
+import pluginFactory from "../src/index.js";
+import { reactVersions } from "./react-versions.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
@@ -46,6 +49,35 @@ for (const reactVersion of reactVersions()) {
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'explicit')]"
+        );
+      });
+
+      test("renders CSF2 story with assignment source referring local variable", async (preview) => {
+        await preview.fileManager.update(
+          "src/Button.tsx",
+          `const Button = ({ label }) => <button>{label}</button>;
+
+          export default {
+            component: Button
+          };
+
+          const baseArgs = {
+            label: "local value"
+          };
+
+          export const ButtonStory = Button.bind({});
+          ButtonStory.args = {
+            label: "label"
+          };`
+        );
+        await preview.show(
+          "src/Button.tsx:ButtonStory",
+          `properties = {
+            ...baseArgs
+          }`
+        );
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'local value')]"
         );
       });
 
@@ -113,6 +145,36 @@ for (const reactVersion of reactVersions()) {
         );
       });
 
+      test("renders CSF3 story with assignment source referring local variable", async (preview) => {
+        await preview.fileManager.update(
+          "src/Button.tsx",
+          `const Button = ({ label }) => <button>{label}</button>;
+
+          export default {
+            component: Button
+          }
+
+          const baseArgs = {
+            label: "local value"
+          };
+
+          export const ButtonStory = {
+            args: {
+              label: "label"
+            }
+          }`
+        );
+        await preview.show(
+          "src/Button.tsx:ButtonStory",
+          `properties = {
+            ...baseArgs
+          }`
+        );
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'local value')]"
+        );
+      });
+
       test("renders CSF3 story with default args", async (preview) => {
         await preview.fileManager.update(
           "src/Button.tsx",
@@ -163,7 +225,7 @@ for (const reactVersion of reactVersions()) {
           `const Button = ({ label }) => <button>{label}</button>;
 
           export default {
-            component: () => <div>foo</div>
+            component: Button
           };
 
           export const ButtonStory = {

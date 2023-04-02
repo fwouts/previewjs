@@ -1,13 +1,14 @@
 import type { Component, ComponentTypeInfo } from "@previewjs/core";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
+  extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
   resolveComponent,
-} from "@previewjs/csf3";
-import { parseSerializableValue } from "@previewjs/serializable-values";
-import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+} from "@previewjs/storybook-helpers";
+import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { analyzeSolidComponent } from "./analyze-component";
+import { analyzeSolidComponent } from "./analyze-component.js";
 
 export function extractSolidComponents(
   resolver: TypeResolver,
@@ -58,30 +59,44 @@ export function extractSolidComponents(
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
   const components: Component[] = [];
-  const args = helpers.extractArgs(sourceFile);
+  const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
   function extractComponentTypeInfo(
     node: ts.Node,
     name: string
   ): ComponentTypeInfo | null {
+    if (name === "default" && storiesDefaultComponent) {
+      return null;
+    }
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    if (storiesDefaultComponent && storyArgs && isExported) {
+    const signature = extractComponentSignature(resolver.checker, node);
+    if (
+      storiesDefaultComponent &&
+      isExported &&
+      (storyArgs || signature?.parameters.length === 0)
+    ) {
+      const associatedComponent = extractStoryAssociatedComponent(
+        resolver,
+        storiesDefaultComponent
+      );
+      if (!associatedComponent) {
+        // No detected associated component, give up.
+        return null;
+      }
       return {
         kind: "story",
-        args: {
-          start: storyArgs.getStart(),
-          end: storyArgs.getEnd(),
-          value: parseSerializableValue(storyArgs),
-        },
-        associatedComponent: extractStoryAssociatedComponent(
-          resolver,
-          storiesDefaultComponent
-        ),
+        args: storyArgs
+          ? {
+              start: storyArgs.getStart(),
+              end: storyArgs.getEnd(),
+              value: parseSerializableValue(storyArgs),
+            }
+          : null,
+        associatedComponent,
       };
     }
-    const signature = extractComponentSignature(resolver.checker, node);
     if (signature) {
       return {
         kind: "component",

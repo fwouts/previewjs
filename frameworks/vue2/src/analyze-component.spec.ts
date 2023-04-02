@@ -14,14 +14,13 @@ import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue2FrameworkPlugin from ".";
-import { inferComponentNameFromVuePath } from "./infer-component-name";
-import { createVueTypeScriptReader } from "./vue-reader";
+import { inferComponentNameFromVuePath } from "./infer-component-name.js";
+import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");

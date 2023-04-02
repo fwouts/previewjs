@@ -38,7 +38,7 @@ export async function updateComponent({
     sendMessageFromPreview({
       kind: "before-render",
     });
-    const { render } = await load({
+    const { render, jsxFactory } = await load({
       wrapperModule,
       wrapperName,
       componentFilePath,
@@ -50,20 +50,21 @@ export async function updateComponent({
     if (shouldAbortRender()) {
       return;
     }
-    let autogenCallbackProps = {};
-    eval(`autogenCallbackProps = ${currentState.autogenCallbackPropsSource};`);
-    let properties = {};
-    eval(`${currentState.propsAssignmentSource};`);
-    const invocationProps = properties;
+    const { autogenCallbackProps, properties } =
+      await componentModule.PreviewJsEvaluateLocally(
+        currentState.autogenCallbackPropsSource,
+        currentState.propsAssignmentSource,
+        jsxFactory
+      );
     sendMessageFromPreview({
       kind: "rendering-setup",
       filePath: componentFilePath,
       componentName,
     });
-    await render((presetProps = {}) => ({
+    await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),
-      ...transformFunctions(presetProps, []),
-      ...transformFunctions(invocationProps, []),
+      ...transformFunctions(presetGlobalProps, []),
+      ...transformFunctions(properties || presetProps, []),
     }));
     if (shouldAbortRender()) {
       return;
@@ -93,6 +94,12 @@ function transformFunctions(value: any, path: string[]): any {
     }
     if (value.constructor === Object) {
       // Plain object (i.e. not Set or Map or any class instance).
+      if (value.$$typeof) {
+        // This is likely a React component, e.g. instantiated in a JSX expression.
+        // We don't want to show an action invoked when the JSX function is invoked,
+        // so skip it.
+        return value;
+      }
       return Object.fromEntries(
         Object.entries(value).map(([k, v]) => [
           k,

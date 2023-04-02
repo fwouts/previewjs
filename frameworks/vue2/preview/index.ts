@@ -1,7 +1,7 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import Vue from "vue";
 
-const root = document.getElementById("root");
+const root = document.getElementById("root")!;
 let app: Vue | null = null;
 
 export const load: RendererLoader = async ({
@@ -38,7 +38,7 @@ export const load: RendererLoader = async ({
       // CSF2 story.
       RenderComponent = {
         functional: true,
-        render: (h, data) => {
+        render: (h: any, data: any) => {
           const storyReturnValue = ComponentOrStory(data.props, {
             argTypes: data.props,
           });
@@ -78,7 +78,7 @@ export const load: RendererLoader = async ({
     };
   }, RenderComponent);
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
@@ -91,15 +91,15 @@ export const load: RendererLoader = async ({
           h(
             {
               functional: true,
-              render: (h, data) => {
+              render: (h: any, data: any) => {
                 const Wrapped = h(Decorated, data);
                 return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
               },
             },
             {
               props: getProps({
-                ...componentModule.default?.args,
-                ...ComponentOrStory.args,
+                presetGlobalProps: componentModule.default?.args || {},
+                presetProps: ComponentOrStory.args || {},
               }),
             }
           ),
@@ -109,5 +109,8 @@ export const load: RendererLoader = async ({
       }
       root.appendChild(app.$el);
     },
+    // While Vue 2 exposes h(), it can only be used when a component is already being rendered.
+    // This makes the approach of invoking jsxFactory prior to rendering the component unfeasible.
+    jsxFactory: null,
   };
 };

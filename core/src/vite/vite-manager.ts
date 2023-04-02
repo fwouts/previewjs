@@ -3,18 +3,20 @@ import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
 import express from "express";
 import fs from "fs-extra";
+import { escape } from "html-escaper";
 import type { Server } from "http";
 import path from "path";
-import { recrawl } from "recrawl";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
+import { findFiles } from "../find-files";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
+import { localEval } from "./plugins/local-eval";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
@@ -37,21 +39,48 @@ export class ViteManager {
   ) {
     const router = express.Router();
     router.get("/preview/", async (req, res) => {
-      await this.viteStartupPromise;
-      const template = await fs.readFile(
-        this.options.shadowHtmlFilePath,
-        "utf-8"
-      );
-      if (!this.viteServer) {
-        res.status(404).end(`Vite is not running.`);
-        return;
-      }
-      res
-        .status(200)
-        .set({ "Content-Type": "text/html" })
-        .end(
-          await this.viteServer.transformIndexHtml(req.originalUrl, template)
+      try {
+        const template = await fs.readFile(
+          this.options.shadowHtmlFilePath,
+          "utf-8"
         );
+        await this.viteStartupPromise;
+        if (!this.viteServer) {
+          res.status(404).end(`Uh-Oh! Vite server is not running.`);
+          return;
+        }
+        res
+          .status(200)
+          .set({ "Content-Type": "text/html" })
+          .end(
+            await this.viteServer.transformIndexHtml(req.originalUrl, template)
+          );
+      } catch (e: any) {
+        res
+          .status(500)
+          .set({ "Content-Type": "text/html" })
+          .end(
+            `<html>
+              <head>
+                <style>
+                  body {
+                    background: #FCA5A5
+                  }
+                  pre {
+                    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+                    monospace;
+                    font-size: 12px;
+                    line-height: 1.5em;
+                    color: #7F1D1D;
+                  }
+                </style>
+              </head>
+              <body>
+                <pre>${escape(`${e}` || "An unknown error has occurred")}</pre>
+              </body>
+            </html>`
+          );
+      }
     });
     router.use("/ping", async (req, res) => {
       this.lastPingTimestamp = Date.now();
@@ -81,10 +110,13 @@ export class ViteManager {
     // Find valid tsconfig.json files.
     //
     // Useful when the project may contain some invalid files.
-    const typeScriptConfigFilePaths = await recrawl({
-      only: ["jsconfig.json", "tsconfig.json"],
-      skip: ["node_modules", ".git"],
-    })(this.options.rootDirPath);
+    const typeScriptConfigAbsoluteFilePaths = await findFiles(
+      this.options.rootDirPath,
+      "{js,ts}config.json"
+    );
+    const typeScriptConfigFilePaths = typeScriptConfigAbsoluteFilePaths.map(
+      (p) => path.relative(this.options.rootDirPath, p)
+    );
     const validTypeScriptFilePaths: string[] = [];
     for (const configFilePath of typeScriptConfigFilePaths) {
       try {
@@ -143,8 +175,7 @@ export class ViteManager {
       ])
     );
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
-      // @ts-expect-error
-      viteTsconfigPaths.default({
+      viteTsconfigPaths({
         root: this.options.rootDirPath,
         projects: validTypeScriptFilePaths,
       }),
@@ -157,6 +188,7 @@ export class ViteManager {
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
+      localEval(),
       exportToplevelPlugin(),
       fakeExportedTypesPlugin({
         readFile: (absoluteFilePath) =>
@@ -207,7 +239,6 @@ export class ViteManager {
       })
     );
     const viteServerPromise = vite.createServer({
-      ...existingViteConfig?.config,
       ...frameworkPluginViteConfig,
       ...existingViteConfig?.config,
       ...this.options.config.vite,
@@ -215,7 +246,6 @@ export class ViteManager {
       root: this.options.rootDirPath,
       base: "/preview/",
       server: {
-        ...existingViteConfig?.config.server,
         middlewareMode: true,
         hmr: {
           overlay: false,
@@ -234,7 +264,19 @@ export class ViteManager {
       customLogger: {
         info: defaultLogger.info,
         warn: defaultLogger.warn,
-        error: defaultLogger.error,
+        error: (msg, options) => {
+          if (!msg.startsWith("\x1B[31mInternal server error")) {
+            // Note: we only send errors through WebSocket when they're not already sent by Vite automatically.
+            this.viteServer?.ws.send({
+              type: "error",
+              err: {
+                message: msg,
+                stack: "",
+              },
+            });
+          }
+          defaultLogger.error(msg, options);
+        },
         warnOnce: defaultLogger.warnOnce,
         clearScreen: () => {
           // Do nothing.

@@ -1,7 +1,8 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
 const buttonVueSource = `
 <template>
@@ -26,6 +27,7 @@ export default {
 </script>
 `;
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "vue3");
 
 test.describe.parallel("vue3/storybook", () => {
@@ -110,6 +112,44 @@ test.describe.parallel("vue3/storybook", () => {
     );
   });
 
+  test("renders templated CSF2 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update("src/Button.vue", buttonVueSource);
+    await preview.fileManager.update(
+      "src/Button.stories.js",
+      `import Button from './Button.vue';
+
+      export default {
+        component: Button
+      }
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      const Template = (args) => ({
+        components: { Button },
+        setup() {
+          return { args };
+        },
+        template: '<Button v-bind="args" />',
+      });
+
+      export const Primary = Template.bind({});
+      Primary.args = {
+        label: "label",
+      };`
+    );
+    await preview.show(
+      "src/Button.stories.js:Primary",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
+    );
+  });
+
   test("renders CSF2 story with default args", async (preview) => {
     await preview.fileManager.update("src/Button.vue", buttonVueSource);
     await preview.fileManager.update(
@@ -191,6 +231,37 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+  });
+
+  test("renders CSF3 story with assignment source referring local variable", async (preview) => {
+    await preview.fileManager.update("src/Button.vue", buttonVueSource);
+    await preview.fileManager.update(
+      "src/Button.stories.js",
+      `import Button from './Button.vue';
+
+      export default {
+        component: Button
+      };
+
+      const baseArgs = {
+        label: "local value"
+      };
+
+      export const Primary = {
+        args: {
+          label: "label"
+        }
+      };`
+    );
+    await preview.show(
+      "src/Button.stories.js:Primary",
+      `properties = {
+        ...baseArgs
+      }`
+    );
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'local value')]"
     );
   });
 

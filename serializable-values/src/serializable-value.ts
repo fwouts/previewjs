@@ -3,6 +3,7 @@ export type SerializableValue =
   | SerializableBooleanValue
   | SerializableFunctionValue
   | SerializableMapValue
+  | SerializableNodeValue
   | SerializableNullValue
   | SerializableNumberValue
   | SerializableObjectValue
@@ -44,13 +45,13 @@ export const TRUE = boolean(true);
 
 export type SerializableFunctionValue = {
   kind: "function";
-  returnValue: SerializableValue;
+  source: string; // Example: "() => 123" or "function foo(a, b) { return a + b; }"
 };
 
-export function fn(returnValue: SerializableValue): SerializableFunctionValue {
+export function fn(source: string): SerializableFunctionValue {
   return {
     kind: "function",
-    returnValue,
+    source,
   };
 }
 
@@ -63,6 +64,26 @@ export function map(values: SerializableObjectValue): SerializableMapValue {
   return {
     kind: "map",
     values,
+  };
+}
+
+export type SerializableNodeValue = {
+  kind: "node";
+  tag: string;
+  props: SerializableObjectValue;
+  children: SerializableValue[] | null;
+};
+
+export function node(
+  tag: string,
+  props: SerializableObjectValue,
+  children: SerializableValue[] | null = null
+): SerializableNodeValue {
+  return {
+    kind: "node",
+    tag,
+    props,
+    children,
   };
 }
 
@@ -87,10 +108,16 @@ export type SerializableObjectValue = {
   entries: SerializableObjectValueEntry[];
 };
 
-export type SerializableObjectValueEntry = {
-  key: SerializableValue;
-  value: SerializableValue;
-};
+export type SerializableObjectValueEntry =
+  | {
+      kind: "key";
+      key: SerializableValue;
+      value: SerializableValue;
+    }
+  | {
+      kind: "spread";
+      value: SerializableValue;
+    };
 
 export function object(
   entries: SerializableObjectValueEntry[]

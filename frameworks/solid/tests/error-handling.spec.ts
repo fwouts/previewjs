@@ -1,8 +1,10 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "solid");
 
 test.describe.parallel("solid/error handling", () => {
@@ -32,7 +34,9 @@ test.describe.parallel("solid/error handling", () => {
             return <div>{logo}</div>;
           }`
     );
-    await preview.show("src/App.tsx:App");
+    await preview.show("src/App.tsx:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to fetch dynamically imported module",
@@ -84,7 +88,9 @@ test.describe.parallel("solid/error handling", () => {
             return <div>{logo}</div>;
           }`
     );
-    await preview.show("src/App.tsx:App");
+    await preview.show("src/App.tsx:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
       `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
       "Failed to fetch dynamically imported module",
@@ -132,8 +138,11 @@ test.describe.parallel("solid/error handling", () => {
       replace: "App.css",
       with: "App-missing.css",
     });
-    await preview.show("src/App.tsx:App");
+    await preview.show("src/App.tsx:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
+      "Failed to load url /src/App-missing.css (resolved id: /src/App-missing.css)",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -152,6 +161,7 @@ test.describe.parallel("solid/error handling", () => {
       with: "App-missing.css",
     });
     await preview.expectLoggedMessages.toMatch([
+      "Failed to load url /src/App-missing.css (resolved id: /src/App-missing.css)",
       "Failed to reload /src/App.tsx.",
     ]);
     await preview.fileManager.update("src/App.tsx", {

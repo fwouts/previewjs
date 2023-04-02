@@ -1,17 +1,17 @@
 import type { ComponentAnalysis } from "@previewjs/core";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import {
-  CollectedTypes,
-  dereferenceType,
   EMPTY_OBJECT_TYPE,
+  OptionalType,
+  TypeResolver,
+  UNKNOWN_TYPE,
+  dereferenceType,
   maybeOptionalType,
   objectType,
   stripUnusedTypes,
-  TypeResolver,
-  UNKNOWN_TYPE,
-  ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { detectPropTypes } from "./prop-types";
+import { detectPropTypes } from "./prop-types.js";
 
 export function analyzeReactComponent(
   typeResolver: TypeResolver,
@@ -129,7 +129,7 @@ function computePropsTypeFromPropTypes(
   collected: CollectedTypes;
 } {
   const type = typeResolver.checker.getTypeAtLocation(propTypes);
-  const fields: Record<string, ValueType> = {};
+  const fields: Record<string, ValueType | OptionalType> = {};
   let collected: CollectedTypes = {};
   for (const property of type.getProperties()) {
     fields[property.name] = (() => {
@@ -157,6 +157,6 @@ function computePropsTypeFromPropTypes(
   const resolved = objectType(fields);
   return {
     type: resolved,
-    collected: stripUnusedTypes(collected, resolved),
+    collected: stripUnusedTypes(collected, [resolved]),
   };
 }

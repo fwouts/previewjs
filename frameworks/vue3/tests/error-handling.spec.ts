@@ -1,8 +1,10 @@
 import test from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "vue3");
 
 test.describe.parallel("vue3/error handling", () => {
@@ -29,8 +31,11 @@ test.describe.parallel("vue3/error handling", () => {
       replace: "components/HelloWorld.vue",
       with: "components/Broken.vue",
     });
-    await preview.show("src/App.vue:App");
+    await preview.show("src/App.vue:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
+      "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -49,6 +54,7 @@ test.describe.parallel("vue3/error handling", () => {
       with: "components/Broken.vue",
     });
     await preview.expectLoggedMessages.toMatch([
+      "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
       "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
     ]);
     await preview.fileManager.update("src/App.vue", {
@@ -58,15 +64,17 @@ test.describe.parallel("vue3/error handling", () => {
     await preview.iframe.waitForSelector(".hello");
   });
 
-  // TODO: Check if it's possible to make this test pass.
-  // Currently, it doesn't reload when App.vue is fixed.
-  test.skip("fails correctly when encountering broken CSS before update", async (preview) => {
+  test("fails correctly when encountering broken CSS before update", async (preview) => {
     await preview.fileManager.update("src/App.vue", {
       replace: "#app {",
       with: " BROKEN",
     });
-    await preview.show("src/App.vue:App");
+    await preview.show("src/App.vue:App").catch(() => {
+      /* expected error */
+    });
     await preview.expectLoggedMessages.toMatch([
+      "App.vue:3:3: Unknown word",
+      "App.vue:3:3: Unknown word",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);

@@ -1,8 +1,11 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
-import { reactVersions } from "./react-versions";
+import url from "url";
+import pluginFactory from "../src/index.js";
+import { reactVersions } from "./react-versions.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const testApp = (suffix: string | number) =>
   path.join(__dirname, "apps", "react" + suffix);
@@ -36,7 +39,9 @@ test.describe.parallel("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.show("src/App.tsx:App");
+        await preview.show("src/App.tsx:App").catch(() => {
+          /* expected error */
+        });
         await preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
@@ -88,7 +93,9 @@ test.describe.parallel("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.show("src/App.tsx:App");
+        await preview.show("src/App.tsx:App").catch(() => {
+          /* expected error */
+        });
         await preview.expectLoggedMessages.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to fetch dynamically imported module",
@@ -136,8 +143,11 @@ test.describe.parallel("react/error handling", () => {
           replace: "App.css",
           with: "App-missing.css",
         });
-        await preview.show("src/App.tsx:App");
+        await preview.show("src/App.tsx:App").catch(() => {
+          /* expected error */
+        });
         await preview.expectLoggedMessages.toMatch([
+          "Failed to load url /src/App-missing.css (resolved id: /src/App-missing.css)",
           "Failed to fetch dynamically imported module",
           "Failed to fetch dynamically imported module",
         ]);
@@ -156,6 +166,7 @@ test.describe.parallel("react/error handling", () => {
           with: "App-missing.css",
         });
         await preview.expectLoggedMessages.toMatch([
+          "Failed to load url /src/App-missing.css (resolved id: /src/App-missing.css)",
           "Failed to reload /src/App.tsx.",
         ]);
         await preview.fileManager.update("src/App.tsx", {
@@ -299,6 +310,18 @@ test.describe.parallel("react/error handling", () => {
           with: " {",
         });
         await preview.iframe.waitForSelector(".App");
+      });
+
+      test("fails correctly when encountering missing CSS", async (preview) => {
+        await preview.fileManager.remove("src/App.css");
+        await preview.show("src/App.tsx:App").catch(() => {
+          /* expected error */
+        });
+        await preview.expectLoggedMessages.toMatch([
+          "Failed to load url /src/App.css (resolved id: /src/App.css)",
+          "Failed to fetch dynamically imported module",
+          "Failed to fetch dynamically imported module",
+        ]);
       });
     });
   }

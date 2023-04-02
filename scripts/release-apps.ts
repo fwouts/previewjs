@@ -1,12 +1,15 @@
-import execa from "execa";
+import { execa } from "execa";
 import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
-import { previewjsProVersion } from "../loader/src/version";
-import { assertCleanGit, isGitClean } from "./clean-git";
-import { gitChangelog } from "./git-changelog";
-import { incrementVersion } from "./increment-version";
-import { getPackageJson } from "./package-json";
+import url from "url";
+import { previewjsProVersion } from "../loader/src/version.js";
+import { assertCleanGit, isGitClean } from "./clean-git.js";
+import { gitChangelog } from "./git-changelog.js";
+import { incrementVersion } from "./increment-version.js";
+import { getPackageJson } from "./package-json.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 async function main() {
   await assertCleanGit();
@@ -14,26 +17,46 @@ async function main() {
   console.log(
     `About to update loader bundle with @previewjs/pro v${previewjsProVersion}.`
   );
-  const { version: coreVersion } = await import("../core/package.json");
-  const { version: vfsVersion } = await import("../vfs/package.json");
-  const { version: preactPluginVersion } = await import(
-    "../frameworks/preact/package.json"
-  );
-  const { version: reactPluginVersion } = await import(
-    "../frameworks/react/package.json"
-  );
-  const { version: solidPluginVersion } = await import(
-    "../frameworks/solid/package.json"
-  );
-  const { version: sveltePluginVersion } = await import(
-    "../frameworks/svelte/package.json"
-  );
-  const { version: vue2PluginVersion } = await import(
-    "../frameworks/vue2/package.json"
-  );
-  const { version: vue3PluginVersion } = await import(
-    "../frameworks/vue3/package.json"
-  );
+  const {
+    default: { version: coreVersion },
+  } = await import("../core/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: vfsVersion },
+  } = await import("../vfs/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: preactPluginVersion },
+  } = await import("../frameworks/preact/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: reactPluginVersion },
+  } = await import("../frameworks/react/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: solidPluginVersion },
+  } = await import("../frameworks/solid/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: sveltePluginVersion },
+  } = await import("../frameworks/svelte/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: vue2PluginVersion },
+  } = await import("../frameworks/vue2/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: vue3PluginVersion },
+  } = await import("../frameworks/vue3/package.json", {
+    assert: { type: "json" },
+  });
   const releaseDirPath = path.join(__dirname, "..", "loader", "src", "release");
   await fs.promises.writeFile(
     path.join(releaseDirPath, "package.json"),

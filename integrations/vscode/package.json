@@ -1,6 +1,6 @@
 {
   "name": "previewjs",
-  "version": "1.17.4",
+  "version": "1.20.1",
   "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
@@ -65,6 +65,11 @@
         "title": "Open Preview.js",
         "category": "Preview.js",
         "icon": "./logo.png"
+      },
+      {
+        "command": "previewjs.reset",
+        "title": "Reset Preview.js after clearing cache",
+        "category": "Preview.js"
       }
     ],
     "keybindings": [
@@ -88,21 +93,21 @@
   "main": "./dist/index.js",
   "scripts": {
     "vscode:prepublish": "pnpm build",
-    "build": "cd ../.. && turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies && cd integrations/vscode && rimraf dist previewjs-1.17.4.vsix && tsc && node esbuild.js && shx cp -rL ../../loader/node_modules/pnpm dist/pnpm && shx cp -rL ../../loader/src/release/* dist/",
+    "build": "cd ../.. && turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies && cd integrations/vscode && rimraf dist previewjs-1.20.1.vsix && tsc && node esbuild.mjs",
     "build:dev": "cross-env PREVIEWJS_PORT=9316 PREVIEWJS_MODULES_DIR=../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app pnpm build",
     "build:dev:pro": "cross-env PREVIEWJS_PORT=9316 PREVIEWJS_MODULES_DIR=../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro pnpm build",
-    "dev:install": "pnpm vsce package --no-dependencies && code --install-extension previewjs-1.17.4.vsix --force"
+    "dev:install": "pnpm vsce package --no-dependencies && code --install-extension previewjs-1.20.1.vsix --force"
   },
   "devDependencies": {
-    "@previewjs/daemon": "*",
+    "@previewjs/daemon": "workspace:*",
+    "@previewjs/loader": "workspace:*",
     "@types/vscode": "^1.71.2",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.17.8",
+    "esbuild": "^0.17.14",
     "exclusive-promises": "^1.0.3",
-    "execa": "^5.1.1",
+    "execa": "^7.1.1",
     "ovsx": "^0.8.0",
-    "rimraf": "^4.1.2",
-    "shx": "^0.3.4",
+    "rimraf": "^4.4.1",
     "strip-ansi": "^7.0.1",
     "typescript": "^4.9.5",
     "vsce": "^2.15.0"

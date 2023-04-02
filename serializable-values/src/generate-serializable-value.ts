@@ -1,35 +1,39 @@
 import { faker } from "@faker-js/faker";
 import {
   ArrayType,
-  arrayType,
   CollectedTypes,
+  RecordType,
+  STRING_TYPE,
+  ValueType,
+  arrayType,
   dereferenceType,
   isValid,
-  RecordType,
-  ValueType,
 } from "@previewjs/type-analyzer";
-import { assertNever } from "assert-never";
+import assertNever from "assert-never";
+import { formatExpression } from "./format-expression";
 import { isValidPropName } from "./prop-name";
 import {
-  array,
   EMPTY_ARRAY,
   EMPTY_OBJECT,
   FALSE,
-  fn,
-  map,
   NULL,
-  number,
-  object,
-  promise,
   SerializableArrayValue,
   SerializableObjectValue,
   SerializableObjectValueEntry,
   SerializableValue,
-  set,
-  string,
   TRUE,
   UNDEFINED,
+  array,
+  fn,
+  map,
+  node,
+  number,
+  object,
+  promise,
+  set,
+  string,
 } from "./serializable-value";
+import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 /**
  * Generates a valid value for the given type.
@@ -78,10 +82,20 @@ function _generateSerializableValue(
     case "boolean":
       return random && Math.random() < 0.5 ? TRUE : FALSE;
     case "string":
-    case "node":
       return string(
         random ? faker.lorem.words(generateRandomInteger(0, 10)) : fieldName
       );
+    case "node":
+      return node("div", EMPTY_OBJECT, [
+        _generateSerializableValue(
+          STRING_TYPE,
+          collected,
+          fieldName,
+          rejectTypeNames,
+          random,
+          isFunctionReturnValue
+        ),
+      ]);
     case "number":
       return number(random ? generateRandomInteger() : 0);
     case "literal":
@@ -140,8 +154,13 @@ function _generateSerializableValue(
     case "object": {
       const entries: SerializableObjectValueEntry[] = [];
       for (const [propName, propType] of Object.entries(type.fields)) {
+        let nonOptionalPropType =
+          propType.kind === "optional" ? propType.type : propType;
+        if (propType.kind === "optional" && (!random || Math.random() < 0.5)) {
+          continue;
+        }
         const propValue = _generateSerializableValue(
-          propType,
+          nonOptionalPropType,
           collected,
           propName,
           rejectTypeNames,
@@ -155,6 +174,7 @@ function _generateSerializableValue(
           continue;
         }
         entries.push({
+          kind: "key",
           key: string(propName),
           value: propValue,
         });
@@ -217,31 +237,30 @@ function _generateSerializableValue(
         random,
         isFunctionReturnValue
       );
-    case "function":
-      return fn(
-        isFunctionReturnValue
-          ? UNDEFINED
-          : _generateSerializableValue(
-              type.returnType,
-              collected,
-              fieldName,
-              rejectTypeNames,
-              random,
-              true
-            )
-      );
-    case "optional":
-      if (random && Math.random() < 0.5) {
-        return _generateSerializableValue(
-          type.type,
+    case "function": {
+      if (isFunctionReturnValue) {
+        // Do not generate complex functions within functions.
+        return fn(`() => {}`);
+      }
+      const returnValue = serializableValueToJavaScript(
+        _generateSerializableValue(
+          type.returnType,
           collected,
           fieldName,
           rejectTypeNames,
           random,
-          isFunctionReturnValue
-        );
-      }
-      return UNDEFINED;
+          true
+        )
+      );
+      return fn(
+        formatExpression(
+          `() => {
+            console.log(${JSON.stringify(fieldName + " invoked")});
+            ${returnValue === "undefined" ? "" : `return ${returnValue};`}
+          }`
+        )
+      );
+    }
     case "promise": {
       return promise({
         type: "reject",
@@ -336,6 +355,7 @@ function generateRecordValue(
       isFunctionReturnValue
     );
     entries.push({
+      kind: "key",
       key,
       value,
     });

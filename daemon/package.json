@@ -13,18 +13,15 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "type": "commonjs",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     },
     "./client": {
-      "require": "./dist/client.cjs",
       "import": "./dist/client.mjs",
       "types": "./dist/client.d.ts"
     }
@@ -37,21 +34,20 @@
     }
   },
   "scripts": {
-    "prepublish": "cd .. && turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies",
     "build": "tsc && unbuild",
     "dev": "ts-node-dev --respawn src/main.ts"
   },
   "devDependencies": {
-    "@previewjs/api": "^7.2.1",
-    "@previewjs/core": "^15.1.2",
-    "@previewjs/loader": "^2.7.0",
-    "@types/node": "^18.14.0",
+    "@previewjs/api": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/loader": "workspace:*",
+    "@types/node": "^18.15.11",
     "exclusive-promises": "^1.0.3",
     "exit-hook": "^3.2.0",
     "is-wsl": "^2.2.0",
-    "rimraf": "^4.1.2",
+    "rimraf": "^4.4.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.5",
-    "unbuild": "^1.1.2"
+    "unbuild": "^1.2.0"
   }
 }

@@ -154,7 +154,7 @@ class ProjectService(private val project: Project) : Disposable {
             val components = api.analyzeFile(
                 AnalyzeFileRequest(
                     workspaceId,
-                    absoluteFilePath = file.path,
+                    absoluteFilePath = file.path
                 )
             ).components
 

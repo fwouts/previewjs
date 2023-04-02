@@ -1,9 +1,14 @@
 import assertNever from "assert-never";
 import type { CollectedTypes, ValueType } from "./definitions";
 
-export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
+export function stripUnusedTypes(
+  collected: CollectedTypes,
+  types: ValueType[]
+) {
   const visitedTypeNames = new Set<string>();
-  visitType(type);
+  for (const type of types) {
+    visitType(type);
+  }
   return Object.fromEntries(
     Object.entries(collected).filter(([name]) => visitedTypeNames.has(name))
   );
@@ -34,7 +39,7 @@ export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
         return;
       case "object":
         for (const fieldType of Object.values(type.fields)) {
-          visitType(fieldType);
+          visitType(fieldType.kind === "optional" ? fieldType.type : fieldType);
         }
         return;
       case "map":
@@ -46,7 +51,6 @@ export function stripUnusedTypes(collected: CollectedTypes, type: ValueType) {
         visitType(type.returnType);
         return;
       case "promise":
-      case "optional":
         visitType(type.type);
         return;
       case "union":

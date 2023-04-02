@@ -1,4 +1,5 @@
 import { exclusivePromiseRunner } from "exclusive-promises";
+import { existsSync, readFileSync, unlinkSync } from "fs";
 import http from "http";
 import type {
   AnalyzeFileRequest,
@@ -19,9 +20,9 @@ import type {
   UpdateClientStatusResponse,
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
-} from "./api";
+} from "./api.js";
 import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
-export * from "./api";
+export * from "./api.js";
 
 export function createClient(baseUrl: string): Client {
   const locking = exclusivePromiseRunner();
@@ -52,8 +53,14 @@ export function createClient(baseUrl: string): Client {
               responseData += data;
             });
             res.on("end", () => {
-              const response = JSON.parse(responseData);
-              resolve(response);
+              try {
+                const response = JSON.parse(responseData);
+                resolve(response);
+              } catch (e) {
+                reject(
+                  new Error(`Request to ${path} failed:\n${responseData}`)
+                );
+              }
             });
           }
         );
@@ -85,6 +92,18 @@ export function createClient(baseUrl: string): Client {
     updatePendingFile: makeRPC("/pending-files/update"),
   };
   return client;
+}
+
+export function destroyDaemon(lockFilePath: string) {
+  if (existsSync(lockFilePath)) {
+    const pid = parseInt(readFileSync(lockFilePath, "utf8"));
+    try {
+      process.kill(pid, "SIGKILL");
+    } catch {
+      // The daemon was already dead.
+    }
+    unlinkSync(lockFilePath);
+  }
 }
 
 export interface Client {

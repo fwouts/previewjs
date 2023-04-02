@@ -1,4 +1,4 @@
-import { startDaemon } from ".";
+import { startDaemon } from "./index.js";
 
 const port = parseInt(process.env.PORT || "9100");
 

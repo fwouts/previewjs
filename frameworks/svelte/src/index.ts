@@ -2,8 +2,9 @@ import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
-import { analyzeSvelteComponentFromSFC } from "./analyze-component";
-import { createSvelteTypeScriptReader } from "./svelte-reader";
+import url from "url";
+import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
+import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -14,6 +15,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     return parseInt(version) === 3;
   },
   async create() {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,

@@ -1,11 +1,10 @@
-import {
-  createWorkspace,
-  FrameworkPluginFactory,
-  setupFrameworkPlugin,
-} from "@previewjs/core";
-import { createFileSystemReader, Reader } from "@previewjs/vfs";
+import { createWorkspace, setupFrameworkPlugin } from "@previewjs/core";
+import type { FrameworkPluginFactory } from "@previewjs/core";
+import { createFileSystemReader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import path from "path";
+import url from "url";
 
 export async function createChromelessWorkspace({
   rootDirPath,
@@ -26,6 +25,7 @@ export async function createChromelessWorkspace({
       `No compatible framework plugin found for directory: ${rootDirPath}`
     );
   }
+  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   const clientDirPath = path.join(__dirname, "..", "client", "dist");
   const workspace = await createWorkspace({
     rootDirPath,

@@ -1,8 +1,8 @@
-import type { RendererLoader } from "@previewjs/iframe";
-import { Fragment, render } from "preact";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
+import { Fragment, createElement, render } from "preact";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
-const container = document.getElementById("root");
+const container = document.getElementById("root")!;
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -37,22 +37,21 @@ export const load: RendererLoader = async ({
         ComponentOrStory
     : ComponentOrStory;
   return {
-    render: async (getProps: (presetProps?: any) => Record<string, any>) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
-      render(null, container);
       container.innerHTML = "";
       render(
-        <ErrorBoundary key={renderId} renderId={renderId}>
+        <ErrorBoundary renderId={renderId}>
           <Wrapper>
             {decorators.reduce(
               (component, decorator) => () => decorator(component),
               () => (
                 <RenderComponent
                   {...getProps({
-                    ...componentModule.default?.args,
-                    ...ComponentOrStory.args,
+                    presetGlobalProps: componentModule.default?.args || {},
+                    presetProps: ComponentOrStory.args || {},
                   })}
                 />
               )
@@ -75,5 +74,6 @@ export const load: RendererLoader = async ({
         throw errorBoundary.state.error;
       }
     },
+    jsxFactory: createElement,
   };
 };
