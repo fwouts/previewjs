@@ -3,24 +3,27 @@ package com.previewjs.intellij.plugin
 import com.intellij.codeInsight.hints.ChangeListener
 import com.intellij.codeInsight.hints.FactoryInlayHintsCollector
 import com.intellij.codeInsight.hints.ImmediateConfigurable
-import com.intellij.codeInsight.hints.InlayGroup
 import com.intellij.codeInsight.hints.InlayHintsProvider
 import com.intellij.codeInsight.hints.InlayHintsSink
 import com.intellij.codeInsight.hints.NoSettings
 import com.intellij.codeInsight.hints.SettingsKey
+import com.intellij.codeInsight.hints.presentation.InlayPresentation
+import com.intellij.codeInsight.hints.presentation.MouseButton
 import com.intellij.lang.Language
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.previewjs.intellij.plugin.services.ProjectService
+import org.jetbrains.annotations.ApiStatus.Experimental
+import java.awt.Cursor
 import javax.swing.JPanel
 
+@Suppress("UnstableApiUsage")
 class InlayProvider : InlayHintsProvider<NoSettings> {
-    override val group = InlayGroup.VALUES_GROUP
-    override val description = "Show hints for:"
     override val key = SettingsKey<NoSettings>(InlayProvider::class.qualifiedName!!)
     override val name = "Preview.js hints"
     override val previewText = null
@@ -42,6 +45,7 @@ class InlayProvider : InlayHintsProvider<NoSettings> {
     ): FactoryInlayHintsCollector {
         val logger = Logger.getInstance(InlayProvider::class.java)
         logger.warn("Creating collector for ${file.virtualFile.path} (${file.language.id})")
+        // TODO: Recycle it?
         return object : FactoryInlayHintsCollector(editor) {
             override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
                 logger.warn("Collecting hints for ${file.virtualFile.path}")
@@ -49,18 +53,25 @@ class InlayProvider : InlayHintsProvider<NoSettings> {
                 val components = projectService.getComponents(file.virtualFile.path)
                 logger.warn("Components for ${file.virtualFile.path} = ${components.size}")
                 for (component in components) {
-                    val line = StringUtil.countNewLines(file.text.subSequence(0, component.start))
-                    val presentation =
-                        factory.roundWithBackground(factory.smallText("Open ${component.componentName} in Preview.js"))
+                    val presentation = factory.withCursorOnHover(
+                        factory.roundWithBackground(factory.smallText("Open ${component.componentName} in Preview.js")),
+                        Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+                    )
+                    val button = factory.onClick(presentation, MouseButton.Left) { _, _ ->
+                        logger.warn("Click!")
+                    }
+
+                    // TODO: Make sure this is correct when not saved yet, appears to be offset weird.
+                    // Probably because we haven't sent the document over to Preview.js yet?
                     sink.addBlockElement(
-                        line,
+                        component.start,
                         relatesToPrecedingText = false,
                         showAbove = true,
                         priority = 0,
-                        presentation
+                        button
                     )
                 }
-                return true
+                return false
             }
         }
     }

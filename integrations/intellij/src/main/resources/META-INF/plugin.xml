@@ -18,7 +18,21 @@
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.previewjs.intellij.plugin.services.ProjectService"/>
         <notificationGroup id="Preview.js" displayType="BALLOON" />
-        <codeInsight.inlayProvider language="JavaScript" implementationClass="com.previewjs.intellij.plugin.InlayProvider" />
+
+<!--
+
+IntelliJ Community Edition language list: JShellLanguage, SHRINKER_CONFIG, HTML, RELAX-NG, JSON5, JAVA, yaml, TOML, DeviceSpec, textmate, TEXT, kotlin, LogcatFilter, JQL, RoomSql, GitExclude, AndroidDataBinding, HgIgnore, IntegrationPerformanceTest, Lombok.Config, EditorConfig, JSON Lines, Properties, IgnoreLang, UAST, XPath2, AIDL, SPI, MultiDexKeep, KND, HtmlCompatible, XPath, AGSL, GitIgnore, DTD, , JSON, XHTML, Groovy, Markdown, Renderscript, Manifest, JVM, RegExp, XML, SVG, Shell Script, Smali
+
+Generated with:
+
+Language.getRegisteredLanguages().joinToString(", ") { l -> l.id }
+-->
+
+<!--        <codeInsight.inlayProvider language="IgnoreLang" implementationClass="com.previewjs.intellij.plugin.InlayProvider" />-->
+<!--        <codeInsight.inlayProvider language="TypeScript JSX" implementationClass="com.previewjs.intellij.plugin.InlayProvider" />-->
+
+        <codeInsight.inlayProviderFactory implementation="com.previewjs.intellij.plugin.InlayProviderFactory" />
+
     </extensions>
 
     <applicationListeners>

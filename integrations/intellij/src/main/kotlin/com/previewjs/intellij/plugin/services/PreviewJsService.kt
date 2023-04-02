@@ -2,13 +2,17 @@ package com.previewjs.intellij.plugin.services
 
 import com.intellij.execution.process.OSProcessUtil
 import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.lang.Language
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
+import com.intellij.remoteDev.util.UrlParameterKeys.Companion.port
+import com.previewjs.intellij.plugin.InlayProvider
 import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
@@ -31,7 +35,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
-const val PACKAGE_NAME = "@previewjs/pro"
 
 @Service
 class PreviewJsSharedService : Disposable {
@@ -135,6 +138,8 @@ Include the content of the Preview.js logs panel for easier debugging.
     }
 
     private suspend fun startDaemon(project: Project): PreviewJsApi {
+        val logger = Logger.getInstance(PreviewJsSharedService::class.java)
+        logger.warn("Language list is = ${Language.getRegisteredLanguages().joinToString(", ") { l -> "${l.id}-${l.displayName}" }}")
         val port: Int
         try {
             ServerSocket(0).use { serverSocket ->

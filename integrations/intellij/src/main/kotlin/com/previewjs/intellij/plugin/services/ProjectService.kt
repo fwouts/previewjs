@@ -43,7 +43,6 @@ import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
 import java.util.Timer
 import java.util.TimerTask
-import java.util.WeakHashMap
 import javax.swing.ImageIcon
 import kotlin.concurrent.schedule
 
@@ -115,6 +114,7 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
+    // TODO: Also pass content here and check if it matches, otherwise empty list?!
     fun getComponents(filePath: String): List<AnalyzedFileComponent> {
         return fileComponents[filePath] ?: emptyList()
     }
