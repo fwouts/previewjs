@@ -2,23 +2,20 @@ package com.previewjs.intellij.plugin.services
 
 import com.intellij.execution.process.OSProcessUtil
 import com.intellij.ide.plugins.PluginManagerCore
-import com.intellij.lang.Language
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
-import com.intellij.remoteDev.util.UrlParameterKeys.Companion.port
-import com.previewjs.intellij.plugin.InlayProvider
 import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
 import com.previewjs.intellij.plugin.api.api
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.actor
@@ -49,6 +46,7 @@ class PreviewJsSharedService : Disposable {
 
     @Volatile
     private var disposed = false
+    private var initializeApiJob: Job? = null
     private var api: PreviewJsApi? = null
 
     data class Message(
@@ -61,12 +59,7 @@ class PreviewJsSharedService : Disposable {
     private var actor = coroutineScope.actor<Message> {
         var errorCount = 0
         for (msg in channel) {
-            val api: PreviewJsApi
-            try {
-                api = initializeApi(msg.project)
-            } catch (e: Throwable) {
-                return@actor
-            }
+            val api = awaitApiReady() ?: return@actor
             try {
                 (msg.fn)(api)
             } catch (e: Throwable) {
@@ -87,6 +80,15 @@ Include the content of the Preview.js logs panel for easier debugging.
                     return@actor
                 }
             }
+        }
+    }
+
+    fun setup(project: Project) {
+        if (initializeApiJob != null) {
+            return
+        }
+        initializeApiJob = coroutineScope.launch {
+            initializeApi(project)
         }
     }
 
@@ -128,11 +130,15 @@ ${e.stackTraceToString()}""",
     }
 
     suspend fun <T> withApi(
-        project: Project,
         fn: suspend (api: PreviewJsApi) -> T
-    ): T {
-        val api = this.initializeApi(project)
+    ): T? {
+        val api = awaitApiReady() ?: return null
         return fn(api)
+    }
+
+    private suspend fun awaitApiReady(): PreviewJsApi? {
+        initializeApiJob?.join()
+        return api
     }
 
     private fun readInputStream(inputStream: InputStream): String {
@@ -270,7 +276,7 @@ ${e.stackTraceToString()}""",
     }
 
     suspend fun ensureWorkspaceReady(project: Project, absoluteFilePath: String): String? {
-        val api = initializeApi(project)
+        val api = this.api ?: return null
         val workspaceId = api.getWorkspace(
             GetWorkspaceRequest(
                 absoluteFilePath = absoluteFilePath

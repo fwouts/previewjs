@@ -1,10 +1,9 @@
-package com.previewjs.intellij.plugin
+package com.previewjs.intellij.plugin.inlays
 
 import com.intellij.codeInsight.hints.InlayHintsProvider
 import com.intellij.codeInsight.hints.InlayHintsProviderFactory
 import com.intellij.codeInsight.hints.ProviderInfo
 import com.intellij.lang.Language
-import com.intellij.openapi.project.Project
 
 @Suppress("UnstableApiUsage")
 class InlayProviderFactory : InlayHintsProviderFactory {

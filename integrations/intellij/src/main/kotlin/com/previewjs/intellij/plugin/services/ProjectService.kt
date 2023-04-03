@@ -48,6 +48,7 @@ class ProjectService(private val project: Project) : Disposable {
     private var currentPreviewWorkspaceId: String? = null
 
     init {
+        service.setup(project)
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(
             object : DocumentListener {
                 override fun documentChanged(event: DocumentEvent) {
@@ -103,7 +104,7 @@ class ProjectService(private val project: Project) : Disposable {
         if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || document.text.length > 1_048_576) {
             return emptyList()
         }
-        return service.withApi(project) { api ->
+        return service.withApi { api ->
             val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@withApi emptyList()
             api.updatePendingFile(
                 UpdatePendingFileRequest(
@@ -117,7 +118,7 @@ class ProjectService(private val project: Project) : Disposable {
                     absoluteFilePath = file.path
                 )
             ).components
-        }
+        } ?: emptyList()
     }
 
     fun openPreview(absoluteFilePath: String, componentId: String) {

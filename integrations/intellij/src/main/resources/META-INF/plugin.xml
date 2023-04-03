@@ -28,10 +28,10 @@ Generated with:
 Language.getRegisteredLanguages().joinToString(", ") { l -> l.id }
 -->
 
-<!--        <codeInsight.inlayProvider language="IgnoreLang" implementationClass="com.previewjs.intellij.plugin.InlayProvider" />-->
-<!--        <codeInsight.inlayProvider language="TypeScript JSX" implementationClass="com.previewjs.intellij.plugin.InlayProvider" />-->
+<!--        <codeInsight.inlayProvider language="IgnoreLang" implementationClass="com.previewjs.intellij.plugin.inlays.InlayProvider" />-->
+<!--        <codeInsight.inlayProvider language="TypeScript JSX" implementationClass="com.previewjs.intellij.plugin.inlays.InlayProvider" />-->
 
-        <codeInsight.inlayProviderFactory implementation="com.previewjs.intellij.plugin.InlayProviderFactory" />
+        <codeInsight.inlayProviderFactory implementation="com.previewjs.intellij.plugin.inlays.InlayProviderFactory" />
 
     </extensions>
 
