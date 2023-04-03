@@ -12,6 +12,7 @@ import com.intellij.codeInsight.hints.SettingsKey
 import com.intellij.lang.Language
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.previewjs.intellij.plugin.services.ProjectService
@@ -27,6 +28,11 @@ class InlayProviderFactory : InlayHintsProviderFactory {
 
         // Full list from IntelliJ IDEA 2023.1:
         // TOML, JSON, HgIgnore, InjectedFreeMarker, MySQL, AZURE, TypeScript, AIDL, AngularJS, PostCSS, Snowflake, Micronaut-MongoDB-JSON, Redis, XML, SQL92, TSQL, protobase, Angular2Svg, JSUnicodeRegexp, Nashorn JS, JVM, EL, Gherkin, AndroidDataBinding, SQLDateTime, SVG, , XHTML, RoomSql, DB2, Properties, XPath, DB2_ZOS, FTL>, JavaScript 1.8, ThymeleafSpringSecurityExtras, Renderscript, Angular2, prototext, ThymeleafTemplatesExpressions, H2, XsdRegExp, HTML, LESS, JQL, yaml, MongoJSExt, JSPX, Flow JS, PostgreSQL, JQuery-CSS, GitIgnore, Lombok.Config, Dockerfile, KND, CouchbaseQuery, Qute, JSRegexp, ThymeleafExpressions, VueExpr, SQLite, SparkSQL, GenericSQL, JSP, OracleSqlPlus, UastContextLanguage, Markdown, DTD, TEXT, DeviceSpec, UAST, ThymeleafUrlExpressions, EQL, Groovy, TypeScript JSX, SCSS, JSONPath, JSON5, Vue, Exasol, HSQLDB, protobuf, EditorConfig, ECMA Script Level 4, Greenplum, Cookie, kotlin, textmate, ClickHouse, HtmlCompatible, EJBQL, Derby, SPI, Cockroach, JavaScript, Angular2Html, MicronautDataQL, IntegrationPerformanceTest, VTL, GitExclude, MultiDexKeep, Shell Script, CassandraQL, RegExp, HiveQL, Smali, Manifest, SHRINKER_CONFIG, JAVA, LogcatFilter, VueJS, IgnoreLang, SQL, $XSLT, PointcutExpression, MariaDB, DB2_IS, AGSL, Oracle, SpEL, SpringDataQL, JSON Lines, FTL], BigQuery, MongoJS, YouTrack, CSS, MongoDB, Metadata JSON, Vertica, SASS, Sybase, ThymeleafIterateExpressions, ThymeleafTemplatesFragmentExpressions, ECMAScript 6, XPath2, HTTP Request, RELAX-NG, DockerIgnore, HttpClientHandlerJavaScriptDialect, FTL, JPAQL, HQL, JShellLanguage, VueTS, MySQL based, MongoDB-JSON, Spring-MongoDB-JSON, Redshift
+    }
+
+    @Deprecated("Use getProvidersInfo without project", replaceWith = ReplaceWith("getProvidersInfo()"))
+    override fun getProvidersInfo(project: Project): List<ProviderInfo<out Any>> {
+        return getLanguages().map { l -> ProviderInfo(l, InlayProvider()) }
     }
 
     override fun getProvidersInfo(): List<ProviderInfo<out Any>> {
