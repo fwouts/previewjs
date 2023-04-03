@@ -1,10 +1,5 @@
 package com.previewjs.intellij.plugin.services
 
-import com.intellij.codeInsight.hints.HorizontalConstrainedPresentation
-import com.intellij.codeInsight.hints.HorizontalConstraints
-import com.intellij.codeInsight.hints.InlineInlayRenderer
-import com.intellij.codeInsight.hints.presentation.PresentationFactory
-import com.intellij.codeInsight.hints.presentation.RecursivelyUpdatingRootPresentation
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
@@ -13,15 +8,9 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.editor.Inlay
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.FileEditor
-import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.fileEditor.FileEditorManagerListener
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
@@ -37,20 +26,14 @@ import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
-import kotlinx.coroutines.Runnable
-import kotlinx.coroutines.runBlocking
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
-import java.util.Timer
-import java.util.TimerTask
 import javax.swing.ImageIcon
-import kotlin.concurrent.schedule
 
 class ProjectService(private val project: Project) : Disposable {
     companion object {
-        private const val INLAY_PRIORITY = 1000
         private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")

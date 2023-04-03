@@ -41,11 +41,7 @@ class InlayProvider : InlayHintsProvider<NoSettings> {
         editor: Editor,
         settings: NoSettings,
         sink: InlayHintsSink
-    ): InlayHintsCollector {
-        return collector
-    }
-
-    private val collector = object : InlayHintsCollector {
+    ) = object : FactoryInlayHintsCollector(editor) {
         override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
             if (element !is PsiFile) {
                 return false
@@ -54,18 +50,14 @@ class InlayProvider : InlayHintsProvider<NoSettings> {
             val components = runBlocking {
                 projectService.computeComponents(element.virtualFile, editor.document)
             }
-            val factory = PresentationFactory(editor)
             for (component in components) {
                 sink.addBlockElement(
                     component.start,
                     relatesToPrecedingText = false,
                     showAbove = true,
                     priority = 0,
-                    presentation = factory.onClick(
-                        factory.withCursorOnHover(
-                            factory.roundWithBackground(factory.smallText("Open ${component.componentName} in Preview.js")),
-                            Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
-                        ), MouseButton.Left
+                    presentation = factory.referenceOnHover(
+                        factory.roundWithBackground(factory.smallText("Open ${component.componentName} in Preview.js")),
                     ) { _, _ ->
                         projectService.openPreview(element.virtualFile.path, component.componentId)
                     }

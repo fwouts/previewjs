@@ -4,18 +4,25 @@ import com.intellij.codeInsight.hints.InlayHintsProvider
 import com.intellij.codeInsight.hints.InlayHintsProviderFactory
 import com.intellij.codeInsight.hints.ProviderInfo
 import com.intellij.lang.Language
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 
 @Suppress("UnstableApiUsage")
 class InlayProviderFactory : InlayHintsProviderFactory {
-    override fun getLanguages(): Iterable<Language> {
-        return Language.getRegisteredLanguages()
-            // TODO: Also Vue and Svelte.
-            .filter { l -> l.id == "textmate" || l.id == "JavaScript" || l.id == "TypeScript" || l.id == "TypeScript JSX" }
+    companion object {
+        // TODO: Also Vue.
+        val LANGUAGE_IDS = setOf("textmate", "JavaScript", "TypeScript", "TypeScript JSX", "SvelteHTML")
     }
 
-    override fun getProvidersInfoForLanguage(language: Language): List<InlayHintsProvider<out Any>> {
+    override fun getProvidersInfo(): List<ProviderInfo<out Any>> {
+        return getLanguages().map { l -> ProviderInfo(l, InlayProvider()) }
+    }
+
+    fun getLanguages(): Iterable<Language> {
+        return Language.getRegisteredLanguages()
+            .filter { l -> LANGUAGE_IDS.contains(l.id) }
+    }
+
+    fun getProvidersInfoForLanguage(language: Language): List<InlayHintsProvider<out Any>> {
         return listOf(InlayProvider())
     }
 }

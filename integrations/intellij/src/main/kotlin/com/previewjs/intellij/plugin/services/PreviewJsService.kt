@@ -156,12 +156,6 @@ ${e.stackTraceToString()}""",
     }
 
     private suspend fun startDaemon(project: Project): PreviewJsApi {
-        val logger = Logger.getInstance(PreviewJsSharedService::class.java)
-        logger.warn(
-            "Language list is = ${
-                Language.getRegisteredLanguages().joinToString(", ") { l -> "${l.id}-${l.displayName}" }
-            }"
-        )
         val port: Int
         try {
             ServerSocket(0).use { serverSocket ->
@@ -174,7 +168,7 @@ ${e.stackTraceToString()}""",
             processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
         var useWsl = false
         try {
-            if (nodeVersionProcess.waitFor() !== 0) {
+            if (nodeVersionProcess.waitFor() != 0) {
                 throw Error("Preview.js was unable to run node.\\n\\nIs it installed? You may need to restart your IDE.")
             }
             checkNodeVersion(nodeVersionProcess)
@@ -185,7 +179,7 @@ ${e.stackTraceToString()}""",
             }
             val nodeVersionProcessWsl =
                 processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
-            if (nodeVersionProcessWsl.waitFor() === 0) {
+            if (nodeVersionProcessWsl.waitFor() == 0) {
                 checkNodeVersion(nodeVersionProcessWsl)
                 useWsl = true
             } else {
@@ -242,7 +236,7 @@ ${e.stackTraceToString()}""",
             val majorVersion = matchResult.groups[1]!!.value.toInt()
             val minorVersion = matchResult.groups[2]!!.value.toInt()
             // Minimum version: 14.18.0.
-            if (majorVersion < 14 || majorVersion === 14 && minorVersion < 18) {
+            if (majorVersion < 14 || majorVersion == 14 && minorVersion < 18) {
                 throw NodeVersionError("Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
             }
         }
