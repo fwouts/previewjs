@@ -2,6 +2,7 @@ package com.previewjs.intellij.plugin.services
 
 import com.intellij.execution.process.OSProcessUtil
 import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.lang.Language
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
@@ -15,6 +16,7 @@ import com.previewjs.intellij.plugin.api.PreviewJsApi
 import com.previewjs.intellij.plugin.api.api
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.actor
@@ -28,12 +30,12 @@ import java.net.ServerSocket
 import java.util.Collections
 import java.util.WeakHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.logging.Logger
 import kotlin.concurrent.thread
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
-const val PACKAGE_NAME = "@previewjs/pro"
 
-@Service
+@Service(Service.Level.APP)
 class PreviewJsSharedService : Disposable {
     private val coroutineContext = SupervisorJob() + Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext)
@@ -46,7 +48,8 @@ class PreviewJsSharedService : Disposable {
 
     @Volatile
     private var disposed = false
-    private lateinit var api: PreviewJsApi
+    private var initializeApiJob: Job? = null
+    private var api: PreviewJsApi? = null
 
     data class Message(
         val project: Project,
@@ -56,31 +59,11 @@ class PreviewJsSharedService : Disposable {
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
+        val logger = Logger.getLogger("PreviewJsSharedService")
+        logger.warning(Language.getRegisteredLanguages().joinToString(", ") { l -> l.id })
         var errorCount = 0
         for (msg in channel) {
-            try {
-                if (daemonProcess == null) {
-                    api = startDaemon(msg.project)
-                }
-            } catch (e: NodeVersionError) {
-                notificationGroup.createNotification(
-                    "Incompatible Node.js version",
-                    e.message,
-                    NotificationType.ERROR
-                )
-                    .notify(msg.project)
-                return@actor
-            } catch (e: Throwable) {
-                notificationGroup.createNotification(
-                    "Preview.js crashed",
-                    """Please report this issue at https://github.com/fwouts/previewjs/issues
-
-${e.stackTraceToString()}""",
-                    NotificationType.ERROR
-                )
-                    .notify(msg.project)
-                return@actor
-            }
+            val api = awaitApiReady() ?: return@actor
             try {
                 (msg.fn)(api)
             } catch (e: Throwable) {
@@ -104,14 +87,62 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
+    fun ensureApiInitialized(project: Project) {
+        if (initializeApiJob != null) {
+            return
+        }
+        initializeApiJob = coroutineScope.launch {
+            initializeApi(project)
+        }
+    }
+
+    private suspend fun initializeApi(project: Project): PreviewJsApi {
+        api?.let {
+            return it
+        }
+        try {
+            val api = startDaemon(project)
+            this.api = api
+            return api
+        } catch (e: NodeVersionError) {
+            notificationGroup.createNotification(
+                "Incompatible Node.js version",
+                e.message,
+                NotificationType.ERROR
+            )
+                .notify(project)
+            throw e
+        } catch (e: Throwable) {
+            notificationGroup.createNotification(
+                "Preview.js crashed",
+                """Please report this issue at https://github.com/fwouts/previewjs/issues
+
+${e.stackTraceToString()}""",
+                NotificationType.ERROR
+            )
+                .notify(project)
+            throw e
+        }
+    }
+
     fun enqueueAction(
         project: Project,
         fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
         getErrorMessage: (e: Throwable) -> String
-    ) {
-        coroutineScope.launch {
-            actor.send(Message(project, fn, getErrorMessage))
-        }
+    ) = coroutineScope.launch {
+        actor.send(Message(project, fn, getErrorMessage))
+    }
+
+    suspend fun <T> withApi(
+        fn: suspend (api: PreviewJsApi) -> T
+    ): T? {
+        val api = awaitApiReady() ?: return null
+        return fn(api)
+    }
+
+    private suspend fun awaitApiReady(): PreviewJsApi? {
+        initializeApiJob?.join()
+        return api
     }
 
     private fun readInputStream(inputStream: InputStream): String {
@@ -143,10 +174,11 @@ Include the content of the Preview.js logs panel for easier debugging.
         } catch (e: IOException) {
             throw Error("No port is available to run Preview.js daemon")
         }
-        val nodeVersionProcess = processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
+        val nodeVersionProcess =
+            processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
         var useWsl = false
         try {
-            if (nodeVersionProcess.waitFor() !== 0) {
+            if (nodeVersionProcess.waitFor() != 0) {
                 throw Error("Preview.js was unable to run node.\\n\\nIs it installed? You may need to restart your IDE.")
             }
             checkNodeVersion(nodeVersionProcess)
@@ -155,8 +187,9 @@ Include the content of the Preview.js logs panel for easier debugging.
             if (!isWindows()) {
                 throw e
             }
-            val nodeVersionProcessWsl = processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
-            if (nodeVersionProcessWsl.waitFor() === 0) {
+            val nodeVersionProcessWsl =
+                processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
+            if (nodeVersionProcessWsl.waitFor() == 0) {
                 checkNodeVersion(nodeVersionProcessWsl)
                 useWsl = true
             } else {
@@ -213,7 +246,7 @@ Include the content of the Preview.js logs panel for easier debugging.
             val majorVersion = matchResult.groups[1]!!.value.toInt()
             val minorVersion = matchResult.groups[2]!!.value.toInt()
             // Minimum version: 14.18.0.
-            if (majorVersion < 14 || majorVersion === 14 && minorVersion < 18) {
+            if (majorVersion < 14 || majorVersion == 14 && minorVersion < 18) {
                 throw NodeVersionError("Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
             }
         }
@@ -247,6 +280,7 @@ Include the content of the Preview.js logs panel for easier debugging.
     }
 
     suspend fun ensureWorkspaceReady(project: Project, absoluteFilePath: String): String? {
+        val api = this.api ?: return null
         val workspaceId = api.getWorkspace(
             GetWorkspaceRequest(
                 absoluteFilePath = absoluteFilePath
@@ -269,7 +303,7 @@ Include the content of the Preview.js logs panel for easier debugging.
             workspaceIdsToDisposeOf.removeAll(otherProjectWorkspaceIds)
         }
         for (workspaceId in workspaceIdsToDisposeOf) {
-            api.disposeWorkspace(DisposeWorkspaceRequest(workspaceId))
+            api?.disposeWorkspace(DisposeWorkspaceRequest(workspaceId))
         }
     }
 

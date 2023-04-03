@@ -1,26 +1,17 @@
 package com.previewjs.intellij.plugin.services
 
-import com.intellij.codeInsight.hints.HorizontalConstrainedPresentation
-import com.intellij.codeInsight.hints.HorizontalConstraints
-import com.intellij.codeInsight.hints.InlineInlayRenderer
-import com.intellij.codeInsight.hints.presentation.PresentationFactory
-import com.intellij.codeInsight.hints.presentation.RecursivelyUpdatingRootPresentation
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.Service
+import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.editor.Inlay
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.FileEditor
-import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.fileEditor.FileEditorManagerListener
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
@@ -36,19 +27,15 @@ import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
-import kotlinx.coroutines.Runnable
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
-import java.util.Timer
-import java.util.TimerTask
 import javax.swing.ImageIcon
-import kotlin.concurrent.schedule
 
+@Service(Service.Level.PROJECT)
 class ProjectService(private val project: Project) : Disposable {
     companion object {
-        private const val INLAY_PRIORITY = 1000
         private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
@@ -56,8 +43,6 @@ class ProjectService(private val project: Project) : Disposable {
 
     private val app = ApplicationManager.getApplication()
     private val service = app.getService(PreviewJsSharedService::class.java)
-    private val editorManager = FileEditorManager.getInstance(project)
-    private var refreshTimerTask: TimerTask? = null
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
@@ -83,40 +68,10 @@ class ProjectService(private val project: Project) : Disposable {
                     }, {
                         "Warning: unable to update pending file ${file.path}"
                     })
-                    refreshTimerTask?.cancel()
-                    refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
-                        refreshTimerTask = null
-                        app.invokeLater(
-                            Runnable {
-                                updateComponents(file)
-                            }
-                        )
-                    }
                 }
             },
             this
         )
-
-        project.messageBus.connect(project)
-            .subscribe(
-                FileEditorManagerListener.FILE_EDITOR_MANAGER,
-                object : FileEditorManagerListener {
-                    override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
-                        updateComponents(file)
-                    }
-                }
-            )
-
-        for (file in editorManager.openFiles) {
-            updateComponents(file)
-        }
-    }
-
-    fun showConsole() {
-        app.invokeLater {
-            getOrCreateConsole()
-            this.consoleToolWindow?.show()
-        }
     }
 
     fun printToConsole(text: String) {
@@ -145,80 +100,29 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-    private fun updateComponents(file: VirtualFile) {
-        if (!JS_EXTENSIONS.contains(file.extension)) {
-            return
+    suspend fun computeComponents(file: VirtualFile, document: Document): List<AnalyzedFileComponent> {
+        if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || document.text.length > 1_048_576) {
+            return emptyList()
         }
-        val fileEditors = editorManager.getEditors(file)
-        service.enqueueAction(project, { api ->
-            val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-            val components = api.analyzeFile(
+        service.ensureApiInitialized(project)
+        return service.withApi { api ->
+            val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@withApi emptyList()
+            api.updatePendingFile(
+                UpdatePendingFileRequest(
+                    absoluteFilePath = file.path,
+                    utf8Content = document.text
+                )
+            )
+            return@withApi api.analyzeFile(
                 AnalyzeFileRequest(
                     workspaceId,
                     absoluteFilePath = file.path
                 )
             ).components
-            app.invokeLater(
-                Runnable {
-                    updateComponentHints(file, fileEditors, components)
-                }
-            )
-        }, {
-            "Warning: unable to find components in ${file.path}"
-        })
+        } ?: emptyList()
     }
 
-    private fun updateComponentHints(
-        file: VirtualFile,
-        fileEditors: Array<FileEditor>,
-        components: List<AnalyzedFileComponent>
-    ) {
-        for (fileEditor in fileEditors) {
-            if (fileEditor is TextEditor) {
-                val editor = fileEditor.editor
-                if (editor is EditorImpl) {
-                    val presentationFactory = PresentationFactory(editor)
-                    val offsets = HashSet<Int>()
-                    for (component in components) {
-                        offsets.add(component.start)
-                    }
-                    val existingBlockByOffset = HashMap<Int, Inlay<*>>()
-                    for (block in editor.inlayModel.getBlockElementsInRange(0, Int.MAX_VALUE)) {
-                        if (offsets.contains(block.offset)) {
-                            existingBlockByOffset[block.offset] = block
-                        } else {
-                            Disposer.dispose(block)
-                        }
-                    }
-                    for (component in components) {
-                        val existingBlock = existingBlockByOffset[component.start]
-                        if (existingBlock == null) {
-                            editor.inlayModel.addBlockElement(
-                                component.start,
-                                false,
-                                true,
-                                INLAY_PRIORITY,
-                                InlineInlayRenderer(
-                                    listOf(
-                                        HorizontalConstrainedPresentation(
-                                            RecursivelyUpdatingRootPresentation(
-                                                presentationFactory.referenceOnHover(
-                                                    presentationFactory.text("Open ${component.componentName} in Preview.js")
-                                                ) { _, _ -> openPreview(file.path, component.componentId) }
-                                            ),
-                                            HorizontalConstraints(INLAY_PRIORITY, false)
-                                        )
-                                    )
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun openPreview(absoluteFilePath: String, componentId: String) {
+    fun openPreview(absoluteFilePath: String, componentId: String) {
         val app = ApplicationManager.getApplication()
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
@@ -288,8 +192,6 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     override fun dispose() {
-        refreshTimerTask?.cancel()
-        refreshTimerTask = null
         previewBrowser = null
         previewToolWindow = null
         consoleView = null
