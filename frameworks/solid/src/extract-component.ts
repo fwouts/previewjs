@@ -198,5 +198,8 @@ function isJsxElement(type: ts.Type): boolean {
       }
     }
   }
-  return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
+  return (
+    jsxElementTypes.has(type.symbol?.getEscapedName().toString()) ||
+    jsxElementTypes.has(type.aliasSymbol?.getEscapedName().toString() || "")
+  );
 }
