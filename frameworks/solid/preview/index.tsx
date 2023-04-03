@@ -51,7 +51,6 @@ export const load: RendererLoader = async ({
         presetProps: ComponentOrStory.args || {},
       });
       detachFn = Solid.render(
-        // @ts-ignore unexpected JSX error
         () => (
           <Wrapper>
             {decorators.reduce(
