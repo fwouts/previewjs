@@ -2,6 +2,7 @@ package com.previewjs.intellij.plugin.services
 
 import com.intellij.execution.process.OSProcessUtil
 import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.lang.Language
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
@@ -29,11 +30,12 @@ import java.net.ServerSocket
 import java.util.Collections
 import java.util.WeakHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.logging.Logger
 import kotlin.concurrent.thread
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
 
-@Service
+@Service(Service.Level.APP)
 class PreviewJsSharedService : Disposable {
     private val coroutineContext = SupervisorJob() + Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext)
@@ -57,6 +59,8 @@ class PreviewJsSharedService : Disposable {
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
+        val logger = Logger.getLogger("PreviewJsSharedService")
+        logger.warning(Language.getRegisteredLanguages().joinToString(", ") { l -> l.id })
         var errorCount = 0
         for (msg in channel) {
             val api = awaitApiReady() ?: return@actor
@@ -83,7 +87,7 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
-    fun setup(project: Project) {
+    fun ensureApiInitialized(project: Project) {
         if (initializeApiJob != null) {
             return
         }

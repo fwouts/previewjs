@@ -6,6 +6,7 @@ import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -32,6 +33,7 @@ import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
 import javax.swing.ImageIcon
 
+@Service(Service.Level.PROJECT)
 class ProjectService(private val project: Project) : Disposable {
     companion object {
         private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
@@ -48,7 +50,6 @@ class ProjectService(private val project: Project) : Disposable {
     private var currentPreviewWorkspaceId: String? = null
 
     init {
-        service.setup(project)
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(
             object : DocumentListener {
                 override fun documentChanged(event: DocumentEvent) {
@@ -99,11 +100,11 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-
     suspend fun computeComponents(file: VirtualFile, document: Document): List<AnalyzedFileComponent> {
         if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || document.text.length > 1_048_576) {
             return emptyList()
         }
+        service.ensureApiInitialized(project)
         return service.withApi { api ->
             val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@withApi emptyList()
             api.updatePendingFile(
