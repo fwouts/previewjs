@@ -11,6 +11,7 @@ import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.Inlay
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -37,6 +38,7 @@ import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
 import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.runBlocking
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
@@ -56,15 +58,11 @@ class ProjectService(private val project: Project) : Disposable {
 
     private val app = ApplicationManager.getApplication()
     private val service = app.getService(PreviewJsSharedService::class.java)
-    private val editorManager = FileEditorManager.getInstance(project)
-    private var refreshTimerTask: TimerTask? = null
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var currentPreviewWorkspaceId: String? = null
-
-    private var fileComponents = mutableMapOf<String, List<AnalyzedFileComponent>>()
 
     init {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(
@@ -85,38 +83,10 @@ class ProjectService(private val project: Project) : Disposable {
                     }, {
                         "Warning: unable to update pending file ${file.path}"
                     })
-                    refreshTimerTask?.cancel()
-                    refreshTimerTask = Timer("PreviewJsHintRefresh", false).schedule(500) {
-                        refreshTimerTask = null
-                        app.invokeLater(
-                            Runnable {
-                                updateComponents(file)
-                            }
-                        )
-                    }
                 }
             },
             this
         )
-
-        project.messageBus.connect(project)
-            .subscribe(
-                FileEditorManagerListener.FILE_EDITOR_MANAGER,
-                object : FileEditorManagerListener {
-                    override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
-                        updateComponents(file)
-                    }
-                }
-            )
-
-        for (file in editorManager.openFiles) {
-            updateComponents(file)
-        }
-    }
-
-    // TODO: Also pass content here and check if it matches, otherwise empty list?!
-    fun getComponents(filePath: String): List<AnalyzedFileComponent> {
-        return fileComponents[filePath] ?: emptyList()
     }
 
     fun printToConsole(text: String) {
@@ -145,30 +115,29 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-    private fun updateComponents(file: VirtualFile) {
-        if (!JS_EXTENSIONS.contains(file.extension)) {
-            return
+
+    suspend fun computeComponents(file: VirtualFile, document: Document): List<AnalyzedFileComponent> {
+        if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || document.text.length > 1_048_576) {
+            return emptyList()
         }
-        service.enqueueAction(project, { api ->
-            val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-            val components = api.analyzeFile(
+        return service.withApi(project) { api ->
+            val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@withApi emptyList()
+            api.updatePendingFile(
+                UpdatePendingFileRequest(
+                    absoluteFilePath = file.path,
+                    utf8Content = document.text
+                )
+            )
+            return@withApi api.analyzeFile(
                 AnalyzeFileRequest(
                     workspaceId,
                     absoluteFilePath = file.path
                 )
             ).components
-
-            app.invokeLater(
-                Runnable {
-                    fileComponents[file.path] = components
-                }
-            )
-        }, {
-            "Warning: unable to find components in ${file.path}"
-        })
+        }
     }
 
-    private fun openPreview(absoluteFilePath: String, componentId: String) {
+    fun openPreview(absoluteFilePath: String, componentId: String) {
         val app = ApplicationManager.getApplication()
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
@@ -238,8 +207,6 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     override fun dispose() {
-        refreshTimerTask?.cancel()
-        refreshTimerTask = null
         previewBrowser = null
         previewToolWindow = null
         consoleView = null
