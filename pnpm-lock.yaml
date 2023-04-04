@@ -281,8 +281,8 @@ importers:
         version: 3.6.0(vite@4.2.1)
     devDependencies:
       '@rollup/plugin-alias':
-        specifier: ^4.0.3
-        version: 4.0.3(rollup@3.20.2)
+        specifier: ^4.0.4
+        version: 4.0.4(rollup@3.20.2)
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.17
@@ -2968,10 +2968,10 @@ packages:
       '@babel/helpers': 7.21.0
       '@babel/parser': 7.21.2
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.2
+      '@babel/traverse': 7.21.2(supports-color@5.5.0)
       '@babel/types': 7.21.2
       convert-source-map: 1.9.0
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.0
@@ -2993,7 +2993,7 @@ packages:
       '@babel/traverse': 7.21.4
       '@babel/types': 7.21.4
       convert-source-map: 1.9.0
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.0
@@ -5427,23 +5427,6 @@ packages:
       '@babel/parser': 7.21.4
       '@babel/types': 7.21.4
 
-  /@babel/traverse@7.21.2:
-    resolution: {integrity: sha512-ts5FFU/dSUPS13tv8XiEObDu9K+iagEKME9kAbaP7r0Y9KtZJZ+NGndDvWoRAYNpeWafbpFeki3q9QoMD6gxyw==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/code-frame': 7.21.4
-      '@babel/generator': 7.21.4
-      '@babel/helper-environment-visitor': 7.18.9
-      '@babel/helper-function-name': 7.21.0
-      '@babel/helper-hoist-variables': 7.18.6
-      '@babel/helper-split-export-declaration': 7.18.6
-      '@babel/parser': 7.21.4
-      '@babel/types': 7.21.4
-      debug: 4.3.4
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-
   /@babel/traverse@7.21.2(supports-color@5.5.0):
     resolution: {integrity: sha512-ts5FFU/dSUPS13tv8XiEObDu9K+iagEKME9kAbaP7r0Y9KtZJZ+NGndDvWoRAYNpeWafbpFeki3q9QoMD6gxyw==}
     engines: {node: '>=6.9.0'}
@@ -5473,7 +5456,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.18.6
       '@babel/parser': 7.21.4
       '@babel/types': 7.21.4
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -9995,6 +9978,19 @@ packages:
 
   /@rollup/plugin-alias@4.0.3(rollup@3.20.2):
     resolution: {integrity: sha512-ZuDWE1q4PQDhvm/zc5Prun8sBpLJy41DMptYrS6MhAy9s9kL/doN1613BWfEchGVfKxzliJ3BjbOPizXX38DbQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 3.20.2
+      slash: 4.0.0
+    dev: true
+
+  /@rollup/plugin-alias@4.0.4(rollup@3.20.2):
+    resolution: {integrity: sha512-0CaAY238SMtYAWEXXptWSR8iz8NYZnH7zNBKuJ14xFJSGwLtPgjvXYsoApAHfzYXXH1ejxpVw7WlHss3zhh9SQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^1.20.0||^2.0.0||^3.0.0
@@ -18612,17 +18608,6 @@ packages:
       ms: 2.1.3
       supports-color: 5.5.0
 
-  /debug@4.3.4:
-    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
-
   /debug@4.3.4(supports-color@5.5.0):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -26294,7 +26279,7 @@ packages:
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.0
       '@netlify/functions': 1.4.0
-      '@rollup/plugin-alias': 4.0.3(rollup@3.20.2)
+      '@rollup/plugin-alias': 4.0.4(rollup@3.20.2)
       '@rollup/plugin-commonjs': 24.0.1(rollup@3.20.2)
       '@rollup/plugin-inject': 5.0.3(rollup@3.20.2)
       '@rollup/plugin-json': 6.0.0(rollup@3.20.2)
@@ -26370,7 +26355,7 @@ packages:
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.0
       '@netlify/functions': 1.4.0
-      '@rollup/plugin-alias': 4.0.3(rollup@3.20.2)
+      '@rollup/plugin-alias': 4.0.4(rollup@3.20.2)
       '@rollup/plugin-commonjs': 24.0.1(rollup@3.20.2)
       '@rollup/plugin-inject': 5.0.3(rollup@3.20.2)
       '@rollup/plugin-json': 6.0.0(rollup@3.20.2)
@@ -34600,7 +34585,7 @@ packages:
     hasBin: true
     dependencies:
       cac: 6.7.14
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       mlly: 1.2.0
       pathe: 1.1.0
       picocolors: 1.0.0
@@ -35038,7 +35023,7 @@ packages:
       acorn-walk: 8.2.0
       cac: 6.7.14
       chai: 4.3.7
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       local-pkg: 0.4.3
       pathe: 1.1.0
       picocolors: 1.0.0
