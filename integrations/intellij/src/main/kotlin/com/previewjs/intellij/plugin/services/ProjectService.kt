@@ -15,10 +15,10 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.wm.RegisterToolWindowTask
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
@@ -31,6 +31,7 @@ import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
+import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
 @Service(Service.Level.PROJECT)
@@ -42,6 +43,7 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     private val app = ApplicationManager.getApplication()
+    private val smallLogo = ImageIO.read(javaClass.getResource("/logo-13.png"))
     private val service = app.getService(PreviewJsSharedService::class.java)
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
@@ -61,16 +63,14 @@ class ProjectService(private val project: Project) : Disposable {
                         service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
                         api.updatePendingFile(
                             UpdatePendingFileRequest(
-                                absoluteFilePath = file.path,
-                                utf8Content = event.document.text
+                                absoluteFilePath = file.path, utf8Content = event.document.text
                             )
                         )
                     }, {
                         "Warning: unable to update pending file ${file.path}"
                     })
                 }
-            },
-            this
+            }, this
         )
     }
 
@@ -89,14 +89,18 @@ class ProjectService(private val project: Project) : Disposable {
         Disposer.register(this, consoleView)
         this.consoleView = consoleView
         this.consoleToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
-            RegisterToolWindowTask(
-                id = "Preview.js logs",
-                anchor = ToolWindowAnchor.BOTTOM,
-                icon = ImageIcon(javaClass.getResource("/logo-16.png")),
-                component = consoleView.component,
-                canCloseContent = false
+            "Preview.js logs"
+        ) {
+            anchor = ToolWindowAnchor.BOTTOM
+            icon = ImageIcon(smallLogo)
+            canCloseContent = false
+        }.apply {
+            contentManager.addContent(
+                ContentFactory.getInstance().createContent(
+                    consoleView.component, null, false
+                )
             )
-        )
+        }
         return consoleView
     }
 
@@ -109,14 +113,12 @@ class ProjectService(private val project: Project) : Disposable {
             val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@withApi emptyList()
             api.updatePendingFile(
                 UpdatePendingFileRequest(
-                    absoluteFilePath = file.path,
-                    utf8Content = document.text
+                    absoluteFilePath = file.path, utf8Content = document.text
                 )
             )
             return@withApi api.analyzeFile(
                 AnalyzeFileRequest(
-                    workspaceId,
-                    absoluteFilePath = file.path
+                    workspaceId, absoluteFilePath = file.path
                 )
             ).components
         } ?: emptyList()
@@ -155,31 +157,30 @@ class ProjectService(private val project: Project) : Disposable {
                         window.openInExternalBrowser = function(url) {
                             ${linkHandler.inject("url")}
                         };
-                    """,
-                                    browser.url,
-                                    0
+                    """, browser.url, 0
                                 )
                             }
-                        },
-                        browser.cefBrowser
+                        }, browser.cefBrowser
                     )
                     Disposer.register(browser, linkHandler)
                     previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
-                        RegisterToolWindowTask(
-                            id = "Preview.js",
-                            anchor = ToolWindowAnchor.RIGHT,
-                            icon = ImageIcon(javaClass.getResource("/logo-16.png")),
-                            component = browser.component,
-                            canCloseContent = false
+                        "Preview.js"
+                    ) {
+                        anchor = ToolWindowAnchor.RIGHT
+                        icon = ImageIcon(smallLogo)
+                        canCloseContent = false
+                    }.apply {
+                        contentManager.addContent(
+                            ContentFactory.getInstance().createContent(
+                                browser.component, null, false
+                            )
                         )
-                    )
+                    }
                 }
                 val currentBrowserUrl = browser.cefBrowser.url
                 if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
                     browser.cefBrowser.executeJavaScript(
-                        "window.postMessage({ kind: \"navigate\", componentId: \"${componentId}\" });",
-                        previewUrl,
-                        0
+                        "window.postMessage({ kind: \"navigate\", componentId: \"${componentId}\" });", previewUrl, 0
                     )
                 } else {
                     browser.loadURL(previewUrl)
