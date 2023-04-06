@@ -131,7 +131,6 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     fun openPreview(absoluteFilePath: String, componentId: String) {
-        val app = ApplicationManager.getApplication()
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
             currentPreviewWorkspaceId?.let {
