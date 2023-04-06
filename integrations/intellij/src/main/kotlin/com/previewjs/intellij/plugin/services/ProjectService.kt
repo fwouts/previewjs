@@ -64,15 +64,15 @@ class ProjectService(private val project: Project) : Disposable {
                         api.updatePendingFile(
                             UpdatePendingFileRequest(
                                 absoluteFilePath = file.path,
-                                utf8Content = event.document.text,
-                            ),
+                                utf8Content = event.document.text
+                            )
                         )
                     }, {
                         "Warning: unable to update pending file ${file.path}"
                     })
                 }
             },
-            this,
+            this
         )
     }
 
@@ -91,7 +91,7 @@ class ProjectService(private val project: Project) : Disposable {
         Disposer.register(this, consoleView)
         this.consoleView = consoleView
         this.consoleToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
-            "Preview.js logs",
+            "Preview.js logs"
         ) {
             anchor = ToolWindowAnchor.BOTTOM
             icon = ImageIcon(smallLogo)
@@ -101,8 +101,8 @@ class ProjectService(private val project: Project) : Disposable {
                 ContentFactory.getInstance().createContent(
                     consoleView.component,
                     null,
-                    false,
-                ),
+                    false
+                )
             )
         }
         return consoleView
@@ -118,14 +118,14 @@ class ProjectService(private val project: Project) : Disposable {
             api.updatePendingFile(
                 UpdatePendingFileRequest(
                     absoluteFilePath = file.path,
-                    utf8Content = document.text,
-                ),
+                    utf8Content = document.text
+                )
             )
             return@withApi api.analyzeFile(
                 AnalyzeFileRequest(
                     workspaceId,
-                    absoluteFilePath = file.path,
-                ),
+                    absoluteFilePath = file.path
+                )
             ).components
         } ?: emptyList()
     }
@@ -165,15 +165,15 @@ class ProjectService(private val project: Project) : Disposable {
                         };
                     """,
                                     browser.url,
-                                    0,
+                                    0
                                 )
                             }
                         },
-                        browser.cefBrowser,
+                        browser.cefBrowser
                     )
                     Disposer.register(browser, linkHandler)
                     previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
-                        "Preview.js",
+                        "Preview.js"
                     ) {
                         anchor = ToolWindowAnchor.RIGHT
                         icon = ImageIcon(smallLogo)
@@ -183,8 +183,8 @@ class ProjectService(private val project: Project) : Disposable {
                             ContentFactory.getInstance().createContent(
                                 browser.component,
                                 null,
-                                false,
-                            ),
+                                false
+                            )
                         )
                     }
                 }
@@ -193,7 +193,7 @@ class ProjectService(private val project: Project) : Disposable {
                     browser.cefBrowser.executeJavaScript(
                         "window.postMessage({ kind: \"navigate\", componentId: \"${componentId}\" });",
                         previewUrl,
-                        0,
+                        0
                     )
                 } else {
                     browser.loadURL(previewUrl)
