@@ -16,20 +16,18 @@ overrideCopyCutPaste();
 let componentLoadId = 0;
 
 async function load({
-  filePath,
-  componentName,
+  componentId,
   autogenCallbackPropsSource,
   propsAssignmentSource,
 }: RenderMessage) {
   const currentComponentLoadId = ++componentLoadId;
   try {
     setState({
-      filePath,
-      componentName,
+      componentId,
       autogenCallbackPropsSource,
       propsAssignmentSource,
     });
-    const { init, refresh } = await componentLoader(filePath, componentName);
+    const { init, refresh } = await componentLoader(componentId);
     init({
       componentLoadId: currentComponentLoadId,
       getLatestComponentLoadId: () => componentLoadId,

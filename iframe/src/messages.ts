@@ -23,8 +23,7 @@ export interface BeforeRender {
 
 export interface RenderingSetup {
   kind: "rendering-setup";
-  filePath: string;
-  componentName: string;
+  componentId: string;
 }
 
 export interface RenderingSuccess {
@@ -55,8 +54,7 @@ export type AppToPreviewMessage = RenderMessage;
 
 export interface RenderMessage {
   kind: "render";
-  filePath: string;
-  componentName: string;
+  componentId: string;
   autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 }

@@ -1,4 +1,4 @@
-import { generateComponentId, RPCs } from "@previewjs/api";
+import { RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
@@ -344,23 +344,16 @@ export async function startDaemon({
         ],
       });
       const results: Array<{
-        componentName: string;
         start: number;
         end: number;
         componentId: string;
       }> = [];
-      for (const [filePath, fileComponents] of Object.entries(components)) {
-        for (const component of fileComponents) {
-          results.push({
-            componentName: component.name,
-            componentId: generateComponentId({
-              filePath,
-              name: component.name,
-            }),
-            start: component.start,
-            end: component.end,
-          });
-        }
+      for (const component of components) {
+        results.push({
+          componentId: component.componentId,
+          start: component.start,
+          end: component.end,
+        });
       }
       return { components: results };
     }

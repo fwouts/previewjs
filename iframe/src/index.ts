@@ -16,8 +16,7 @@ export interface PreviewIframeController {
 }
 
 export interface LoadComponentOptions {
-  filePath: string;
-  componentName: string;
+  componentId: string;
   propsAssignmentSource: string;
   autogenCallbackPropsSource: string;
 }
@@ -245,9 +244,8 @@ export interface FileChanged {
 export type RendererLoader = (options: {
   wrapperModule: any;
   wrapperName?: string;
-  componentFilePath: string;
   componentModule: any;
-  componentName?: string;
+  componentId: string;
   renderId: number;
   shouldAbortRender: () => boolean;
 }) => Promise<{

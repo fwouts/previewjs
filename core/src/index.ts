@@ -1,6 +1,5 @@
 import {
   decodeComponentId,
-  generateComponentId,
   RequestOf,
   ResponseOf,
   RPC,
@@ -26,7 +25,7 @@ import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
-  Component,
+  AnalyzableComponent,
   ComponentAnalysis,
   ComponentTypeInfo,
   FrameworkPlugin,
@@ -94,13 +93,7 @@ export async function createWorkspace({
       ]
     );
     const componentIdToDetectedComponent = Object.fromEntries(
-      detectedComponents.map((c) => [
-        generateComponentId({
-          filePath: path.relative(rootDirPath, c.absoluteFilePath),
-          name: c.name,
-        }),
-        c,
-      ])
+      detectedComponents.map((c) => [c.componentId, c])
     );
     const components: {
       [componentId: string]: {
@@ -131,13 +124,8 @@ export async function createWorkspace({
             : {
                 kind: "story",
                 args: component.info.args,
-                associatedComponent: {
-                  filePath: path.relative(
-                    rootDirPath,
-                    component.info.associatedComponent.absoluteFilePath
-                  ),
-                  name: component.info.associatedComponent.name,
-                },
+                associatedComponentId:
+                  component.info.associatedComponent.componentId,
               },
         props,
       };

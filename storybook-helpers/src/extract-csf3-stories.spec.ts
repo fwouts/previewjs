@@ -1,19 +1,19 @@
 import { object, string, UNKNOWN } from "@previewjs/serializable-values";
-import { createTypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { TypeAnalyzer } from "@previewjs/type-analyzer";
+import { createTypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { extractCsf3Stories } from "./extract-csf3-stories";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
-const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
-const STORIES_FILE = path.join(ROOT_DIR, "App.stories.jsx");
+const APP_TSX = path.join(ROOT_DIR, "App.tsx");
+const APP_STORIES_JSX = path.join(ROOT_DIR, "App.stories.jsx");
 
 describe.concurrent("extractCsf3Stories", () => {
   let memoryReader: Reader & Writer;
@@ -21,7 +21,7 @@ describe.concurrent("extractCsf3Stories", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    memoryReader.updateFile(MAIN_FILE, "export const Button = 123;");
+    memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR,
       reader: createStackedReader([
@@ -39,7 +39,7 @@ describe.concurrent("extractCsf3Stories", () => {
 
   it("detects CSF 3 stories", () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 import { Button } from "./App";
 
@@ -59,11 +59,10 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "Example",
+        componentId: "App.stories.jsx:Example",
         info: {
           kind: "story",
           args: {
@@ -76,20 +75,17 @@ export function NotStory() {}
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "NoArgs",
+        componentId: "App.stories.jsx:NoArgs",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
@@ -98,7 +94,7 @@ export function NotStory() {}
 
   it("resolves args to UNKNOWN when too complex", () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 import { Button } from "./App";
 
@@ -116,11 +112,10 @@ export const Example = {
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "Example",
+        componentId: "App.stories.jsx:Example",
         info: {
           kind: "story",
           args: {
@@ -133,8 +128,7 @@ export const Example = {
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
@@ -143,7 +137,7 @@ export const Example = {
 
   it("detects CSF 3 stories when export default uses cast", () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 import { Button } from "./App";
 
@@ -163,11 +157,10 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "Example",
+        componentId: "App.stories.jsx:Example",
         info: {
           kind: "story",
           args: {
@@ -180,20 +173,17 @@ export function NotStory() {}
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "NoArgs",
+        componentId: "App.stories.jsx:NoArgs",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
@@ -201,9 +191,9 @@ export function NotStory() {}
   });
 
   it("follows default imported component definition", () => {
-    memoryReader.updateFile(MAIN_FILE, `export default "foo";`);
+    memoryReader.updateFile(APP_TSX, `export default "foo";`);
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 import Button from "./App";
 
@@ -223,11 +213,10 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "Example",
+        componentId: "App.stories.jsx:Example",
         info: {
           kind: "story",
           args: {
@@ -240,20 +229,17 @@ export function NotStory() {}
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "default",
+            componentId: "App.tsx:default",
           },
         },
       },
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "NoArgs",
+        componentId: "App.stories.jsx:NoArgs",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "default",
+            componentId: "App.tsx:default",
           },
         },
       },
@@ -261,13 +247,13 @@ export function NotStory() {}
   });
 
   it("follows wildcard re-exported component definition", () => {
-    memoryReader.updateFile(MAIN_FILE, "export const Button = 123;");
+    memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
       `export * from "./App";`
     );
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 import { Button } from "./reexport";
 
@@ -287,11 +273,10 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "Example",
+        componentId: "App.stories.jsx:Example",
         info: {
           kind: "story",
           args: {
@@ -304,20 +289,17 @@ export function NotStory() {}
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "NoArgs",
+        componentId: "App.stories.jsx:NoArgs",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
@@ -325,13 +307,13 @@ export function NotStory() {}
   });
 
   it("follows named re-exported component definition", () => {
-    memoryReader.updateFile(MAIN_FILE, "export const Button = 123;");
+    memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
       `export { Button as ReexportedButton } from "./App";`
     );
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 import { ReexportedButton } from "./reexport";
 
@@ -351,11 +333,10 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "Example",
+        componentId: "App.stories.jsx:Example",
         info: {
           kind: "story",
           args: {
@@ -368,20 +349,17 @@ export function NotStory() {}
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
       {
-        absoluteFilePath: STORIES_FILE,
-        name: "NoArgs",
+        componentId: "App.stories.jsx:NoArgs",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
@@ -390,7 +368,7 @@ export function NotStory() {}
 
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 export default {
   foo: "bar"
@@ -406,13 +384,13 @@ export const NoArgs = {}
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([]);
   });
 
   it("ignores objects that look like CSF 3 stories when no default export", () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_JSX,
       `
 export const Example = {
   args: {
@@ -424,13 +402,14 @@ export const NoArgs = {}
     `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([]);
   });
 
   function extract(absoluteFilePath: string) {
     const resolver = typeAnalyzer.analyze([absoluteFilePath]);
     return extractCsf3Stories(
+      ROOT_DIR,
       resolver,
       resolver.sourceFile(absoluteFilePath)!,
       () =>

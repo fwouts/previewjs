@@ -79,7 +79,6 @@ data class AnalyzeFileResponse(
 )
 
 data class AnalyzedFileComponent(
-    val componentName: String,
     val start: Int,
     val end: Int,
     val componentId: String

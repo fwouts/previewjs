@@ -6,20 +6,18 @@ let app: App | null = null;
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
-  componentFilePath,
   componentModule,
-  componentName,
+  componentId,
   shouldAbortRender,
 }) => {
+  const componentName = componentId.substring(componentId.indexOf(":") + 1);
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   let ComponentOrStory: any;
-  if (componentFilePath.endsWith(".vue")) {
+  if (componentId.includes(".vue:")) {
     ComponentOrStory = componentModule.default;
     if (!ComponentOrStory) {
-      throw new Error(
-        `No default component could be found in ${componentFilePath}`
-      );
+      throw new Error(`No default component could be found for ${componentId}`);
     }
   } else {
     ComponentOrStory = componentModule[`__previewjs__${componentName}`];

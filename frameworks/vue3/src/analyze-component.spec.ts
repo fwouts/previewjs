@@ -1,3 +1,4 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   BOOLEAN_TYPE,
@@ -7,12 +8,12 @@ import {
   STRING_TYPE,
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue3FrameworkPlugin from ".";
@@ -310,7 +311,7 @@ export default defineComponent({
       await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
         MAIN_FILE,
       ])
-    ).find((c) => c.name === componentName);
+    ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }

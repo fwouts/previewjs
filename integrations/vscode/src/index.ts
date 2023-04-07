@@ -99,10 +99,13 @@ export async function activate() {
         return components.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
+          const componentName = c.componentId.substring(
+            c.componentId.indexOf(":") + 1
+          );
           lens.command = {
             command: "previewjs.open",
             arguments: [document, c.componentId],
-            title: `Open ${c.componentName} in Preview.js`,
+            title: `Open ${componentName} in Preview.js`,
           };
           return lens;
         });

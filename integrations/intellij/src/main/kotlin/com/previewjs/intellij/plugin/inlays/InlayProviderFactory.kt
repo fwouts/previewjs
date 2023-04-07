@@ -76,6 +76,7 @@ class InlayProviderFactory : InlayHintsProviderFactory {
                     projectService.computeComponents(element.virtualFile, editor.document)
                 }
                 for (component in components) {
+                    val componentName = component.componentId.substring(component.componentId.indexOf(":") + 1)
                     sink.addBlockElement(
                         component.start,
                         relatesToPrecedingText = false,
