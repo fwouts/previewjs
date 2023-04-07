@@ -14,6 +14,7 @@ import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
+import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
@@ -31,8 +32,6 @@ import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
-import javax.imageio.ImageIO
-import javax.swing.ImageIcon
 
 @Service(Service.Level.PROJECT)
 class ProjectService(private val project: Project) : Disposable {
@@ -43,7 +42,7 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     private val app = ApplicationManager.getApplication()
-    private val smallLogo = ImageIO.read(javaClass.getResource("/logo-13.png"))
+    private val smallLogo = IconLoader.getIcon("/logo.svg", javaClass)
     private val service = app.getService(PreviewJsSharedService::class.java)
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
@@ -94,7 +93,7 @@ class ProjectService(private val project: Project) : Disposable {
             "Preview.js logs"
         ) {
             anchor = ToolWindowAnchor.BOTTOM
-            icon = ImageIcon(smallLogo)
+            icon = smallLogo
             canCloseContent = false
         }.apply {
             contentManager.addContent(
@@ -175,7 +174,7 @@ class ProjectService(private val project: Project) : Disposable {
                         "Preview.js"
                     ) {
                         anchor = ToolWindowAnchor.RIGHT
-                        icon = ImageIcon(smallLogo)
+                        icon = smallLogo
                         canCloseContent = false
                     }.apply {
                         contentManager.addContent(
