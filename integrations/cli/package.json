@@ -23,11 +23,13 @@
     "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app nodemon --exec ts-node-esm src/main.ts",
     "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro nodemon --exec ts-node-esm src/main.ts"
   },
+  "dependencies": {
+    "@previewjs/chromeless": "workspace:*",
+    "@previewjs/plugin-react": "workspace:*"
+  },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
-    "@previewjs/chromeless": "workspace:*",
     "@previewjs/loader": "workspace:*",
-    "@previewjs/plugin-react": "workspace:*",
     "@types/node": "^18.15.11",
     "chalk": "^5.2.0",
     "commander": "^10.0.0",

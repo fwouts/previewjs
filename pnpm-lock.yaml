@@ -2545,19 +2545,20 @@ importers:
         version: 4.2.1(@types/node@18.15.11)
 
   integrations/cli:
+    dependencies:
+      '@previewjs/chromeless':
+        specifier: workspace:*
+        version: link:../../chromeless
+      '@previewjs/plugin-react':
+        specifier: workspace:*
+        version: link:../../frameworks/react
     devDependencies:
       '@previewjs/api':
         specifier: workspace:*
         version: link:../../api
-      '@previewjs/chromeless':
-        specifier: workspace:*
-        version: link:../../chromeless
       '@previewjs/loader':
         specifier: workspace:*
         version: link:../../loader
-      '@previewjs/plugin-react':
-        specifier: workspace:*
-        version: link:../../frameworks/react
       '@types/node':
         specifier: ^18.15.11
         version: 18.15.11
