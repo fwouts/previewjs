@@ -1,6 +1,12 @@
-import type { RendererLoader } from "@previewjs/iframe";
-import { JSX } from "solid-js/jsx-runtime";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
+import type { JSX } from "solid-js";
+import h from "solid-js/h";
 import * as Solid from "solid-js/web";
+
+const container = document.getElementById("root")!;
+let detachFn: () => void = () => {
+  // This function will be replaced by the real one when the component is loaded.
+};
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -12,7 +18,7 @@ export const load: RendererLoader = async ({
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
-    (({ children }) => <>{children}</>);
+    (({ children }: { children: JSX.Element }) => <>{children}</>);
   const ComponentOrStory =
     componentModule[
       componentName === "default" ? "default" : `__previewjs__${componentName}`
@@ -24,15 +30,6 @@ export const load: RendererLoader = async ({
     ...(ComponentOrStory.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
-  const variants = (ComponentOrStory.__previewjs_variants || []).map(
-    (variant) => {
-      return {
-        key: variant.key,
-        label: variant.label,
-        props: variant.props,
-      };
-    }
-  );
   const RenderComponent = isStoryModule
     ? typeof ComponentOrStory === "function"
       ? ComponentOrStory
@@ -42,38 +39,29 @@ export const load: RendererLoader = async ({
         componentModule.default?.component ||
         ComponentOrStory
     : ComponentOrStory;
-  const Renderer = (props) => {
-    const effectiveProps = {
-      ...componentModule.default?.args,
-      ...ComponentOrStory.args,
-      ...props,
-    };
-    return (
-      <Wrapper>
-        {decorators.reduce(
-          (component, decorator) => () => decorator(component),
-          () => <RenderComponent {...effectiveProps} />
-        )()}
-      </Wrapper>
-    );
-  };
   return {
-    variants,
-    render: (props) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
-      return render(Renderer, props);
+      detachFn();
+      container.innerHTML = "";
+      const props = getProps({
+        presetGlobalProps: componentModule.default?.args || {},
+        presetProps: ComponentOrStory.args || {},
+      });
+      detachFn = Solid.render(
+        () => (
+          <Wrapper>
+            {decorators.reduce(
+              (component, decorator) => () => decorator(component),
+              () => <RenderComponent {...props} />
+            )()}
+          </Wrapper>
+        ),
+        container
+      );
     },
+    jsxFactory: h,
   };
 };
-
-const container = document.getElementById("root");
-let detachFn: () => void = () => {
-  // This function will be replaced by the real one when the component is loaded.
-};
-async function render<P>(Renderer: (props: P) => JSX.Element, props: P) {
-  detachFn();
-  container.innerHTML = "";
-  detachFn = Solid.render(() => Renderer(props), container);
-}

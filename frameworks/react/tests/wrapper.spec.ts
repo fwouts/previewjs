@@ -1,9 +1,9 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
-
-test.describe.configure({ mode: "parallel" });
+import url from "url";
+import pluginFactory from "../src/index.js";
+import { reactVersions } from "./react-versions.js";
 
 const WRAPPER_SOURCE = `import { ReactNode } from "react";
 export const Wrapper = ({ children }: { children: ReactNode }) => {
@@ -11,12 +11,13 @@ export const Wrapper = ({ children }: { children: ReactNode }) => {
 };
 `;
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = (suffix: string | number) =>
-  path.join(__dirname, "../../../test-apps/react" + suffix);
+  path.join(__dirname, "apps", "react" + suffix);
 
-for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/wrapper", () => {
+for (const reactVersion of reactVersions()) {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/wrapper", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("refreshes when wrapper is added", async (preview) => {

@@ -2,9 +2,9 @@ import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
-import { analyzeVueComponentFromTemplate } from "./analyze-component";
-import { inferComponentNameFromVuePath } from "./infer-component-name";
-import { createVueTypeScriptReader } from "./vue-reader";
+import url from "url";
+import { extractVueComponents } from "./extract-component.js";
+import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const vue2FrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -16,17 +16,18 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 2;
   },
-  async create() {
+  async create({ rootDirPath }) {
     const { loadNuxtConfig } = await import("@nuxt/config");
-    const { createVuePlugin } = await import("vite-plugin-vue2");
-    const { extractVueComponents } = await import("./extract-component");
+    const { default: vue2Plugin } = await import("@vitejs/plugin-vue2");
+    const { default: vue2JsxPlugin } = await import("@vitejs/plugin-vue2-jsx");
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
-      transformReader: (reader, rootDirPath) =>
+      transformReader: (reader) =>
         createStackedReader([
           createVueTypeScriptReader(reader),
           createFileSystemReader({
@@ -37,39 +38,19 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             watch: false,
           }),
         ]),
-      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
-        const resolver = typeAnalyzer.analyze(absoluteFilePaths);
+      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+        const resolver = typeAnalyzer.analyze(
+          absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
+        );
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (
-            absoluteFilePath.endsWith(".vue") &&
-            (await fs.pathExists(absoluteFilePath))
-          ) {
-            components.push({
-              absoluteFilePath,
-              name: inferComponentNameFromVuePath(absoluteFilePath),
-              offsets: [
-                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
-              ],
-              info: {
-                kind: "component",
-                exported: true,
-                analyze: async () =>
-                  analyzeVueComponentFromTemplate(
-                    typeAnalyzer,
-                    absoluteFilePath
-                  ),
-              },
-            });
-          } else {
-            components.push(
-              ...extractVueComponents(resolver, absoluteFilePath)
-            );
-          }
+          components.push(
+            ...extractVueComponents(reader, resolver, absoluteFilePath)
+          );
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         let rootDirPath: string;
         return {
           resolve: {
@@ -78,9 +59,14 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           },
           plugins: [
-            createVuePlugin({
-              jsx: true,
-            }),
+            // TODO: Add vite-plugin-vue2 test app.
+            ...configuredPlugins,
+            configuredPlugins.find((plugin) => plugin.name.includes("vue2"))
+              ? null
+              : vue2Plugin(),
+            configuredPlugins.find((plugin) => plugin.name.includes("jsx"))
+              ? null
+              : vue2JsxPlugin(),
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
@@ -154,9 +140,6 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           ],
         };
-      },
-      esbuild: {
-        jsxFactory: "h",
       },
     };
   },

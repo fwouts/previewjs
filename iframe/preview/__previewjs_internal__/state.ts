@@ -11,6 +11,6 @@ export function setState(newState: PreviewState) {
 export interface PreviewState {
   filePath: string;
   componentName: string;
-  defaultPropsSource: string;
+  autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 }

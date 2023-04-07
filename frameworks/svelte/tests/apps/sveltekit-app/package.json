@@ -1,0 +1,21 @@
+{
+  "name": "svelte-test-app-sveltekit-app",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^1.0.3",
+    "@sveltejs/kit": "^1.10.0",
+    "svelte": "^3.55.1",
+    "svelte-check": "^2.10.3",
+    "svelte-preprocess": "^4.10.7",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
+  },
+  "type": "module"
+}

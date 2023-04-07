@@ -26,6 +26,8 @@ export function virtualPlugin(options: {
       if (id.startsWith(VIRTUAL_PREFIX)) {
         id = id.slice(VIRTUAL_PREFIX.length);
       }
+      // Remove query params.
+      id = id.split("?", 2)[0]!;
       const extension = path.extname(id);
       let absoluteId;
       if (path.isAbsolute(id)) {
@@ -109,7 +111,8 @@ export function virtualPlugin(options: {
           // We run an esbuild transform for .js or no extension
           // because it may include JSX. Otherwise, let plugins
           // decide whether to use esbuild or not.
-          moduleExtension === "" || moduleExtension === ".js"
+          !id.includes("__previewjs_internal__") &&
+          (moduleExtension === "" || moduleExtension === ".js")
             ? (
                 await transformWithEsbuild(source, absoluteFilePath, {
                   loader: "tsx",

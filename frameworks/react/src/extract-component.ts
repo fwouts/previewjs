@@ -1,12 +1,14 @@
-import type { Component } from "@previewjs/core";
+import type { Component, ComponentTypeInfo } from "@previewjs/core";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
+  extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
   resolveComponent,
-} from "@previewjs/csf3";
-import { helpers, TypeResolver } from "@previewjs/type-analyzer";
+} from "@previewjs/storybook-helpers";
+import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { analyzeReactComponent } from "./analyze-component";
+import { analyzeReactComponent } from "./analyze-component.js";
 
 export function extractReactComponents(
   resolver: TypeResolver,
@@ -54,45 +56,124 @@ export function extractReactComponents(
   }
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
-  const resolvedStoriesComponent = storiesDefaultComponent
-    ? resolveComponent(resolver.checker, storiesDefaultComponent)
-    : null;
   const components: Component[] = [];
-  const args = helpers.extractArgs(sourceFile);
+  const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  for (const [name, statement, node] of functions) {
-    const hasArgs = !!args[name];
+
+  function extractComponentTypeInfo(
+    node: ts.Node,
+    name: string
+  ): ComponentTypeInfo | null {
+    if (name === "default" && storiesDefaultComponent) {
+      return null;
+    }
+    const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    const signature = extractReactComponent(resolver.checker, node);
+    const signature = extractComponentSignature(resolver.checker, node);
+    if (
+      storiesDefaultComponent &&
+      isExported &&
+      (storyArgs || signature?.parameters.length === 0)
+    ) {
+      const associatedComponent = extractStoryAssociatedComponent(
+        resolver,
+        storiesDefaultComponent
+      );
+      if (!associatedComponent) {
+        // No detected associated component, give up.
+        return null;
+      }
+      return {
+        kind: "story",
+        args: storyArgs
+          ? {
+              start: storyArgs.getStart(),
+              end: storyArgs.getEnd(),
+              value: parseSerializableValue(storyArgs),
+            }
+          : null,
+        associatedComponent,
+      };
+    }
     if (signature) {
+      return {
+        kind: "component",
+        exported: isExported,
+        analyze: async () =>
+          analyzeReactComponent(resolver, absoluteFilePath, name, signature),
+      };
+    }
+    return null;
+  }
+
+  for (const [name, statement, node] of functions) {
+    const info = extractComponentTypeInfo(node, name);
+    if (info) {
       components.push({
         absoluteFilePath,
         name,
         offsets: [[statement.getStart(), statement.getEnd()]],
-        info:
-          storiesDefaultComponent && hasArgs && isExported
-            ? {
-                kind: "story",
-                associatedComponent: resolvedStoriesComponent,
-              }
-            : {
-                kind: "component",
-                exported: isExported,
-                analyze: async () =>
-                  analyzeReactComponent(
-                    resolver,
-                    absoluteFilePath,
-                    name,
-                    signature
-                  ),
-              },
+        info,
       });
     }
   }
-  return [...components, ...extractCsf3Stories(resolver, sourceFile)];
+
+  return [
+    ...components,
+    ...extractCsf3Stories(
+      resolver,
+      sourceFile,
+      async ({ absoluteFilePath, name }) => {
+        const component = extractReactComponents(
+          resolver,
+          absoluteFilePath
+        ).find((c) => c.name === name);
+        if (component?.info.kind !== "component") {
+          return {
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          };
+        }
+        return component.info.analyze();
+      }
+    ),
+  ];
 }
 
-function extractReactComponent(
+function extractStoryAssociatedComponent(
+  resolver: TypeResolver,
+  component: ts.Expression
+) {
+  const resolvedStoriesComponent = resolveComponent(
+    resolver.checker,
+    component
+  );
+  return resolvedStoriesComponent
+    ? {
+        ...resolvedStoriesComponent,
+        analyze: async () => {
+          const signature = extractComponentSignature(
+            resolver.checker,
+            component
+          );
+          if (!signature) {
+            return {
+              propsType: UNKNOWN_TYPE,
+              types: {},
+            };
+          }
+          return analyzeReactComponent(
+            resolver,
+            resolvedStoriesComponent.absoluteFilePath,
+            resolvedStoriesComponent.name,
+            signature
+          );
+        },
+      }
+    : null;
+}
+
+function extractComponentSignature(
   checker: ts.TypeChecker,
   node: ts.Node
 ): ts.Signature | null {

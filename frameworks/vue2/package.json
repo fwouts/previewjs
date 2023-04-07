@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-vue2",
-  "version": "5.0.7",
+  "version": "8.0.8",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -15,34 +15,38 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "./dist/index.js",
-  "exports": {
-    ".": {
-      "default": "./dist/index.js"
-    }
-  },
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-vue2 --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
-    "test": "vitest --no-threads"
+    "prepare": "rimraf preview/modules && shx mkdir preview/modules && shx cp -rL node_modules/vue preview/modules/vue && shx rm -rf preview/modules/vue/packages/compiler-sfc/test",
+    "build": "tsc && unbuild",
+    "test": "vitest",
+    "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.0.3",
-    "@previewjs/type-analyzer": "^4.0.6",
-    "@previewjs/vfs": "^1.2.9",
-    "@nuxt/config": "^2.15.8",
-    "fs-extra": "^10.1.0",
-    "typescript": "^4.8.4",
-    "vite-plugin-vue2": "^2.0.2",
+    "@nuxt/config": "^2.16.3",
+    "@previewjs/serializable-values": "^6.0.2",
+    "@previewjs/storybook-helpers": "^1.0.8",
+    "@previewjs/type-analyzer": "^7.3.0",
+    "@previewjs/vfs": "^2.0.4",
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "@vitejs/plugin-vue2-jsx": "^1.1.0",
+    "fs-extra": "^11.1.1",
+    "typescript": "^4.9.5",
     "vue": "^2.7.14",
     "vue-template-compiler": "^2.7.14"
   },
   "devDependencies": {
+    "@playwright/test": "^1.32.1",
     "@previewjs/core": "workspace:*",
-    "@types/fs-extra": "9.0.13",
-    "rimraf": "3.0.2",
-    "vite": "3.2.4",
-    "vitest": "0.25.2"
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/testing": "workspace:*",
+    "@types/fs-extra": "^11.0.1",
+    "rimraf": "^4.4.1",
+    "shx": "^0.3.4",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1",
+    "vitest": "^0.29.8"
   }
 }

@@ -1,8 +1,8 @@
 {
   "name": "@previewjs/plugin-solid",
-  "version": "3.0.3",
+  "version": "6.2.3",
   "description": "SolidJS plugin for Preview.js enabling instant preview of SolidJS components and stories",
-  "info": "A framework plugin for Preview.js that enables instant preview and update-as-you-type of SolidJS components and stories with auto-generated properties and configurable custom previews, so you can iterate on any component without ever leaving your IDE",
+  "info": "A framework plugin for Preview.js that enables instant preview and update-as-you-type of SolidJS components and stories with auto-generated properties, so you can iterate on any component without ever leaving your IDE",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -17,34 +17,30 @@
   },
   "homepage": "https://previewjs.com",
   "sideEffects": false,
-  "type": "commonjs",
-  "main": "./dist/index.js",
-  "exports": {
-    ".": {
-      "default": "./dist/index.js"
-    },
-    "./setup": {
-      "module": "./setup.mjs",
-      "default": "./setup.js"
-    }
-  },
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/plugin-solid --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc",
-    "test": "vitest --no-threads"
+    "build": "tsc && unbuild",
+    "test": "vitest",
+    "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/csf3": "^3.0.3",
-    "@previewjs/type-analyzer": "^4.0.6",
-    "@previewjs/vfs": "^1.2.9",
-    "typescript": "^4.8.4",
-    "vite-plugin-solid": "^2.4.0"
+    "@previewjs/serializable-values": "^6.0.2",
+    "@previewjs/storybook-helpers": "^1.0.8",
+    "@previewjs/type-analyzer": "^7.3.0",
+    "@previewjs/vfs": "^2.0.4",
+    "typescript": "^4.9.5",
+    "vite-plugin-solid": "^2.6.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.32.1",
     "@previewjs/core": "workspace:*",
-    "rimraf": "3.0.2",
-    "solid-js": "1.6.1",
-    "vite": "3.2.4",
-    "vitest": "0.25.2"
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/testing": "workspace:*",
+    "solid-js": "^1.7.2",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1",
+    "vitest": "^0.29.8"
   }
 }

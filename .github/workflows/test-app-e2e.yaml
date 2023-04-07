@@ -1,4 +1,4 @@
-name: Test Preview.js app end-to-end
+name: Test Preview.js end-to-end
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -28,29 +28,17 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        os: [ubuntu-20.04, macos-11, windows-2022]
+        os: [ubuntu-22.04, macos-11, windows-2022]
         group: [1, 2, 3]
         include:
-          # Important: Node 14 version must match minimum checked
-          # for CLI package.json, as well as IntelliJ and VS Code
-          # node --version checks.
-          - node-version: 14.18.0
-            os: ubuntu-latest
+          - node-version: 16.x
+            os: ubuntu-22.04
             group: 1
-          - node-version: 14.18.0
-            os: ubuntu-latest
+          - node-version: 16.x
+            os: ubuntu-22.04
             group: 2
-          - node-version: 14.18.0
-            os: ubuntu-latest
-            group: 3
-          - node-version: 16.9.0
-            os: ubuntu-latest
-            group: 1
-          - node-version: 16.9.0
-            os: ubuntu-latest
-            group: 2
-          - node-version: 16.9.0
-            os: ubuntu-latest
+          - node-version: 16.x
+            os: ubuntu-22.04
             group: 3
     steps:
       - uses: actions/checkout@v3
@@ -62,30 +50,17 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-full-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-full-
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: true
-      - run: pnpm turbo run build
-        env:
-          SKIP_PREFLIGHT_CHECK: "true"
-      - run: pnpm install # necessary to link e2e-test-runner
-      - run: cd frameworks/react && pnpm e2e-test --shard=${{ matrix.group }}/3
-      - run: cd app && pnpm e2e-test
-        env:
-          GROUP_INDEX: ${{ matrix.group }}
-          GROUP_COUNT: 3
-      - name: Archive success screenshots
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: success-screenshots-${{ runner.os }}-${{ matrix.node-version }}-${{ matrix.group }}
-          path: app/tests/__screenshots__
+      - run: pnpm turbo build
+      - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2 --retries=3
       - name: Update screenshots on non-main branches
         run: |
-          if [ -z "$(git status --porcelain)" ]; then
+          if [ -z "$(git diff --exit-code)" ]; then
             echo "No changes detected."
           else
             git status
@@ -106,7 +81,7 @@ jobs:
               git push origin ${{ github.head_ref }}
             fi
           fi
-        if: ${{ github.ref != 'refs/heads/main' && matrix.os == 'ubuntu-20.04' }}
+        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
@@ -127,4 +102,4 @@ jobs:
             })
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
-        if: ${{ github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-20.04' }}
+        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}

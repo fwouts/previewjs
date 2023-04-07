@@ -1,0 +1,25 @@
+{
+  "name": "vue2-test-app-nuxt2-app",
+  "version": "^1",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "core-js": "^3.29.0",
+    "nuxt": "^2.16.2",
+    "vue": "^2.7.14",
+    "vue-server-renderer": "^2.7.14",
+    "vue-template-compiler": "^2.7.14",
+    "webpack": "^5.75.0"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.16.0",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/tailwindcss": "^6.4.1",
+    "consola": "^2.15.3",
+    "postcss": "^8.4.21"
+  }
+}

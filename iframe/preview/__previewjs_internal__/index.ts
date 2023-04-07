@@ -4,7 +4,11 @@ import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
 import { sendMessageFromPreview } from "./messages";
 import { setState } from "./state";
+import { setupViteHmrListener } from "./vite-hmr-listener";
+// @ts-ignore
+import { componentLoader } from "./component-loader.js";
 
+setupViteHmrListener();
 setUpLogInterception();
 setUpLinkInterception();
 overrideCopyCutPaste();
@@ -14,7 +18,7 @@ let componentLoadId = 0;
 async function load({
   filePath,
   componentName,
-  defaultPropsSource,
+  autogenCallbackPropsSource,
   propsAssignmentSource,
 }: RenderMessage) {
   const currentComponentLoadId = ++componentLoadId;
@@ -22,15 +26,10 @@ async function load({
     setState({
       filePath,
       componentName,
-      defaultPropsSource,
+      autogenCallbackPropsSource,
       propsAssignmentSource,
     });
-    const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
-      filePath
-    )}&c=${encodeURIComponent(componentName)}`;
-    const { init, refresh } = await import(
-      /* @vite-ignore */ componentLoaderUrl
-    );
+    const { init, refresh } = await componentLoader(filePath, componentName);
     init({
       componentLoadId: currentComponentLoadId,
       getLatestComponentLoadId: () => componentLoadId,

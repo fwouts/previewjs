@@ -3,9 +3,10 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import ts from "typescript";
-import { extractReactComponents } from "./extract-component";
-import { reactImportsPlugin } from "./react-js-imports-plugin";
-import { REACT_SPECIAL_TYPES } from "./special-types";
+import url from "url";
+import { extractReactComponents } from "./extract-component.js";
+import { reactImportsPlugin } from "./react-js-imports-plugin.js";
+import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
 const reactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -13,9 +14,17 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     if (!version) {
       return false;
     }
-    return parseInt(version) >= 16;
+    const [major, minor] = version.split(".").map((n) => parseInt(n)) as [
+      number,
+      number
+    ];
+    if (isNaN(major) || isNaN(minor)) {
+      return false;
+    }
+    return major >= 17 || (major === 16 && minor >= 14);
   },
-  async create() {
+  async create({ rootDirPath, dependencies }) {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.join(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -27,7 +36,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
       },
-      transformReader: (reader, rootDirPath) =>
+      transformReader: (reader) =>
         createStackedReader([
           reader,
           createFileSystemReader({
@@ -38,7 +47,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
             watch: false,
           }),
         ]),
-      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
@@ -48,7 +57,10 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
+        const hasReactPlugin = configuredPlugins.find((plugin) =>
+          plugin.name.startsWith("vite:react-")
+        );
         return {
           resolve: {
             alias: {
@@ -57,16 +69,37 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
           },
           plugins: [
             reactImportsPlugin(),
-            react(),
+            ...configuredPlugins,
+            ...(!hasReactPlugin
+              ? [
+                  // @ts-ignore
+                  react(),
+                ]
+              : []),
+            {
+              name: "previewjs:update-react-import",
+              async transform(code: string, id: string) {
+                if (!id.endsWith("__previewjs_internal__/renderer/index.tsx")) {
+                  return;
+                }
+                const reactVersion = parseInt(
+                  (await dependencies["react"]?.readInstalledVersion()) || "0"
+                );
+                return code.replace(
+                  /__PREVIEWJS_PLUGIN_REACT_IMPORT_PATH__/g,
+                  reactVersion >= 18 ? "./render-18" : "./render-16"
+                );
+              },
+            },
             {
               name: "previewjs:disable-react-hmr",
-              async transform(code, id) {
+              async transform(code: string, id: string) {
                 if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
                   return null;
                 }
                 // HMR prevents preview props from being refreshed.
                 // For now, we disable it entirely.
-                return code.replace(/import\.meta/g, "({})");
+                return code.replace(/import\.meta\.hot/g, "false");
               },
             },
           ],

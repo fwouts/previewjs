@@ -31,6 +31,10 @@ Preview.js is available for:
 
 [Read the docs to learn more](https://previewjs.com)
 
+## Contributing
+
+Please see the [contributing guide](./CONTRIBUTING.md).
+
 ## Sponsors
 
 <p align="center">

@@ -1,15 +1,20 @@
-import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import { object, string, TRUE } from "@previewjs/serializable-values";
+import {
+  createTypeAnalyzer,
+  objectType,
+  STRING_TYPE,
+  TypeAnalyzer,
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import vue3FrameworkPlugin from ".";
-import { extractVueComponents } from "./extract-component";
+import { extractVueComponents } from "./extract-component.js";
 import { createVueTypeScriptReader } from "./vue-reader";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
@@ -17,7 +22,7 @@ const MAIN_FILE_TSX = path.join(ROOT_DIR, "App.tsx");
 const MAIN_FILE_VUE = path.join(ROOT_DIR, "MyComponent.vue");
 const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe("extractVueComponents", () => {
+describe.concurrent("extractVueComponents", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
@@ -26,21 +31,26 @@ describe("extractVueComponents", () => {
     memoryReader.updateFile(
       MAIN_FILE_VUE,
       `
+<script setup lang="ts">
+import { ref } from 'vue';
+
+defineProps<{ label: string }>()
+
+const count = ref(0)
+</script>
+
 <template>
   <div>
-    Hello, World!
+    {{ label }}
   </div>
 </template>
-
-<script>
-export default {
-  name: "App",
-};
-</script>
 `
     );
-    const frameworkPlugin = await vue3FrameworkPlugin.create();
     const rootDirPath = path.join(__dirname, "virtual");
+    const frameworkPlugin = await vue3FrameworkPlugin.create({
+      rootDirPath,
+      dependencies: {},
+    });
     const reader = createStackedReader([
       createVueTypeScriptReader(memoryReader),
       createFileSystemReader({
@@ -82,7 +92,7 @@ export const NotAStory = {
 };
 
 export default Component1;
-      
+
 `
     );
     expect(extract(MAIN_FILE_TSX)).toMatchObject([
@@ -208,16 +218,31 @@ export const Primary = () => ({
 });
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Primary",
         info: {
-          // TODO: this should be "story".
-          kind: "component",
-          exported: true,
+          kind: "story",
+          args: null,
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE_VUE,
+            name: "MyComponent",
+          },
         },
       },
     ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   it("detects CSF2 stories", async () => {
@@ -245,18 +270,26 @@ Primary.args = {
 };
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
-      {
-        name: "Template",
-        info: {
-          kind: "component",
-          exported: false,
-        },
-      },
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Primary",
         info: {
           kind: "story",
+          args: {
+            value: object([
+              {
+                kind: "key",
+                key: string("primary"),
+                value: TRUE,
+              },
+              {
+                kind: "key",
+                key: string("label"),
+                value: string("Button"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",
@@ -264,6 +297,17 @@ Primary.args = {
         },
       },
     ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   it("detects CSF3 stories", async () => {
@@ -284,11 +328,21 @@ export const NoArgs = {}
 export function NotStory() {}
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Example",
         info: {
           kind: "story",
+          args: {
+            value: object([
+              {
+                kind: "key",
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",
@@ -299,6 +353,7 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE_VUE,
             name: "MyComponent",
@@ -306,10 +361,22 @@ export function NotStory() {}
         },
       },
     ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   function extract(absoluteFilePath: string) {
     return extractVueComponents(
+      memoryReader,
       typeAnalyzer.analyze([absoluteFilePath]),
       absoluteFilePath
     );

@@ -1,47 +1,61 @@
 import type * as core from "@previewjs/core";
 import type * as vfs from "@previewjs/vfs";
-import { chmodSync, constants, existsSync, lstatSync, readdirSync } from "fs";
+import { execaCommand } from "execa";
+import fs from "fs";
 import path from "path";
+import url from "url";
 
-export function loadModules({
+export async function loadModules({
   installDir,
   packageName,
 }: {
   installDir: string;
   packageName: string;
 }) {
-  const coreModule = requireModule("@previewjs/core") as typeof core;
-  const vfsModule = requireModule("@previewjs/vfs") as typeof vfs;
-  const setupEnvironment: core.SetupPreviewEnvironment =
-    requireModule(packageName);
+  if (
+    fs.existsSync(path.join(installDir, "pnpm")) &&
+    !fs.existsSync(path.join(installDir, "node_modules"))
+  ) {
+    console.log("[install:begin] Running pnpm install...");
+    const pnpmProcess = execaCommand(
+      `cd "${installDir}" && node pnpm/bin/pnpm.cjs install --frozen-lockfile`,
+      {
+        shell: true,
+      }
+    );
+    pnpmProcess.stdout?.on("data", (chunk) => process.stdout.write(chunk));
+    pnpmProcess.stderr?.on("data", (chunk) => process.stderr.write(chunk));
+    await pnpmProcess;
+    console.log("[install:end] Done.");
+  }
+  const coreModule: typeof core = await importModule("@previewjs/core");
+  const vfsModule: typeof vfs = await importModule("@previewjs/vfs");
+  const setupEnvironment: core.SetupPreviewEnvironment = await importModule(
+    packageName
+  );
   const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
-    requireModule("@previewjs/plugin-react"),
-    requireModule("@previewjs/plugin-solid").default,
-    requireModule("@previewjs/plugin-svelte").default,
-    requireModule("@previewjs/plugin-vue2").default,
-    requireModule("@previewjs/plugin-vue3").default,
+    await importModule("@previewjs/plugin-preact"),
+    await importModule("@previewjs/plugin-react"),
+    await importModule("@previewjs/plugin-solid"),
+    await importModule("@previewjs/plugin-svelte"),
+    await importModule("@previewjs/plugin-vue2"),
+    await importModule("@previewjs/plugin-vue3"),
   ];
 
-  function requireModule(name: string) {
+  async function importModule(name: string) {
     try {
-      return require(require.resolve(name, {
-        paths: [installDir],
-      }));
+      const module = await import(
+        // TODO: Remove the hardcoded subpath.
+        url
+          .pathToFileURL(
+            path.join(installDir, "node_modules", name, "dist", "index.mjs")
+          )
+          .toString()
+      );
+      return module.default || module;
     } catch (e) {
       console.error(`Unable to load ${name} from ${installDir}`, e);
       throw e;
-    }
-  }
-
-  for (const f of readdirSync(path.join(installDir, "node_modules"))) {
-    if (f.startsWith("esbuild-")) {
-      const binPath = path.join(__dirname, "node_modules", f, "bin", "esbuild");
-      if (
-        existsSync(binPath) &&
-        !(lstatSync(binPath).mode & constants.S_IXUSR)
-      ) {
-        chmodSync(binPath, "555");
-      }
     }
   }
 

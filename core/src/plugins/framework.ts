@@ -1,3 +1,4 @@
+import type { SerializableValue } from "@previewjs/serializable-values";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -10,7 +11,10 @@ import type { PackageDependencies } from "./dependencies";
 
 export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
-  create(): Promise<FrameworkPlugin>;
+  create(options: {
+    rootDirPath: string;
+    dependencies: PackageDependencies;
+  }): Promise<FrameworkPlugin>;
 }
 
 export interface FrameworkPlugin {
@@ -18,12 +22,12 @@ export interface FrameworkPlugin {
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;
-  readonly transformReader?: (reader: Reader, rootDirPath: string) => Reader;
+  readonly transformReader?: (reader: Reader) => Reader;
   readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
   readonly specialTypes?: Record<string, ValueType>;
-  readonly viteConfig: () => vite.UserConfig;
-  readonly incompatibleVitePlugins?: string[];
+  readonly viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
   readonly detectComponents: (
+    reader: Reader,
     typeAnalyzer: TypeAnalyzer,
     absoluteFilePaths: string[]
   ) => Promise<Component[]>;
@@ -33,20 +37,30 @@ export interface Component {
   readonly absoluteFilePath: string;
   readonly name: string;
   readonly offsets: Array<[start: number, end: number]>;
-  readonly info:
-    | {
-        kind: "component";
-        readonly exported: boolean;
-        readonly analyze: () => Promise<ComponentAnalysis>;
-      }
-    | {
-        kind: "story";
-        readonly associatedComponent: {
-          readonly absoluteFilePath: string;
-          readonly name: string;
-        } | null;
-      };
+  readonly info: ComponentTypeInfo;
 }
+
+export type ComponentTypeInfo =
+  | {
+      kind: "component";
+      readonly exported: boolean;
+      readonly analyze: () => Promise<ComponentAnalysis>;
+    }
+  | {
+      kind: "story";
+      readonly args: {
+        start: number;
+        end: number;
+        value: SerializableValue;
+      } | null;
+      readonly associatedComponent: StoryAssociatedComponent;
+    };
+
+export type StoryAssociatedComponent = {
+  readonly absoluteFilePath: string;
+  readonly name: string;
+  readonly analyze: () => Promise<ComponentAnalysis>;
+};
 
 export interface ComponentAnalysis {
   propsType: ValueType;

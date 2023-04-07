@@ -1,6 +1,6 @@
 import type * as core from "@previewjs/core";
 import { exclusivePromiseRunner } from "exclusive-promises";
-import { loadModules } from "./modules";
+import { loadModules } from "./modules.js";
 
 const locking = exclusivePromiseRunner();
 
@@ -9,7 +9,7 @@ export async function load(options: {
   packageName: string;
 }) {
   const { core, vfs, setupEnvironment, frameworkPluginFactories } =
-    loadModules(options);
+    await loadModules(options);
   const memoryReader = vfs.createMemoryReader();
   const reader = vfs.createStackedReader([
     memoryReader,
@@ -29,11 +29,9 @@ export async function load(options: {
     async getWorkspace({
       versionCode,
       absoluteFilePath,
-      persistedStateManager,
     }: {
       versionCode: string;
       absoluteFilePath: string;
-      persistedStateManager?: core.PersistedStateManager;
     }) {
       const rootDirPath = core.findWorkspaceRoot(absoluteFilePath);
       if (!rootDirPath) {
@@ -45,31 +43,29 @@ export async function load(options: {
         return existingWorkspace;
       }
       const created = await locking(async () => {
-        const loaded = await core.loadPreviewEnv({
+        const frameworkPlugin = await core.setupFrameworkPlugin({
           rootDirPath,
-          setupEnvironment,
           frameworkPluginFactories,
         });
-        if (!loaded) {
+        if (!frameworkPlugin) {
           console.warn(
             `No compatible Preview.js plugin for workspace: ${rootDirPath}`
           );
           return null;
         }
-        const { previewEnv, frameworkPlugin } = loaded;
         console.log(
           `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDirPath}`
         );
         return await core.createWorkspace({
-          versionCode,
           logLevel: "info",
           rootDirPath,
           reader,
           frameworkPlugin,
-          middlewares: previewEnv.middlewares || [],
-          persistedStateManager:
-            persistedStateManager || previewEnv.persistedStateManager,
-          onReady: previewEnv.onReady?.bind(previewEnv),
+          setupEnvironment: (options) =>
+            setupEnvironment({
+              versionCode,
+              ...options,
+            }),
         });
       });
       // Note: This caches the incompatibility of a workspace (i.e. caching null), which

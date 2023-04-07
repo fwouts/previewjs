@@ -1,9 +1,9 @@
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
 
-let root: Root;
-export function render<P>(Renderer: React.ComponentType<P>, props: P) {
-  const container = document.getElementById("root");
+let root: Root | null = null;
+export function render(Renderer: React.ComponentType, props: any) {
+  const container = document.getElementById("root")!;
   if (!Renderer) {
     if (root) {
       root.unmount();

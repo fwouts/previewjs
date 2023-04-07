@@ -2,12 +2,8 @@ import {
   generateSerializableValue,
   serializableValueToJavaScript,
 } from "@previewjs/serializable-values";
-import {
-  CollectedTypes,
-  dereferenceType,
-  objectType,
-  ValueType,
-} from "@previewjs/type-analyzer";
+import { dereferenceType, objectType } from "@previewjs/type-analyzer";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 
 /**
  * Generates an invocation source for a specific component.

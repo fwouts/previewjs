@@ -1,16 +1,18 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
+import { reactVersions } from "./react-versions.js";
 
-test.describe.configure({ mode: "parallel" });
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const testApp = (suffix: string | number) =>
-  path.join(__dirname, "../../../test-apps/react" + suffix);
+  path.join(__dirname, "apps", "react" + suffix);
 
-for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/forwarded ref", () => {
+for (const reactVersion of reactVersions()) {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/forwarded ref", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("renders forwarded ref component", async (preview) => {

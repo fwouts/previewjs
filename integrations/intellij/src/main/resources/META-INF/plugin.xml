@@ -16,12 +16,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="com.previewjs.intellij.plugin.services.ProjectService"/>
         <notificationGroup id="Preview.js" displayType="BALLOON" />
+        <codeInsight.inlayProviderFactory implementation="com.previewjs.intellij.plugin.inlays.InlayProviderFactory" />
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.previewjs.intellij.plugin.listeners.ProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>

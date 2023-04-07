@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/config",
-  "version": "3.0.6",
+  "version": "4.9.8",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -14,24 +14,17 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "sideEffects": false,
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/config --no-deps --include-dependencies",
     "build": "tsc && unbuild"
   },
   "devDependencies": {
-    "@types/node": "18.11.9",
-    "unbuild": "0.9.1",
-    "vite": "3.2.4"
+    "@types/node": "^18.15.11",
+    "typescript": "^4.9.5",
+    "unbuild": "^1.2.0",
+    "vite": "^4.2.1"
   }
 }

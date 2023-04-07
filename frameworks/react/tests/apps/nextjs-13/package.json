@@ -1,21 +1,20 @@
 {
-  "name": "nextjs-13",
+  "name": "react-test-app-nextjs-13",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev"
   },
   "dependencies": {
-    "@previewjs/config-helper-nextjs": "workspace:*",
-    "@types/node": "18.11.9",
-    "@types/react": "18.0.24",
-    "@types/react-dom": "18.0.8",
-    "next": "13.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "4.8.4"
+    "@types/node": "^18.14.6",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "next": "^13.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@previewjs/config-helper-nextjs": "workspace:*"
   }
 }

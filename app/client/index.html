@@ -3,9 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <title>Preview.js</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      iframe {
+        background: #fff;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="./src/main.tsx"></script>
+    <iframe id="root" frameborder="0"></iframe>
+    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>

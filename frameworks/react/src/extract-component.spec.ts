@@ -1,21 +1,28 @@
-import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import { object, string, TRUE } from "@previewjs/serializable-values";
+import {
+  createTypeAnalyzer,
+  objectType,
+  STRING_TYPE,
+  TypeAnalyzer,
+} from "@previewjs/type-analyzer";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
+import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import reactFrameworkPlugin from ".";
-import { extractReactComponents } from "./extract-component";
+import { extractReactComponents } from "./extract-component.js";
+import reactFrameworkPlugin from "./index.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
 const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe("extractReactComponents", () => {
+describe.concurrent("extractReactComponents", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
@@ -23,9 +30,12 @@ describe("extractReactComponents", () => {
     memoryReader = createMemoryReader();
     memoryReader.updateFile(
       MAIN_FILE,
-      "export default () => <div>Hello, World!</div>;"
+      "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
-    const frameworkPlugin = await reactFrameworkPlugin.create();
+    const frameworkPlugin = await reactFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR,
       reader: createStackedReader([
@@ -294,6 +304,56 @@ export default () => {
     expect(extract(MAIN_FILE)).toMatchObject([]);
   });
 
+  it("detects CSF1 stories", async () => {
+    memoryReader.updateFile(
+      STORIES_FILE,
+      `
+import Button from "./App";
+
+export default {
+  component: Button
+}
+
+export const Primary = () => <Button primary label="Button" />;
+
+export const NotStory = (props) => <Button {...props} />;
+`
+    );
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
+      {
+        name: "Primary",
+        info: {
+          kind: "story",
+          args: null,
+          associatedComponent: {
+            absoluteFilePath: MAIN_FILE,
+            name: "default",
+          },
+        },
+      },
+      {
+        name: "NotStory",
+        info: {
+          kind: "component",
+          exported: true,
+        },
+      },
+    ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
+  });
+
   it("detects CSF2 stories", async () => {
     memoryReader.updateFile(
       STORIES_FILE,
@@ -313,7 +373,9 @@ Primary.args = {
 };
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Template",
         info: {
@@ -325,6 +387,20 @@ Primary.args = {
         name: "Primary",
         info: {
           kind: "story",
+          args: {
+            value: object([
+              {
+                kind: "key",
+                key: string("primary"),
+                value: TRUE,
+              },
+              {
+                kind: "key",
+                key: string("label"),
+                value: string("Button"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "default",
@@ -332,6 +408,17 @@ Primary.args = {
         },
       },
     ]);
+    if (extractedStories[1]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[1].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   it("detects CSF3 stories", async () => {
@@ -355,11 +442,22 @@ export const NoArgs = {}
 export function NotStory() {}
 `
     );
-    expect(extract(STORIES_FILE)).toMatchObject([
+
+    const extractedStories = extract(STORIES_FILE);
+    expect(extractedStories).toMatchObject([
       {
         name: "Example",
         info: {
           kind: "story",
+          args: {
+            value: object([
+              {
+                kind: "key",
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "default",
@@ -370,6 +468,7 @@ export function NotStory() {}
         name: "NoArgs",
         info: {
           kind: "story",
+          args: null,
           associatedComponent: {
             absoluteFilePath: MAIN_FILE,
             name: "default",
@@ -377,6 +476,17 @@ export function NotStory() {}
         },
       },
     ]);
+    if (extractedStories[0]?.info.kind !== "story") {
+      throw new Error();
+    }
+    expect(
+      await extractedStories[0].info.associatedComponent.analyze()
+    ).toEqual({
+      propsType: objectType({
+        label: STRING_TYPE,
+      }),
+      types: {},
+    });
   });
 
   function extract(absoluteFilePath: string) {

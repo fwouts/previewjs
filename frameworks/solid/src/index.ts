@@ -1,11 +1,11 @@
 import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
-import type { Plugin } from "vite";
+import url from "url";
 import vitePluginSolid from "vite-plugin-solid";
-import { extractSolidComponents } from "./extract-component";
-import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin";
-import { SOLID_SPECIAL_TYPES } from "./special-types";
+import { extractSolidComponents } from "./extract-component.js";
+import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin.js";
+import { SOLID_SPECIAL_TYPES } from "./special-types.js";
 
 const solidFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -16,6 +16,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
     return parseInt(version) === 1;
   },
   async create() {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -27,7 +28,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         jsx: ts.JsxEmit.Preserve,
         jsxImportSource: "solid-js",
       },
-      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
@@ -37,10 +38,18 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => {
+      viteConfig: (configuredPlugins) => {
         return {
           plugins: [
-            vitePluginSolid() as Plugin,
+            ...configuredPlugins.filter(
+              (plugin) =>
+                plugin.name !== "solid-start-file-system-router" &&
+                plugin.name !== "solid-start-inline-server-modules" &&
+                plugin.name !== "solid-start-server"
+            ),
+            configuredPlugins.find((plugin) => plugin.name.includes("solid"))
+              ? null
+              : vitePluginSolid(),
             optimizeSolidDepsPlugin(),
             {
               name: "previewjs:disable-solid-hmr",
@@ -50,7 +59,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
                 }
                 // HMR prevents preview props from being refreshed.
                 // For now, we disable it entirely.
-                return code.replace(/import\.meta/g, "({})");
+                return code.replace(/import\.meta\.hot/g, "false");
               },
             },
           ],

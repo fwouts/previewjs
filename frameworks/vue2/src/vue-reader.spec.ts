@@ -1,9 +1,10 @@
-import { createMemoryReader, Reader, Writer } from "@previewjs/vfs";
+import { createMemoryReader } from "@previewjs/vfs";
 import path from "path";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader";
+import type { Reader, Writer } from "@previewjs/vfs";
 
-describe("createVueTypeScriptReader", () => {
+describe.concurrent("createVueTypeScriptReader", () => {
   let memoryReader: Reader & Writer;
   let reader: Reader;
 
@@ -35,6 +36,12 @@ export default {
       throw new Error();
     }
     expect(await virtualFile.read()).toEqual(`
+
+export default {
+  name: 'App',
+  props: {}
+}
+
 const pjs_component = {
     name: "App",
     props: {}
@@ -82,6 +89,6 @@ foo
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(``);
+    expect(await virtualFile.read()).toEqual(`export default {}`);
   });
 });

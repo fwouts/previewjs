@@ -4,32 +4,28 @@
   "ignoreDeps": [
     "@previewjs/api",
     "@previewjs/app",
-    "@previewjs/app-foundations",
     "@previewjs/chromeless",
     "@previewjs/config",
     "@previewjs/core",
-    "@previewjs/csf3",
-    "@previewjs/e2e-test-runner",
     "@previewjs/iframe",
+    "@previewjs/loader",
+    "@previewjs/plugin-preact",
     "@previewjs/plugin-react",
     "@previewjs/plugin-solid",
     "@previewjs/plugin-svelte",
     "@previewjs/plugin-vue2",
     "@previewjs/plugin-vue3",
     "@previewjs/pro",
+    "@previewjs/properties",
     "@previewjs/serializable-values",
+    "@previewjs/storybook-helpers",
     "@previewjs/testing",
     "@previewjs/type-analyzer",
     "@previewjs/vfs",
     "@types/vscode",
     "vscode"
   ],
-  "ignorePaths": [
-    "frameworks/**/apps/**",
-    "loader/src/release/**",
-    "smoke-test-apps/**",
-    "test-apps/**"
-  ],
+  "ignorePaths": ["frameworks/**/apps/**", "loader/src/release/**"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],

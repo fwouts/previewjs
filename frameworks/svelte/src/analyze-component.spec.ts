@@ -11,26 +11,28 @@ import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import svelteFrameworkPlugin from ".";
-import { analyzeSvelteComponentFromSFC } from "./analyze-component";
+import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
 
-describe("analyze Svelte component", () => {
+describe.concurrent("analyze Svelte component", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await svelteFrameworkPlugin.create();
+    frameworkPlugin = await svelteFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createSvelteTypeScriptReader(

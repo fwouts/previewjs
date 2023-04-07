@@ -19,25 +19,29 @@ import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
+import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import reactFrameworkPlugin from ".";
-import { REACT_SPECIAL_TYPES } from "./special-types";
+import reactFrameworkPlugin from "./index.js";
+import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe("analyzeReactComponent", () => {
+describe.concurrent("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await reactFrameworkPlugin.create();
+    frameworkPlugin = await reactFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
@@ -546,7 +550,9 @@ A.propTypes = {
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.detectComponents(typeAnalyzer, [MAIN_FILE])
+      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
+        MAIN_FILE,
+      ])
     ).find((c) => c.name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

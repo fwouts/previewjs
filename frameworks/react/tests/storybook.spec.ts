@@ -1,28 +1,30 @@
-import test from "@playwright/test";
+import { test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
-import pluginFactory from "../src";
+import url from "url";
+import pluginFactory from "../src/index.js";
+import { reactVersions } from "./react-versions.js";
 
-test.describe.configure({ mode: "parallel" });
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const testApp = (suffix: string | number) =>
-  path.join(__dirname, "../../../test-apps/react" + suffix);
+  path.join(__dirname, "apps", "react" + suffix);
 
-for (const reactVersion of [16, 17, 18]) {
-  test.describe(`v${reactVersion}`, () => {
-    test.describe("react/storybook", () => {
+for (const reactVersion of reactVersions()) {
+  test.describe.parallel(`v${reactVersion}`, () => {
+    test.describe.parallel("react/storybook", () => {
       const test = previewTest([pluginFactory], testApp(reactVersion));
 
       test("renders CSF2 story with no args", async (preview) => {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-          
-          const ButtonStory = () => <Button label="Hello, World!" />;
 
           export default {
             component: Button
-          }`
+          };
+
+          export const ButtonStory = () => <Button label="Hello, World!" />;`
         );
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
@@ -34,16 +36,68 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
-            args: {
-              label: "Hello, World!"
-            }
+            component: Button
+          };
+
+          export const ButtonStory = Button.bind({});
+          ButtonStory.args = {
+            label: "explicit"
           };`
         );
-        await preview.show("src/Button.tsx:Button");
+        await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
+          "xpath=//button[contains(., 'explicit')]"
+        );
+      });
+
+      test("renders CSF2 story with assignment source referring local variable", async (preview) => {
+        await preview.fileManager.update(
+          "src/Button.tsx",
+          `const Button = ({ label }) => <button>{label}</button>;
+
+          export default {
+            component: Button
+          };
+
+          const baseArgs = {
+            label: "local value"
+          };
+
+          export const ButtonStory = Button.bind({});
+          ButtonStory.args = {
+            label: "label"
+          };`
+        );
+        await preview.show(
+          "src/Button.tsx:ButtonStory",
+          `properties = {
+            ...baseArgs
+          }`
+        );
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'local value')]"
+        );
+      });
+
+      test("renders CSF2 story with default args", async (preview) => {
+        await preview.fileManager.update(
+          "src/Button.tsx",
+          `const Button = ({ label }) => <button>{label}</button>;
+
+          export default {
+            component: Button,
+            args: {
+              label: "default"
+            }
+          };
+
+          export const ButtonStory = Button.bind({});`
+        );
+        await preview.show("src/Button.tsx:ButtonStory");
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'default')]"
         );
       });
 
@@ -51,17 +105,20 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-          Button.args = {
-            label: "explicit"
-          };
-          
+
           export default {
+            component: Button,
             args: {
               label: "default"
             }
+          };
+
+          export const ButtonStory = Button.bind({});
+          ButtonStory.args = {
+            label: "explicit"
           };`
         );
-        await preview.show("src/Button.tsx:Button");
+        await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'explicit')]"
         );
@@ -71,20 +128,50 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button
           }
-        
-          export const Example = {
+
+          export const ButtonStory = {
             args: {
-              label: "Hello, World!"
+              label: "explicit"
             }
           }`
         );
-        await preview.show("src/Button.tsx:Example");
+        await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
+          "xpath=//button[contains(., 'explicit')]"
+        );
+      });
+
+      test("renders CSF3 story with assignment source referring local variable", async (preview) => {
+        await preview.fileManager.update(
+          "src/Button.tsx",
+          `const Button = ({ label }) => <button>{label}</button>;
+
+          export default {
+            component: Button
+          }
+
+          const baseArgs = {
+            label: "local value"
+          };
+
+          export const ButtonStory = {
+            args: {
+              label: "label"
+            }
+          }`
+        );
+        await preview.show(
+          "src/Button.tsx:ButtonStory",
+          `properties = {
+            ...baseArgs
+          }`
+        );
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'local value')]"
         );
       });
 
@@ -92,19 +179,19 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button,
             args: {
-              label: "Hello, World!"
+              label: "default"
             }
           }
-        
-          export const Example = {};`
+
+          export const ButtonStory = {};`
         );
-        await preview.show("src/Button.tsx:Example");
+        await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
-          "xpath=//button[contains(., 'Hello, World!')]"
+          "xpath=//button[contains(., 'default')]"
         );
       });
 
@@ -112,21 +199,21 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
             component: Button,
             args: {
               label: "default"
             }
           };
-        
-          export const Example = {
+
+          export const ButtonStory = {
             args: {
               label: "explicit"
             }
           };`
         );
-        await preview.show("src/Button.tsx:Example");
+        await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'explicit')]"
         );
@@ -136,19 +223,19 @@ for (const reactVersion of [16, 17, 18]) {
         await preview.fileManager.update(
           "src/Button.tsx",
           `const Button = ({ label }) => <button>{label}</button>;
-  
+
           export default {
-            component: () => <div>foo</div>
+            component: Button
           };
-        
-          export const Example = {
+
+          export const ButtonStory = {
             args: {
               label: "Hello, World!"
             },
             render: (args) => <Button {...args} />
           };`
         );
-        await preview.show("src/Button.tsx:Example");
+        await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'Hello, World!')]"
         );

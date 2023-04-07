@@ -1,20 +1,14 @@
-import {
-  PreviewConfig,
-  PREVIEW_CONFIG_NAME,
-  readConfig,
-} from "@previewjs/config";
-import {
-  createFileSystemReader,
-  createStackedReader,
-  Reader,
-  ReaderListenerInfo,
-} from "@previewjs/vfs";
+import { PREVIEW_CONFIG_NAME, readConfig } from "@previewjs/config";
+import type { PreviewConfig } from "@previewjs/config";
+import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
+import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
 import type express from "express";
 import path from "path";
 import type * as vite from "vite";
 import { getCacheDir } from "./caching";
+import { FILES_REQUIRING_REDETECTION } from "./detect-components";
 import { findFiles } from "./find-files";
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
@@ -48,16 +42,11 @@ const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
 
 const FILES_REQUIRING_RESTART = new Set([
   PREVIEW_CONFIG_NAME,
-  "jsconfig.json",
-  "tsconfig.json",
-  "package.json",
-  "package-lock.json",
-  "pnpm-lock.yaml",
-  "vite.config.js",
-  "vite.config.ts",
-  "yarn.lock",
+  ...FILES_REQUIRING_REDETECTION,
   ...POSTCSS_CONFIG_FILE,
   ...GLOBAL_CSS_FILE,
+  "vite.config.js",
+  "vite.config.ts",
 ]);
 
 const SHUTDOWN_CHECK_INTERVAL = 3000;
@@ -106,7 +95,10 @@ export class Previewer {
     ]);
   }
 
-  async start(allocatePort: () => Promise<number>) {
+  async start(
+    allocatePort: () => Promise<number>,
+    options: { restarting?: boolean } = {}
+  ) {
     let port: number;
     const statusBeforeStart = this.status;
     switch (statusBeforeStart.kind) {
@@ -139,11 +131,11 @@ export class Previewer {
             kind: "stopped",
           };
         }
-        await this.start(async () => port);
+        await this.start(async () => port, options);
         break;
       case "stopped":
         port = await allocatePort();
-        await this.startFromStopped(port);
+        await this.startFromStopped(port, options);
         break;
       default:
         throw assertNever(statusBeforeStart);
@@ -151,7 +143,10 @@ export class Previewer {
     return port;
   }
 
-  private async startFromStopped(port: number) {
+  private async startFromStopped(
+    port: number,
+    { restarting }: { restarting?: boolean } = {}
+  ) {
     this.status = {
       kind: "starting",
       port,
@@ -180,12 +175,17 @@ export class Previewer {
             },
           ],
         });
-        if (this.transformingReader.observe) {
-          this.disposeObserver = await this.transformingReader.observe(
-            this.options.rootDirPath
-          );
+        if (!restarting) {
+          // When we restart, we must not stop the file observer otherwise a crash while restarting
+          // (e.g. due to an incomplete preview.config.js) would mean that we stop listening altogether,
+          // and we will never know to restart.
+          if (this.transformingReader.observe) {
+            this.disposeObserver = await this.transformingReader.observe(
+              this.options.rootDirPath
+            );
+          }
+          this.transformingReader.listeners.add(this.onFileChangeListener);
         }
-        this.transformingReader.listeners.add(this.onFileChangeListener);
         this.viteManager = new ViteManager({
           rootDirPath: this.options.rootDirPath,
           shadowHtmlFilePath: path.join(
@@ -230,10 +230,17 @@ export class Previewer {
   async stop(
     options: {
       onceUnused?: boolean;
+      restarting?: boolean;
     } = {}
   ) {
     if (this.status.kind === "starting") {
-      await this.status.promise;
+      try {
+        await this.status.promise;
+      } catch {
+        this.status = {
+          kind: "stopped",
+        };
+      }
     }
     if (this.status.kind !== "started") {
       return;
@@ -245,7 +252,7 @@ export class Previewer {
         }, SHUTDOWN_CHECK_INTERVAL);
       }
     } else {
-      await this.stopNow();
+      await this.stopNow(options);
     }
   }
 
@@ -262,21 +269,27 @@ export class Previewer {
     return true;
   }
 
-  private async stopNow() {
+  private async stopNow({
+    restarting,
+  }: {
+    restarting?: boolean;
+  } = {}) {
     if (this.status.kind === "starting") {
       await this.status.promise;
     }
     if (this.status.kind !== "started") {
       return;
     }
-    this.transformingReader.listeners.remove(this.onFileChangeListener);
     this.status = {
       kind: "stopping",
       port: this.status.port,
       promise: (async () => {
-        if (this.disposeObserver) {
-          await this.disposeObserver();
-          this.disposeObserver = null;
+        if (!restarting) {
+          this.transformingReader.listeners.remove(this.onFileChangeListener);
+          if (this.disposeObserver) {
+            await this.disposeObserver();
+            this.disposeObserver = null;
+          }
         }
         if (this.viteManager) {
           await this.viteManager.stop();
@@ -313,9 +326,11 @@ export class Previewer {
           const port = this.status.port;
           // Packages were updated. Restart.
           console.log("New dependencies were detected. Restarting...");
-          this.stop()
+          this.stop({
+            restarting: true,
+          })
             .then(async () => {
-              await this.start(async () => port);
+              await this.start(async () => port, { restarting: true });
             })
             .catch(console.error);
         }

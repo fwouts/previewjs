@@ -1,17 +1,47 @@
-import type { Component, ComponentAnalysis } from "@previewjs/core";
+import type { Component, ComponentTypeInfo } from "@previewjs/core";
+import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
+  extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
   resolveComponent,
-} from "@previewjs/csf3";
+} from "@previewjs/storybook-helpers";
 import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import type { Reader } from "@previewjs/vfs";
 import ts from "typescript";
-import { inferComponentNameFromVuePath } from "./infer-component-name";
+import { analyzeVueComponentFromTemplate } from "./analyze-component.js";
+import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
 export function extractVueComponents(
+  reader: Reader,
   resolver: TypeResolver,
   absoluteFilePath: string
 ): Component[] {
+  const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
+  if (vueAbsoluteFilePath) {
+    const virtualVueTsAbsoluteFilePath = vueAbsoluteFilePath + ".ts";
+    const fileEntry = reader.readSync(vueAbsoluteFilePath);
+    if (fileEntry?.kind !== "file") {
+      return [];
+    }
+    return [
+      {
+        absoluteFilePath: vueAbsoluteFilePath,
+        name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
+        offsets: [[0, fileEntry.size()]],
+        info: {
+          kind: "component",
+          exported: true,
+          analyze: async () =>
+            analyzeVueComponentFromTemplate(
+              resolver,
+              virtualVueTsAbsoluteFilePath
+            ),
+        },
+      },
+    ];
+  }
+
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -52,92 +82,180 @@ export function extractVueComponents(
   }
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
-  const resolvedStoriesComponent = storiesDefaultComponent
-    ? resolveComponent(resolver.checker, storiesDefaultComponent)
-    : null;
   const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  const args = helpers.extractArgs(sourceFile);
-  // TODO: Handle JSX and Storybook stories.
-  const analysis: ComponentAnalysis = {
-    propsType: UNKNOWN_TYPE,
-    types: {},
-  };
-  for (const [name, statement, node] of functions) {
-    const hasArgs = !!args[name];
+  const args = extractArgs(sourceFile);
+
+  function extractComponentTypeInfo(
+    node: ts.Node,
+    name: string
+  ): ComponentTypeInfo | null {
+    const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    const signature = extractVueComponent(resolver.checker, node, hasArgs);
-    if (signature) {
+    if (storiesDefaultComponent && storyArgs && isExported) {
+      const associatedComponent = extractStoryAssociatedComponent(
+        resolver,
+        storiesDefaultComponent
+      );
+      if (!associatedComponent) {
+        // No detected associated component, give up.
+        return null;
+      }
+      return {
+        kind: "story",
+        args: {
+          start: storyArgs.getStart(),
+          end: storyArgs.getEnd(),
+          value: parseSerializableValue(storyArgs),
+        },
+        associatedComponent,
+      };
+    }
+    const type = resolver.checker.getTypeAtLocation(node);
+    for (const callSignature of type.getCallSignatures()) {
+      const returnType = callSignature.getReturnType();
+      if (isJsxElement(returnType)) {
+        return {
+          kind: "component",
+          exported: isExported,
+          analyze: async () => ({
+            // TODO: Handle JSX properties.
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          }),
+        };
+      }
+      if (
+        storiesDefaultComponent &&
+        isExported &&
+        returnType.getProperty("template")
+      ) {
+        // This is a story.
+        const associatedComponent = extractStoryAssociatedComponent(
+          resolver,
+          storiesDefaultComponent
+        );
+        if (!associatedComponent) {
+          // No detected associated component, give up.
+          return null;
+        }
+        return {
+          kind: "story",
+          args: null,
+          associatedComponent,
+        };
+      }
+    }
+    return null;
+  }
+
+  for (const [name, statement, node] of functions) {
+    const info = extractComponentTypeInfo(node, name);
+    if (info) {
       components.push({
         absoluteFilePath,
         name,
-        offsets: [[statement.getFullStart(), statement.getEnd()]],
-        info:
-          storiesDefaultComponent && hasArgs && isExported
-            ? {
-                kind: "story",
-                associatedComponent: resolvedStoriesComponent,
-              }
-            : {
-                kind: "component",
-                exported: isExported,
-                analyze: async () => analysis,
-              },
+        offsets: [[statement.getStart(), statement.getEnd()]],
+        info,
       });
     }
   }
 
-  return [...components, ...extractCsf3Stories(resolver, sourceFile)].map(
-    (c) => ({
-      ...c,
-      info:
-        c.info.kind === "story"
-          ? {
-              kind: "story",
-              associatedComponent: c.info.associatedComponent
-                ? transformVirtualTsVueFile(c.info.associatedComponent)
-                : null,
-            }
-          : c.info,
-    })
-  );
+  return [
+    ...components,
+    ...extractCsf3Stories(
+      resolver,
+      sourceFile,
+      async ({ absoluteFilePath, name }) => {
+        const vueComponents = extractVueComponents(
+          reader,
+          resolver,
+          absoluteFilePath
+        );
+        const component = absoluteFilePath.endsWith(".vue.ts")
+          ? vueComponents[0]
+          : vueComponents.find((c) => c.name === name);
+        if (component?.info.kind !== "component") {
+          return {
+            propsType: UNKNOWN_TYPE,
+            types: {},
+          };
+        }
+        return component.info.analyze();
+      }
+    ).map((c) => {
+      if (
+        c.info.kind !== "story" ||
+        !c.info.associatedComponent.absoluteFilePath.endsWith(".vue.ts")
+      ) {
+        return c;
+      }
+      const associatedComponentVueAbsoluteFilePath = stripTsExtension(
+        c.info.associatedComponent.absoluteFilePath
+      );
+      return {
+        ...c,
+        info: {
+          ...c.info,
+          associatedComponent: {
+            ...c.info.associatedComponent,
+            absoluteFilePath: associatedComponentVueAbsoluteFilePath,
+            name: inferComponentNameFromVuePath(
+              associatedComponentVueAbsoluteFilePath
+            ),
+          },
+        },
+      };
+    }),
+  ];
 }
 
-function transformVirtualTsVueFile({
-  absoluteFilePath,
-  name,
-}: {
-  absoluteFilePath: string;
-  name: string;
-}) {
-  if (absoluteFilePath.endsWith(".vue.ts")) {
-    absoluteFilePath = absoluteFilePath.substring(
-      0,
-      absoluteFilePath.length - 3
-    );
-    name = inferComponentNameFromVuePath(absoluteFilePath);
+function stripTsExtension(filePath: string) {
+  return filePath.substring(0, filePath.length - 3);
+}
+
+function extractVueFilePath(filePath: string) {
+  if (filePath.endsWith(".vue")) {
+    return filePath;
   }
-  return { absoluteFilePath, name };
-}
-
-function extractVueComponent(
-  checker: ts.TypeChecker,
-  node: ts.Node,
-  hasArgs: boolean
-): ts.Signature | null {
-  const type = checker.getTypeAtLocation(node);
-  for (const callSignature of type.getCallSignatures()) {
-    const returnType = callSignature.getReturnType();
-    if (isJsxElement(returnType)) {
-      // JSX component.
-      return callSignature;
-    }
-    if (returnType.getProperty("template") || hasArgs) {
-      // This is a story.
-      return callSignature;
-    }
+  if (filePath.endsWith(".vue.ts")) {
+    return filePath.substring(0, filePath.length - 3);
   }
   return null;
+}
+
+function extractStoryAssociatedComponent(
+  resolver: TypeResolver,
+  component: ts.Expression
+) {
+  const resolvedStoriesComponent = resolveComponent(
+    resolver.checker,
+    component
+  );
+  if (!resolvedStoriesComponent) {
+    return null;
+  }
+  const vueAbsoluteFilePath = extractVueFilePath(
+    resolvedStoriesComponent.absoluteFilePath
+  );
+  if (vueAbsoluteFilePath) {
+    return {
+      absoluteFilePath: vueAbsoluteFilePath,
+      name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
+      analyze: async () =>
+        analyzeVueComponentFromTemplate(resolver, vueAbsoluteFilePath + ".ts"),
+    };
+  } else {
+    return {
+      ...resolvedStoriesComponent,
+      analyze: async () =>
+        // TODO: Handle JSX properties.
+        ({
+          propsType: UNKNOWN_TYPE,
+          types: {},
+        }),
+    };
+  }
 }
 
 const jsxElementTypes = new Set(["Element"]);

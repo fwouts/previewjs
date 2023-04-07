@@ -39,12 +39,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-exclude-test-apps-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-exclude-test-apps-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          run_install: true
+          run_install: |
+            - args: [--filter=\!./frameworks/\*/tests/apps/\*]
       - run: pnpm lint
       - run: pnpm check-licenses
       - run: pnpm check-deps

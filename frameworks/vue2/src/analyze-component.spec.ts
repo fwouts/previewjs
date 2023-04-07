@@ -14,26 +14,28 @@ import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
+import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue2FrameworkPlugin from ".";
-import { analyzeVueComponentFromTemplate } from "./analyze-component";
-import { createVueTypeScriptReader } from "./vue-reader";
+import { inferComponentNameFromVuePath } from "./infer-component-name.js";
+import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
-describe("analyze Vue 2 component", () => {
+describe.concurrent("analyze Vue 2 component", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await vue2FrameworkPlugin.create();
+    frameworkPlugin = await vue2FrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
@@ -88,7 +90,7 @@ export default {
 </template>
 <script>
 export default {
-  
+
   props: {
     a: String,
     b: { type: String },
@@ -129,7 +131,7 @@ export default {
 </template>
 <script>
 export default {
-  
+
   props: ["a", "b", "c"]
 }
 </script>
@@ -184,6 +186,18 @@ export default class App extends Vue {
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    return analyzeVueComponentFromTemplate(typeAnalyzer, MAIN_FILE);
+    const componentName = inferComponentNameFromVuePath(MAIN_FILE);
+    const component = (
+      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
+        MAIN_FILE,
+      ])
+    ).find((c) => c.name === componentName);
+    if (!component) {
+      throw new Error(`Component ${componentName} not found`);
+    }
+    if (component.info.kind === "story") {
+      throw new Error(`Component ${componentName} is a story`);
+    }
+    return component.info.analyze();
   }
 });

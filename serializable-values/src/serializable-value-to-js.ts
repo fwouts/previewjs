@@ -1,31 +1,15 @@
 import assertNever from "assert-never";
-import prettier from "prettier";
-import parserBabel from "prettier/parser-babel.js";
-import type { SerializableValue } from "./serializable-value";
+import { formatExpression } from "./format-expression";
+import {
+  SerializableObjectValue,
+  SerializableValue,
+  object,
+} from "./serializable-value";
 
 export function serializableValueToJavaScript(
   value: SerializableValue
 ): string {
-  let expression = serializableValueToUnformattedJavaScript(value);
-  try {
-    expression = formatExpression(expression);
-  } catch {
-    // This can be expected e.g. when code is in the middle of being typed.
-    // Example: Promise.reject(new|)
-  }
-  return expression;
-}
-
-function formatExpression(expressionSource: string) {
-  const formattedStatement = prettier
-    .format(`value = ${expressionSource}`, {
-      parser: "babel",
-      plugins: [parserBabel],
-      filepath: "component.js",
-      trailingComma: "none",
-    })
-    .trim();
-  return formattedStatement.replace(/^value = ((.|\s)*);$/m, "$1");
+  return formatExpression(serializableValueToUnformattedJavaScript(value));
 }
 
 function serializableValueToUnformattedJavaScript(
@@ -39,11 +23,7 @@ function serializableValueToUnformattedJavaScript(
     case "boolean":
       return value.value ? "true" : "false";
     case "function":
-      return `() => ${
-        value.returnValue.kind === "undefined"
-          ? "{}"
-          : `(${serializableValueToUnformattedJavaScript(value.returnValue)})`
-      }`;
+      return value.source;
     case "map":
       return `new Map(${
         value.values.entries.length > 0
@@ -52,6 +32,24 @@ function serializableValueToUnformattedJavaScript(
             )})`
           : ""
       })`;
+    case "node":
+      return value.children
+        ? `<${value.tag} ${unformattedJsxProps(value.props)}>${value.children
+            .map((child) => {
+              if (
+                child.kind === "string" &&
+                // Whitespaces aren't safe to inline.
+                child.value.trim() === child.value
+              ) {
+                return child.value;
+              } else if (child.kind === "node") {
+                return serializableValueToJavaScript(child);
+              } else {
+                return `{${serializableValueToJavaScript(child)}}`;
+              }
+            })
+            .join("\n")}</${value.tag}>`
+        : `<${value.tag} ${unformattedJsxProps(value.props)} />`;
     case "null":
       return "null";
     case "number":
@@ -63,11 +61,17 @@ function serializableValueToUnformattedJavaScript(
       let text = "";
       text += "{\n";
       for (const entry of value.entries) {
-        text += `${
-          entry.key.kind === "string"
-            ? JSON.stringify(entry.key.value)
-            : `[${serializableValueToUnformattedJavaScript(entry.key)}]`
-        }: ${serializableValueToUnformattedJavaScript(entry.value)},\n`;
+        if (entry.kind === "key") {
+          text += `${
+            entry.key.kind === "string"
+              ? JSON.stringify(entry.key.value)
+              : `[${serializableValueToUnformattedJavaScript(entry.key)}]`
+          }: ${serializableValueToUnformattedJavaScript(entry.value)},\n`;
+        } else if (entry.kind === "spread") {
+          text += `...${serializableValueToJavaScript(entry.value)},\n`;
+        } else {
+          throw assertNever(entry);
+        }
       }
       text += "\n}";
       return text;
@@ -94,17 +98,29 @@ function serializableValueToUnformattedJavaScript(
       return JSON.stringify(value.value);
     case "undefined":
       return "undefined";
-    case "unknown": {
-      const source = value.source ?? "{}";
-      try {
-        formatExpression(source);
-        // It didn't throw? Cool, that must be good to return.
-        return source;
-      } catch {
-        return "{}";
-      }
-    }
+    case "unknown":
+      return value.source ?? "{}";
     default:
       throw assertNever(value);
   }
+}
+
+function unformattedJsxProps(props: SerializableObjectValue): string {
+  const attributes: string[] = [];
+  for (const prop of props.entries) {
+    if (prop.kind === "spread") {
+      attributes.push(`{...(${serializableValueToJavaScript(prop.value)})}`);
+    } else if (prop.key.kind !== "string") {
+      attributes.push(`...(${serializableValueToJavaScript(object([prop]))})`);
+    } else if (prop.value.kind === "boolean" && prop.value.value === true) {
+      attributes.push(`${prop.key.value}`);
+    } else if (prop.value.kind === "string") {
+      attributes.push(`${prop.key.value}=${JSON.stringify(prop.value.value)}`);
+    } else {
+      attributes.push(
+        `${prop.key.value}={${serializableValueToJavaScript(prop.value)}}`
+      );
+    }
+  }
+  return attributes.join("\n");
 }

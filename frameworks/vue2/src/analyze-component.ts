@@ -1,15 +1,12 @@
 import type { ComponentAnalysis } from "@previewjs/core";
-import { TypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import { TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function analyzeVueComponentFromTemplate(
-  typeAnalyzer: TypeAnalyzer,
-  absoluteFilePath: string
+  resolver: TypeResolver,
+  virtualVueTsAbsoluteFilePath: string
 ): ComponentAnalysis {
-  // This virtual file exists thanks to transformReader().
-  const tsFilePath = `${absoluteFilePath}.ts`;
-  const resolver = typeAnalyzer.analyze([tsFilePath]);
-  const sourceFile = resolver.sourceFile(tsFilePath);
+  const sourceFile = resolver.sourceFile(virtualVueTsAbsoluteFilePath);
   for (const statement of sourceFile?.statements || []) {
     if (
       ts.isTypeAliasDeclaration(statement) &&

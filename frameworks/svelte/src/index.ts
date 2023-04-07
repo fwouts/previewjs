@@ -2,8 +2,9 @@ import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
-import { analyzeSvelteComponentFromSFC } from "./analyze-component";
-import { createSvelteTypeScriptReader } from "./svelte-reader";
+import url from "url";
+import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
+import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -14,6 +15,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     return parseInt(version) === 3;
   },
   async create() {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -21,7 +23,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       transformReader: (reader) => createSvelteTypeScriptReader(reader),
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
-      detectComponents: async (typeAnalyzer, absoluteFilePaths) => {
+      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           if (
@@ -50,7 +52,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         }
         return components;
       },
-      viteConfig: () => ({
+      viteConfig: (configuredPlugins) => ({
         define: {
           __SVELTEKIT_DEV__: "false",
           __SVELTEKIT_APP_VERSION_POLL_INTERVAL__: "0",
@@ -62,7 +64,17 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
           },
         },
         plugins: [
-          svelte(),
+          ...configuredPlugins.filter(
+            (plugin) =>
+              plugin.name !== "vite-plugin-svelte-kit" &&
+              plugin.name !== "vite-plugin-sveltekit-build" &&
+              plugin.name !== "vite-plugin-sveltekit-middleware" &&
+              plugin.name !== "vite-plugin-sveltekit-setup" &&
+              plugin.name !== "vite-plugin-sveltekit-compile"
+          ),
+          configuredPlugins.find((plugin) => plugin.name.includes("svelte"))
+            ? null
+            : svelte(),
           {
             name: "previewjs:fake-sveltekit-client",
             transform(code, id) {
@@ -90,12 +102,11 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
               if (!id.endsWith(".svelte")) {
                 return null;
               }
-              return code.replace(/import\.meta/g, "({})");
+              return code.replace(/import\.meta\.hot/g, "false");
             },
           },
         ],
       }),
-      incompatibleVitePlugins: ["vite-plugin-svelte-kit"],
     };
   },
 };

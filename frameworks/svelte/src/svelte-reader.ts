@@ -1,4 +1,5 @@
-import {
+import { ReaderListeners } from "@previewjs/vfs";
+import type {
   Directory,
   DirectorySync,
   Entry,
@@ -6,7 +7,6 @@ import {
   File,
   FileSync,
   Reader,
-  ReaderListeners,
 } from "@previewjs/vfs";
 import path from "path";
 import { preprocess } from "svelte/compiler";

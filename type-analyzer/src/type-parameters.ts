@@ -1,17 +1,16 @@
 import assertNever from "assert-never";
+import type { ParameterizableType, ValueType } from "./definitions";
 import {
   arrayType,
   functionType,
   mapType,
+  maybeOptionalType,
   objectType,
-  optionalType,
-  ParameterizableType,
   promiseType,
   recordType,
   setType,
   tupleType,
   UNKNOWN_TYPE,
-  ValueType,
 } from "./definitions";
 import { computeIntersection } from "./intersection";
 import { computeUnion } from "./union";
@@ -89,7 +88,14 @@ function replaceNamedType(
         Object.fromEntries(
           Object.entries(type.fields).map(([key, fieldType]) => [
             key,
-            replaceNamedType(fieldType, named, replacement),
+            maybeOptionalType(
+              replaceNamedType(
+                fieldType.kind === "optional" ? fieldType.type : fieldType,
+                named,
+                replacement
+              ),
+              fieldType.kind === "optional"
+            ),
           ])
         )
       );
@@ -105,8 +111,6 @@ function replaceNamedType(
       return functionType(
         replaceNamedType(type.returnType, named, replacement)
       );
-    case "optional":
-      return optionalType(replaceNamedType(type.type, named, replacement));
     case "promise":
       return promiseType(replaceNamedType(type.type, named, replacement));
     case "name":

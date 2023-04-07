@@ -1,9 +1,10 @@
-import { createMemoryReader, Reader, Writer } from "@previewjs/vfs";
+import { createMemoryReader } from "@previewjs/vfs";
 import path from "path";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader";
+import type { Reader, Writer } from "@previewjs/vfs";
 
-describe("createVueTypeScriptReader", () => {
+describe.concurrent("createVueTypeScriptReader", () => {
   let memoryReader: Reader & Writer;
   let reader: Reader;
 
@@ -26,7 +27,7 @@ const count = ref(0)
 
 <template>
   <h1>{{ msg }}</h1>
-</template>  
+</template>
     `
     );
     const virtualFile = await reader.read(
@@ -43,7 +44,8 @@ import { ref } from 'vue';
 defineProps<{ msg: string }>()
 
 const count = ref(0)
-`);
+
+export default {}`);
   });
 
   it("extracts from normal script", async () => {
@@ -60,7 +62,7 @@ export default defineComponent({
 
 <template>
   <h1>{{ msg }}</h1>
-</template>  
+</template>
     `
     );
     const virtualFile = await reader.read(
@@ -70,7 +72,13 @@ export default defineComponent({
       throw new Error();
     }
     expect(await virtualFile.read()).toEqual(`
-import { defineComponent } from "vue";
+
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'App'
+})
+
 const pjs_component = {
     name: "App"
 } as const;
@@ -109,7 +117,7 @@ foo
 
 <template>
   <h1>{{ msg }}</h1>
-</template>  
+</template>
     `
     );
     const virtualFile = await reader.read(
@@ -118,6 +126,6 @@ foo
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(``);
+    expect(await virtualFile.read()).toEqual(`export default {}`);
   });
 });

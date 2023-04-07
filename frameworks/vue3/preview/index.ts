@@ -1,5 +1,7 @@
-import type { RendererLoader } from "@previewjs/iframe";
-import { App, createApp, FunctionalComponent } from "vue";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
+import { App, createApp } from "vue";
+
+let app: App | null = null;
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -25,50 +27,24 @@ export const load: RendererLoader = async ({
       throw new Error(`No component named '${componentName}'`);
     }
   }
-  let defaultProps = {
-    ...componentModule.default?.args,
-    ...ComponentOrStory.args,
-  };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
   if (ComponentOrStory.render) {
-    // Vue or JSX component. Nothing to do.
+    // Vue component. Nothing to do.
   } else {
-    storybookCheck: if (typeof ComponentOrStory === "function") {
-      // JSX or CSF2.
-      let maybeCsf2StoryComponent;
-      try {
-        maybeCsf2StoryComponent = ComponentOrStory(defaultProps);
-      } catch (e) {
-        // Vue or JSX component. Nothing to do.
-        break storybookCheck;
-      }
-      if (
-        !maybeCsf2StoryComponent ||
-        (!maybeCsf2StoryComponent?.components &&
-          !maybeCsf2StoryComponent?.template)
-      ) {
-        // Vue or JSX component. Nothing to do.
-      } else {
-        // CSF2 story.
-        const csf2StoryComponent = ComponentOrStory(defaultProps);
-        if (!csf2StoryComponent) {
-          throw new Error("Encountered invalid CSF2 story");
-        }
-        storyDecorators.push(...(csf2StoryComponent.decorators || []));
-        if (csf2StoryComponent.template) {
-          RenderComponent = csf2StoryComponent;
+    // JSX or Storybook story, either CSF2 or CSF3.
+    if (typeof ComponentOrStory === "function") {
+      RenderComponent = (props: any) => {
+        const storyReturnValue = ComponentOrStory(props);
+        if (storyReturnValue.template) {
+          // CSF2 story.
+          // @ts-ignore
+          return h(storyReturnValue, props);
         } else {
-          RenderComponent = Object.values(
-            csf2StoryComponent.components || {}
-          )[0];
-          if (!RenderComponent) {
-            throw new Error(
-              "Encountered a story with no template or components"
-            );
-          }
+          // JSX
+          return storyReturnValue;
         }
-      }
+      };
     } else {
       // CSF3 story.
       const csf3Story = ComponentOrStory;
@@ -90,51 +66,30 @@ export const load: RendererLoader = async ({
       components: { ...decorated.components, story: component },
     };
   }, RenderComponent);
-  const previews =
-    typeof RenderComponent.previews === "function"
-      ? RenderComponent.previews()
-      : RenderComponent.previews || {};
-  const variants = Object.entries(previews).map(([key, props]) => {
-    return {
-      key,
-      label: key,
-      props,
-    };
-  });
   return {
-    variants,
-    render: async (props) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
-      await render(
-        (props) =>
-          Wrapper
-            ? // @ts-ignore
-              h(Wrapper, null, () => h(Decorated, props))
-            : // @ts-ignore
-              h(Decorated, props),
-        {
-          ...defaultProps,
-          ...props,
-        }
-      );
+      if (app) {
+        app.unmount();
+        app = null;
+      }
+      const props = getProps({
+        presetGlobalProps: componentModule.default?.args || {},
+        presetProps: ComponentOrStory.args || {},
+      });
+      app = createApp(() => {
+        // @ts-ignore
+        const decoratedNode = h(Decorated, props);
+        return Wrapper
+          ? // @ts-ignore
+            h(Wrapper, null, () => decoratedNode)
+          : decoratedNode;
+      }, {});
+      app.mount("#root");
     },
+    // @ts-ignore
+    jsxFactory: h,
   };
 };
-
-let app: App | null = null;
-export async function render<P extends Record<string, unknown>>(
-  Renderer: FunctionalComponent<P>,
-  props: P
-) {
-  if (app) {
-    app.unmount();
-    app = null;
-  }
-  if (!Renderer) {
-    return;
-  }
-  app = createApp(Renderer, props || {});
-  app.mount("#root");
-}

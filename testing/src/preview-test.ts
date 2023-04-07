@@ -1,29 +1,32 @@
 /// <reference types="@previewjs/iframe/preview/window" />
 
 import { test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { getPreviewIframe, startPreview } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
 import type playwright from "playwright";
-import { expectLoggedMessages, LoggedMessagesMatcher } from "./events";
-import { FileManager, prepareFileManager } from "./file-manager";
-import { prepareTestDir } from "./test-dir";
+import { expectLoggedMessages } from "./events";
+import type { LoggedMessagesMatcher } from "./events";
+import { prepareFileManager } from "./file-manager";
+import type { FileManager } from "./file-manager";
 
 // Port allocated for the duration of the process.
 let port: number;
 
+type TestPreview = Awaited<ReturnType<typeof startPreview>> & {
+  page: Page;
+  fileManager: FileManager;
+  expectLoggedMessages: LoggedMessagesMatcher;
+};
+
 export const previewTest = (
   frameworkPluginFactories: FrameworkPluginFactory[],
-  workspaceDirPath: string
+  testProjectDirPath: string
 ) => {
   const testFn = (
     title: string,
-    testFunction: (
-      preview: Awaited<ReturnType<typeof startPreview>> & {
-        fileManager: FileManager;
-        expectLoggedMessages: LoggedMessagesMatcher;
-      }
-    ) => Promise<void>,
+    testFunction: (preview: TestPreview) => Promise<void>,
     playwrightTest: typeof test.only = test
   ) => {
     return playwrightTest(title, async ({ page }) => {
@@ -31,10 +34,9 @@ export const previewTest = (
       if (!port) {
         port = await getPort();
       }
-      const rootDirPath = await prepareTestDir(workspaceDirPath);
       let showingComponent = false;
-      const { reader, fileManager } = await prepareFileManager({
-        rootDirPath,
+      const { rootDirPath, reader, fileManager } = await prepareFileManager({
+        testProjectDirPath,
         onBeforeFileUpdated: async () => {
           if (!showingComponent) {
             return;
@@ -58,6 +60,7 @@ export const previewTest = (
             }
             return window.__waitForExpectedRefresh__();
           });
+          await preview.iframe.waitForIdle();
         },
       });
       const preview = await startPreview({
@@ -74,6 +77,7 @@ export const previewTest = (
       };
       try {
         await testFunction({
+          page,
           fileManager,
           get expectLoggedMessages() {
             return expectLoggedMessages(this.events.get());
@@ -85,15 +89,17 @@ export const previewTest = (
       }
     });
   };
-  testFn.describe = (title: string, callback: () => void) =>
-    test.describe(title, callback);
   testFn.only = (
     title: string,
-    testFunction: (
-      preview: Awaited<ReturnType<typeof startPreview>>
-    ) => Promise<void>
+    testFunction: (preview: TestPreview) => Promise<void>
   ) => {
     return testFn(title, testFunction, test.only);
+  };
+  testFn.skip = (
+    title: string,
+    testFunction: (preview: TestPreview) => Promise<void>
+  ) => {
+    return testFn(title, testFunction, test.skip);
   };
   return testFn;
 };

@@ -1,12 +1,15 @@
-import execa from "execa";
+import { execa } from "execa";
 import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
-import { previewjsProVersion } from "../loader/src/version";
-import { assertCleanGit, isGitClean } from "./clean-git";
-import { gitChangelog } from "./git-changelog";
-import { incrementVersion } from "./increment-version";
-import { getPackageJson } from "./package-json";
+import url from "url";
+import { previewjsProVersion } from "../loader/src/version.js";
+import { assertCleanGit, isGitClean } from "./clean-git.js";
+import { gitChangelog } from "./git-changelog.js";
+import { incrementVersion } from "./increment-version.js";
+import { getPackageJson } from "./package-json.js";
+
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 async function main() {
   await assertCleanGit();
@@ -14,23 +17,46 @@ async function main() {
   console.log(
     `About to update loader bundle with @previewjs/pro v${previewjsProVersion}.`
   );
-  const { version: coreVersion } = await import("../core/package.json");
-  const { version: vfsVersion } = await import("../vfs/package.json");
-  const { version: reactPluginVersion } = await import(
-    "../frameworks/react/package.json"
-  );
-  const { version: solidPluginVersion } = await import(
-    "../frameworks/solid/package.json"
-  );
-  const { version: sveltePluginVersion } = await import(
-    "../frameworks/svelte/package.json"
-  );
-  const { version: vue2PluginVersion } = await import(
-    "../frameworks/vue2/package.json"
-  );
-  const { version: vue3PluginVersion } = await import(
-    "../frameworks/vue3/package.json"
-  );
+  const {
+    default: { version: coreVersion },
+  } = await import("../core/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: vfsVersion },
+  } = await import("../vfs/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: preactPluginVersion },
+  } = await import("../frameworks/preact/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: reactPluginVersion },
+  } = await import("../frameworks/react/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: solidPluginVersion },
+  } = await import("../frameworks/solid/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: sveltePluginVersion },
+  } = await import("../frameworks/svelte/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: vue2PluginVersion },
+  } = await import("../frameworks/vue2/package.json", {
+    assert: { type: "json" },
+  });
+  const {
+    default: { version: vue3PluginVersion },
+  } = await import("../frameworks/vue3/package.json", {
+    assert: { type: "json" },
+  });
   const releaseDirPath = path.join(__dirname, "..", "loader", "src", "release");
   await fs.promises.writeFile(
     path.join(releaseDirPath, "package.json"),
@@ -38,56 +64,7 @@ async function main() {
       {
         dependencies: {
           "@previewjs/core": coreVersion,
-          "@previewjs/plugin-react": reactPluginVersion,
-          "@previewjs/plugin-solid": solidPluginVersion,
-          "@previewjs/plugin-vue2": vue2PluginVersion,
-          "@previewjs/plugin-vue3": vue3PluginVersion,
-          "@previewjs/pro": previewjsProVersion,
-          "@previewjs/vfs": vfsVersion,
-        },
-      },
-      null,
-      2
-    ),
-    "utf8"
-  );
-  console.log(`Running npm install (without esbuild optional deps)...`);
-  await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
-    cwd: releaseDirPath,
-  });
-  const packageLock = JSON.parse(
-    await fs.promises.readFile(
-      path.join(releaseDirPath, "package-lock.json"),
-      "utf8"
-    )
-  );
-  const esbuildOptionalDependencies =
-    packageLock["packages"]["node_modules/esbuild"]["optionalDependencies"];
-  const esbuildBinaryPackages = [
-    "esbuild-darwin-64",
-    "esbuild-darwin-arm64",
-    "esbuild-linux-64",
-    "esbuild-linux-arm64",
-    "esbuild-windows-32",
-    "esbuild-windows-64",
-    "esbuild-windows-arm64",
-  ];
-  const esbuildBinaryDependencies: Record<string, string> = {};
-  for (const binaryPackage of esbuildBinaryPackages) {
-    const version = esbuildOptionalDependencies[binaryPackage];
-    if (!version) {
-      throw new Error(
-        `Missing esbuild binary dependency: ${binaryPackage}. Perhaps the release script needs to be updated.`
-      );
-    }
-    esbuildBinaryDependencies[binaryPackage] = version;
-  }
-  await fs.promises.writeFile(
-    path.join(releaseDirPath, "package.json"),
-    JSON.stringify(
-      {
-        dependencies: {
-          "@previewjs/core": coreVersion,
+          "@previewjs/plugin-preact": preactPluginVersion,
           "@previewjs/plugin-react": reactPluginVersion,
           "@previewjs/plugin-solid": solidPluginVersion,
           "@previewjs/plugin-svelte": sveltePluginVersion,
@@ -95,7 +72,6 @@ async function main() {
           "@previewjs/plugin-vue3": vue3PluginVersion,
           "@previewjs/pro": previewjsProVersion,
           "@previewjs/vfs": vfsVersion,
-          ...esbuildBinaryDependencies,
         },
       },
       null,
@@ -103,8 +79,9 @@ async function main() {
     ),
     "utf8"
   );
-  console.log(`Running npm install with esbuild optional deps...`);
-  await execa("pnpm", ["npm", "install", "--ignore-scripts", "-f"], {
+  console.log(`Running pnpm install...`);
+  await fs.promises.unlink(path.join(releaseDirPath, "pnpm-lock.yaml"));
+  await execa("pnpm", ["install", "--lockfile-only"], {
     cwd: releaseDirPath,
   });
   await execa("git", ["add", "."]);

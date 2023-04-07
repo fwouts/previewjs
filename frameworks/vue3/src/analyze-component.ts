@@ -1,23 +1,18 @@
 import type { ComponentAnalysis } from "@previewjs/core";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import {
-  CollectedTypes,
+  maybeOptionalType,
   objectType,
-  optionalType,
-  TypeAnalyzer,
   TypeResolver,
   UNKNOWN_TYPE,
-  ValueType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function analyzeVueComponentFromTemplate(
-  typeAnalyzer: TypeAnalyzer,
-  absoluteFilePath: string
+  resolver: TypeResolver,
+  virtualVueTsAbsoluteFilePath: string
 ): ComponentAnalysis {
-  // This virtual file exists thanks to transformReader().
-  const tsFilePath = `${absoluteFilePath}.ts`;
-  const resolver = typeAnalyzer.analyze([tsFilePath]);
-  const sourceFile = resolver.sourceFile(tsFilePath);
+  const sourceFile = resolver.sourceFile(virtualVueTsAbsoluteFilePath);
   for (const statement of sourceFile?.statements || []) {
     const definedProps = extractDefinePropsFromStatement(resolver, statement);
     if (definedProps) {
@@ -133,9 +128,10 @@ function extractDefinePropsFromExpression(
           Object.entries(definePropsType.type.fields).map(
             ([fieldKey, fieldType]) => [
               fieldKey,
-              fieldsWithDefaultValue.has(fieldKey)
-                ? optionalType(fieldType)
-                : fieldType,
+              maybeOptionalType(
+                fieldType,
+                fieldsWithDefaultValue.has(fieldKey)
+              ),
             ]
           )
         )

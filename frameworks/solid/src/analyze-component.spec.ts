@@ -1,4 +1,4 @@
-import { FrameworkPlugin } from "@previewjs/core";
+import type { FrameworkPlugin } from "@previewjs/core";
 import {
   arrayType,
   createTypeAnalyzer,
@@ -10,29 +10,31 @@ import {
   STRING_TYPE,
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
-  Reader,
-  Writer,
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import solidFrameworkPlugin from ".";
-import { SOLID_SPECIAL_TYPES } from "./special-types";
+import { SOLID_SPECIAL_TYPES } from "./special-types.js";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe("analyzeSolidComponent", () => {
+describe.concurrent("analyzeSolidComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await solidFrameworkPlugin.create();
+    frameworkPlugin = await solidFrameworkPlugin.create({
+      rootDirPath: ROOT_DIR_PATH,
+      dependencies: {},
+    });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
@@ -351,7 +353,9 @@ A.args = {
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.detectComponents(typeAnalyzer, [MAIN_FILE])
+      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
+        MAIN_FILE,
+      ])
     ).find((c) => c.name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

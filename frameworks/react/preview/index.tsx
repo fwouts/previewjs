@@ -1,10 +1,8 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import React from "react";
-// @ts-ignore Vite is fine with this
-import { version } from "react/package.json";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
-
-const moduleName = parseInt(version) >= 18 ? "./render-18" : "./render-16";
+// @ts-ignore
+import { render } from "__PREVIEWJS_PLUGIN_REACT_IMPORT_PATH__";
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -29,15 +27,6 @@ export const load: RendererLoader = async ({
     ...(ComponentOrStory.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
-  const variants = (ComponentOrStory.__previewjs_variants || []).map(
-    (variant) => {
-      return {
-        key: variant.key,
-        label: variant.label,
-        props: variant.props,
-      };
-    }
-  );
   const RenderComponent = isStoryModule
     ? typeof ComponentOrStory === "function"
       ? ComponentOrStory
@@ -47,35 +36,30 @@ export const load: RendererLoader = async ({
         componentModule.default?.component ||
         ComponentOrStory
     : ComponentOrStory;
-  const Renderer = (props) => {
+  const Renderer = (props: any) => {
     return (
       <ErrorBoundary key={renderId} renderId={renderId}>
         <Wrapper>
           {decorators.reduce(
             (component, decorator) => () => decorator(component),
-            () => (
-              <RenderComponent
-                {...componentModule.default?.args}
-                {...ComponentOrStory.args}
-                {...props}
-              />
-            )
+            () => <RenderComponent {...props} />
           )()}
         </Wrapper>
       </ErrorBoundary>
     );
   };
   return {
-    variants,
-    render: async (props) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
-      const { render } = await import(/* @vite-ignore */ moduleName);
-      if (shouldAbortRender()) {
-        return;
-      }
-      await render(Renderer, props);
+      await render(
+        Renderer,
+        getProps({
+          presetGlobalProps: componentModule.default?.args || {},
+          presetProps: ComponentOrStory.args || {},
+        })
+      );
       if (shouldAbortRender()) {
         return;
       }
@@ -90,5 +74,6 @@ export const load: RendererLoader = async ({
         throw errorBoundary.state.error;
       }
     },
+    jsxFactory: React.createElement,
   };
 };

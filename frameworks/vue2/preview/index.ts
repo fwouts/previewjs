@@ -1,5 +1,8 @@
-import type { RendererLoader } from "@previewjs/iframe";
+import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import Vue from "vue";
+
+const root = document.getElementById("root")!;
+let app: Vue | null = null;
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -25,50 +28,34 @@ export const load: RendererLoader = async ({
       throw new Error(`No component named '${componentName}'`);
     }
   }
-  let defaultProps = {
-    ...componentModule.default?.args,
-    ...ComponentOrStory.args,
-  };
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
-  if (ComponentOrStory.render) {
+  if (ComponentOrStory.render || ComponentOrStory.name === "VueComponent") {
     // Vue or JSX component. Nothing to do.
   } else {
     // Storybook story, either CSF2 or CSF3.
-    storybookCheck: if (typeof ComponentOrStory === "function") {
+    if (typeof ComponentOrStory === "function") {
       // CSF2 story.
-      let maybeCsf2StoryComponent;
-      try {
-        maybeCsf2StoryComponent = ComponentOrStory(defaultProps, {
-          argTypes: defaultProps,
-        });
-      } catch (e) {
-        // Not a CSF2 story. Nothing to do.
-        break storybookCheck;
-      }
-      if (
-        !maybeCsf2StoryComponent ||
-        (!maybeCsf2StoryComponent?.components &&
-          !maybeCsf2StoryComponent?.template)
-      ) {
-        // Vue or JSX component. Nothing to do.
-      } else {
-        // This looks a lot like a CSF2 story. It must be one.
-        const csf2StoryComponent = maybeCsf2StoryComponent;
-        storyDecorators.push(...(csf2StoryComponent.decorators || []));
-        if (csf2StoryComponent.template) {
-          RenderComponent = csf2StoryComponent;
-        } else {
-          RenderComponent = Object.values(
-            csf2StoryComponent.components || {}
-          )[0];
-          if (!RenderComponent) {
+      RenderComponent = {
+        functional: true,
+        render: (h: any, data: any) => {
+          const storyReturnValue = ComponentOrStory(data.props, {
+            argTypes: data.props,
+          });
+          if (storyReturnValue.template) {
+            return h(storyReturnValue, data);
+          }
+          const component =
+            Object.values(storyReturnValue.components || {})[0] ||
+            componentModule.default?.component;
+          if (!component) {
             throw new Error(
               "Encountered a story with no template or components"
             );
           }
-        }
-      }
+          return h(component, data);
+        },
+      };
     } else {
       // CSF3 story.
       const csf3Story = ComponentOrStory;
@@ -90,56 +77,40 @@ export const load: RendererLoader = async ({
       components: { ...decorated.components, story: component },
     };
   }, RenderComponent);
-  const previews =
-    typeof RenderComponent.previews === "function"
-      ? RenderComponent.previews()
-      : RenderComponent.previews || {};
-  const variants = Object.entries(previews).map(([key, props]) => {
-    return {
-      key,
-      label: key,
-      props,
-    };
-  });
   return {
-    variants,
-    render: async (props) => {
+    render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
         return;
       }
-      await render((h, props) => {
-        const Wrapped = h(Decorated, {
-          props: {
-            ...defaultProps,
-            ...props,
-          },
-        });
-        return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
-      }, props);
+      if (app) {
+        app.$destroy();
+        app = null;
+      }
+      app = new Vue({
+        render: (h) =>
+          h(
+            {
+              functional: true,
+              render: (h: any, data: any) => {
+                const Wrapped = h(Decorated, data);
+                return Wrapper ? h(Wrapper, {}, [Wrapped]) : Wrapped;
+              },
+            },
+            {
+              props: getProps({
+                presetGlobalProps: componentModule.default?.args || {},
+                presetProps: ComponentOrStory.args || {},
+              }),
+            }
+          ),
+      }).$mount();
+      while (root.firstChild) {
+        root.removeChild(root.firstChild);
+      }
+      root.appendChild(app.$el);
     },
+    // While Vue 2 exposes h(), it can only be used when a component is already being rendered.
+    // This makes the approach of invoking jsxFactory prior to rendering the component unfeasible.
+    jsxFactory: null,
   };
 };
-
-const root = document.getElementById("root");
-let app: Vue | null = null;
-
-// TODO: Type Renderer properly.
-async function render<P>(Renderer: any, props: P) {
-  if (app) {
-    app.$destroy();
-    app = null;
-  }
-  if (!Renderer) {
-    return;
-  }
-  if (Renderer.functional) {
-    Renderer = Renderer.render;
-  }
-  app = new Vue({
-    render: (h) => Renderer(h, props),
-  }).$mount();
-  while (root.firstChild) {
-    root.removeChild(root.firstChild);
-  }
-  root.appendChild(app.$el);
-}
