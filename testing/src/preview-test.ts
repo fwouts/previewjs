@@ -1,15 +1,19 @@
 /// <reference types="@previewjs/iframe/preview/window" />
 
-import { test } from "@playwright/test";
 import type { Page } from "@playwright/test";
-import { getPreviewIframe, startPreview } from "@previewjs/chromeless";
+import { test } from "@playwright/test";
+import {
+  createChromelessWorkspace,
+  getPreviewIframe,
+  startPreview,
+} from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
 import type playwright from "playwright";
-import { expectLoggedMessages } from "./events";
 import type { LoggedMessagesMatcher } from "./events";
-import { prepareFileManager } from "./file-manager";
+import { expectLoggedMessages } from "./events";
 import type { FileManager } from "./file-manager";
+import { prepareFileManager } from "./file-manager";
 
 // Port allocated for the duration of the process.
 let port: number;
@@ -63,11 +67,14 @@ export const previewTest = (
           await preview.iframe.waitForIdle();
         },
       });
-      const preview = await startPreview({
+      const workspace = await createChromelessWorkspace({
         frameworkPluginFactories,
-        page,
         rootDirPath,
         reader,
+      });
+      const preview = await startPreview({
+        workspace,
+        page,
         port,
       });
       const previewShow = preview.show.bind(preview);

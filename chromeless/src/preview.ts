@@ -1,34 +1,23 @@
 import { RPCs } from "@previewjs/api";
-import type { FrameworkPluginFactory } from "@previewjs/core";
+import type { Workspace } from "@previewjs/core";
 import {
   generateCallbackProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
-import type { Reader } from "@previewjs/vfs";
 import type playwright from "playwright";
 import ts from "typescript";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
-import { createChromelessWorkspace } from "./workspace";
 
 export async function startPreview({
-  frameworkPluginFactories,
+  workspace,
   page,
-  rootDirPath,
   port,
-  reader,
 }: {
-  frameworkPluginFactories: FrameworkPluginFactory[];
+  workspace: Workspace;
   page: playwright.Page;
-  rootDirPath: string;
   port: number;
-  reader?: Reader;
 }) {
-  const workspace = await createChromelessWorkspace({
-    rootDirPath,
-    reader,
-    frameworkPluginFactories,
-  });
   const preview = await workspace.preview.start(async () => port);
   await page.goto(preview.url());
 
