@@ -141,14 +141,7 @@ export async function startPreview({
       }
       return componentIds;
     },
-    async show(
-      componentId: string,
-      {
-        propsAssignmentSource,
-      }: {
-        propsAssignmentSource?: string;
-      } = {}
-    ) {
+    async show(componentId: string, propsAssignmentSource?: string) {
       const filePath = componentId.split(":")[0]!;
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
