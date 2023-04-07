@@ -95,6 +95,9 @@ export function detectComponents(
       changedAbsoluteFilePaths
     );
     const components = [...recycledComponents, ...refreshedComponents];
+    components.sort((a, b) => {
+      return a.componentId.localeCompare(b.componentId);
+    });
     if (!options.filePaths) {
       await fs.mkdirp(path.dirname(cacheFilePath));
       const updatedCache: CachedProjectComponents = {
