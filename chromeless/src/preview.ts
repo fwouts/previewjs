@@ -1,34 +1,23 @@
-import { generateComponentId, RPCs } from "@previewjs/api";
-import type { FrameworkPluginFactory } from "@previewjs/core";
+import { RPCs } from "@previewjs/api";
+import type { Workspace } from "@previewjs/core";
 import {
   generateCallbackProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
-import type { Reader } from "@previewjs/vfs";
 import type playwright from "playwright";
 import ts from "typescript";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
-import { createChromelessWorkspace } from "./workspace";
 
 export async function startPreview({
-  frameworkPluginFactories,
+  workspace,
   page,
-  rootDirPath,
   port,
-  reader,
 }: {
-  frameworkPluginFactories: FrameworkPluginFactory[];
+  workspace: Workspace;
   page: playwright.Page;
-  rootDirPath: string;
   port: number;
-  reader?: Reader;
 }) {
-  const workspace = await createChromelessWorkspace({
-    rootDirPath,
-    reader,
-    frameworkPluginFactories,
-  });
   const preview = await workspace.preview.start(async () => port);
   await page.goto(preview.url());
 
@@ -123,23 +112,6 @@ export async function startPreview({
           path: destinationPath,
         });
       },
-    },
-    async detectComponents(): Promise<string[]> {
-      const response = await workspace.localRpc(RPCs.DetectComponents, {});
-      const componentIds: string[] = [];
-      for (const [filePath, fileComponents] of Object.entries(
-        response.components
-      )) {
-        for (const component of fileComponents) {
-          componentIds.push(
-            generateComponentId({
-              filePath,
-              name: component.name,
-            })
-          );
-        }
-      }
-      return componentIds;
     },
     async show(componentId: string, propsAssignmentSource?: string) {
       const filePath = componentId.split(":")[0]!;

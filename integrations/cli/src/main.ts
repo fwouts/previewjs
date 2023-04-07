@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { decodeComponentId } from "@previewjs/api";
-import { startPreview } from "@previewjs/chromeless";
+import { RPCs, generateComponentId } from "@previewjs/api";
+import { createChromelessWorkspace, startPreview } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
 import reactPlugin from "@previewjs/plugin-react";
 import chalk from "chalk";
@@ -37,26 +37,42 @@ program
       const browser = await playwright.chromium.launch();
       const page = await browser.newPage();
       const rootDirPath = dirPath || process.cwd();
-      const preview = await startPreview({
-        rootDirPath,
+      const workspace = await createChromelessWorkspace({
         // TODO: Auto-pass framework plugin factories, or get them from config.
         frameworkPluginFactories: [reactPlugin],
+        rootDirPath,
+      });
+      const preview = await startPreview({
+        workspace,
         page,
         port: 3123,
       });
-      for (const componentId of await preview.detectComponents()) {
-        try {
-          await preview.show(componentId);
-          const { filePath, name } = decodeComponentId(componentId);
-          const dirPath = path.dirname(filePath);
-          await preview.iframe.takeScreenshot(
-            path.join(rootDirPath, dirPath, "__screenshots__", name + ".png")
-          );
-          console.log(`✅ ${componentId}`);
-        } catch (e: any) {
-          console.log(`❌ ${componentId}`);
-          // TODO: Show if verbose on.
-          // console.warn(e.message);
+      const response = await workspace.localRpc(RPCs.DetectComponents, {});
+      for (const [filePath, fileComponents] of Object.entries(
+        response.components
+      )) {
+        for (const component of fileComponents) {
+          const componentId = generateComponentId({
+            filePath,
+            name: component.name,
+          });
+          try {
+            await preview.show(componentId);
+            const dirPath = path.dirname(filePath);
+            await preview.iframe.takeScreenshot(
+              path.join(
+                rootDirPath,
+                dirPath,
+                "__screenshots__",
+                component.name + ".png"
+              )
+            );
+            console.log(`✅ ${componentId}`);
+          } catch (e: any) {
+            console.log(`❌ ${componentId}`);
+            // TODO: Show if verbose on.
+            // console.warn(e.message);
+          }
         }
       }
       await preview.stop();
