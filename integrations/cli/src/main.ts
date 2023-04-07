@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { decodeComponentId } from "@previewjs/api";
 import { startPreview } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
 import reactPlugin from "@previewjs/plugin-react";
@@ -35,9 +36,9 @@ program
     if ("test") {
       const browser = await playwright.chromium.launch();
       const page = await browser.newPage();
+      const rootDirPath = dirPath || process.cwd();
       const preview = await startPreview({
-        // TODO: Detect root directory.
-        rootDirPath: dirPath || process.cwd(),
+        rootDirPath,
         // TODO: Auto-pass framework plugin factories, or get them from config.
         frameworkPluginFactories: [reactPlugin],
         page,
@@ -46,12 +47,10 @@ program
       for (const componentId of await preview.detectComponents()) {
         try {
           await preview.show(componentId);
+          const { filePath, name } = decodeComponentId(componentId);
+          const dirPath = path.dirname(filePath);
           await preview.iframe.takeScreenshot(
-            path.join(
-              __dirname,
-              "__screenshots__",
-              componentId.split(":")[1] + ".png"
-            )
+            path.join(rootDirPath, dirPath, "__screenshots__", name + ".png")
           );
           console.log(`✅ ${componentId}`);
         } catch (e: any) {
