@@ -333,7 +333,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components } = await workspace.localRpc(RPCs.DetectComponents, {
+      return workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [
           path
             .relative(
@@ -343,19 +343,6 @@ export async function startDaemon({
             .replace(/\\/g, "/"),
         ],
       });
-      const results: Array<{
-        start: number;
-        end: number;
-        componentId: string;
-      }> = [];
-      for (const component of components) {
-        results.push({
-          componentId: component.componentId,
-          start: component.start,
-          end: component.end,
-        });
-      }
-      return { components: results };
     }
   );
 
