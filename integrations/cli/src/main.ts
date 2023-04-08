@@ -52,21 +52,16 @@ program
         {}
       );
       for (const component of components) {
-        const { filePath } = decodeComponentId(component.componentId);
+        const { filePath, name } = decodeComponentId(component.componentId);
         try {
           await preview.show(component.componentId);
           const dirPath = path.dirname(filePath);
           await preview.iframe.takeScreenshot(
-            path.join(
-              rootDirPath,
-              dirPath,
-              "__screenshots__",
-              component.name + ".png"
-            )
+            path.join(rootDirPath, dirPath, "__screenshots__", name + ".png")
           );
-          console.log(`✅ ${componentId}`);
+          console.log(`✅ ${component.componentId}`);
         } catch (e: any) {
-          console.log(`❌ ${componentId}`);
+          console.log(`❌ ${component.componentId}`);
           // TODO: Show if verbose on.
           // console.warn(e.message);
         }
