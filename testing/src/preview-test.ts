@@ -5,7 +5,6 @@ import { test } from "@playwright/test";
 import {
   createChromelessWorkspace,
   getPreviewIframe,
-  startPreview,
 } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
@@ -18,7 +17,11 @@ import { prepareFileManager } from "./file-manager";
 // Port allocated for the duration of the process.
 let port: number;
 
-type TestPreview = Awaited<ReturnType<typeof startPreview>> & {
+type TestPreview = Awaited<
+  ReturnType<
+    Awaited<ReturnType<typeof createChromelessWorkspace>>["preview"]["start"]
+  >
+> & {
   page: Page;
   fileManager: FileManager;
   expectLoggedMessages: LoggedMessagesMatcher;
@@ -72,9 +75,7 @@ export const previewTest = (
         rootDirPath,
         reader,
       });
-      const preview = await startPreview({
-        workspace,
-        page,
+      const preview = await workspace.preview.start(page, {
         port,
       });
       const previewShow = preview.show.bind(preview);

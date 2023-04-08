@@ -1,10 +1,12 @@
+import type { FrameworkPluginFactory, Workspace } from "@previewjs/core";
 import { createWorkspace, setupFrameworkPlugin } from "@previewjs/core";
-import type { FrameworkPluginFactory } from "@previewjs/core";
-import { createFileSystemReader } from "@previewjs/vfs";
 import type { Reader } from "@previewjs/vfs";
+import { createFileSystemReader } from "@previewjs/vfs";
 import express from "express";
 import path from "path";
+import { Page } from "playwright";
 import url from "url";
+import { startPreview } from "./preview";
 
 export async function createChromelessWorkspace({
   rootDirPath,
@@ -15,7 +17,16 @@ export async function createChromelessWorkspace({
   frameworkPluginFactories: FrameworkPluginFactory[];
   reader?: Reader;
   port?: number;
-}) {
+}): Promise<
+  Omit<Workspace, "preview"> & {
+    preview: {
+      start: (
+        page: Page,
+        options?: { port?: number }
+      ) => ReturnType<typeof startPreview>;
+    };
+  }
+> {
   const frameworkPlugin = await setupFrameworkPlugin({
     rootDirPath,
     frameworkPluginFactories,
@@ -41,5 +52,11 @@ export async function createChromelessWorkspace({
       `No workspace could be created for directory: ${rootDirPath}`
     );
   }
-  return workspace;
+  return {
+    ...workspace,
+    preview: {
+      start: (page: Page, options: { port?: number } = {}) =>
+        startPreview({ workspace, page, ...options }),
+    },
+  };
 }
