@@ -1,3 +1,4 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   ANY_TYPE,
@@ -15,12 +16,12 @@ import {
   TypeAnalyzer,
   unionType,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
@@ -553,7 +554,7 @@ A.propTypes = {
       await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
         MAIN_FILE,
       ])
-    ).find((c) => c.name === componentName);
+    ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }

@@ -1,6 +1,6 @@
-export async function componentLoader(filePath, componentName) {
-  const componentLoaderUrl = `/preview/@component-loader.js?p=${encodeURIComponent(
-    filePath
-  )}&c=${encodeURIComponent(componentName)}`;
+export async function componentLoader(componentId) {
+  const componentLoaderUrl = `/preview/@component-loader.js?c=${encodeURIComponent(
+    componentId
+  )}`;
   return await import(/* @vite-ignore */ componentLoaderUrl);
 }

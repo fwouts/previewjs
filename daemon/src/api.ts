@@ -45,7 +45,6 @@ export interface AnalyzeFileRequest {
 
 export interface AnalyzeFileResponse {
   components: Array<{
-    componentName: string;
     start: number;
     end: number;
     componentId: string;

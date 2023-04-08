@@ -6,8 +6,7 @@ export async function updateComponent({
   wrapperModule,
   wrapperName,
   componentModule,
-  componentFilePath,
-  componentName,
+  componentId,
   renderId,
   shouldAbortRender,
   loadingError,
@@ -16,8 +15,7 @@ export async function updateComponent({
   wrapperModule: any;
   wrapperName: string;
   componentModule: any;
-  componentFilePath: string;
-  componentName: string;
+  componentId: string;
   renderId: number;
   shouldAbortRender: () => boolean;
   loadingError: string | null;
@@ -41,9 +39,8 @@ export async function updateComponent({
     const { render, jsxFactory } = await load({
       wrapperModule,
       wrapperName,
-      componentFilePath,
       componentModule,
-      componentName,
+      componentId,
       renderId,
       shouldAbortRender,
     });
@@ -58,8 +55,7 @@ export async function updateComponent({
       );
     sendMessageFromPreview({
       kind: "rendering-setup",
-      filePath: componentFilePath,
-      componentName,
+      componentId,
     });
     await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),

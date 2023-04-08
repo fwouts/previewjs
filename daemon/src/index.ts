@@ -1,4 +1,4 @@
-import { generateComponentId, RPCs } from "@previewjs/api";
+import { RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
@@ -333,7 +333,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components } = await workspace.localRpc(RPCs.DetectComponents, {
+      return workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [
           path
             .relative(
@@ -343,26 +343,6 @@ export async function startDaemon({
             .replace(/\\/g, "/"),
         ],
       });
-      const results: Array<{
-        componentName: string;
-        start: number;
-        end: number;
-        componentId: string;
-      }> = [];
-      for (const [filePath, fileComponents] of Object.entries(components)) {
-        for (const component of fileComponents) {
-          results.push({
-            componentName: component.name,
-            componentId: generateComponentId({
-              filePath,
-              name: component.name,
-            }),
-            start: component.start,
-            end: component.end,
-          });
-        }
-      }
-      return { components: results };
     }
   );
 

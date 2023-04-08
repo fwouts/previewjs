@@ -30,12 +30,11 @@ export interface FrameworkPlugin {
     reader: Reader,
     typeAnalyzer: TypeAnalyzer,
     absoluteFilePaths: string[]
-  ) => Promise<Component[]>;
+  ) => Promise<AnalyzableComponent[]>;
 }
 
-export interface Component {
-  readonly absoluteFilePath: string;
-  readonly name: string;
+export interface AnalyzableComponent {
+  readonly componentId: string;
   readonly offsets: Array<[start: number, end: number]>;
   readonly info: ComponentTypeInfo;
 }
@@ -57,8 +56,7 @@ export type ComponentTypeInfo =
     };
 
 export type StoryAssociatedComponent = {
-  readonly absoluteFilePath: string;
-  readonly name: string;
+  readonly componentId: string;
   readonly analyze: () => Promise<ComponentAnalysis>;
 };
 

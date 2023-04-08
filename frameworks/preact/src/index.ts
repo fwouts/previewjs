@@ -1,4 +1,7 @@
-import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import type {
+  AnalyzableComponent,
+  FrameworkPluginFactory,
+} from "@previewjs/core";
 import path from "path";
 import ts from "typescript";
 import url from "url";
@@ -13,7 +16,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) >= 10;
   },
-  async create() {
+  async create({ rootDirPath }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
@@ -30,10 +33,10 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       },
       detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
-        const components: Component[] = [];
+        const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractPreactComponents(resolver, absoluteFilePath)
+            ...extractPreactComponents(resolver, rootDirPath, absoluteFilePath)
           );
         }
         return components;

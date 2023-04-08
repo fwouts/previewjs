@@ -5,20 +5,20 @@ import {
   STRING_TYPE,
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import solidFrameworkPlugin from ".";
 import { extractSolidComponents } from "./extract-component.js";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
-const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
-const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
+const APP_TSX = path.join(ROOT_DIR, "App.tsx");
+const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractSolidComponents", () => {
   let memoryReader: Reader & Writer;
@@ -27,7 +27,7 @@ describe.concurrent("extractSolidComponents", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       "export const Button = ({ label }: { label: string }) => <div>{label}</div>;"
     );
     const frameworkPlugin = await solidFrameworkPlugin.create({
@@ -52,7 +52,7 @@ describe.concurrent("extractSolidComponents", () => {
 
   it("detects expected components", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 import type { Component } from 'solid-js';
 
@@ -76,23 +76,23 @@ export default Component1;
 
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "Component1",
+        componentId: "App.tsx:Component1",
         info: {
           kind: "component",
           exported: true,
         },
       },
       {
-        name: "Component2",
+        componentId: "App.tsx:Component2",
         info: {
           kind: "component",
           exported: false,
         },
       },
       {
-        name: "Component3",
+        componentId: "App.tsx:Component3",
         info: {
           kind: "component",
           exported: false,
@@ -103,7 +103,7 @@ export default Component1;
 
   it("detects components without any Solid import", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 export function DeclaredFunction() {
   return <div>Hello, World!</div>;
@@ -112,16 +112,16 @@ export function DeclaredFunction() {
 const ConstantFunction = () => <div>Hello, World!</div>;
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "DeclaredFunction",
+        componentId: "App.tsx:DeclaredFunction",
         info: {
           kind: "component",
           exported: true,
         },
       },
       {
-        name: "ConstantFunction",
+        componentId: "App.tsx:ConstantFunction",
         info: {
           kind: "component",
           exported: false,
@@ -132,7 +132,7 @@ const ConstantFunction = () => <div>Hello, World!</div>;
 
   it("detects CSF1 stories", async () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_TSX,
       `
 import { Button } from "./App";
 
@@ -146,21 +146,20 @@ export const NotStory = (props) => <Button {...props} />;
 `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        name: "Primary",
+        componentId: "App.stories.tsx:Primary",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
       {
-        name: "NotStory",
+        componentId: "App.stories.tsx:NotStory",
         info: {
           kind: "component",
           exported: true,
@@ -182,7 +181,7 @@ export const NotStory = (props) => <Button {...props} />;
 
   it("detects CSF2 stories", async () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_TSX,
       `
 import { Button } from "./App";
 
@@ -200,17 +199,17 @@ Primary.args = {
 `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        name: "Template",
+        componentId: "App.stories.tsx:Template",
         info: {
           kind: "component",
           exported: false,
         },
       },
       {
-        name: "Primary",
+        componentId: "App.stories.tsx:Primary",
         info: {
           kind: "story",
           args: {
@@ -228,8 +227,7 @@ Primary.args = {
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
@@ -249,7 +247,7 @@ Primary.args = {
 
   it("detects CSF3 stories", async () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_TSX,
       `
 import { Button } from "./App";
 
@@ -266,10 +264,10 @@ export function NotStory() {}
 `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        name: "Example",
+        componentId: "App.stories.tsx:Example",
         info: {
           kind: "story",
           args: {
@@ -282,19 +280,17 @@ export function NotStory() {}
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
       {
-        name: "NoArgs",
+        componentId: "App.stories.tsx:NoArgs",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "Button",
+            componentId: "App.tsx:Button",
           },
         },
       },
@@ -315,6 +311,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractSolidComponents(
       typeAnalyzer.analyze([absoluteFilePath]),
+      ROOT_DIR,
       absoluteFilePath
     );
   }
