@@ -156,8 +156,8 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       playwright:
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -387,8 +387,8 @@ importers:
         version: 4.9.5
     devDependencies:
       '@playwright/test':
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       '@previewjs/api':
         specifier: workspace:*
         version: link:../../api
@@ -533,8 +533,8 @@ importers:
         version: 4.9.5
     devDependencies:
       '@playwright/test':
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       '@previewjs/api':
         specifier: workspace:*
         version: link:../../api
@@ -1971,11 +1971,11 @@ importers:
         version: 4.9.5
       vite-plugin-solid:
         specifier: ^2.6.1
-        version: 2.6.1(solid-js@1.7.2)(vite@4.2.1)
+        version: 2.6.1(solid-js@1.7.3)(vite@4.2.1)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -1986,8 +1986,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       solid-js:
-        specifier: ^1.7.2
-        version: 1.7.2
+        specifier: ^1.7.3
+        version: 1.7.3
       unbuild:
         specifier: ^1.2.0
         version: 1.2.0
@@ -2105,8 +2105,8 @@ importers:
         version: 4.9.5
     devDependencies:
       '@playwright/test':
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2283,8 +2283,8 @@ importers:
         version: 2.7.14
     devDependencies:
       '@playwright/test':
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2435,8 +2435,8 @@ importers:
         version: 3.2.47
     devDependencies:
       '@playwright/test':
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2582,7 +2582,7 @@ importers:
         version: 9.1.0
       playwright:
         specifier: ^1.32.1
-        version: 1.32.1
+        version: 1.32.2
       rimraf:
         specifier: ^4.4.1
         version: 4.4.1
@@ -2773,8 +2773,8 @@ importers:
   testing:
     dependencies:
       '@playwright/test':
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
       '@previewjs/api':
         specifier: ^10.0.2
         version: link:../api
@@ -2800,8 +2800,8 @@ importers:
         specifier: ^6.1.2
         version: 6.1.2
       playwright:
-        specifier: ^1.32.1
-        version: 1.32.1
+        specifier: ^1.32.2
+        version: 1.32.2
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.1
@@ -9566,13 +9566,13 @@ packages:
       stack-trace: 0.0.10
     dev: false
 
-  /@playwright/test@1.32.1:
-    resolution: {integrity: sha512-FTwjCuhlm1qHUGf4hWjfr64UMJD/z0hXYbk+O387Ioe6WdyZQ+0TBDAc6P+pHjx2xCv1VYNgrKbYrNixFWy4Dg==}
+  /@playwright/test@1.32.2:
+    resolution: {integrity: sha512-nhaTSDpEdTTttdkDE8Z6K3icuG1DVRxrl98Qq0Lfc63SS9a2sjc9+x8ezysh7MzCKz6Y+nArml3/mmt+gqRmQQ==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@types/node': 18.15.11
-      playwright-core: 1.32.1
+      playwright-core: 1.32.2
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -27808,18 +27808,18 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core@1.32.1:
-    resolution: {integrity: sha512-KZYUQC10mXD2Am1rGlidaalNGYk3LU1vZqqNk0gT4XPty1jOqgup8KDP8l2CUlqoNKhXM5IfGjWgW37xvGllBA==}
+  /playwright-core@1.32.2:
+    resolution: {integrity: sha512-zD7aonO+07kOTthsrCR3YCVnDcqSHIJpdFUtZEMOb6//1Rc7/6mZDRdw+nlzcQiQltOOsiqI3rrSyn/SlyjnJQ==}
     engines: {node: '>=14'}
     hasBin: true
 
-  /playwright@1.32.1:
-    resolution: {integrity: sha512-GnEizysWMvoqHC3I9l8+4/ZxeLwLNdJJG76xdKGxzOcIZDcw5RSk/FKrFb5CuA+zcLpjIM2p9eR9Z4CuUDkWXg==}
+  /playwright@1.32.2:
+    resolution: {integrity: sha512-jHVnXJke0PXpuPszKtk9y1zZSlzO5+2a+aockT/AND0oeXx46FiJEFrafthurglLygVZA+1gEbtUM1C7qtTV+Q==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.32.1
+      playwright-core: 1.32.2
 
   /please-upgrade-node@3.2.0:
     resolution: {integrity: sha512-gQR3WpIgNIKwBMVLkpMUeR3e1/E1y42bqDQZfql+kDeXd8COYfM8PQA4X6y7a8u9Ua9FHmsrrmirW2vHs45hWg==}
@@ -31795,8 +31795,8 @@ packages:
     dependencies:
       csstype: 3.1.1
 
-  /solid-js@1.7.2:
-    resolution: {integrity: sha512-01f8GIc+HTTlfDXtK+TFku3AllHyJ3hNsIpxM2qpObRP4VbEGVIP6VbULnThPlpse+J1y/I/1N9QeQ9MNkE8Ow==}
+  /solid-js@1.7.3:
+    resolution: {integrity: sha512-4hwaF/zV/xbNeBBIYDyu3dcReOZBECbO//mrra6GqOrKy4Soyo+fnKjpZSa0nODm6j1aL0iQRh/7ofYowH+jzw==}
     dependencies:
       csstype: 3.1.1
       seroval: 0.5.1
@@ -31811,7 +31811,7 @@ packages:
       '@babel/types': 7.21.4
       solid-js: 1.6.12
 
-  /solid-refresh@0.5.1(solid-js@1.7.2):
+  /solid-refresh@0.5.1(solid-js@1.7.3):
     resolution: {integrity: sha512-kzfcoUYW6ZOUvk/7trfRbwLLBkQmMT2kGJUy9UMPnniMRYaMmyckjCxg1GuXCoSkrC3Bu2NK39I3iPJZYfqDXw==}
     peerDependencies:
       solid-js: ^1.3
@@ -31819,7 +31819,7 @@ packages:
       '@babel/generator': 7.21.4
       '@babel/helper-module-imports': 7.18.6
       '@babel/types': 7.21.4
-      solid-js: 1.7.2
+      solid-js: 1.7.3
     dev: false
 
   /solid-start-node@0.2.23(solid-start@0.2.23)(undici@5.20.0)(vite@3.2.5):
@@ -34778,7 +34778,7 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-solid@2.6.1(solid-js@1.7.2)(vite@4.2.1):
+  /vite-plugin-solid@2.6.1(solid-js@1.7.3)(vite@4.2.1):
     resolution: {integrity: sha512-/khM/ha3B5/pTWQWVJd/0n6ODPIrOcajwhbrD8Gnv37XmJJssu+KA8ssN73raMIicf2eiQKiTAV39w7dSl4Irg==}
     peerDependencies:
       solid-js: ^1.3.17 || ^1.4.0 || ^1.5.0 || ^1.6.0
@@ -34789,8 +34789,8 @@ packages:
       '@types/babel__core': 7.20.0
       babel-preset-solid: 1.6.12(@babel/core@7.21.4)
       merge-anything: 5.1.4
-      solid-js: 1.7.2
-      solid-refresh: 0.5.1(solid-js@1.7.2)
+      solid-js: 1.7.3
+      solid-refresh: 0.5.1(solid-js@1.7.3)
       vite: 4.2.1(@types/node@18.15.11)
       vitefu: 0.2.4(vite@4.2.1)
     transitivePeerDependencies:

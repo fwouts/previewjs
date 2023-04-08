@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { RPCs, generateComponentId } from "@previewjs/api";
+import { RPCs, decodeComponentId } from "@previewjs/api";
 import { createChromelessWorkspace, startPreview } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
 import reactPlugin from "@previewjs/plugin-react";
@@ -47,32 +47,28 @@ program
         page,
         port: 3123,
       });
-      const response = await workspace.localRpc(RPCs.DetectComponents, {});
-      for (const [filePath, fileComponents] of Object.entries(
-        response.components
-      )) {
-        for (const component of fileComponents) {
-          const componentId = generateComponentId({
-            filePath,
-            name: component.name,
-          });
-          try {
-            await preview.show(componentId);
-            const dirPath = path.dirname(filePath);
-            await preview.iframe.takeScreenshot(
-              path.join(
-                rootDirPath,
-                dirPath,
-                "__screenshots__",
-                component.name + ".png"
-              )
-            );
-            console.log(`✅ ${componentId}`);
-          } catch (e: any) {
-            console.log(`❌ ${componentId}`);
-            // TODO: Show if verbose on.
-            // console.warn(e.message);
-          }
+      const { components } = await workspace.localRpc(
+        RPCs.DetectComponents,
+        {}
+      );
+      for (const component of components) {
+        const { filePath } = decodeComponentId(component.componentId);
+        try {
+          await preview.show(component.componentId);
+          const dirPath = path.dirname(filePath);
+          await preview.iframe.takeScreenshot(
+            path.join(
+              rootDirPath,
+              dirPath,
+              "__screenshots__",
+              component.name + ".png"
+            )
+          );
+          console.log(`✅ ${componentId}`);
+        } catch (e: any) {
+          console.log(`❌ ${componentId}`);
+          // TODO: Show if verbose on.
+          // console.warn(e.message);
         }
       }
       await preview.stop();

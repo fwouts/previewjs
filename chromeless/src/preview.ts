@@ -118,19 +118,14 @@ export async function startPreview({
       const { components } = await workspace.localRpc(RPCs.DetectComponents, {
         filePaths: [filePath],
       });
-      const detectedComponents = components[filePath] || [];
-      const matchingDetectedComponent = detectedComponents.find(
-        (c) => componentId === `${filePath}:${c.name}`
+      const matchingDetectedComponent = components.find(
+        (c) => componentId === c.componentId
       );
       if (!matchingDetectedComponent) {
         throw new Error(
           `Component may be previewable but was not detected by framework plugin: ${componentId}`
         );
       }
-      const component = {
-        componentName: matchingDetectedComponent.name,
-        filePath,
-      };
       const computePropsResponse = await workspace.localRpc(RPCs.ComputeProps, {
         componentIds: [componentId],
       });
@@ -173,7 +168,7 @@ export async function startPreview({
           window.renderComponent(component);
         },
         {
-          ...component,
+          componentId,
           autogenCallbackPropsSource: transpile(
             `autogenCallbackProps = ${autogenCallbackProps.source}`
           ),
