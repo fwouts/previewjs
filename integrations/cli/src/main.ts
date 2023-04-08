@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { RPCs, decodeComponentId } from "@previewjs/api";
+import { decodeComponentId } from "@previewjs/api";
 import { createChromelessWorkspace, startPreview } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
 import reactPlugin from "@previewjs/plugin-react";
@@ -46,10 +46,7 @@ program
         workspace,
         page,
       });
-      const { components } = await workspace.localRpc(
-        RPCs.DetectComponents,
-        {}
-      );
+      const { components } = await workspace.detectComponents();
       for (const component of components) {
         const { filePath, name } = decodeComponentId(component.componentId);
         try {
