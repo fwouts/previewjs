@@ -29,32 +29,32 @@ async function main() {
   });
   const {
     default: { version: preactPluginVersion },
-  } = await import("../frameworks/preact/package.json", {
+  } = await import("../framework-plugins/preact/package.json", {
     assert: { type: "json" },
   });
   const {
     default: { version: reactPluginVersion },
-  } = await import("../frameworks/react/package.json", {
+  } = await import("../framework-plugins/react/package.json", {
     assert: { type: "json" },
   });
   const {
     default: { version: solidPluginVersion },
-  } = await import("../frameworks/solid/package.json", {
+  } = await import("../framework-plugins/solid/package.json", {
     assert: { type: "json" },
   });
   const {
     default: { version: sveltePluginVersion },
-  } = await import("../frameworks/svelte/package.json", {
+  } = await import("../framework-plugins/svelte/package.json", {
     assert: { type: "json" },
   });
   const {
     default: { version: vue2PluginVersion },
-  } = await import("../frameworks/vue2/package.json", {
+  } = await import("../framework-plugins/vue2/package.json", {
     assert: { type: "json" },
   });
   const {
     default: { version: vue3PluginVersion },
-  } = await import("../frameworks/vue3/package.json", {
+  } = await import("../framework-plugins/vue3/package.json", {
     assert: { type: "json" },
   });
   const releaseDirPath = path.join(__dirname, "..", "loader", "src", "release");
