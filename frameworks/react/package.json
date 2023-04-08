@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-react",
-  "version": "9.2.3",
+  "version": "9.2.4",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -25,11 +25,11 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/api": "^10.0.2",
-    "@previewjs/serializable-values": "^6.0.2",
-    "@previewjs/storybook-helpers": "^1.0.8",
-    "@previewjs/type-analyzer": "^7.3.0",
-    "@previewjs/vfs": "^2.0.4",
+    "@previewjs/api": "^11.0.0",
+    "@previewjs/serializable-values": "^6.0.3",
+    "@previewjs/storybook-helpers": "^2.0.0",
+    "@previewjs/type-analyzer": "^7.3.1",
+    "@previewjs/vfs": "^2.0.5",
     "@vitejs/plugin-react": "^3.1.0",
     "typescript": "^4.9.5"
   },

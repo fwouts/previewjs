@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/chromeless",
-  "version": "4.1.2",
+  "version": "5.0.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -21,11 +21,11 @@
     "build": "rimraf dist && tsc && unbuild && vite build client"
   },
   "dependencies": {
-    "@previewjs/api": "^10.0.2",
-    "@previewjs/core": "^19.4.3",
-    "@previewjs/iframe": "^8.1.1",
-    "@previewjs/properties": "^2.2.1",
-    "@previewjs/vfs": "^2.0.4",
+    "@previewjs/api": "^11.0.0",
+    "@previewjs/core": "^20.0.0",
+    "@previewjs/iframe": "^9.0.0",
+    "@previewjs/properties": "^2.2.2",
+    "@previewjs/vfs": "^2.0.5",
     "express": "^4.18.2",
     "playwright": "^1.32.2",
     "typescript": "^4.9.5"
