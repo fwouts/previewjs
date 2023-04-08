@@ -5,12 +5,12 @@ import {
   STRING_TYPE,
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -19,8 +19,8 @@ import { extractPreactComponents } from "./extract-component.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR = path.join(__dirname, "virtual");
-const MAIN_FILE = path.join(ROOT_DIR, "App.tsx");
-const STORIES_FILE = path.join(ROOT_DIR, "App.stories.tsx");
+const APP_TSX = path.join(ROOT_DIR, "App.tsx");
+const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractPreactComponents", () => {
   let memoryReader: Reader & Writer;
@@ -29,7 +29,7 @@ describe.concurrent("extractPreactComponents", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
     const frameworkPlugin = await reactFrameworkPlugin.create({
@@ -54,7 +54,7 @@ describe.concurrent("extractPreactComponents", () => {
 
   it("detects expected components", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 import { ComponentType, FunctionComponent, Component } from 'preact';
 import { forwardRef } from 'preact/compat';
@@ -101,16 +101,16 @@ export const AlsoNotAStory = {
 };
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "DeclaredFunction",
+        componentId: "App.tsx:DeclaredFunction",
         info: {
           kind: "component",
           exported: false,
         },
       },
       {
-        name: "ConstantFunction",
+        componentId: "App.tsx:ConstantFunction",
         info: {
           kind: "component",
           exported: false,
@@ -123,28 +123,28 @@ export const AlsoNotAStory = {
       //   offsets: expect.anything(),
       // },
       {
-        name: "ClassComponent1",
+        componentId: "App.tsx:ClassComponent1",
         info: {
           kind: "component",
           exported: false,
         },
       },
       {
-        name: "ForwardRef",
+        componentId: "App.tsx:ForwardRef",
         info: {
           kind: "component",
           exported: false,
         },
       },
       {
-        name: "NotObjectProps",
+        componentId: "App.tsx:NotObjectProps",
         info: {
           kind: "component",
           exported: true,
         },
       },
       {
-        name: "MissingType",
+        componentId: "App.tsx:MissingType",
         info: {
           kind: "component",
           exported: true,
@@ -155,7 +155,7 @@ export const AlsoNotAStory = {
 
   it("detects components without any React import", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 function DeclaredFunction() {
   return <div>Hello, World!</div>;
@@ -164,16 +164,16 @@ function DeclaredFunction() {
 const ConstantFunction = () => <div>Hello, World!</div>;
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "DeclaredFunction",
+        componentId: "App.tsx:DeclaredFunction",
         info: {
           kind: "component",
           exported: false,
         },
       },
       {
-        name: "ConstantFunction",
+        componentId: "App.tsx:ConstantFunction",
         info: {
           kind: "component",
           exported: false,
@@ -184,7 +184,7 @@ const ConstantFunction = () => <div>Hello, World!</div>;
 
   it("ignores default export of identifier", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 const A = () => {
   return <div>Hello, World!</div>;
@@ -193,9 +193,9 @@ const A = () => {
 export default A;
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "A",
+        componentId: "App.tsx:A",
         info: {
           kind: "component",
           exported: true,
@@ -206,16 +206,16 @@ export default A;
 
   it("detects default export component (arrow function)", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 export default () => {
   return <div>Hello, World!</div>;
 }
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "default",
+        componentId: "App.tsx:default",
         info: {
           kind: "component",
           exported: true,
@@ -226,16 +226,16 @@ export default () => {
 
   it("detects default export component (named function)", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 export default function test(){
   return <div>Hello, World!</div>;
 }
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "test",
+        componentId: "App.tsx:test",
         info: {
           kind: "component",
           exported: true,
@@ -246,16 +246,16 @@ export default function test(){
 
   it("detects default export component (anonymous function)", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 export default function(){
   return <div>Hello, World!</div>;
 }
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([
+    expect(extract(APP_TSX)).toMatchObject([
       {
-        name: "default",
+        componentId: "App.tsx:default",
         info: {
           kind: "component",
           exported: true,
@@ -266,19 +266,19 @@ export default function(){
 
   it("does not detect default export non-component", async () => {
     memoryReader.updateFile(
-      MAIN_FILE,
+      APP_TSX,
       `
 export default () => {
   return "foo";
 }
 `
     );
-    expect(extract(MAIN_FILE)).toMatchObject([]);
+    expect(extract(APP_TSX)).toMatchObject([]);
   });
 
   it("detects CSF1 stories", async () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_TSX,
       `
 import Button from "./App";
 
@@ -292,21 +292,20 @@ export const NotStory = (props) => <Button {...props} />;
 `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        name: "Primary",
+        componentId: "App.stories.tsx:Primary",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "default",
+            componentId: "App.tsx:default",
           },
         },
       },
       {
-        name: "NotStory",
+        componentId: "App.stories.tsx:NotStory",
         info: {
           kind: "component",
           exported: true,
@@ -328,7 +327,7 @@ export const NotStory = (props) => <Button {...props} />;
 
   it("detects CSF2 stories", async () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_TSX,
       `
 import Button from "./App";
 
@@ -346,17 +345,17 @@ Primary.args = {
 `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        name: "Template",
+        componentId: "App.stories.tsx:Template",
         info: {
           kind: "component",
           exported: false,
         },
       },
       {
-        name: "Primary",
+        componentId: "App.stories.tsx:Primary",
         info: {
           kind: "story",
           args: {
@@ -374,8 +373,7 @@ Primary.args = {
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "default",
+            componentId: "App.tsx:default",
           },
         },
       },
@@ -395,7 +393,7 @@ Primary.args = {
 
   it("detects CSF3 stories", async () => {
     memoryReader.updateFile(
-      STORIES_FILE,
+      APP_STORIES_TSX,
       `
 import Button from "./App";
 
@@ -415,10 +413,10 @@ export function NotStory() {}
 `
     );
 
-    const extractedStories = extract(STORIES_FILE);
+    const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        name: "Example",
+        componentId: "App.stories.tsx:Example",
         info: {
           kind: "story",
           args: {
@@ -431,19 +429,17 @@ export function NotStory() {}
             ]),
           },
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "default",
+            componentId: "App.tsx:default",
           },
         },
       },
       {
-        name: "NoArgs",
+        componentId: "App.stories.tsx:NoArgs",
         info: {
           kind: "story",
           args: null,
           associatedComponent: {
-            absoluteFilePath: MAIN_FILE,
-            name: "default",
+            componentId: "App.tsx:default",
           },
         },
       },
@@ -464,6 +460,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractPreactComponents(
       typeAnalyzer.analyze([absoluteFilePath]),
+      ROOT_DIR,
       absoluteFilePath
     );
   }

@@ -32,13 +32,11 @@ export const DetectComponents: RPC<
 };
 
 export type DetectComponentsResponse = {
-  components: {
-    [filePath: string]: Component[];
-  };
+  components: Component[];
 };
 
 export type Component = {
-  name: string;
+  componentId: string;
   start: number;
   end: number;
   info: ComponentInfo;
@@ -56,8 +54,5 @@ export type ComponentInfo =
         end: number;
         value: SerializableValue;
       } | null;
-      associatedComponent: {
-        filePath: string;
-        name: string;
-      };
+      associatedComponentId: string;
     };

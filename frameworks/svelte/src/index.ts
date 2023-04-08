@@ -1,4 +1,8 @@
-import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import { generateComponentId } from "@previewjs/api";
+import type {
+  AnalyzableComponent,
+  FrameworkPluginFactory,
+} from "@previewjs/core";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
@@ -14,7 +18,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 3;
   },
-  async create() {
+  async create({ rootDirPath }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
@@ -24,19 +28,20 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
       detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
-        const components: Component[] = [];
+        const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           if (
             absoluteFilePath.endsWith(".svelte") &&
             (await fs.pathExists(absoluteFilePath))
           ) {
-            const name = path.basename(
-              absoluteFilePath,
-              path.extname(absoluteFilePath)
-            );
             components.push({
-              absoluteFilePath,
-              name,
+              componentId: generateComponentId({
+                filePath: path.relative(rootDirPath, absoluteFilePath),
+                name: path.basename(
+                  absoluteFilePath,
+                  path.extname(absoluteFilePath)
+                ),
+              }),
               offsets: [
                 [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
               ],

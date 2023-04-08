@@ -1,27 +1,25 @@
+import { generateComponentId } from "@previewjs/api";
+import path from "path";
 import ts from "typescript";
 
-export function resolveComponent(
+export function resolveComponentId(
+  rootDirPath: string,
   checker: ts.TypeChecker,
   expression: ts.Expression
-): {
-  absoluteFilePath: string;
-  name: string;
-} | null {
+): string | null {
   const symbol = checker.getSymbolAtLocation(expression);
   if (!symbol) {
     return null;
   }
-  return resolveSymbol(checker, symbol);
+  return resolveSymbolToComponentId(rootDirPath, checker, symbol);
 }
 
-function resolveSymbol(
+function resolveSymbolToComponentId(
+  rootDirPath: string,
   checker: ts.TypeChecker,
   symbol: ts.Symbol,
   isDefault = false
-): {
-  absoluteFilePath: string;
-  name: string;
-} | null {
+): string | null {
   const declarations = symbol.getDeclarations() || [];
   const importClause = declarations.find(ts.isImportClause);
   if (importClause) {
@@ -30,7 +28,7 @@ function resolveSymbol(
       importClause.parent.moduleSpecifier
     );
     if (imported) {
-      return resolveSymbol(checker, imported, true);
+      return resolveSymbolToComponentId(rootDirPath, checker, imported, true);
     }
   }
   const importSpecifier = declarations.find(ts.isImportSpecifier);
@@ -40,7 +38,7 @@ function resolveSymbol(
       ? checker.getSymbolAtLocation(importSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
     if (imported) {
-      return resolveSymbol(checker, imported);
+      return resolveSymbolToComponentId(rootDirPath, checker, imported);
     }
   }
   const exportSpecifier = declarations.find(ts.isExportSpecifier);
@@ -50,7 +48,7 @@ function resolveSymbol(
       ? checker.getSymbolAtLocation(exportSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
     if (exported) {
-      return resolveSymbol(checker, exported);
+      return resolveSymbolToComponentId(rootDirPath, checker, exported);
     }
   }
   const firstDeclaration = declarations[0];
@@ -58,8 +56,8 @@ function resolveSymbol(
     return null;
   }
   const sourceFile = firstDeclaration.getSourceFile();
-  return {
-    absoluteFilePath: sourceFile.fileName,
+  return generateComponentId({
+    filePath: path.relative(rootDirPath, sourceFile.fileName),
     name: isDefault ? "default" : symbol.getName(),
-  };
+  });
 }

@@ -1,4 +1,4 @@
-import type { RPCs } from "@previewjs/api";
+import { RPCs, decodeComponentId } from "@previewjs/api";
 import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
@@ -6,7 +6,7 @@ import path from "path";
 import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
-import type { Component } from "./plugins/framework";
+import { AnalyzableComponent } from "./plugins/framework";
 
 export const FILES_REQUIRING_REDETECTION = new Set([
   "jsconfig.json",
@@ -17,11 +17,9 @@ export const FILES_REQUIRING_REDETECTION = new Set([
   "yarn.lock",
 ]);
 
-type ProjectComponents = RPCs.DetectComponentsResponse["components"];
-
 type CachedProjectComponents = {
   detectionStartTimestamp: number;
-  components: ProjectComponents;
+  components: RPCs.Component[];
 };
 
 // Prevent concurrent running of detectComponents()
@@ -64,7 +62,7 @@ export function detectComponents(
         ) as CachedProjectComponents)
       : {
           detectionStartTimestamp: 0,
-          components: {},
+          components: [],
         };
     if (
       existingCache.detectionStartTimestamp <
@@ -73,7 +71,7 @@ export function detectComponents(
       // Cache cannot be used as it was generated before detection-impacted files were updated.
       existingCache = {
         detectionStartTimestamp: 0,
-        components: {},
+        components: [],
       };
     }
     const changedAbsoluteFilePaths = absoluteFilePaths.filter(
@@ -86,10 +84,9 @@ export function detectComponents(
         );
       }
     );
-    const recycledComponents = Object.fromEntries(
-      Object.entries(existingCache.components).filter(([filePath]) =>
-        filePathsSet.has(filePath)
-      )
+    const recycledComponents = existingCache.components.filter(
+      ({ componentId }) =>
+        filePathsSet.has(decodeComponentId(componentId).filePath)
     );
     const refreshedComponents = await detectComponentsCore(
       workspace,
@@ -97,16 +94,10 @@ export function detectComponents(
       typeAnalyzer,
       changedAbsoluteFilePaths
     );
-    const allComponents = {
-      ...recycledComponents,
-      ...refreshedComponents,
-    };
-    const components = Object.keys(allComponents)
-      .sort()
-      .reduce<ProjectComponents>((ordered, filePath) => {
-        ordered[filePath] = allComponents[filePath]!;
-        return ordered;
-      }, {});
+    const components = [...recycledComponents, ...refreshedComponents];
+    components.sort((a, b) => {
+      return a.componentId.localeCompare(b.componentId);
+    });
     if (!options.filePaths) {
       await fs.mkdirp(path.dirname(cacheFilePath));
       const updatedCache: CachedProjectComponents = {
@@ -124,8 +115,8 @@ async function detectComponentsCore(
   frameworkPlugin: FrameworkPlugin,
   typeAnalyzer: TypeAnalyzer,
   changedAbsoluteFilePaths: string[]
-): Promise<ProjectComponents> {
-  const components: ProjectComponents = {};
+): Promise<RPCs.Component[]> {
+  const components: RPCs.Component[] = [];
   if (changedAbsoluteFilePaths.length === 0) {
     return components;
   }
@@ -135,24 +126,17 @@ async function detectComponentsCore(
     changedAbsoluteFilePaths
   );
   for (const component of found) {
-    const filePath = path
-      .relative(workspace.rootDirPath, component.absoluteFilePath)
-      .replace(/\\/g, "/");
-    const fileComponents = (components[filePath] ||= []);
-    fileComponents.push(
-      detectedComponentToApiComponent(workspace.rootDirPath, component)
-    );
+    components.push(detectedComponentToApiComponent(component));
   }
   return components;
 }
 
 export function detectedComponentToApiComponent(
-  rootDirPath: string,
-  component: Component
+  component: AnalyzableComponent
 ): RPCs.Component {
   const [start, end] = component.offsets[0]!;
   return {
-    name: component.name,
+    componentId: component.componentId,
     start,
     end,
     info:
@@ -164,13 +148,8 @@ export function detectedComponentToApiComponent(
         : {
             kind: "story",
             args: component.info.args,
-            associatedComponent: {
-              filePath: path.relative(
-                rootDirPath,
-                component.info.associatedComponent.absoluteFilePath
-              ),
-              name: component.info.associatedComponent.name,
-            },
+            associatedComponentId:
+              component.info.associatedComponent.componentId,
           },
   };
 }

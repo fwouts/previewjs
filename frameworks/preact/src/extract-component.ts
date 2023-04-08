@@ -1,19 +1,22 @@
-import type { Component, ComponentTypeInfo } from "@previewjs/core";
+import { decodeComponentId, generateComponentId } from "@previewjs/api";
+import type { AnalyzableComponent, ComponentTypeInfo } from "@previewjs/core";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
   extractCsf3Stories,
   extractDefaultComponent,
-  resolveComponent,
+  resolveComponentId,
 } from "@previewjs/storybook-helpers";
-import { helpers, TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
+import path from "path";
 import ts from "typescript";
 import { analyzePreactComponent } from "./analyze-component.js";
 
 export function extractPreactComponents(
   resolver: TypeResolver,
+  rootDirPath: string,
   absoluteFilePath: string
-): Component[] {
+): AnalyzableComponent[] {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -56,7 +59,7 @@ export function extractPreactComponents(
   }
 
   const storiesDefaultComponent = extractDefaultComponent(sourceFile);
-  const components: Component[] = [];
+  const components: AnalyzableComponent[] = [];
   const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
@@ -76,6 +79,7 @@ export function extractPreactComponents(
       (storyArgs || signature?.parameters.length === 0)
     ) {
       const associatedComponent = extractStoryAssociatedComponent(
+        rootDirPath,
         resolver,
         storiesDefaultComponent
       );
@@ -109,8 +113,10 @@ export function extractPreactComponents(
     const info = extractComponentTypeInfo(node, name);
     if (info) {
       components.push({
-        absoluteFilePath,
-        name,
+        componentId: generateComponentId({
+          filePath: path.relative(rootDirPath, absoluteFilePath),
+          name,
+        }),
         offsets: [[statement.getStart(), statement.getEnd()]],
         info,
       });
@@ -120,13 +126,16 @@ export function extractPreactComponents(
   return [
     ...components,
     ...extractCsf3Stories(
+      rootDirPath,
       resolver,
       sourceFile,
-      async ({ absoluteFilePath, name }) => {
+      async (componentId) => {
+        const { filePath } = decodeComponentId(componentId);
         const component = extractPreactComponents(
           resolver,
-          absoluteFilePath
-        ).find((c) => c.name === name);
+          rootDirPath,
+          path.join(rootDirPath, filePath)
+        ).find((c) => c.componentId === componentId);
         if (component?.info.kind !== "component") {
           return {
             propsType: UNKNOWN_TYPE,
@@ -140,16 +149,18 @@ export function extractPreactComponents(
 }
 
 function extractStoryAssociatedComponent(
+  rootDirPath: string,
   resolver: TypeResolver,
   component: ts.Expression
 ) {
-  const resolvedStoriesComponent = resolveComponent(
+  const resolvedStoriesComponentId = resolveComponentId(
+    rootDirPath,
     resolver.checker,
     component
   );
-  return resolvedStoriesComponent
+  return resolvedStoriesComponentId
     ? {
-        ...resolvedStoriesComponent,
+        componentId: resolvedStoriesComponentId,
         analyze: async () => {
           const signature = extractComponentSignature(
             resolver.checker,

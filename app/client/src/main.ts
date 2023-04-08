@@ -37,7 +37,6 @@ async function onUrlChanged() {
   if (!componentId.includes(":")) {
     return;
   }
-  const [filePath, componentName] = componentId.split(":") as [string, string];
   iframeController.resetIframe();
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
     componentIds: [componentId],
@@ -48,8 +47,7 @@ async function onUrlChanged() {
     computePropsResponse.types
   );
   iframeController.loadComponent({
-    filePath,
-    componentName,
+    componentId,
     propsAssignmentSource: transpile(
       generatePropsAssignmentSource(
         propsType,

@@ -9,8 +9,7 @@ export function setState(newState: PreviewState) {
 }
 
 export interface PreviewState {
-  filePath: string;
-  componentName: string;
+  componentId: string;
   autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 }

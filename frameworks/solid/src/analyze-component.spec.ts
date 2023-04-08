@@ -1,3 +1,4 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   arrayType,
@@ -356,7 +357,7 @@ A.args = {
       await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
         MAIN_FILE,
       ])
-    ).find((c) => c.name === componentName);
+    ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }

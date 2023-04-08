@@ -1,3 +1,4 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   createTypeAnalyzer,
@@ -10,12 +11,12 @@ import {
   unionType,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue2FrameworkPlugin from ".";
@@ -191,7 +192,7 @@ export default class App extends Vue {
       await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
         MAIN_FILE,
       ])
-    ).find((c) => c.name === componentName);
+    ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
