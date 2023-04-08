@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { decodeComponentId } from "@previewjs/api";
-import { createChromelessWorkspace, startPreview } from "@previewjs/chromeless";
+import { createChromelessWorkspace } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
 import reactPlugin from "@previewjs/plugin-react";
 import chalk from "chalk";
@@ -42,10 +42,7 @@ program
         frameworkPluginFactories: [reactPlugin],
         rootDirPath,
       });
-      const preview = await startPreview({
-        workspace,
-        page,
-      });
+      const preview = await workspace.preview.start(page);
       const { components } = await workspace.detectComponents();
       for (const component of components) {
         const { filePath, name } = decodeComponentId(component.componentId);
