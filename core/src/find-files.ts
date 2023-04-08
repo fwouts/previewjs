@@ -17,9 +17,11 @@ export async function findFiles(rootDirPath: string, pattern: string) {
   // Note: in some cases, presumably because of yarn using link
   // for faster node_modules, glob may return files in the parent
   // directory. We filter them out here.
-  return files.filter((f) =>
-    f.startsWith(rootDirPath.replace(/\\/g, "/") + "/")
-  );
+  let normalizedRootDirPath = rootDirPath.replace(/\\/g, "/");
+  if (!normalizedRootDirPath.endsWith("/")) {
+    normalizedRootDirPath += "/";
+  }
+  return files.filter((f) => f.startsWith(normalizedRootDirPath));
 }
 
 async function findGitRoot(
