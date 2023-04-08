@@ -8,13 +8,13 @@ const require = createRequire(import.meta.url);
 
 export async function setupFrameworkPlugin({
   rootDirPath,
-  frameworkPluginFactories,
+  frameworkPlugins,
 }: {
   rootDirPath: string;
-  frameworkPluginFactories: FrameworkPluginFactory[];
+  frameworkPlugins: FrameworkPluginFactory[];
 }) {
   const dependencies = await extractPackageDependencies(rootDirPath);
-  for (const candidate of frameworkPluginFactories || []) {
+  for (const candidate of frameworkPlugins) {
     if (await candidate.isCompatible(dependencies)) {
       return candidate.create({
         rootDirPath,

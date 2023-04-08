@@ -28,7 +28,7 @@ type TestPreview = Awaited<
 };
 
 export const previewTest = (
-  frameworkPluginFactories: FrameworkPluginFactory[],
+  frameworkPlugins: FrameworkPluginFactory[],
   testProjectDirPath: string
 ) => {
   const testFn = (
@@ -71,7 +71,7 @@ export const previewTest = (
         },
       });
       const workspace = await createChromelessWorkspace({
-        frameworkPluginFactories,
+        frameworkPlugins,
         rootDirPath,
         reader,
       });

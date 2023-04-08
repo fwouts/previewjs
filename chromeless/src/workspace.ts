@@ -10,11 +10,11 @@ import { startPreview } from "./preview";
 
 export async function createChromelessWorkspace({
   rootDirPath,
-  frameworkPluginFactories,
+  frameworkPlugins,
   reader = createFileSystemReader(),
 }: {
   rootDirPath: string;
-  frameworkPluginFactories: FrameworkPluginFactory[];
+  frameworkPlugins: FrameworkPluginFactory[];
   reader?: Reader;
   port?: number;
 }): Promise<
@@ -29,7 +29,7 @@ export async function createChromelessWorkspace({
 > {
   const frameworkPlugin = await setupFrameworkPlugin({
     rootDirPath,
-    frameworkPluginFactories,
+    frameworkPlugins,
   });
   if (!frameworkPlugin) {
     throw new Error(
