@@ -39,7 +39,7 @@ program
       const rootDirPath = dirPath || process.cwd();
       const workspace = await createChromelessWorkspace({
         // TODO: Auto-pass framework plugin factories, or get them from config.
-        frameworkPluginFactories: [reactPlugin],
+        frameworkPlugins: [reactPlugin],
         rootDirPath,
       });
       const preview = await workspace.preview.start(page);
