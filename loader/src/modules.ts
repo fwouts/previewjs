@@ -33,7 +33,7 @@ export async function loadModules({
   const setupEnvironment: core.SetupPreviewEnvironment = await importModule(
     packageName
   );
-  const frameworkPluginFactories: core.FrameworkPluginFactory[] = [
+  const frameworkPlugins: core.FrameworkPluginFactory[] = [
     await importModule("@previewjs/plugin-preact"),
     await importModule("@previewjs/plugin-react"),
     await importModule("@previewjs/plugin-solid"),
@@ -63,6 +63,6 @@ export async function loadModules({
     core: coreModule,
     vfs: vfsModule,
     setupEnvironment,
-    frameworkPluginFactories,
+    frameworkPlugins,
   };
 }

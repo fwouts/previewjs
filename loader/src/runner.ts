@@ -8,8 +8,9 @@ export async function load(options: {
   installDir: string;
   packageName: string;
 }) {
-  const { core, vfs, setupEnvironment, frameworkPluginFactories } =
-    await loadModules(options);
+  const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules(
+    options
+  );
   const memoryReader = vfs.createMemoryReader();
   const reader = vfs.createStackedReader([
     memoryReader,
@@ -45,7 +46,7 @@ export async function load(options: {
       const created = await locking(async () => {
         const frameworkPlugin = await core.setupFrameworkPlugin({
           rootDirPath,
-          frameworkPluginFactories,
+          frameworkPlugins,
         });
         if (!frameworkPlugin) {
           console.warn(
