@@ -45,7 +45,6 @@ program
       const preview = await startPreview({
         workspace,
         page,
-        port: 3123,
       });
       const { components } = await workspace.localRpc(
         RPCs.DetectComponents,
