@@ -169,10 +169,25 @@ export async function createWorkspace({
       }
     },
   });
+
+  async function localRpc<E extends RPC<any, any>>(
+    endpoint: E,
+    request: RequestOf<E>
+  ): Promise<ResponseOf<E>> {
+    const result = await router.handle(endpoint.path, request);
+    if (result.kind === "success") {
+      return result.response as ResponseOf<E>;
+    }
+    throw new Error(result.message);
+  }
+
   const workspace: Workspace = {
     rootDirPath,
     reader,
     typeAnalyzer,
+    detectComponents: (options = {}) =>
+      localRpc(RPCs.DetectComponents, options),
+    computeProps: (options) => localRpc(RPCs.ComputeProps, options),
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -191,16 +206,6 @@ export async function createWorkspace({
           },
         };
       },
-    },
-    async localRpc<E extends RPC<any, any>>(
-      endpoint: E,
-      request: RequestOf<E>
-    ): Promise<ResponseOf<E>> {
-      const result = await router.handle(endpoint.path, request);
-      if (result.kind === "success") {
-        return result.response as ResponseOf<E>;
-      }
-      throw new Error(result.message);
     },
     dispose: async () => {
       typeAnalyzer.dispose();
@@ -239,13 +244,15 @@ export interface Workspace {
   rootDirPath: string;
   reader: Reader;
   typeAnalyzer: TypeAnalyzer;
+  detectComponents(
+    options?: RequestOf<typeof RPCs.DetectComponents>
+  ): Promise<ResponseOf<typeof RPCs.DetectComponents>>;
+  computeProps(
+    options: RequestOf<typeof RPCs.ComputeProps>
+  ): Promise<ResponseOf<typeof RPCs.ComputeProps>>;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
-  localRpc<E extends RPC<any, any>>(
-    endpoint: E,
-    request: RequestOf<E>
-  ): Promise<ResponseOf<E>>;
   dispose(): Promise<void>;
 }
 

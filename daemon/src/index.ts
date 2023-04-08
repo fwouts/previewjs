@@ -1,4 +1,3 @@
-import { RPCs } from "@previewjs/api";
 import type { Preview, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
@@ -333,7 +332,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      return workspace.localRpc(RPCs.DetectComponents, {
+      return workspace.detectComponents({
         filePaths: [
           path
             .relative(

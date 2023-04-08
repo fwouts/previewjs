@@ -1,4 +1,3 @@
-import { RPCs } from "@previewjs/api";
 import type { Workspace } from "@previewjs/core";
 import {
   generateCallbackProps,
@@ -117,7 +116,7 @@ export async function startPreview({
     },
     async show(componentId: string, propsAssignmentSource?: string) {
       const filePath = componentId.split(":")[0]!;
-      const { components } = await workspace.localRpc(RPCs.DetectComponents, {
+      const { components } = await workspace.detectComponents({
         filePaths: [filePath],
       });
       const matchingDetectedComponent = components.find(
@@ -128,7 +127,7 @@ export async function startPreview({
           `Component may be previewable but was not detected by framework plugin: ${componentId}`
         );
       }
-      const computePropsResponse = await workspace.localRpc(RPCs.ComputeProps, {
+      const computePropsResponse = await workspace.computeProps({
         componentIds: [componentId],
       });
       const propsType = computePropsResponse.components[componentId]!.props;
