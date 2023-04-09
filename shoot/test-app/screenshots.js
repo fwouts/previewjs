@@ -1,12 +1,13 @@
-const playwright = require("playwright");
+import reactPlugin from "@previewjs/plugin-react";
+import { generateScreenshots } from "@previewjs/shoot";
+import playwright from "playwright";
 
 async function main() {
-  const { generateScreenshots } = await import("@previewjs/shoot");
   const browser = await playwright.chromium.launch();
   const page = await browser.newPage();
   await generateScreenshots({
     page,
-    frameworkPlugins: [(await import("@previewjs/plugin-react")).default],
+    frameworkPlugins: [reactPlugin],
     generateScreenshotPath({ filePath, name }) {
       return `${filePath}-${name}.png`;
     },
