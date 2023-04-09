@@ -197,6 +197,17 @@ jobs:
             fi
           fi
       - run: |
+          cd screenshot
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
           cd storybook-helpers
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then

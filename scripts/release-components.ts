@@ -88,6 +88,11 @@ const packages: Package[] = [
     tagName: "properties",
   },
   {
+    name: "screenshot",
+    dirPath: "screenshot",
+    tagName: "screenshot",
+  },
+  {
     name: "serializable-values",
     dirPath: "serializable-values",
     tagName: "serializable-values",
