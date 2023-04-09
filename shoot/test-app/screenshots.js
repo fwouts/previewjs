@@ -4,11 +4,17 @@ async function main() {
   const { generateScreenshots } = await import("@previewjs/shoot");
   const browser = await playwright.chromium.launch();
   const page = await browser.newPage();
-  const screenshots = await generateScreenshots({
+  await generateScreenshots({
     page,
     frameworkPlugins: [(await import("@previewjs/plugin-react")).default],
+    generateScreenshotPath({ filePath, name }) {
+      return `${filePath}-${name}.png`;
+    },
+    onScreenshot({ filePath, name }) {
+      console.log(`${filePath} 📸 ${name}`);
+    },
   });
-  console.log(screenshots);
+  await browser.close();
 }
 
 main().catch((e) => {

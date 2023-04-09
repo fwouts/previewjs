@@ -11,12 +11,24 @@ export async function generateScreenshots({
   filePathPattern,
   cwd = process.cwd(),
   suppressErrors = false,
+  generateScreenshotPath = ({ filePath, name }) =>
+    path.join(cwd, path.dirname(filePath), "__screenshots__", name + ".png"),
+  onScreenshot,
 }: {
   page: playwright.Page;
   frameworkPlugins: FrameworkPluginFactory[];
   filePathPattern?: string;
   cwd?: string;
   suppressErrors?: boolean;
+  generateScreenshotPath?: (options: {
+    filePath: string;
+    name: string;
+  }) => string;
+  onScreenshot?: (options: {
+    filePath: string;
+    name: string;
+    screenshotPath: string;
+  }) => void;
 }) {
   const workspace = await createChromelessWorkspace({
     frameworkPlugins,
@@ -40,13 +52,11 @@ export async function generateScreenshots({
     const { filePath, name } = decodeComponentId(component.componentId);
     try {
       await preview.show(component.componentId);
-      const screenshotPath = path.join(
-        cwd,
-        path.dirname(filePath),
-        "__screenshots__",
-        name + ".png"
-      );
+      const screenshotPath = generateScreenshotPath({ filePath, name });
       await preview.iframe.takeScreenshot(screenshotPath);
+      if (onScreenshot) {
+        onScreenshot({ filePath, name, screenshotPath });
+      }
       generatedScreenshots.push(screenshotPath);
     } catch (e: any) {
       const messsage = `Unable to generate screenshot for ${component.componentId}`;
@@ -60,6 +70,7 @@ export async function generateScreenshots({
     }
   }
   await preview.stop();
+  await workspace.dispose();
   return {
     generatedScreenshots,
   };
