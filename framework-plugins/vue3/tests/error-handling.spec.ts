@@ -35,7 +35,7 @@ test.describe.parallel("vue3/error handling", () => {
       /* expected error */
     });
     await preview.expectLoggedMessages.toMatch([
-      "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
+      "Failed to load url /src/components/Broken.vue",
       "Failed to fetch dynamically imported module",
       "Failed to fetch dynamically imported module",
     ]);
@@ -54,7 +54,7 @@ test.describe.parallel("vue3/error handling", () => {
       with: "components/Broken.vue",
     });
     await preview.expectLoggedMessages.toMatch([
-      "Failed to load url /src/components/Broken.vue (resolved id: /src/components/Broken.vue)",
+      "Failed to load url /src/components/Broken.vue",
       "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
     ]);
     await preview.fileManager.update("src/App.vue", {
