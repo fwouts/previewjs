@@ -2,7 +2,6 @@ import { decodeComponentId } from "@previewjs/api";
 import { createChromelessWorkspace } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { globby } from "globby";
-import path from "path";
 import type playwright from "playwright";
 
 export async function generateScreenshots({
@@ -11,16 +10,15 @@ export async function generateScreenshots({
   filePathPattern,
   cwd = process.cwd(),
   suppressErrors = false,
-  generateScreenshotPath = ({ filePath, name }) =>
-    path.join(cwd, path.dirname(filePath), "__screenshots__", name + ".png"),
+  generateScreenshotPath,
   onScreenshot,
 }: {
   page: playwright.Page;
   frameworkPlugins: FrameworkPluginFactory[];
-  filePathPattern?: string;
+  filePathPattern: string;
   cwd?: string;
   suppressErrors?: boolean;
-  generateScreenshotPath?: (options: {
+  generateScreenshotPath: (options: {
     filePath: string;
     name: string;
   }) => string;
@@ -35,18 +33,15 @@ export async function generateScreenshots({
     rootDirPath: cwd,
   });
   const preview = await workspace.preview.start(page);
-  const filePaths = filePathPattern
-    ? await globby(filePathPattern, {
-        gitignore: true,
-        ignore: ["**/node_modules/**"],
-        cwd,
-        followSymbolicLinks: false,
-      })
-    : undefined;
+  const filePaths = await globby(filePathPattern, {
+    gitignore: true,
+    ignore: ["**/node_modules/**"],
+    cwd,
+    followSymbolicLinks: false,
+  });
   const { components } = await workspace.detectComponents({
     filePaths,
   });
-  const generatedScreenshots: string[] = [];
   for (const component of components) {
     const { filePath, name } = decodeComponentId(component.componentId);
     try {
@@ -56,7 +51,6 @@ export async function generateScreenshots({
       if (onScreenshot) {
         onScreenshot({ filePath, name, screenshotPath });
       }
-      generatedScreenshots.push(screenshotPath);
     } catch (e: any) {
       const messsage = `Unable to generate screenshot for ${component.componentId}`;
       if (suppressErrors) {
@@ -70,7 +64,4 @@ export async function generateScreenshots({
   }
   await preview.stop();
   await workspace.dispose();
-  return {
-    generatedScreenshots,
-  };
 }
