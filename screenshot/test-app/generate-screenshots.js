@@ -1,5 +1,5 @@
 import reactPlugin from "@previewjs/plugin-react";
-import { generateScreenshots } from "@previewjs/shoot";
+import { generateScreenshots } from "@previewjs/screenshot";
 import playwright from "playwright";
 
 const browser = await playwright.chromium.launch();
