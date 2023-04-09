@@ -12,7 +12,6 @@ try {
     format: "esm",
     outfile: "./dist/main.js",
     platform: "node",
-    external: ["@previewjs/chromeless", "@previewjs/plugin-react"],
     banner: {
       // https://github.com/evanw/esbuild/issues/1921
       js: `

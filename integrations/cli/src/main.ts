@@ -1,15 +1,10 @@
 #!/usr/bin/env node
 
-import { decodeComponentId } from "@previewjs/api";
-import { createChromelessWorkspace } from "@previewjs/chromeless";
 import { load } from "@previewjs/loader";
-import reactPlugin from "@previewjs/plugin-react";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
 import open from "open";
-import path from "path";
-import playwright from "playwright";
 import url from "url";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -33,36 +28,6 @@ program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    if ("test") {
-      const browser = await playwright.chromium.launch();
-      const page = await browser.newPage();
-      const rootDirPath = dirPath || process.cwd();
-      const workspace = await createChromelessWorkspace({
-        frameworkPlugins: [reactPlugin],
-        rootDirPath,
-      });
-      const preview = await workspace.preview.start(page);
-      const { components } = await workspace.detectComponents();
-      for (const component of components) {
-        const { filePath, name } = decodeComponentId(component.componentId);
-        try {
-          await preview.show(component.componentId);
-          const dirPath = path.dirname(filePath);
-          await preview.iframe.takeScreenshot(
-            path.join(rootDirPath, dirPath, "__screenshots__", name + ".png")
-          );
-          console.log(`✅ ${component.componentId}`);
-        } catch (e: any) {
-          console.log(`❌ ${component.componentId}`);
-          // TODO: Show if verbose on.
-          // console.warn(e.message);
-        }
-      }
-      await preview.stop();
-      console.log("Done!");
-      process.exit(0);
-    }
-
     const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
     if (!packageName) {
       throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);

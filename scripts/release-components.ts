@@ -93,6 +93,11 @@ const packages: Package[] = [
     tagName: "serializable-values",
   },
   {
+    name: "shoot",
+    dirPath: "shoot",
+    tagName: "shoot",
+  },
+  {
     name: "storybook-helpers",
     dirPath: "storybook-helpers",
     tagName: "storybook-helpers",
