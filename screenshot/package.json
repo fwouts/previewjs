@@ -19,7 +19,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc && unbuild",
-    "test": "cd test-app && node generate-screenshots.js"
+    "e2e-test": "cd test-app && node generate-screenshots.js"
   },
   "dependencies": {
     "@previewjs/api": "^11.0.0",
