@@ -40,7 +40,6 @@ export async function generateScreenshots({
         gitignore: true,
         ignore: ["**/node_modules/**"],
         cwd,
-        absolute: true,
         followSymbolicLinks: false,
       })
     : undefined;
