@@ -27,7 +27,7 @@ jobs:
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: |
-            - args: [--filter=\!./frameworks/\*/tests/apps/\*]
+            - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
       - name: Update NPM token
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
       - run: pnpm turbo build --filter="!./integrations/**/*" --filter="!./daemon"
@@ -109,7 +109,7 @@ jobs:
             fi
           fi
       - run: |
-          cd frameworks/preact
+          cd framework-plugins/preact
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"
@@ -120,7 +120,7 @@ jobs:
             fi
           fi
       - run: |
-          cd frameworks/react
+          cd framework-plugins/react
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"
@@ -131,7 +131,7 @@ jobs:
             fi
           fi
       - run: |
-          cd frameworks/solid
+          cd framework-plugins/solid
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"
@@ -142,7 +142,7 @@ jobs:
             fi
           fi
       - run: |
-          cd frameworks/svelte
+          cd framework-plugins/svelte
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"
@@ -153,7 +153,7 @@ jobs:
             fi
           fi
       - run: |
-          cd frameworks/vue2
+          cd framework-plugins/vue2
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"
@@ -164,7 +164,7 @@ jobs:
             fi
           fi
       - run: |
-          cd frameworks/vue3
+          cd framework-plugins/vue3
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"

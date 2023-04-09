@@ -45,7 +45,7 @@ jobs:
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: |
-            - args: [--filter=\!./frameworks/\*/tests/apps/\*]
+            - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
       - run: pnpm lint
       - run: pnpm check-licenses
       - run: pnpm check-deps

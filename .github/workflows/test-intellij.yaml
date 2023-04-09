@@ -45,7 +45,7 @@ jobs:
       - uses: pnpm/action-setup@v2.2.4
         with:
           run_install: |
-            - args: [--filter=\!./frameworks/\*/tests/apps/\*]
+            - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
       - run: pnpm turbo run build --scope=@previewjs/intellij-daemon --include-dependencies
       - run: cd integrations/intellij && ./gradlew ktlintCheck
       - run: cd integrations/intellij && ./gradlew runPluginVerifier

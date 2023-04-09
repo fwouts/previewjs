@@ -54,32 +54,32 @@ const packages: Package[] = [
   },
   {
     name: "plugin-preact",
-    dirPath: "frameworks/preact",
+    dirPath: "framework-plugins/preact",
     tagName: "plugins/preact",
   },
   {
     name: "plugin-react",
-    dirPath: "frameworks/react",
+    dirPath: "framework-plugins/react",
     tagName: "plugins/react",
   },
   {
     name: "plugin-solid",
-    dirPath: "frameworks/solid",
+    dirPath: "framework-plugins/solid",
     tagName: "plugins/solid",
   },
   {
     name: "plugin-svelte",
-    dirPath: "frameworks/svelte",
+    dirPath: "framework-plugins/svelte",
     tagName: "plugins/svelte",
   },
   {
     name: "plugin-vue2",
-    dirPath: "frameworks/vue2",
+    dirPath: "framework-plugins/vue2",
     tagName: "plugins/vue2",
   },
   {
     name: "plugin-vue3",
-    dirPath: "frameworks/vue3",
+    dirPath: "framework-plugins/vue3",
     tagName: "plugins/vue3",
   },
   {

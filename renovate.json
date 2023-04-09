@@ -25,7 +25,7 @@
     "@types/vscode",
     "vscode"
   ],
-  "ignorePaths": ["frameworks/**/apps/**", "loader/src/release/**"],
+  "ignorePaths": ["framework-plugins/**/apps/**", "loader/src/release/**"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
