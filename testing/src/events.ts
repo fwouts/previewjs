@@ -4,7 +4,7 @@ import { inspect } from "util";
 export function expectLoggedMessages(events: PreviewEvent[]) {
   return {
     toMatch: async (
-      messages: string[],
+      messages: Array<string | string[]>,
       level = "error",
       retrying = false
     ): Promise<void> => {
@@ -25,12 +25,15 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
       }
       const remainingLogEvents = [...logEvents];
       for (const message of messages) {
+        const messageCandidates = Array.isArray(message) ? message : [message];
         let found = false;
-        for (let i = 0; i < remainingLogEvents.length; i++) {
-          if (remainingLogEvents[i]?.message.includes(message)) {
-            remainingLogEvents.splice(i, 1);
-            found = true;
-            break;
+        eventLoop: for (let i = 0; i < remainingLogEvents.length; i++) {
+          for (const candidate of messageCandidates) {
+            if (remainingLogEvents[i]?.message.includes(candidate)) {
+              remainingLogEvents.splice(i, 1);
+              found = true;
+              break eventLoop;
+            }
           }
         }
         if (!found) {
@@ -61,5 +64,5 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
 }
 
 export type LoggedMessagesMatcher = {
-  toMatch: (messages: string[], level?: string) => void;
+  toMatch: (messages: Array<string | string[]>, level?: string) => void;
 };
