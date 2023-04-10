@@ -27,12 +27,12 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
       for (const message of messages) {
         const messageCandidates = Array.isArray(message) ? message : [message];
         let found = false;
-        for (let i = 0; i < remainingLogEvents.length; i++) {
+        eventLoop: for (let i = 0; i < remainingLogEvents.length; i++) {
           for (const candidate of messageCandidates) {
             if (remainingLogEvents[i]?.message.includes(candidate)) {
               remainingLogEvents.splice(i, 1);
               found = true;
-              break;
+              break eventLoop;
             }
           }
         }
