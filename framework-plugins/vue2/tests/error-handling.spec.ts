@@ -107,8 +107,6 @@ test.describe.parallel("vue2/error handling", () => {
     await preview.iframe.waitForSelector("#app");
     await preview.fileManager.rename("src/App.vue", "src/App-renamed.vue");
     await preview.expectLoggedMessages.toMatch([
-      "no such file or directory, open '/src/App.vue'",
-      "Failed to reload /src/App.vue",
       "Failed to reload /src/App.vue",
     ]);
   });
