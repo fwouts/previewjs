@@ -61,9 +61,7 @@ jobs:
       - name: Update screenshots on non-main branches
         run: |
           git add .
-          if [ -z "$(git diff --exit-code)" ]; then
-            echo "No changes detected."
-          else
+          if [[ $(git status --short) ]]; then
             git status
             echo "::set-env name=SCREENSHOTS_CHANGED::1"
             git stash
@@ -79,6 +77,8 @@ jobs:
               git pull --rebase
               git push origin ${{ github.head_ref }}
             fi
+          else
+            echo "No changes detected."
           fi
         if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
         shell: bash
