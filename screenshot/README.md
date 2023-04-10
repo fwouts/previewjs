@@ -1,6 +1,6 @@
 # Generate screenshots with `@previewjs/screenshot`
 
-This library leverages the power of Preview.js foundations in conjunction with [Playwright](https://playwright.dev) to generate screenshots of any components and stories that Preview.js can render.
+This library leverages the power of Preview.js foundations in conjunction with [Playwright](https://playwright.dev) to generate screenshots of any components and stories that [Preview.js](https://previewjs.com) can render.
 
 ## Example with React
 
@@ -27,7 +27,9 @@ await generateScreenshots({
 await browser.close();
 ```
 
-See [test-app/generate-screenshots.js](./test-app/generate-screenshots.js) for a concrete example.
+See [test-app/generate-screenshots.js](https://github.com/fwouts/previewjs/blob/main/screenshot/test-app/generate-screenshots.js) for a simple example.
+
+See the [Hungry example app](https://github.com/fwouts/hungry/blob/main/generate-screenshots.mjs) for a more elaborate example along with a [GitHub Actions workflow](https://github.com/fwouts/hungry/blob/main/.github/workflows/screenshot.yml) that updates screenshots automatically in PRs.
 
 ## Setup
 
@@ -57,7 +59,7 @@ Then write a Node.js script (like the example above) to generate your screenshot
 
 ## Configuration
 
-Given the brevity of the implementation (~60 LOC), you are encouraged to [read the source](./src/index.ts) to understand the options that are available to you.
+Given the brevity of the implementation (~60 LOC), you are encouraged to [read the source](https://github.com/fwouts/previewjs/blob/main/screenshot/src/index.ts) to understand the options that are available to you.
 
 PRs welcome!
 
