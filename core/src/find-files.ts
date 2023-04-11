@@ -12,6 +12,7 @@ export async function findFiles(rootDirPath: string, pattern: string) {
     cwd: gitRootPath,
     absolute: true,
     followSymbolicLinks: false,
+    suppressErrors: true,
   });
 
   // Note: in some cases, presumably because of yarn using link
