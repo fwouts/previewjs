@@ -12,9 +12,11 @@ export async function createChromelessWorkspace({
   rootDirPath,
   frameworkPlugins,
   reader = createFileSystemReader(),
+  logLevel = "info",
 }: {
   rootDirPath: string;
   frameworkPlugins: FrameworkPluginFactory[];
+  logLevel?: "error" | "warn" | "info" | "silent";
   reader?: Reader;
   port?: number;
 }): Promise<
@@ -41,7 +43,7 @@ export async function createChromelessWorkspace({
   const workspace = await createWorkspace({
     rootDirPath,
     frameworkPlugin,
-    logLevel: "info",
+    logLevel,
     reader,
     setupEnvironment: async () => ({
       middlewares: [express.static(clientDirPath)],
