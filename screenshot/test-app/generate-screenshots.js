@@ -11,7 +11,7 @@ await generateScreenshots({
   generateScreenshotPath({ filePath, name }) {
     return `${filePath}-${name}.png`;
   },
-  onScreenshot({ filePath, name }) {
+  onScreenshotGenerated({ filePath, name }) {
     console.log(`${filePath} 📸 ${name}`);
   },
 });

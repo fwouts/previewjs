@@ -20,7 +20,7 @@ await generateScreenshots({
   generateScreenshotPath({ filePath, name }) {
     return `${filePath}-${name}.png`;
   },
-  onScreenshot({ filePath, name }) {
+  onScreenshotGenerated({ filePath, name }) {
     console.log(`${filePath} 📸 ${name}`);
   },
 });
@@ -48,12 +48,12 @@ $ yarn add -D playwright @previewjs/screenshot @previewjs/plugin-[your-framework
 
 Here are the available framework plugins at the time of writing:
 
-- `@previewjs/preact`
-- `@previewjs/react`
-- `@previewjs/solid`
-- `@previewjs/svelte` (see [#1258](https://github.com/fwouts/previewjs/issues/1258) for Storybook support)
-- `@previewjs/vue2`
-- `@previewjs/vue3`
+- `@previewjs/plugin-preact`
+- `@previewjs/plugin-react`
+- `@previewjs/plugin-solid`
+- `@previewjs/plugin-svelte` (see [#1258](https://github.com/fwouts/previewjs/issues/1258) for Storybook support)
+- `@previewjs/plugin-vue2`
+- `@previewjs/plugin-vue3`
 
 Then write a Node.js script (like the example above) to generate your screenshots.
 
