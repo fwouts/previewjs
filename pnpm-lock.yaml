@@ -2776,7 +2776,7 @@ importers:
         version: 18.0.11
       '@vitejs/plugin-react':
         specifier: ^3.1.0
-        version: 3.1.0(vite@4.2.1)
+        version: 3.1.0(vite@4.3.0-beta.5)
       playwright:
         specifier: ^1.32.2
         version: 1.32.2
@@ -2784,8 +2784,8 @@ importers:
         specifier: ^4.9.5
         version: 4.9.5
       vite:
-        specifier: ^4.2.1
-        version: 4.2.1(@types/node@18.15.11)
+        specifier: ^4.3.0-beta.5
+        version: 4.3.0-beta.5(@types/node@18.15.11)
 
   serializable-values:
     dependencies:
@@ -13254,7 +13254,6 @@ packages:
       vite: 4.3.0-beta.5(@types/node@18.15.11)
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@vitejs/plugin-vue-jsx@3.0.1(vite@4.0.4)(vue@3.2.47):
     resolution: {integrity: sha512-+Jb7ggL48FSPS1uhPnJbJwWa9Sr90vQ+d0InW+AhBM22n+cfuYqJZDckBc+W3QSHe1WDvewMZfa4wZOtk5pRgw==}
