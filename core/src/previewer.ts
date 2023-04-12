@@ -1,7 +1,7 @@
-import { PREVIEW_CONFIG_NAME, readConfig } from "@previewjs/config";
 import type { PreviewConfig } from "@previewjs/config";
-import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
+import { PREVIEW_CONFIG_NAME, readConfig } from "@previewjs/config";
 import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
+import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
 import type express from "express";
@@ -47,6 +47,8 @@ const FILES_REQUIRING_RESTART = new Set([
   ...GLOBAL_CSS_FILE,
   "vite.config.js",
   "vite.config.ts",
+  // TODO: Make plugins contribute files requiring restart to make core agnostic of Svelte config files.
+  "svelte.config.js",
 ]);
 
 const SHUTDOWN_CHECK_INTERVAL = 3000;

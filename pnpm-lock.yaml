@@ -2122,6 +2122,9 @@ importers:
       '@previewjs/testing':
         specifier: workspace:*
         version: link:../../testing
+      '@sveltejs/kit':
+        specifier: ^1.10.0
+        version: 1.10.0(svelte@3.58.0)(vite@4.3.0-beta.4)
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -11582,6 +11585,34 @@ packages:
       - supports-color
     dev: true
 
+  /@sveltejs/kit@1.10.0(svelte@3.58.0)(vite@4.3.0-beta.4):
+    resolution: {integrity: sha512-0P35zHrByfbF3Ym3RdQL+RvzgsCDSyO3imSwuZ67XAD5HoCQFF3a8Mhh0V3sObz3rc5aJd4Qn82UpAihJqZ6gQ==}
+    engines: {node: ^16.14 || >=18}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      svelte: ^3.54.0
+      vite: ^4.0.0
+    dependencies:
+      '@sveltejs/vite-plugin-svelte': 2.0.4(svelte@3.58.0)(vite@4.3.0-beta.4)
+      '@types/cookie': 0.5.1
+      cookie: 0.5.0
+      devalue: 4.3.0
+      esm-env: 1.0.0
+      kleur: 4.1.5
+      magic-string: 0.30.0
+      mime: 3.0.0
+      sade: 1.8.1
+      set-cookie-parser: 2.5.1
+      sirv: 2.0.2
+      svelte: 3.58.0
+      tiny-glob: 0.2.9
+      undici: 5.20.0
+      vite: 4.3.0-beta.4(@types/node@18.15.11)
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@sveltejs/vite-plugin-svelte@1.4.0(svelte@3.58.0)(vite@4.2.1):
     resolution: {integrity: sha512-6QupI/jemMfK+yI2pMtJcu5iO2gtgTfcBdGwMZZt+lgbFELhszbDl6Qjh000HgAV8+XUA+8EY8DusOFk8WhOIg==}
     engines: {node: ^14.18.0 || >= 16}
@@ -11637,7 +11668,6 @@ packages:
       vitefu: 0.2.4(vite@4.3.0-beta.4)
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@svgr/babel-plugin-add-jsx-attribute@5.4.0:
     resolution: {integrity: sha512-ZFf2gs/8/6B8PnSofI0inYXr2SDNTDScPXhN7k5EqD4aZ3gi6u+rbmZHVB8IM3wDyx8ntKACZbtXSm7oZGRqVg==}
@@ -33926,7 +33956,6 @@ packages:
         optional: true
     dependencies:
       vite: 4.3.0-beta.4(@types/node@18.15.11)
-    dev: false
 
   /vitest@0.30.0:
     resolution: {integrity: sha512-2WW4WeTHtrLFeoiuotWvEW6khozx1NvMGYoGsNz2btdddEbqvEdPJIouIdoiC5i61Rl1ctZvm9cn2R9TcPQlzw==}
