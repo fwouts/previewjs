@@ -84,9 +84,16 @@ export function detectComponents(
         );
       }
     );
+    const refreshedFilePaths = new Set(
+      changedAbsoluteFilePaths.map((absoluteFilePath) =>
+        path.relative(workspace.rootDirPath, absoluteFilePath)
+      )
+    );
     const recycledComponents = existingCache.components.filter(
-      ({ componentId }) =>
-        filePathsSet.has(decodeComponentId(componentId).filePath)
+      ({ componentId }) => {
+        const filePath = decodeComponentId(componentId).filePath;
+        return filePathsSet.has(filePath) && !refreshedFilePaths.has(filePath);
+      }
     );
     const refreshedComponents = await detectComponentsCore(
       workspace,
