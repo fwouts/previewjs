@@ -41,7 +41,7 @@ export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
 async function loadModule(configPath: string, asModule: boolean) {
   if (asModule) {
     const module = await import(
-      url.pathToFileURL(configPath).toString() + `?t=${Date.now()}`
+      `${url.pathToFileURL(configPath).href}?ts=${Date.now()}`
     );
     return module.default;
   } else {
