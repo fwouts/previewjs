@@ -3,6 +3,7 @@ import type {
   AnalyzableComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
+import type sveltekit from "@sveltejs/kit";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
@@ -21,6 +22,15 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
   async create({ rootDirPath }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
+    const svelteConfigPath = path.join(rootDirPath, "svelte.config.js");
+    let alias: Record<string, string> = {};
+    if (await fs.pathExists(svelteConfigPath)) {
+      // Source: https://github.com/sveltejs/kit/blob/168547325c0044bc97c9c60aba1b70942dde22fe/packages/kit/src/core/config/index.js#L70
+      const config: sveltekit.Config = await import(
+        `${url.pathToFileURL(svelteConfigPath).href}?ts=${Date.now()}`
+      );
+      alias = config.kit?.alias || {};
+    }
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-svelte",
@@ -66,6 +76,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         resolve: {
           alias: {
             $app: "node_modules/@sveltejs/kit/src/runtime/app",
+            ...alias,
           },
         },
         plugins: [
