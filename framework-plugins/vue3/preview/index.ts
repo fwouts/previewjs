@@ -1,6 +1,7 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import { App, createApp } from "vue";
 
+const root = document.getElementById("root")!;
 let app: App | null = null;
 
 export const load: RendererLoader = async ({
@@ -85,7 +86,10 @@ export const load: RendererLoader = async ({
             h(Wrapper, null, () => decoratedNode)
           : decoratedNode;
       }, {});
-      app.mount("#root");
+      app.mount(root);
+      if (ComponentOrStory.play) {
+        ComponentOrStory.play({ canvasElement: root });
+      }
     },
     // @ts-ignore
     jsxFactory: h,
