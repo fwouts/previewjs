@@ -3,6 +3,7 @@ import React from "react";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 // @ts-ignore
 import { render } from "__PREVIEWJS_PLUGIN_REACT_IMPORT_PATH__";
+import { rootContainer } from "./root";
 
 export const load: RendererLoader = async ({
   wrapperModule,
@@ -73,6 +74,9 @@ export const load: RendererLoader = async ({
       }
       if (errorBoundary.state.error) {
         throw errorBoundary.state.error;
+      }
+      if (ComponentOrStory.play) {
+        ComponentOrStory.play({ canvasElement: rootContainer });
       }
     },
     jsxFactory: React.createElement,

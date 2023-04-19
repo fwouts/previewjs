@@ -191,7 +191,26 @@ function extractComponentSignature(
   checker: ts.TypeChecker,
   node: ts.Node
 ): ts.Signature | null {
-  const type = checker.getTypeAtLocation(node);
+  let type = checker.getTypeAtLocation(node);
+
+  // When we encounter a story defined as ... = Template.bind({}) where the
+  // type cannot be detected, fall back to the type of Template.
+  if (
+    type.flags === ts.TypeFlags.Any &&
+    ts.isCallExpression(node) &&
+    ts.isPropertyAccessExpression(node.expression) &&
+    ts.isIdentifier(node.expression.name) &&
+    node.expression.name.text === "bind"
+  ) {
+    const symbol = checker.getSymbolAtLocation(node.expression.expression);
+    if (
+      symbol?.valueDeclaration &&
+      ts.isVariableDeclaration(symbol.valueDeclaration) &&
+      symbol.valueDeclaration.initializer
+    ) {
+      type = checker.getTypeAtLocation(symbol.valueDeclaration.initializer);
+    }
+  }
 
   // Function component.
   for (const callSignature of type.getCallSignatures()) {

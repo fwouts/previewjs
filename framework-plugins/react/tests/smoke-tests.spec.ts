@@ -26,8 +26,16 @@ test.describe.parallel("smoke tests", () => {
       "cra-sass": ["src/App.tsx:App"],
       "cra-sass-modules": ["src/App.tsx:App"],
       "cra-sass-modules-no-suffix": ["src/App.tsx:App"],
-      "cra-storybook-js": ["src/stories/Button.stories.jsx:Primary"],
-      "cra-storybook-ts": ["src/stories/Button.stories.tsx:Primary"],
+      "cra-storybook-js": [
+        "src/stories/Button.stories.jsx:Primary",
+        "src/stories/Page.stories.jsx:LoggedOut",
+        "src/stories/Page.stories.jsx:LoggedIn",
+      ],
+      "cra-storybook-ts": [
+        "src/stories/Button.stories.tsx:Primary",
+        "src/stories/Page.stories.tsx:LoggedOut",
+        "src/stories/Page.stories.tsx:LoggedIn",
+      ],
       "cra-styled-components": ["src/App.tsx:App"],
       "cra-suspense": ["src/App.jsx:App"],
       "cra-svgr": ["src/App.tsx:App"],

@@ -106,6 +106,9 @@ export const load: RendererLoader = async ({
         root.removeChild(root.firstChild);
       }
       root.appendChild(app.$el);
+      if (ComponentOrStory.play) {
+        ComponentOrStory.play({ canvasElement: root });
+      }
     },
     // While Vue 2 exposes h(), it can only be used when a component is already being rendered.
     // This makes the approach of invoking jsxFactory prior to rendering the component unfeasible.
