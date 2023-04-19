@@ -86,7 +86,9 @@ export function detectComponents(
     );
     const refreshedFilePaths = new Set(
       changedAbsoluteFilePaths.map((absoluteFilePath) =>
-        path.relative(workspace.rootDirPath, absoluteFilePath)
+        path
+          .relative(workspace.rootDirPath, absoluteFilePath)
+          .replace(/\\/g, "/")
       )
     );
     const recycledComponents = existingCache.components.filter(
