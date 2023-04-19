@@ -63,7 +63,7 @@ export const load: RendererLoader = async ({
         container
       );
       if (ComponentOrStory.play) {
-        ComponentOrStory.play({ canvasElement: container });
+        await ComponentOrStory.play({ canvasElement: container });
       }
     },
     jsxFactory: h,

@@ -76,7 +76,7 @@ export const load: RendererLoader = async ({
         throw errorBoundary.state.error;
       }
       if (ComponentOrStory.play) {
-        ComponentOrStory.play({ canvasElement: rootContainer });
+        await ComponentOrStory.play({ canvasElement: rootContainer });
       }
     },
     jsxFactory: React.createElement,

@@ -88,7 +88,7 @@ export const load: RendererLoader = async ({
       }, {});
       app.mount(root);
       if (ComponentOrStory.play) {
-        ComponentOrStory.play({ canvasElement: root });
+        await ComponentOrStory.play({ canvasElement: root });
       }
     },
     // @ts-ignore

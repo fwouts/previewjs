@@ -107,7 +107,7 @@ export const load: RendererLoader = async ({
       }
       root.appendChild(app.$el);
       if (ComponentOrStory.play) {
-        ComponentOrStory.play({ canvasElement: root });
+        await ComponentOrStory.play({ canvasElement: root });
       }
     },
     // While Vue 2 exposes h(), it can only be used when a component is already being rendered.
