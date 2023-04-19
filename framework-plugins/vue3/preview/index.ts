@@ -12,6 +12,7 @@ export const load: RendererLoader = async ({
   shouldAbortRender,
 }) => {
   const componentName = componentId.substring(componentId.indexOf(":") + 1);
+  const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   let ComponentOrStory: any;
@@ -28,7 +29,7 @@ export const load: RendererLoader = async ({
   }
   let storyDecorators = ComponentOrStory.decorators || [];
   let RenderComponent = ComponentOrStory;
-  if (ComponentOrStory.render) {
+  if (ComponentOrStory.render && !isStoryModule) {
     // Vue component. Nothing to do.
   } else {
     // JSX or Storybook story, either CSF2 or CSF3.
@@ -88,7 +89,14 @@ export const load: RendererLoader = async ({
       }, {});
       app.mount(root);
       if (ComponentOrStory.play) {
-        await ComponentOrStory.play({ canvasElement: root });
+        try {
+          await ComponentOrStory.play({ canvasElement: root });
+        } catch (e: any) {
+          // For some reason, Storybook expects to throw exceptions that should be ignored.
+          if (!e.message?.startsWith("ignoredException")) {
+            throw e;
+          }
+        }
       }
     },
     // @ts-ignore
