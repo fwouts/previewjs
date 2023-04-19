@@ -29,7 +29,7 @@ export function extractReactComponents(
         // Avoid duplicates.
         continue;
       }
-      functions.push(["default", statement, statement]);
+      functions.push(["default", statement, statement.expression]);
     } else if (ts.isVariableStatement(statement)) {
       for (const declaration of statement.declarationList.declarations) {
         if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
