@@ -11,8 +11,16 @@ test.describe.parallel("smoke tests", () => {
     pluginFactory,
     componentIdsPerProject: {
       "preact-ts": ["src/components/app.tsx:App"],
-      "storybook-js": ["src/App.jsx:App"],
-      "storybook-ts": ["src/stories/Button.stories.tsx:Primary"],
+      "vite-storybook-js": [
+        "src/stories/Button.stories.jsx:Primary",
+        "src/stories/Page.stories.jsx:LoggedOut",
+        "src/stories/Page.stories.jsx:LoggedIn",
+      ],
+      "vite-storybook-ts": [
+        "src/stories/Button.stories.tsx:Primary",
+        "src/stories/Page.stories.tsx:LoggedOut",
+        "src/stories/Page.stories.tsx:LoggedIn",
+      ],
       "vite-preact": ["src/app.tsx:App"],
     },
   });
