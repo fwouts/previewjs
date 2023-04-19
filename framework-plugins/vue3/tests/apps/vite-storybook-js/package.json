@@ -1,0 +1,25 @@
+{
+  "name": "vue3-test-app-vite-storybook-js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.6",
+    "@storybook/addon-interactions": "^7.0.6",
+    "@storybook/addon-links": "^7.0.6",
+    "@storybook/blocks": "^7.0.6",
+    "@storybook/testing-library": "^0.0.14-next.2",
+    "@storybook/vue3": "^7.0.6",
+    "@storybook/vue3-vite": "^7.0.6",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "storybook": "^7.0.6",
+    "vite": "^4.2.0"
+  }
+}
