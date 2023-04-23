@@ -34,12 +34,12 @@ export async function loadModules({
     packageName
   );
   const frameworkPlugins: core.FrameworkPluginFactory[] = [
-    await importModule("@previewjs/plugin-preact"),
-    await importModule("@previewjs/plugin-react"),
     await importModule("@previewjs/plugin-solid"),
     await importModule("@previewjs/plugin-svelte"),
     await importModule("@previewjs/plugin-vue2"),
     await importModule("@previewjs/plugin-vue3"),
+    await importModule("@previewjs/plugin-preact"),
+    await importModule("@previewjs/plugin-react"),
   ];
 
   async function importModule(name: string) {
