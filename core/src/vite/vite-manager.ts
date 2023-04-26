@@ -13,7 +13,10 @@ import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { findFiles } from "../find-files";
 import type { FrameworkPlugin } from "../plugins/framework";
-import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
+import {
+  COMPONENT_LOADER_MODULE,
+  componentLoaderPlugin,
+} from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { localEval } from "./plugins/local-eval";
@@ -174,6 +177,11 @@ export class ViteManager {
         ...(this.options.config.vite?.plugins || []),
       ])
     );
+    const publicDir =
+      this.options.config.vite?.publicDir ||
+      existingViteConfig?.config.publicDir ||
+      frameworkPluginViteConfig.publicDir ||
+      this.options.config.publicDir;
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
@@ -200,6 +208,41 @@ export class ViteManager {
           }),
       }),
       cssModulesWithoutSuffixPlugin(),
+      // TODO: Move to publicAssetImportPlugin()
+      {
+        name: "previewjs-public-asset-import",
+        resolveId: async (source) => {
+          if (
+            !source.startsWith("/") ||
+            source.startsWith("/__previewjs__/") ||
+            source.startsWith(COMPONENT_LOADER_MODULE)
+          ) {
+            return;
+          }
+          const publicDirAbsolutePath = path.join(
+            this.options.rootDirPath,
+            publicDir
+          );
+          const potentialPublicFilePath = path.join(
+            publicDirAbsolutePath,
+            source
+          );
+          if (
+            !potentialPublicFilePath.startsWith(
+              publicDirAbsolutePath + path.sep
+            )
+          ) {
+            console.error("blocked", potentialPublicFilePath);
+            // Block attempts to move out of the directory.
+            return;
+          }
+          if (!(await fs.pathExists(potentialPublicFilePath))) {
+            console.error("blocked 2", potentialPublicFilePath);
+            return;
+          }
+          return source;
+        },
+      },
       componentLoaderPlugin(this.options),
       frameworkPluginViteConfig.plugins,
     ];
@@ -289,11 +332,7 @@ export class ViteManager {
         this.options.config.vite?.cacheDir ||
         existingViteConfig?.config.cacheDir ||
         this.options.cacheDir,
-      publicDir:
-        this.options.config.vite?.publicDir ||
-        existingViteConfig?.config.publicDir ||
-        frameworkPluginViteConfig.publicDir ||
-        this.options.config.publicDir,
+      publicDir,
       plugins,
       define: {
         ...existingViteConfig?.config.define,
