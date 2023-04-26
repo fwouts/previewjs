@@ -5,7 +5,6 @@ import * as si from "svelte/internal";
 const root = document.getElementById("root")!;
 let currentElement: any = null;
 
-// TODO: Support Storybook.
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
