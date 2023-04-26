@@ -16,7 +16,10 @@ test.describe.parallel("smoke tests", () => {
             // SvelteKit requires Node 16.
             // See https://github.com/sveltejs/kit/issues/2412
             "sveltekit-app": ["src/routes/+page.svelte:+page"],
-            "sveltekit-demo": ["src/routes/Header.svelte:Header"],
+            "sveltekit-demo": [
+              "src/routes/+page.svelte:+page",
+              "src/routes/Header.svelte:Header",
+            ],
           }
         : {}),
     },

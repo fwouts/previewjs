@@ -8,6 +8,7 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
 import url from "url";
+import { mergeConfig } from "vite";
 import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
@@ -72,7 +73,6 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
           __SVELTEKIT_DEV__: "false",
           __SVELTEKIT_APP_VERSION_POLL_INTERVAL__: "0",
         },
-        publicDir: "static",
         resolve: {
           alias: {
             $app: "node_modules/@sveltejs/kit/src/runtime/app",
@@ -88,6 +88,23 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
               plugin.name !== "vite-plugin-sveltekit-setup" &&
               plugin.name !== "vite-plugin-sveltekit-compile"
           ),
+          configuredPlugins.find(
+            (plugin) =>
+              plugin.name.includes("sveltekit") ||
+              plugin.name.includes("svelte-kit")
+          )
+            ? {
+                name: "previewjs:sveltekit-static-dir",
+                config: (config) => {
+                  return mergeConfig(
+                    {
+                      publicDir: "static",
+                    },
+                    config
+                  );
+                },
+              }
+            : null,
           configuredPlugins.find((plugin) => plugin.name.includes("svelte"))
             ? null
             : svelte(),
