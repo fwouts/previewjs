@@ -4,7 +4,7 @@
   import viteLogo from "/vite.svg";
 </script>
 
-<main>
+<main id="ready">
   <div>
     <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
       <img src={viteLogo} class="logo" alt="Vite Logo" />

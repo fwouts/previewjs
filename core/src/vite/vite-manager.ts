@@ -211,8 +211,9 @@ export class ViteManager {
       // TODO: Move to publicAssetImportPlugin()
       {
         name: "previewjs-public-asset-import",
-        resolveId: async (source) => {
+        resolveId: async (source, importer) => {
           if (
+            !importer ||
             !source.startsWith("/") ||
             source.startsWith("/__previewjs__/") ||
             source.startsWith(COMPONENT_LOADER_MODULE)
@@ -237,7 +238,6 @@ export class ViteManager {
             return;
           }
           if (!(await fs.pathExists(potentialPublicFilePath))) {
-            console.error("blocked 2", potentialPublicFilePath);
             return;
           }
           return source;
