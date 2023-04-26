@@ -88,10 +88,10 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
               plugin.name !== "vite-plugin-sveltekit-setup" &&
               plugin.name !== "vite-plugin-sveltekit-compile"
           ),
-          configuredPlugins.find((plugin) =>
-            plugin.name.includes(
-              "sveltekit" || plugin.name.includes("svelte-kit")
-            )
+          configuredPlugins.find(
+            (plugin) =>
+              plugin.name.includes("sveltekit") ||
+              plugin.name.includes("svelte-kit")
           )
             ? {
                 name: "previewjs:sveltekit-static-dir",
