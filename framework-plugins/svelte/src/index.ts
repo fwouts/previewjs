@@ -40,10 +40,11 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (
-            absoluteFilePath.endsWith(".svelte") &&
-            (await fs.pathExists(absoluteFilePath))
-          ) {
+          if (absoluteFilePath.endsWith(".svelte")) {
+            const entry = await reader.read(absoluteFilePath);
+            if (entry?.kind !== "file") {
+              continue;
+            }
             components.push({
               componentId: generateComponentId({
                 filePath: path.relative(rootDirPath, absoluteFilePath),
@@ -52,9 +53,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
                   path.extname(absoluteFilePath)
                 ),
               }),
-              offsets: [
-                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
-              ],
+              offsets: [[0, (await entry.read()).length]],
               info: {
                 kind: "component",
                 exported: true,
