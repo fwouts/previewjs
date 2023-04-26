@@ -5,11 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "storybook": "storybook dev -p 6006"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.0.7",
