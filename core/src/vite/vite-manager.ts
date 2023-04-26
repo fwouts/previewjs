@@ -233,7 +233,6 @@ export class ViteManager {
               publicDirAbsolutePath + path.sep
             )
           ) {
-            console.error("blocked", potentialPublicFilePath);
             // Block attempts to move out of the directory.
             return;
           }
