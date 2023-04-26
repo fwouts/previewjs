@@ -1,4 +1,3 @@
-import { generateComponentId } from "@previewjs/api";
 import type {
   AnalyzableComponent,
   FrameworkPluginFactory,
@@ -8,7 +7,7 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
 import url from "url";
-import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
+import { extractSvelteComponents } from "./extract-component.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
@@ -42,31 +41,19 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
       detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+        const resolver = typeAnalyzer.analyze(
+          absoluteFilePaths.map((p) => (p.endsWith(".svelte") ? `${p}.ts` : p))
+        );
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (absoluteFilePath.endsWith(".svelte")) {
-            const entry = await reader.read(absoluteFilePath);
-            if (entry?.kind !== "file") {
-              continue;
-            }
-            components.push({
-              componentId: generateComponentId({
-                filePath: path.relative(rootDirPath, absoluteFilePath),
-                name: path.basename(
-                  absoluteFilePath,
-                  path.extname(absoluteFilePath)
-                ),
-              }),
-              offsets: [[0, (await entry.read()).length]],
-              info: {
-                kind: "component",
-                exported: true,
-                analyze: async () =>
-                  analyzeSvelteComponentFromSFC(typeAnalyzer, absoluteFilePath),
-              },
-            });
-          }
-          // TODO: Storybook support.
+          components.push(
+            ...(await extractSvelteComponents(
+              reader,
+              resolver,
+              rootDirPath,
+              absoluteFilePath
+            ))
+          );
         }
         return components;
       },

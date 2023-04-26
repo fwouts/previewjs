@@ -1,3 +1,4 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   ANY_TYPE,
@@ -7,16 +8,16 @@ import {
   optionalType,
   TypeAnalyzer,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import svelteFrameworkPlugin from ".";
-import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
+import { inferComponentNameFromSveltePath } from "./infer-component-name";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
@@ -175,6 +176,18 @@ describe.concurrent("analyze Svelte component", () => {
 
   async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    return analyzeSvelteComponentFromSFC(typeAnalyzer, MAIN_FILE);
+    const componentName = inferComponentNameFromSveltePath(MAIN_FILE);
+    const component = (
+      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
+        MAIN_FILE,
+      ])
+    ).find((c) => decodeComponentId(c.componentId).name === componentName);
+    if (!component) {
+      throw new Error(`Component ${componentName} not found`);
+    }
+    if (component.info.kind === "story") {
+      throw new Error(`Component ${componentName} is a story`);
+    }
+    return component.info.analyze();
   }
 });

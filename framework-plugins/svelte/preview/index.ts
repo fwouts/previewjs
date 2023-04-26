@@ -5,16 +5,31 @@ import * as si from "svelte/internal";
 const root = document.getElementById("root")!;
 let currentElement: any = null;
 
-// TODO: Support Storybook.
+type Component = any;
+
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   componentModule,
+  componentId,
   shouldAbortRender,
 }) => {
+  const componentName = componentId.substring(componentId.indexOf(":") + 1);
+  const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
-  const Component = componentModule.default;
+  const ComponentOrStory =
+    componentModule[isStoryModule ? componentName : "default"];
+  if (!ComponentOrStory) {
+    throw new Error(`No component named '${componentName}'`);
+  }
+  const RenderComponent = isStoryModule
+    ? ComponentOrStory.component || componentModule.default?.component
+    : ComponentOrStory;
+  const decorators = [
+    ...(ComponentOrStory.decorators || []),
+    ...(componentModule.default?.decorators || []),
+  ];
   return {
     render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
@@ -26,28 +41,64 @@ export const load: RendererLoader = async ({
       }
       root.innerHTML = "";
       const props = getProps({
-        // TODO: Pass Storybook args.
-        presetGlobalProps: {},
-        presetProps: {},
+        presetGlobalProps: componentModule.default?.args || {},
+        presetProps: ComponentOrStory.args || {},
       });
+      const [Decorated, decoratedProps] = decorate(
+        RenderComponent,
+        props,
+        decorators.reverse()
+      );
       currentElement = Wrapper
         ? new Wrapper({
             target: root,
             props: {
               $$slots: createSlots({
-                default: [Component, props],
+                default: [Decorated, decoratedProps],
               }),
               $$scope: {},
             },
           })
-        : new Component({
+        : new Decorated({
             target: root,
-            props,
+            props: decoratedProps,
           });
+      if (ComponentOrStory.play) {
+        try {
+          await ComponentOrStory.play({ canvasElement: root });
+        } catch (e: any) {
+          // For some reason, Storybook expects to throw exceptions that should be ignored.
+          if (!e.message?.startsWith("ignoredException")) {
+            throw e;
+          }
+        }
+      }
     },
     jsxFactory: null,
   };
 };
+
+// https://storybook.js.org/docs/svelte/writing-stories/decorators
+function decorate(
+  Component: Component,
+  props: any,
+  decorators: Array<() => Component>
+): [Component, any] {
+  if (decorators.length === 0) {
+    return [Component, props];
+  }
+  const [rootDecoratorFn, ...remainingDecorators] = decorators;
+  const RootDecorator = rootDecoratorFn!();
+  return [
+    RootDecorator,
+    {
+      $$slots: createSlots({
+        default: decorate(Component, props, remainingDecorators),
+      }),
+      $$scope: {},
+    },
+  ];
+}
 
 // Source: https://github.com/sveltejs/svelte/issues/2588#issuecomment-828578980
 const createSlots = (slots: Record<string, any>) => {

@@ -20,6 +20,16 @@ test.describe.parallel("smoke tests", () => {
               "src/routes/+page.svelte:+page",
               "src/routes/Header.svelte:Header",
             ],
+            "vite-storybook-js": [
+              "src/stories/Button.stories.js:Primary",
+              "src/stories/Page.stories.js:LoggedOut",
+              "src/stories/Page.stories.js:LoggedIn",
+            ],
+            "vite-storybook-ts": [
+              "src/stories/Button.stories.ts:Primary",
+              "src/stories/Page.stories.ts:LoggedOut",
+              "src/stories/Page.stories.ts:LoggedIn",
+            ],
           }
         : {}),
     },

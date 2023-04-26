@@ -1,19 +1,21 @@
 import type { ComponentAnalysis } from "@previewjs/core";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type {
+  CollectedTypes,
+  TypeResolver,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import {
+  OptionalType,
   maybeOptionalType,
   objectType,
-  OptionalType,
-  TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
 export function analyzeSvelteComponentFromSFC(
-  typeAnalyzer: TypeAnalyzer,
-  filePath: string
+  resolver: TypeResolver,
+  virtualSvelteTsAbsoluteFilePath: string
 ): ComponentAnalysis {
-  const resolver = typeAnalyzer.analyze([filePath + ".ts"]);
-  const sourceFile = resolver.sourceFile(filePath + ".ts");
+  const sourceFile = resolver.sourceFile(virtualSvelteTsAbsoluteFilePath);
   const propsTypeFields: Record<string, ValueType | OptionalType> = {};
   let collected: CollectedTypes = {};
   for (const statement of sourceFile?.statements || []) {
