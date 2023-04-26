@@ -5,7 +5,7 @@ import path from "path";
 import { URLSearchParams } from "url";
 import type { Plugin } from "vite";
 
-const COMPONENT_LOADER_MODULE = "/@component-loader.js";
+export const COMPONENT_LOADER_MODULE = "/@component-loader.js";
 
 type PluginOptions = {
   rootDirPath: string;
