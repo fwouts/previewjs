@@ -1,6 +1,7 @@
 import depcheck from "depcheck";
-import execa from "execa";
+import { execaCommandSync } from "execa";
 import path from "path";
+import url from "url";
 import { inspect } from "util";
 
 const globalIgnores = [
@@ -8,8 +9,6 @@ const globalIgnores = [
   "@typescript-eslint/parser",
   "autoprefixer",
   "eslint-config-prettier",
-  "eslint-plugin-react",
-  "eslint-plugin-react-hooks",
   "postcss",
   "tailwindcss",
   "tsc && unbuild",
@@ -17,12 +16,15 @@ const globalIgnores = [
 
 // TODO: Go through these deps and eliminate the ones that are not needed.
 const localIgnores: Record<string, string[]> = {
-  "/": ["npm", "prettier", "turbo"],
-  "/core": ["monaco-editor"],
-  "/frameworks/react": ["@types/prop-types"],
-  "/frameworks/react/preview": ["@types/prop-types", "react", "react-dom"],
-  "/frameworks/vue2": ["vue"],
-  "/frameworks/vue3/preview": [
+  "/": ["pnpm", "prettier", "turbo"],
+  "/framework-plugins/react": ["@types/prop-types"],
+  "/framework-plugins/react/preview": [
+    "@types/prop-types",
+    "react",
+    "react-dom",
+  ],
+  "/framework-plugins/vue2": ["vue"],
+  "/framework-plugins/vue3/preview": [
     "@vue/shared",
     "@vue/reactivity",
     "@vue/runtime-core",
@@ -32,8 +34,9 @@ const localIgnores: Record<string, string[]> = {
 };
 
 async function main() {
+  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   const rootDir = path.join(__dirname, "..");
-  const json = execa.commandSync("pnpm -r la --json").stdout;
+  const json = execaCommandSync("pnpm -r la --json").stdout;
   const workspaces = JSON.parse(json);
 
   let foundErrors = false;
@@ -41,8 +44,7 @@ async function main() {
     const { path: workspacePath } = workspace;
     const relativePath = "/" + path.relative(rootDir, workspacePath);
     if (
-      relativePath.startsWith("/test-apps") ||
-      relativePath.startsWith("/smoke-test-apps") ||
+      relativePath.includes("/tests/apps/") ||
       relativePath === "/dev-workspace"
     ) {
       continue;

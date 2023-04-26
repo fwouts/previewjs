@@ -1,6 +1,7 @@
 import express from "express";
 import type http from "http";
-import { createHttpTerminator, HttpTerminator } from "http-terminator";
+import { createHttpTerminator } from "http-terminator";
+import type { HttpTerminator } from "http-terminator";
 
 export class Server {
   private readonly app: express.Application;

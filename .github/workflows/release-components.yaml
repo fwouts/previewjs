@@ -1,5 +1,9 @@
 name: Release Components
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -17,171 +21,233 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-exclude-test-apps-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-exclude-test-apps-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          run_install: true
+          run_install: |
+            - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
       - name: Update NPM token
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      - id: checkApiVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./api/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkApiVersion.outputs.changed == 'true'
-        run: cd api && pnpm publish --no-git-checks --access public
-      - id: checkAppFoundationsVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./app-foundations/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkAppFoundationsVersion.outputs.changed == 'true'
-        run: cd app-foundations && pnpm publish --no-git-checks --access public
-      - id: checkAppVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./app/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkAppVersion.outputs.changed == 'true'
-        run: cd app && pnpm publish --no-git-checks --access public
-      - id: checkChromelessVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./chromeless/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkChromelessVersion.outputs.changed == 'true'
-        run: cd chromeless && pnpm publish --no-git-checks --access public
-      - id: checkConfigVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./config/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkConfigVersion.outputs.changed == 'true'
-        run: cd config && pnpm publish --no-git-checks --access public
-      - id: checkConfigHelperNextjsVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./config-helpers/nextjs/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkConfigHelperNextjsVersion.outputs.changed == 'true'
-        run: cd config-helpers/nextjs && pnpm publish --no-git-checks --access public
-      - id: checkCoreVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./core/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkCoreVersion.outputs.changed == 'true'
-        run: cd core && pnpm publish --no-git-checks --access public
-      - id: checkCsf3Version
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./csf3/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkCsf3Version.outputs.changed == 'true'
-        run: cd csf3 && pnpm publish --no-git-checks --access public
-      - id: checkE2ETestRunnerVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./e2e-test-runner/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkE2ETestRunnerVersion.outputs.changed == 'true'
-        run: cd e2e-test-runner && pnpm publish --no-git-checks --access public
-      - id: checkIframeVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./iframe/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkIframeVersion.outputs.changed == 'true'
-        run: cd iframe && pnpm publish --no-git-checks --access public
-      - id: checkPluginReactVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./frameworks/react/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkPluginReactVersion.outputs.changed == 'true'
-        run: cd frameworks/react && pnpm publish --no-git-checks --access public
-      - id: checkPluginSolidVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./frameworks/solid/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkPluginSolidVersion.outputs.changed == 'true'
-        run: cd frameworks/solid && pnpm publish --no-git-checks --access public
-      - id: checkPluginSvelteVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./frameworks/svelte/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkPluginSvelteVersion.outputs.changed == 'true'
-        run: cd frameworks/svelte && pnpm publish --no-git-checks --access public
-      - id: checkPluginVue2Version
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./frameworks/vue2/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkPluginVue2Version.outputs.changed == 'true'
-        run: cd frameworks/vue2 && pnpm publish --no-git-checks --access public
-      - id: checkPluginVue3Version
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./frameworks/vue3/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkPluginVue3Version.outputs.changed == 'true'
-        run: cd frameworks/vue3 && pnpm publish --no-git-checks --access public
-      - id: checkPropertiesVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./properties/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkPropertiesVersion.outputs.changed == 'true'
-        run: cd properties && pnpm publish --no-git-checks --access public
-      - id: checkSerializableValuesVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./serializable-values/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkSerializableValuesVersion.outputs.changed == 'true'
-        run: cd serializable-values && pnpm publish --no-git-checks --access public
-      - id: checkTestingVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./testing/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkTestingVersion.outputs.changed == 'true'
-        run: cd testing && pnpm publish --no-git-checks --access public
-      - id: checkTypeAnalyzerVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./type-analyzer/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkTypeAnalyzerVersion.outputs.changed == 'true'
-        run: cd type-analyzer && pnpm publish --no-git-checks --access public
-      - id: checkVfsVersion
-        uses: EndBug/version-check@v2.1.1
-        with:
-          diff-search: true
-          file-name: ./vfs/package.json
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.checkVfsVersion.outputs.changed == 'true'
-        run: cd vfs && pnpm publish --no-git-checks --access public
+      - run: pnpm turbo build --filter="!./integrations/**/*" --filter="!./daemon"
+      - run: |
+          cd api
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd app
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd chromeless
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd config
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd config-helpers/nextjs
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd core
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd iframe
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd framework-plugins/preact
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd framework-plugins/react
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd framework-plugins/solid
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd framework-plugins/svelte
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd framework-plugins/vue2
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd framework-plugins/vue3
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd properties
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd serializable-values
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd screenshot
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd storybook-helpers
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd testing
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd type-analyzer
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi
+      - run: |
+          cd vfs
+          if ! pnpm publish --no-git-checks --access public 2>error.log; then
+            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
+              echo "Package is already published. Ignoring the following:"
+              cat error.log
+            else
+              cat error.log >&2
+              exit 1
+            fi
+          fi

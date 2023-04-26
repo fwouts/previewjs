@@ -1,0 +1,47 @@
+{
+  "name": "@previewjs/plugin-preact",
+  "version": "3.3.3",
+  "license": "MIT",
+  "author": {
+    "name": "Klemen Slavič",
+    "email": "krof.drakula@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && unbuild",
+    "test": "vitest",
+    "e2e-test": "playwright test"
+  },
+  "dependencies": {
+    "@previewjs/api": "^11.0.2",
+    "@previewjs/serializable-values": "^6.0.7",
+    "@previewjs/storybook-helpers": "^2.0.4",
+    "@previewjs/type-analyzer": "^7.3.5",
+    "@previewjs/vfs": "^2.0.9",
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.32.3",
+    "@previewjs/api": "workspace:*",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/properties": "workspace:*",
+    "@previewjs/testing": "workspace:*",
+    "preact": "^10.13.2",
+    "rimraf": "^5.0.0",
+    "unbuild": "^1.2.1",
+    "vite": "^4.3.1",
+    "vitest": "^0.30.1"
+  }
+}

@@ -1,63 +1,57 @@
-import { RequestOf, ResponseOf, RPC, RPCs } from "@previewjs/api";
 import {
+  decodeComponentId,
+  RequestOf,
+  ResponseOf,
+  RPC,
+  RPCs,
+} from "@previewjs/api";
+import type {
   CollectedTypes,
-  createTypeAnalyzer,
-  EMPTY_OBJECT_TYPE,
-  UNKNOWN_TYPE,
+  TypeAnalyzer,
+  ValueType,
 } from "@previewjs/type-analyzer";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
-import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs-extra";
-import getPort from "get-port";
+import getPort, { portNumbers } from "get-port";
+import { createRequire } from "module";
 import path from "path";
 import type * as vite from "vite";
 import { detectComponents } from "./detect-components";
-import {
-  LocalFilePersistedStateManager,
-  PersistedStateManager,
-} from "./persisted-state";
-import type { FrameworkPlugin } from "./plugins/framework";
+import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
+import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
-import { ApiRouter, RegisterRPC } from "./router";
-export type { PersistedStateManager } from "./persisted-state";
+import { ApiRouter } from "./router";
+export type { PackageDependencies } from "./plugins/dependencies";
 export type {
-  Component,
+  AnalyzableComponent,
   ComponentAnalysis,
+  ComponentTypeInfo,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
-export { loadPreviewEnv } from "./preview-env";
-export type {
-  PreviewEnvironment,
-  SetupPreviewEnvironment,
-} from "./preview-env";
+export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
+export type { SetupPreviewEnvironment } from "./preview-env";
+
+const require = createRequire(import.meta.url);
 
 process.on("uncaughtException", (e) => {
   console.error("Uncaught Exception:", e);
 });
 
 export async function createWorkspace({
-  versionCode,
   rootDirPath,
   reader,
   frameworkPlugin,
   logLevel,
-  middlewares,
-  onReady,
-  persistedStateManager = new LocalFilePersistedStateManager(),
+  setupEnvironment,
 }: {
-  versionCode: string;
   rootDirPath: string;
-  middlewares: express.RequestHandler[];
   frameworkPlugin: FrameworkPlugin;
   logLevel: vite.LogLevel;
   reader: Reader;
-  persistedStateManager?: PersistedStateManager;
-  onReady?(options: {
-    registerRPC: RegisterRPC;
-    workspace: Workspace;
-  }): Promise<void>;
+  setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
   const expectedPluginApiVersion = 3;
   if (
@@ -73,7 +67,7 @@ export async function createWorkspace({
     );
   }
   if (frameworkPlugin.transformReader) {
-    reader = frameworkPlugin.transformReader(reader, rootDirPath);
+    reader = frameworkPlugin.transformReader(reader);
   }
   const collected: CollectedTypes = {};
   const typeAnalyzer = createTypeAnalyzer({
@@ -82,55 +76,79 @@ export async function createWorkspace({
     collected,
     specialTypes: frameworkPlugin.specialTypes,
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+    printWarnings: logLevel === "info",
   });
   const router = new ApiRouter();
-  router.registerRPC(RPCs.GetInfo, async () => {
-    const separatorPosition = versionCode.indexOf("-");
-    if (separatorPosition === -1) {
-      throw new Error(`Unsupported version code format: ${versionCode}`);
-    }
-    const platform = versionCode.substr(0, separatorPosition);
-    const version = versionCode.substr(separatorPosition + 1);
-    return {
-      appInfo: {
-        platform,
-        version,
-      },
-    };
-  });
-  router.registerRPC(RPCs.ComputeProps, async ({ filePath, componentName }) => {
-    const component = (
-      await frameworkPlugin.detectComponents(typeAnalyzer, [
-        path.join(rootDirPath, filePath),
-      ])
-    ).find((c) => c.name === componentName);
-    if (!component) {
-      return {
-        types: {
-          props: UNKNOWN_TYPE,
-          all: {},
-        },
+  router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
+    let analyze: () => Promise<ComponentAnalysis>;
+    const detectedComponents = await frameworkPlugin.detectComponents(
+      reader,
+      typeAnalyzer,
+      [
+        ...new Set(
+          componentIds.map((c) =>
+            path.join(rootDirPath, decodeComponentId(c).filePath)
+          )
+        ),
+      ]
+    );
+    const componentIdToDetectedComponent = Object.fromEntries(
+      detectedComponents.map((c) => [c.componentId, c])
+    );
+    const components: {
+      [componentId: string]: {
+        info: RPCs.ComponentInfo;
+        props: ValueType;
       };
-    }
-    if (component.info.kind === "story") {
-      return {
-        types: {
-          props: EMPTY_OBJECT_TYPE,
-          all: {},
-        },
+    } = {};
+    let types: CollectedTypes = {};
+    for (const componentId of componentIds) {
+      const component = componentIdToDetectedComponent[componentId];
+      if (!component) {
+        const { filePath, name } = decodeComponentId(componentId);
+        throw new Error(`Component ${name} not detected in ${filePath}.`);
+      }
+      if (component.info.kind === "component") {
+        analyze = component.info.analyze;
+      } else {
+        analyze = component.info.associatedComponent.analyze;
+      }
+      const { propsType: props, types: componentTypes } = await analyze();
+      components[componentId] = {
+        info:
+          component.info.kind === "component"
+            ? {
+                kind: "component",
+                exported: component.info.exported,
+              }
+            : {
+                kind: "story",
+                args: component.info.args,
+                associatedComponentId:
+                  component.info.associatedComponent.componentId,
+              },
+        props,
       };
+      types = { ...types, ...componentTypes };
     }
-    const result = await component.info.analyze();
     return {
-      types: {
-        props: result.propsType,
-        all: result.types,
-      },
+      components,
+      types,
     };
   });
   router.registerRPC(RPCs.DetectComponents, (options) =>
     detectComponents(workspace, frameworkPlugin, typeAnalyzer, options)
   );
+  const middlewares: express.Handler[] = [
+    express.json(),
+    async (req, res, next) => {
+      if (req.path.startsWith("/api/")) {
+        res.json(await router.handle(req.path.substr(5), req.body));
+      } else {
+        next();
+      }
+    },
+  ];
   const previewer = new Previewer({
     reader,
     rootDirPath,
@@ -141,28 +159,7 @@ export async function createWorkspace({
     ),
     frameworkPlugin,
     logLevel,
-    middlewares: [
-      express.json(),
-      cookieParser(),
-      express
-        .Router()
-        .use(
-          "/monaco-editor",
-          express.static(path.join(__dirname, "monaco-editor"))
-        ),
-      async (req, res, next) => {
-        if (req.path === "/api/" + RPCs.GetState.path) {
-          res.json(await persistedStateManager.get(req));
-        } else if (req.path === "/api/" + RPCs.UpdateState.path) {
-          res.json(await persistedStateManager.update(req, res));
-        } else if (req.path.startsWith("/api/")) {
-          res.json(await router.handle(req.path.substr(5), req.body));
-        } else {
-          next();
-        }
-      },
-      ...middlewares,
-    ],
+    middlewares,
     onFileChanged: (absoluteFilePath) => {
       const filePath = path.relative(rootDirPath, absoluteFilePath);
       for (const name of Object.keys(collected)) {
@@ -172,9 +169,25 @@ export async function createWorkspace({
       }
     },
   });
+
+  async function localRpc<E extends RPC<any, any>>(
+    endpoint: E,
+    request: RequestOf<E>
+  ): Promise<ResponseOf<E>> {
+    const result = await router.handle(endpoint.path, request);
+    if (result.kind === "success") {
+      return result.response as ResponseOf<E>;
+    }
+    throw new Error(result.message);
+  }
+
   const workspace: Workspace = {
     rootDirPath,
     reader,
+    typeAnalyzer,
+    detectComponents: (options = {}) =>
+      localRpc(RPCs.DetectComponents, options),
+    computeProps: (options) => localRpc(RPCs.ComputeProps, options),
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -182,7 +195,7 @@ export async function createWorkspace({
           return (
             port ||
             (await getPort({
-              port: getPort.makeRange(3140, 4000),
+              port: portNumbers(3140, 4000),
             }))
           );
         });
@@ -194,25 +207,18 @@ export async function createWorkspace({
         };
       },
     },
-    async localRpc<E extends RPC<any, any>>(
-      endpoint: E,
-      request: RequestOf<E>
-    ): Promise<ResponseOf<E>> {
-      const result = await router.handle(endpoint.path, request);
-      if (result.kind === "success") {
-        return result.response as ResponseOf<E>;
-      }
-      throw new Error(result.message);
-    },
     dispose: async () => {
       typeAnalyzer.dispose();
     },
   };
-  if (onReady) {
-    await onReady({
+  if (setupEnvironment) {
+    const environment = await setupEnvironment({
       registerRPC: (endpoint, handler) => router.registerRPC(endpoint, handler),
       workspace,
     });
+    if (environment.middlewares) {
+      middlewares.push(...environment.middlewares);
+    }
   }
   return workspace;
 }
@@ -237,13 +243,16 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
+  typeAnalyzer: TypeAnalyzer;
+  detectComponents(
+    options?: RequestOf<typeof RPCs.DetectComponents>
+  ): Promise<ResponseOf<typeof RPCs.DetectComponents>>;
+  computeProps(
+    options: RequestOf<typeof RPCs.ComputeProps>
+  ): Promise<ResponseOf<typeof RPCs.ComputeProps>>;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
-  localRpc<E extends RPC<any, any>>(
-    endpoint: E,
-    request: RequestOf<E>
-  ): Promise<ResponseOf<E>>;
   dispose(): Promise<void>;
 }
 

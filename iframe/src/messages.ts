@@ -1,5 +1,5 @@
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
-import type { Action, LogMessage, Variant } from "./index";
+import type { Action, LogMessage } from "./index";
 
 export type PreviewToAppMessage =
   | Bootstrapped
@@ -23,9 +23,7 @@ export interface BeforeRender {
 
 export interface RenderingSetup {
   kind: "rendering-setup";
-  filePath: string;
-  componentName: string;
-  variants?: Variant[];
+  componentId: string;
 }
 
 export interface RenderingSuccess {
@@ -56,8 +54,7 @@ export type AppToPreviewMessage = RenderMessage;
 
 export interface RenderMessage {
   kind: "render";
-  filePath: string;
-  componentName: string;
-  defaultPropsSource: string;
+  componentId: string;
+  autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 }

@@ -1,12 +1,12 @@
-import execa from "execa";
+import { execa } from "execa";
 import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
 import { inspect } from "util";
-import { assertCleanGit } from "./clean-git";
-import { gitChangelog } from "./git-changelog";
-import { incrementVersion } from "./increment-version";
-import { getPackageJson } from "./package-json";
+import { assertCleanGit } from "./clean-git.js";
+import { gitChangelog } from "./git-changelog.js";
+import { incrementVersion } from "./increment-version.js";
+import { getPackageJson } from "./package-json.js";
 
 type Package = {
   name: string;
@@ -26,11 +26,6 @@ const packages: Package[] = [
     name: "app",
     dirPath: "app",
     tagName: "app",
-  },
-  {
-    name: "app-foundations",
-    dirPath: "app-foundations",
-    tagName: "app-foundations",
   },
   {
     name: "chromeless",
@@ -53,43 +48,38 @@ const packages: Package[] = [
     tagName: "config-helpers/nextjs",
   },
   {
-    name: "csf3",
-    dirPath: "csf3",
-    tagName: "csf3",
-  },
-  {
-    name: "e2e-test-runner",
-    dirPath: "e2e-test-runner",
-    tagName: "e2e-test-runner",
-  },
-  {
     name: "iframe",
     dirPath: "iframe",
     tagName: "iframe",
   },
   {
+    name: "plugin-preact",
+    dirPath: "framework-plugins/preact",
+    tagName: "plugins/preact",
+  },
+  {
     name: "plugin-react",
-    dirPath: "frameworks/react",
+    dirPath: "framework-plugins/react",
     tagName: "plugins/react",
   },
   {
     name: "plugin-solid",
-    dirPath: "frameworks/solid",
+    dirPath: "framework-plugins/solid",
     tagName: "plugins/solid",
   },
   {
     name: "plugin-svelte",
-    dirPath: "frameworks/svelte",
+    dirPath: "framework-plugins/svelte",
     tagName: "plugins/svelte",
   },
   {
     name: "plugin-vue2",
-    dirPath: "frameworks/vue2",
+    dirPath: "framework-plugins/vue2",
     tagName: "plugins/vue2",
   },
   {
     name: "plugin-vue3",
-    dirPath: "frameworks/vue3",
+    dirPath: "framework-plugins/vue3",
     tagName: "plugins/vue3",
   },
   {
@@ -98,9 +88,19 @@ const packages: Package[] = [
     tagName: "properties",
   },
   {
+    name: "screenshot",
+    dirPath: "screenshot",
+    tagName: "screenshot",
+  },
+  {
     name: "serializable-values",
     dirPath: "serializable-values",
     tagName: "serializable-values",
+  },
+  {
+    name: "storybook-helpers",
+    dirPath: "storybook-helpers",
+    tagName: "storybook-helpers",
   },
   {
     name: "testing",
@@ -150,6 +150,7 @@ async function main() {
   }
 
   const releasedPackages: string[] = [];
+  const forceReleasePackages: Record<string, Set<string>> = {};
   while (Object.entries(localDependencies).length > 0) {
     const nextPackageWithoutDeps = Object.entries(localDependencies).find(
       ([_, deps]) => deps.size === 0
@@ -169,9 +170,17 @@ async function main() {
     const dependents = Object.entries(localDependencies)
       .filter(([_, deps]) => deps.has(scopedName))
       .map(([name]) => name);
-    const released = await preparePackageRelease(packageInfo, dependents);
+    const released = await preparePackageRelease(
+      packageInfo,
+      dependents,
+      forceReleasePackages[scopedName]
+    );
     if (released) {
-      releasedPackages.push(released);
+      releasedPackages.push(released.versionedPackageName);
+      for (const packageName of released.impactedPackageNames) {
+        forceReleasePackages[packageName] ||= new Set();
+        forceReleasePackages[packageName]?.add(released.versionedPackageName);
+      }
     }
     for (const deps of Object.values(localDependencies)) {
       deps.delete(scopedName);
@@ -195,8 +204,9 @@ async function main() {
 
 async function preparePackageRelease(
   packageInfo: Package,
-  dependents: string[]
-): Promise<string | null> {
+  dependents: string[],
+  majorDependencyUpdates: Set<string> | null = null
+) {
   const packageName = `@previewjs/${packageInfo.name}`;
   const packageJson = getPackageJson(`${packageInfo.dirPath}/package.json`);
   const { version: currentVersion } = await packageJson.read();
@@ -207,12 +217,18 @@ async function preparePackageRelease(
     packageInfo.dirPath,
     ...(packageInfo.additionalChangelogPath || []),
   ]);
-  if (!changelog) {
+  if (!changelog && !majorDependencyUpdates) {
     console.log(`There is nothing to release.\n`);
     return null;
   }
   const prompt = inquirer.createPromptModule();
-  console.log(`You are about to release the following:\n${changelog}`);
+  console.log(`You are about to release the following:`);
+  if (majorDependencyUpdates) {
+    for (const dependency of majorDependencyUpdates) {
+      console.log(`- major dependency update: ${dependency}`);
+    }
+  }
+  console.log(changelog);
   const { shouldRelease } = await prompt({
     name: "shouldRelease",
     type: "confirm",
@@ -222,6 +238,7 @@ async function preparePackageRelease(
     return null;
   }
   const version = await incrementVersion(currentVersion);
+  const isMajorUpdate = version.endsWith(".0.0");
   await packageJson.updateVersion(version);
   for (const dependent of dependents) {
     const depPackageInfo = packages.find((p) => p.name === dependent);
@@ -232,7 +249,10 @@ async function preparePackageRelease(
       `${depPackageInfo.dirPath}/package.json`
     ).updateDependency(packageName, version);
   }
-  return `${packageName}@v${version}`;
+  return {
+    versionedPackageName: `${packageName}@v${version}`,
+    impactedPackageNames: isMajorUpdate ? dependents : [],
+  };
 }
 
 main().catch((e) => {

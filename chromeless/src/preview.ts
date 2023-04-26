@@ -1,50 +1,62 @@
-import { RPCs } from "@previewjs/api";
-import type { FrameworkPluginFactory } from "@previewjs/core";
+import type { Workspace } from "@previewjs/core";
 import {
-  generateDefaultProps,
+  generateCallbackProps,
   generatePropsAssignmentSource,
 } from "@previewjs/properties";
-import type { Reader } from "@previewjs/vfs";
 import type playwright from "playwright";
+import ts from "typescript";
 import { setupPreviewEventListener } from "./event-listener";
 import { getPreviewIframe } from "./iframe";
-import { render } from "./render";
-import { createChromelessWorkspace } from "./workspace";
 
 export async function startPreview({
-  frameworkPluginFactories,
+  workspace,
   page,
-  rootDirPath,
   port,
-  reader,
 }: {
-  frameworkPluginFactories: FrameworkPluginFactory[];
+  workspace: Workspace;
   page: playwright.Page;
-  rootDirPath: string;
-  port: number;
-  reader?: Reader;
+  port?: number;
 }) {
-  const workspace = await createChromelessWorkspace({
-    rootDirPath,
-    reader,
-    frameworkPluginFactories,
-  });
-  const preview = await workspace.preview.start(async () => port);
+  const preview = await workspace.preview.start(
+    port ? async () => port : undefined
+  );
   await page.goto(preview.url());
 
   // This callback will be invoked each time a component is done rendering.
   let onRenderingDone = () => {
     // No-op by default.
   };
+  let onRenderingError = (_e: any) => {
+    // No-op by default.
+  };
+  let failOnErrorLog = false;
+  let lastErrorLog: string | null = null;
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
-      onRenderingDone();
+      if (event.success) {
+        onRenderingDone();
+      } else {
+        if (lastErrorLog) {
+          onRenderingError(new Error(lastErrorLog));
+        } else {
+          // The error log should be coming straight after.
+          failOnErrorLog = true;
+        }
+      }
+    } else if (event.kind === "log-message" && event.level === "error") {
+      lastErrorLog = event.message;
+      if (failOnErrorLog) {
+        onRenderingError(new Error(event.message));
+      }
     }
   });
 
   return {
     events,
     iframe: {
+      async waitForIdle() {
+        await waitUntilNetworkIdle(page);
+      },
       async waitForSelector(
         selector: string,
         options: {
@@ -104,50 +116,97 @@ export async function startPreview({
     },
     async show(componentId: string, propsAssignmentSource?: string) {
       const filePath = componentId.split(":")[0]!;
-      const { components } = await workspace.localRpc(RPCs.DetectComponents, {
+      const { components } = await workspace.detectComponents({
         filePaths: [filePath],
       });
-      const detectedComponents = components[filePath] || [];
-      const matchingDetectedComponent = detectedComponents.find(
-        (c) => componentId === `${filePath}:${c.name}`
+      const matchingDetectedComponent = components.find(
+        (c) => componentId === c.componentId
       );
       if (!matchingDetectedComponent) {
         throw new Error(
           `Component may be previewable but was not detected by framework plugin: ${componentId}`
         );
       }
-      const component = {
-        componentName: matchingDetectedComponent.name,
-        filePath,
-      };
-      const computePropsResponse = await workspace.localRpc(
-        RPCs.ComputeProps,
-        component
-      );
-      const defaultProps = generateDefaultProps(
-        computePropsResponse.types.props,
-        computePropsResponse.types.all
+      const computePropsResponse = await workspace.computeProps({
+        componentIds: [componentId],
+      });
+      const propsType = computePropsResponse.components[componentId]!.props;
+      const autogenCallbackProps = generateCallbackProps(
+        propsType,
+        computePropsResponse.types
       );
       if (!propsAssignmentSource) {
-        propsAssignmentSource = generatePropsAssignmentSource(
-          computePropsResponse.types.props,
-          defaultProps.keys,
-          computePropsResponse.types.all
-        );
+        propsAssignmentSource =
+          matchingDetectedComponent.info.kind === "story"
+            ? "properties = null"
+            : generatePropsAssignmentSource(
+                propsType,
+                autogenCallbackProps.keys,
+                computePropsResponse.types
+              );
       }
-      const donePromise = new Promise<void>((resolve) => {
+      const donePromise = new Promise<void>((resolve, reject) => {
         onRenderingDone = resolve;
+        onRenderingError = reject;
       });
-      await render(page, {
-        ...component,
-        defaultPropsSource: defaultProps.source,
-        propsAssignmentSource,
-      });
+      await waitUntilNetworkIdle(page);
+      await page.evaluate(
+        async (component) => {
+          // It's possible that window.renderComponent isn't ready yet.
+          let waitStart = Date.now();
+          const timeoutSeconds = 10;
+          while (
+            !window.renderComponent &&
+            Date.now() - waitStart < timeoutSeconds * 1000
+          ) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+          if (!window.renderComponent) {
+            throw new Error(
+              `window.renderComponent() isn't available after waiting ${timeoutSeconds} seconds`
+            );
+          }
+          window.renderComponent(component);
+        },
+        {
+          componentId,
+          autogenCallbackPropsSource: transpile(
+            `autogenCallbackProps = ${autogenCallbackProps.source}`
+          ),
+          propsAssignmentSource: transpile(propsAssignmentSource!),
+        }
+      );
       await donePromise;
+      await waitUntilNetworkIdle(page);
     },
     async stop() {
       await preview.stop();
       await workspace.dispose();
     },
   };
+}
+
+function transpile(source: string) {
+  // Transform JSX if required.
+  try {
+    return ts.transpileModule(source, {
+      compilerOptions: {
+        target: ts.ScriptTarget.ES2022,
+        jsx: ts.JsxEmit.React,
+        jsxFactory: "__jsxFactory__",
+      },
+    }).outputText;
+  } catch (e) {
+    throw new Error(`Error transforming source:\n${source}\n\n${e}`);
+  }
+}
+
+async function waitUntilNetworkIdle(page: playwright.Page) {
+  await page.waitForLoadState("networkidle");
+  try {
+    await (await getPreviewIframe(page)).waitForLoadState("networkidle");
+  } catch (e) {
+    // It's OK for the iframe to be replaced by another one, in which case wait again.
+    await (await getPreviewIframe(page)).waitForLoadState("networkidle");
+  }
 }

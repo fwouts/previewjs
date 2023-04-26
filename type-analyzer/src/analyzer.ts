@@ -3,29 +3,31 @@ import path from "path";
 import ts from "typescript";
 import {
   ANY_TYPE,
-  arrayType,
   BOOLEAN_TYPE,
   CollectedTypes,
   EMPTY_OBJECT_TYPE,
+  NEVER_TYPE,
+  NULL_TYPE,
+  NUMBER_TYPE,
+  OptionalType,
+  ParameterizableType,
+  STRING_TYPE,
+  UNKNOWN_TYPE,
+  VOID_TYPE,
+  ValueType,
+  arrayType,
   enumType,
   functionType,
   literalType,
   mapType,
   maybeOptionalType,
   namedType,
-  NEVER_TYPE,
-  NULL_TYPE,
-  NUMBER_TYPE,
   objectType,
-  ParameterizableType,
   promiseType,
   recordType,
   setType,
-  STRING_TYPE,
   tupleType,
-  UNKNOWN_TYPE,
-  ValueType,
-  VOID_TYPE,
+  unionType,
 } from "./definitions";
 import { computeIntersection } from "./intersection";
 import { stripUnusedTypes } from "./strip-unused-types";
@@ -39,26 +41,30 @@ export function createTypeAnalyzer(options: {
   collected?: CollectedTypes;
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
   specialTypes?: Record<string, ValueType>;
+  printWarnings?: boolean;
 }): TypeAnalyzer {
   return new TypeAnalyzer(
     options.rootDirPath,
     options.reader,
     options.collected || {},
     options.specialTypes || {},
-    options.tsCompilerOptions || {}
+    options.tsCompilerOptions || {},
+    options.printWarnings || false
   );
 }
 
 class TypeAnalyzer {
   private service: ts.LanguageService | null = null;
   private entryPointFilePaths: string[] = [];
+  private printedWarnings = new Set<string>();
 
   constructor(
     private readonly rootDirPath: string,
     reader: Reader,
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
-    tsCompilerOptions: Partial<ts.CompilerOptions>
+    tsCompilerOptions: Partial<ts.CompilerOptions>,
+    private readonly printWarnings: boolean
   ) {
     this.service = ts.createLanguageService(
       typescriptServiceHost({
@@ -80,11 +86,38 @@ class TypeAnalyzer {
     if (!program) {
       throw new Error(`No program available.`);
     }
+    if (this.printWarnings) {
+      const semanticDiagnostics = program.getSemanticDiagnostics();
+      let printedSemanticWarningsHeader = false;
+      let lastFileName = "";
+      for (const diagnostic of semanticDiagnostics) {
+        const messageText =
+          typeof diagnostic.messageText === "string"
+            ? diagnostic.messageText
+            : diagnostic.messageText.messageText;
+        if (this.printedWarnings.has(messageText)) {
+          continue;
+        }
+        if (!printedSemanticWarningsHeader) {
+          console.warn(
+            "Warning: encountered some TypeScript error(s) while resolving types.\nThis may be safe to ignore, but could help point out why some components are not detected by Preview.js."
+          );
+          printedSemanticWarningsHeader = true;
+        }
+        if (diagnostic.file && lastFileName !== diagnostic.file.fileName) {
+          lastFileName = diagnostic.file.fileName;
+          console.warn(`${path.relative(this.rootDirPath, lastFileName)}:`);
+        }
+        console.warn(messageText);
+        this.printedWarnings.add(messageText);
+      }
+    }
     return new TypeResolver(
       this.rootDirPath,
       this.collected,
       this.specialTypes,
-      program
+      program,
+      this.printWarnings
     );
   }
 
@@ -101,7 +134,8 @@ class TypeResolver {
     private readonly rootDirPath: string,
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
-    private readonly program: ts.Program
+    private readonly program: ts.Program,
+    private readonly printWarnings: boolean
   ) {
     this.checker = program.getTypeChecker();
   }
@@ -118,7 +152,7 @@ class TypeResolver {
     const resolved = this.resolveTypeInternal(type);
     return {
       type: resolved,
-      collected: stripUnusedTypes(this.collected, resolved),
+      collected: stripUnusedTypes(this.collected, [resolved]),
     };
   }
 
@@ -163,11 +197,13 @@ class TypeResolver {
       try {
         return this.resolveUncollectedType(type, genericTypeNames);
       } catch (e: any) {
-        console.debug(
-          `Unable to resolve uncollected type ${this.checker.typeToString(
-            type
-          )}\n\n${e.stack || e.message}`
-        );
+        if (this.printWarnings) {
+          console.warn(
+            `Unable to resolve type ${this.checker.typeToString(type)}\n\n${
+              e.stack || e.message
+            }`
+          );
+        }
         throw e;
       }
     }
@@ -376,11 +412,13 @@ class TypeResolver {
       for (const t of type.types) {
         const subtype = this.resolveTypeInternal(t, genericTypeNames);
         if (!subtype) {
-          console.debug(
-            `Unable to resolve ${
-              type.isUnion() ? "union" : "intersection"
-            } subtype ${this.checker.typeToString(t)}`
-          );
+          if (this.printWarnings) {
+            console.warn(
+              `Unable to resolve ${
+                type.isUnion() ? "union" : "intersection"
+              } subtype ${this.checker.typeToString(t)}`
+            );
+          }
           return UNKNOWN_TYPE;
         }
         subtypes.push(subtype);
@@ -421,7 +459,7 @@ class TypeResolver {
           this.resolveTypeInternal(indexType, genericTypeNames)
         );
       }
-      const fields: Record<string, ValueType> = {};
+      const fields: Record<string, ValueType | OptionalType> = {};
       for (const property of type.getProperties()) {
         const [propertyName, ...nestedPath] = property.name.split(".");
         if (nestedPath.length > 0) {
@@ -437,6 +475,8 @@ class TypeResolver {
         }
         let propertyTsType: ts.Type | undefined;
         if (
+          property.valueDeclaration &&
+          ts.canHaveModifiers(property.valueDeclaration) &&
           property.valueDeclaration?.modifiers?.find(
             (m) =>
               m.kind === ts.SyntaxKind.PrivateKeyword ||
@@ -469,20 +509,28 @@ class TypeResolver {
             property.name
           );
         }
-        fields[propertyName!] = maybeOptionalType(
-          propertyTsType
-            ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
-            : UNKNOWN_TYPE,
-          Boolean(property.flags & ts.SymbolFlags.Optional)
-        );
+        let fieldType = propertyTsType
+          ? this.resolveTypeInternal(propertyTsType, genericTypeNames)
+          : UNKNOWN_TYPE;
+        const optional = Boolean(property.flags & ts.SymbolFlags.Optional);
+        if (optional) {
+          if (fieldType.kind === "union") {
+            fieldType = unionType(
+              fieldType.types.filter((t) => t.kind !== "void")
+            );
+          }
+        }
+        fields[propertyName!] = maybeOptionalType(fieldType, optional);
       }
       return objectType(fields);
     }
-    console.debug(
-      `Unable to recognise type with flags ${flags} in ${this.checker.typeToString(
-        type
-      )}`
-    );
+    if (this.printWarnings) {
+      console.warn(
+        `Unable to recognise type with flags ${flags} in ${this.checker.typeToString(
+          type
+        )}`
+      );
+    }
     return UNKNOWN_TYPE;
   }
 

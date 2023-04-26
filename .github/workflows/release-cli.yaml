@@ -5,10 +5,6 @@ on:
     types:
       - created
 
-defaults:
-  run:
-    working-directory: integrations/cli
-
 jobs:
   build:
     if: startsWith(github.ref, 'refs/tags/cli/v')
@@ -29,14 +25,16 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-exclude-test-apps-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-
+            ${{ runner.os }}-exclude-test-apps-
       - uses: pnpm/action-setup@v2.2.4
         with:
-          run_install: true
+          run_install: |
+            - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
+      - run: pnpm turbo build --filter="./integrations/cli"
       - name: Extract version from package.json
-        uses: sergeysova/jq-action@v2.2.1
+        uses: sergeysova/jq-action@v2.3.0
         id: version
         with:
           cmd: "jq .version integrations/cli/package.json -r"
@@ -45,4 +43,4 @@ jobs:
       - name: Check that versions match
         run: '[[ "${{ steps.version.outputs.value }}" == "$VERSION" ]] && echo "Versions match"'
       - name: Publish
-        run: pnpm publish --no-git-checks --access public
+        run: cd integrations/cli && pnpm publish --no-git-checks --access public

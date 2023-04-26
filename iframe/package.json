@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/iframe",
-  "version": "2.1.1",
+  "version": "9.0.4",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -14,22 +14,15 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/iframe --no-deps --include-dependencies",
     "build": "tsc && unbuild"
   },
   "devDependencies": {
-    "unbuild": "0.9.1",
-    "vite": "3.2.4"
+    "typescript": "^4.9.5",
+    "unbuild": "^1.2.1",
+    "vite": "^4.3.1"
   }
 }

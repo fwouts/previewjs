@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/properties",
-  "version": "0.0.1",
+  "version": "2.2.6",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -14,27 +14,21 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/properties --no-deps --include-dependencies",
     "build": "tsc && unbuild",
-    "test": "vitest --no-threads"
+    "test": "vitest"
   },
   "dependencies": {
-    "@previewjs/serializable-values": "^3.1.0",
-    "@previewjs/type-analyzer": "^4.0.6"
+    "@previewjs/serializable-values": "^6.0.7",
+    "@previewjs/type-analyzer": "^7.3.5"
   },
   "devDependencies": {
-    "unbuild": "0.9.1",
-    "vitest": "0.25.2"
+    "typescript": "^4.9.5",
+    "unbuild": "^1.2.1",
+    "vite": "^4.3.1",
+    "vitest": "^0.30.1"
   }
 }

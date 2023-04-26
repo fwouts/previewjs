@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
-import type * as api from "@previewjs/api";
 import { load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
 import open from "open";
+import url from "url";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
 );
@@ -38,31 +39,6 @@ program
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,
       absoluteFilePath: dirPath || process.cwd(),
-      persistedStateManager: {
-        get: async (req) => {
-          const cookie = req.cookies["state"];
-          if (cookie) {
-            return JSON.parse(cookie);
-          }
-          return {};
-        },
-        update: async (req, res) => {
-          const existingCookie = req.cookies["state"];
-          let existingState: api.PersistedState = {};
-          if (existingCookie) {
-            existingState = JSON.parse(existingCookie);
-          }
-          const state = {
-            ...existingState,
-            ...req.body,
-          };
-          res.cookie("state", JSON.stringify(state), {
-            httpOnly: true,
-            sameSite: "strict",
-          });
-          return state;
-        },
-      },
     });
     if (!workspace) {
       console.error(chalk.red(`No workspace detected.`));

@@ -1,3 +1,6 @@
+import { computeIntersection } from "./intersection";
+import { computeUnion } from "./union";
+
 export type ValueType =
   | AnyType
   | UnknownType
@@ -19,7 +22,6 @@ export type ValueType =
   | UnionType
   | IntersectionType
   | FunctionType
-  | OptionalType
   | PromiseType
   | NamedType;
 
@@ -87,10 +89,10 @@ export function enumType(options: {
 
 export interface ObjectType {
   kind: "object";
-  fields: { [fieldName: string]: ValueType };
+  fields: { [fieldName: string]: ValueType | OptionalType };
 }
 export function objectType(fields: {
-  [fieldName: string]: ValueType;
+  [fieldName: string]: ValueType | OptionalType;
 }): ObjectType {
   return {
     kind: "object",
@@ -162,7 +164,13 @@ export interface UnionType {
   kind: "union";
   types: ValueType[];
 }
-export function unionType(types: ValueType[]): ValueType {
+export function unionType(
+  types: ValueType[],
+  { skipOptimize }: { skipOptimize?: boolean } = {}
+): ValueType {
+  if (!skipOptimize) {
+    return computeUnion(types);
+  }
   if (types.length === 0) {
     return NEVER_TYPE;
   }
@@ -179,7 +187,13 @@ export interface IntersectionType {
   kind: "intersection";
   types: ValueType[];
 }
-export function intersectionType(types: ValueType[]): ValueType {
+export function intersectionType(
+  types: ValueType[],
+  { skipOptimize }: { skipOptimize?: boolean } = {}
+): ValueType {
+  if (!skipOptimize) {
+    return computeIntersection(types);
+  }
   if (types.length === 0) {
     return ANY_TYPE;
   }
@@ -207,23 +221,28 @@ export interface OptionalType {
   type: ValueType;
 }
 export function optionalType(type: ValueType): OptionalType {
-  if (type.kind === "optional") {
-    return type;
-  }
   return {
     kind: "optional",
     type,
   };
 }
 export function maybeOptionalType(
-  type: ValueType,
-  optional: boolean
-): ValueType {
+  type: ValueType | OptionalType,
+  optional = false
+): ValueType | OptionalType {
   if (type.kind === "optional") {
     return type;
   }
   if (optional) {
     return optionalType(type);
+  }
+  if (type.kind === "union") {
+    const hasVoid = type.types.findIndex((t) => t.kind === "void");
+    if (hasVoid !== -1) {
+      return optionalType(
+        unionType(type.types.filter((t) => t.kind !== "void"))
+      );
+    }
   }
   return type;
 }

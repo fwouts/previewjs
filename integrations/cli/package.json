@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/cli",
-  "version": "1.16.2",
+  "version": "1.22.0",
   "license": "https://previewjs.com/eula",
   "author": {
     "name": "François Wouts",
@@ -14,28 +14,28 @@
     "url": "https://github.com/fwouts/previewjs/issues"
   },
   "homepage": "https://previewjs.com",
+  "type": "module",
   "bin": {
     "previewjs": "dist/main.js"
   },
   "scripts": {
-    "prepublish": "cd .. && pnpm turbo run build --scope=@previewjs/cli --no-deps --include-dependencies",
-    "build": "rimraf dist && tsc && node esbuild.js && shx cp -rL ../../loader/src/release/node_modules dist/node_modules",
-    "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app ts-node-dev --respawn src/main.ts",
-    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro ts-node-dev --respawn src/main.ts"
+    "build": "rimraf dist && tsc && node esbuild.js",
+    "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app nodemon --exec ts-node-esm src/main.ts",
+    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro nodemon --exec ts-node-esm src/main.ts"
   },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
     "@previewjs/loader": "workspace:*",
-    "@types/node": "18.11.9",
-    "chalk": "^4.1.2",
-    "commander": "^9.4.1",
-    "cross-env": "7.0.3",
-    "esbuild": "0.15.14",
-    "open": "^8.4.0",
-    "rimraf": "3.0.2",
-    "shx": "0.3.4",
-    "ts-node-dev": "2.0.0",
-    "typescript": "4.8.4"
+    "@types/node": "^18.16.1",
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.17.18",
+    "nodemon": "^2.0.22",
+    "open": "^9.1.0",
+    "rimraf": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
   },
   "engines": {
     "node": "^14.18.0 || >=16.0.0"

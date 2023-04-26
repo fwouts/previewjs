@@ -1,4 +1,4 @@
-import execa from "execa";
+import { execa } from "execa";
 
 export async function assertCleanGit() {
   const { stdout: gitBranch } = await execa("git", [

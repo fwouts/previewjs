@@ -1,10 +1,11 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { PreviewConfig } from "@previewjs/config";
-import { pathExistsSync } from "fs-extra";
+import fs from "fs-extra";
 import path from "path";
 import { URLSearchParams } from "url";
 import type { Plugin } from "vite";
 
-const COMPONENT_LOADER_MODULE = "/@component-loader.js";
+export const COMPONENT_LOADER_MODULE = "/@component-loader.js";
 
 type PluginOptions = {
   rootDirPath: string;
@@ -39,11 +40,11 @@ function generateComponentLoaderModule(
     config: { wrapper },
   }: PluginOptions
 ): string {
-  const filePath = urlParams.get("p");
-  const componentName = urlParams.get("c");
-  if (filePath === null || componentName === null) {
+  const componentId = urlParams.get("c");
+  if (componentId === null) {
     throw new Error(`Invalid use of ${COMPONENT_LOADER_MODULE} module`);
   }
+  const { filePath } = decodeComponentId(componentId);
   const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
@@ -64,7 +65,7 @@ export async function refresh() {
   const shouldAbortRender = () => renderId !== (getLatestComponentLoadId() + "-" + refreshId);
   let loadingError = null;
   ${
-    wrapper && pathExistsSync(path.join(rootDirPath, wrapper.path))
+    wrapper && fs.pathExistsSync(path.join(rootDirPath, wrapper.path))
       ? `
   let wrapperModulePromise;
   if (import.meta.hot.data.preloadedWrapperModule) {
@@ -106,8 +107,7 @@ export async function refresh() {
     wrapperModule,
     wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
     componentModule,
-    componentFilePath: ${JSON.stringify(filePath)},
-    componentName: ${JSON.stringify(componentName)},
+    componentId: ${JSON.stringify(componentId)},
     renderId,
     shouldAbortRender,
     loadingError,

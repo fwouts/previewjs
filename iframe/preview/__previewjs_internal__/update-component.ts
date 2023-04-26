@@ -6,8 +6,7 @@ export async function updateComponent({
   wrapperModule,
   wrapperName,
   componentModule,
-  componentFilePath,
-  componentName,
+  componentId,
   renderId,
   shouldAbortRender,
   loadingError,
@@ -16,8 +15,7 @@ export async function updateComponent({
   wrapperModule: any;
   wrapperName: string;
   componentModule: any;
-  componentFilePath: string;
-  componentName: string;
+  componentId: string;
   renderId: number;
   shouldAbortRender: () => boolean;
   loadingError: string | null;
@@ -38,37 +36,32 @@ export async function updateComponent({
     sendMessageFromPreview({
       kind: "before-render",
     });
-    const { variants, render } = await load({
+    const { render, jsxFactory } = await load({
       wrapperModule,
       wrapperName,
-      componentFilePath,
       componentModule,
-      componentName,
+      componentId,
       renderId,
       shouldAbortRender,
     });
     if (shouldAbortRender()) {
       return;
     }
-    let defaultProps = {};
-    eval(`defaultProps = ${currentState.defaultPropsSource};`);
-    let properties = {};
-    eval(`${currentState.propsAssignmentSource};`);
+    const { autogenCallbackProps, properties } =
+      await componentModule.PreviewJsEvaluateLocally(
+        currentState.autogenCallbackPropsSource,
+        currentState.propsAssignmentSource,
+        jsxFactory
+      );
     sendMessageFromPreview({
       kind: "rendering-setup",
-      filePath: componentFilePath,
-      componentName,
-      // Note: we must remove `props` since it may not be serialisable.
-      variants: variants?.map(({ key, label }) => ({ key, label })),
+      componentId,
     });
-    const props = transformFunctions(
-      {
-        ...defaultProps,
-        ...properties,
-      },
-      []
-    );
-    await render(props);
+    await render(({ presetProps, presetGlobalProps }) => ({
+      ...transformFunctions(autogenCallbackProps, []),
+      ...transformFunctions(presetGlobalProps, []),
+      ...transformFunctions(properties || presetProps, []),
+    }));
     if (shouldAbortRender()) {
       return;
     }
@@ -87,7 +80,7 @@ export async function updateComponent({
  * Ensures that any call to a function within objects and arrays is automatically intercepted
  * and shown to the user.
  */
-function transformFunctions(value: unknown, path: string[]): unknown {
+function transformFunctions(value: any, path: string[]): any {
   if (value && typeof value === "object") {
     if (Array.isArray(value)) {
       // Array.
@@ -97,6 +90,12 @@ function transformFunctions(value: unknown, path: string[]): unknown {
     }
     if (value.constructor === Object) {
       // Plain object (i.e. not Set or Map or any class instance).
+      if (value.$$typeof) {
+        // This is likely a React component, e.g. instantiated in a JSX expression.
+        // We don't want to show an action invoked when the JSX function is invoked,
+        // so skip it.
+        return value;
+      }
       return Object.fromEntries(
         Object.entries(value).map(([k, v]) => [
           k,

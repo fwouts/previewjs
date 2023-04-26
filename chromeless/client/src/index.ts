@@ -1,9 +1,9 @@
-import { createController, PreviewEvent } from "@previewjs/iframe";
+import type { PreviewEvent } from "@previewjs/iframe";
+import { createController } from "@previewjs/iframe";
 
 export type Component = {
-  filePath: string;
-  componentName: string;
-  defaultPropsSource: string;
+  componentId: string;
+  autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 };
 
@@ -25,8 +25,7 @@ const controller = createController({
 
 window.onload = () => {
   controller.start();
-};
-
-window.renderComponent = (component: Component) => {
-  controller.loadComponent(component);
+  window.renderComponent = (component: Component) => {
+    controller.loadComponent(component);
+  };
 };

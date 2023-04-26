@@ -1,31 +1,10 @@
+import type { SerializableValue } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
-import type { PersistedState } from "./persisted-state";
 import type { RPC } from "./rpc";
-
-export const GetInfo: RPC<
-  void,
-  {
-    appInfo: {
-      platform: string;
-      version: string;
-    };
-  }
-> = {
-  path: "get-info",
-};
-
-export const GetState: RPC<void, PersistedState> = {
-  path: "get-state",
-};
-
-export const UpdateState: RPC<Partial<PersistedState>, PersistedState> = {
-  path: "update-state",
-};
 
 export const ComputeProps: RPC<
   {
-    filePath: string;
-    componentName: string;
+    componentIds: string[];
   },
   ComputePropsResponse
 > = {
@@ -33,10 +12,13 @@ export const ComputeProps: RPC<
 };
 
 export type ComputePropsResponse = {
-  types: {
-    props: ValueType;
-    all: CollectedTypes;
+  components: {
+    [componentId: string]: {
+      info: ComponentInfo;
+      props: ValueType;
+    };
   };
+  types: CollectedTypes;
 };
 
 export const DetectComponents: RPC<
@@ -50,25 +32,27 @@ export const DetectComponents: RPC<
 };
 
 export type DetectComponentsResponse = {
-  components: {
-    [filePath: string]: Component[];
-  };
+  components: Component[];
 };
 
 export type Component = {
-  name: string;
+  componentId: string;
   start: number;
   end: number;
-  info:
-    | {
-        kind: "component";
-        exported: boolean;
-      }
-    | {
-        kind: "story";
-        associatedComponent: {
-          filePath: string;
-          name: string;
-        } | null;
-      };
+  info: ComponentInfo;
 };
+
+export type ComponentInfo =
+  | {
+      kind: "component";
+      exported: boolean;
+    }
+  | {
+      kind: "story";
+      args: {
+        start: number;
+        end: number;
+        value: SerializableValue;
+      } | null;
+      associatedComponentId: string;
+    };

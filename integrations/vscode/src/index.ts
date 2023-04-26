@@ -1,11 +1,12 @@
-import type { Client } from "@previewjs/server/client";
+import { destroyDaemon } from "@previewjs/daemon/client";
+import fs from "fs";
 import path from "path";
 import vscode from "vscode";
 import { clientId } from "./client-id";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
 import { ensurePreviewServerStarted } from "./preview-server";
-import { startPreviewJsServer } from "./start-server";
-import { openUsageOnFirstTimeStart } from "./welcome";
+import { daemonLockFilePath } from "./start-daemon";
+import { createState } from "./state";
 
 const codeLensLanguages = [
   "javascript",
@@ -36,48 +37,12 @@ let dispose = async () => {
   // Do nothing.
 };
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate() {
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
-
-  const previewjsInitPromise = startPreviewJsServer(outputChannel)
-    .catch((e) => {
-      outputChannel.appendLine(e.stack);
-      return null;
-    })
-    .then((p) => {
-      if (!p) {
-        outputChannel.appendLine("Preview.js server could not be started.");
-        outputChannel.show();
-        return null;
-      }
-      return p;
-    });
+  let currentState = createState({ outputChannel });
 
   const config = vscode.workspace.getConfiguration();
   let focusedOutputChannelForError = false;
-  const workspaceIds = new Set<string>();
-
-  async function getWorkspaceId(
-    previewjsClient: Client,
-    document: vscode.TextDocument
-  ) {
-    if (!path.isAbsolute(document.fileName)) {
-      return null;
-    }
-    const workspace = await previewjsClient.getWorkspace({
-      absoluteFilePath: document.fileName,
-    });
-    if (!workspace.workspaceId) {
-      return null;
-    }
-    if (!workspaceIds.has(workspace.workspaceId)) {
-      outputChannel.appendLine(
-        `✨ Created Preview.js workspace for: ${workspace.rootDirPath}`
-      );
-      workspaceIds.add(workspace.workspaceId);
-    }
-    return workspace.workspaceId;
-  }
 
   // Note: ESlint warning isn't relevant because we're correctly inferring arguments types.
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -99,38 +64,48 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   dispose = async () => {
-    const previewjsClient = await previewjsInitPromise;
-    await previewjsClient?.updateClientStatus({
-      clientId,
-      alive: false,
-    });
+    const state = await currentState;
+    if (state) {
+      await state.client.updateClientStatus({
+        clientId,
+        alive: false,
+      });
+      await closePreviewPanel(state);
+    }
     outputChannel.dispose();
   };
 
-  await openUsageOnFirstTimeStart(context);
+  vscode.window.onDidChangeActiveTextEditor(async (e) => {
+    const state = await currentState;
+    if (!state) {
+      return;
+    }
+    const components = await state.getComponents(e?.document);
+    vscode.commands.executeCommand(
+      "setContext",
+      "previewjs.componentsDetected",
+      components.length > 0
+    );
+  });
 
   if (config.get("previewjs.codelens", true)) {
     vscode.languages.registerCodeLensProvider(codeLensLanguages, {
       provideCodeLenses: catchErrors(async (document: vscode.TextDocument) => {
-        const previewjsClient = await previewjsInitPromise;
-        if (!previewjsClient) {
-          return [];
+        const state = await currentState;
+        if (!state) {
+          return;
         }
-        const workspaceId = await getWorkspaceId(previewjsClient, document);
-        if (!workspaceId) {
-          return [];
-        }
-        const { components } = await previewjsClient.analyzeFile({
-          workspaceId,
-          absoluteFilePath: document.fileName,
-        });
+        const components = await state.getComponents(document);
         return components.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
+          const componentName = c.componentId.substring(
+            c.componentId.indexOf(":") + 1
+          );
           lens.command = {
             command: "previewjs.open",
             arguments: [document, c.componentId],
-            title: `Open ${c.componentName} in Preview.js`,
+            title: `Open ${componentName} in Preview.js`,
           };
           return lens;
         });
@@ -145,26 +120,19 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.workspace.onDidSaveTextDocument(async (e) => {
       await updateDocument(e, true);
     });
-    vscode.window.onDidChangeActiveTextEditor(async (e) => {
-      if (!e) {
-        // Do nothing.
-        return;
-      }
-      await updateDocument(e.document);
-    });
     async function updateDocument(
       document: vscode.TextDocument,
       saved = false
     ) {
-      const previewjsClient = await previewjsInitPromise;
+      const state = await currentState;
       if (
-        !previewjsClient ||
+        !state ||
         !path.isAbsolute(document.fileName) ||
         !watchedExtensions.has(path.extname(document.fileName))
       ) {
         return;
       }
-      previewjsClient.updatePendingFile({
+      state.client.updatePendingFile({
         absoluteFilePath: document.fileName,
         utf8Content: saved ? null : document.getText(),
       });
@@ -172,11 +140,33 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   vscode.commands.registerCommand(
+    "previewjs.reset",
+    catchErrors(async () => {
+      outputChannel.appendLine("Resetting Preview.js...");
+      const state = await currentState;
+      if (state) {
+        state.dispose();
+      }
+      currentState = Promise.resolve(null);
+      destroyDaemon(daemonLockFilePath);
+      if (state) {
+        for (const rootDirPath of Object.values(state.workspaces)) {
+          fs.rmSync(path.join(rootDirPath, "node_modules", ".previewjs"), {
+            recursive: true,
+            force: true,
+          });
+        }
+      }
+      currentState = createState({ outputChannel });
+    })
+  );
+
+  vscode.commands.registerCommand(
     "previewjs.open",
     catchErrors(
       async (document?: vscode.TextDocument, componentId?: string) => {
-        const previewjsClient = await previewjsInitPromise;
-        if (!previewjsClient) {
+        const state = await currentState;
+        if (!state) {
           vscode.window.showErrorMessage(
             "Preview.js was unable to start successfully. Please check Preview.js output panel and consider filing a bug at https://github.com/fwouts/previewjs/issues."
           );
@@ -195,7 +185,7 @@ export async function activate(context: vscode.ExtensionContext) {
             return;
           }
         }
-        const workspaceId = await getWorkspaceId(previewjsClient, document);
+        const workspaceId = await state.getWorkspaceId(document);
         if (!workspaceId) {
           vscode.window.showErrorMessage(
             `No compatible workspace detected from ${document.fileName}`
@@ -206,10 +196,7 @@ export async function activate(context: vscode.ExtensionContext) {
           const offset = editor?.selection.active
             ? document.offsetAt(editor.selection.active)
             : 0;
-          const { components } = await previewjsClient.analyzeFile({
-            workspaceId,
-            absoluteFilePath: document.fileName,
-          });
+          const components = await state.getComponents(document);
           const component =
             components.find((c) => offset >= c.start && offset <= c.end) ||
             components[0];
@@ -221,11 +208,8 @@ export async function activate(context: vscode.ExtensionContext) {
           }
           componentId = component.componentId;
         }
-        const preview = await ensurePreviewServerStarted(
-          previewjsClient,
-          workspaceId
-        );
-        updatePreviewPanel(previewjsClient, preview.url, componentId);
+        const preview = await ensurePreviewServerStarted(state, workspaceId);
+        updatePreviewPanel(state, preview.url, componentId);
       }
     )
   );
@@ -233,7 +217,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 export async function deactivate() {
   await dispose();
-  await closePreviewPanel();
   dispose = async () => {
     // Do nothing.
   };

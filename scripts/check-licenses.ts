@@ -1,21 +1,19 @@
 import checker from "license-checker";
 import path from "path";
+import url from "url";
 import { inspect } from "util";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const starts = [
   path.join(__dirname, "..", "app"),
-  path.join(__dirname, "..", "integrations", "intellij", "controller"),
+  path.join(__dirname, "..", "integrations", "intellij", "daemon"),
   path.join(__dirname, "..", "integrations", "vscode"),
 ];
 
 async function main() {
   const allPackages = await extractPackagesFromDirectories(starts, []);
   // Check that we don't get false negatives by missing packages.
-  for (const packageName of [
-    "@previewjs/app",
-    "mobx-react-lite",
-    "@fortawesome/react-fontawesome",
-  ]) {
+  for (const packageName of ["@previewjs/app", "express", "@types/fs-extra"]) {
     if (!allPackages.find(({ name }) => name === packageName)) {
       throw new Error(`Expected to find package: ${packageName}`);
     }

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+  },
+  "include": ["preview", "src", "tests"],
+  "exclude": ["node_modules", "tests/apps"]
+}

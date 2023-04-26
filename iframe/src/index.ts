@@ -16,10 +16,9 @@ export interface PreviewIframeController {
 }
 
 export interface LoadComponentOptions {
-  filePath: string;
-  componentName: string;
+  componentId: string;
   propsAssignmentSource: string;
-  defaultPropsSource: string;
+  autogenCallbackPropsSource: string;
 }
 
 class PreviewIframeControllerImpl implements PreviewIframeController {
@@ -99,9 +98,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "rendering-setup":
         listener({
           kind: "rendering-setup",
-          info: {
-            variants: data.variants,
-          },
         });
         break;
       case "rendering-success":
@@ -218,9 +214,6 @@ export type BeforeRender = {
 
 export type RenderingSetup = {
   kind: "rendering-setup";
-  info: {
-    variants?: Variant[];
-  };
 };
 
 export interface RenderingDone {
@@ -248,24 +241,21 @@ export interface FileChanged {
   path: string;
 }
 
-export interface Variant {
-  key: string;
-  label: string;
-}
-
 export type RendererLoader = (options: {
   wrapperModule: any;
   wrapperName?: string;
-  componentFilePath: string;
   componentModule: any;
-  componentName?: string;
+  componentId: string;
   renderId: number;
   shouldAbortRender: () => boolean;
 }) => Promise<{
-  variants?: Array<
-    Variant & {
-      props: any;
-    }
-  >;
-  render: (props: any) => Promise<void>;
+  render: (getProps: GetPropsFn) => Promise<void>;
+  // Note: we use `any` here because it depends on the framework.
+  // This will be null if JSX isn't supported.
+  jsxFactory: ((type: any, props: any, ...children: any[]) => any) | null;
 }>;
+
+export type GetPropsFn = (options: {
+  presetGlobalProps: any;
+  presetProps: any;
+}) => Record<string, any>;
