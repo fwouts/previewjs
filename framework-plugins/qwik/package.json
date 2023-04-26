@@ -34,18 +34,19 @@
   },
   "dependencies": {
     "@builder.io/qwik": "^0.13.3",
-    "@previewjs/type-analyzer": "^4.0.6",
-    "@previewjs/vfs": "^1.2.9",
+    "@previewjs/type-analyzer": "^7.3.5",
+    "@previewjs/vfs": "^2.0.9",
     "fs-extra": "^10.1.0",
     "typescript": "^4.8.4"
   },
   "devDependencies": {
-    "@playwright/test": "1.27.1",
+    "@playwright/test": "1.32.3",
     "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
     "@previewjs/testing": "workspace:*",
-    "@types/fs-extra": "^9.0.13",
-    "unbuild": "0.9.1",
-    "vite": "3.2.4",
-    "vitest": "0.25.2"
+    "@types/fs-extra": "^11.0.1",
+    "unbuild": "1.2.1",
+    "vite": "4.3.1",
+    "vitest": "0.30.1"
   }
 }

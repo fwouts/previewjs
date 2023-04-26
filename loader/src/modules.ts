@@ -34,6 +34,7 @@ export async function loadModules({
     packageName
   );
   const frameworkPlugins: core.FrameworkPluginFactory[] = [
+    await importModule("@previewjs/plugin-qwik"),
     await importModule("@previewjs/plugin-solid"),
     await importModule("@previewjs/plugin-svelte"),
     await importModule("@previewjs/plugin-vue2"),

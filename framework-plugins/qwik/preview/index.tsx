@@ -1,7 +1,7 @@
 import type { RendererLoader } from "@previewjs/iframe";
 
 import { render } from "@builder.io/qwik";
-import { QWIK_LOADER } from "@builder.io/qwik/loader/index";
+import { QWIK_LOADER } from "@builder.io/qwik/loader";
 eval(QWIK_LOADER);
 
 const root = document.getElementById("root")!;
@@ -11,9 +11,10 @@ export const load: RendererLoader = async ({
   // wrapperModule,
   // wrapperName,
   componentModule,
-  componentName,
+  componentId,
   shouldAbortRender,
 }) => {
+  const componentName = componentId.substring(componentId.indexOf(":") + 1);
   // TODO: Support Wrapper?
   const Component = componentModule[componentName];
   return {
@@ -25,5 +26,6 @@ export const load: RendererLoader = async ({
       root.innerHTML = "";
       render(root, Component(props));
     },
+    jsxFactory: null,
   };
 };

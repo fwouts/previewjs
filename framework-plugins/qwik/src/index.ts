@@ -2,6 +2,7 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { EMPTY_OBJECT_TYPE } from "@previewjs/type-analyzer";
 import path from "path";
+import url from "url";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -14,6 +15,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     return true;
   },
   async create() {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
       pluginApiVersion: 3,
@@ -24,8 +26,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         // TODO: Implement for real.
         return [
           {
-            absoluteFilePath: "src/components/header/header.tsx",
-            name: "default",
+            componentId: "src/components/header/header.tsx:default",
             offsets: [[0, 1000]],
             info: {
               kind: "component",

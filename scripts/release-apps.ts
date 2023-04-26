@@ -33,6 +33,11 @@ async function main() {
     assert: { type: "json" },
   });
   const {
+    default: { version: qwikPluginVersion },
+  } = await import("../framework-plugins/qwik/package.json", {
+    assert: { type: "json" },
+  });
+  const {
     default: { version: reactPluginVersion },
   } = await import("../framework-plugins/react/package.json", {
     assert: { type: "json" },
@@ -65,6 +70,7 @@ async function main() {
         dependencies: {
           "@previewjs/core": coreVersion,
           "@previewjs/plugin-preact": preactPluginVersion,
+          "@previewjs/plugin-qwik": qwikPluginVersion,
           "@previewjs/plugin-react": reactPluginVersion,
           "@previewjs/plugin-solid": solidPluginVersion,
           "@previewjs/plugin-svelte": sveltePluginVersion,
