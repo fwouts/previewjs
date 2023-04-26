@@ -8,7 +8,6 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
 import url from "url";
-import { mergeConfig } from "vite";
 import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
@@ -25,12 +24,16 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     const svelteConfigPath = path.join(rootDirPath, "svelte.config.js");
     let alias: Record<string, string> = {};
+    let isSvelteKit = false;
     if (await fs.pathExists(svelteConfigPath)) {
       // Source: https://github.com/sveltejs/kit/blob/168547325c0044bc97c9c60aba1b70942dde22fe/packages/kit/src/core/config/index.js#L70
-      const config: sveltekit.Config = await import(
-        `${url.pathToFileURL(svelteConfigPath).href}?ts=${Date.now()}`
-      );
+      const config: sveltekit.Config = (
+        await import(
+          `${url.pathToFileURL(svelteConfigPath).href}?ts=${Date.now()}`
+        )
+      ).default;
       alias = config.kit?.alias || {};
+      isSvelteKit = Boolean(config.kit);
     }
     return {
       pluginApiVersion: 3,
@@ -41,10 +44,11 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          if (
-            absoluteFilePath.endsWith(".svelte") &&
-            (await fs.pathExists(absoluteFilePath))
-          ) {
+          if (absoluteFilePath.endsWith(".svelte")) {
+            const entry = await reader.read(absoluteFilePath);
+            if (entry?.kind !== "file") {
+              continue;
+            }
             components.push({
               componentId: generateComponentId({
                 filePath: path.relative(rootDirPath, absoluteFilePath),
@@ -53,9 +57,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
                   path.extname(absoluteFilePath)
                 ),
               }),
-              offsets: [
-                [0, (await fs.readFile(absoluteFilePath, "utf-8")).length],
-              ],
+              offsets: [[0, (await entry.read()).length]],
               info: {
                 kind: "component",
                 exported: true,
@@ -69,16 +71,21 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         return components;
       },
       viteConfig: (configuredPlugins) => ({
-        define: {
-          __SVELTEKIT_DEV__: "false",
-          __SVELTEKIT_APP_VERSION_POLL_INTERVAL__: "0",
-        },
-        resolve: {
-          alias: {
-            $app: "node_modules/@sveltejs/kit/src/runtime/app",
-            ...alias,
-          },
-        },
+        ...(isSvelteKit
+          ? {
+              define: {
+                __SVELTEKIT_DEV__: "false",
+                __SVELTEKIT_APP_VERSION_POLL_INTERVAL__: "0",
+              },
+              resolve: {
+                alias: {
+                  $app: "node_modules/@sveltejs/kit/src/runtime/app",
+                  ...alias,
+                },
+              },
+              publicDir: "static",
+            }
+          : {}),
         plugins: [
           ...configuredPlugins.filter(
             (plugin) =>
@@ -88,47 +95,34 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
               plugin.name !== "vite-plugin-sveltekit-setup" &&
               plugin.name !== "vite-plugin-sveltekit-compile"
           ),
-          configuredPlugins.find(
-            (plugin) =>
-              plugin.name.includes("sveltekit") ||
-              plugin.name.includes("svelte-kit")
-          )
-            ? {
-                name: "previewjs:sveltekit-static-dir",
-                config: (config) => {
-                  return mergeConfig(
-                    {
-                      publicDir: "static",
-                    },
-                    config
-                  );
-                },
-              }
-            : null,
           configuredPlugins.find((plugin) => plugin.name.includes("svelte"))
             ? null
             : svelte(),
-          {
-            name: "previewjs:fake-sveltekit-client",
-            transform(code, id) {
-              if (
-                id.includes("@sveltejs/kit/src/runtime/client/singletons.js")
-              ) {
-                // Prevent errors with missing client methods such as disable_scroll_handling.
-                return code
-                  .replace(`export let client`, `export let client = {}`)
-                  .replace(
-                    `url: notifiable_store({})`,
-                    `url: notifiable_store(document.location)`
-                  )
-                  .replace(
-                    `page: notifiable_store({})`,
-                    `page: notifiable_store({ url: document.location })`
-                  );
+          isSvelteKit
+            ? {
+                name: "previewjs:fake-sveltekit-client",
+                transform(code, id) {
+                  if (
+                    id.includes(
+                      "@sveltejs/kit/src/runtime/client/singletons.js"
+                    )
+                  ) {
+                    // Prevent errors with missing client methods such as disable_scroll_handling.
+                    return code
+                      .replace(`export let client`, `export let client = {}`)
+                      .replace(
+                        `url: notifiable_store({})`,
+                        `url: notifiable_store(document.location)`
+                      )
+                      .replace(
+                        `page: notifiable_store({})`,
+                        `page: notifiable_store({ url: document.location })`
+                      );
+                  }
+                  return null;
+                },
               }
-              return null;
-            },
-          },
+            : null,
           {
             name: "previewjs:disable-svelte-hmr",
             async transform(code, id) {

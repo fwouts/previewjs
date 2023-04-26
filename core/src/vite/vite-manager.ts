@@ -17,6 +17,7 @@ import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { localEval } from "./plugins/local-eval";
+import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
@@ -174,6 +175,11 @@ export class ViteManager {
         ...(this.options.config.vite?.plugins || []),
       ])
     );
+    const publicDir =
+      this.options.config.vite?.publicDir ||
+      existingViteConfig?.config.publicDir ||
+      frameworkPluginViteConfig.publicDir ||
+      this.options.config.publicDir;
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
@@ -200,6 +206,10 @@ export class ViteManager {
           }),
       }),
       cssModulesWithoutSuffixPlugin(),
+      publicAssetImportPluginPlugin({
+        rootDirPath: this.options.rootDirPath,
+        publicDir,
+      }),
       componentLoaderPlugin(this.options),
       frameworkPluginViteConfig.plugins,
     ];
@@ -289,11 +299,7 @@ export class ViteManager {
         this.options.config.vite?.cacheDir ||
         existingViteConfig?.config.cacheDir ||
         this.options.cacheDir,
-      publicDir:
-        this.options.config.vite?.publicDir ||
-        existingViteConfig?.config.publicDir ||
-        frameworkPluginViteConfig.publicDir ||
-        this.options.config.publicDir,
+      publicDir,
       plugins,
       define: {
         ...existingViteConfig?.config.define,

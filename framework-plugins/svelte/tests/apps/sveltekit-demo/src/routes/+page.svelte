@@ -10,7 +10,7 @@
   <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
+<section id="ready">
   <h1>
     <span class="welcome">
       <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
