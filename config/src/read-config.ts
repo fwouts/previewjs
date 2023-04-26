@@ -33,7 +33,6 @@ export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
   }
   return {
     alias: {},
-    publicDir: "public",
     ...config,
   };
 }
