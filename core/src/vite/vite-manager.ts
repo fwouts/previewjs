@@ -13,13 +13,11 @@ import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { findFiles } from "../find-files";
 import type { FrameworkPlugin } from "../plugins/framework";
-import {
-  COMPONENT_LOADER_MODULE,
-  componentLoaderPlugin,
-} from "./plugins/component-loader-plugin";
+import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { localEval } from "./plugins/local-eval";
+import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
 export class ViteManager {
@@ -208,40 +206,10 @@ export class ViteManager {
           }),
       }),
       cssModulesWithoutSuffixPlugin(),
-      // TODO: Move to publicAssetImportPlugin()
-      {
-        name: "previewjs-public-asset-import",
-        resolveId: async (source, importer) => {
-          if (
-            !importer ||
-            !source.startsWith("/") ||
-            source.startsWith("/__previewjs__/") ||
-            source.startsWith(COMPONENT_LOADER_MODULE)
-          ) {
-            return;
-          }
-          const publicDirAbsolutePath = path.join(
-            this.options.rootDirPath,
-            publicDir
-          );
-          const potentialPublicFilePath = path.join(
-            publicDirAbsolutePath,
-            source
-          );
-          if (
-            !potentialPublicFilePath.startsWith(
-              publicDirAbsolutePath + path.sep
-            )
-          ) {
-            // Block attempts to move out of the directory.
-            return;
-          }
-          if (!(await fs.pathExists(potentialPublicFilePath))) {
-            return;
-          }
-          return source;
-        },
-      },
+      publicAssetImportPluginPlugin({
+        rootDirPath: this.options.rootDirPath,
+        publicDir,
+      }),
       componentLoaderPlugin(this.options),
       frameworkPluginViteConfig.plugins,
     ];
