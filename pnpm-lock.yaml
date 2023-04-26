@@ -2237,102 +2237,6 @@ importers:
         specifier: ^4.3.2
         version: 4.3.2(@types/node@18.16.1)
 
-  framework-plugins/svelte/tests/apps/svelte-storybook-js:
-    devDependencies:
-      '@storybook/addon-essentials':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-interactions':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-links':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/blocks':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/svelte':
-        specifier: ^7.0.7
-        version: 7.0.7(svelte@3.58.0)
-      '@storybook/svelte-vite':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(vite@4.3.2)
-      '@storybook/testing-library':
-        specifier: ^0.0.14-next.2
-        version: 0.0.14-next.2
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^2.0.3
-        version: 2.1.0(svelte@3.58.0)(vite@4.3.2)
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-      storybook:
-        specifier: ^7.0.7
-        version: 7.0.7
-      svelte:
-        specifier: ^3.57.0
-        version: 3.58.0
-      vite:
-        specifier: ^4.3.2
-        version: 4.3.2(@types/node@18.16.1)
-
-  framework-plugins/svelte/tests/apps/svelte-storybook-ts:
-    devDependencies:
-      '@storybook/addon-essentials':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-interactions':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/addon-links':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/blocks':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/svelte':
-        specifier: ^7.0.7
-        version: 7.0.7(svelte@3.58.0)
-      '@storybook/svelte-vite':
-        specifier: ^7.0.7
-        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
-      '@storybook/testing-library':
-        specifier: ^0.0.14-next.2
-        version: 0.0.14-next.2
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^2.0.3
-        version: 2.1.0(svelte@3.58.0)(vite@4.3.2)
-      '@tsconfig/svelte':
-        specifier: ^4.0.1
-        version: 4.0.1
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-      storybook:
-        specifier: ^7.0.7
-        version: 7.0.7
-      svelte:
-        specifier: ^3.57.0
-        version: 3.58.0
-      svelte-check:
-        specifier: ^2.10.3
-        version: 2.10.3(@babel/core@7.21.4)(svelte@3.58.0)
-      tslib:
-        specifier: ^2.5.0
-        version: 2.5.0
-      typescript:
-        specifier: ^5.0.2
-        version: 5.0.4
-      vite:
-        specifier: ^4.3.2
-        version: 4.3.2
-
   framework-plugins/svelte/tests/apps/sveltekit-app:
     devDependencies:
       '@sveltejs/adapter-auto':
@@ -2395,6 +2299,102 @@ importers:
       vite:
         specifier: ^4.1.4
         version: 4.2.1(@types/node@18.16.1)
+
+  framework-plugins/svelte/tests/apps/vite-storybook-js:
+    devDependencies:
+      '@storybook/addon-essentials':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-interactions':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-links':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/svelte':
+        specifier: ^7.0.7
+        version: 7.0.7(svelte@3.58.0)
+      '@storybook/svelte-vite':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(vite@4.3.2)
+      '@storybook/testing-library':
+        specifier: ^0.0.14-next.2
+        version: 0.0.14-next.2
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^2.0.3
+        version: 2.1.0(svelte@3.58.0)(vite@4.3.2)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      storybook:
+        specifier: ^7.0.7
+        version: 7.0.7
+      svelte:
+        specifier: ^3.57.0
+        version: 3.58.0
+      vite:
+        specifier: ^4.3.2
+        version: 4.3.2(@types/node@18.16.1)
+
+  framework-plugins/svelte/tests/apps/vite-storybook-ts:
+    devDependencies:
+      '@storybook/addon-essentials':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-interactions':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-links':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/svelte':
+        specifier: ^7.0.7
+        version: 7.0.7(svelte@3.58.0)
+      '@storybook/svelte-vite':
+        specifier: ^7.0.7
+        version: 7.0.7(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)(vite@4.3.2)
+      '@storybook/testing-library':
+        specifier: ^0.0.14-next.2
+        version: 0.0.14-next.2
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^2.0.3
+        version: 2.1.0(svelte@3.58.0)(vite@4.3.2)
+      '@tsconfig/svelte':
+        specifier: ^4.0.1
+        version: 4.0.1
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      storybook:
+        specifier: ^7.0.7
+        version: 7.0.7
+      svelte:
+        specifier: ^3.57.0
+        version: 3.58.0
+      svelte-check:
+        specifier: ^2.10.3
+        version: 2.10.3(@babel/core@7.21.4)(svelte@3.58.0)
+      tslib:
+        specifier: ^2.5.0
+        version: 2.5.0
+      typescript:
+        specifier: ^5.0.2
+        version: 5.0.4
+      vite:
+        specifier: ^4.3.2
+        version: 4.3.2(@types/node@18.16.1)
 
   framework-plugins/vue2:
     dependencies:
@@ -3300,10 +3300,10 @@ packages:
       '@babel/helpers': 7.21.0
       '@babel/parser': 7.21.4
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.4
+      '@babel/traverse': 7.21.4(supports-color@5.5.0)
       '@babel/types': 7.21.4
       convert-source-map: 1.9.0
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.0
@@ -3468,7 +3468,7 @@ packages:
       '@babel/core': 7.21.4
       '@babel/helper-compilation-targets': 7.21.4(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.20.2
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
       resolve: 1.22.1
       semver: 6.3.0
@@ -3520,7 +3520,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.18.6
       '@babel/helper-validator-identifier': 7.19.1
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.4
+      '@babel/traverse': 7.21.4(supports-color@5.5.0)
       '@babel/types': 7.21.4
     transitivePeerDependencies:
       - supports-color
@@ -3575,7 +3575,7 @@ packages:
       '@babel/helper-member-expression-to-functions': 7.21.0
       '@babel/helper-optimise-call-expression': 7.18.6
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.4
+      '@babel/traverse': 7.21.4(supports-color@5.5.0)
       '@babel/types': 7.21.4
     transitivePeerDependencies:
       - supports-color
@@ -3616,7 +3616,7 @@ packages:
     dependencies:
       '@babel/helper-function-name': 7.21.0
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.4
+      '@babel/traverse': 7.21.4(supports-color@5.5.0)
       '@babel/types': 7.21.4
     transitivePeerDependencies:
       - supports-color
@@ -3626,7 +3626,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.21.4
+      '@babel/traverse': 7.21.4(supports-color@5.5.0)
       '@babel/types': 7.21.4
     transitivePeerDependencies:
       - supports-color
@@ -5863,23 +5863,6 @@ packages:
       - supports-color
     dev: true
 
-  /@babel/traverse@7.21.4:
-    resolution: {integrity: sha512-eyKrRHKdyZxqDm+fV1iqL9UAHMoIg0nDaGqfIOd8rKH17m5snv7Gn4qgjBoFfLz9APvjFU/ICT00NVCv1Epp8Q==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/code-frame': 7.21.4
-      '@babel/generator': 7.21.4
-      '@babel/helper-environment-visitor': 7.18.9
-      '@babel/helper-function-name': 7.21.0
-      '@babel/helper-hoist-variables': 7.18.6
-      '@babel/helper-split-export-declaration': 7.18.6
-      '@babel/parser': 7.21.4
-      '@babel/types': 7.21.4
-      debug: 4.3.4
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-
   /@babel/traverse@7.21.4(supports-color@5.5.0):
     resolution: {integrity: sha512-eyKrRHKdyZxqDm+fV1iqL9UAHMoIg0nDaGqfIOd8rKH17m5snv7Gn4qgjBoFfLz9APvjFU/ICT00NVCv1Epp8Q==}
     engines: {node: '>=6.9.0'}
@@ -7242,7 +7225,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       espree: 9.5.1
       globals: 13.20.0
       ignore: 5.2.4
@@ -7688,7 +7671,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -11942,7 +11925,7 @@ packages:
       remark-slug: 6.1.0
       rollup: 3.21.0
       typescript: 5.0.4
-      vite: 4.3.2
+      vite: 4.3.2(@types/node@18.16.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -12908,7 +12891,7 @@ packages:
     dependencies:
       '@babel/generator': 7.21.4
       '@babel/parser': 7.21.4
-      '@babel/traverse': 7.21.4
+      '@babel/traverse': 7.21.4(supports-color@5.5.0)
       '@babel/types': 7.21.4
       '@storybook/csf': 0.1.0
       '@storybook/types': 7.0.7
@@ -13712,7 +13695,7 @@ packages:
       svelte: 3.58.0
       sveltedoc-parser: 4.2.1
       ts-dedent: 2.2.0
-      vite: 4.3.2
+      vite: 4.3.2(@types/node@18.16.1)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - supports-color
@@ -13817,8 +13800,8 @@ packages:
   /@storybook/testing-library@0.0.14-next.2:
     resolution: {integrity: sha512-i/SLSGm0o978ELok/SB4Qg1sZ3zr+KuuCkzyFqcCD0r/yf+bG35aQGkFqqxfSAdDxuQom0NO02FE+qys5Eapdg==}
     dependencies:
-      '@storybook/client-logger': 7.0.6
-      '@storybook/instrumenter': 7.0.6
+      '@storybook/client-logger': 7.0.7
+      '@storybook/instrumenter': 7.0.7
       '@testing-library/dom': 8.20.0
       '@testing-library/user-event': 13.5.0(@testing-library/dom@8.20.0)
       ts-dedent: 2.2.0
@@ -14109,13 +14092,13 @@ packages:
       svelte: ^3.54.0
       vite: ^4.0.0
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.0
       svelte: 3.58.0
       svelte-hmr: 0.15.1(svelte@3.58.0)
-      vite: 4.3.2
+      vite: 4.3.2(@types/node@18.16.1)
       vitefu: 0.2.4(vite@4.3.2)
     transitivePeerDependencies:
       - supports-color
@@ -16947,7 +16930,7 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -20612,17 +20595,6 @@ packages:
       ms: 2.1.3
       supports-color: 5.5.0
 
-  /debug@4.3.4:
-    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.2
-
   /debug@4.3.4(supports-color@5.5.0):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -20978,7 +20950,7 @@ packages:
     hasBin: true
     dependencies:
       address: 1.2.2
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -21778,7 +21750,7 @@ packages:
     peerDependencies:
       esbuild: '>=0.12 <1'
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       esbuild: 0.17.18
     transitivePeerDependencies:
       - supports-color
@@ -22383,7 +22355,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       doctrine: 3.0.0
       enquirer: 2.3.6
       escape-string-regexp: 4.0.0
@@ -24678,7 +24650,7 @@ packages:
     engines: {node: '>= 6.0.0'}
     dependencies:
       agent-base: 5.1.1
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -24688,7 +24660,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -32090,7 +32062,7 @@ packages:
     engines: {node: '>=8.16.0'}
     dependencies:
       '@types/mime-types': 2.1.1
-      debug: 4.3.4
+      debug: 4.3.4(supports-color@5.5.0)
       extract-zip: 1.7.0
       https-proxy-agent: 4.0.0
       mime: 2.6.0
@@ -37409,38 +37381,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vite@4.3.2:
-    resolution: {integrity: sha512-9R53Mf+TBoXCYejcL+qFbZde+eZveQLDYd9XgULILLC1a5ZwPaqgmdVpL8/uvw2BM/1TzetWjglwm+3RO+xTyw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      esbuild: 0.17.18
-      postcss: 8.4.21
-      rollup: 3.21.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
   /vite@4.3.2(@types/node@18.16.1):
     resolution: {integrity: sha512-9R53Mf+TBoXCYejcL+qFbZde+eZveQLDYd9XgULILLC1a5ZwPaqgmdVpL8/uvw2BM/1TzetWjglwm+3RO+xTyw==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -37513,7 +37453,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.3.2
+      vite: 4.3.2(@types/node@18.16.1)
     dev: true
 
   /vitest@0.30.1:

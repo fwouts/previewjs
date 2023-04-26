@@ -19,9 +19,7 @@ export const load: RendererLoader = async ({
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   const ComponentOrStory =
-    componentModule[
-      componentName === "default" ? "default" : `__previewjs__${componentName}`
-    ];
+    componentModule[isStoryModule ? componentName : "default"];
   if (!ComponentOrStory) {
     throw new Error(`No component named '${componentName}'`);
   }
@@ -66,7 +64,14 @@ export const load: RendererLoader = async ({
             props: decoratedProps,
           });
       if (ComponentOrStory.play) {
-        await ComponentOrStory.play({ canvasElement: root });
+        try {
+          await ComponentOrStory.play({ canvasElement: root });
+        } catch (e: any) {
+          // For some reason, Storybook expects to throw exceptions that should be ignored.
+          if (!e.message?.startsWith("ignoredException")) {
+            throw e;
+          }
+        }
       }
     },
     jsxFactory: null,
