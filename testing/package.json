@@ -21,7 +21,7 @@
     "build": "rimraf dist && tsc && unbuild"
   },
   "dependencies": {
-    "@playwright/test": "^1.32.3",
+    "@playwright/test": "^1.33.0",
     "@previewjs/api": "^11.0.2",
     "@previewjs/chromeless": "^5.1.4",
     "@previewjs/core": "^20.0.7",
@@ -30,7 +30,7 @@
     "assert-never": "^1.2.1",
     "fs-extra": "^11.1.1",
     "get-port": "^6.1.2",
-    "playwright": "^1.32.3"
+    "playwright": "^1.33.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
