@@ -26,8 +26,8 @@ importers:
         specifier: 8.2.4
         version: 8.2.4(@types/node@18.16.1)(vite@4.3.3)
       '@previewjs/pro':
-        specifier: 1.12.2
-        version: 1.12.2(@types/node@18.16.1)
+        specifier: 1.12.3
+        version: 1.12.3(@types/node@18.16.1)
       '@previewjs/vfs':
         specifier: 2.0.10
         version: 2.0.10
@@ -737,7 +737,7 @@ packages:
     dependencies:
       '@previewjs/api': 11.0.2
       '@previewjs/config': 4.9.12
-      '@previewjs/iframe': 9.0.5
+      '@previewjs/iframe': 9.0.6
       '@previewjs/serializable-values': 6.0.8
       '@previewjs/type-analyzer': 7.3.6
       '@previewjs/vfs': 2.0.10
@@ -771,8 +771,8 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/iframe@9.0.5:
-    resolution: {integrity: sha512-0C3oQbvHdPz+JS6sW+hddWk8RYiBnH7vlZQK+r4QYDm/KXZFh6/3ppp79XwJi7wdcyX4S7Z/7r4isH37aTgmHg==}
+  /@previewjs/iframe@9.0.6:
+    resolution: {integrity: sha512-2htdWpkR101XpiCwk9v3YnoBpsETp+JtgEHzFM4rFm4LI1JIxOHclsob3NwjzrdEqVR32qXy+AyHQu1JVpP1PA==}
     dev: false
 
   /@previewjs/plugin-preact@3.3.4(@types/node@18.16.1):
@@ -930,8 +930,8 @@ packages:
       - vite
     dev: false
 
-  /@previewjs/pro@1.12.2(@types/node@18.16.1):
-    resolution: {integrity: sha512-7B3pLqCuBCF1MJLje2k3S020l3I5Ja6VOF6QiR//gpuvOooQOrHCVkHRcsHBDFcPKC8HHHMEB7y9Ro27JFkrmQ==}
+  /@previewjs/pro@1.12.3(@types/node@18.16.1):
+    resolution: {integrity: sha512-xg7sVG/C5MgDL8Co5dpRdNojaKlyWBY+qXLVfzXVl5Z/vjVRsYDgITvkOpXSkzrgvf8ExDjpjzP6StLXUBOZ3A==}
     dependencies:
       '@previewjs/core': 20.0.7(@types/node@18.16.1)
       '@previewjs/serializable-values': 6.0.8
