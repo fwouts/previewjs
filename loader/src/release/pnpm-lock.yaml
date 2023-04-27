@@ -17,8 +17,8 @@ importers:
         specifier: 6.3.4
         version: 6.3.4(@types/node@18.16.1)(solid-js@1.7.3)(vite@4.3.3)
       '@previewjs/plugin-svelte':
-        specifier: 4.1.0
-        version: 4.1.0(@types/node@18.16.1)
+        specifier: 4.1.1
+        version: 4.1.1(@types/node@18.16.1)
       '@previewjs/plugin-vue2':
         specifier: 8.1.4
         version: 8.1.4(@types/node@18.16.1)(vite@4.3.3)
@@ -26,8 +26,8 @@ importers:
         specifier: 8.2.4
         version: 8.2.4(@types/node@18.16.1)(vite@4.3.3)
       '@previewjs/pro':
-        specifier: 1.12.3
-        version: 1.12.3(@types/node@18.16.1)
+        specifier: 1.12.5
+        version: 1.12.5(@types/node@18.16.1)
       '@previewjs/vfs':
         specifier: 2.0.10
         version: 2.0.10
@@ -846,8 +846,8 @@ packages:
       - vite
     dev: false
 
-  /@previewjs/plugin-svelte@4.1.0(@types/node@18.16.1):
-    resolution: {integrity: sha512-7wD46H2D9admH3+wMSIcB3LGvO7EzOC5f+GaewtWSVVDhzbAA9L6pWfkBx1Ow75a/N5UWxtycSq5M2yAkds5bw==}
+  /@previewjs/plugin-svelte@4.1.1(@types/node@18.16.1):
+    resolution: {integrity: sha512-8MlUUUYVpqedj6dMM55k6XLNF5HKLYLAcsgIbcwtBlywaHpgvu+KKlWQY+1F0Ky7RIepSr27yXUtoYsyuJueFA==}
     dependencies:
       '@previewjs/api': 11.0.2
       '@previewjs/serializable-values': 6.0.8
@@ -930,9 +930,10 @@ packages:
       - vite
     dev: false
 
-  /@previewjs/pro@1.12.3(@types/node@18.16.1):
-    resolution: {integrity: sha512-xg7sVG/C5MgDL8Co5dpRdNojaKlyWBY+qXLVfzXVl5Z/vjVRsYDgITvkOpXSkzrgvf8ExDjpjzP6StLXUBOZ3A==}
+  /@previewjs/pro@1.12.5(@types/node@18.16.1):
+    resolution: {integrity: sha512-qaj9r20k5Yfbb83B0YJbZHkNdfRw7+bsGb8aHtDtI3VBphA9FoJpDYX7/1Gw+EHzMmAk4P+EqGZXRXCyiPOozg==}
     dependencies:
+      '@previewjs/api': 11.0.2
       '@previewjs/core': 20.0.7(@types/node@18.16.1)
       '@previewjs/serializable-values': 6.0.8
       '@previewjs/storybook-helpers': 2.0.5(@types/node@18.16.1)
