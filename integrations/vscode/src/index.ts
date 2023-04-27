@@ -13,6 +13,7 @@ const codeLensLanguages = [
   "javascriptreact",
   "jsx",
   "svelte",
+  "typescript",
   "typescriptreact",
   "vue",
 ];
