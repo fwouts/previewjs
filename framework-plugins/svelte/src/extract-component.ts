@@ -60,6 +60,38 @@ export async function extractSvelteComponents(
         }
         return component.info.analyze();
       }
-    );
+    ).map((c) => {
+      if (
+        c.info.kind !== "story" ||
+        !c.info.associatedComponent.componentId.includes(".svelte.ts:")
+      ) {
+        return c;
+      }
+      const { filePath: associatedComponentFilePath } = decodeComponentId(
+        c.info.associatedComponent.componentId
+      );
+      const associatedComponentSvelteFilePath = stripTsExtension(
+        associatedComponentFilePath
+      );
+      return {
+        ...c,
+        info: {
+          ...c.info,
+          associatedComponent: {
+            ...c.info.associatedComponent,
+            componentId: generateComponentId({
+              filePath: associatedComponentSvelteFilePath,
+              name: inferComponentNameFromSveltePath(
+                associatedComponentSvelteFilePath
+              ),
+            }),
+          },
+        },
+      };
+    });
   }
+}
+
+function stripTsExtension(filePath: string) {
+  return filePath.substring(0, filePath.length - 3);
 }
