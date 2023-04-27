@@ -364,8 +364,11 @@ importers:
       '@previewjs/plugin-vue3':
         specifier: workspace:*
         version: link:../framework-plugins/vue3
+      '@previewjs/pro':
+        specifier: ^1.12.4
+        version: 1.12.4(@types/node@18.16.1)
       '@previewjs/vfs':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../vfs
 
   framework-plugins/preact:
@@ -9932,6 +9935,137 @@ packages:
       webpack: 4.46.0
     dev: true
 
+  /@previewjs/api@11.0.2:
+    resolution: {integrity: sha512-qFMcO5ikxns7XTUgr952af5XHOrcPc5DBUI5wjRLppbGJcjb/BoHbGECAZiySkyu2qT78yIY4ix4vM00Zoc50g==}
+    dependencies:
+      '@previewjs/serializable-values': 6.0.8
+      '@previewjs/type-analyzer': 7.3.6
+      axios: 1.3.6
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@previewjs/config@4.9.12:
+    resolution: {integrity: sha512-fQ4QJouPo7mbGp3+SB2GHLmB7Mp6EJju5WhO+88qnHKw0DG2aodFMPCEVatK5MtaJfFGjbZ0A9NnWtk8vzbuLQ==}
+    dev: false
+
+  /@previewjs/core@20.0.7(@types/node@18.16.1):
+    resolution: {integrity: sha512-VlCcqFamBY22ijtE9IXrWddmNdz5hilkj303Dm7qsmIhQoyq2ttatg7cd2htVafKiVBl1OtqwF4rZ+Hb4SbNzg==}
+    dependencies:
+      '@previewjs/api': 11.0.2
+      '@previewjs/config': 4.9.12
+      '@previewjs/iframe': 9.0.6
+      '@previewjs/serializable-values': 6.0.8
+      '@previewjs/type-analyzer': 7.3.6
+      '@previewjs/vfs': 2.0.10
+      acorn: 8.8.2
+      acorn-jsx: 5.3.2(acorn@8.8.2)
+      assert-never: 1.2.1
+      axios: 1.3.6
+      exclusive-promises: 1.0.3
+      express: 4.18.2
+      fs-extra: 11.1.1
+      get-port: 6.1.2
+      globby: 13.1.4
+      html-escaper: 3.0.3
+      http-terminator: 3.2.0
+      rollup-plugin-friendly-type-imports: 1.0.3
+      ts-node: 10.9.1(@types/node@18.16.1)(typescript@4.9.5)
+      tsconfig-paths: 4.2.0
+      typescript: 4.9.5
+      vite: 4.3.3(@types/node@18.16.1)
+      vite-tsconfig-paths: 3.6.0(vite@4.3.3)
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - debug
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@previewjs/iframe@9.0.6:
+    resolution: {integrity: sha512-2htdWpkR101XpiCwk9v3YnoBpsETp+JtgEHzFM4rFm4LI1JIxOHclsob3NwjzrdEqVR32qXy+AyHQu1JVpP1PA==}
+    dev: false
+
+  /@previewjs/pro@1.12.4(@types/node@18.16.1):
+    resolution: {integrity: sha512-+s/XYEUy2xfQ6QPXVzJBOTJCmUAT/E9Ol4HZFkGMwbmFEeU9763znPPCTUZ6/GyjvIxsId09Xz3Zz0RMMGN1KA==}
+    dependencies:
+      '@previewjs/api': 11.0.2
+      '@previewjs/core': 20.0.7(@types/node@18.16.1)
+      '@previewjs/serializable-values': 6.0.8
+      '@previewjs/storybook-helpers': 2.0.5(@types/node@18.16.1)
+      axios: 1.3.6
+      env-paths: 3.0.0
+      express: 4.18.2
+      fs-extra: 11.1.1
+      prettier: 2.8.8
+      universal-base64: 2.1.0
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - debug
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@previewjs/serializable-values@6.0.8:
+    resolution: {integrity: sha512-IQoUNnckeqsXHJR+yoGAzEOIv3udEacziLaWjsmaAHCLQHHSAVve/f+bVktKOxqxdjJRAzPRQnZwimyKT7L/tg==}
+    dependencies:
+      '@faker-js/faker': 7.6.0
+      '@previewjs/type-analyzer': 7.3.6
+      assert-never: 1.2.1
+      prettier: 2.8.8
+      typescript: 4.9.5
+    dev: false
+
+  /@previewjs/storybook-helpers@2.0.5(@types/node@18.16.1):
+    resolution: {integrity: sha512-X1IBSEMyczxaMfPP+zvnfJkhR0QNp+qtX3XWA0kNNcKnGKBeJ0sz2uQ9aUK4nA+Fk/++T1oCofUaXxqzhIMURg==}
+    dependencies:
+      '@previewjs/api': 11.0.2
+      '@previewjs/core': 20.0.7(@types/node@18.16.1)
+      '@previewjs/serializable-values': 6.0.8
+      '@previewjs/type-analyzer': 7.3.6
+      typescript: 4.9.5
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - debug
+      - less
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@previewjs/type-analyzer@7.3.6:
+    resolution: {integrity: sha512-p8OtC5+SKpU1A1wuI8ZRB9cqU9XXYrGAF2SBnTNCq6tNq/ov/nFvPmD14KNaCzmj8gaVAADpoxhoeUURtR+MhA==}
+    dependencies:
+      '@previewjs/vfs': 2.0.10
+      assert-never: 1.2.1
+      prettier: 2.8.8
+      typescript: 4.9.5
+    dev: false
+
+  /@previewjs/vfs@2.0.10:
+    resolution: {integrity: sha512-poUa8SIJbtU+CfdRg5grlcfPrTwj8fJcCpSS08PJn+TKUtOM0ydo/dmYUHyGspN8DhHFpNRPcltBLKfa/+odAg==}
+    dependencies:
+      assert-never: 1.2.1
+      chokidar: 3.5.3
+      fs-extra: 11.1.1
+    dev: false
+
   /@react-native-community/cli-clean@9.2.1:
     resolution: {integrity: sha512-dyNWFrqRe31UEvNO+OFWmQ4hmqA07bR9Ief/6NnGwx67IO9q83D5PEAf/o96ML6jhSbDwCmpPKhPwwBbsyM3mQ==}
     dependencies:
@@ -10214,7 +10348,7 @@ packages:
   /@react-navigation/routers@6.1.8:
     resolution: {integrity: sha512-CEge+ZLhb1HBrSvv4RwOol7EKLW1QoqVIQlE9TN5MpxS/+VoQvP+cLbuz0Op53/iJfYhtXRFd1ZAd3RTRqto9w==}
     dependencies:
-      nanoid: 3.3.4
+      nanoid: 3.3.6
     dev: false
 
   /@rollup/plugin-alias@4.0.4(rollup@3.21.0):
@@ -21458,6 +21592,11 @@ packages:
   /env-editor@0.4.2:
     resolution: {integrity: sha512-ObFo8v4rQJAE59M69QzwloxPZtd33TpYEIjtKD1rrFDcM1Gd7IkDxEBU+HriziN6HSHQnBJi8Dmy+JWkav5HKA==}
     engines: {node: '>=8'}
+    dev: false
+
+  /env-paths@3.0.0:
+    resolution: {integrity: sha512-dtJUTepzMW3Lm/NPxRf3wP4642UWhjL2sQxc+ym2YMj1m/H2zDNQOlezafzkHwn6sMstjHTwG6iQQsctDW/b1A==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: false
 
   /envinfo@7.8.1:
@@ -37074,6 +37213,10 @@ packages:
       unist-util-is: 4.1.0
       unist-util-visit-parents: 3.1.1
     dev: true
+
+  /universal-base64@2.1.0:
+    resolution: {integrity: sha512-WeOkACVnIXJZr/qlv7++Rl1zuZOHN96v2yS5oleUuv8eJOs5j9M5U3xQEIoWqn1OzIuIcgw0fswxWnUVGDfW6g==}
+    dev: false
 
   /universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}

@@ -21,7 +21,7 @@
   "scripts": {
     "build": "rimraf dist && tsc && node esbuild.js",
     "dev": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/app nodemon --exec ts-node-esm src/main.ts",
-    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../../previewjs-pro/dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro nodemon --exec ts-node-esm src/main.ts"
+    "dev:pro": "cross-env PREVIEWJS_MODULES_DIR=$INIT_CWD/../../dev-workspace PREVIEWJS_PACKAGE_NAME=@previewjs/pro nodemon --exec ts-node-esm src/main.ts"
   },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
