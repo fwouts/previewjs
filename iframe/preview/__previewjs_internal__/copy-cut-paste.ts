@@ -1,5 +1,8 @@
 export function overrideCopyCutPaste() {
-  if (!navigator.userAgent.includes(" Code/")) {
+  if (
+    !navigator.userAgent.includes(" Code/") &&
+    !navigator.userAgent.includes(" Code-Insiders/")
+  ) {
     // We're not running in VS Code.
     return;
   }
