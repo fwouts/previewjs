@@ -365,8 +365,8 @@ importers:
         specifier: workspace:*
         version: link:../framework-plugins/vue3
       '@previewjs/pro':
-        specifier: ^1.12.4
-        version: 1.12.4(@types/node@18.16.1)
+        specifier: ^1.12.5
+        version: 1.12.5(@types/node@18.16.1)
       '@previewjs/vfs':
         specifier: workspace:*
         version: link:../vfs
@@ -9992,8 +9992,8 @@ packages:
     resolution: {integrity: sha512-2htdWpkR101XpiCwk9v3YnoBpsETp+JtgEHzFM4rFm4LI1JIxOHclsob3NwjzrdEqVR32qXy+AyHQu1JVpP1PA==}
     dev: false
 
-  /@previewjs/pro@1.12.4(@types/node@18.16.1):
-    resolution: {integrity: sha512-+s/XYEUy2xfQ6QPXVzJBOTJCmUAT/E9Ol4HZFkGMwbmFEeU9763znPPCTUZ6/GyjvIxsId09Xz3Zz0RMMGN1KA==}
+  /@previewjs/pro@1.12.5(@types/node@18.16.1):
+    resolution: {integrity: sha512-qaj9r20k5Yfbb83B0YJbZHkNdfRw7+bsGb8aHtDtI3VBphA9FoJpDYX7/1Gw+EHzMmAk4P+EqGZXRXCyiPOozg==}
     dependencies:
       '@previewjs/api': 11.0.2
       '@previewjs/core': 20.0.7(@types/node@18.16.1)

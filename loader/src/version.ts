@@ -1,1 +1,1 @@
-export const previewjsProVersion = "1.12.4";
+export const previewjsProVersion = "1.12.5";
