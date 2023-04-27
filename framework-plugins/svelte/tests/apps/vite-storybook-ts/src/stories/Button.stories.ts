@@ -46,3 +46,7 @@ export const Small: Story = {
     label: 'Button',
   },
 };
+
+export const ButtonStorytest = {
+  args: {}
+};
