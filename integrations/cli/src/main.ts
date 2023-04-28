@@ -4,7 +4,6 @@ import { load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
-import open from "open";
 import url from "url";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -47,7 +46,6 @@ program
 
     const port = parseInt(options.port);
     await workspace!.preview.start(async () => port);
-    await open(`http://localhost:${port}`);
   });
 
 program.parseAsync(process.argv).catch((e) => {
