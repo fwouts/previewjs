@@ -1,4 +1,6 @@
 <div align="center">
+  <img src="assets/readme-header.svg" />
+  <br />
   <a href="https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs" target="_blank">
     <img src="https://img.shields.io/visual-studio-marketplace/v/zenclabs.previewjs?label=vscode extension" />
     <img src="https://img.shields.io/visual-studio-marketplace/d/zenclabs.previewjs" />
