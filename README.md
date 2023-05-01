@@ -10,6 +10,11 @@
     <img src="https://img.shields.io/jetbrains/plugin/v/18384" />
     <img src="https://img.shields.io/jetbrains/plugin/d/18384" />
   </a>
+  <br />
+  <a href="https://previewjs.com/docs/platforms/cli" target="_blank">
+    <img src="https://img.shields.io/npm/v/@previewjs/cli" />
+    <img src="https://img.shields.io/npm/dt/@previewjs/cli" />
+  </a>
 </div>
 <br />
 
