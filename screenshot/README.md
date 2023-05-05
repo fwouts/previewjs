@@ -51,7 +51,7 @@ Here are the available framework plugins at the time of writing:
 - `@previewjs/plugin-preact`
 - `@previewjs/plugin-react`
 - `@previewjs/plugin-solid`
-- `@previewjs/plugin-svelte` (see [#1258](https://github.com/fwouts/previewjs/issues/1258) for Storybook support)
+- `@previewjs/plugin-svelte`
 - `@previewjs/plugin-vue2`
 - `@previewjs/plugin-vue3`
 
