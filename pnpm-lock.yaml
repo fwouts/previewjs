@@ -2870,8 +2870,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1
       ovsx:
-        specifier: ^0.8.0
-        version: 0.8.0
+        specifier: ^0.8.1
+        version: 0.8.1
       rimraf:
         specifier: ^5.0.0
         version: 5.0.0
@@ -29846,8 +29846,8 @@ packages:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
     dev: true
 
-  /ovsx@0.8.0:
-    resolution: {integrity: sha512-W1U7lgBIbhSB1DcqyGKeenKzmwWYY78SkWd+BUKKyLyqN6w39Uekdr0PKAM7dyBGb0JLtLE7d86A1jJVn8bEng==}
+  /ovsx@0.8.1:
+    resolution: {integrity: sha512-smfdxuSScUwzEsNgxdEWTmWVYaRmb2Xa1qF/LadMtowq/gg01+zNxDGUAlqALin82RBj++IF0O+qrzrC10O7ww==}
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
@@ -29856,6 +29856,7 @@ packages:
       follow-redirects: 1.15.2(debug@4.3.4)
       is-ci: 2.0.0
       leven: 3.1.0
+      semver: 5.7.1
       tmp: 0.2.1
     transitivePeerDependencies:
       - debug
