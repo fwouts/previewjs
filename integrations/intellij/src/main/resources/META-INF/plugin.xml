@@ -22,4 +22,14 @@
         <notificationGroup id="Preview.js" displayType="BALLOON" />
         <codeInsight.inlayProviderFactory implementation="com.previewjs.intellij.plugin.inlays.InlayProviderFactory" />
     </extensions>
+    <actions>
+        <action id="com.previewjs.intellij.plugin.actions.OpenPreviewAction"
+                class="com.previewjs.intellij.plugin.actions.OpenPreviewAction"
+                text="Open in Preview.js"
+                icon="/logo.svg"
+        >
+            <add-to-group group-id="ToolbarRunGroup" anchor="first" />
+            <add-to-group group-id="MainToolbarRight" anchor="first" />
+        </action>
+    </actions>
 </idea-plugin>
