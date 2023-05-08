@@ -10,8 +10,6 @@ import com.previewjs.intellij.plugin.services.ProjectService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-
 
 class OpenPreviewAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
@@ -21,7 +19,8 @@ class OpenPreviewAction : AnAction() {
         val selectedTextEditor = manager.selectedTextEditor
         if (selectedTextEditor == null) {
             notificationGroup.createNotification(
-                "No file is currently selected", NotificationType.ERROR
+                "No file is currently selected",
+                NotificationType.ERROR
             ).notify(project)
             return
         }
@@ -32,7 +31,8 @@ class OpenPreviewAction : AnAction() {
                 projectService.computeComponents(selectedTextEditor.virtualFile, selectedTextEditor.document)
             if (components.isEmpty()) {
                 notificationGroup.createNotification(
-                    "No components detected in ${selectedTextEditor.virtualFile.path}", NotificationType.ERROR
+                    "No components detected in ${selectedTextEditor.virtualFile.path}",
+                    NotificationType.ERROR
                 ).notify(project)
                 return@launch
             }
