@@ -81,7 +81,26 @@ export const load: RendererLoader = async ({
       });
       app = createApp(() => {
         // @ts-ignore
-        const decoratedNode = h(Decorated, props);
+        const decoratedNode = h(
+          Decorated,
+          Object.fromEntries(
+            Object.entries(props).filter(
+              ([propName]) => !propName.startsWith("slot__")
+            )
+          ),
+          Object.fromEntries(
+            Object.entries(props)
+              .filter(([propName]) => propName.startsWith("slot__"))
+              .map(([propName, propValue]) => [
+                propName.substring(6),
+                // TODO: Test with bound scopes (<v-for><slot v-bind...>)
+                () => {
+                  console.log("returning slot", propName, propValue);
+                  return propValue;
+                },
+              ])
+          )
+        );
         return Wrapper
           ? // @ts-ignore
             h(Wrapper, null, () => decoratedNode)

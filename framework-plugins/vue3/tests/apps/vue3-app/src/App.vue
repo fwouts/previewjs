@@ -1,6 +1,12 @@
 <template>
   <img id="ready" alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="nested">
+    <slot>empty slot</slot>
+    <slot name="foo">empty named slot</slot>
+    <br />
+    <br />
+  </div>
 </template>
 
 <script>
@@ -22,5 +28,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.nested {
+  padding: 32px;
 }
 </style>

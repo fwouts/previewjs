@@ -2,6 +2,8 @@
   <div id="app">
     <img id="ready" alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
+    <slot></slot>
+    <slot name="foo">test</slot>
   </div>
 </template>
 

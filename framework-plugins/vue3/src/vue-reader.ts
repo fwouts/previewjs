@@ -1,7 +1,3 @@
-import { ReaderListeners } from "@previewjs/vfs";
-import { parse } from "@vue/compiler-sfc";
-import path from "path";
-import ts from "typescript";
 import type {
   Directory,
   DirectorySync,
@@ -9,6 +5,11 @@ import type {
   FileSync,
   Reader,
 } from "@previewjs/vfs";
+import { ReaderListeners } from "@previewjs/vfs";
+import { ElementNode } from "@vue/compiler-core";
+import { parse } from "@vue/compiler-sfc";
+import path from "path";
+import ts from "typescript";
 
 /**
  * Returns a reader that returns a virtual TypeScript file
@@ -88,8 +89,16 @@ class VueTypeScriptReader implements Reader {
 
 function convertToTypeScript(vueTemplateSource: string, name: string) {
   const parsed = parse(vueTemplateSource);
+  let pjsSlotsType = "[]";
+  if (parsed.descriptor.template) {
+    const slots = extractSlots(parsed.descriptor.template.ast);
+    pjsSlotsType = `[${slots
+      .map((slotName) => JSON.stringify(slotName))
+      .join(", ")}]`;
+  }
+  const pjsSlotsTypeDeclaration = `type PJS_Slots = ${pjsSlotsType};`;
   if (parsed.descriptor.scriptSetup) {
-    return `import { defineProps } from '@vue/runtime-core';\n${parsed.descriptor.scriptSetup.content}\nexport default {}`;
+    return `import { defineProps } from '@vue/runtime-core';\n${parsed.descriptor.scriptSetup.content}\nexport default {};${pjsSlotsTypeDeclaration}`;
   } else if (parsed.descriptor.script) {
     const lang = parsed.descriptor.script.lang;
     if (lang && !["js", "javascript", "ts", "typescript"].includes(lang)) {
@@ -163,9 +172,10 @@ type PJS_CombinedProps<T> = T extends readonly [...any] ? {
 });
 type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props']> : {}
 type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
+${pjsSlotsTypeDeclaration}
 `;
   } else {
-    return "export default {}";
+    return "export default {};${pjsSlotsTypeDeclaration}";
   }
 }
 
@@ -179,4 +189,23 @@ function extractDefineComponentArgument(node: ts.Expression): ts.Expression {
     return node.arguments[0]!;
   }
   return node;
+}
+
+function extractSlots(element: ElementNode): string[] {
+  if (element.tag === "slot") {
+    let slotName = "default";
+    for (const prop of element.props) {
+      if (prop.name === "name" && prop.type === 6 && prop.value) {
+        slotName = prop.value.content;
+      }
+    }
+    return [slotName];
+  }
+  const result: string[] = [];
+  for (const child of element.children) {
+    if (child.type === 1) {
+      result.push(...extractSlots(child));
+    }
+  }
+  return result;
 }

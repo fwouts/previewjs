@@ -3,7 +3,7 @@ import jsx from "acorn-jsx";
 import path from "path";
 import type * as vite from "vite";
 
-const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
+const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx", ".vue", ".svelte"]);
 
 export function exportToplevelPlugin(): vite.Plugin {
   return {
@@ -20,7 +20,9 @@ export function exportToplevelPlugin(): vite.Plugin {
         return null;
       }
       try {
-        const topLevelEntityNames = findTopLevelEntityNames(code);
+        const parsed = parse(code);
+        const topLevelEntityNames = findTopLevelEntityNames(parsed);
+        code = exposeDefaultExport(code, parsed);
         return `${code};
           export {
           ${topLevelEntityNames
@@ -34,11 +36,14 @@ export function exportToplevelPlugin(): vite.Plugin {
   };
 }
 
-export function findTopLevelEntityNames(source: string): string[] {
-  const parsed = Parser.extend(jsx()).parse(source, {
+export function parse(code: string) {
+  return Parser.extend(jsx()).parse(code, {
     ecmaVersion: "latest",
     sourceType: "module",
   });
+}
+
+export function findTopLevelEntityNames(parsed: Node): string[] {
   const topLevelEntityNames: string[] = [];
   // Note: acorn doesn't provide detailed typings.
   for (const statement of (parsed as any).body || []) {
@@ -82,4 +87,30 @@ function addIfIdentifier(array: string[], id?: Node) {
     }
     array.push(name);
   }
+}
+
+export function exposeDefaultExport(code: string, parsed: Node): string {
+  for (const statement of (parsed as any).body || []) {
+    if (
+      statement.type === "ExportDefaultDeclaration" &&
+      statement.declaration
+    ) {
+      if (statement.declaration.id) {
+        // Default export has a name, e.g. "export default function f()".
+        // It would be incorrect to wrap it into a variable declaration
+        // because that would remove it from the top-level scope and break
+        // hoisting.
+        return `${code}\nconst pjs_defaultExport = ${statement.declaration.id.name};`;
+      } else {
+        return `${code.substring(
+          0,
+          statement.start
+        )}const pjs_defaultExport = ${code.substring(
+          statement.declaration.start,
+          statement.declaration.end
+        )};\nexport default pjs_defaultExport;${code.substring(statement.end)}`;
+      }
+    }
+  }
+  return code;
 }
