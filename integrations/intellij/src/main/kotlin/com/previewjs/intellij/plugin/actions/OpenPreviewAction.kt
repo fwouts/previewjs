@@ -16,29 +16,31 @@ class OpenPreviewAction : AnAction() {
         val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
         val project = e.project ?: return
         val manager = FileEditorManager.getInstance(project)
+        val selectedFiles = manager.selectedFiles
         val selectedTextEditor = manager.selectedTextEditor
-        if (selectedTextEditor == null) {
+        if (selectedTextEditor == null || selectedFiles.isEmpty()) {
             notificationGroup.createNotification(
                 "No file is currently selected",
                 NotificationType.ERROR
             ).notify(project)
             return
         }
+        val selectedFile = selectedFiles[0]
         val offset = manager.selectedTextEditor?.selectionModel?.selectionStart
         CoroutineScope(Dispatchers.IO).launch {
             val projectService = project.getService(ProjectService::class.java)
             val components =
-                projectService.computeComponents(selectedTextEditor.virtualFile, selectedTextEditor.document)
+                projectService.computeComponents(selectedFile, selectedTextEditor.document)
             if (components.isEmpty()) {
                 notificationGroup.createNotification(
-                    "No components detected in ${selectedTextEditor.virtualFile.path}",
+                    "No components detected in ${selectedFile.path}",
                     NotificationType.ERROR
                 ).notify(project)
                 return@launch
             }
             val component =
                 components.find { c -> offset != null && offset >= c.start && offset <= c.end } ?: components[0]
-            projectService.openPreview(selectedTextEditor.virtualFile.path, component.componentId)
+            projectService.openPreview(selectedFile.path, component.componentId)
         }
     }
 
