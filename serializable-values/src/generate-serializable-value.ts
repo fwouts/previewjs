@@ -83,7 +83,9 @@ function _generateSerializableValue(
       return random && Math.random() < 0.5 ? TRUE : FALSE;
     case "string":
       return string(
-        random ? faker.lorem.words(generateRandomInteger(0, 10)) : fieldName
+        random
+          ? faker.lorem.words(generateRandomInteger(0, 10))
+          : stringFromFieldName(fieldName)
       );
     case "node":
       return node("div", EMPTY_OBJECT, [
@@ -281,6 +283,15 @@ function _generateSerializableValue(
     default:
       throw assertNever(type);
   }
+}
+
+function stringFromFieldName(fieldName: string) {
+  // If a field looks like "abc:def" then return "def".
+  const columnPosition = fieldName.lastIndexOf(":");
+  if (columnPosition === -1) {
+    return fieldName.trim();
+  }
+  return fieldName.substring(columnPosition).trim();
 }
 
 function generateArrayValue(
