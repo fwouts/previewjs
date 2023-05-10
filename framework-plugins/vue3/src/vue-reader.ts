@@ -192,11 +192,20 @@ function extractDefineComponentArgument(node: ts.Expression): ts.Expression {
 }
 
 function extractSlots(element: ElementNode): string[] {
-  if (element.tag === "slot") {
+  namedSlot: if (element.tag === "slot") {
     let slotName = "default";
     for (const prop of element.props) {
       if (prop.name === "name" && prop.type === 6 && prop.value) {
         slotName = prop.value.content;
+      }
+      if (
+        prop.name === "bind" &&
+        prop.type === 7 &&
+        prop.arg?.type === 4 &&
+        prop.arg.content === "name"
+      ) {
+        // Dynamic slot name, we don't know how to handle this.
+        break namedSlot;
       }
     }
     return [slotName];
