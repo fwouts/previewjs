@@ -104,27 +104,30 @@ export const load: RendererLoader = async ({
   };
 };
 
-function slotTransformingH(component: any, props: any) {
+function slotTransformingH(component: any, props: any, children: any) {
+  console.error("children", children);
   props ||= {};
   // @ts-ignore
   return h(
     component,
     Object.fromEntries(
       Object.entries(props).filter(
-        ([propName]) => !propName.startsWith("slot__")
+        ([propName]) => !propName.startsWith("slot:")
       )
     ),
-    Object.fromEntries(
-      Object.entries(props)
-        .filter(([propName]) => propName.startsWith("slot__"))
-        .map(([propName, propValue]) => [
-          propName.substring(6),
-          // TODO: Test with bound scopes (<v-for><slot v-bind...>)
-          () => {
-            // console.log("returning slot", propName, propValue);
-            return propValue;
-          },
-        ])
-    )
+    children !== undefined
+      ? children
+      : Object.fromEntries(
+          Object.entries(props)
+            .filter(([propName]) => propName.startsWith("slot:"))
+            .map(([propName, propValue]) => [
+              propName.substring(5),
+              // TODO: Test with bound scopes (<v-for><slot v-bind...>)
+              () => {
+                // console.log("returning slot", propName, propValue);
+                return propValue;
+              },
+            ])
+        )
   );
 }
