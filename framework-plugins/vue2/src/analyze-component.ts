@@ -1,7 +1,7 @@
 import type { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
-  NODE_TYPE,
+  STRING_TYPE,
   TypeResolver,
   UNKNOWN_TYPE,
   ValueType,
@@ -48,7 +48,10 @@ export function analyzeVueComponentFromTemplate(
       propsType,
       objectType(
         Object.fromEntries(
-          slots.map((slotName) => [`slot:${slotName}`, optionalType(NODE_TYPE)])
+          slots.map((slotName) => [
+            `slot:${slotName}`,
+            optionalType(STRING_TYPE),
+          ])
         )
       ),
     ]),
