@@ -110,7 +110,7 @@ export const load: RendererLoader = async ({
                 Object.entries(props)
                   .filter(([propName]) => propName.startsWith("slot:"))
                   .map(([propName, propValue]) => [
-                    propName.substring(6),
+                    propName.substring(5),
                     () => h("div", propValue),
                   ])
               ),
