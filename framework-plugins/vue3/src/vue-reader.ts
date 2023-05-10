@@ -175,7 +175,7 @@ type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
 ${pjsSlotsTypeDeclaration}
 `;
   } else {
-    return "export default {};${pjsSlotsTypeDeclaration}";
+    return `export default {};${pjsSlotsTypeDeclaration}`;
   }
 }
 

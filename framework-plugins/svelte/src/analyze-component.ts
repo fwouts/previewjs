@@ -1,13 +1,14 @@
 import type { ComponentAnalysis } from "@previewjs/core";
-import type {
+import {
   CollectedTypes,
+  NODE_TYPE,
+  OptionalType,
   TypeResolver,
   ValueType,
-} from "@previewjs/type-analyzer";
-import {
-  OptionalType,
+  intersectionType,
   maybeOptionalType,
   objectType,
+  optionalType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -18,6 +19,7 @@ export function analyzeSvelteComponentFromSFC(
   const sourceFile = resolver.sourceFile(virtualSvelteTsAbsoluteFilePath);
   const propsTypeFields: Record<string, ValueType | OptionalType> = {};
   let collected: CollectedTypes = {};
+  let slots: string[] = [];
   for (const statement of sourceFile?.statements || []) {
     if (
       ts.isVariableStatement(statement) &&
@@ -40,10 +42,34 @@ export function analyzeSvelteComponentFromSFC(
         );
         collected = { ...collected, ...fieldCollected };
       }
+    } else if (
+      ts.isTypeAliasDeclaration(statement) &&
+      statement.name.text === "PJS_Slots"
+    ) {
+      const slotsType = resolver.checker.getTypeAtLocation(statement);
+      const resolvedSlotsTypeName = resolver.resolveType(slotsType);
+      if (resolvedSlotsTypeName.type.kind === "name") {
+        const resolvedSlotsType =
+          resolvedSlotsTypeName.collected[resolvedSlotsTypeName.type.name];
+        if (resolvedSlotsType?.type.kind === "tuple") {
+          for (const item of resolvedSlotsType.type.items) {
+            if (item.kind === "literal" && typeof item.value === "string") {
+              slots.push(item.value);
+            }
+          }
+        }
+      }
     }
   }
   return {
-    propsType: objectType(propsTypeFields),
+    propsType: intersectionType([
+      objectType(propsTypeFields),
+      objectType(
+        Object.fromEntries(
+          slots.map((slotName) => [`slot:${slotName}`, optionalType(NODE_TYPE)])
+        )
+      ),
+    ]),
     types: collected,
   };
 }
