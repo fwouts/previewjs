@@ -81,26 +81,7 @@ export const load: RendererLoader = async ({
       });
       app = createApp(() => {
         // @ts-ignore
-        const decoratedNode = h(
-          Decorated,
-          Object.fromEntries(
-            Object.entries(props).filter(
-              ([propName]) => !propName.startsWith("slot__")
-            )
-          ),
-          Object.fromEntries(
-            Object.entries(props)
-              .filter(([propName]) => propName.startsWith("slot__"))
-              .map(([propName, propValue]) => [
-                propName.substring(6),
-                // TODO: Test with bound scopes (<v-for><slot v-bind...>)
-                () => {
-                  console.log("returning slot", propName, propValue);
-                  return propValue;
-                },
-              ])
-          )
-        );
+        const decoratedNode = slotTransformingH(Decorated, props);
         return Wrapper
           ? // @ts-ignore
             h(Wrapper, null, () => decoratedNode)
@@ -119,6 +100,31 @@ export const load: RendererLoader = async ({
       }
     },
     // @ts-ignore
-    jsxFactory: h,
+    jsxFactory: slotTransformingH,
   };
 };
+
+function slotTransformingH(component: any, props: any) {
+  props ||= {};
+  // @ts-ignore
+  return h(
+    component,
+    Object.fromEntries(
+      Object.entries(props).filter(
+        ([propName]) => !propName.startsWith("slot__")
+      )
+    ),
+    Object.fromEntries(
+      Object.entries(props)
+        .filter(([propName]) => propName.startsWith("slot__"))
+        .map(([propName, propValue]) => [
+          propName.substring(6),
+          // TODO: Test with bound scopes (<v-for><slot v-bind...>)
+          () => {
+            // console.log("returning slot", propName, propValue);
+            return propValue;
+          },
+        ])
+    )
+  );
+}

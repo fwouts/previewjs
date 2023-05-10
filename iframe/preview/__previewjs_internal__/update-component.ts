@@ -96,6 +96,10 @@ function transformFunctions(value: any, path: string[]): any {
         // so skip it.
         return value;
       }
+      if (value.__v_isVNode) {
+        // This is likely a Vue component (at least Vue 3).
+        return value;
+      }
       return Object.fromEntries(
         Object.entries(value).map(([k, v]) => [
           k,
