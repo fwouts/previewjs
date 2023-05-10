@@ -85,7 +85,9 @@ function wrapSlotProps(props: Record<string, any>) {
   const slots: Record<string, any> = {};
   for (const [key, value] of Object.entries(props)) {
     if (key.startsWith("slot:")) {
-      slots[key.substring(5)] = value;
+      const element = document.createElement("span");
+      element.innerText = value;
+      slots[key.substring(5)] = [element];
     } else {
       result[key] = value;
     }

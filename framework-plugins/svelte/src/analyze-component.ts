@@ -1,8 +1,8 @@
 import type { ComponentAnalysis } from "@previewjs/core";
 import {
   CollectedTypes,
-  NODE_TYPE,
   OptionalType,
+  STRING_TYPE,
   TypeResolver,
   ValueType,
   intersectionType,
@@ -66,7 +66,10 @@ export function analyzeSvelteComponentFromSFC(
       objectType(propsTypeFields),
       objectType(
         Object.fromEntries(
-          slots.map((slotName) => [`slot:${slotName}`, optionalType(NODE_TYPE)])
+          slots.map((slotName) => [
+            `slot:${slotName}`,
+            optionalType(STRING_TYPE),
+          ])
         )
       ),
     ]),
