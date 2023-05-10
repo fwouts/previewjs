@@ -245,9 +245,9 @@ ${e.stackTraceToString()}""",
         matchResult?.let {
             val majorVersion = matchResult.groups[1]!!.value.toInt()
             val minorVersion = matchResult.groups[2]!!.value.toInt()
-            // Minimum version: 14.18.0.
-            if (majorVersion < 14 || majorVersion == 14 && minorVersion < 18) {
-                throw NodeVersionError("Preview.js needs NodeJS 14.18.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
+            // Minimum version: 16.14.0.
+            if (majorVersion < 16 || majorVersion == 16 && minorVersion < 14) {
+                throw NodeVersionError("Preview.js needs NodeJS 16.14.0+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
             }
         }
     }
