@@ -105,7 +105,6 @@ export const load: RendererLoader = async ({
 };
 
 function slotTransformingH(component: any, props: any, children: any) {
-  console.error("children", children);
   props ||= {};
   // @ts-ignore
   return h(
