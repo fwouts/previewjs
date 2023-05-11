@@ -203,38 +203,37 @@ ${e.stackTraceToString()}""",
         val process = builder.start()
         daemonProcess = process
         val daemonOutputReader = BufferedReader(InputStreamReader(process.inputStream))
-        val ready = AtomicBoolean(false)
-        thread {
-            var line: String? = null
-            while (!disposed && daemonOutputReader.readLine().also { line = it } != null) {
-                if (line!!.contains("[install:begin]")) {
-                    notificationGroup.createNotification(
-                        "⏳ Installing Preview.js dependencies...",
-                        NotificationType.INFORMATION
-                    )
-                        .notify(project)
+        while (!disposed) {
+            while (!daemonOutputReader.ready()) {
+                if (!process.isAlive) {
+                    throw Error("Daemon process died")
                 }
-                if (line!!.contains("[install:end]")) {
-                    notificationGroup.createNotification(
-                        "✅ Preview.js dependencies installed",
-                        NotificationType.INFORMATION
-                    )
-                        .notify(project)
-                }
-                if (line!!.contains("[ready]")) {
-                    ready.set(true)
-                }
-                for (p in workspaceIds.keys + setOf(project)) {
-                    if (p.isDisposed) {
-                        continue
-                    }
-                    p.service<ProjectService>().printToConsole(cleanStdOut(line + "\n"))
-                }
+                delay(100)
             }
-        }
-        // TODO: Use a more elegant approach, presumably based on coroutines.
-        while (!ready.get()) {
-            delay(100)
+            val line = daemonOutputReader.readLine() ?: break
+            if (line.contains("[install:begin]")) {
+                notificationGroup.createNotification(
+                    "⏳ Installing Preview.js dependencies...",
+                    NotificationType.INFORMATION
+                )
+                    .notify(project)
+            }
+            if (line.contains("[install:end]")) {
+                notificationGroup.createNotification(
+                    "✅ Preview.js dependencies installed",
+                    NotificationType.INFORMATION
+                )
+                    .notify(project)
+            }
+            if (line.contains("[ready]")) {
+                break
+            }
+            for (p in workspaceIds.keys + setOf(project)) {
+                if (p.isDisposed) {
+                    continue
+                }
+                p.service<ProjectService>().printToConsole(cleanStdOut(line + "\n"))
+            }
         }
         return api("http://localhost:$port")
     }
