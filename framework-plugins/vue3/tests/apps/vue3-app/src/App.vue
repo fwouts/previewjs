@@ -1,12 +1,9 @@
 <template>
   <img id="ready" alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Welcome to Your Vue.js App" />
-  <div class="nested">
-    <slot>empty slot</slot>
-    <slot name="foo">empty named slot</slot>
-    <br />
-    <br />
-  </div>
+  <slot>default slot</slot>
+  <br />
+  <slot name="foo">named slot</slot>
 </template>
 
 <script>
