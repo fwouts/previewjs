@@ -25,14 +25,14 @@ repositories {
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
-    implementation("com.squareup.moshi:moshi:1.14.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation("com.squareup.moshi:moshi:1.15.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 }
 
 // Configure gradle-intellij-plugin plugin.
