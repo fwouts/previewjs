@@ -1,8 +1,8 @@
+import type { Reader, Writer } from "@previewjs/vfs";
 import { createMemoryReader } from "@previewjs/vfs";
 import path from "path";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader";
-import type { Reader, Writer } from "@previewjs/vfs";
 
 describe.concurrent("createVueTypeScriptReader", () => {
   let memoryReader: Reader & Writer;
@@ -37,7 +37,7 @@ const count = ref(0)
       throw new Error();
     }
     expect(await virtualFile.read())
-      .toEqual(`import { defineProps } from '@vue/runtime-core';
+      .toMatchInlineSnapshot(`import { defineProps } from '@vue/runtime-core';
 
 import { ref } from 'vue';
 
@@ -71,7 +71,7 @@ export default defineComponent({
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(`
+    expect(await virtualFile.read()).toMatchInlineSnapshot(`
 
 import { defineComponent } from 'vue'
 
@@ -126,6 +126,8 @@ foo
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(`export default {}`);
+    expect(await virtualFile.read()).toMatchInlineSnapshot(
+      '"export default {}"'
+    );
   });
 });
