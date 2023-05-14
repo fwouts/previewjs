@@ -104,14 +104,12 @@ export const load: RendererLoader = async ({
                   ([propName]) => !propName.startsWith("slot:")
                 )
               ),
-              // TODO: ACTUALLY IMPLEMENT!
-              // TODO: PREVENT __jsxFactory__ errors!
               scopedSlots: Object.fromEntries(
                 Object.entries(props)
                   .filter(([propName]) => propName.startsWith("slot:"))
                   .map(([propName, propValue]) => [
                     propName.substring(5),
-                    () => h("div", propValue),
+                    () => h("span", propValue),
                   ])
               ),
             }

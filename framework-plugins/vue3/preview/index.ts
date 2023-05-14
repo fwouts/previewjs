@@ -121,11 +121,7 @@ function slotTransformingH(component: any, props: any, children: any) {
             .filter(([propName]) => propName.startsWith("slot:"))
             .map(([propName, propValue]) => [
               propName.substring(5),
-              // TODO: Test with bound scopes (<v-for><slot v-bind...>)
-              () => {
-                // console.log("returning slot", propName, propValue);
-                return propValue;
-              },
+              () => propValue,
             ])
         )
   );

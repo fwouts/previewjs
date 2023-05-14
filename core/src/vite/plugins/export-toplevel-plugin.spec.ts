@@ -1,14 +1,13 @@
 import { describe, expect, test } from "vitest";
-import { findTopLevelEntityNames, parse } from "./export-toplevel-plugin";
+import { findTopLevelEntityNames } from "./export-toplevel-plugin";
 
 describe("exportToplevelPlugin", () => {
   test("findTopLevelEntityNames", () => {
-    expect(findTopLevelEntityNames(parse(""))).toMatchInlineSnapshot("[]");
-    expect(findTopLevelEntityNames(parse("test"))).toMatchInlineSnapshot("[]");
+    expect(findTopLevelEntityNames("")).toMatchInlineSnapshot("[]");
+    expect(findTopLevelEntityNames("test")).toMatchInlineSnapshot("[]");
     expect(
       findTopLevelEntityNames(
-        parse(
-          `
+        `
         // Note: the following exports define entities that are not defined in the current file.
         // They should *not* appear in the output!
         export * as e1 from "./foo";
@@ -31,7 +30,6 @@ describe("exportToplevelPlugin", () => {
         export default function g() {
           
         }`
-        )
       )
     ).toMatchInlineSnapshot(`
       [
@@ -45,9 +43,7 @@ describe("exportToplevelPlugin", () => {
       ]
     `);
     expect(
-      findTopLevelEntityNames(
-        parse(`export const Foo = () => <div>children</div>;`)
-      )
+      findTopLevelEntityNames(`export const Foo = () => <div>children</div>;`)
     ).toMatchInlineSnapshot(`
       [
         "Foo",
@@ -55,13 +51,11 @@ describe("exportToplevelPlugin", () => {
     `);
     expect(
       findTopLevelEntityNames(
-        parse(
-          `export const Foo = {
+        `export const Foo = {
           args: {
             children: <div>children</div>
           }
         }`
-        )
       )
     ).toMatchInlineSnapshot(`
       [
