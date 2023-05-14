@@ -1,3 +1,3 @@
-import { greeting } from "components/greeting";
+import { greeting } from "components/greeting-proxy";
 
 export const Button = () => <button>{greeting}</button>;
