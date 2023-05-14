@@ -29,9 +29,7 @@ import java.io.InputStreamReader
 import java.net.ServerSocket
 import java.util.Collections
 import java.util.WeakHashMap
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.logging.Logger
-import kotlin.concurrent.thread
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
 
