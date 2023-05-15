@@ -1,3 +1,4 @@
+import path from "path";
 import { svgr } from "vite-plugin-react-svgr";
 
 /** @type {import('vite').UserConfig} */
@@ -6,7 +7,7 @@ export default {
     alias: [
       {
         find: /button2/,
-        replacement: "./src/components/Button",
+        replacement: path.resolve(__dirname, "src/components/Button"),
       },
     ],
   },
