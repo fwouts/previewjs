@@ -6,10 +6,10 @@ import assertNever from "assert-never";
 import axios from "axios";
 import type express from "express";
 import path from "path";
-import type * as vite from "vite";
 import { getCacheDir } from "./caching";
 import { FILES_REQUIRING_REDETECTION } from "./detect-components";
 import { findFiles } from "./find-files";
+import { Logger } from "./logger";
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
 import { ViteManager } from "./vite/vite-manager";
@@ -68,7 +68,7 @@ export class Previewer {
       reader: Reader;
       previewDirPath: string;
       rootDirPath: string;
-      logLevel: vite.UserConfig["logLevel"];
+      logger: Logger;
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
       onFileChanged?(absoluteFilePath: string): void;
@@ -201,7 +201,7 @@ export class Previewer {
           reader: this.transformingReader,
           cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
           config: this.config,
-          logLevel: this.options.logLevel,
+          logger: this.options.logger,
           frameworkPlugin: this.options.frameworkPlugin,
         });
         const server = await this.appServer.start(port);

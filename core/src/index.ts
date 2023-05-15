@@ -17,12 +17,14 @@ import fs from "fs-extra";
 import getPort, { portNumbers } from "get-port";
 import { createRequire } from "module";
 import path from "path";
-import type * as vite from "vite";
 import { detectComponents } from "./detect-components";
+import { Logger } from "./logger";
 import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
+export { createLogger, LogLevel } from "./logger";
+export type { Logger } from "./logger";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   AnalyzableComponent,
@@ -44,12 +46,12 @@ export async function createWorkspace({
   rootDirPath,
   reader,
   frameworkPlugin,
-  logLevel,
+  logger,
   setupEnvironment,
 }: {
   rootDirPath: string;
   frameworkPlugin: FrameworkPlugin;
-  logLevel: vite.LogLevel;
+  logger: Logger;
   reader: Reader;
   setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
@@ -76,7 +78,7 @@ export async function createWorkspace({
     collected,
     specialTypes: frameworkPlugin.specialTypes,
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-    printWarnings: logLevel === "info",
+    warn: logger.warn.bind(logger),
   });
   const router = new ApiRouter();
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
@@ -158,7 +160,7 @@ export async function createWorkspace({
       "preview"
     ),
     frameworkPlugin,
-    logLevel,
+    logger,
     middlewares,
     onFileChanged: (absoluteFilePath) => {
       const filePath = path.relative(rootDirPath, absoluteFilePath);

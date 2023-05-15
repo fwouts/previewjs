@@ -11,6 +11,8 @@ export async function load(options: {
   const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules(
     options
   );
+  // TODO: Get this from somewhere. Or perhaps logger should be per workspace?
+  const logger = core.createLogger(core.LogLevel.DEBUG);
   const memoryReader = vfs.createMemoryReader();
   const reader = vfs.createStackedReader([
     memoryReader,
@@ -58,7 +60,7 @@ export async function load(options: {
           `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDirPath}`
         );
         return await core.createWorkspace({
-          logLevel: "info",
+          logger,
           rootDirPath,
           reader,
           frameworkPlugin,

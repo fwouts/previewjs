@@ -12,6 +12,7 @@ import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { findFiles } from "../find-files";
+import { Logger } from "../logger";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
@@ -28,13 +29,13 @@ export class ViteManager {
 
   constructor(
     private readonly options: {
+      logger: Logger;
       reader: Reader;
       rootDirPath: string;
       shadowHtmlFilePath: string;
       detectedGlobalCssFilePaths: string[];
       cacheDir: string;
       config: PreviewConfig;
-      logLevel: vite.UserConfig["logLevel"];
       frameworkPlugin: FrameworkPlugin;
     }
   ) {
@@ -168,7 +169,7 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
-    const defaultLogger = vite.createLogger(this.options.logLevel);
+    const defaultLogger = vite.createLogger(this.options.logger.viteLogLevel());
     const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig(
       await flattenPlugins([
         ...(existingViteConfig?.config.plugins || []),
