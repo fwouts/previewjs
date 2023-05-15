@@ -67,8 +67,7 @@ type PJS_CombinedProps<T> = T extends readonly [...any] ? {
   [K in PJS_RequiredPropsKeys<T>]: T[K] extends PJS_RequiredPropType<infer S> ? S : never;
 });
 type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props']> : {}
-type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
-`);
+type PJS_Props = PJS_ExtractProps<typeof pjs_component>;`);
   });
 
   it("ignores incompatible script lang", async () => {
