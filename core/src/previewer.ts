@@ -6,7 +6,7 @@ import assertNever from "assert-never";
 import axios from "axios";
 import type express from "express";
 import path from "path";
-import { Logger } from "pino";
+import type { Logger } from "pino";
 import { getCacheDir } from "./caching";
 import { FILES_REQUIRING_REDETECTION } from "./detect-components";
 import { findFiles } from "./find-files";

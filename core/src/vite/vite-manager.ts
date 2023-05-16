@@ -6,7 +6,7 @@ import fs from "fs-extra";
 import { escape } from "html-escaper";
 import type { Server } from "http";
 import path from "path";
-import { Logger } from "pino";
+import type { Logger } from "pino";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
