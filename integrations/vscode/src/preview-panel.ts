@@ -1,6 +1,6 @@
 import vscode from "vscode";
 import { ensurePreviewServerStopped } from "./preview-server";
-import { PreviewJsState } from "./state";
+import type { PreviewJsState } from "./state";
 
 export function updatePreviewPanel(
   state: PreviewJsState,

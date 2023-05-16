@@ -1,5 +1,6 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
-import { App, createApp } from "vue";
+import type { App } from "vue";
+import { createApp } from "vue";
 
 const root = document.getElementById("root")!;
 let app: App | null = null;

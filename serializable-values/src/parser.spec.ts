@@ -2,6 +2,7 @@ import { AssertionError } from "assert";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { parseSerializableValue } from "./parser";
+import type { SerializableValue } from "./serializable-value";
 import {
   EMPTY_ARRAY,
   EMPTY_MAP,
@@ -9,7 +10,6 @@ import {
   EMPTY_SET,
   FALSE,
   NULL,
-  SerializableValue,
   TRUE,
   UNDEFINED,
   UNKNOWN,
