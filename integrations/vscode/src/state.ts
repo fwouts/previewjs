@@ -1,11 +1,10 @@
-import { Client } from "@previewjs/daemon/client";
-import vscode, { WebviewPanel } from "vscode";
-import {
-  ComponentDetector,
-  createComponentDetector,
-} from "./component-detector";
+import type { Client } from "@previewjs/daemon/client";
+import vscode from "vscode";
+import type { ComponentDetector } from "./component-detector";
+import { createComponentDetector } from "./component-detector";
 import { ensureDaemonRunning } from "./start-daemon";
-import { Workspaces, createWorkspaceGetter } from "./workspaces";
+import type { Workspaces } from "./workspaces";
+import { createWorkspaceGetter } from "./workspaces";
 
 export async function createState({
   outputChannel,
@@ -59,7 +58,7 @@ export type PreviewJsState = {
   client: Client;
   dispose: () => void;
   workspaces: Workspaces;
-  previewPanel: WebviewPanel | null;
+  previewPanel: vscode.WebviewPanel | null;
   currentPreview: {
     workspaceId: string;
     url: string;

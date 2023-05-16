@@ -1,10 +1,10 @@
 import assertNever from "assert-never";
 import { formatExpression } from "./format-expression";
-import {
+import type {
   SerializableObjectValue,
   SerializableValue,
-  object,
 } from "./serializable-value";
+import { object } from "./serializable-value";
 
 export function serializableValueToJavaScript(
   value: SerializableValue

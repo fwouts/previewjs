@@ -1,10 +1,9 @@
 import type { ComponentAnalysis } from "@previewjs/core";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import {
-  CollectedTypes,
   NODE_TYPE,
   TypeResolver,
   UNKNOWN_TYPE,
-  ValueType,
   intersectionType,
   maybeOptionalType,
   objectType,

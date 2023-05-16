@@ -1,20 +1,22 @@
 import type { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
+import type {
+  CollectedTypes,
+  OptionalType,
+  ParameterizableType,
+  ValueType,
+} from "./definitions";
 import {
   ANY_TYPE,
   BOOLEAN_TYPE,
-  CollectedTypes,
   EMPTY_OBJECT_TYPE,
   NEVER_TYPE,
   NULL_TYPE,
   NUMBER_TYPE,
-  OptionalType,
-  ParameterizableType,
   STRING_TYPE,
   UNKNOWN_TYPE,
   VOID_TYPE,
-  ValueType,
   arrayType,
   enumType,
   functionType,

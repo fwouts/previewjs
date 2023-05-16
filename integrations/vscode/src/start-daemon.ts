@@ -2,14 +2,8 @@ import type { Client } from "@previewjs/daemon/client";
 import { createClient } from "@previewjs/daemon/client";
 import type { ExecaChildProcess, ExecaReturnValue, Options } from "execa";
 import { execa } from "execa";
-import {
-  FSWatcher,
-  closeSync,
-  openSync,
-  readFileSync,
-  utimesSync,
-  watch,
-} from "fs";
+import type { FSWatcher } from "fs";
+import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
 import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";

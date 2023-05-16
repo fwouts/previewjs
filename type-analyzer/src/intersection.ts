@@ -1,11 +1,10 @@
 import isEqual from "lodash/isEqual";
+import type { OptionalType, ValueType } from "./definitions";
 import {
   functionType,
   intersectionType,
   maybeOptionalType,
-  OptionalType,
   unionType,
-  ValueType,
   VOID_TYPE,
 } from "./definitions";
 
