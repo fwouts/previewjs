@@ -43,7 +43,17 @@ export async function activate() {
   let currentState = createState({ outputChannel });
 
   const config = vscode.workspace.getConfiguration();
+
   let focusedOutputChannelForError = false;
+  function onError(e: unknown) {
+    if (!focusedOutputChannelForError) {
+      outputChannel.show();
+      focusedOutputChannelForError = true;
+    }
+    outputChannel.appendLine(
+      e instanceof Error ? e.stack || e.message : `${e}`
+    );
+  }
 
   // Note: ESlint warning isn't relevant because we're correctly inferring arguments types.
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -52,13 +62,7 @@ export async function activate() {
       try {
         return await f(...args);
       } catch (e: unknown) {
-        if (!focusedOutputChannelForError) {
-          outputChannel.show();
-          focusedOutputChannelForError = true;
-        }
-        outputChannel.appendLine(
-          e instanceof Error ? e.stack || e.message : `${e}`
-        );
+        onError(e);
         throw e;
       }
     };
@@ -210,7 +214,7 @@ export async function activate() {
           componentId = component.componentId;
         }
         const preview = await ensurePreviewServerStarted(state, workspaceId);
-        updatePreviewPanel(state, preview.url, componentId);
+        updatePreviewPanel(state, preview.url, componentId, onError);
       }
     )
   );

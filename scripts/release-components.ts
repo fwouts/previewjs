@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { execa } from "execa";
 import fs from "fs";
 import inquirer from "inquirer";

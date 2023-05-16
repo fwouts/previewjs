@@ -19,7 +19,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 2;
   },
-  async create({ rootDirPath }) {
+  async create({ rootDirPath, logger }) {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { default: vue2Plugin } = await import("@vitejs/plugin-vue2");
     const { default: vue2JsxPlugin } = await import("@vitejs/plugin-vue2-jsx");
@@ -32,7 +32,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
       previewDirPath,
       transformReader: (reader) =>
         createStackedReader([
-          createVueTypeScriptReader(reader),
+          createVueTypeScriptReader(logger, reader),
           createFileSystemReader({
             mapping: {
               from: path.join(previewDirPath, "modules"),
@@ -133,7 +133,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
                     },
                   };
                 } catch (e) {
-                  console.warn(e);
+                  logger.warn(e);
                   return {};
                 }
               },

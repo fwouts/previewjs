@@ -4,6 +4,8 @@ import type { Reader } from "@previewjs/vfs";
 import { createFileSystemReader } from "@previewjs/vfs";
 import express from "express";
 import path from "path";
+import type { Logger } from "pino";
+import createLogger from "pino";
 import type { Page } from "playwright";
 import url from "url";
 import { startPreview } from "./preview";
@@ -12,11 +14,11 @@ export async function createChromelessWorkspace({
   rootDirPath,
   frameworkPlugins,
   reader = createFileSystemReader(),
-  logLevel = "info",
+  logger = createLogger(),
 }: {
   rootDirPath: string;
   frameworkPlugins: FrameworkPluginFactory[];
-  logLevel?: "error" | "warn" | "info" | "silent";
+  logger?: Logger;
   reader?: Reader;
   port?: number;
 }): Promise<
@@ -32,6 +34,7 @@ export async function createChromelessWorkspace({
   const frameworkPlugin = await setupFrameworkPlugin({
     rootDirPath,
     frameworkPlugins,
+    logger,
   });
   if (!frameworkPlugin) {
     throw new Error(
@@ -43,7 +46,7 @@ export async function createChromelessWorkspace({
   const workspace = await createWorkspace({
     rootDirPath,
     frameworkPlugin,
-    logLevel,
+    logger,
     reader,
     setupEnvironment: async () => ({
       middlewares: [express.static(clientDirPath)],

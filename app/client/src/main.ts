@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createAxiosApi, RPCs } from "@previewjs/api";
 import { createController } from "@previewjs/iframe";
 import {

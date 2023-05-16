@@ -3,12 +3,15 @@ import type * as vfs from "@previewjs/vfs";
 import { execaCommand } from "execa";
 import fs from "fs";
 import path from "path";
+import type { Logger } from "pino";
 import url from "url";
 
 export async function loadModules({
+  logger,
   installDir,
   packageName,
 }: {
+  logger: Logger;
   installDir: string;
   packageName: string;
 }) {
@@ -16,7 +19,8 @@ export async function loadModules({
     fs.existsSync(path.join(installDir, "pnpm")) &&
     !fs.existsSync(path.join(installDir, "node_modules"))
   ) {
-    console.log("[install:begin] Running pnpm install...");
+    // Note: The bracketed tag is required for VS Code and IntelliJ to detect start of installation.
+    process.stdout.write("[install:begin] Running pnpm install...\n");
     const pnpmProcess = execaCommand(
       `cd "${installDir}" && node pnpm/bin/pnpm.cjs install --frozen-lockfile`,
       {
@@ -26,7 +30,8 @@ export async function loadModules({
     pnpmProcess.stdout?.on("data", (chunk) => process.stdout.write(chunk));
     pnpmProcess.stderr?.on("data", (chunk) => process.stderr.write(chunk));
     await pnpmProcess;
-    console.log("[install:end] Done.");
+    // Note: The bracketed tag is required for VS Code and IntelliJ to detect end of installation.
+    process.stdout.write("[install:end] Done.\n");
   }
   const coreModule: typeof core = await importModule("@previewjs/core");
   const vfsModule: typeof vfs = await importModule("@previewjs/vfs");
@@ -54,7 +59,7 @@ export async function loadModules({
       );
       return module.default || module;
     } catch (e) {
-      console.error(`Unable to load ${name} from ${installDir}`, e);
+      logger.fatal(`Unable to load ${name} from ${installDir}`, e);
       throw e;
     }
   }

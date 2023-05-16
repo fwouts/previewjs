@@ -1,6 +1,7 @@
 import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
+import type { Logger } from "pino";
 import type { PackageDependencies } from "./dependencies";
 import type { FrameworkPluginFactory } from "./framework";
 
@@ -9,16 +10,19 @@ const require = createRequire(import.meta.url);
 export async function setupFrameworkPlugin({
   rootDirPath,
   frameworkPlugins,
+  logger,
 }: {
   rootDirPath: string;
   frameworkPlugins: FrameworkPluginFactory[];
+  logger: Logger;
 }) {
-  const dependencies = await extractPackageDependencies(rootDirPath);
+  const dependencies = await extractPackageDependencies(logger, rootDirPath);
   for (const candidate of frameworkPlugins) {
     if (await candidate.isCompatible(dependencies)) {
       return candidate.create({
         rootDirPath,
         dependencies,
+        logger,
       });
     }
   }
@@ -26,6 +30,7 @@ export async function setupFrameworkPlugin({
 }
 
 async function extractPackageDependencies(
+  logger: Logger,
   rootDirPath: string
 ): Promise<PackageDependencies> {
   const packageJsonPath = path.join(rootDirPath, "package.json");
@@ -83,7 +88,7 @@ async function extractPackageDependencies(
             }
             return version;
           } catch (e) {
-            console.error(
+            logger.error(
               `Unable to read installed version of package: ${name}`,
               e
             );

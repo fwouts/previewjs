@@ -58,7 +58,8 @@ if (lockFilePath) {
       flag: "wx",
     });
     exitHook(() => {
-      console.log("[exit] Preview.js daemon shutting down");
+      // Note: The bracketed tag is required for VS Code and IntelliJ to detect exit.
+      process.stdout.write("[exit] Preview.js daemon shutting down");
       try {
         unlinkSync(lockFilePath);
       } catch {
@@ -68,6 +69,7 @@ if (lockFilePath) {
       }
     });
   } catch {
+    // eslint-disable-next-line no-console
     console.error(
       `Unable to obtain lock: ${lockFilePath}\nYou can delete this file manually if you wish to override the lock.`
     );
@@ -100,10 +102,12 @@ if (logFilePath) {
     process.stdout.write.bind(process.stdout)
   );
   process.on("uncaughtException", (e) => {
+    // eslint-disable-next-line no-console
     console.error("Encountered an uncaught exception", e);
     process.exit(1);
   });
   process.on("unhandledRejection", (e) => {
+    // eslint-disable-next-line no-console
     console.error("Encountered an unhandled promise", e);
     process.exit(1);
   });
@@ -126,6 +130,7 @@ export async function startDaemon({
     installDir: loaderInstallDir,
     packageName,
   });
+  const logger = previewjs.logger;
 
   const clients = new Set<string>();
   const workspaces: Record<string, Workspace> = {};
@@ -169,7 +174,7 @@ export async function startDaemon({
         return detectedRoot;
       }
     } catch (e) {
-      console.warn(
+      logger.warn(
         `Unable to read WSL config, assuming default root: ${defaultRoot}`
       );
       return defaultRoot;
@@ -210,12 +215,12 @@ export async function startDaemon({
         .then((responseBody) => sendJsonResponse(res, responseBody))
         .catch((e) => {
           if (e instanceof NotFoundError) {
-            console.error(`404 in endpoint ${req.url}:`);
-            console.error(e);
+            logger.error(`404 in endpoint ${req.url}:`);
+            logger.error(e);
             sendPlainTextError(res, 404, e.message || "Not Found");
           } else {
-            console.error(`500 in endpoint ${req.url}:`);
-            console.error(e);
+            logger.error(`500 in endpoint ${req.url}:`);
+            logger.error(e);
             sendPlainTextError(res, 500, e.message || "Internal Error");
           }
         });
@@ -254,7 +259,7 @@ export async function startDaemon({
 
   endpoint<InfoRequest, KillResponse>("/previewjs/kill", async () => {
     setTimeout(() => {
-      console.log("Seppuku was requested. Bye bye.");
+      logger.info("Seppuku was requested. Bye bye.");
       process.exit(0);
     }, 1000);
     return {
@@ -276,8 +281,8 @@ export async function startDaemon({
       }
       shutdownTimer = setTimeout(() => {
         if (clients.size === 0) {
-          console.log(
-            `No clients are alive after ${AUTOMATIC_SHUTDOWN_DELAY_SECONDS}s.`
+          logger.info(
+            `No clients are alive after ${AUTOMATIC_SHUTDOWN_DELAY_SECONDS}s. Shutting down.`
           );
           process.exit(0);
         }
@@ -422,7 +427,8 @@ export async function startDaemon({
     });
   });
 
-  console.log(
-    `[ready] Preview.js daemon server is now running at http://localhost:${port}`
+  // Note: The bracketed tag is required for VS Code and IntelliJ to detect ready state.
+  process.stdout.write(
+    `[ready] Preview.js daemon server is now running at http://localhost:${port}\n`
   );
 }

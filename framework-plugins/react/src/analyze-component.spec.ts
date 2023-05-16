@@ -23,6 +23,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import reactFrameworkPlugin from "./index.js";
@@ -42,6 +43,7 @@ describe.concurrent("analyzeReactComponent", () => {
     frameworkPlugin = await reactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
+      logger: createLogger({ level: "debug" }),
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,

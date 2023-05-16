@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { LogLevel } from "../../src";
 import { sendMessageFromPreview } from "./messages";
 // @ts-ignore

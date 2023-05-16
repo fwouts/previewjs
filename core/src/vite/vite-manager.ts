@@ -6,6 +6,7 @@ import fs from "fs-extra";
 import { escape } from "html-escaper";
 import type { Server } from "http";
 import path from "path";
+import type { Logger } from "pino";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
@@ -28,13 +29,13 @@ export class ViteManager {
 
   constructor(
     private readonly options: {
+      logger: Logger;
       reader: Reader;
       rootDirPath: string;
       shadowHtmlFilePath: string;
       detectedGlobalCssFilePaths: string[];
       cacheDir: string;
       config: PreviewConfig;
-      logLevel: vite.UserConfig["logLevel"];
       frameworkPlugin: FrameworkPlugin;
     }
   ) {
@@ -124,7 +125,7 @@ export class ViteManager {
         loadTsconfig(configFilePath);
         validTypeScriptFilePaths.push(configFilePath);
       } catch (e) {
-        console.warn(
+        this.options.logger.warn(
           `Encountered an invalid config file, ignoring: ${configFilePath}`
         );
       }
@@ -168,7 +169,9 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
-    const defaultLogger = vite.createLogger(this.options.logLevel);
+    const defaultLogger = vite.createLogger(
+      viteLogLevelFromPinoLogger(this.options.logger)
+    );
     const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig(
       await flattenPlugins([
         ...(existingViteConfig?.config.plugins || []),
@@ -186,6 +189,7 @@ export class ViteManager {
         projects: validTypeScriptFilePaths,
       }),
       virtualPlugin({
+        logger: this.options.logger,
         reader: this.options.reader,
         rootDirPath: this.options.rootDirPath,
         allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow || [
@@ -415,4 +419,26 @@ async function flattenPlugins(
     }
   }
   return plugins;
+}
+
+function viteLogLevelFromPinoLogger(logger: Logger): vite.LogLevel {
+  switch (logger.level) {
+    case "fatal":
+      return "silent";
+    case "error":
+      return "error";
+    case "warn":
+      return "warn";
+    case "info":
+      return "info";
+    case "debug":
+      return "info";
+    case "trace":
+      return "info";
+    case "silent":
+      return "silent";
+    default:
+      logger.warn(`Unknown log level: ${logger.level}`);
+      return "info";
+  }
 }

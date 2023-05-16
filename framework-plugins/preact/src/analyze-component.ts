@@ -7,9 +7,11 @@ import {
   TypeResolver,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
+import type { Logger } from "pino";
 import ts from "typescript";
 
 export function analyzePreactComponent(
+  logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
 ): ComponentAnalysis {
@@ -79,7 +81,7 @@ export function analyzePreactComponent(
     }
     return { propsType, types };
   } catch (e) {
-    console.warn(
+    logger.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(
         type
       )}`,

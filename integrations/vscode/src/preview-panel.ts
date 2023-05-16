@@ -5,7 +5,8 @@ import type { PreviewJsState } from "./state";
 export function updatePreviewPanel(
   state: PreviewJsState,
   previewBaseUrl: string,
-  componentId: string
+  componentId: string,
+  onError: (e: unknown) => void
 ) {
   if (!state.previewPanel) {
     state.previewPanel = vscode.window.createWebviewPanel(
@@ -24,7 +25,7 @@ export function updatePreviewPanel(
     });
     state.previewPanel.onDidDispose(() => {
       state.previewPanel = null;
-      ensurePreviewServerStopped(state).catch(console.error);
+      ensurePreviewServerStopped(state).catch(onError);
     });
     state.previewPanel.webview.html = `<!DOCTYPE html>
   <html>

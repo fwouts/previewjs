@@ -19,9 +19,10 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import reactFrameworkPlugin from ".";
+import preactFrameworkPlugin from ".";
 import { PREACT_SPECIAL_TYPES } from "./special-types.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -35,9 +36,10 @@ describe.concurrent("analyzePreactComponent", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await reactFrameworkPlugin.create({
+    frameworkPlugin = await preactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
+      logger: createLogger({ level: "debug" }),
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,

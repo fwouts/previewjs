@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import depcheck from "depcheck";
 import { execaCommandSync } from "execa";
 import path from "path";

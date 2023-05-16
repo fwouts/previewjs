@@ -1,16 +1,31 @@
 import type * as core from "@previewjs/core";
 import { exclusivePromiseRunner } from "exclusive-promises";
+import fs from "fs-extra";
+import path from "path";
+import createLogger from "pino";
 import { loadModules } from "./modules.js";
 
 const locking = exclusivePromiseRunner();
 
-export async function load(options: {
+const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
+
+export async function load({
+  installDir,
+  packageName,
+}: {
   installDir: string;
   packageName: string;
 }) {
-  const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules(
-    options
-  );
+  let logLevel = process.env["PREVIEWJS_LOG_LEVEL"]?.toLowerCase();
+  if (!validLogLevels.has(logLevel)) {
+    logLevel = "info";
+  }
+  const globalLogger = createLogger({ level: "debug" });
+  const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules({
+    logger: globalLogger,
+    installDir,
+    packageName,
+  });
   const memoryReader = vfs.createMemoryReader();
   const reader = vfs.createStackedReader([
     memoryReader,
@@ -24,6 +39,7 @@ export async function load(options: {
 
   return {
     core,
+    logger: globalLogger,
     updateFileInMemory(absoluteFilePath: string, text: string | null) {
       memoryReader.updateFile(absoluteFilePath, text);
     },
@@ -36,8 +52,17 @@ export async function load(options: {
     }) {
       const rootDirPath = core.findWorkspaceRoot(absoluteFilePath);
       if (!rootDirPath) {
-        console.warn(`No workspace root detected from ${absoluteFilePath}`);
+        globalLogger.info(
+          `No workspace root detected from ${absoluteFilePath}`
+        );
         return null;
+      }
+      // TODO: Load a proper configuration file containing the desired log level.
+      // Pending https://twitter.com/fwouts/status/1658288168238735361
+      let logger = globalLogger;
+      if (await fs.pathExists(path.join(rootDirPath, "previewjs-debug"))) {
+        // Show debug logs for this workspace.
+        logger = createLogger({ level: "debug" });
       }
       const existingWorkspace = workspaces[rootDirPath];
       if (existingWorkspace !== undefined) {
@@ -47,18 +72,19 @@ export async function load(options: {
         const frameworkPlugin = await core.setupFrameworkPlugin({
           rootDirPath,
           frameworkPlugins,
+          logger,
         });
         if (!frameworkPlugin) {
-          console.warn(
+          logger.warn(
             `No compatible Preview.js plugin for workspace: ${rootDirPath}`
           );
           return null;
         }
-        console.log(
+        logger.info(
           `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDirPath}`
         );
         return await core.createWorkspace({
-          logLevel: "info",
+          logger,
           rootDirPath,
           reader,
           frameworkPlugin,

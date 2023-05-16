@@ -6,48 +6,25 @@ import {
   TypeResolver,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type { Logger } from "pino";
 import ts from "typescript";
 
 export function analyzeSolidComponent(
+  logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
 ): ComponentAnalysis {
-  const resolved = computePropsType(typeResolver, signature);
-  return {
-    propsType: resolved.type,
-    types: { ...resolved.collected },
-  };
-}
-
-function computePropsType(
-  typeResolver: TypeResolver,
-  signature: ts.Signature
-): {
-  type: ValueType;
-  collected: CollectedTypes;
-} {
-  return computePropsTypeFromSignature(typeResolver, signature);
-}
-
-function computePropsTypeFromSignature(
-  typeResolver: TypeResolver,
-  signature: ts.Signature
-): {
-  type: ValueType;
-  collected: CollectedTypes;
-} {
   const firstParam = signature.getParameters()[0];
   if (!firstParam) {
     return {
-      type: EMPTY_OBJECT_TYPE,
-      collected: {},
+      propsType: EMPTY_OBJECT_TYPE,
+      types: {},
     };
   }
   if (!firstParam.valueDeclaration) {
     return {
-      type: UNKNOWN_TYPE,
-      collected: {},
+      propsType: UNKNOWN_TYPE,
+      types: {},
     };
   }
   const type = typeResolver.checker.getTypeOfSymbolAtLocation(
@@ -83,9 +60,9 @@ function computePropsTypeFromSignature(
         );
       }
     }
-    return { type: propsType, collected };
+    return { propsType, types: collected };
   } catch (e) {
-    console.warn(
+    logger.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(
         type
       )}`,
@@ -93,7 +70,7 @@ function computePropsTypeFromSignature(
     );
   }
   return {
-    type: UNKNOWN_TYPE,
-    collected: {},
+    propsType: UNKNOWN_TYPE,
+    types: {},
   };
 }

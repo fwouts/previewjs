@@ -12,6 +12,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import reactFrameworkPlugin from ".";
@@ -23,6 +24,8 @@ const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractPreactComponents", () => {
+  const logger = createLogger({ level: "debug" });
+
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
@@ -35,6 +38,7 @@ describe.concurrent("extractPreactComponents", () => {
     const frameworkPlugin = await reactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
       dependencies: {},
+      logger,
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR,
@@ -459,6 +463,7 @@ export function NotStory() {}
 
   function extract(absoluteFilePath: string) {
     return extractPreactComponents(
+      logger,
       typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath

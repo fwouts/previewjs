@@ -9,10 +9,12 @@ import {
 } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
+import type { Logger } from "pino";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component.js";
 
 export function extractSolidComponents(
+  logger: Logger,
   resolver: TypeResolver,
   rootDirPath: string,
   absoluteFilePath: string
@@ -81,8 +83,9 @@ export function extractSolidComponents(
       (storyArgs || signature?.parameters.length === 0)
     ) {
       const associatedComponent = extractStoryAssociatedComponent(
-        rootDirPath,
+        logger,
         resolver,
+        rootDirPath,
         storiesDefaultComponent
       );
       if (!associatedComponent) {
@@ -105,7 +108,7 @@ export function extractSolidComponents(
       return {
         kind: "component",
         exported: isExported,
-        analyze: async () => analyzeSolidComponent(resolver, signature),
+        analyze: async () => analyzeSolidComponent(logger, resolver, signature),
       };
     }
     return null;
@@ -134,6 +137,7 @@ export function extractSolidComponents(
       async (componentId) => {
         const { filePath } = decodeComponentId(componentId);
         const component = extractSolidComponents(
+          logger,
           resolver,
           rootDirPath,
           path.join(rootDirPath, filePath)
@@ -151,8 +155,9 @@ export function extractSolidComponents(
 }
 
 function extractStoryAssociatedComponent(
-  rootDirPath: string,
+  logger: Logger,
   resolver: TypeResolver,
+  rootDirPath: string,
   component: ts.Expression
 ) {
   const resolvedStoriesComponentId = resolveComponentId(
@@ -174,7 +179,7 @@ function extractStoryAssociatedComponent(
               types: {},
             };
           }
-          return analyzeSolidComponent(resolver, signature);
+          return analyzeSolidComponent(logger, resolver, signature);
         },
       }
     : null;
