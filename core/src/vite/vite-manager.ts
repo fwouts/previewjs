@@ -6,13 +6,13 @@ import fs from "fs-extra";
 import { escape } from "html-escaper";
 import type { Server } from "http";
 import path from "path";
+import { Logger } from "pino";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { findFiles } from "../find-files";
-import { Logger } from "../logger";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
@@ -169,7 +169,9 @@ export class ViteManager {
       undefined,
       this.options.rootDirPath
     );
-    const defaultLogger = vite.createLogger(this.options.logger.viteLogLevel());
+    const defaultLogger = vite.createLogger(
+      viteLogLevelFromPinoLogger(this.options.logger)
+    );
     const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig(
       await flattenPlugins([
         ...(existingViteConfig?.config.plugins || []),
@@ -416,4 +418,26 @@ async function flattenPlugins(
     }
   }
   return plugins;
+}
+
+function viteLogLevelFromPinoLogger(logger: Logger): vite.LogLevel {
+  switch (logger.level) {
+    case "fatal":
+      return "silent";
+    case "error":
+      return "error";
+    case "warn":
+      return "warn";
+    case "info":
+      return "info";
+    case "debug":
+      return "info";
+    case "trace":
+      return "info";
+    case "silent":
+      return "silent";
+    default:
+      logger.warn(`Unknown log level: ${logger.level}`);
+      return "info";
+  }
 }

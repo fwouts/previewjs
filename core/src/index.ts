@@ -17,14 +17,12 @@ import fs from "fs-extra";
 import getPort, { portNumbers } from "get-port";
 import { createRequire } from "module";
 import path from "path";
+import { Logger } from "pino";
 import { detectComponents } from "./detect-components";
-import { Logger } from "./logger";
 import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
-export { createLogger, LogLevel } from "./logger";
-export type { Logger } from "./logger";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   AnalyzableComponent,
