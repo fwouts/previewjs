@@ -288,7 +288,7 @@ function stringFromFieldName(fieldName: string) {
   if (columnPosition === -1) {
     return fieldName.trim();
   }
-  return fieldName.substring(columnPosition).trim();
+  return fieldName.substring(columnPosition + 1).trim();
 }
 
 function generateArrayValue(
