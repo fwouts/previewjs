@@ -26,7 +26,6 @@ import {
   array,
   fn,
   map,
-  node,
   number,
   object,
   promise,
@@ -88,16 +87,14 @@ function _generateSerializableValue(
           : stringFromFieldName(fieldName)
       );
     case "node":
-      return node("div", EMPTY_OBJECT, [
-        _generateSerializableValue(
-          STRING_TYPE,
-          collected,
-          fieldName,
-          rejectTypeNames,
-          random,
-          isFunctionReturnValue
-        ),
-      ]);
+      return _generateSerializableValue(
+        STRING_TYPE,
+        collected,
+        fieldName,
+        rejectTypeNames,
+        random,
+        isFunctionReturnValue
+      );
     case "number":
       return number(random ? generateRandomInteger() : 0);
     case "literal":
