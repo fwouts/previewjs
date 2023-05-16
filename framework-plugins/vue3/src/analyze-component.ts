@@ -8,7 +8,6 @@ import {
   intersectionType,
   maybeOptionalType,
   objectType,
-  optionalType,
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
@@ -56,7 +55,7 @@ export function analyzeVueComponentFromTemplate(
       propsType,
       objectType(
         Object.fromEntries(
-          slots.map((slotName) => [`slot:${slotName}`, optionalType(NODE_TYPE)])
+          slots.map((slotName) => [`slot:${slotName}`, NODE_TYPE])
         )
       ),
     ]),
