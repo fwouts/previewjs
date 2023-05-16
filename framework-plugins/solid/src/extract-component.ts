@@ -9,7 +9,7 @@ import {
 } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
-import { Logger } from "pino";
+import type { Logger } from "pino";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component.js";
 

@@ -3,7 +3,7 @@ import type * as vfs from "@previewjs/vfs";
 import { execaCommand } from "execa";
 import fs from "fs";
 import path from "path";
-import { Logger } from "pino";
+import type { Logger } from "pino";
 import url from "url";
 
 export async function loadModules({
