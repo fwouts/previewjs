@@ -32,7 +32,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
       previewDirPath,
       transformReader: (reader) =>
         createStackedReader([
-          createVueTypeScriptReader(reader),
+          createVueTypeScriptReader(logger, reader),
           createFileSystemReader({
             mapping: {
               from: path.join(previewDirPath, "modules"),
