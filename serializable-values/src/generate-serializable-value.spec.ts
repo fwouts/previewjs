@@ -319,18 +319,8 @@ describe("generateSerializableValue", () => {
             },
             "kind": "key",
             "value": {
-              "children": [
-                {
-                  "kind": "string",
-                  "value": "nodeType",
-                },
-              ],
-              "kind": "node",
-              "props": {
-                "entries": [],
-                "kind": "object",
-              },
-              "tag": "div",
+              "kind": "string",
+              "value": "nodeType",
             },
           },
           {
@@ -351,18 +341,8 @@ describe("generateSerializableValue", () => {
             },
             "kind": "key",
             "value": {
-              "children": [
-                {
-                  "kind": "string",
-                  "value": "reactNodeType",
-                },
-              ],
-              "kind": "node",
-              "props": {
-                "entries": [],
-                "kind": "object",
-              },
-              "tag": "div",
+              "kind": "string",
+              "value": "reactNodeType",
             },
           },
           {

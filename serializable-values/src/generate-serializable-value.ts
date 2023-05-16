@@ -26,7 +26,6 @@ import {
   array,
   fn,
   map,
-  node,
   number,
   object,
   promise,
@@ -83,19 +82,19 @@ function _generateSerializableValue(
       return random && Math.random() < 0.5 ? TRUE : FALSE;
     case "string":
       return string(
-        random ? faker.lorem.words(generateRandomInteger(0, 10)) : fieldName
+        random
+          ? faker.lorem.words(generateRandomInteger(0, 10))
+          : stringFromFieldName(fieldName)
       );
     case "node":
-      return node("div", EMPTY_OBJECT, [
-        _generateSerializableValue(
-          STRING_TYPE,
-          collected,
-          fieldName,
-          rejectTypeNames,
-          random,
-          isFunctionReturnValue
-        ),
-      ]);
+      return _generateSerializableValue(
+        STRING_TYPE,
+        collected,
+        fieldName,
+        rejectTypeNames,
+        random,
+        isFunctionReturnValue
+      );
     case "number":
       return number(random ? generateRandomInteger() : 0);
     case "literal":
@@ -281,6 +280,15 @@ function _generateSerializableValue(
     default:
       throw assertNever(type);
   }
+}
+
+function stringFromFieldName(fieldName: string) {
+  // If a field looks like "abc:def" then return "def".
+  const columnPosition = fieldName.lastIndexOf(":");
+  if (columnPosition === -1) {
+    return fieldName.trim();
+  }
+  return fieldName.substring(columnPosition + 1).trim();
 }
 
 function generateArrayValue(

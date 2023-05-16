@@ -2,6 +2,9 @@
   <div id="app">
     <img id="ready" alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
+    <slot>default slot</slot>
+    <br />
+    <slot name="foo">named slot</slot>
   </div>
 </template>
 

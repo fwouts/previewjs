@@ -1,4 +1,3 @@
-import { ReaderListeners } from "@previewjs/vfs";
 import type {
   Directory,
   DirectorySync,
@@ -8,6 +7,7 @@ import type {
   FileSync,
   Reader,
 } from "@previewjs/vfs";
+import { ReaderListeners } from "@previewjs/vfs";
 import path from "path";
 import { preprocess } from "svelte/compiler";
 
@@ -113,11 +113,42 @@ function convertToTypeScript(svelteTemplateSource: string) {
     {
       script: ({ content }) => {
         scriptContent = content;
-        return {
-          code: "",
-        };
       },
     },
   ]);
-  return scriptContent;
+  let slotNames: string[] = [];
+  let slotSearchPosition = -1;
+  while (true) {
+    slotSearchPosition = svelteTemplateSource.indexOf(
+      "<slot",
+      slotSearchPosition + 1
+    );
+    if (slotSearchPosition === -1) {
+      break;
+    }
+    let slotEndPosition = svelteTemplateSource.indexOf(
+      "</slot>",
+      slotSearchPosition
+    );
+    if (slotEndPosition === -1) {
+      // No </slot> found, search for /> instead for <slot />
+      // self-closing tag.
+      slotEndPosition = svelteTemplateSource.indexOf("/>", slotSearchPosition);
+    }
+    const slotCode = svelteTemplateSource.substring(
+      slotSearchPosition,
+      slotEndPosition
+    );
+    const slotNameMatch = slotCode.match(/\sname="(.*)"/);
+    if (slotNameMatch) {
+      slotNames.push(slotNameMatch[1]!);
+    } else {
+      // No name, slot name assumed to be "default".
+      slotNames.push("default");
+    }
+  }
+  const pjsSlotsTypeDeclaration = `type PJS_Slots = [${slotNames
+    .map((slotName) => JSON.stringify(slotName))
+    .join(", ")}];`;
+  return `${scriptContent}\n${pjsSlotsTypeDeclaration}`;
 }
