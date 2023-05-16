@@ -40,10 +40,12 @@ export const load: RendererLoader = async ({
         currentElement = null;
       }
       root.innerHTML = "";
-      const props = getProps({
-        presetGlobalProps: componentModule.default?.args || {},
-        presetProps: ComponentOrStory.args || {},
-      });
+      const props = wrapSlotProps(
+        getProps({
+          presetGlobalProps: componentModule.default?.args || {},
+          presetProps: ComponentOrStory.args || {},
+        })
+      );
       const [Decorated, decoratedProps] = decorate(
         RenderComponent,
         props,
@@ -77,6 +79,25 @@ export const load: RendererLoader = async ({
     jsxFactory: null,
   };
 };
+
+function wrapSlotProps(props: Record<string, any>) {
+  const result: Record<string, any> = {};
+  const slots: Record<string, any> = {};
+  for (const [key, value] of Object.entries(props)) {
+    if (key.startsWith("slot:")) {
+      const element = document.createElement("span");
+      element.innerText = value;
+      slots[key.substring(5)] = [element];
+    } else {
+      result[key] = value;
+    }
+  }
+  if (Object.keys(slots).length > 0) {
+    result.$$slots = createSlots(slots);
+    result.$$scope = {};
+  }
+  return result;
+}
 
 // https://storybook.js.org/docs/svelte/writing-stories/decorators
 function decorate(

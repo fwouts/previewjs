@@ -1,10 +1,10 @@
 import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createSvelteTypeScriptReader } from "./svelte-reader";
@@ -53,10 +53,13 @@ describe.concurrent("createSvelteTypeScriptReader", () => {
     if (virtualFile?.kind !== "file") {
       throw new Error();
     }
-    expect(await virtualFile.read()).toEqual(`
-  import logo from './assets/svelte.png'
-  import Counter from './lib/Counter.svelte'
-`);
+    expect(await virtualFile.read()).toMatchInlineSnapshot(`
+      "
+        import logo from './assets/svelte.png'
+        import Counter from './lib/Counter.svelte'
+
+      type PJS_Slots = [];"
+    `);
   });
 
   // TODO: Add a test to ensure that module scripts are ignored.

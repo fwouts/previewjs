@@ -81,7 +81,7 @@ export const load: RendererLoader = async ({
       });
       app = createApp(() => {
         // @ts-ignore
-        const decoratedNode = h(Decorated, props);
+        const decoratedNode = slotTransformingH(Decorated, props);
         return Wrapper
           ? // @ts-ignore
             h(Wrapper, null, () => decoratedNode)
@@ -100,6 +100,29 @@ export const load: RendererLoader = async ({
       }
     },
     // @ts-ignore
-    jsxFactory: h,
+    jsxFactory: slotTransformingH,
   };
 };
+
+function slotTransformingH(component: any, props: any, children: any) {
+  props ||= {};
+  // @ts-ignore
+  return h(
+    component,
+    Object.fromEntries(
+      Object.entries(props).filter(
+        ([propName]) => !propName.startsWith("slot:")
+      )
+    ),
+    children !== undefined
+      ? children
+      : Object.fromEntries(
+          Object.entries(props)
+            .filter(([propName]) => propName.startsWith("slot:"))
+            .map(([propName, propValue]) => [
+              propName.substring(5),
+              () => propValue,
+            ])
+        )
+  );
+}

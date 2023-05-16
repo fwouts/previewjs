@@ -17,6 +17,9 @@
 
   <div class="card">
     <Counter />
+    <slot>default slot</slot>
+    <br />
+    <slot name="foo">named slot</slot>
   </div>
 
   <p>

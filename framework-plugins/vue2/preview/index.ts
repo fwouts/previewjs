@@ -84,6 +84,10 @@ export const load: RendererLoader = async ({
         app.$destroy();
         app = null;
       }
+      const props = getProps({
+        presetGlobalProps: componentModule.default?.args || {},
+        presetProps: ComponentOrStory.args || {},
+      });
       app = new Vue({
         render: (h) =>
           h(
@@ -95,10 +99,19 @@ export const load: RendererLoader = async ({
               },
             },
             {
-              props: getProps({
-                presetGlobalProps: componentModule.default?.args || {},
-                presetProps: ComponentOrStory.args || {},
-              }),
+              props: Object.fromEntries(
+                Object.entries(props).filter(
+                  ([propName]) => !propName.startsWith("slot:")
+                )
+              ),
+              scopedSlots: Object.fromEntries(
+                Object.entries(props)
+                  .filter(([propName]) => propName.startsWith("slot:"))
+                  .map(([propName, propValue]) => [
+                    propName.substring(5),
+                    () => h("span", propValue),
+                  ])
+              ),
             }
           ),
       }).$mount();

@@ -1,7 +1,3 @@
-import { ReaderListeners } from "@previewjs/vfs";
-import path from "path";
-import ts from "typescript";
-import { parseComponent } from "vue-template-compiler";
 import type {
   Directory,
   DirectorySync,
@@ -9,6 +5,10 @@ import type {
   FileSync,
   Reader,
 } from "@previewjs/vfs";
+import { ReaderListeners } from "@previewjs/vfs";
+import path from "path";
+import ts from "typescript";
+import { ASTElement, compile, parseComponent } from "vue-template-compiler";
 
 /**
  * Returns a reader that returns a virtual TypeScript file
@@ -87,13 +87,10 @@ class VueTypeScriptReader implements Reader {
 
 function convertToTypeScript(vueTemplateSource: string, name: string) {
   const parsed = parseComponent(vueTemplateSource);
-  const scriptContent = parsed.script?.content;
+  const scriptContent = parsed.script?.content || "export default {}";
   const lang = parsed.script?.lang;
-  if (
-    !scriptContent ||
-    (lang && !["js", "javascript", "ts", "typescript"].includes(lang))
-  ) {
-    return "export default {}";
+  if (lang && !["js", "javascript", "ts", "typescript"].includes(lang)) {
+    return scriptContent;
   }
   const sourceFile = ts.createSourceFile(
     `${name}.vue.ts`,
@@ -226,6 +223,16 @@ function convertToTypeScript(vueTemplateSource: string, name: string) {
         )
       );
   }
+  let pjsSlotsType = "[]";
+  if (parsed.template) {
+    const compiled = compile(parsed.template?.content);
+    if (compiled.ast) {
+      const slots = extractSlots(compiled.ast);
+      pjsSlotsType = `[${slots
+        .map((slotName) => JSON.stringify(slotName))
+        .join(", ")}]`;
+    }
+  }
   return `
 ${scriptContent}
 ${pjsComponentDeclaration}
@@ -250,5 +257,25 @@ type PJS_CombinedProps<T> = T extends readonly [...any] ? {
 });
 type PJS_ExtractProps<T> = T extends { props: any } ? PJS_CombinedProps<T['props']> : {}
 type PJS_Props = PJS_ExtractProps<typeof pjs_component>;
+type PJS_Slots = ${pjsSlotsType};
 `;
+}
+
+function extractSlots(element: ASTElement): string[] {
+  if (element.tag === "slot") {
+    const slotNameDoubleQuoted = element.slotName || '"default"';
+    try {
+      return [JSON.parse(slotNameDoubleQuoted)];
+    } catch (e) {
+      console.warn(`Invalid slot name string: ${slotNameDoubleQuoted}`);
+      return [];
+    }
+  }
+  const result: string[] = [];
+  for (const child of element.children) {
+    if (child.type === 1) {
+      result.push(...extractSlots(child));
+    }
+  }
+  return result;
 }
