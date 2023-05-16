@@ -8,7 +8,8 @@ import type {
 import { ReaderListeners } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
-import { ASTElement, compile, parseComponent } from "vue-template-compiler";
+import type { ASTElement } from "vue-template-compiler";
+import { compile, parseComponent } from "vue-template-compiler";
 
 /**
  * Returns a reader that returns a virtual TypeScript file

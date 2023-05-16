@@ -1,6 +1,6 @@
 import type { AnalyzeFileResponse, Client } from "@previewjs/daemon/client";
 import type vscode from "vscode";
-import { WorkspaceGetter } from "./workspaces";
+import type { WorkspaceGetter } from "./workspaces";
 
 export function createComponentDetector(
   client: Client,

@@ -1,4 +1,5 @@
-import { Component, ComponentChildren } from "preact";
+import type { ComponentChildren } from "preact";
+import { Component } from "preact";
 
 type ErrorBoundaryProps = {
   renderId: number;

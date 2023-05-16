@@ -1,10 +1,12 @@
 import type { ComponentAnalysis } from "@previewjs/core";
-import {
+import type {
   CollectedTypes,
   OptionalType,
+  ValueType,
+} from "@previewjs/type-analyzer";
+import {
   STRING_TYPE,
   TypeResolver,
-  ValueType,
   intersectionType,
   maybeOptionalType,
   objectType,

@@ -6,7 +6,7 @@ import type {
   Reader,
 } from "@previewjs/vfs";
 import { ReaderListeners } from "@previewjs/vfs";
-import { ElementNode } from "@vue/compiler-core";
+import type { ElementNode } from "@vue/compiler-core";
 import { parse } from "@vue/compiler-sfc";
 import path from "path";
 import ts from "typescript";

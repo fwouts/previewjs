@@ -1,8 +1,11 @@
 import type { ComponentAnalysis } from "@previewjs/core";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type {
+  CollectedTypes,
+  OptionalType,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import {
   EMPTY_OBJECT_TYPE,
-  OptionalType,
   TypeResolver,
   UNKNOWN_TYPE,
   dereferenceType,

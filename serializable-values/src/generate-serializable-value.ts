@@ -1,10 +1,12 @@
 import { faker } from "@faker-js/faker";
-import {
+import type {
   ArrayType,
   CollectedTypes,
   RecordType,
-  STRING_TYPE,
   ValueType,
+} from "@previewjs/type-analyzer";
+import {
+  STRING_TYPE,
   arrayType,
   dereferenceType,
   isValid,
@@ -12,15 +14,17 @@ import {
 import assertNever from "assert-never";
 import { formatExpression } from "./format-expression";
 import { isValidPropName } from "./prop-name";
+import type {
+  SerializableArrayValue,
+  SerializableObjectValue,
+  SerializableObjectValueEntry,
+  SerializableValue,
+} from "./serializable-value";
 import {
   EMPTY_ARRAY,
   EMPTY_OBJECT,
   FALSE,
   NULL,
-  SerializableArrayValue,
-  SerializableObjectValue,
-  SerializableObjectValueEntry,
-  SerializableValue,
   TRUE,
   UNDEFINED,
   array,
