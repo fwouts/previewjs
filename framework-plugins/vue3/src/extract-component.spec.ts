@@ -12,6 +12,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import vue3FrameworkPlugin from ".";
 import { extractVueComponents } from "./extract-component.js";
@@ -50,6 +51,7 @@ const count = ref(0)
     const frameworkPlugin = await vue3FrameworkPlugin.create({
       rootDirPath,
       dependencies: {},
+      logger: createLogger({ level: "debug" }),
     });
     const reader = createStackedReader([
       createVueTypeScriptReader(memoryReader),

@@ -51,6 +51,7 @@ window.addEventListener(
     const data = event.data;
     switch (data.kind) {
       case "render":
+        // eslint-disable-next-line no-console
         load(data).catch(console.error);
         break;
     }

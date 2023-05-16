@@ -9,10 +9,12 @@ import {
 } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
+import type { Logger } from "pino";
 import ts from "typescript";
 import { analyzePreactComponent } from "./analyze-component.js";
 
 export function extractPreactComponents(
+  logger: Logger,
   resolver: TypeResolver,
   rootDirPath: string,
   absoluteFilePath: string
@@ -79,8 +81,9 @@ export function extractPreactComponents(
       (storyArgs || signature?.parameters.length === 0)
     ) {
       const associatedComponent = extractStoryAssociatedComponent(
-        rootDirPath,
+        logger,
         resolver,
+        rootDirPath,
         storiesDefaultComponent
       );
       if (!associatedComponent) {
@@ -103,7 +106,8 @@ export function extractPreactComponents(
       return {
         kind: "component",
         exported: isExported,
-        analyze: async () => analyzePreactComponent(resolver, signature),
+        analyze: async () =>
+          analyzePreactComponent(logger, resolver, signature),
       };
     }
     return null;
@@ -132,6 +136,7 @@ export function extractPreactComponents(
       async (componentId) => {
         const { filePath } = decodeComponentId(componentId);
         const component = extractPreactComponents(
+          logger,
           resolver,
           rootDirPath,
           path.join(rootDirPath, filePath)
@@ -149,8 +154,9 @@ export function extractPreactComponents(
 }
 
 function extractStoryAssociatedComponent(
-  rootDirPath: string,
+  logger: Logger,
   resolver: TypeResolver,
+  rootDirPath: string,
   component: ts.Expression
 ) {
   const resolvedStoriesComponentId = resolveComponentId(
@@ -172,7 +178,7 @@ function extractStoryAssociatedComponent(
               types: {},
             };
           }
-          return analyzePreactComponent(resolver, signature);
+          return analyzePreactComponent(logger, resolver, signature);
         },
       }
     : null;

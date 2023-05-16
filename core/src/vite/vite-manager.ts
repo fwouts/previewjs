@@ -125,7 +125,7 @@ export class ViteManager {
         loadTsconfig(configFilePath);
         validTypeScriptFilePaths.push(configFilePath);
       } catch (e) {
-        console.warn(
+        this.options.logger.warn(
           `Encountered an invalid config file, ignoring: ${configFilePath}`
         );
       }
@@ -189,6 +189,7 @@ export class ViteManager {
         projects: validTypeScriptFilePaths,
       }),
       virtualPlugin({
+        logger: this.options.logger,
         reader: this.options.reader,
         rootDirPath: this.options.rootDirPath,
         allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow || [

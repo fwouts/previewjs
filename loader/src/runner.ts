@@ -9,18 +9,23 @@ const locking = exclusivePromiseRunner();
 
 const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 
-export async function load(options: {
+export async function load({
+  installDir,
+  packageName,
+}: {
   installDir: string;
   packageName: string;
 }) {
-  const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules(
-    options
-  );
   let logLevel = process.env["PREVIEWJS_LOG_LEVEL"]?.toLowerCase();
   if (!validLogLevels.has(logLevel)) {
     logLevel = "info";
   }
   const globalLogger = createLogger({ level: "debug" });
+  const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules({
+    logger: globalLogger,
+    installDir,
+    packageName,
+  });
   const memoryReader = vfs.createMemoryReader();
   const reader = vfs.createStackedReader([
     memoryReader,
@@ -34,6 +39,7 @@ export async function load(options: {
 
   return {
     core,
+    logger: globalLogger,
     updateFileInMemory(absoluteFilePath: string, text: string | null) {
       memoryReader.updateFile(absoluteFilePath, text);
     },
@@ -66,6 +72,7 @@ export async function load(options: {
         const frameworkPlugin = await core.setupFrameworkPlugin({
           rootDirPath,
           frameworkPlugins,
+          logger,
         });
         if (!frameworkPlugin) {
           logger.warn(

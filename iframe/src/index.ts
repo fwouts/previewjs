@@ -64,6 +64,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     if (message.kind === "render") {
       this.clearExpectRenderTimeout();
       this.expectRenderTimeout = setTimeout(() => {
+        // eslint-disable-next-line no-console
         console.warn(
           "Expected render did not occur after 5 seconds. Reloading iframe..."
         );

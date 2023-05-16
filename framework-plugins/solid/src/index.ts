@@ -18,7 +18,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 1;
   },
-  async create({ rootDirPath }) {
+  async create({ rootDirPath, logger }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
@@ -36,7 +36,12 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractSolidComponents(resolver, rootDirPath, absoluteFilePath)
+            ...extractSolidComponents(
+              logger,
+              resolver,
+              rootDirPath,
+              absoluteFilePath
+            )
           );
         }
         return components;

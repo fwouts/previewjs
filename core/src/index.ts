@@ -17,7 +17,7 @@ import fs from "fs-extra";
 import getPort, { portNumbers } from "get-port";
 import { createRequire } from "module";
 import path from "path";
-import { Logger } from "pino";
+import type { Logger } from "pino";
 import { detectComponents } from "./detect-components";
 import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
@@ -37,6 +37,7 @@ export type { SetupPreviewEnvironment } from "./preview-env";
 const require = createRequire(import.meta.url);
 
 process.on("uncaughtException", (e) => {
+  // eslint-disable-next-line no-console
   console.error("Uncaught Exception:", e);
 });
 
@@ -78,7 +79,7 @@ export async function createWorkspace({
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
     warn: logger.warn.bind(logger),
   });
-  const router = new ApiRouter();
+  const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     let analyze: () => Promise<ComponentAnalysis>;
     const detectedComponents = await frameworkPlugin.detectComponents(

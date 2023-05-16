@@ -12,6 +12,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import vue2FrameworkPlugin from ".";
 import { extractVueComponents } from "./extract-component.js";
@@ -54,6 +55,7 @@ export default {
     const frameworkPlugin = await vue2FrameworkPlugin.create({
       rootDirPath,
       dependencies: {},
+      logger: createLogger({ level: "debug" }),
     });
     const reader = createStackedReader([
       createVueTypeScriptReader(memoryReader),

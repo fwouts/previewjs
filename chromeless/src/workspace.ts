@@ -33,6 +33,7 @@ export async function createChromelessWorkspace({
   const frameworkPlugin = await setupFrameworkPlugin({
     rootDirPath,
     frameworkPlugins,
+    logger,
   });
   if (!frameworkPlugin) {
     throw new Error(

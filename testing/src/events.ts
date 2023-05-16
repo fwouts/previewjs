@@ -44,6 +44,7 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
               )}`
             );
           } else {
+            // eslint-disable-next-line no-console
             console.warn(
               `Unable to find logged message immediately: "${message}".\n\nRetrying in five seconds...`
             );

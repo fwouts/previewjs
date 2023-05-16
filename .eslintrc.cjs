@@ -33,6 +33,7 @@ module.exports = {
     "@typescript-eslint/no-var-requires": "off",
     "no-constant-condition": "off",
     "no-inner-declarations": "off",
+    "no-console": "error",
     "prefer-const": "off",
   },
 };

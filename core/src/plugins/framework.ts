@@ -5,6 +5,7 @@ import type {
   ValueType,
 } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
+import type { Logger } from "pino";
 import type ts from "typescript";
 import type vite from "vite";
 import type { PackageDependencies } from "./dependencies";
@@ -13,6 +14,7 @@ export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
   create(options: {
     rootDirPath: string;
+    logger: Logger;
     dependencies: PackageDependencies;
   }): Promise<FrameworkPlugin>;
 }

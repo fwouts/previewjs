@@ -9,10 +9,12 @@ import {
 } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
+import type { Logger } from "pino";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component.js";
 
 export function extractReactComponents(
+  logger: Logger,
   resolver: TypeResolver,
   rootDirPath: string,
   absoluteFilePath: string
@@ -79,8 +81,9 @@ export function extractReactComponents(
       (storyArgs || signature?.parameters.length === 0)
     ) {
       const associatedComponent = extractStoryAssociatedComponent(
-        rootDirPath,
+        logger,
         resolver,
+        rootDirPath,
         storiesDefaultComponent
       );
       if (!associatedComponent) {
@@ -104,7 +107,13 @@ export function extractReactComponents(
         kind: "component",
         exported: isExported,
         analyze: async () =>
-          analyzeReactComponent(resolver, absoluteFilePath, name, signature),
+          analyzeReactComponent(
+            logger,
+            resolver,
+            absoluteFilePath,
+            name,
+            signature
+          ),
       };
     }
     return null;
@@ -133,6 +142,7 @@ export function extractReactComponents(
       async (componentId) => {
         const { filePath } = decodeComponentId(componentId);
         const component = extractReactComponents(
+          logger,
           resolver,
           rootDirPath,
           path.join(rootDirPath, filePath)
@@ -150,8 +160,9 @@ export function extractReactComponents(
 }
 
 function extractStoryAssociatedComponent(
-  rootDirPath: string,
+  logger: Logger,
   resolver: TypeResolver,
+  rootDirPath: string,
   component: ts.Expression
 ) {
   const resolvedStoriesComponentId = resolveComponentId(
@@ -177,6 +188,7 @@ function extractStoryAssociatedComponent(
             resolvedStoriesComponentId
           );
           return analyzeReactComponent(
+            logger,
             resolver,
             path.join(rootDirPath, filePath),
             name,

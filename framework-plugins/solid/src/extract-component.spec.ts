@@ -12,6 +12,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import solidFrameworkPlugin from ".";
 import { extractSolidComponents } from "./extract-component.js";
@@ -21,6 +22,8 @@ const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractSolidComponents", () => {
+  const logger = createLogger({ level: "debug" });
+
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
@@ -33,6 +36,7 @@ describe.concurrent("extractSolidComponents", () => {
     const frameworkPlugin = await solidFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
       dependencies: {},
+      logger,
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR,
@@ -310,6 +314,7 @@ export function NotStory() {}
 
   function extract(absoluteFilePath: string) {
     return extractSolidComponents(
+      logger,
       typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath
