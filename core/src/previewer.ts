@@ -6,7 +6,7 @@ import assertNever from "assert-never";
 import axios from "axios";
 import type express from "express";
 import path from "path";
-import type * as vite from "vite";
+import type { Logger } from "pino";
 import { getCacheDir } from "./caching";
 import { FILES_REQUIRING_REDETECTION } from "./detect-components";
 import { findFiles } from "./find-files";
@@ -68,7 +68,7 @@ export class Previewer {
       reader: Reader;
       previewDirPath: string;
       rootDirPath: string;
-      logLevel: vite.UserConfig["logLevel"];
+      logger: Logger;
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
       onFileChanged?(absoluteFilePath: string): void;
@@ -109,7 +109,7 @@ export class Previewer {
         try {
           await statusBeforeStart.promise;
         } catch (e) {
-          console.error(e);
+          this.options.logger.error(e);
           this.status = {
             kind: "stopped",
           };
@@ -128,7 +128,7 @@ export class Previewer {
         try {
           await statusBeforeStart.promise;
         } catch (e) {
-          console.error(e);
+          this.options.logger.error(e);
           this.status = {
             kind: "stopped",
           };
@@ -170,6 +170,7 @@ export class Previewer {
           )}).@(${GLOBAL_CSS_EXTS.join("|")})`
         );
         this.appServer = new Server({
+          logger: this.options.logger,
           middlewares: [
             ...(this.options.middlewares || []),
             (req, res, next) => {
@@ -201,7 +202,7 @@ export class Previewer {
           reader: this.transformingReader,
           cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
           config: this.config,
-          logLevel: this.options.logLevel,
+          logger: this.options.logger,
           frameworkPlugin: this.options.frameworkPlugin,
         });
         const server = await this.appServer.start(port);
@@ -250,7 +251,7 @@ export class Previewer {
     if (options.onceUnused) {
       if (!(await this.shutdownCheck())) {
         this.shutdownCheckInterval = setInterval(() => {
-          this.shutdownCheck().catch(console.error);
+          this.shutdownCheck().catch(this.options.logger.error);
         }, SHUTDOWN_CHECK_INTERVAL);
       }
     } else {
@@ -327,14 +328,16 @@ export class Previewer {
         if (this.status.kind === "starting" || this.status.kind === "started") {
           const port = this.status.port;
           // Packages were updated. Restart.
-          console.log("New dependencies were detected. Restarting...");
+          this.options.logger.info(
+            "New dependencies were detected. Restarting..."
+          );
           this.stop({
             restarting: true,
           })
             .then(async () => {
               await this.start(async () => port, { restarting: true });
             })
-            .catch(console.error);
+            .catch(this.options.logger.error);
         }
         return;
       }

@@ -12,6 +12,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import vue2FrameworkPlugin from ".";
 import { extractVueComponents } from "./extract-component.js";
@@ -23,6 +24,8 @@ const MY_COMPONENT_VUE = path.join(ROOT_DIR, "MyComponent.vue");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractVueComponents", () => {
+  const logger = createLogger({ level: "debug" });
+
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
@@ -54,9 +57,10 @@ export default {
     const frameworkPlugin = await vue2FrameworkPlugin.create({
       rootDirPath,
       dependencies: {},
+      logger,
     });
     const reader = createStackedReader([
-      createVueTypeScriptReader(memoryReader),
+      createVueTypeScriptReader(logger, memoryReader),
       createFileSystemReader({
         mapping: {
           from: path.join(__dirname, "..", "preview", "modules"),

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import checker from "license-checker";
 import path from "path";
 import url from "url";

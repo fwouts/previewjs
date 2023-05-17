@@ -1,20 +1,22 @@
 import type { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
+import type {
+  CollectedTypes,
+  OptionalType,
+  ParameterizableType,
+  ValueType,
+} from "./definitions";
 import {
   ANY_TYPE,
   BOOLEAN_TYPE,
-  CollectedTypes,
   EMPTY_OBJECT_TYPE,
   NEVER_TYPE,
   NULL_TYPE,
   NUMBER_TYPE,
-  OptionalType,
-  ParameterizableType,
   STRING_TYPE,
   UNKNOWN_TYPE,
   VOID_TYPE,
-  ValueType,
   arrayType,
   enumType,
   functionType,
@@ -41,7 +43,7 @@ export function createTypeAnalyzer(options: {
   collected?: CollectedTypes;
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
   specialTypes?: Record<string, ValueType>;
-  printWarnings?: boolean;
+  warn?: (message: string) => void;
 }): TypeAnalyzer {
   return new TypeAnalyzer(
     options.rootDirPath,
@@ -49,7 +51,7 @@ export function createTypeAnalyzer(options: {
     options.collected || {},
     options.specialTypes || {},
     options.tsCompilerOptions || {},
-    options.printWarnings || false
+    options.warn
   );
 }
 
@@ -64,7 +66,7 @@ class TypeAnalyzer {
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
     tsCompilerOptions: Partial<ts.CompilerOptions>,
-    private readonly printWarnings: boolean
+    private readonly warn?: (message: string) => void
   ) {
     this.service = ts.createLanguageService(
       typescriptServiceHost({
@@ -86,7 +88,7 @@ class TypeAnalyzer {
     if (!program) {
       throw new Error(`No program available.`);
     }
-    if (this.printWarnings) {
+    if (this.warn) {
       const semanticDiagnostics = program.getSemanticDiagnostics();
       let printedSemanticWarningsHeader = false;
       let lastFileName = "";
@@ -99,16 +101,16 @@ class TypeAnalyzer {
           continue;
         }
         if (!printedSemanticWarningsHeader) {
-          console.warn(
+          this.warn(
             "Warning: encountered some TypeScript error(s) while resolving types.\nThis may be safe to ignore, but could help point out why some components are not detected by Preview.js."
           );
           printedSemanticWarningsHeader = true;
         }
         if (diagnostic.file && lastFileName !== diagnostic.file.fileName) {
           lastFileName = diagnostic.file.fileName;
-          console.warn(`${path.relative(this.rootDirPath, lastFileName)}:`);
+          this.warn(`${path.relative(this.rootDirPath, lastFileName)}:`);
         }
-        console.warn(messageText);
+        this.warn(messageText);
         this.printedWarnings.add(messageText);
       }
     }
@@ -117,7 +119,7 @@ class TypeAnalyzer {
       this.collected,
       this.specialTypes,
       program,
-      this.printWarnings
+      this.warn
     );
   }
 
@@ -135,7 +137,7 @@ class TypeResolver {
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
     private readonly program: ts.Program,
-    private readonly printWarnings: boolean
+    private readonly warn?: (message: string) => void
   ) {
     this.checker = program.getTypeChecker();
   }
@@ -197,8 +199,8 @@ class TypeResolver {
       try {
         return this.resolveUncollectedType(type, genericTypeNames);
       } catch (e: any) {
-        if (this.printWarnings) {
-          console.warn(
+        if (this.warn) {
+          this.warn(
             `Unable to resolve type ${this.checker.typeToString(type)}\n\n${
               e.stack || e.message
             }`
@@ -412,8 +414,8 @@ class TypeResolver {
       for (const t of type.types) {
         const subtype = this.resolveTypeInternal(t, genericTypeNames);
         if (!subtype) {
-          if (this.printWarnings) {
-            console.warn(
+          if (this.warn) {
+            this.warn(
               `Unable to resolve ${
                 type.isUnion() ? "union" : "intersection"
               } subtype ${this.checker.typeToString(t)}`
@@ -524,8 +526,8 @@ class TypeResolver {
       }
       return objectType(fields);
     }
-    if (this.printWarnings) {
-      console.warn(
+    if (this.warn) {
+      this.warn(
         `Unable to recognise type with flags ${flags} in ${this.checker.typeToString(
           type
         )}`

@@ -1,10 +1,5 @@
-import {
-  decodeComponentId,
-  RequestOf,
-  ResponseOf,
-  RPC,
-  RPCs,
-} from "@previewjs/api";
+import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
+import { decodeComponentId, RPCs } from "@previewjs/api";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -17,7 +12,7 @@ import fs from "fs-extra";
 import getPort, { portNumbers } from "get-port";
 import { createRequire } from "module";
 import path from "path";
-import type * as vite from "vite";
+import type { Logger } from "pino";
 import { detectComponents } from "./detect-components";
 import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
@@ -37,6 +32,7 @@ export type { SetupPreviewEnvironment } from "./preview-env";
 const require = createRequire(import.meta.url);
 
 process.on("uncaughtException", (e) => {
+  // eslint-disable-next-line no-console
   console.error("Uncaught Exception:", e);
 });
 
@@ -44,12 +40,12 @@ export async function createWorkspace({
   rootDirPath,
   reader,
   frameworkPlugin,
-  logLevel,
+  logger,
   setupEnvironment,
 }: {
   rootDirPath: string;
   frameworkPlugin: FrameworkPlugin;
-  logLevel: vite.LogLevel;
+  logger: Logger;
   reader: Reader;
   setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
@@ -76,9 +72,9 @@ export async function createWorkspace({
     collected,
     specialTypes: frameworkPlugin.specialTypes,
     tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-    printWarnings: logLevel === "info",
+    warn: logger.warn.bind(logger),
   });
-  const router = new ApiRouter();
+  const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     let analyze: () => Promise<ComponentAnalysis>;
     const detectedComponents = await frameworkPlugin.detectComponents(
@@ -158,7 +154,7 @@ export async function createWorkspace({
       "preview"
     ),
     frameworkPlugin,
-    logLevel,
+    logger,
     middlewares,
     onFileChanged: (absoluteFilePath) => {
       const filePath = path.relative(rootDirPath, absoluteFilePath);

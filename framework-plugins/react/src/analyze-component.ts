@@ -1,8 +1,11 @@
 import type { ComponentAnalysis } from "@previewjs/core";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type {
+  CollectedTypes,
+  OptionalType,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import {
   EMPTY_OBJECT_TYPE,
-  OptionalType,
   TypeResolver,
   UNKNOWN_TYPE,
   dereferenceType,
@@ -10,10 +13,12 @@ import {
   objectType,
   stripUnusedTypes,
 } from "@previewjs/type-analyzer";
+import type { Logger } from "pino";
 import ts from "typescript";
 import { detectPropTypes } from "./prop-types.js";
 
 export function analyzeReactComponent(
+  logger: Logger,
   typeResolver: TypeResolver,
   absoluteFilePath: string,
   componentName: string,
@@ -24,7 +29,7 @@ export function analyzeReactComponent(
   if (sourceFile) {
     propTypes = detectPropTypes(sourceFile, componentName);
   }
-  const resolved = computePropsType(typeResolver, signature, propTypes);
+  const resolved = computePropsType(logger, typeResolver, signature, propTypes);
   return {
     propsType: resolved.type,
     types: { ...resolved.collected },
@@ -32,6 +37,7 @@ export function analyzeReactComponent(
 }
 
 function computePropsType(
+  logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature,
   propTypes: ts.Expression | null
@@ -42,10 +48,11 @@ function computePropsType(
   if (propTypes) {
     return computePropsTypeFromPropTypes(typeResolver, propTypes);
   }
-  return computePropsTypeFromSignature(typeResolver, signature);
+  return computePropsTypeFromSignature(logger, typeResolver, signature);
 }
 
 function computePropsTypeFromSignature(
+  logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
 ): {
@@ -108,7 +115,7 @@ function computePropsTypeFromSignature(
     }
     return { type: propsType, collected };
   } catch (e) {
-    console.warn(
+    logger.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(
         type
       )}`,

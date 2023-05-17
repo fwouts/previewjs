@@ -4,9 +4,12 @@ import type {
   RPC,
   WrappedResponse,
 } from "@previewjs/api";
+import type { Logger } from "pino";
 
 export class ApiRouter {
   private handlers = new Map<string, RequestHandler<any, any>>();
+
+  constructor(private readonly logger: Logger) {}
 
   async handle(
     path: string,
@@ -26,7 +29,7 @@ export class ApiRouter {
         response,
       };
     } catch (e: any) {
-      console.error(`Handler ${path} failed`, e);
+      this.logger.error(`Handler ${path} failed`, e);
       return {
         kind: "error",
         message: e.message,

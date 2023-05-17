@@ -18,6 +18,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
+import createLogger from "pino";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue2FrameworkPlugin from ".";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
@@ -27,6 +28,8 @@ const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
 describe.concurrent("analyze Vue 2 component", () => {
+  const logger = createLogger({ level: "debug" });
+
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -36,10 +39,12 @@ describe.concurrent("analyze Vue 2 component", () => {
     frameworkPlugin = await vue2FrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
+      logger,
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
+        logger,
         createStackedReader([
           memoryReader,
           createFileSystemReader({

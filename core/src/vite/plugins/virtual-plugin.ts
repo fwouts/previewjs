@@ -1,6 +1,7 @@
 import type { Reader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
+import type { Logger } from "pino";
 import type * as vite from "vite";
 import { transformWithEsbuild } from "vite";
 
@@ -9,6 +10,7 @@ const VIRTUAL_PREFIX = `/@previewjs-virtual:`;
 const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 
 export function virtualPlugin(options: {
+  logger: Logger;
   reader: Reader;
   rootDirPath: string;
   allowedAbsolutePaths: string[];
@@ -91,13 +93,13 @@ export function virtualPlugin(options: {
         }
       }
       if (!isAllowed) {
-        console.error(
+        options.logger.error(
           `Attempted access to ${absoluteFilePath} which is outside of allowed directories. See https://previewjs.com/docs/config and https://vitejs.dev/config/server-options.html#server-fs-allow for more information.`
         );
         return null;
       }
       if (entry.kind !== "file") {
-        console.error(`Unable to read file from ${absoluteFilePath}`);
+        options.logger.error(`Unable to read file from ${absoluteFilePath}`);
         return null;
       }
       const source = await entry.read();

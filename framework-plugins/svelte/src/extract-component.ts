@@ -2,7 +2,7 @@ import { decodeComponentId, generateComponentId } from "@previewjs/api";
 import type { AnalyzableComponent } from "@previewjs/core";
 import { extractCsf3Stories } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
-import { Reader } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import path from "path";
 import { analyzeSvelteComponentFromSFC } from "./analyze-component.js";
 import { inferComponentNameFromSveltePath } from "./infer-component-name.js";

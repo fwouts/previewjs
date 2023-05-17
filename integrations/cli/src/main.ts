@@ -40,7 +40,7 @@ program
       absoluteFilePath: dirPath || process.cwd(),
     });
     if (!workspace) {
-      console.error(chalk.red(`No workspace detected.`));
+      previewjs.logger.error(chalk.red(`No workspace detected.`));
       process.exit(1);
     }
 
@@ -49,6 +49,7 @@ program
   });
 
 program.parseAsync(process.argv).catch((e) => {
+  // eslint-disable-next-line no-console
   console.error(e);
   process.exit(1);
 });

@@ -26,7 +26,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return major >= 17 || (major === 16 && minor >= 14);
   },
-  async create({ rootDirPath, dependencies }) {
+  async create({ rootDirPath, logger, dependencies }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.join(__dirname, "..", "preview");
     return {
@@ -55,7 +55,12 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractReactComponents(resolver, rootDirPath, absoluteFilePath)
+            ...extractReactComponents(
+              logger,
+              resolver,
+              rootDirPath,
+              absoluteFilePath
+            )
           );
         }
         return components;

@@ -16,7 +16,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) >= 10;
   },
-  async create({ rootDirPath }) {
+  async create({ rootDirPath, logger }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     return {
@@ -36,7 +36,12 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractPreactComponents(resolver, rootDirPath, absoluteFilePath)
+            ...extractPreactComponents(
+              logger,
+              resolver,
+              rootDirPath,
+              absoluteFilePath
+            )
           );
         }
         return components;

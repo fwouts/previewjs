@@ -1,14 +1,16 @@
 import assertNever from "assert-never";
 import ts from "typescript";
 import { formatExpression } from "./format-expression";
+import type {
+  SerializableObjectValueEntry,
+  SerializableValue,
+} from "./serializable-value";
 import {
   EMPTY_MAP,
   EMPTY_OBJECT,
   EMPTY_SET,
   FALSE,
   NULL,
-  SerializableObjectValueEntry,
-  SerializableValue,
   TRUE,
   UNDEFINED,
   UNKNOWN,

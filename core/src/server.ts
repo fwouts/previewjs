@@ -1,14 +1,20 @@
 import express from "express";
 import type http from "http";
-import { createHttpTerminator } from "http-terminator";
 import type { HttpTerminator } from "http-terminator";
+import { createHttpTerminator } from "http-terminator";
+import type { Logger } from "pino";
 
 export class Server {
   private readonly app: express.Application;
+  private readonly logger: Logger;
   private serverTerminator: HttpTerminator | null = null;
   private server: http.Server | null = null;
 
-  constructor(options: { middlewares: express.RequestHandler[] }) {
+  constructor(options: {
+    logger: Logger;
+    middlewares: express.RequestHandler[];
+  }) {
+    this.logger = options.logger;
     const app = express();
     app.use((_req, res, next) => {
       // Disable caching.
@@ -26,7 +32,9 @@ export class Server {
   async start(port: number) {
     return new Promise<http.Server>((resolve) => {
       const server = (this.server = this.app.listen(port, () => {
-        console.log(`Preview.js Server running at http://localhost:${port}.`);
+        this.logger.info(
+          `Preview.js Server running at http://localhost:${port}.`
+        );
         resolve(server);
       }));
       this.serverTerminator = createHttpTerminator({
@@ -46,6 +54,6 @@ export class Server {
       await new Promise((resolve) => server.close(resolve));
       this.server = null;
     }
-    console.log(`Preview.js Server stopped.`);
+    this.logger.info(`Preview.js server stopped.`);
   }
 }

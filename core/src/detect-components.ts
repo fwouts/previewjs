@@ -6,7 +6,7 @@ import path from "path";
 import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
-import { AnalyzableComponent } from "./plugins/framework";
+import type { AnalyzableComponent } from "./plugins/framework";
 
 export const FILES_REQUIRING_REDETECTION = new Set([
   "jsconfig.json",
