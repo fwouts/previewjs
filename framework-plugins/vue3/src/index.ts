@@ -29,6 +29,9 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
+      tsCompilerOptions: {
+        types: ["vue/jsx"],
+      },
       transformReader: (reader) =>
         createStackedReader([
           createVueTypeScriptReader(reader),
