@@ -16,6 +16,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import svelteFrameworkPlugin from ".";
 import { inferComponentNameFromSveltePath } from "./infer-component-name";
@@ -34,7 +35,7 @@ describe.concurrent("analyze Svelte component", () => {
     frameworkPlugin = await svelteFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger({ level: "debug" }),
+      logger: createLogger({ level: "debug" }, prettyLogger()),
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,

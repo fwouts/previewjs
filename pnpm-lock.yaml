@@ -158,6 +158,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       playwright:
         specifier: ^1.33.0
         version: 1.33.0
@@ -416,6 +419,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       preact:
         specifier: ^10.13.2
         version: 10.13.2
@@ -622,6 +628,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -2054,6 +2063,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       solid-js:
         specifier: ^1.7.5
         version: 1.7.5
@@ -2200,6 +2212,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
@@ -2474,6 +2489,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       rimraf:
         specifier: ^5.0.0
         version: 5.0.0
@@ -2650,6 +2668,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       rimraf:
         specifier: ^5.0.0
         version: 5.0.0
@@ -2938,6 +2959,9 @@ importers:
       pino:
         specifier: ^8.14.1
         version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.0
+        version: 10.0.0
       pnpm:
         specifier: ^8.5.0
         version: 8.5.0
@@ -21254,6 +21278,9 @@ packages:
       time-zone: 1.0.0
     dev: true
 
+  /dateformat@4.6.3:
+    resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
+
   /dayjs@1.11.7:
     resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
     dev: false
@@ -23645,6 +23672,9 @@ packages:
     engines: {'0': node >=0.6.0}
     dev: true
 
+  /fast-copy@3.0.1:
+    resolution: {integrity: sha512-Knr7NOtK3HWRYGtHoJrjkaWepqT8thIVGAwt0p0aUs1zqkAzXZV4vo9fFNwyb5fcqK1GKYFYxldQdIDVKhUAfA==}
+
   /fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -23710,6 +23740,9 @@ packages:
   /fast-redact@3.2.0:
     resolution: {integrity: sha512-zaTadChr+NekyzallAMXATXLOR8MNx3zqpZ0MUF2aGf4EathnG0f32VLODNlY8IuGY3HoRO2L6/6fSzNsLaHIw==}
     engines: {node: '>=6'}
+
+  /fast-safe-stringify@2.1.1:
+    resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
 
   /fastq@1.15.0:
     resolution: {integrity: sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==}
@@ -24980,6 +25013,12 @@ packages:
   /he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+
+  /help-me@4.2.0:
+    resolution: {integrity: sha512-TAOnTB8Tz5Dw8penUuzHVrKNKlCIbwwbHnXraNJxPwf8LRtE2HlM84RYuezMFcwOJmoYOCWVDyJ8TQGxn9PgxA==}
+    dependencies:
+      glob: 8.1.0
+      readable-stream: 3.6.1
 
   /hermes-estree@0.8.0:
     resolution: {integrity: sha512-W6JDAOLZ5pMPMjEiQGLCXSSV7pIBEgRR5zGkxgmzGSXHOxqV5dC/M1Zevqpbm9TZDE5tu358qZf8Vkzmsc+u7Q==}
@@ -26997,6 +27036,10 @@ packages:
   /join-component@1.1.0:
     resolution: {integrity: sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==}
     dev: false
+
+  /joycon@3.1.1:
+    resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
+    engines: {node: '>=10'}
 
   /js-message@1.0.7:
     resolution: {integrity: sha512-efJLHhLjIyKRewNS9EGZ4UpI8NguuL6fKkhRxVuMmrGV2xN/0APGdQYwLFky5w9naebSZ0OwAGp0G6/2Cg90rA==}
@@ -30712,6 +30755,25 @@ packages:
     dependencies:
       readable-stream: 4.4.0
       split2: 4.2.0
+
+  /pino-pretty@10.0.0:
+    resolution: {integrity: sha512-zKFjYXBzLaLTEAN1ayKpHXtL5UeRQC7R3lvhKe7fWs7hIVEjKGG/qIXwQt9HmeUp71ogUd/YcW+LmMwRp4KT6Q==}
+    hasBin: true
+    dependencies:
+      colorette: 2.0.19
+      dateformat: 4.6.3
+      fast-copy: 3.0.1
+      fast-safe-stringify: 2.1.1
+      help-me: 4.2.0
+      joycon: 3.1.1
+      minimist: 1.2.8
+      on-exit-leak-free: 2.1.0
+      pino-abstract-transport: 1.0.0
+      pump: 3.0.0
+      readable-stream: 4.4.0
+      secure-json-parse: 2.7.0
+      sonic-boom: 3.3.0
+      strip-json-comments: 3.1.1
 
   /pino-std-serializers@6.2.1:
     resolution: {integrity: sha512-wHuWB+CvSVb2XqXM0W/WOYUkVSPbiJb9S5fNB7TBhd8s892Xq910bRxwHtC4l71hgztObTjXL6ZheZXFjhDrDQ==}
@@ -34916,6 +34978,9 @@ packages:
   /scule@1.0.0:
     resolution: {integrity: sha512-4AsO/FrViE/iDNEPaAQlb77tf0csuq27EsVpy6ett584EcRTp6pTDLoGWVxCD77y5iU5FauOvhsI4o1APwPoSQ==}
     dev: true
+
+  /secure-json-parse@2.7.0:
+    resolution: {integrity: sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==}
 
   /select-hose@2.0.0:
     resolution: {integrity: sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==}

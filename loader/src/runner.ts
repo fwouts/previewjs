@@ -3,6 +3,7 @@ import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import { loadModules } from "./modules.js";
 
 const locking = exclusivePromiseRunner();
@@ -20,7 +21,8 @@ export async function load({
   if (!validLogLevels.has(logLevel)) {
     logLevel = "info";
   }
-  const globalLogger = createLogger({ level: "debug" });
+  const prettyLoggerStream = prettyLogger();
+  const globalLogger = createLogger({ level: logLevel }, prettyLoggerStream);
   const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules({
     logger: globalLogger,
     installDir,
@@ -62,7 +64,7 @@ export async function load({
       let logger = globalLogger;
       if (await fs.pathExists(path.join(rootDirPath, "previewjs-debug"))) {
         // Show debug logs for this workspace.
-        logger = createLogger({ level: "debug" });
+        logger = createLogger({ level: "debug" }, prettyLoggerStream);
       }
       const existingWorkspace = workspaces[rootDirPath];
       if (existingWorkspace !== undefined) {

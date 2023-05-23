@@ -6,6 +6,7 @@ import express from "express";
 import path from "path";
 import type { Logger } from "pino";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import type { Page } from "playwright";
 import url from "url";
 import { startPreview } from "./preview";
@@ -14,7 +15,7 @@ export async function createChromelessWorkspace({
   rootDirPath,
   frameworkPlugins,
   reader = createFileSystemReader(),
-  logger = createLogger(),
+  logger = createLogger(prettyLogger()),
 }: {
   rootDirPath: string;
   frameworkPlugins: FrameworkPluginFactory[];

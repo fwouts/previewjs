@@ -2,6 +2,7 @@ import type { Reader, Writer } from "@previewjs/vfs";
 import { createMemoryReader } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader";
 
@@ -12,7 +13,7 @@ describe.concurrent("createVueTypeScriptReader", () => {
   beforeEach(() => {
     memoryReader = createMemoryReader();
     reader = createVueTypeScriptReader(
-      createLogger({ level: "debug" }),
+      createLogger({ level: "debug" }, prettyLogger()),
       memoryReader
     );
   });

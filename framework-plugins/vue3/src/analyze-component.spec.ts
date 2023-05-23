@@ -16,6 +16,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue3FrameworkPlugin from ".";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
@@ -34,7 +35,7 @@ describe.concurrent("analyze Vue 3 component", () => {
     frameworkPlugin = await vue3FrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger({ level: "debug" }),
+      logger: createLogger({ level: "debug" }, prettyLogger()),
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,

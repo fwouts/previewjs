@@ -20,6 +20,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import preactFrameworkPlugin from ".";
@@ -39,7 +40,7 @@ describe.concurrent("analyzePreactComponent", () => {
     frameworkPlugin = await preactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger({ level: "debug" }),
+      logger: createLogger({ level: "debug" }, prettyLogger()),
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,
