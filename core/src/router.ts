@@ -22,6 +22,7 @@ export class ApiRouter {
         message: `No handler is registered for path '${path}'`,
       };
     }
+    this.logger.debug(`RPC ${path} invoked`);
     try {
       const response = await handler(request);
       return {
@@ -29,7 +30,7 @@ export class ApiRouter {
         response,
       };
     } catch (e: any) {
-      this.logger.error(`Handler ${path} failed`, e);
+      this.logger.error(`RPC ${path} failed`, e);
       return {
         kind: "error",
         message: e.message,
