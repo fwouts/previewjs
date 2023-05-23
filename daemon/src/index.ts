@@ -57,9 +57,11 @@ if (lockFilePath) {
     writeFileSync(lockFilePath, process.pid.toString(10), {
       flag: "wx",
     });
-    exitHook(() => {
+    exitHook((signal) => {
       // Note: The bracketed tag is required for VS Code and IntelliJ to detect exit.
-      process.stdout.write("[exit] Preview.js daemon shutting down");
+      process.stdout.write(
+        `[exit] Preview.js daemon shutting down with signal: ${signal}`
+      );
       try {
         unlinkSync(lockFilePath);
       } catch {
