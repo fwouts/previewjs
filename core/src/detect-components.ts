@@ -50,12 +50,15 @@ export function detectComponents(
           path.join(workspace.rootDirPath, filePath)
         );
       } else {
-        logger.debug(`Finding files from root:`, workspace.rootDirPath);
+        logger.debug(
+          `Finding component files from root:`,
+          workspace.rootDirPath
+        );
         const filePaths = await findFiles(
           workspace.rootDirPath,
           "**/*.@(js|jsx|ts|tsx|svelte|vue)"
         );
-        logger.debug(`Found ${filePaths.length} files`);
+        logger.debug(`Found ${filePaths.length} component files`);
         return filePaths;
       }
     })();

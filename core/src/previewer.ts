@@ -189,6 +189,7 @@ export class Previewer {
           }
           this.transformingReader.listeners.add(this.onFileChangeListener);
         }
+        this.options.logger.debug(`Initializing Vite manager`);
         this.viteManager = new ViteManager({
           rootDirPath: this.options.rootDirPath,
           shadowHtmlFilePath: path.join(
@@ -205,8 +206,11 @@ export class Previewer {
           logger: this.options.logger,
           frameworkPlugin: this.options.frameworkPlugin,
         });
+        this.options.logger.debug(`Starting server`);
         const server = await this.appServer.start(port);
+        this.options.logger.debug(`Starting Vite manager`);
         await this.viteManager.start(server, port);
+        this.options.logger.debug(`Previewer ready`);
         this.status = {
           kind: "started",
           port,

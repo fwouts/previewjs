@@ -33,7 +33,7 @@ export class Server {
     return new Promise<http.Server>((resolve) => {
       const server = (this.server = this.app.listen(port, () => {
         this.logger.info(
-          `Preview.js Server running at http://localhost:${port}.`
+          `Preview.js server running at http://localhost:${port}.`
         );
         resolve(server);
       }));

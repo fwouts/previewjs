@@ -112,9 +112,13 @@ export class ViteManager {
     // Find valid tsconfig.json files.
     //
     // Useful when the project may contain some invalid files.
+    this.options.logger.debug(`Finding js/tsconfig.json files`);
     const typeScriptConfigAbsoluteFilePaths = await findFiles(
       this.options.rootDirPath,
       "{js,ts}config.json"
+    );
+    this.options.logger.debug(
+      `Found ${typeScriptConfigAbsoluteFilePaths.length} config files`
     );
     const typeScriptConfigFilePaths = typeScriptConfigAbsoluteFilePaths.map(
       (p) => path.relative(this.options.rootDirPath, p)
@@ -130,14 +134,17 @@ export class ViteManager {
         );
       }
     }
+    this.options.logger.debug(
+      `Found ${typeScriptConfigAbsoluteFilePaths.length} files`
+    );
     const tsInferredAlias: Alias[] = [];
     // If there is a top-level tsconfig.json, use it to infer aliases.
     // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-    const config = loadTsconfig(
-      typeScriptConfigFilePaths.includes("tsconfig.json")
-        ? "tsconfig.json"
-        : "jsconfig.json"
-    );
+    const configFile = typeScriptConfigFilePaths.includes("tsconfig.json")
+      ? "tsconfig.json"
+      : "jsconfig.json";
+    const config = loadTsconfig(configFile);
+    this.options.logger.debug(`Loaded ${configFile}`, config);
     if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
       const { baseUrl, paths } = config.compilerOptions;
       for (const [match, mapping] of Object.entries(paths)) {
