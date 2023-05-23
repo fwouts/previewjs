@@ -259,6 +259,7 @@ export class ViteManager {
         };
       })
     );
+    this.options.logger.debug(`Creating Vite server`);
     const viteServerPromise = vite.createServer({
       ...frameworkPluginViteConfig,
       ...existingViteConfig?.config,
@@ -354,6 +355,7 @@ export class ViteManager {
       });
     });
     this.viteServer = await viteServerPromise;
+    this.options.logger.debug(`Done starting Vite server`);
     this.viteServer.watcher.addListener("change", (path) => {
       this.viteServer?.ws.send({
         type: "custom",
