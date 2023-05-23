@@ -33,7 +33,11 @@ const require = createRequire(import.meta.url);
 
 process.on("uncaughtException", (e) => {
   // eslint-disable-next-line no-console
-  console.error("Uncaught Exception:", e);
+  console.error("Encountered an uncaught exception", e);
+});
+process.on("unhandledRejection", (e) => {
+  // eslint-disable-next-line no-console
+  console.error("Encountered an unhandled promise", e);
 });
 
 export async function createWorkspace({
