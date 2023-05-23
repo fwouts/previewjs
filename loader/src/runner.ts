@@ -20,7 +20,7 @@ export async function load({
   if (!validLogLevels.has(logLevel)) {
     logLevel = "info";
   }
-  const globalLogger = createLogger({ level: "debug" });
+  const globalLogger = createLogger({ level: logLevel });
   const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules({
     logger: globalLogger,
     installDir,
