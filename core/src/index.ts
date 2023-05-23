@@ -224,15 +224,12 @@ export async function createWorkspace({
 }
 
 /**
- * Returns the absolute directory path of the closest ancestor containing node_modules.
+ * Returns the absolute directory path of the closest ancestor containing package.json.
  */
 export function findWorkspaceRoot(absoluteFilePath: string): string | null {
   let dirPath = path.resolve(absoluteFilePath);
   while (dirPath !== path.dirname(dirPath)) {
-    if (
-      fs.existsSync(path.join(dirPath, "package.json")) &&
-      fs.existsSync(path.join(dirPath, "node_modules"))
-    ) {
+    if (fs.existsSync(path.join(dirPath, "package.json"))) {
       return dirPath;
     }
     dirPath = path.dirname(dirPath);
