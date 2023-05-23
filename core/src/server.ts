@@ -51,7 +51,15 @@ export class Server {
     }
     if (this.server) {
       const server = this.server;
-      await new Promise((resolve) => server.close(resolve));
+      await new Promise<void>((resolve, reject) =>
+        server.close((err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        })
+      );
       this.server = null;
     }
     this.logger.info(`Preview.js server stopped.`);
