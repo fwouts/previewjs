@@ -13,6 +13,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import reactFrameworkPlugin from ".";
@@ -24,7 +25,10 @@ const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractPreactComponents", () => {
-  const logger = createLogger({ level: "debug" });
+  const logger = createLogger(
+    { level: "debug" },
+    prettyLogger({ colorize: true })
+  );
 
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;

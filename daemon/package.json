@@ -34,8 +34,7 @@
     }
   },
   "scripts": {
-    "build": "tsc && unbuild",
-    "dev": "ts-node-dev --respawn src/main.ts"
+    "build": "tsc && unbuild && ts-node-esm patch-build.ts"
   },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
@@ -46,7 +45,7 @@
     "exit-hook": "^3.2.0",
     "is-wsl": "^2.2.0",
     "rimraf": "^5.0.0",
-    "ts-node-dev": "^2.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "unbuild": "^1.2.1"
   }

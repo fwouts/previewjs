@@ -13,6 +13,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import vue2FrameworkPlugin from ".";
 import { extractVueComponents } from "./extract-component.js";
@@ -24,7 +25,10 @@ const MY_COMPONENT_VUE = path.join(ROOT_DIR, "MyComponent.vue");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractVueComponents", () => {
-  const logger = createLogger({ level: "debug" });
+  const logger = createLogger(
+    { level: "debug" },
+    prettyLogger({ colorize: true })
+  );
 
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;

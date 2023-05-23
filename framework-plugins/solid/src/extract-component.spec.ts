@@ -13,6 +13,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import solidFrameworkPlugin from ".";
 import { extractSolidComponents } from "./extract-component.js";
@@ -22,7 +23,10 @@ const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractSolidComponents", () => {
-  const logger = createLogger({ level: "debug" });
+  const logger = createLogger(
+    { level: "debug" },
+    prettyLogger({ colorize: true })
+  );
 
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
