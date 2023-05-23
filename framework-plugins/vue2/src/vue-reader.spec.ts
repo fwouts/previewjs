@@ -13,7 +13,7 @@ describe.concurrent("createVueTypeScriptReader", () => {
   beforeEach(() => {
     memoryReader = createMemoryReader();
     reader = createVueTypeScriptReader(
-      createLogger({ level: "debug" }, prettyLogger()),
+      createLogger({ level: "debug" }, prettyLogger({ colorize: true })),
       memoryReader
     );
   });

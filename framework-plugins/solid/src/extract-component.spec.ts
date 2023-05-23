@@ -23,7 +23,10 @@ const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe.concurrent("extractSolidComponents", () => {
-  const logger = createLogger({ level: "debug" }, prettyLogger());
+  const logger = createLogger(
+    { level: "debug" },
+    prettyLogger({ colorize: true })
+  );
 
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;

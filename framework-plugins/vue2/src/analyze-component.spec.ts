@@ -29,7 +29,10 @@ const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
 describe.concurrent("analyze Vue 2 component", () => {
-  const logger = createLogger({ level: "debug" }, prettyLogger());
+  const logger = createLogger(
+    { level: "debug" },
+    prettyLogger({ colorize: true })
+  );
 
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;

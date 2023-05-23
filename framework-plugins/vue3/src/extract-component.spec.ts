@@ -52,7 +52,10 @@ const count = ref(0)
     const frameworkPlugin = await vue3FrameworkPlugin.create({
       rootDirPath,
       dependencies: {},
-      logger: createLogger({ level: "debug" }, prettyLogger()),
+      logger: createLogger(
+        { level: "debug" },
+        prettyLogger({ colorize: true })
+      ),
     });
     const reader = createStackedReader([
       createVueTypeScriptReader(memoryReader),

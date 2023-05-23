@@ -40,7 +40,10 @@ describe.concurrent("analyzePreactComponent", () => {
     frameworkPlugin = await preactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger({ level: "debug" }, prettyLogger()),
+      logger: createLogger(
+        { level: "debug" },
+        prettyLogger({ colorize: true })
+      ),
     });
     typeAnalyzer = createTypeAnalyzer({
       rootDirPath: ROOT_DIR_PATH,

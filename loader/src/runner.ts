@@ -21,7 +21,7 @@ export async function load({
   if (!validLogLevels.has(logLevel)) {
     logLevel = "info";
   }
-  const prettyLoggerStream = prettyLogger();
+  const prettyLoggerStream = prettyLogger({ colorize: true });
   const globalLogger = createLogger({ level: logLevel }, prettyLoggerStream);
   const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules({
     logger: globalLogger,
