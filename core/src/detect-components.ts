@@ -3,6 +3,7 @@ import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
+import type { Logger } from "pino";
 import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
@@ -27,6 +28,7 @@ type CachedProjectComponents = {
 const oneAtATime = exclusivePromiseRunner();
 
 export function detectComponents(
+  logger: Logger,
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
   typeAnalyzer: TypeAnalyzer,
@@ -36,19 +38,27 @@ export function detectComponents(
   } = {}
 ): Promise<RPCs.DetectComponentsResponse> {
   return oneAtATime(async () => {
+    logger.debug(`Detecting components with options`, options);
     const detectionStartTimestamp = Date.now();
     const cacheFilePath = path.join(
       getCacheDir(workspace.rootDirPath),
       "components.json"
     );
-    const absoluteFilePaths = options.filePaths
-      ? options.filePaths.map((filePath) =>
+    const absoluteFilePaths = await (async () => {
+      if (options.filePaths) {
+        return options.filePaths.map((filePath) =>
           path.join(workspace.rootDirPath, filePath)
-        )
-      : await findFiles(
+        );
+      } else {
+        logger.debug(`Finding files from root:`, workspace.rootDirPath);
+        const filePaths = await findFiles(
           workspace.rootDirPath,
           "**/*.@(js|jsx|ts|tsx|svelte|vue)"
         );
+        logger.debug(`Found ${filePaths.length} files`);
+        return filePaths;
+      }
+    })();
     const filePathsSet = new Set(
       absoluteFilePaths.map((absoluteFilePath) =>
         path
@@ -98,6 +108,7 @@ export function detectComponents(
       }
     );
     const refreshedComponents = await detectComponentsCore(
+      logger,
       workspace,
       frameworkPlugin,
       typeAnalyzer,
@@ -117,11 +128,18 @@ export function detectComponents(
 }
 
 async function detectComponentsCore(
+  logger: Logger,
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
   typeAnalyzer: TypeAnalyzer,
   changedAbsoluteFilePaths: string[]
 ): Promise<RPCs.Component[]> {
+  logger.debug(
+    `Running component detection with file paths:`,
+    changedAbsoluteFilePaths.map((absoluteFilePath) =>
+      path.relative(workspace.rootDirPath, absoluteFilePath)
+    )
+  );
   const components: RPCs.Component[] = [];
   if (changedAbsoluteFilePaths.length === 0) {
     return components;
@@ -131,6 +149,7 @@ async function detectComponentsCore(
     typeAnalyzer,
     changedAbsoluteFilePaths
   );
+  logger.debug(`Done running component detection`);
   for (const component of found) {
     components.push(detectedComponentToApiComponent(component));
   }

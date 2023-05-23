@@ -49,6 +49,10 @@ export async function createWorkspace({
   reader: Reader;
   setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
+  logger.debug(
+    `Creating workspace with framework plugin ${frameworkPlugin.name} from root:`,
+    rootDirPath
+  );
   const expectedPluginApiVersion = 3;
   if (
     !frameworkPlugin.pluginApiVersion ||
@@ -76,6 +80,7 @@ export async function createWorkspace({
   });
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
+    logger.debug(`Computing props for components:`, componentIds);
     let analyze: () => Promise<ComponentAnalysis>;
     const detectedComponents = await frameworkPlugin.detectComponents(
       reader,
@@ -88,6 +93,7 @@ export async function createWorkspace({
         ),
       ]
     );
+    logger.debug(`Detected ${detectedComponents.length} components`);
     const componentIdToDetectedComponent = Object.fromEntries(
       detectedComponents.map((c) => [c.componentId, c])
     );
@@ -109,7 +115,9 @@ export async function createWorkspace({
       } else {
         analyze = component.info.associatedComponent.analyze;
       }
+      logger.debug(`Analyzing ${component.info.kind}: ${componentId}`);
       const { propsType: props, types: componentTypes } = await analyze();
+      logger.debug(`Done analyzing: ${componentId}`);
       components[componentId] = {
         info:
           component.info.kind === "component"
@@ -133,7 +141,7 @@ export async function createWorkspace({
     };
   });
   router.registerRPC(RPCs.DetectComponents, (options) =>
-    detectComponents(workspace, frameworkPlugin, typeAnalyzer, options)
+    detectComponents(logger, workspace, frameworkPlugin, typeAnalyzer, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
