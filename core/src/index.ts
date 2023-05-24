@@ -54,8 +54,7 @@ export async function createWorkspace({
   setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
   logger.debug(
-    `Creating workspace with framework plugin ${frameworkPlugin.name} from root:`,
-    rootDirPath
+    `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDirPath}`
   );
   const expectedPluginApiVersion = 3;
   if (
@@ -84,7 +83,7 @@ export async function createWorkspace({
   });
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
-    logger.debug(`Computing props for components:`, componentIds);
+    logger.debug(`Computing props for components: ${componentIds.join(", ")}`);
     let analyze: () => Promise<ComponentAnalysis>;
     const detectedComponents = await frameworkPlugin.detectComponents(
       reader,

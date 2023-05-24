@@ -144,7 +144,9 @@ export class ViteManager {
       ? "tsconfig.json"
       : "jsconfig.json";
     const config = loadTsconfig(configFile);
-    this.options.logger.debug(`Loaded ${configFile}`, config);
+    this.options.logger.debug(
+      `Loaded ${configFile}: ${JSON.stringify(config || null, null, 2)}`
+    );
     if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
       const { baseUrl, paths } = config.compilerOptions;
       for (const [match, mapping] of Object.entries(paths)) {

@@ -38,7 +38,9 @@ export function detectComponents(
   } = {}
 ): Promise<RPCs.DetectComponentsResponse> {
   return oneAtATime(async () => {
-    logger.debug(`Detecting components with options`, options);
+    logger.debug(
+      `Detecting components with options: ${JSON.stringify(options)}`
+    );
     const detectionStartTimestamp = Date.now();
     const cacheFilePath = path.join(
       getCacheDir(workspace.rootDirPath),
@@ -51,8 +53,7 @@ export function detectComponents(
         );
       } else {
         logger.debug(
-          `Finding component files from root:`,
-          workspace.rootDirPath
+          `Finding component files from root: ${workspace.rootDirPath}`
         );
         const filePaths = await findFiles(
           workspace.rootDirPath,
@@ -137,16 +138,17 @@ async function detectComponentsCore(
   typeAnalyzer: TypeAnalyzer,
   changedAbsoluteFilePaths: string[]
 ): Promise<RPCs.Component[]> {
-  logger.debug(
-    `Running component detection with file paths:`,
-    changedAbsoluteFilePaths.map((absoluteFilePath) =>
-      path.relative(workspace.rootDirPath, absoluteFilePath)
-    )
-  );
   const components: RPCs.Component[] = [];
   if (changedAbsoluteFilePaths.length === 0) {
     return components;
   }
+  logger.debug(
+    `Running component detection with file paths:\n- ${changedAbsoluteFilePaths
+      .map((absoluteFilePath) =>
+        path.relative(workspace.rootDirPath, absoluteFilePath)
+      )
+      .join("- \n")}`
+  );
   const found = await frameworkPlugin.detectComponents(
     workspace.reader,
     typeAnalyzer,
