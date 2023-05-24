@@ -5,8 +5,8 @@ importers:
   .:
     dependencies:
       '@previewjs/core':
-        specifier: 21.0.0
-        version: 21.0.0(@types/node@20.2.3)
+        specifier: 21.0.1
+        version: 21.0.1(@types/node@20.2.3)
       '@previewjs/plugin-preact':
         specifier: 4.0.0
         version: 4.0.0(@types/node@20.2.3)
@@ -729,8 +729,8 @@ packages:
     resolution: {integrity: sha512-CwGcgAyaeGa4PBFu86nuIvX3LRihgUm5hld+BXgM/uI+zNd6IqDUoK82J5Zwm+rMVNqBM1CNluMen5Arqorp/g==}
     dev: false
 
-  /@previewjs/core@21.0.0(@types/node@20.2.3):
-    resolution: {integrity: sha512-6N99ii35HZ7ixuWHlixxgJbeHiOEckPA03jWZmGgJRK8uD5zao6xuzBwnIlMgK7KRp2uxoaZ9r8ssuaPmDOkLA==}
+  /@previewjs/core@21.0.1(@types/node@20.2.3):
+    resolution: {integrity: sha512-6skio1PfHEMaSlZ4x/iAEJe3ZrjH0zJsKKNpFcS6j5q3BDYXu/dw3hq6ueYsL6nwKZr3667kBgJ/kQuaR/UBGg==}
     dependencies:
       '@previewjs/api': 12.0.0
       '@previewjs/config': 4.9.15
@@ -932,7 +932,7 @@ packages:
     resolution: {integrity: sha512-x+YQeMupOAYq3F8lui2jJOqPlnYABz+dKXN7uPMsH2+WpJ26Ko2Ejz7k9Kk0AdUQJPenlssXbPk+AnFVTlkrjg==}
     dependencies:
       '@previewjs/api': 12.0.0
-      '@previewjs/core': 21.0.0(@types/node@20.2.3)
+      '@previewjs/core': 21.0.1(@types/node@20.2.3)
       '@previewjs/serializable-values': 7.0.0
       '@previewjs/storybook-helpers': 2.0.8(@types/node@20.2.3)
       axios: 1.4.0
@@ -968,7 +968,7 @@ packages:
     resolution: {integrity: sha512-WvSBLxjEgKWAZRp1QEYaurhTD3xTprN+Zhv8sHPkJ3LAPtCaT8tYmOA66n/csNaVJ4atZFv5BFQFX4f7ATV/Lg==}
     dependencies:
       '@previewjs/api': 12.0.0
-      '@previewjs/core': 21.0.0(@types/node@20.2.3)
+      '@previewjs/core': 21.0.1(@types/node@20.2.3)
       '@previewjs/serializable-values': 7.0.0
       '@previewjs/type-analyzer': 8.0.0
       typescript: 5.0.4
