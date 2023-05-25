@@ -57,7 +57,7 @@ export function detectComponents(
         );
         const filePaths = await findFiles(
           workspace.rootDirPath,
-          "**/*.@(js|jsx|ts|tsx|svelte|vue)"
+          "**/*.@(js|jsx|ts|tsx|md|mdx|svelte|vue)"
         );
         logger.debug(`Found ${filePaths.length} component files`);
         return filePaths;

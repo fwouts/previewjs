@@ -36,7 +36,7 @@ import java.net.URLEncoder
 @Service(Service.Level.PROJECT)
 class ProjectService(private val project: Project) : Disposable {
     companion object {
-        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
+        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "md", "mdx", "svelte", "vue")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
     }
