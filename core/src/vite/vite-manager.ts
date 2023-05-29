@@ -29,6 +29,7 @@ export class ViteManager {
     private readonly options: {
       logger: Logger;
       reader: Reader;
+      base: string;
       rootDirPath: string;
       shadowHtmlFilePath: string;
       detectedGlobalCssFilePaths: string[];
@@ -226,7 +227,7 @@ export class ViteManager {
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
-      base: "/preview/",
+      base: this.options.base,
       server: {
         middlewareMode: true,
         hmr: {

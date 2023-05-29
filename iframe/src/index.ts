@@ -12,7 +12,7 @@ export interface PreviewIframeController {
   start(): void;
   stop(): void;
   loadComponent(options: LoadComponentOptions): void;
-  resetIframe(): void;
+  resetIframe(componentId: string): void;
 }
 
 export interface LoadComponentOptions {
@@ -36,7 +36,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
   start() {
     window.addEventListener("message", this.onWindowMessage);
-    this.resetIframe();
   }
 
   stop() {
@@ -53,7 +52,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   private send(message: AppToPreviewMessage) {
     this.lastMessage = message;
     if (!this.previewBootstrapped && !this.waitingForBootstrapped) {
-      this.resetIframe();
+      this.resetIframe(message.componentId);
       return;
     }
     const iframeWindow = this.options.getIframe()?.contentWindow;
@@ -68,19 +67,19 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         console.warn(
           "Expected render did not occur after 5 seconds. Reloading iframe..."
         );
-        this.resetIframe();
+        this.resetIframe(message.componentId);
       }, 5000);
     }
   }
 
-  resetIframe() {
+  resetIframe(componentId: string) {
     const iframe = this.options.getIframe();
     this.previewBootstrapped = false;
     if (!iframe) {
       return;
     }
     this.waitingForBootstrapped = true;
-    iframe.src = `/preview/?t=${Date.now()}`;
+    iframe.src = `/preview/${componentId}/?t=${Date.now()}`;
   }
 
   private onWindowMessage = (event: MessageEvent<PreviewToAppMessage>) => {

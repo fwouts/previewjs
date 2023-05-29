@@ -58,7 +58,7 @@ const SHUTDOWN_AFTER_INACTIVITY = 10000;
 export class Previewer {
   private readonly transformingReader: Reader;
   private appServer: Server | null = null;
-  private viteManager: ViteManager | null = null;
+  private viteManagers: Record<string, ViteManager> = {};
   private status: PreviewerStatus = { kind: "stopped" };
   private shutdownCheckInterval: NodeJS.Timeout | null = null;
   private disposeObserver: (() => Promise<void>) | null = null;
@@ -158,13 +158,13 @@ export class Previewer {
         // PostCSS requires the current directory to change because it relies
         // on the `import-cwd` package to resolve plugins.
         process.chdir(this.options.rootDirPath);
-        const config = await readConfig(this.options.rootDirPath);
-        this.config = {
-          ...config,
-          wrapper: config.wrapper || {
+        const configFromProject = await readConfig(this.options.rootDirPath);
+        const config = (this.config = {
+          ...configFromProject,
+          wrapper: configFromProject.wrapper || {
             path: this.options.frameworkPlugin.defaultWrapperPath,
           },
-        };
+        });
         const globalCssAbsoluteFilePaths = await findFiles(
           this.options.rootDirPath,
           `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
@@ -172,16 +172,43 @@ export class Previewer {
           )}).@(${GLOBAL_CSS_EXTS.join("|")})`
         );
         const router = express.Router();
-        router.get("/preview/", async (req, res) => {
-          if (!this.viteManager) {
-            res.status(404).end(`Uh-Oh! Vite server is not running.`);
-            return;
-          }
+        router.get(/^\/preview\/.*:[^/]+\/$/, async (req, res) => {
           try {
+            if (!this.appServer?.server) {
+              throw new Error(`No server running`);
+            }
+            const componentId = req.path.substring(9, req.path.length - 1);
+            let viteManager = this.viteManagers[componentId];
+            if (!viteManager) {
+              this.options.logger.debug(`Initializing Vite manager`);
+              viteManager = new ViteManager({
+                base: req.path,
+                rootDirPath: this.options.rootDirPath,
+                shadowHtmlFilePath: path.join(
+                  this.options.previewDirPath,
+                  "index.html"
+                ),
+                detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
+                  (absoluteFilePath) =>
+                    path.relative(this.options.rootDirPath, absoluteFilePath)
+                ),
+                reader: this.transformingReader,
+                cacheDir: path.join(
+                  getCacheDir(this.options.rootDirPath),
+                  "vite"
+                ),
+                config,
+                logger: this.options.logger,
+                frameworkPlugin: this.options.frameworkPlugin,
+              });
+              this.viteManagers[componentId] = viteManager;
+              this.options.logger.debug(`Starting Vite manager`);
+              await viteManager.start(this.appServer.server, port);
+            }
             res
               .status(200)
               .set({ "Content-Type": "text/html" })
-              .end(await this.viteManager.loadIndexHtml(req.originalUrl));
+              .end(await viteManager.loadIndexHtml(req.originalUrl));
           } catch (e: any) {
             res
               .status(500)
@@ -223,7 +250,18 @@ export class Previewer {
             ...(this.options.middlewares || []),
             router,
             (req, res, next) => {
-              this.viteManager?.middleware(req, res, next);
+              const componentIdMatch = req.path.match(
+                /^\/preview\/(.*:[^/]+)\/.*$/
+              );
+              if (componentIdMatch) {
+                const componentId = componentIdMatch[1]!;
+                const viteManager = this.viteManagers[componentId];
+                if (viteManager) {
+                  viteManager.middleware(req, res, next);
+                }
+              } else {
+                res.status(404).end(`No match for path: ${req.path}`);
+              }
             },
           ],
         });
@@ -238,27 +276,8 @@ export class Previewer {
           }
           this.transformingReader.listeners.add(this.onFileChangeListener);
         }
-        this.options.logger.debug(`Initializing Vite manager`);
-        this.viteManager = new ViteManager({
-          rootDirPath: this.options.rootDirPath,
-          shadowHtmlFilePath: path.join(
-            this.options.previewDirPath,
-            "index.html"
-          ),
-          detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
-            (absoluteFilePath) =>
-              path.relative(this.options.rootDirPath, absoluteFilePath)
-          ),
-          reader: this.transformingReader,
-          cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
-          config: this.config,
-          logger: this.options.logger,
-          frameworkPlugin: this.options.frameworkPlugin,
-        });
         this.options.logger.debug(`Starting server`);
-        const server = await this.appServer.start(port);
-        this.options.logger.debug(`Starting Vite manager`);
-        await this.viteManager.start(server, port);
+        await this.appServer.start(port);
         this.options.logger.debug(`Previewer ready`);
         this.status = {
           kind: "started",
@@ -346,10 +365,10 @@ export class Previewer {
             this.disposeObserver = null;
           }
         }
-        if (this.viteManager) {
-          await this.viteManager.stop();
-          this.viteManager = null;
-        }
+        await Promise.all(
+          Object.values(this.viteManagers).map((v) => v.stop())
+        );
+        this.viteManagers = {};
         if (this.appServer) {
           await this.appServer.stop();
           this.appServer = null;
@@ -371,7 +390,9 @@ export class Previewer {
         absoluteFilePath ===
           path.resolve(this.options.rootDirPath, this.config.wrapper.path)
       ) {
-        this.viteManager?.triggerFullReload();
+        for (const viteManager of Object.values(this.viteManagers)) {
+          viteManager.triggerFullReload();
+        }
       }
       if (
         !info.virtual &&
@@ -394,8 +415,10 @@ export class Previewer {
         return;
       }
       if (info.virtual) {
-        this.viteManager?.triggerReload(absoluteFilePath);
-        this.viteManager?.triggerReload(absoluteFilePath + ".ts");
+        for (const viteManager of Object.values(this.viteManagers)) {
+          viteManager.triggerReload(absoluteFilePath);
+          viteManager.triggerReload(absoluteFilePath + ".ts");
+        }
       } else if (this.options.onFileChanged) {
         this.options.onFileChanged(absoluteFilePath);
       }
