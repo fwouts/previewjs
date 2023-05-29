@@ -9,9 +9,9 @@
     <script type="module">
       import * as componentModule from "/%COMPONENT_FILE_PATH%";
       import { initPreview } from "/__previewjs_internal__/index.ts";
+      %GLOBAL_CSS_IMPORTS%
 
-      const componentId = "%COMPONENT_ID%";
-      initPreview(componentModule, componentId);
+      initPreview(componentModule, "%COMPONENT_ID%");
     </script>
     <style>
       body {

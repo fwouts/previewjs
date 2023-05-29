@@ -68,9 +68,20 @@ export class ViteManager {
     const { filePath } = decodeComponentId(this.options.componentId);
     return await this.viteServer.transformIndexHtml(
       url,
-      template
-        .replace("%COMPONENT_ID%", this.options.componentId)
-        .replace("%COMPONENT_FILE_PATH%", filePath)
+      template.replace(/%([^%]+)%/gi, (matched) => {
+        switch (matched) {
+          case "%COMPONENT_ID%":
+            return this.options.componentId;
+          case "%COMPONENT_FILE_PATH%":
+            return filePath;
+          case "%GLOBAL_CSS_IMPORTS%":
+            return this.options.detectedGlobalCssFilePaths
+              .map((cssFilePath) => `import "/${cssFilePath}";`)
+              .join("\n");
+          default:
+            throw new Error(`Unknown template key: ${matched}`);
+        }
+      })
     );
   }
 
