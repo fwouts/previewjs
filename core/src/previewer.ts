@@ -5,6 +5,7 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
 import express from "express";
+import { escape } from "html-escaper";
 import path from "path";
 import type { Logger } from "pino";
 import { getCacheDir } from "./caching";
@@ -171,6 +172,43 @@ export class Previewer {
           )}).@(${GLOBAL_CSS_EXTS.join("|")})`
         );
         const router = express.Router();
+        router.get("/preview/", async (req, res) => {
+          if (!this.viteManager) {
+            res.status(404).end(`Uh-Oh! Vite server is not running.`);
+            return;
+          }
+          try {
+            res
+              .status(200)
+              .set({ "Content-Type": "text/html" })
+              .end(await this.viteManager.loadIndexHtml(req.originalUrl));
+          } catch (e: any) {
+            res
+              .status(500)
+              .set({ "Content-Type": "text/html" })
+              .end(
+                `<html>
+              <head>
+                <style>
+                  body {
+                    background: #FCA5A5
+                  }
+                  pre {
+                    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+                    monospace;
+                    font-size: 12px;
+                    line-height: 1.5em;
+                    color: #7F1D1D;
+                  }
+                </style>
+              </head>
+              <body>
+                <pre>${escape(`${e}` || "An unknown error has occurred")}</pre>
+              </body>
+            </html>`
+              );
+          }
+        });
         router.use("/ping", async (req, res) => {
           this.lastPingTimestamp = Date.now();
           res.json(
