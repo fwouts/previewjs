@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import { sendMessageFromPreview } from "./messages";
-import { getState } from "./state";
 
 export function setupViteHmrListener() {
   const maxWaitBeforeUpdatesDeclaredOverMillis = 300;
@@ -58,23 +57,6 @@ export function setupViteHmrListener() {
       error = null;
       isFirstUpdate = false;
     }
-    const state = getState();
-    payload.updates = payload.updates.filter((update) => {
-      if (
-        update.type === "js-update" &&
-        state &&
-        update.path.startsWith("/@component-loader.js")
-      ) {
-        const params = new URLSearchParams(update.path.split("?")[1] || "");
-        const c = params.get("c");
-        if (c !== state.componentId) {
-          // Ignore old updates to /@component-loader.js, which are not needed
-          // and may fail (e.g. if they import a file that no longer exists).
-          return false;
-        }
-      }
-      return true;
-    });
     sendMessageFromPreview({
       kind: "vite-before-update",
       payload,

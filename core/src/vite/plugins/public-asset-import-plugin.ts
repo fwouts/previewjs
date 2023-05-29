@@ -1,7 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
 import type * as vite from "vite";
-import { COMPONENT_LOADER_MODULE } from "./component-loader-plugin";
 
 /**
  * Allows imports of assets from the public directory.
@@ -21,8 +20,7 @@ export function publicAssetImportPluginPlugin({
       if (
         !importer ||
         !source.startsWith("/") ||
-        source.startsWith("/__previewjs__/") ||
-        source.startsWith(COMPONENT_LOADER_MODULE)
+        source.startsWith("/__previewjs__/")
       ) {
         return;
       }

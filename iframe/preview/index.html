@@ -6,7 +6,13 @@
       window.global = globalThis;
       window.module = undefined;
     </script>
-    <script type="module" src="./__previewjs_internal__/index.ts"></script>
+    <script type="module">
+      import * as componentModule from "/%COMPONENT_FILE_PATH%";
+      import { initPreview } from "/__previewjs_internal__/index.ts";
+
+      const componentId = "%COMPONENT_ID%";
+      initPreview(componentModule, componentId);
+    </script>
     <style>
       body {
         padding: 1rem;

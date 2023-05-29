@@ -182,6 +182,7 @@ export class Previewer {
             if (!viteManager) {
               this.options.logger.debug(`Initializing Vite manager`);
               viteManager = new ViteManager({
+                componentId,
                 base: req.path,
                 rootDirPath: this.options.rootDirPath,
                 shadowHtmlFilePath: path.join(
@@ -251,17 +252,17 @@ export class Previewer {
             router,
             (req, res, next) => {
               const componentIdMatch = req.path.match(
-                /^\/preview\/(.*:[^/]+)\/.*$/
+                /^(\/@id\/__x00__)?\/preview\/(.*:[^/]+)\/.*$/
               );
               if (componentIdMatch) {
-                const componentId = componentIdMatch[1]!;
+                const componentId = componentIdMatch[2]!;
                 const viteManager = this.viteManagers[componentId];
                 if (viteManager) {
                   viteManager.middleware(req, res, next);
+                  return;
                 }
-              } else {
-                res.status(404).end(`No match for path: ${req.path}`);
               }
+              res.status(404).end(`No match for path: ${req.path}`);
             },
           ],
         });

@@ -1,3 +1,4 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
@@ -13,7 +14,6 @@ import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { findFiles } from "../find-files";
 import type { FrameworkPlugin } from "../plugins/framework";
-import { componentLoaderPlugin } from "./plugins/component-loader-plugin";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { localEval } from "./plugins/local-eval";
@@ -30,6 +30,7 @@ export class ViteManager {
       logger: Logger;
       reader: Reader;
       base: string;
+      componentId: string;
       rootDirPath: string;
       shadowHtmlFilePath: string;
       detectedGlobalCssFilePaths: string[];
@@ -64,7 +65,13 @@ export class ViteManager {
     if (!this.viteServer) {
       throw new Error(`Vite server is not running.`);
     }
-    return await this.viteServer.transformIndexHtml(url, template);
+    const { filePath } = decodeComponentId(this.options.componentId);
+    return await this.viteServer.transformIndexHtml(
+      url,
+      template
+        .replace("%COMPONENT_ID%", this.options.componentId)
+        .replace("%COMPONENT_FILE_PATH%", filePath)
+    );
   }
 
   async start(server: Server, port: number) {
@@ -182,7 +189,6 @@ export class ViteManager {
         rootDirPath: this.options.rootDirPath,
         publicDir,
       }),
-      componentLoaderPlugin(this.options),
       frameworkPluginViteConfig.plugins,
     ];
 
