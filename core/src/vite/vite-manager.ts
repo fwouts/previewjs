@@ -65,19 +65,36 @@ export class ViteManager {
     if (!this.viteServer) {
       throw new Error(`Vite server is not running.`);
     }
-    const { filePath } = decodeComponentId(this.options.componentId);
+    const { filePath: componentPath } = decodeComponentId(
+      this.options.componentId
+    );
+    const wrapper = this.options.config.wrapper;
+    const wrapperPath =
+      wrapper &&
+      (await fs.pathExists(path.join(this.options.rootDirPath, wrapper.path)))
+        ? wrapper.path
+        : null;
     return await this.viteServer.transformIndexHtml(
       url,
       template.replace(/%([^%]+)%/gi, (matched) => {
         switch (matched) {
           case "%COMPONENT_ID%":
             return this.options.componentId;
-          case "%COMPONENT_FILE_PATH%":
-            return filePath;
+          case "%COMPONENT_IMPORT%":
+            return `import * as componentModule from "/${componentPath}";`;
+          case "%WRAPPER_IMPORT%":
+            return wrapperPath
+              ? `import * as wrapperModule from "/${wrapperPath}";`
+              : "const wrapperModule = null;";
+          case "%WRAPPER_NAME%":
+            return wrapper?.componentName || "";
           case "%GLOBAL_CSS_IMPORTS%":
-            return this.options.detectedGlobalCssFilePaths
-              .map((cssFilePath) => `import "/${cssFilePath}";`)
-              .join("\n");
+            // Don't use automatically inferred CSS stylesheets if we have an explicit wrapper.
+            return wrapperPath
+              ? ""
+              : this.options.detectedGlobalCssFilePaths
+                  .map((cssFilePath) => `import "/${cssFilePath}";`)
+                  .join("\n");
           default:
             throw new Error(`Unknown template key: ${matched}`);
         }

@@ -8,21 +8,28 @@ import { setState } from "./state";
 import { updateComponent } from "./update-component";
 import { setupViteHmrListener } from "./vite-hmr-listener";
 
-export async function initPreview(componentModule: any, componentId: string) {
+export async function initPreview({
+  componentModule,
+  componentId,
+  wrapperModule,
+  wrapperName,
+}: {
+  componentModule: any;
+  componentId: string;
+  wrapperModule: any;
+  wrapperName: string;
+}) {
   setupViteHmrListener();
   setUpLogInterception();
   setUpLinkInterception();
   overrideCopyCutPaste();
 
-  // TODO: Remove?
-  let componentLoadId = 0;
   let renderId = 0;
 
   async function load({
     autogenCallbackPropsSource,
     propsAssignmentSource,
   }: RenderMessage) {
-    const currentComponentLoadId = ++componentLoadId;
     try {
       renderId += 1;
       setState({
@@ -31,11 +38,8 @@ export async function initPreview(componentModule: any, componentId: string) {
       });
       const thisRenderId = renderId;
       await updateComponent({
-        // TODO: Figure this out.
-        wrapperModule: null,
-        wrapperName: "",
-        // wrapperModule,
-        // wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
+        wrapperModule,
+        wrapperName,
         componentModule,
         componentId,
         renderId,
