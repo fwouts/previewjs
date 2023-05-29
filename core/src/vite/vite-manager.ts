@@ -25,7 +25,6 @@ export class ViteManager {
   readonly middleware: express.RequestHandler;
   private viteStartupPromise: Promise<void> | undefined;
   private viteServer?: vite.ViteDevServer;
-  private lastPingTimestamp = 0;
 
   constructor(
     private readonly options: {
@@ -83,14 +82,6 @@ export class ViteManager {
             </html>`
           );
       }
-    });
-    router.use("/ping", async (req, res) => {
-      this.lastPingTimestamp = Date.now();
-      res.json(
-        JSON.stringify({
-          pong: "match!",
-        })
-      );
     });
     router.use(async (req, res, next) => {
       const waitSeconds = 60;
@@ -378,10 +369,6 @@ export class ViteManager {
 
   getConfig() {
     return this.options.config;
-  }
-
-  getLastPingTimestamp() {
-    return this.lastPingTimestamp;
   }
 
   triggerReload(absoluteFilePath: string) {

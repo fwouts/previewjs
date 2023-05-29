@@ -4,7 +4,7 @@ import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
-import type express from "express";
+import express from "express";
 import path from "path";
 import type { Logger } from "pino";
 import { getCacheDir } from "./caching";
@@ -62,6 +62,7 @@ export class Previewer {
   private shutdownCheckInterval: NodeJS.Timeout | null = null;
   private disposeObserver: (() => Promise<void>) | null = null;
   private config: PreviewConfig | null = null;
+  private lastPingTimestamp = 0;
 
   constructor(
     private readonly options: {
@@ -169,10 +170,20 @@ export class Previewer {
             "|"
           )}).@(${GLOBAL_CSS_EXTS.join("|")})`
         );
+        const router = express.Router();
+        router.use("/ping", async (req, res) => {
+          this.lastPingTimestamp = Date.now();
+          res.json(
+            JSON.stringify({
+              pong: "match!",
+            })
+          );
+        });
         this.appServer = new Server({
           logger: this.options.logger,
           middlewares: [
             ...(this.options.middlewares || []),
+            router,
             (req, res, next) => {
               this.viteManager?.middleware(req, res, next);
             },
@@ -264,8 +275,7 @@ export class Previewer {
   }
 
   private async shutdownCheck() {
-    const lastPingTimestamp = this.viteManager?.getLastPingTimestamp() || 0;
-    if (lastPingTimestamp + SHUTDOWN_AFTER_INACTIVITY > Date.now()) {
+    if (this.lastPingTimestamp + SHUTDOWN_AFTER_INACTIVITY > Date.now()) {
       return false;
     }
     if (this.shutdownCheckInterval) {
