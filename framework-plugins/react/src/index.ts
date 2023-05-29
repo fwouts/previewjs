@@ -1,12 +1,17 @@
-import type {
-  AnalyzableComponent,
-  FrameworkPluginFactory,
+import mdx from "@mdx-js/rollup";
+import { generateComponentId } from "@previewjs/api";
+import {
+  type AnalyzableComponent,
+  type FrameworkPluginFactory,
 } from "@previewjs/core";
+import { EMPTY_OBJECT_TYPE } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import remarkFrontmatter from "remark-frontmatter";
 import ts from "typescript";
 import url from "url";
+import type vite from "vite";
 import { extractReactComponents } from "./extract-component.js";
 import { reactImportsPlugin } from "./react-js-imports-plugin.js";
 import { REACT_SPECIAL_TYPES } from "./special-types.js";
@@ -54,14 +59,39 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          components.push(
-            ...extractReactComponents(
-              logger,
-              resolver,
-              rootDirPath,
-              absoluteFilePath
-            )
-          );
+          if (
+            absoluteFilePath.endsWith(".md") ||
+            absoluteFilePath.endsWith(".mdx")
+          ) {
+            const entry = await reader.read(absoluteFilePath);
+            if (entry?.kind !== "file") {
+              continue;
+            }
+            components.push({
+              componentId: generateComponentId({
+                filePath: path.relative(rootDirPath, absoluteFilePath),
+                name: "default",
+              }),
+              offsets: [[0, (await entry.read()).length]],
+              info: {
+                kind: "component",
+                exported: true,
+                analyze: async () => ({
+                  propsType: EMPTY_OBJECT_TYPE,
+                  types: {},
+                }),
+              },
+            });
+          } else {
+            components.push(
+              ...extractReactComponents(
+                logger,
+                resolver,
+                rootDirPath,
+                absoluteFilePath
+              )
+            );
+          }
         }
         return components;
       },
@@ -73,9 +103,14 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
           resolve: {
             alias: {
               "react-native": "react-native-web",
+              // TODO: Figure out if this is needed with React 17.
+              // "react/jsx-runtime": "react/jsx-runtime.js",
             },
           },
           plugins: [
+            mdx({
+              remarkPlugins: [remarkFrontmatter],
+            }) as vite.Plugin,
             reactImportsPlugin(),
             ...configuredPlugins,
             ...(!hasReactPlugin

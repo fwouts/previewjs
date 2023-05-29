@@ -44,7 +44,16 @@ export const load: RendererLoader = async ({
         <Wrapper>
           {decorators.reduce(
             (component, decorator) => () => decorator(component),
-            () => <RenderComponent {...props} />
+            // TODO: Remove this hack.
+            () => (
+              <RenderComponent
+                {...props}
+                components={{
+                  DocImage: () => <b>DocImage</b>,
+                  DocVideo: () => <b>DocVideo</b>,
+                }}
+              />
+            )
           )()}
         </Wrapper>
       </ErrorBoundary>

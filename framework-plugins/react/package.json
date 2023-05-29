@@ -25,12 +25,14 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
+    "@mdx-js/rollup": "^2.3.0",
     "@previewjs/api": "^12.0.0",
     "@previewjs/serializable-values": "^7.0.0",
     "@previewjs/storybook-helpers": "^2.0.8",
     "@previewjs/type-analyzer": "^8.0.0",
     "@previewjs/vfs": "^2.0.13",
     "@vitejs/plugin-react": "^4.0.0",
+    "remark-frontmatter": "^4.0.1",
     "typescript": "^5.0.4"
   },
   "devDependencies": {

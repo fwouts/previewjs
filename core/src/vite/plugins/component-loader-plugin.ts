@@ -45,6 +45,7 @@ function generateComponentLoaderModule(
     throw new Error(`Invalid use of ${COMPONENT_LOADER_MODULE} module`);
   }
   const { filePath } = decodeComponentId(componentId);
+  const isMarkdown = filePath.endsWith(".md") || filePath.endsWith(".mdx");
   const componentModuleId = `/${filePath.replace(/\\/g, "/")}`;
   return `import { updateComponent } from '/__previewjs_internal__/update-component';
 import { load } from '/__previewjs_internal__/renderer/index';
@@ -65,7 +66,9 @@ export async function refresh() {
   const shouldAbortRender = () => renderId !== (getLatestComponentLoadId() + "-" + refreshId);
   let loadingError = null;
   ${
-    wrapper && fs.pathExistsSync(path.join(rootDirPath, wrapper.path))
+    isMarkdown
+      ? "const wrapperModule = null;"
+      : wrapper && fs.pathExistsSync(path.join(rootDirPath, wrapper.path))
       ? `
   let wrapperModulePromise;
   if (import.meta.hot.data.preloadedWrapperModule) {
