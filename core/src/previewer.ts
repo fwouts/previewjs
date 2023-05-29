@@ -205,6 +205,7 @@ export class Previewer {
               this.viteManagers[componentId] = viteManager;
               this.options.logger.debug(`Starting Vite manager`);
               await viteManager.start(this.appServer.server, port);
+              // TODO: Figure out when to close other vite managers.
             }
             res
               .status(200)
