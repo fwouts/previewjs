@@ -38,7 +38,7 @@ async function onUrlChanged() {
   if (!componentId.includes(":")) {
     return;
   }
-  iframeController.resetIframe();
+  iframeController.resetIframe(componentId);
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
     componentIds: [componentId],
   });

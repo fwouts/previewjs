@@ -9,6 +9,8 @@ export class Server {
   private readonly logger: Logger;
   private serverTerminator: HttpTerminator | null = null;
 
+  #server: http.Server | null = null;
+
   constructor(options: {
     logger: Logger;
     middlewares: express.RequestHandler[];
@@ -28,6 +30,10 @@ export class Server {
     this.app = app;
   }
 
+  get server() {
+    return this.#server;
+  }
+
   async start(port: number) {
     return new Promise<http.Server>((resolve) => {
       const server = this.app.listen(port, () => {
@@ -40,6 +46,7 @@ export class Server {
         server,
         gracefulTerminationTimeout: 0,
       });
+      this.#server = server;
     });
   }
 
@@ -48,6 +55,7 @@ export class Server {
       await this.serverTerminator.terminate();
       this.serverTerminator = null;
     }
+    this.#server = null;
     this.logger.info(`Preview.js server stopped.`);
   }
 }

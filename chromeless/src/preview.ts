@@ -29,23 +29,23 @@ export async function startPreview({
   let onRenderingError = (_e: any) => {
     // No-op by default.
   };
-  let failOnErrorLog = false;
+  let renderSucceeded = false;
   let lastErrorLog: string | null = null;
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
       if (event.success) {
+        renderSucceeded = true;
         onRenderingDone();
       } else {
         if (lastErrorLog) {
           onRenderingError(new Error(lastErrorLog));
         } else {
           // The error log should be coming straight after.
-          failOnErrorLog = true;
         }
       }
     } else if (event.kind === "log-message" && event.level === "error") {
       lastErrorLog = event.message;
-      if (failOnErrorLog) {
+      if (!renderSucceeded && !event.message.startsWith("[Vue warn]")) {
         onRenderingError(new Error(event.message));
       }
     }
@@ -150,6 +150,7 @@ export async function startPreview({
         onRenderingError = reject;
       });
       await waitUntilNetworkIdle(page);
+      renderSucceeded = false;
       await page.evaluate(
         async (component) => {
           // It's possible that window.renderComponent isn't ready yet.
