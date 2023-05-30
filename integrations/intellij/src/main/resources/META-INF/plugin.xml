@@ -20,7 +20,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="Preview.js" displayType="BALLOON" />
-        <codeInsight.inlayProviderFactory implementation="com.previewjs.intellij.plugin.inlays.InlayProviderFactory" />
+        <codeInsight.declarativeInlayProviderFactory implementation="com.previewjs.intellij.plugin.inlays.PreviewJsInlayProviderFactory" />
+        <codeInsight.inlayActionHandler implementationClass="com.previewjs.intellij.plugin.inlays.PreviewJsInlayActionHandler" handlerId="com.previewjs.inlays.handler" />
     </extensions>
     <actions>
         <action id="com.previewjs.intellij.plugin.actions.OpenPreviewAction"
