@@ -105,7 +105,10 @@ export class ViteManager {
         : `
     const wrapperModulePromise = Promise.resolve(null);
     ${this.options.detectedGlobalCssFilePaths
-      .map((cssFilePath) => `import(/* @vite-ignore */ "/${cssFilePath}");`)
+      .map(
+        (cssFilePath) =>
+          `import(/* @vite-ignore */ "/${cssFilePath.replace(/\\/g, "/")}");`
+      )
       .join("\n")}
     `
     }
