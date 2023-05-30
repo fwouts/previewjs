@@ -45,7 +45,7 @@ export async function startPreview({
       }
     } else if (event.kind === "log-message" && event.level === "error") {
       lastErrorLog = event.message;
-      if (!renderSucceeded && !event.message.startsWith('[Vue warn]') {
+      if (!renderSucceeded && !event.message.startsWith("[Vue warn]")) {
         onRenderingError(new Error(event.message));
       }
     }
