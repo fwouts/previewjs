@@ -7,18 +7,13 @@
       window.module = undefined;
     </script>
     <script type="module">
-      import { initPreview } from "/__previewjs_internal__/index.ts";
+      import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
 
-      %COMPONENT_IMPORT%
-      %WRAPPER_IMPORT%
-      %GLOBAL_CSS_IMPORTS%
+      initListeners();
 
-      initPreview({
-        componentModule,
-        componentId: "%COMPONENT_ID%",
-        wrapperModule,
-        wrapperName: "%WRAPPER_NAME%",
-      });
+      import.meta.hot.accept();
+
+      %INIT_PREVIEW_BLOCK%
     </script>
     <style>
       body {

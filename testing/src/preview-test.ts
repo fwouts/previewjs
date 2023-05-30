@@ -57,13 +57,20 @@ export const previewTest = (
             return;
           }
           await runInIframe(page, async () => {
+            const INIT_WAIT_SECONDS = 5;
+
             // It's possible that __waitForExpectedRefresh__ isn't ready yet.
             let waitStart = Date.now();
             while (
               !window.__waitForExpectedRefresh__ &&
-              Date.now() - waitStart < 5000
+              Date.now() - waitStart < INIT_WAIT_SECONDS * 1000
             ) {
               await new Promise((resolve) => setTimeout(resolve, 100));
+            }
+            if (!window.__waitForExpectedRefresh__) {
+              throw new Error(
+                `window.__waitForExpectedRefresh__ is still not initialised after waiting for ${INIT_WAIT_SECONDS} seconds.`
+              );
             }
             return window.__waitForExpectedRefresh__();
           });

@@ -33,8 +33,6 @@ test.describe.parallel("svelte/error handling", () => {
     });
     await preview.expectLoggedMessages.toMatch([
       "Failed to load url /src/lib/Broken.svelte",
-      "Failed to fetch dynamically imported module",
-      "Failed to fetch dynamically imported module",
     ]);
     await preview.fileManager.update("src/App.svelte", {
       replace: "lib/Broken.svelte",
@@ -73,8 +71,6 @@ test.describe.parallel("svelte/error handling", () => {
     });
     await preview.expectLoggedMessages.toMatch([
       ["Identifier is expected", "App.svelte:3:5: Unknown word"],
-      "Failed to fetch dynamically imported module",
-      "Failed to fetch dynamically imported module",
     ]);
     await preview.fileManager.update("src/App.svelte", {
       replace: " BROKEN",

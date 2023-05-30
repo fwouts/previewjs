@@ -35,8 +35,6 @@ test.describe.parallel("vue2/error handling", () => {
     });
     await preview.expectLoggedMessages.toMatch([
       "Failed to load url /src/components/Broken.vue",
-      "Failed to fetch dynamically imported module",
-      "Failed to fetch dynamically imported module",
     ]);
     await preview.fileManager.update("src/App.vue", {
       replace: "components/Broken.vue",
@@ -71,12 +69,7 @@ test.describe.parallel("vue2/error handling", () => {
     await preview.show("src/App.vue:App").catch(() => {
       /* expected error */
     });
-    await preview.expectLoggedMessages.toMatch([
-      "App.vue:3:3: Unknown word",
-      "App.vue:3:3: Unknown word",
-      "Failed to fetch dynamically imported module",
-      "Failed to fetch dynamically imported module",
-    ]);
+    await preview.expectLoggedMessages.toMatch(["App.vue:3:3: Unknown word"]);
     await preview.fileManager.update("src/App.vue", {
       replace: " BROKEN",
       with: "#app {",

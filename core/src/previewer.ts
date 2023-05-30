@@ -4,6 +4,7 @@ import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
+import { exclusivePromiseRunner } from "exclusive-promises";
 import express from "express";
 import { escape } from "html-escaper";
 import path from "path";
@@ -64,6 +65,7 @@ export class Previewer {
   private disposeObserver: (() => Promise<void>) | null = null;
   private config: PreviewConfig | null = null;
   private lastPingTimestamp = 0;
+  private locking = exclusivePromiseRunner();
 
   constructor(
     private readonly options: {
@@ -173,40 +175,59 @@ export class Previewer {
         );
         const router = express.Router();
         router.get(/^\/preview\/.*:[^/]+\/$/, async (req, res) => {
+          if (req.header("Accept") === "text/x-vite-ping") {
+            // This is triggered as part of HMR. It may come after we've
+            // switched to rendering a different component, so we want to
+            // make sure this doesn't accidentally restart the Vite manager for it.
+            res.writeHead(204).end();
+            return;
+          }
           try {
-            if (!this.appServer?.server) {
+            const server = this.appServer?.server;
+            if (!server) {
               throw new Error(`No server running`);
             }
             const componentId = req.path.substring(9, req.path.length - 1);
-            let viteManager = this.viteManagers[componentId];
-            if (!viteManager) {
-              this.options.logger.debug(`Initializing Vite manager`);
-              viteManager = new ViteManager({
-                componentId,
-                base: req.path,
-                rootDirPath: this.options.rootDirPath,
-                shadowHtmlFilePath: path.join(
-                  this.options.previewDirPath,
-                  "index.html"
-                ),
-                detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
-                  (absoluteFilePath) =>
-                    path.relative(this.options.rootDirPath, absoluteFilePath)
-                ),
-                reader: this.transformingReader,
-                cacheDir: path.join(
-                  getCacheDir(this.options.rootDirPath),
-                  "vite"
-                ),
-                config,
-                logger: this.options.logger,
-                frameworkPlugin: this.options.frameworkPlugin,
-              });
-              this.viteManagers[componentId] = viteManager;
-              this.options.logger.debug(`Starting Vite manager`);
-              await viteManager.start(this.appServer.server, port);
-              // TODO: Figure out when to close other vite managers.
-            }
+            // Note: we only ever have a single active Vite manager.
+            // We must prevent race conditions here when we quickly switch back to a
+            // component whose Vite manager hasn't stopped yet.
+            let viteManager!: ViteManager;
+            await this.locking(async () => {
+              const existingViteManager = this.viteManagers[componentId];
+              if (existingViteManager) {
+                viteManager = existingViteManager;
+              } else {
+                await Promise.all(
+                  Object.values(this.viteManagers).map((v) => v.stop())
+                );
+                this.viteManagers = {};
+                this.options.logger.debug(`Initializing Vite manager`);
+                viteManager = new ViteManager({
+                  componentId,
+                  base: req.path,
+                  rootDirPath: this.options.rootDirPath,
+                  shadowHtmlFilePath: path.join(
+                    this.options.previewDirPath,
+                    "index.html"
+                  ),
+                  detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
+                    (absoluteFilePath) =>
+                      path.relative(this.options.rootDirPath, absoluteFilePath)
+                  ),
+                  reader: this.transformingReader,
+                  cacheDir: path.join(
+                    getCacheDir(this.options.rootDirPath),
+                    "vite"
+                  ),
+                  config,
+                  logger: this.options.logger,
+                  frameworkPlugin: this.options.frameworkPlugin,
+                });
+                this.viteManagers[componentId] = viteManager;
+                this.options.logger.debug(`Starting Vite manager`);
+                await viteManager.start(server, port);
+              }
+            });
             res
               .status(200)
               .set({ "Content-Type": "text/html" })

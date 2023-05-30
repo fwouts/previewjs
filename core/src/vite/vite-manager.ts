@@ -65,36 +65,62 @@ export class ViteManager {
     if (!this.viteServer) {
       throw new Error(`Vite server is not running.`);
     }
-    const { filePath: componentPath } = decodeComponentId(
-      this.options.componentId
-    );
+    const { filePath } = decodeComponentId(this.options.componentId);
+    const componentPath = filePath.replace(/\\/g, "/");
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
       wrapper &&
       (await fs.pathExists(path.join(this.options.rootDirPath, wrapper.path)))
-        ? wrapper.path
+        ? wrapper.path.replace(/\\/g, "/")
         : null;
     return await this.viteServer.transformIndexHtml(
       url,
       template.replace(/%([^%]+)%/gi, (matched) => {
         switch (matched) {
-          case "%COMPONENT_ID%":
-            return this.options.componentId;
-          case "%COMPONENT_IMPORT%":
-            return `import * as componentModule from "/${componentPath}";`;
-          case "%WRAPPER_IMPORT%":
-            return wrapperPath
-              ? `import * as wrapperModule from "/${wrapperPath}";`
-              : "const wrapperModule = null;";
-          case "%WRAPPER_NAME%":
-            return wrapper?.componentName || "";
-          case "%GLOBAL_CSS_IMPORTS%":
-            // Don't use automatically inferred CSS stylesheets if we have an explicit wrapper.
-            return wrapperPath
-              ? ""
-              : this.options.detectedGlobalCssFilePaths
-                  .map((cssFilePath) => `import "/${cssFilePath}";`)
-                  .join("\n");
+          case "%INIT_PREVIEW_BLOCK%":
+            return `
+    let latestComponentModule;
+    let latestWrapperModule;
+    let refresh;
+    
+    const componentModulePromise = import(/* @vite-ignore */ "/${componentPath}");
+    import.meta.hot.accept(["/${componentPath}"], ([componentModule]) => {
+      if (componentModule && refresh) {
+        latestComponentModule = componentModule;
+        refresh(latestComponentModule, latestWrapperModule);
+      }
+    });
+
+    ${
+      wrapperPath
+        ? `
+    const wrapperModulePromise = import(/* @vite-ignore */ "/${wrapperPath}");
+    import.meta.hot.accept(["/${wrapperPath}"], ([wrapperModule]) => {
+      if (wrapperModule && refresh) {
+        latestWrapperModule = wrapperModule;
+        refresh(latestComponentModule, latestWrapperModule);
+      }
+    });
+    `
+        : `
+    const wrapperModulePromise = Promise.resolve(null);
+    ${this.options.detectedGlobalCssFilePaths
+      .map((cssFilePath) => `import(/* @vite-ignore */ "/${cssFilePath}");`)
+      .join("\n")}
+    `
+    }
+    Promise.all([componentModulePromise, wrapperModulePromise])
+        .then(([componentModule, wrapperModule]) => {
+          latestComponentModule = componentModule;
+          latestWrapperModule = wrapperModule;
+          refresh = initPreview({
+            componentModule,
+            componentId: ${JSON.stringify(this.options.componentId)},
+            wrapperModule,
+            wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
+          });
+        });
+  `;
           default:
             throw new Error(`Unknown template key: ${matched}`);
         }
@@ -266,7 +292,24 @@ export class ViteManager {
         middlewareMode: true,
         hmr: {
           overlay: false,
-          server,
+          server: {
+            ...server,
+            on: (event, listener) => {
+              if (event === "upgrade") {
+                // Vite doesn't check req.url, so it ends up trying to upgrade the same
+                // socket multiple times if multiple Vite managers are running.
+                // See https://github.com/vitejs/vite/blob/5c3fa057f10b1adea4e28f58f69bf6b636eac4aa/packages/vite/src/node/server/ws.ts#L105
+                server.on("upgrade", (req, socket, head) => {
+                  if (req.url === this.options.base) {
+                    // TODO: Why doesn't this.options.logger.error() work?
+                    listener(req, socket, head);
+                  }
+                });
+              } else {
+                server.on(event, listener);
+              }
+            },
+          } as Server,
           clientPort: port,
           ...(typeof this.options.config.vite?.server?.hmr === "object"
             ? this.options.config.vite?.server?.hmr

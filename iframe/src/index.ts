@@ -22,8 +22,8 @@ export interface LoadComponentOptions {
 }
 
 class PreviewIframeControllerImpl implements PreviewIframeController {
-  private previewBootstrapped = false;
-  private waitingForBootstrapped = false;
+  private componentIdBootstrapped: string | null = null;
+  private pendingComponentIdBootstrap: string | null = null;
   private lastMessage: AppToPreviewMessage | null = null;
   private expectRenderTimeout?: any;
 
@@ -51,7 +51,10 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
   private send(message: AppToPreviewMessage) {
     this.lastMessage = message;
-    if (!this.previewBootstrapped && !this.waitingForBootstrapped) {
+    if (
+      this.componentIdBootstrapped !== message.componentId &&
+      this.pendingComponentIdBootstrap !== message.componentId
+    ) {
       this.resetIframe(message.componentId);
       return;
     }
@@ -74,11 +77,11 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
   resetIframe(componentId: string) {
     const iframe = this.options.getIframe();
-    this.previewBootstrapped = false;
+    this.componentIdBootstrapped = null;
     if (!iframe) {
       return;
     }
-    this.waitingForBootstrapped = true;
+    this.pendingComponentIdBootstrap = componentId;
     iframe.src = `/preview/${componentId}/?t=${Date.now()}`;
   }
 
@@ -138,8 +141,8 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   };
 
   private onBootstrapped() {
-    this.previewBootstrapped = true;
-    this.waitingForBootstrapped = false;
+    this.componentIdBootstrapped = this.pendingComponentIdBootstrap;
+    this.pendingComponentIdBootstrap = null;
     if (this.lastMessage) {
       this.send(this.lastMessage);
     }

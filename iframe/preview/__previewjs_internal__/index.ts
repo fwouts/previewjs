@@ -8,7 +8,16 @@ import { setState } from "./state";
 import { updateComponent } from "./update-component";
 import { setupViteHmrListener } from "./vite-hmr-listener";
 
-export async function initPreview({
+// Important: initListeners() must be invoked before we try to load any modules
+// that might fail to load, such as a component, so we can intercept Vite errors.
+export function initListeners() {
+  setupViteHmrListener();
+  setUpLogInterception();
+  setUpLinkInterception();
+  overrideCopyCutPaste();
+}
+
+export function initPreview({
   componentModule,
   componentId,
   wrapperModule,
@@ -19,11 +28,6 @@ export async function initPreview({
   wrapperModule: any;
   wrapperName: string;
 }) {
-  setupViteHmrListener();
-  setUpLogInterception();
-  setUpLinkInterception();
-  overrideCopyCutPaste();
-
   let renderId = 0;
 
   async function load({
@@ -60,12 +64,15 @@ export async function initPreview({
   if (!root) {
     throw new Error(`Unable to find #root!`);
   }
+
+  let lastRenderMessage: RenderMessage | null = null;
   window.addEventListener(
     "message",
     (event: MessageEvent<AppToPreviewMessage>) => {
       const data = event.data;
       switch (data.kind) {
         case "render":
+          lastRenderMessage = data;
           // eslint-disable-next-line no-console
           load(data).catch(console.error);
           break;
@@ -76,4 +83,13 @@ export async function initPreview({
   sendMessageFromPreview({
     kind: "bootstrapped",
   });
+
+  return (updatedComponentModule: any, updatedWrapperModule: any) => {
+    componentModule = updatedComponentModule;
+    wrapperModule = updatedWrapperModule;
+    if (lastRenderMessage) {
+      // eslint-disable-next-line no-console
+      load(lastRenderMessage).catch(console.error);
+    }
+  };
 }
