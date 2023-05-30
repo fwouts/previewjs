@@ -48,8 +48,6 @@ export function initPreview({
         componentId,
         renderId,
         shouldAbortRender: () => renderId !== thisRenderId,
-        // TODO: Figure this out.
-        loadingError: null,
         load: loadRenderer,
       });
     } catch (error: any) {

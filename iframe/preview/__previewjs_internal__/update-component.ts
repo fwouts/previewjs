@@ -9,7 +9,6 @@ export async function updateComponent({
   componentId,
   renderId,
   shouldAbortRender,
-  loadingError,
   load,
 }: {
   wrapperModule: any;
@@ -18,7 +17,6 @@ export async function updateComponent({
   componentId: string;
   renderId: number;
   shouldAbortRender: () => boolean;
-  loadingError: string | null;
   load: RendererLoader;
 }) {
   const currentState = getState();
@@ -26,13 +24,6 @@ export async function updateComponent({
     return;
   }
   try {
-    if (loadingError) {
-      sendMessageFromPreview({
-        kind: "rendering-error",
-        message: loadingError,
-      });
-      return;
-    }
     sendMessageFromPreview({
       kind: "before-render",
     });
