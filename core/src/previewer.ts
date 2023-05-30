@@ -273,18 +273,11 @@ export class Previewer {
             ...(this.options.middlewares || []),
             router,
             (req, res, next) => {
-              const componentIdMatch = req.path.match(
-                /^(\/@id\/__x00__)?\/preview\/(.*:[^/]+)\/.*$/
-              );
-              if (componentIdMatch) {
-                const componentId = componentIdMatch[2]!;
-                const viteManager = this.viteManagers[componentId];
-                if (viteManager) {
-                  viteManager.middleware(req, res, next);
-                  return;
-                }
+              // Note: this isn't a problem because there is only ever at most one
+              // Vite manager at any given time.
+              for (const viteManager of Object.values(this.viteManagers)) {
+                viteManager.middleware(req, res, next);
               }
-              res.status(404).end(`No match for path: ${req.path}`);
             },
           ],
         });
