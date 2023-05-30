@@ -2,7 +2,6 @@ package com.previewjs.intellij.plugin.services
 
 import com.intellij.execution.process.OSProcessUtil
 import com.intellij.ide.plugins.PluginManagerCore
-import com.intellij.lang.Language
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
@@ -29,7 +28,6 @@ import java.io.InputStreamReader
 import java.net.ServerSocket
 import java.util.Collections
 import java.util.WeakHashMap
-import java.util.logging.Logger
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
 
@@ -57,8 +55,6 @@ class PreviewJsSharedService : Disposable {
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private var actor = coroutineScope.actor<Message> {
-        val logger = Logger.getLogger("PreviewJsSharedService")
-        logger.warning(Language.getRegisteredLanguages().joinToString(", ") { l -> l.id })
         var errorCount = 0
         for (msg in channel) {
             val api = awaitApiReady() ?: return@actor
