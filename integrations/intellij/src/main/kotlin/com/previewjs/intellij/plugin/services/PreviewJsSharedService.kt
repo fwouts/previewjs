@@ -81,7 +81,7 @@ Include the content of the Preview.js logs panel for easier debugging.
         }
     }
 
-    fun ensureApiInitialized(project: Project) {
+    private fun ensureApiInitialized(project: Project) {
         if (initializeApiJob != null) {
             return
         }
@@ -123,15 +123,11 @@ ${e.stackTraceToString()}""",
         project: Project,
         fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
         getErrorMessage: (e: Throwable) -> String
-    ) = coroutineScope.launch {
-        actor.send(Message(project, fn, getErrorMessage))
-    }
-
-    suspend fun <T> withApi(
-        fn: suspend (api: PreviewJsApi) -> T
-    ): T? {
-        val api = awaitApiReady() ?: return null
-        return fn(api)
+    ): Job {
+        ensureApiInitialized(project)
+        return coroutineScope.launch {
+            actor.send(Message(project, fn, getErrorMessage))
+        }
     }
 
     private suspend fun awaitApiReady(): PreviewJsApi? {

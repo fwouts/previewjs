@@ -6,10 +6,8 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.vfs.readText
 import com.previewjs.intellij.plugin.services.ProjectService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class OpenPreviewAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
@@ -27,16 +25,14 @@ class OpenPreviewAction : AnAction() {
         }
         val selectedFile = selectedFiles[0]
         val offset = manager.selectedTextEditor?.selectionModel?.selectionStart
-        CoroutineScope(Dispatchers.IO).launch {
-            val projectService = project.getService(ProjectService::class.java)
-            val components =
-                projectService.computeComponents(selectedFile, selectedTextEditor.document)
+        val projectService = project.getService(ProjectService::class.java)
+        projectService.computeComponents(selectedFile, selectedFile.readText()) { components ->
             if (components.isEmpty()) {
                 notificationGroup.createNotification(
                     "No components detected in ${selectedFile.path}",
                     NotificationType.ERROR
                 ).notify(project)
-                return@launch
+                return@computeComponents
             }
             val component =
                 components.find { c -> offset != null && offset >= c.start && offset <= c.end } ?: components[0]

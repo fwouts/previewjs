@@ -7,15 +7,17 @@ import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.editor.Document
-import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.editor.event.DocumentEvent
-import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.openapi.vfs.newvfs.BulkFileListener
+import com.intellij.openapi.vfs.newvfs.events.VFileEvent
+import com.intellij.openapi.vfs.readText
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
@@ -28,6 +30,7 @@ import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
+import org.apache.commons.lang.StringUtils
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
@@ -49,30 +52,64 @@ class ProjectService(private val project: Project) : Disposable {
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var currentPreviewWorkspaceId: String? = null
+    private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
 
     init {
-        EditorFactory.getInstance().eventMulticaster.addDocumentListener(
-            object : DocumentListener {
-                override fun documentChanged(event: DocumentEvent) {
-                    val file = FileDocumentManager.getInstance().getFile(event.document)
-                    if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
-                        return
-                    }
-                    service.enqueueAction(project, { api ->
-                        service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-                        api.updatePendingFile(
-                            UpdatePendingFileRequest(
-                                absoluteFilePath = file.path,
-                                utf8Content = event.document.text
+        val projectFileIndex = ProjectFileIndex.getInstance(project)
+        val connection = project.messageBus.connect(this)
+        connection.subscribe(
+            VirtualFileManager.VFS_CHANGES,
+            object : BulkFileListener {
+                override fun after(events: List<VFileEvent>) {
+                    events.forEach { event ->
+                        val file = event.file
+                        if (file == null || !projectFileIndex.isInProject(file)) {
+                            return@forEach
+                        }
+                        if (file.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
+                            return@forEach
+                        }
+                        val text = file.readText()
+                        if (text.length > 1_048_576) {
+                            return@forEach
+                        }
+                        service.enqueueAction(project, { api ->
+                            service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
+                            api.updatePendingFile(
+                                UpdatePendingFileRequest(
+                                    absoluteFilePath = file.path,
+                                    utf8Content = text
+                                )
                             )
-                        )
-                    }, {
-                        "Warning: unable to update pending file ${file.path}"
-                    })
+                        }, {
+                            "Warning: unable to update pending file ${file.path}"
+                        })
+                        onFileOpenedOrUpdated(file)
+                    }
                 }
-            },
-            this
+            }
         )
+
+        // Keep track of all open files to track their components.
+        //
+        // This is required because inlay providers must do their work synchronously. An earlier version
+        // of Preview.js made a blocking call to the Preview.js server that introduced overall slowness
+        // in the IDE as this all happens on the main thread(!).
+        connection.subscribe(
+            FileEditorManagerListener.FILE_EDITOR_MANAGER,
+            object : FileEditorManagerListener {
+                override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
+                    onFileOpenedOrUpdated(file)
+                }
+
+                override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
+                    onFileClosed(file)
+                }
+            }
+        )
+        FileEditorManager.getInstance(project).allEditors.forEach { editor ->
+            onFileOpenedOrUpdated(editor.file)
+        }
     }
 
     fun printToConsole(text: String) {
@@ -107,26 +144,61 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-    suspend fun computeComponents(file: VirtualFile, document: Document): List<AnalyzedFileComponent> {
-        if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || document.text.length > 1_048_576) {
-            return emptyList()
+    private fun onFileOpenedOrUpdated(file: VirtualFile) {
+        val text = file.readText()
+        computeComponents(file, text) { components ->
+            componentMap[file.path] = Pair(text, components)
         }
-        service.ensureApiInitialized(project)
-        return service.withApi { api ->
-            val workspaceId = service.ensureWorkspaceReady(project, file.path) ?: return@withApi emptyList()
+    }
+
+    private fun onFileClosed(file: VirtualFile) {
+        componentMap.remove(file.path)
+    }
+
+    fun getPrecomputedComponents(file: VirtualFile, currentText: String): List<AnalyzedFileComponent> {
+        val computed = componentMap[file.path] ?: return emptyList()
+        val (computedText, components) = computed
+        if (currentText == computedText) {
+            return components
+        }
+        val differenceIndex = StringUtils.indexOfDifference(currentText, computedText)
+        // Assume that a chunk of text was either added or removed where the difference occurs.
+        val differenceDelta = currentText.length - computedText.length
+        return components.filter {
+            it.start < differenceIndex || (it.start >= differenceIndex - differenceDelta)
+        }.map {
+            AnalyzedFileComponent(
+                start = if (it.start < differenceIndex) it.start else it.start + differenceDelta,
+                end = if (it.end < differenceIndex) it.end else it.end + differenceDelta,
+                componentId = it.componentId
+            )
+        }
+    }
+
+    fun computeComponents(file: VirtualFile, text: String, callback: (result: List<AnalyzedFileComponent>) -> Unit) {
+        if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
+            return callback(emptyList())
+        }
+        service.enqueueAction(project, { api ->
+            val workspaceId =
+                service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction callback(emptyList())
             api.updatePendingFile(
                 UpdatePendingFileRequest(
                     absoluteFilePath = file.path,
-                    utf8Content = document.text
+                    utf8Content = text
                 )
             )
-            return@withApi api.analyzeFile(
-                AnalyzeFileRequest(
-                    workspaceId,
-                    absoluteFilePath = file.path
-                )
-            ).components
-        } ?: emptyList()
+            callback(
+                api.analyzeFile(
+                    AnalyzeFileRequest(
+                        workspaceId,
+                        absoluteFilePath = file.path
+                    )
+                ).components
+            )
+        }, {
+            "Warning: unable to compute components for ${file.path}"
+        })
     }
 
     fun openPreview(absoluteFilePath: String, componentId: String) {
