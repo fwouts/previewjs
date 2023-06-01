@@ -74,12 +74,8 @@ class InlayProviderFactory : InlayHintsProviderFactory {
             sink: InlayHintsSink
         ) = object : FactoryInlayHintsCollector(editor) {
             override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
-                if (element !is PsiFile) {
-                    return false
-                }
-                val file = editor.virtualFile
-                val projectService = element.project.service<ProjectService>()
-                val components = projectService.getPrecomputedComponents(file, element.text)
+                val projectService = file.project.service<ProjectService>()
+                val components = projectService.getPrecomputedComponents(file)
                 for (component in components) {
                     val componentName = component.componentId.substring(component.componentId.indexOf(":") + 1)
                     sink.addBlockElement(
@@ -90,7 +86,7 @@ class InlayProviderFactory : InlayHintsProviderFactory {
                         presentation = factory.referenceOnHover(
                             factory.roundWithBackground(factory.smallText("Open $componentName in Preview.js"))
                         ) { _, _ ->
-                            projectService.openPreview(file.path, component.componentId)
+                            projectService.openPreview(editor.virtualFile.path, component.componentId)
                         }
                     )
                 }

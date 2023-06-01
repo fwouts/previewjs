@@ -21,6 +21,7 @@ import com.intellij.openapi.vfs.readText
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.psi.PsiFile
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
@@ -155,16 +156,24 @@ class ProjectService(private val project: Project) : Disposable {
         componentMap.remove(file.path)
     }
 
-    fun getPrecomputedComponents(file: VirtualFile, currentText: String): List<AnalyzedFileComponent> {
-        val computed = componentMap[file.path] ?: return emptyList()
+    fun getPrecomputedComponents(psiFile: PsiFile): List<AnalyzedFileComponent> {
+        val currentText = psiFile.text
+        val computed = componentMap[psiFile.virtualFile.path] ?: return emptyList()
         val (computedText, components) = computed
         if (currentText == computedText) {
             return components
         }
-        val differenceIndex = StringUtils.indexOfDifference(currentText, computedText)
+        val exactCharacterDifferenceIndex = StringUtils.indexOfDifference(currentText, computedText)
+        // In the case of a file with multiple components, when we delete a component, the index of the first
+        // detected difference may be "too far", example it can be "export const |Foo" if we have repeated
+        // "export const <story-name>" statements. We instead consider that the difference starts at the beginning
+        // of the line, i.e. "|export const Foo".
+        val differenceIndex = currentText.lastIndexOf("\n", exactCharacterDifferenceIndex) + 1
         // Assume that a chunk of text was either added or removed where the difference occurs.
-        val differenceDelta = currentText.length - computedText.length
+        val differenceDelta = currentText.length - computedText.length + exactCharacterDifferenceIndex - differenceIndex
         return components.filter {
+            // Case 1: Component definition starts before the cut. It's fine if the end gets cut off.
+            // Case 2: Component definition starts after the cut.
             it.start < differenceIndex || (it.start >= differenceIndex - differenceDelta)
         }.map {
             AnalyzedFileComponent(
