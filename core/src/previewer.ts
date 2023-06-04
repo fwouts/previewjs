@@ -4,7 +4,6 @@ import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
-import { exclusivePromiseRunner } from "exclusive-promises";
 import express from "express";
 import { escape } from "html-escaper";
 import path from "path";
@@ -59,13 +58,12 @@ const SHUTDOWN_AFTER_INACTIVITY = 10000;
 export class Previewer {
   private readonly transformingReader: Reader;
   private appServer: Server | null = null;
-  private viteManagers: Record<string, ViteManager> = {};
+  private viteManager: ViteManager | null = null;
   private status: PreviewerStatus = { kind: "stopped" };
   private shutdownCheckInterval: NodeJS.Timeout | null = null;
   private disposeObserver: (() => Promise<void>) | null = null;
   private config: PreviewConfig | null = null;
   private lastPingTimestamp = 0;
-  private locking = exclusivePromiseRunner();
 
   constructor(
     private readonly options: {
@@ -175,63 +173,26 @@ export class Previewer {
         );
         const router = express.Router();
         router.get(/^\/preview\/.*:[^/]+\/$/, async (req, res) => {
+          const componentId = req.path.substring(9, req.path.length - 1);
           if (req.header("Accept") === "text/x-vite-ping") {
-            // This is triggered as part of HMR. It may come after we've
-            // switched to rendering a different component, so we want to
-            // make sure this doesn't accidentally restart the Vite manager for it.
+            // This is triggered as part of HMR. Exit early.
             res.writeHead(204).end();
             return;
           }
+          if (!this.viteManager) {
+            res.status(404).end(`Uh-Oh! Vite server is not running.`);
+            return;
+          }
           try {
-            const server = this.appServer?.server;
-            if (!server) {
-              throw new Error(`No server running`);
-            }
-            const componentId = req.path.substring(9, req.path.length - 1);
-            // Note: we only ever have a single active Vite manager.
-            // We must prevent race conditions here when we quickly switch back to a
-            // component whose Vite manager hasn't stopped yet.
-            let viteManager!: ViteManager;
-            await this.locking(async () => {
-              const existingViteManager = this.viteManagers[componentId];
-              if (existingViteManager) {
-                viteManager = existingViteManager;
-              } else {
-                await Promise.all(
-                  Object.values(this.viteManagers).map((v) => v.stop())
-                );
-                this.viteManagers = {};
-                this.options.logger.debug(`Initializing Vite manager`);
-                viteManager = new ViteManager({
-                  componentId,
-                  base: req.path,
-                  rootDirPath: this.options.rootDirPath,
-                  shadowHtmlFilePath: path.join(
-                    this.options.previewDirPath,
-                    "index.html"
-                  ),
-                  detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
-                    (absoluteFilePath) =>
-                      path.relative(this.options.rootDirPath, absoluteFilePath)
-                  ),
-                  reader: this.transformingReader,
-                  cacheDir: path.join(
-                    getCacheDir(this.options.rootDirPath),
-                    "vite"
-                  ),
-                  config,
-                  logger: this.options.logger,
-                  frameworkPlugin: this.options.frameworkPlugin,
-                });
-                this.viteManagers[componentId] = viteManager;
-                this.options.logger.debug(`Starting Vite manager`);
-                await viteManager.start(server, port);
-              }
-            });
             res
               .status(200)
               .set({ "Content-Type": "text/html" })
-              .end(await viteManager.loadIndexHtml(req.originalUrl));
+              .end(
+                await this.viteManager.loadIndexHtml(
+                  req.originalUrl,
+                  componentId
+                )
+              );
           } catch (e: any) {
             res
               .status(500)
@@ -273,11 +234,7 @@ export class Previewer {
             ...(this.options.middlewares || []),
             router,
             (req, res, next) => {
-              // Note: this isn't a problem because there is only ever at most one
-              // Vite manager at any given time.
-              for (const viteManager of Object.values(this.viteManagers)) {
-                viteManager.middleware(req, res, next);
-              }
+              this.viteManager?.middleware(req, res, next);
             },
           ],
         });
@@ -292,8 +249,26 @@ export class Previewer {
           }
           this.transformingReader.listeners.add(this.onFileChangeListener);
         }
+        this.viteManager = new ViteManager({
+          rootDirPath: this.options.rootDirPath,
+          shadowHtmlFilePath: path.join(
+            this.options.previewDirPath,
+            "index.html"
+          ),
+          detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
+            (absoluteFilePath) =>
+              path.relative(this.options.rootDirPath, absoluteFilePath)
+          ),
+          reader: this.transformingReader,
+          cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
+          config,
+          logger: this.options.logger,
+          frameworkPlugin: this.options.frameworkPlugin,
+        });
         this.options.logger.debug(`Starting server`);
-        await this.appServer.start(port);
+        const server = await this.appServer.start(port);
+        this.options.logger.debug(`Starting Vite manager`);
+        await this.viteManager.start(server, port);
         this.options.logger.debug(`Previewer ready`);
         this.status = {
           kind: "started",
@@ -381,14 +356,10 @@ export class Previewer {
             this.disposeObserver = null;
           }
         }
-        await Promise.all(
-          Object.values(this.viteManagers).map((v) => v.stop())
-        );
-        this.viteManagers = {};
-        if (this.appServer) {
-          await this.appServer.stop();
-          this.appServer = null;
-        }
+        await this.viteManager?.stop();
+        this.viteManager = null;
+        await this.appServer?.stop();
+        this.appServer = null;
         this.status = {
           kind: "stopped",
         };
@@ -406,9 +377,7 @@ export class Previewer {
         absoluteFilePath ===
           path.resolve(this.options.rootDirPath, this.config.wrapper.path)
       ) {
-        for (const viteManager of Object.values(this.viteManagers)) {
-          viteManager.triggerFullReload();
-        }
+        this.viteManager?.triggerFullReload();
       }
       if (
         !info.virtual &&
@@ -431,10 +400,8 @@ export class Previewer {
         return;
       }
       if (info.virtual) {
-        for (const viteManager of Object.values(this.viteManagers)) {
-          viteManager.triggerReload(absoluteFilePath);
-          viteManager.triggerReload(absoluteFilePath + ".ts");
-        }
+        this.viteManager?.triggerReload(absoluteFilePath);
+        this.viteManager?.triggerReload(absoluteFilePath + ".ts");
       } else if (this.options.onFileChanged) {
         this.options.onFileChanged(absoluteFilePath);
       }

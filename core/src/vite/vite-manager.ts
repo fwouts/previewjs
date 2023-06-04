@@ -29,8 +29,6 @@ export class ViteManager {
     private readonly options: {
       logger: Logger;
       reader: Reader;
-      base: string;
-      componentId: string;
       rootDirPath: string;
       shadowHtmlFilePath: string;
       detectedGlobalCssFilePaths: string[];
@@ -56,7 +54,7 @@ export class ViteManager {
     this.middleware = router;
   }
 
-  async loadIndexHtml(url: string) {
+  async loadIndexHtml(url: string, componentId: string) {
     const template = await fs.readFile(
       this.options.shadowHtmlFilePath,
       "utf-8"
@@ -65,7 +63,7 @@ export class ViteManager {
     if (!this.viteServer) {
       throw new Error(`Vite server is not running.`);
     }
-    const { filePath } = decodeComponentId(this.options.componentId);
+    const { filePath } = decodeComponentId(componentId);
     const componentPath = filePath.replace(/\\/g, "/");
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
@@ -118,7 +116,7 @@ export class ViteManager {
           latestWrapperModule = wrapperModule;
           refresh = initPreview({
             componentModule,
-            componentId: ${JSON.stringify(this.options.componentId)},
+            componentId: ${JSON.stringify(componentId)},
             wrapperModule,
             wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
           });
@@ -290,29 +288,12 @@ export class ViteManager {
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDirPath,
-      base: this.options.base,
+      base: "/preview/",
       server: {
         middlewareMode: true,
         hmr: {
           overlay: false,
-          server: {
-            ...server,
-            on: (event, listener) => {
-              if (event === "upgrade") {
-                // Vite doesn't check req.url, so it ends up trying to upgrade the same
-                // socket multiple times if multiple Vite managers are running.
-                // See https://github.com/vitejs/vite/blob/5c3fa057f10b1adea4e28f58f69bf6b636eac4aa/packages/vite/src/node/server/ws.ts#L105
-                server.on("upgrade", (req, socket, head) => {
-                  if (req.url === this.options.base) {
-                    // TODO: Why doesn't this.options.logger.error() work?
-                    listener(req, socket, head);
-                  }
-                });
-              } else {
-                server.on(event, listener);
-              }
-            },
-          } as Server,
+          server,
           clientPort: port,
           ...(typeof this.options.config.vite?.server?.hmr === "object"
             ? this.options.config.vite?.server?.hmr
