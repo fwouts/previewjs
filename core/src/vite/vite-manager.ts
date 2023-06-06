@@ -8,10 +8,8 @@ import type { Server } from "http";
 import path from "path";
 import type { Logger } from "pino";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
-import {
-  loadTsconfig,
-  type Tsconfig,
-} from "tsconfig-paths/lib/tsconfig-loader.js";
+import type { Tsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
+import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
