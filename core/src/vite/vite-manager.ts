@@ -81,7 +81,6 @@ export class ViteManager {
     let latestWrapperModule;
     let refresh;
     
-    const componentModulePromise = import(/* @vite-ignore */ "/${componentPath}");
     import.meta.hot.accept(["/${componentPath}"], ([componentModule]) => {
       if (componentModule && refresh) {
         latestComponentModule = componentModule;
@@ -110,17 +109,19 @@ export class ViteManager {
       .join("\n")}
     `
     }
-    Promise.all([componentModulePromise, wrapperModulePromise])
-        .then(([componentModule, wrapperModule]) => {
-          latestComponentModule = componentModule;
-          latestWrapperModule = wrapperModule;
-          refresh = initPreview({
-            componentModule,
-            componentId: ${JSON.stringify(componentId)},
-            wrapperModule,
-            wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
-          });
+
+    // Important: the wrapper must be loaded first as it may monkey-patch
+    // modules imported by the component module.
+    wrapperModulePromise.then(wrapperModule => {
+      import(/* @vite-ignore */ "/${componentPath}").then(componentModule => {
+        refresh = initPreview({
+          componentModule,
+          componentId: ${JSON.stringify(componentId)},
+          wrapperModule,
+          wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
         });
+      });
+    });
   `;
           default:
             throw new Error(`Unknown template key: ${matched}`);
