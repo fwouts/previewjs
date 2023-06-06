@@ -271,7 +271,10 @@ export class Previewer {
         this.options.logger.debug(`Starting server`);
         const server = await this.appServer.start(port);
         this.options.logger.debug(`Starting Vite manager`);
-        await this.viteManager.start(server, port);
+        this.viteManager.start(server, port).catch((e) => {
+          this.options.logger.error(`Vite manager failed to start: ${e}`);
+          this.stop();
+        });
         this.options.logger.debug(`Previewer ready`);
         this.status = {
           kind: "started",

@@ -39,17 +39,8 @@ export class ViteManager {
   ) {
     const router = express.Router();
     router.use(async (req, res, next) => {
-      const waitSeconds = 60;
-      const waitUntil = Date.now() + waitSeconds * 1000;
-      while (!this.viteServer) {
-        await new Promise((resolve) => setTimeout(resolve, 50));
-        if (Date.now() > waitUntil) {
-          throw new Error(
-            `Vite server is not running after ${waitSeconds} seconds.`
-          );
-        }
-      }
-      this.viteServer.middlewares(req, res, next);
+      const viteServer = await this.awaitViteServerReady();
+      viteServer.middlewares(req, res, next);
     });
     this.middleware = router;
   }
@@ -59,10 +50,7 @@ export class ViteManager {
       this.options.shadowHtmlFilePath,
       "utf-8"
     );
-    await this.viteStartupPromise;
-    if (!this.viteServer) {
-      throw new Error(`Vite server is not running.`);
-    }
+    const viteServer = await this.awaitViteServerReady();
     const { filePath } = decodeComponentId(componentId);
     const componentPath = filePath.replace(/\\/g, "/");
     const wrapper = this.options.config.wrapper;
@@ -71,7 +59,7 @@ export class ViteManager {
       (await fs.pathExists(path.join(this.options.rootDirPath, wrapper.path)))
         ? wrapper.path.replace(/\\/g, "/")
         : null;
-    return await this.viteServer.transformIndexHtml(
+    return await viteServer.transformIndexHtml(
       url,
       template.replace(/%([^%]+)%/gi, (matched) => {
         switch (matched) {
@@ -127,6 +115,14 @@ export class ViteManager {
         }
       })
     );
+  }
+
+  private async awaitViteServerReady() {
+    await this.viteStartupPromise;
+    if (!this.viteServer) {
+      throw new Error(`Vite server is not running.`);
+    }
+    return this.viteServer;
   }
 
   async start(server: Server, port: number) {
@@ -373,6 +369,7 @@ export class ViteManager {
   }
 
   async stop() {
+    await this.viteStartupPromise;
     if (this.viteServer) {
       await this.viteServer.close();
       delete this.viteServer;
