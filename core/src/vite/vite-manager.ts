@@ -8,11 +8,11 @@ import type { Server } from "http";
 import path from "path";
 import type { Logger } from "pino";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
+import type { Tsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
-import { findFiles } from "../find-files";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
@@ -131,43 +131,27 @@ export class ViteManager {
   }
 
   async start(server: Server, port: number) {
-    // Find valid tsconfig.json files.
-    //
-    // Useful when the project may contain some invalid files.
-    this.options.logger.debug(`Finding js/tsconfig.json files`);
-    const typeScriptConfigAbsoluteFilePaths = await findFiles(
-      this.options.rootDirPath,
-      "{js,ts}config.json"
-    );
-    this.options.logger.debug(
-      `Found ${typeScriptConfigAbsoluteFilePaths.length} config files`
-    );
-    const typeScriptConfigFilePaths = typeScriptConfigAbsoluteFilePaths.map(
-      (p) => path.relative(this.options.rootDirPath, p)
-    );
-    const validTypeScriptFilePaths: string[] = [];
-    for (const configFilePath of typeScriptConfigFilePaths) {
-      try {
-        loadTsconfig(configFilePath);
-        validTypeScriptFilePaths.push(configFilePath);
-      } catch (e) {
-        this.options.logger.warn(
-          `Encountered an invalid config file, ignoring: ${configFilePath}`
-        );
-      }
-    }
-    this.options.logger.debug(
-      `Found ${typeScriptConfigAbsoluteFilePaths.length} files`
-    );
     const tsInferredAlias: Alias[] = [];
     // If there is a top-level tsconfig.json, use it to infer aliases.
     // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-    const configFile = typeScriptConfigFilePaths.includes("tsconfig.json")
-      ? "tsconfig.json"
-      : "jsconfig.json";
-    const config = loadTsconfig(configFile);
+    let config: Tsconfig | null = null;
+    for (const potentialTsConfigFileName of [
+      "tsconfig.json",
+      "jsconfig.json",
+    ]) {
+      const potentialTsConfigFilePath = path.join(
+        this.options.rootDirPath,
+        potentialTsConfigFileName
+      );
+      if (await fs.pathExists(potentialTsConfigFilePath)) {
+        config = loadTsconfig(potentialTsConfigFilePath) || null;
+        if (config) {
+          break;
+        }
+      }
+    }
     this.options.logger.debug(
-      `Loaded ${configFile}: ${JSON.stringify(config || null, null, 2)}`
+      `Loaded ts/jsconfig: ${JSON.stringify(config || null, null, 2)}`
     );
     if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
       const { baseUrl, paths } = config.compilerOptions;
@@ -217,7 +201,6 @@ export class ViteManager {
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
-        projects: validTypeScriptFilePaths,
       }),
       virtualPlugin({
         logger: this.options.logger,
