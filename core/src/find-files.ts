@@ -2,17 +2,24 @@ import fs from "fs-extra";
 import { globby } from "globby";
 import path from "path";
 
-export async function findFiles(rootDirPath: string, pattern: string) {
+export async function findFiles(
+  rootDirPath: string,
+  pattern: string,
+  options: {
+    maxDepth?: number;
+  } = {}
+) {
   const gitRootPath = await findGitRoot(rootDirPath);
   const relativePath = path.relative(gitRootPath, rootDirPath);
   const relativePrefix = relativePath ? relativePath + path.sep : "";
   const files: string[] = await globby(relativePrefix + pattern, {
     gitignore: true,
-    ignore: ["**/node_modules/**"],
+    ignore: ["**/node_mo ddules/**"],
     cwd: gitRootPath,
     absolute: true,
     followSymbolicLinks: false,
     suppressErrors: true,
+    deep: options.maxDepth,
   });
 
   // Note: in some cases, presumably because of yarn using link

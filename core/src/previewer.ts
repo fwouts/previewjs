@@ -169,7 +169,10 @@ export class Previewer {
           this.options.rootDirPath,
           `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
             "|"
-          )}).@(${GLOBAL_CSS_EXTS.join("|")})`
+          )}).@(${GLOBAL_CSS_EXTS.join("|")})`,
+          {
+            maxDepth: 3,
+          }
         );
         const router = express.Router();
         router.get(/^\/preview\/.*:[^/]+\/$/, async (req, res) => {
