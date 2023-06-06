@@ -3078,8 +3078,8 @@ importers:
         version: 5.0.4
     devDependencies:
       '@types/prettier':
-        specifier: ^2.7.2
-        version: 2.7.2
+        specifier: ^2.7.3
+        version: 2.7.3
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
@@ -3186,8 +3186,8 @@ importers:
         specifier: ^4.14.195
         version: 4.14.195
       '@types/prettier':
-        specifier: ^2.7.2
-        version: 2.7.2
+        specifier: ^2.7.3
+        version: 2.7.3
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -3549,7 +3549,7 @@ packages:
     dependencies:
       '@babel/core': 7.21.4
       '@babel/helper-compilation-targets': 7.21.4(@babel/core@7.21.4)
-      '@babel/helper-plugin-utils': 7.20.2
+      '@babel/helper-plugin-utils': 7.21.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
       resolve: 1.22.2
@@ -3565,7 +3565,7 @@ packages:
     dependencies:
       '@babel/core': 7.21.8
       '@babel/helper-compilation-targets': 7.21.4(@babel/core@7.21.8)
-      '@babel/helper-plugin-utils': 7.20.2
+      '@babel/helper-plugin-utils': 7.21.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
       resolve: 1.22.2
@@ -4127,12 +4127,12 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.21.9
+      '@babel/compat-data': 7.21.4
       '@babel/core': 7.21.8
-      '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.21.8)
+      '@babel/helper-compilation-targets': 7.21.4(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.21.5
       '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.21.8)
-      '@babel/plugin-transform-parameters': 7.21.3(@babel/core@7.21.8)
+      '@babel/plugin-transform-parameters': 7.20.7(@babel/core@7.21.8)
 
   /@babel/plugin-proposal-optional-catch-binding@7.18.6(@babel/core@7.21.4):
     resolution: {integrity: sha512-Q40HEhs9DJQyaZfUjjn6vE8Cv4GmMHCYuMGIWUnlxH6400VGxOuwWsPt4FxXxJkC/5eOzgn0z21M9gMT4MOhbw==}
@@ -5178,7 +5178,6 @@ packages:
     dependencies:
       '@babel/core': 7.21.8
       '@babel/helper-plugin-utils': 7.21.5
-    dev: true
 
   /@babel/plugin-transform-parameters@7.21.3(@babel/core@7.12.9):
     resolution: {integrity: sha512-Wxc+TvppQG9xWFYatvCGPvZ6+SIUxQ2ZdiBP+PHYMIjnPXD+uThCshaz4NZOnODAtBjjcVQQ/3OKs9LW28purQ==}
@@ -14085,8 +14084,8 @@ packages:
     resolution: {integrity: sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw==}
     dev: true
 
-  /@types/prettier@2.7.2:
-    resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
+  /@types/prettier@2.7.3:
+    resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==}
 
   /@types/pretty-hrtime@1.0.1:
     resolution: {integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==}
@@ -25505,7 +25504,7 @@ packages:
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
       '@types/babel__traverse': 7.18.3
-      '@types/prettier': 2.7.2
+      '@types/prettier': 2.7.3
       babel-preset-current-node-syntax: 1.0.1(@babel/core@7.21.8)
       chalk: 4.1.2
       expect: 27.5.1
@@ -30232,7 +30231,7 @@ packages:
       klona: 2.0.6
       loader-utils: 2.0.4
       postcss: 7.0.39
-      schema-utils: 3.1.2
+      schema-utils: 3.1.1
       semver: 7.5.1
       webpack: 4.46.0
     dev: true
@@ -30264,7 +30263,7 @@ packages:
       klona: 2.0.6
       loader-utils: 2.0.4
       postcss: 8.4.23
-      schema-utils: 3.1.2
+      schema-utils: 3.1.1
       semver: 7.5.1
       webpack: 4.46.0
     dev: false
@@ -30280,7 +30279,7 @@ packages:
       klona: 2.0.6
       loader-utils: 2.0.4
       postcss: 8.4.23
-      schema-utils: 3.1.2
+      schema-utils: 3.1.1
       semver: 7.5.1
       webpack: 5.83.1
     dev: true
