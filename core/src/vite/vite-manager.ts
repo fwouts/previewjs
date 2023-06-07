@@ -323,6 +323,12 @@ export class ViteManager {
         ...existingViteConfig?.config.define,
         ...this.options.config.vite?.define,
       },
+      optimizeDeps: {
+        entries: [],
+        ...frameworkPluginViteConfig.optimizeDeps,
+        ...existingViteConfig?.config.optimizeDeps,
+        ...this.options.config.vite?.optimizeDeps,
+      },
       resolve: {
         ...existingViteConfig?.config.resolve,
         ...this.options.config.vite?.resolve,
