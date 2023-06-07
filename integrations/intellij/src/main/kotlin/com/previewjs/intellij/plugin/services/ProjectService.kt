@@ -36,6 +36,7 @@ import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import java.net.URLEncoder
+import kotlin.math.max
 
 @Service(Service.Level.PROJECT)
 class ProjectService(private val project: Project) : Disposable {
@@ -164,23 +165,40 @@ class ProjectService(private val project: Project) : Disposable {
             return components
         }
         val exactCharacterDifferenceIndex = StringUtils.indexOfDifference(currentText, computedText)
-        // In the case of a file with multiple components, when we delete a component, the index of the first
-        // detected difference may be "too far", example it can be "export const |Foo" if we have repeated
-        // "export const <story-name>" statements. We instead consider that the difference starts at the beginning
-        // of the line, i.e. "|export const Foo".
-        val differenceIndex = currentText.lastIndexOf("\n", exactCharacterDifferenceIndex) + 1
         // Assume that a chunk of text was either added or removed where the difference occurs.
-        val differenceDelta = currentText.length - computedText.length + exactCharacterDifferenceIndex - differenceIndex
-        return components.filter {
-            // Case 1: Component definition starts before the cut. It's fine if the end gets cut off.
-            // Case 2: Component definition starts after the cut.
-            it.start < differenceIndex || (it.start >= differenceIndex - differenceDelta)
-        }.map {
-            AnalyzedFileComponent(
-                start = if (it.start < differenceIndex) it.start else it.start + differenceDelta,
-                end = if (it.end < differenceIndex) it.end else it.end + differenceDelta,
-                componentId = it.componentId
-            )
+        val differenceDelta = currentText.length - computedText.length
+        val currentTextEnd = currentText.substring(exactCharacterDifferenceIndex + max(0, differenceDelta))
+        val computedTextEnd = computedText.substring(exactCharacterDifferenceIndex + max(0, -differenceDelta))
+        if (currentTextEnd != computedTextEnd) {
+            return emptyList()
+        }
+        if (differenceDelta > 0) {
+            // A chunk of text was added.
+            return components.map {
+                AnalyzedFileComponent(
+                    start = if (it.start < exactCharacterDifferenceIndex) it.start else it.start + differenceDelta,
+                    end = if (it.end < exactCharacterDifferenceIndex) it.end else it.end + differenceDelta,
+                    componentId = it.componentId
+                )
+            }
+        } else {
+            // A chunk of text was removed.
+            // In the case of a file with multiple components, when we delete a component, the index of the first
+            // detected difference may be "too far", example it can be "export const |Foo" if we have repeated
+            // "export const <story-name>" statements. We instead consider that the difference starts at the beginning
+            // of the line, i.e. "|export const Foo".
+            val start = currentText.lastIndexOf("\n", exactCharacterDifferenceIndex)
+            // TODO: Double check this logic. It's likely incorrect.
+            val end = currentText.lastIndexOf("\n", exactCharacterDifferenceIndex - differenceDelta)
+            return components.filter {
+                it.start < start || it.start >= end
+            }.map {
+                AnalyzedFileComponent(
+                    start = if (it.start < start) it.start else it.start + differenceDelta,
+                    end = if (it.end < start) it.end else it.end + differenceDelta,
+                    componentId = it.componentId
+                )
+            }
         }
     }
 
