@@ -316,7 +316,6 @@ export class ViteManager {
       publicDir,
       plugins,
       define: {
-        ...existingViteConfig?.config.define,
         __filename: undefined,
         __dirname: undefined,
         ...frameworkPluginViteConfig.define,
