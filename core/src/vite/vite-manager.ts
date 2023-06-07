@@ -88,13 +88,15 @@ export class ViteManager {
     });
     `
         : `
-    const wrapperModulePromise = Promise.resolve(null);
-    ${this.options.detectedGlobalCssFilePaths
+    const wrapperModulePromise = Promise.all([${this.options.detectedGlobalCssFilePaths
       .map(
         (cssFilePath) =>
-          `import(/* @vite-ignore */ "/${cssFilePath.replace(/\\/g, "/")}");`
+          `import(/* @vite-ignore */ "/${cssFilePath.replace(
+            /\\/g,
+            "/"
+          )}").catch(() => null)`
       )
-      .join("\n")}
+      .join(",")}]).then(() => null);
     `
     }
 
