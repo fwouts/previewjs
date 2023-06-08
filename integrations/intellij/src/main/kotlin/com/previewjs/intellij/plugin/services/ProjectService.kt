@@ -14,7 +14,6 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
@@ -58,14 +57,13 @@ class ProjectService(private val project: Project) : Disposable {
     private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
 
     init {
-        val projectFileIndex = ProjectFileIndex.getInstance(project)
         val connection = project.messageBus.connect(this)
 
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(
             object : DocumentListener {
                 override fun documentChanged(event: DocumentEvent) {
                     val file = FileDocumentManager.getInstance().getFile(event.document)
-                    if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || !projectFileIndex.isInProject(file) || event.document.text.length > 1_048_576) {
+                    if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
                         return
                     }
                     service.enqueueAction(project, { api ->
