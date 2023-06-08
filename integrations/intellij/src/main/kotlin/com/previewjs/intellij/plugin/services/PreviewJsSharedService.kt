@@ -13,6 +13,7 @@ import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
 import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
 import com.previewjs.intellij.plugin.api.api
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -187,44 +188,45 @@ ${e.stackTraceToString()}""",
                 throw e
             }
         }
-        val builder = processBuilder("node --trace-warnings dist/main.js $port", useWsl)
-            .redirectErrorStream(true)
+        val builder = processBuilder("node --trace-warnings dist/main.js $port", useWsl).redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
         val process = builder.start()
         daemonProcess = process
         val daemonOutputReader = BufferedReader(InputStreamReader(process.inputStream))
-        while (!disposed) {
-            while (!daemonOutputReader.ready()) {
-                if (!process.isAlive) {
-                    throw Error("Daemon process died")
+        val ready = CompletableDeferred<Unit>()
+        coroutineScope.launch {
+            while (!disposed) {
+                while (!daemonOutputReader.ready()) {
+                    if (!process.isAlive) {
+                        throw Error("Daemon process died")
+                    }
+                    delay(100)
                 }
-                delay(100)
-            }
-            val line = daemonOutputReader.readLine() ?: break
-            if (line.contains("[install:begin]")) {
-                notificationGroup.createNotification(
-                    "⏳ Installing Preview.js dependencies...",
-                    NotificationType.INFORMATION
-                )
-                    .notify(project)
-            }
-            if (line.contains("[install:end]")) {
-                notificationGroup.createNotification(
-                    "✅ Preview.js dependencies installed",
-                    NotificationType.INFORMATION
-                )
-                    .notify(project)
-            }
-            if (line.contains("[ready]")) {
-                break
-            }
-            for (p in workspaceIds.keys + setOf(project)) {
-                if (p.isDisposed) {
-                    continue
+                val line = daemonOutputReader.readLine() ?: break
+                if (line.contains("[install:begin]")) {
+                    notificationGroup.createNotification(
+                        "⏳ Installing Preview.js dependencies...",
+                        NotificationType.INFORMATION
+                    ).notify(project)
                 }
-                p.service<ProjectService>().printToConsole(cleanStdOut(line + "\n"))
+                if (line.contains("[install:end]")) {
+                    notificationGroup.createNotification(
+                        "✅ Preview.js dependencies installed",
+                        NotificationType.INFORMATION
+                    ).notify(project)
+                }
+                if (line.contains("[ready]")) {
+                    ready.complete(Unit)
+                }
+                for (p in workspaceIds.keys + setOf(project)) {
+                    if (p.isDisposed) {
+                        continue
+                    }
+                    p.service<ProjectService>().printToConsole(cleanStdOut(line + "\n"))
+                }
             }
         }
+        ready.await()
         return api("http://localhost:$port")
     }
 
