@@ -8,16 +8,16 @@ import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.editor.event.DocumentEvent
+import com.intellij.openapi.editor.event.DocumentListener
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.openapi.vfs.newvfs.BulkFileListener
-import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.vfs.readText
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
@@ -58,39 +58,29 @@ class ProjectService(private val project: Project) : Disposable {
     private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
 
     init {
-        val projectFileIndex = ProjectFileIndex.getInstance(project)
         val connection = project.messageBus.connect(this)
-        connection.subscribe(
-            VirtualFileManager.VFS_CHANGES,
-            object : BulkFileListener {
-                override fun after(events: List<VFileEvent>) {
-                    events.forEach { event ->
-                        val file = event.file
-                        if (file == null || !projectFileIndex.isInProject(file)) {
-                            return@forEach
-                        }
-                        if (file.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
-                            return@forEach
-                        }
-                        val text = file.readText()
-                        if (text.length > 1_048_576) {
-                            return@forEach
-                        }
-                        service.enqueueAction(project, { api ->
-                            service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-                            api.updatePendingFile(
-                                UpdatePendingFileRequest(
-                                    absoluteFilePath = file.path,
-                                    utf8Content = text
-                                )
-                            )
-                        }, {
-                            "Warning: unable to update pending file ${file.path}"
-                        })
-                        onFileOpenedOrUpdated(file)
+
+        EditorFactory.getInstance().eventMulticaster.addDocumentListener(
+            object : DocumentListener {
+                override fun documentChanged(event: DocumentEvent) {
+                    val file = FileDocumentManager.getInstance().getFile(event.document)
+                    if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
+                        return
                     }
+                    service.enqueueAction(project, { api ->
+                        service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
+                        api.updatePendingFile(
+                            UpdatePendingFileRequest(
+                                absoluteFilePath = file.path,
+                                utf8Content = event.document.text
+                            )
+                        )
+                    }, {
+                        "Warning: unable to update pending file ${file.path}"
+                    })
                 }
-            }
+            },
+            this
         )
 
         // Keep track of all open files to track their components.
