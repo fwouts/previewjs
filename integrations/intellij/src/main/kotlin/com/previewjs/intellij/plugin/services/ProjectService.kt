@@ -1,5 +1,6 @@
 package com.previewjs.intellij.plugin.services
 
+import com.intellij.codeInsight.hints.InlayHintsPassFactory
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
@@ -150,6 +151,9 @@ class ProjectService(private val project: Project) : Disposable {
         val text = file.readText()
         computeComponents(file, text) { components ->
             componentMap[file.path] = Pair(text, components)
+            ApplicationManager.getApplication().invokeLater {
+                InlayHintsPassFactory.forceHintsUpdateOnNextPass()
+            }
         }
     }
 
