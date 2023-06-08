@@ -86,7 +86,7 @@ class InlayProviderFactory : InlayHintsProviderFactory {
                         presentation = factory.referenceOnHover(
                             factory.roundWithBackground(factory.smallText("Open $componentName in Preview.js"))
                         ) { _, _ ->
-                            projectService.openPreview(editor.virtualFile.path, component.componentId)
+                            projectService.openPreview(file.path, component.componentId)
                         }
                     )
                 }
