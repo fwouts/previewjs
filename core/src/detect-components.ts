@@ -70,14 +70,19 @@ export function detectComponents(
           .replace(/\\/g, "/")
       )
     );
-    let existingCache: CachedProjectComponents = fs.existsSync(cacheFilePath)
-      ? (JSON.parse(
+    let existingCache: CachedProjectComponents = {
+      detectionStartTimestamp: 0,
+      components: [],
+    };
+    if (fs.existsSync(cacheFilePath)) {
+      try {
+        existingCache = JSON.parse(
           fs.readFileSync(cacheFilePath, "utf8")
-        ) as CachedProjectComponents)
-      : {
-          detectionStartTimestamp: 0,
-          components: [],
-        };
+        ) as CachedProjectComponents;
+      } catch (e) {
+        logger.warn(`Unable to parse JSON from cache at ${cacheFilePath}`);
+      }
+    }
     if (
       existingCache.detectionStartTimestamp <
       (await detectionMinimalTimestamp(workspace.rootDirPath))
