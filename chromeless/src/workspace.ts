@@ -15,7 +15,9 @@ export async function createChromelessWorkspace({
   rootDirPath,
   frameworkPlugins,
   reader = createFileSystemReader(),
-  logger = createLogger(prettyLogger({ colorize: true })),
+  logger = createLogger(
+    prettyLogger({ colorize: true, destination: process.stdout })
+  ),
 }: {
   rootDirPath: string;
   frameworkPlugins: FrameworkPluginFactory[];
