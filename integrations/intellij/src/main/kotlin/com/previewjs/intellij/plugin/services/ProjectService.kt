@@ -1,5 +1,6 @@
 package com.previewjs.intellij.plugin.services
 
+import com.intellij.codeInsight.hints.InlayHintsPassFactory
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
@@ -13,11 +14,11 @@ import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.vfs.readText
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
@@ -68,10 +69,11 @@ class ProjectService(private val project: Project) : Disposable {
                     }
                     service.enqueueAction(project, { api ->
                         service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
+                        val text = event.document.text
                         api.updatePendingFile(
                             UpdatePendingFileRequest(
                                 absoluteFilePath = file.path,
-                                utf8Content = event.document.text
+                                utf8Content = text
                             )
                         )
                     }, {
@@ -91,7 +93,11 @@ class ProjectService(private val project: Project) : Disposable {
             FileEditorManagerListener.FILE_EDITOR_MANAGER,
             object : FileEditorManagerListener {
                 override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
-                    onFileOpenedOrUpdated(file)
+                    val textEditor = source.allEditors.find { it.file == file } as? TextEditor ?: return
+                    if (textEditor.file != file) {
+                        return
+                    }
+                    recomputeComponents(file, textEditor.editor.document.text)
                 }
 
                 override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
@@ -99,8 +105,11 @@ class ProjectService(private val project: Project) : Disposable {
                 }
             }
         )
-        FileEditorManager.getInstance(project).allEditors.forEach { editor ->
-            onFileOpenedOrUpdated(editor.file)
+        FileEditorManager.getInstance(project).allEditors.forEach { textEditor ->
+            if (textEditor !is TextEditor) {
+                return@forEach
+            }
+            recomputeComponents(textEditor.file, textEditor.editor.document.text)
         }
     }
 
@@ -136,10 +145,13 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-    private fun onFileOpenedOrUpdated(file: VirtualFile) {
-        val text = file.readText()
-        computeComponents(file, text) { components ->
+    private fun recomputeComponents(file: VirtualFile, text: String) {
+        computeComponents(file) { components ->
             componentMap[file.path] = Pair(text, components)
+            ApplicationManager.getApplication().invokeLater {
+                @Suppress("UnstableApiUsage")
+                InlayHintsPassFactory.forceHintsUpdateOnNextPass()
+            }
         }
     }
 
@@ -154,12 +166,20 @@ class ProjectService(private val project: Project) : Disposable {
         if (currentText == computedText) {
             return components
         }
+
+        // Since it's not an exact match, trigger recomputing in the background.
+        recomputeComponents(psiFile.virtualFile, currentText)
+
+        // Keep going to see if we can show something useful in the meantime to avoid unnecessary flickering.
+        // If a chunk of text was either added or removed, then we can still show our old results by shifting
+        // them a little.
         val exactCharacterDifferenceIndex = StringUtils.indexOfDifference(currentText, computedText)
-        // Assume that a chunk of text was either added or removed where the difference occurs.
         val differenceDelta = currentText.length - computedText.length
         val currentTextEnd = currentText.substring(exactCharacterDifferenceIndex + max(0, differenceDelta))
         val computedTextEnd = computedText.substring(exactCharacterDifferenceIndex + max(0, -differenceDelta))
         if (currentTextEnd != computedTextEnd) {
+            // This is a case where it's not as simple as adding or removing a chunk.
+            // Give up and wait for components to be recomputed.
             return emptyList()
         }
         if (differenceDelta > 0) {
@@ -192,19 +212,13 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    fun computeComponents(file: VirtualFile, text: String, callback: (result: List<AnalyzedFileComponent>) -> Unit) {
+    fun computeComponents(file: VirtualFile, callback: (result: List<AnalyzedFileComponent>) -> Unit) {
         if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
             return callback(emptyList())
         }
         service.enqueueAction(project, { api ->
             val workspaceId =
                 service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction callback(emptyList())
-            api.updatePendingFile(
-                UpdatePendingFileRequest(
-                    absoluteFilePath = file.path,
-                    utf8Content = text
-                )
-            )
             callback(
                 api.analyzeFile(
                     AnalyzeFileRequest(
