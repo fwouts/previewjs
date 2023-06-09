@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.vfs.readText
 import com.previewjs.intellij.plugin.services.ProjectService
 
 class OpenPreviewAction : AnAction() {
@@ -26,7 +25,7 @@ class OpenPreviewAction : AnAction() {
         val selectedFile = selectedFiles[0]
         val offset = manager.selectedTextEditor?.selectionModel?.selectionStart
         val projectService = project.getService(ProjectService::class.java)
-        projectService.computeComponents(selectedFile, selectedFile.readText()) { components ->
+        projectService.computeComponents(selectedFile) { components ->
             if (components.isEmpty()) {
                 notificationGroup.createNotification(
                     "No components detected in ${selectedFile.path}",
