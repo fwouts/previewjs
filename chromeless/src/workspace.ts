@@ -16,7 +16,11 @@ export async function createChromelessWorkspace({
   frameworkPlugins,
   reader = createFileSystemReader(),
   logger = createLogger(
-    { level: process.env["PREVIEWJS_LOG_LEVEL"]?.toLowerCase() },
+    {
+      ...(process.env["PREVIEWJS_LOG_LEVEL"]
+        ? { level: process.env["PREVIEWJS_LOG_LEVEL"].toLowerCase() }
+        : {}),
+    },
     prettyLogger({ colorize: true, destination: process.stdout })
   ),
 }: {
