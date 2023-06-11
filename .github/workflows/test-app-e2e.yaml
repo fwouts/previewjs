@@ -57,7 +57,7 @@ jobs:
         with:
           run_install: true
       - run: pnpm turbo build
-      - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2 --retries=3
+      - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2 --retries=5
         env:
           PREVIEWJS_LOG_LEVEL: "debug"
       - name: Update screenshots on non-main branches
