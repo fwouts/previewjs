@@ -31,22 +31,31 @@ export async function startPreview({
   };
   let renderSucceeded = false;
   let lastErrorLog: string | null = null;
+  let delay: NodeJS.Timeout;
+
+  function errorUnlessSoonSuccessful(message: string) {
+    delay = setTimeout(() => {
+      onRenderingError(new Error(message));
+    }, 1000);
+  }
+
   const events = await setupPreviewEventListener(page, (event) => {
     if (event.kind === "rendering-done") {
       if (event.success) {
         renderSucceeded = true;
+        clearTimeout(delay);
         onRenderingDone();
       } else {
         if (lastErrorLog) {
-          onRenderingError(new Error(lastErrorLog));
+          errorUnlessSoonSuccessful(lastErrorLog);
         } else {
           // The error log should be coming straight after.
         }
       }
     } else if (event.kind === "log-message" && event.level === "error") {
       lastErrorLog = event.message;
-      if (!renderSucceeded && !event.message.startsWith("[Vue warn]")) {
-        onRenderingError(new Error(event.message));
+      if (!renderSucceeded) {
+        errorUnlessSoonSuccessful(event.message);
       }
     }
   });
