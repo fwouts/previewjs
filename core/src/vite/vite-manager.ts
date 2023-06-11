@@ -350,16 +350,21 @@ export class ViteManager {
           ),
         ],
       },
+    }).then(viteServer => {
+      this.viteServer = viteServer;
+      return viteServer;
     });
     this.viteStartupPromise = new Promise<void>((resolve) => {
-      viteServerPromise.finally(() => {
+      viteServerPromise.catch(e => {
+        this.options.logger.error(`Vite startup error: ${e}`);
+      }).finally(() => {
         resolve();
         delete this.viteStartupPromise;
       });
     });
-    this.viteServer = await viteServerPromise;
+    const viteServer = await viteServerPromise;
     this.options.logger.debug(`Done starting Vite server`);
-    this.viteServer.watcher.addListener("change", (path) => {
+    viteServer.watcher.addListener("change", (path) => {
       this.viteServer?.ws.send({
         type: "custom",
         event: "previewjs-file-changed",
