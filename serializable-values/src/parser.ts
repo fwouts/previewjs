@@ -275,6 +275,8 @@ function extractPropertiesFromJsxElement(
         kind: "spread",
         value: parseSerializableValue(property.expression),
       });
+    } else if (ts.isJsxNamespacedName(property.name)) {
+      continue;
     } else {
       let value: SerializableValue;
       if (!property.initializer) {
