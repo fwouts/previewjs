@@ -36,7 +36,7 @@ export async function startPreview({
   function errorUnlessSoonSuccessful(message: string) {
     delay = setTimeout(() => {
       onRenderingError(new Error(message));
-    }, 1000);
+    }, 5000);
   }
 
   const events = await setupPreviewEventListener(page, (event) => {
