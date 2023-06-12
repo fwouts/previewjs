@@ -134,10 +134,12 @@ export class ViteManager {
   }
 
   async start(server: Server, port: number) {
-    let resolveViteStartupPromise = () => {};
-    this.viteStartupPromise = new Promise<void>(
-      (resolve) => (resolveViteStartupPromise = resolve)
-    );
+    let resolveViteStartupPromise = () => {
+      // No-op, see next line.
+    };
+    this.viteStartupPromise = new Promise<void>((resolve) => {
+      resolveViteStartupPromise = resolve;
+    });
     const tsInferredAlias: Alias[] = [];
     // If there is a top-level tsconfig.json, use it to infer aliases.
     // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
