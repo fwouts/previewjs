@@ -39,8 +39,13 @@ export class ViteManager {
   ) {
     const router = express.Router();
     router.use(async (req, res, next) => {
-      const viteServer = await this.awaitViteServerReady();
-      viteServer.middlewares(req, res, next);
+      try {
+        const viteServer = await this.awaitViteServerReady();
+        viteServer.middlewares(req, res, next);
+      } catch (e) {
+        this.options.logger.error(`Routing error: ${e}`);
+        res.status(500).end(`Error: ${e}`);
+      }
     });
     this.middleware = router;
   }
@@ -129,6 +134,10 @@ export class ViteManager {
   }
 
   async start(server: Server, port: number) {
+    let resolveViteStartupPromise = () => {};
+    this.viteStartupPromise = new Promise<void>(
+      (resolve) => (resolveViteStartupPromise = resolve)
+    );
     const tsInferredAlias: Alias[] = [];
     // If there is a top-level tsconfig.json, use it to infer aliases.
     // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
@@ -350,21 +359,17 @@ export class ViteManager {
           ),
         ],
       },
-    }).then(viteServer => {
-      this.viteServer = viteServer;
-      return viteServer;
     });
-    this.viteStartupPromise = new Promise<void>((resolve) => {
-      viteServerPromise.catch(e => {
-        this.options.logger.error(`Vite startup error: ${e}`);
-      }).finally(() => {
-        resolve();
-        delete this.viteStartupPromise;
-      });
+    viteServerPromise.catch((e) => {
+      this.options.logger.error(`Vite startup error: ${e}`);
+      resolveViteStartupPromise();
+      delete this.viteStartupPromise;
     });
-    const viteServer = await viteServerPromise;
+    this.viteServer = await viteServerPromise;
+    delete this.viteStartupPromise;
+    resolveViteStartupPromise();
     this.options.logger.debug(`Done starting Vite server`);
-    viteServer.watcher.addListener("change", (path) => {
+    this.viteServer.watcher.addListener("change", (path) => {
       this.viteServer?.ws.send({
         type: "custom",
         event: "previewjs-file-changed",
