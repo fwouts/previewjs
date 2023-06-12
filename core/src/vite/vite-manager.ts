@@ -134,9 +134,7 @@ export class ViteManager {
   }
 
   async start(server: Server, port: number) {
-    let resolveViteStartupPromise = () => {
-      // No-op, see next line.
-    };
+    let resolveViteStartupPromise!: () => void;
     this.viteStartupPromise = new Promise<void>((resolve) => {
       resolveViteStartupPromise = resolve;
     });
