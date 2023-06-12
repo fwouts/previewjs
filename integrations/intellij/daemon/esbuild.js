@@ -26,6 +26,7 @@ try {
     format: "esm",
     outfile: "./dist/main.js",
     platform: "node",
+    target: "es2020",
     define: {
       "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify(
         process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/pro"

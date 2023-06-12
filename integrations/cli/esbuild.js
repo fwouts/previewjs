@@ -12,6 +12,7 @@ try {
     format: "esm",
     outfile: "./dist/main.js",
     platform: "node",
+    target: "es2020",
     banner: {
       // https://github.com/evanw/esbuild/issues/1921
       js: `
