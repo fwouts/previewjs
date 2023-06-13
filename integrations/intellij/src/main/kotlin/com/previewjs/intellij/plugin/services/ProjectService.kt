@@ -148,7 +148,7 @@ class ProjectService(private val project: Project) : Disposable {
     private fun recomputeComponents(file: VirtualFile, text: String) {
         computeComponents(file) { components ->
             componentMap[file.path] = Pair(text, components)
-            ApplicationManager.getApplication().invokeLater {
+            app.invokeLater {
                 @Suppress("UnstableApiUsage")
                 InlayHintsPassFactory.forceHintsUpdateOnNextPass()
             }
