@@ -32,12 +32,17 @@ export async function load({
     packageName,
   });
   const memoryReader = vfs.createMemoryReader();
-  const reader = vfs.createStackedReader([
-    memoryReader,
-    vfs.createFileSystemReader({
-      watch: true,
-    }),
-  ]);
+  const fsReader = vfs.createFileSystemReader({
+    watch: true,
+  });
+  fsReader.listeners.add({
+    onChange(absoluteFilePath, info) {
+      if (!info.virtual) {
+        memoryReader.updateFile(absoluteFilePath, null);
+      }
+    },
+  });
+  const reader = vfs.createStackedReader([memoryReader, fsReader]);
   const workspaces: {
     [rootDirPath: string]: core.Workspace | null;
   } = {};

@@ -4,7 +4,8 @@ import type { WorkspaceGetter } from "./workspaces";
 
 export function createComponentDetector(
   client: Client,
-  getWorkspaceId: WorkspaceGetter
+  getWorkspaceId: WorkspaceGetter,
+  pendingFileChanges: Map<string, string>
 ): ComponentDetector {
   return async function (
     document?: vscode.TextDocument
@@ -15,6 +16,14 @@ export function createComponentDetector(
     const workspaceId = await getWorkspaceId(document);
     if (!workspaceId) {
       return [];
+    }
+    const pendingText = pendingFileChanges.get(document.fileName);
+    if (pendingText !== undefined) {
+      pendingFileChanges.delete(document.fileName);
+      await client.updatePendingFile({
+        absoluteFilePath: document.fileName,
+        utf8Content: pendingText,
+      });
     }
     const { components } = await client.analyzeFile({
       workspaceId,

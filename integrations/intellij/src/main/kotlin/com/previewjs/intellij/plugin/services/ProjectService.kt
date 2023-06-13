@@ -19,9 +19,13 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.openapi.vfs.newvfs.BulkFileListener
+import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.openapi.wm.ex.ToolWindowManagerListener
 import com.intellij.psi.PsiFile
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefBrowser
@@ -42,6 +46,7 @@ import kotlin.math.max
 @Service(Service.Level.PROJECT)
 class ProjectService(private val project: Project) : Disposable {
     companion object {
+        private const val TOOL_WINDOW_ID = "Preview.js"
         private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
@@ -54,8 +59,10 @@ class ProjectService(private val project: Project) : Disposable {
     private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
+    private var previewToolWindowActive = false
     private var currentPreviewWorkspaceId: String? = null
     private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
+    private var pendingFileChanges = mutableMapOf<String, String>()
 
     init {
         val connection = project.messageBus.connect(this)
@@ -63,25 +70,44 @@ class ProjectService(private val project: Project) : Disposable {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(
             object : DocumentListener {
                 override fun documentChanged(event: DocumentEvent) {
-                    val file = FileDocumentManager.getInstance().getFile(event.document)
-                    if (file?.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || event.document.text.length > 1_048_576) {
-                        return
-                    }
-                    service.enqueueAction(project, { api ->
-                        service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction
-                        val text = event.document.text
-                        api.updatePendingFile(
-                            UpdatePendingFileRequest(
-                                absoluteFilePath = file.path,
-                                utf8Content = text
-                            )
-                        )
-                    }, {
-                        "Warning: unable to update pending file ${file.path}"
-                    })
+                    val file = FileDocumentManager.getInstance().getFile(event.document) ?: return
+                    updateFileContent(file, event.document.text)
                 }
             },
             this
+        )
+
+        connection.subscribe(
+            VirtualFileManager.VFS_CHANGES,
+            object : BulkFileListener {
+                override fun after(events: List<VFileEvent>) {
+                    events.forEach { event ->
+                        val file = event.file ?: return@forEach
+                        updateFileContent(file, null)
+                    }
+                }
+            }
+        )
+
+        // Keep track of whether preview panel is active or not.
+        connection.subscribe(
+            ToolWindowManagerListener.TOPIC,
+            object : ToolWindowManagerListener {
+                override fun stateChanged(toolWindowManager: ToolWindowManager) {
+                    val toolWindow = toolWindowManager.getToolWindow(TOOL_WINDOW_ID) ?: return
+                    // Note: stateChanged may be called about any other tool window, so double check
+                    // there was a change.
+                    if (toolWindow.isActive != previewToolWindowActive) {
+                        previewToolWindowActive = toolWindow.isActive
+                        if (previewToolWindowActive) {
+                            for ((path, text) in pendingFileChanges) {
+                                uploadFileContentToPreviewJsApi(path, text)
+                            }
+                            pendingFileChanges.clear()
+                        }
+                    }
+                }
+            }
         )
 
         // Keep track of all open files to track their components.
@@ -111,6 +137,36 @@ class ProjectService(private val project: Project) : Disposable {
             }
             recomputeComponents(textEditor.file, textEditor.editor.document.text)
         }
+    }
+
+    private fun updateFileContent(file: VirtualFile, text: String?) {
+        if (file.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || (text != null && text.length > 1_048_576)) {
+            return
+        }
+        if (previewToolWindowActive) {
+            uploadFileContentToPreviewJsApi(file.path, text)
+        } else {
+            // Don't make unnecessary HTTP requests to Preview.js API, keep them for
+            // when the preview panel is active.
+            if (text != null) {
+                pendingFileChanges[file.path] = text
+            } else {
+                pendingFileChanges.remove(file.path)
+            }
+        }
+    }
+
+    private fun uploadFileContentToPreviewJsApi(path: String, text: String?) {
+        service.enqueueAction(project, { api ->
+            api.updatePendingFile(
+                UpdatePendingFileRequest(
+                    absoluteFilePath = path,
+                    utf8Content = text
+                )
+            )
+        }, {
+            "Warning: unable to update pending file $path"
+        })
     }
 
     fun printToConsole(text: String) {
@@ -148,8 +204,8 @@ class ProjectService(private val project: Project) : Disposable {
     private fun recomputeComponents(file: VirtualFile, text: String) {
         computeComponents(file) { components ->
             componentMap[file.path] = Pair(text, components)
+            @Suppress("UnstableApiUsage")
             app.invokeLater {
-                @Suppress("UnstableApiUsage")
                 InlayHintsPassFactory.forceHintsUpdateOnNextPass()
             }
         }
@@ -219,14 +275,22 @@ class ProjectService(private val project: Project) : Disposable {
         service.enqueueAction(project, { api ->
             val workspaceId =
                 service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction callback(emptyList())
-            callback(
-                api.analyzeFile(
-                    AnalyzeFileRequest(
-                        workspaceId,
-                        absoluteFilePath = file.path
+            val pendingText = pendingFileChanges.remove(file.path)
+            if (pendingText != null) {
+                api.updatePendingFile(
+                    UpdatePendingFileRequest(
+                        absoluteFilePath = file.path,
+                        utf8Content = pendingText
                     )
-                ).components
+                )
+            }
+            val analysisResponse = api.analyzeFile(
+                AnalyzeFileRequest(
+                    workspaceId,
+                    absoluteFilePath = file.path
+                )
             )
+            callback(analysisResponse.components)
         }, {
             "Warning: unable to compute components for ${file.path}"
         })
@@ -274,7 +338,7 @@ class ProjectService(private val project: Project) : Disposable {
                     )
                     Disposer.register(browser, linkHandler)
                     previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
-                        "Preview.js"
+                        TOOL_WINDOW_ID
                     ) {
                         anchor = ToolWindowAnchor.RIGHT
                         icon = smallLogo
