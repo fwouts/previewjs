@@ -152,7 +152,7 @@ async function detectComponentsCore(
       .map((absoluteFilePath) =>
         path.relative(workspace.rootDirPath, absoluteFilePath)
       )
-      .join("- \n")}`
+      .join("\n- ")}`
   );
   const found = await frameworkPlugin.detectComponents(
     workspace.reader,
