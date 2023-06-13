@@ -118,29 +118,34 @@ export async function activate() {
     });
   }
 
-  if (config.get("previewjs.livePreview", true)) {
-    vscode.workspace.onDidChangeTextDocument(async (e) => {
-      await updateDocument(e.document);
-    });
-    vscode.workspace.onDidSaveTextDocument(async (e) => {
-      await updateDocument(e, true);
-    });
-    async function updateDocument(
-      document: vscode.TextDocument,
-      saved = false
+  vscode.workspace.onDidChangeTextDocument(async (e) => {
+    await updateDocument(e.document);
+  });
+  vscode.workspace.onDidSaveTextDocument(async (e) => {
+    await updateDocument(e, true);
+  });
+  async function updateDocument(document: vscode.TextDocument, saved = false) {
+    const state = await currentState;
+    if (
+      !state ||
+      !path.isAbsolute(document.fileName) ||
+      !watchedExtensions.has(path.extname(document.fileName))
     ) {
-      const state = await currentState;
-      if (
-        !state ||
-        !path.isAbsolute(document.fileName) ||
-        !watchedExtensions.has(path.extname(document.fileName))
-      ) {
-        return;
-      }
-      state.client.updatePendingFile({
+      return;
+    }
+    if (state.previewPanel?.visible) {
+      await state.client.updatePendingFile({
         absoluteFilePath: document.fileName,
         utf8Content: saved ? null : document.getText(),
       });
+    } else {
+      // Don't make unnecessary HTTP requests to Preview.js API, keep them for
+      // when the preview panel is active.
+      if (saved) {
+        state.pendingFileChanges.delete(document.fileName);
+      } else {
+        state.pendingFileChanges.set(document.fileName, document.getText());
+      }
     }
   }
 

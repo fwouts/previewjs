@@ -35,7 +35,12 @@ export async function createState({
     outputChannel,
     workspaces
   );
-  const getComponents = createComponentDetector(daemon.client, getWorkspaceId);
+  const pendingFileChanges = new Map<string, string>();
+  const getComponents = createComponentDetector(
+    daemon.client,
+    getWorkspaceId,
+    pendingFileChanges
+  );
   const state: PreviewJsState = {
     client: daemon.client,
     dispose: () => {
@@ -46,6 +51,7 @@ export async function createState({
       }
     },
     workspaces,
+    pendingFileChanges,
     getComponents,
     getWorkspaceId,
     previewPanel: null,
@@ -58,6 +64,7 @@ export type PreviewJsState = {
   client: Client;
   dispose: () => void;
   workspaces: Workspaces;
+  pendingFileChanges: Map<string, string>;
   previewPanel: vscode.WebviewPanel | null;
   currentPreview: {
     workspaceId: string;

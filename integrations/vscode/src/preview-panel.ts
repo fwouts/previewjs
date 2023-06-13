@@ -9,7 +9,7 @@ export function updatePreviewPanel(
   onError: (e: unknown) => void
 ) {
   if (!state.previewPanel) {
-    state.previewPanel = vscode.window.createWebviewPanel(
+    const previewPanel = vscode.window.createWebviewPanel(
       "preview", // Identifies the type of the webview. Used internally
       "Preview", // Title of the panel displayed to the user
       vscode.ViewColumn.Two, // Editor column to show the new webview panel in.
@@ -18,16 +18,37 @@ export function updatePreviewPanel(
         retainContextWhenHidden: true,
       }
     );
-    state.previewPanel.webview.onDidReceiveMessage((message) => {
+    state.previewPanel = previewPanel;
+    let panelVisible = false;
+    previewPanel.onDidChangeViewState(() => {
+      if (previewPanel.visible !== panelVisible) {
+        panelVisible = previewPanel.visible;
+        if (panelVisible) {
+          const promises: Array<Promise<unknown>> = [];
+          for (const [filePath, text] of state.pendingFileChanges) {
+            promises.push(
+              state.client.updatePendingFile({
+                absoluteFilePath: filePath,
+                utf8Content: text,
+              })
+            );
+          }
+          Promise.all(promises).catch((e) => {
+            onError(e);
+          });
+        }
+      }
+    });
+    previewPanel.webview.onDidReceiveMessage((message) => {
       if (message.command === "open-browser") {
         vscode.env.openExternal(vscode.Uri.parse(message.url));
       }
     });
-    state.previewPanel.onDidDispose(() => {
+    previewPanel.onDidDispose(() => {
       state.previewPanel = null;
       ensurePreviewServerStopped(state).catch(onError);
     });
-    state.previewPanel.webview.html = `<!DOCTYPE html>
+    previewPanel.webview.html = `<!DOCTYPE html>
   <html>
     <head>
       <style>
