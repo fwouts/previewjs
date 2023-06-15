@@ -14,7 +14,7 @@ export async function findFiles(
   const relativePrefix = relativePath ? relativePath + path.sep : "";
   const files: string[] = await globby(relativePrefix + pattern, {
     gitignore: true,
-    ignore: ["**/node_mo ddules/**"],
+    ignore: ["**/node_modules/**"],
     cwd: gitRootPath,
     absolute: true,
     followSymbolicLinks: false,
