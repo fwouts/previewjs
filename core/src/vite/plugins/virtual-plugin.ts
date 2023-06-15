@@ -117,7 +117,7 @@ export function virtualPlugin(options: {
           (moduleExtension === "" || moduleExtension === ".js")
             ? (
                 await transformWithEsbuild(source, absoluteFilePath, {
-                  loader: "tsx",
+                  loader: absoluteFilePath.endsWith(".ts") ? "ts" : "tsx",
                   format: "esm",
                   target: "es2020",
                   sourcefile: path.relative(rootDirPath, absoluteFilePath),
