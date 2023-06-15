@@ -208,6 +208,7 @@ export class ViteManager {
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
+        projects: [],
       }),
       virtualPlugin({
         logger: this.options.logger,
@@ -280,6 +281,9 @@ export class ViteManager {
       configFile: false,
       root: this.options.rootDirPath,
       base: "/preview/",
+      optimizeDeps: {
+        entries: [],
+      },
       server: {
         middlewareMode: true,
         hmr: {
