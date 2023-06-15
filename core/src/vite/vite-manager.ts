@@ -208,7 +208,7 @@ export class ViteManager {
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
-        projects: [],
+        projects: ["."],
       }),
       virtualPlugin({
         logger: this.options.logger,
