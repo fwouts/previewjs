@@ -1,5 +1,6 @@
 import fs from "fs-extra";
-import { globby } from "globby";
+// @ts-ignore This is a temporary patch for globby.
+import { globby } from "@fwouts/globby";
 import path from "path";
 
 export async function findFiles(

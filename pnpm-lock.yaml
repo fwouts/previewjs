@@ -220,6 +220,9 @@ importers:
 
   core:
     dependencies:
+      '@fwouts/globby':
+        specifier: ^13.1.5
+        version: 13.1.5
       '@previewjs/api':
         specifier: ^12.0.1
         version: link:../api
@@ -262,9 +265,6 @@ importers:
       get-port:
         specifier: ^7.0.0
         version: 7.0.0
-      globby:
-        specifier: ^13.1.4
-        version: 13.1.4
       html-escaper:
         specifier: ^3.0.3
         version: 3.0.3
@@ -7803,6 +7803,17 @@ packages:
   /@fontsource/fira-mono@4.5.10:
     resolution: {integrity: sha512-bxUnRP8xptGRo8YXeY073DSpfK74XpSb0ZyRNpHV9WvLnJ7TwPOjZll8hTMin7zLC6iOp59pDZ8EQDj1gzgAQQ==}
     dev: true
+
+  /@fwouts/globby@13.1.5:
+    resolution: {integrity: sha512-+0QCPUsZWAUR0s82okYTuGH4MjBEItynlj5sOkinb5hen+jXEWps5TsThOh4SgnFlpdRGdcWzb2dIWLeCzg7Bg==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      dir-glob: 3.0.1
+      fast-glob: 3.2.12
+      ignore: 5.2.4
+      merge2: 1.4.1
+      slash: 4.0.0
+    dev: false
 
   /@gar/promisify@1.1.3:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
