@@ -43,6 +43,8 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
               absoluteFilePath
             )
           );
+          // Ensure this potentially long-running function doesn't block the thread.
+          await 0;
         }
         return components;
       },
