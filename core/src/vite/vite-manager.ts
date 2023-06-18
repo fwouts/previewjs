@@ -1,14 +1,12 @@
 import { decodeComponentId } from "@previewjs/api";
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
-import type { Alias } from "@rollup/plugin-alias";
 import express from "express";
 import fs from "fs-extra";
 import type { Server } from "http";
 import path from "path";
 import type { Logger } from "pino";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
-import type { Tsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
@@ -138,10 +136,6 @@ export class ViteManager {
     this.viteStartupPromise = new Promise<void>((resolve) => {
       resolveViteStartupPromise = resolve;
     });
-    const tsInferredAlias: Alias[] = [];
-    // If there is a top-level tsconfig.json, use it to infer aliases.
-    // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-    let config: Tsconfig | null = null;
     const tsProjectFiles: string[] = [];
     for (const potentialTsConfigFileName of [
       "tsconfig.json",
@@ -152,37 +146,10 @@ export class ViteManager {
         potentialTsConfigFileName
       );
       if (await fs.pathExists(potentialTsConfigFilePath)) {
-        config = loadTsconfig(potentialTsConfigFilePath) || null;
-        if (config) {
+        if (loadTsconfig(potentialTsConfigFilePath)) {
           tsProjectFiles.push(potentialTsConfigFilePath);
           break;
         }
-      }
-    }
-    this.options.logger.debug(
-      `Loaded ts/jsconfig: ${JSON.stringify(config || null, null, 2)}`
-    );
-    if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
-      const { baseUrl, paths } = config.compilerOptions;
-      for (const [match, mapping] of Object.entries(paths)) {
-        const firstMapping = mapping[0];
-        if (!firstMapping) {
-          continue;
-        }
-        const matchNoWildcard = match.endsWith("/*")
-          ? match.slice(0, match.length - 2)
-          : match;
-        const firstMappingNoWildcard = firstMapping.endsWith("/*")
-          ? firstMapping.slice(0, firstMapping.length - 2)
-          : firstMapping;
-        tsInferredAlias.push({
-          find: matchNoWildcard,
-          replacement: path.join(
-            this.options.rootDirPath,
-            baseUrl,
-            firstMappingNoWildcard
-          ),
-        });
       }
     }
     const existingViteConfig = await vite.loadConfigFromFile(
@@ -351,7 +318,6 @@ export class ViteManager {
           ...viteAliasToRollupAliasEntries(
             existingViteConfig?.config.resolve?.alias
           ),
-          ...tsInferredAlias,
           {
             find: "~",
             replacement: "",
