@@ -1,5 +1,7 @@
-@value colors: "ui/colors.css";
-@value appHeaderBackgroundColor, appLinkTextColor from colors;
+@value textColors: "ui/text-colors.css";
+@value backgroundColors: "~styling/background-colors.css";
+@value appLinkTextColor from textColors;
+@value appHeaderBackgroundColor from backgroundColors;
 
 .App {
   text-align: center;
