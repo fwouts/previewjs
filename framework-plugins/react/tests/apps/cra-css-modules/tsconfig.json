@@ -15,9 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "ui/*": ["src/styling/*"]
+      "ui/*": ["styling/*"]
     }
   },
   "include": ["src"]

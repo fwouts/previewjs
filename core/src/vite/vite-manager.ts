@@ -141,7 +141,7 @@ export class ViteManager {
     const tsInferredAlias: Alias[] = [];
     // If there is a top-level tsconfig.json, use it to infer aliases.
     // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-    let config: Tsconfig | null = null;
+    let tsConfig: Tsconfig | null = null;
     const tsProjectFiles: string[] = [];
     for (const potentialTsConfigFileName of [
       "tsconfig.json",
@@ -152,38 +152,41 @@ export class ViteManager {
         potentialTsConfigFileName
       );
       if (await fs.pathExists(potentialTsConfigFilePath)) {
-        config = loadTsconfig(potentialTsConfigFilePath) || null;
-        if (config) {
+        tsConfig = loadTsconfig(potentialTsConfigFilePath) || null;
+        if (tsConfig) {
           tsProjectFiles.push(potentialTsConfigFilePath);
           break;
         }
       }
     }
     this.options.logger.debug(
-      `Loaded ts/jsconfig: ${JSON.stringify(config || null, null, 2)}`
+      `Loaded ts/jsconfig: ${JSON.stringify(tsConfig || null, null, 2)}`
     );
-    if (config?.compilerOptions?.baseUrl && config?.compilerOptions?.paths) {
-      const { baseUrl, paths } = config.compilerOptions;
-      for (const [match, mapping] of Object.entries(paths)) {
-        const firstMapping = mapping[0];
-        if (!firstMapping) {
-          continue;
-        }
-        const matchNoWildcard = match.endsWith("/*")
-          ? match.slice(0, match.length - 2)
-          : match;
-        const firstMappingNoWildcard = firstMapping.endsWith("/*")
-          ? firstMapping.slice(0, firstMapping.length - 2)
-          : firstMapping;
-        tsInferredAlias.push({
-          find: matchNoWildcard,
-          replacement: path.join(
-            this.options.rootDirPath,
-            baseUrl,
-            firstMappingNoWildcard
-          ),
-        });
+    const baseUrl = tsConfig?.compilerOptions?.baseUrl || "";
+    const tsConfigPaths = tsConfig?.compilerOptions?.paths || {};
+    let baseAlias = baseUrl.startsWith("./") ? baseUrl.substring(1) : baseUrl;
+    if (baseAlias && !baseAlias.endsWith("/")) {
+      baseAlias += "/";
+    }
+    for (const [match, mapping] of Object.entries(tsConfigPaths)) {
+      const firstMapping = mapping[0];
+      if (!firstMapping) {
+        continue;
       }
+      const matchNoWildcard = match.endsWith("/*")
+        ? match.slice(0, match.length - 2)
+        : match;
+      const firstMappingNoWildcard = firstMapping.endsWith("/*")
+        ? firstMapping.slice(0, firstMapping.length - 2)
+        : firstMapping;
+      tsInferredAlias.push({
+        find: matchNoWildcard,
+        replacement: path.join(
+          this.options.rootDirPath,
+          baseUrl,
+          firstMappingNoWildcard
+        ),
+      });
     }
     const existingViteConfig = await vite.loadConfigFromFile(
       {
@@ -353,12 +356,12 @@ export class ViteManager {
           ),
           ...tsInferredAlias,
           {
-            find: "~",
-            replacement: "",
+            find: /^~(.*)/,
+            replacement: baseAlias + "$1",
           },
           {
             find: "@",
-            replacement: "",
+            replacement: baseAlias,
           },
           ...viteAliasToRollupAliasEntries(
             frameworkPluginViteConfig.resolve?.alias
