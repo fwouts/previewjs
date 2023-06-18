@@ -52,6 +52,7 @@ test.describe.parallel("smoke tests", () => {
       "nextjs-13": ["pages/index.tsx:App"],
       "react-native-web-app": ["App.tsx:App"],
       "storybook-js": ["src/App.jsx:App"],
+      "vite-mobx": ["src/App.tsx:App"],
       "vite-tailwind": ["src/App.tsx:App"],
       "vite-ts-react-swc": ["src/App.tsx:App"],
       "vite-vanilla-extract": ["src/App.tsx:App"],
