@@ -237,12 +237,11 @@ export const Primary = () => ({
         },
       },
     ]);
-    if (extractedStories[0]?.info.kind !== "story") {
+    const storyInfo = extractedStories[0]?.info;
+    if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
-    expect(
-      await extractedStories[0].info.associatedComponent.analyze()
-    ).toEqual({
+    expect(await storyInfo.associatedComponent.analyze()).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
       }),
@@ -301,12 +300,11 @@ Primary.args = {
         },
       },
     ]);
-    if (extractedStories[0]?.info.kind !== "story") {
+    const storyInfo = extractedStories[0]?.info;
+    if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
-    expect(
-      await extractedStories[0].info.associatedComponent.analyze()
-    ).toEqual({
+    expect(await storyInfo.associatedComponent.analyze()).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
       }),
@@ -363,12 +361,11 @@ export function NotStory() {}
         },
       },
     ]);
-    if (extractedStories[0]?.info.kind !== "story") {
+    const storyInfo = extractedStories[0]?.info;
+    if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
-    expect(
-      await extractedStories[0].info.associatedComponent.analyze()
-    ).toEqual({
+    expect(await storyInfo.associatedComponent.analyze()).toEqual({
       propsType: objectType({
         label: STRING_TYPE,
       }),

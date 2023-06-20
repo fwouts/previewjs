@@ -5,8 +5,11 @@ import ts from "typescript";
 export function resolveComponentId(
   rootDirPath: string,
   checker: ts.TypeChecker,
-  expression: ts.Expression
+  expression: ts.Expression | null
 ): string | null {
+  if (!expression) {
+    return null;
+  }
   const symbol = checker.getSymbolAtLocation(expression);
   if (!symbol) {
     return null;

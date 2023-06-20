@@ -184,7 +184,7 @@ export function detectedComponentToApiComponent(
             kind: "story",
             args: component.info.args,
             associatedComponentId:
-              component.info.associatedComponent.componentId,
+              component.info.associatedComponent?.componentId || null,
           },
   };
 }

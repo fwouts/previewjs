@@ -54,7 +54,7 @@ export type ComponentTypeInfo =
         end: number;
         value: SerializableValue;
       } | null;
-      readonly associatedComponent: StoryAssociatedComponent;
+      readonly associatedComponent: StoryAssociatedComponent | null;
     };
 
 export type StoryAssociatedComponent = {

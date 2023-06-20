@@ -1,8 +1,13 @@
 import ts from "typescript";
 
-export function extractDefaultComponent(
+export type StoriesInfo = {
+  component: ts.Expression | null;
+  title: string | null;
+};
+
+export function extractStoriesInfo(
   sourceFile: ts.SourceFile
-): ts.Expression | null {
+): StoriesInfo | null {
   const entities: Record<string, ts.Expression> = {};
   for (const statement of sourceFile.statements) {
     if (ts.isVariableStatement(statement)) {
@@ -12,26 +17,43 @@ export function extractDefaultComponent(
         }
       }
     } else if (ts.isExportAssignment(statement)) {
-      return extractComponent(statement.expression);
+      return extractFromDefaultExport(statement.expression);
     }
   }
 
-  function extractComponent(expression: ts.Expression): ts.Expression | null {
+  function extractFromDefaultExport(
+    expression: ts.Expression
+  ): StoriesInfo | null {
     expression = unwrapExpression(expression);
     if (ts.isObjectLiteralExpression(expression)) {
+      let component: ts.Expression | null = null;
+      let title: string | null = null;
       for (const property of expression.properties) {
         if (
-          ts.isPropertyAssignment(property) &&
-          ts.isIdentifier(property.name) &&
-          property.name.text === "component"
+          !ts.isPropertyAssignment(property) ||
+          !ts.isIdentifier(property.name)
         ) {
-          return property.initializer;
+          continue;
         }
+        if (property.name.text === "component") {
+          component = property.initializer;
+        } else if (
+          property.name.text === "title" &&
+          ts.isStringLiteral(property.initializer)
+        ) {
+          title = property.initializer.text;
+        }
+      }
+      if (component || title) {
+        return {
+          component,
+          title,
+        };
       }
     } else if (ts.isIdentifier(expression)) {
       const value = entities[expression.text];
       if (value) {
-        return extractComponent(value);
+        return extractFromDefaultExport(value);
       }
     }
     return null;

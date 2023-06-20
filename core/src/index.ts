@@ -5,7 +5,7 @@ import type {
   TypeAnalyzer,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { createTypeAnalyzer } from "@previewjs/type-analyzer";
+import { createTypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
@@ -116,7 +116,13 @@ export async function createWorkspace({
       if (component.info.kind === "component") {
         analyze = component.info.analyze;
       } else {
-        analyze = component.info.associatedComponent.analyze;
+        analyze =
+          component.info.associatedComponent?.analyze ||
+          (() =>
+            Promise.resolve({
+              propsType: UNKNOWN_TYPE,
+              types: {},
+            }));
       }
       logger.debug(`Analyzing ${component.info.kind}: ${componentId}`);
       const { propsType: props, types: componentTypes } = await analyze();
@@ -132,7 +138,7 @@ export async function createWorkspace({
                 kind: "story",
                 args: component.info.args,
                 associatedComponentId:
-                  component.info.associatedComponent.componentId,
+                  component.info.associatedComponent?.componentId || null,
               },
         props,
       };
