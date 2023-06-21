@@ -108,7 +108,9 @@ export class ViteManager {
     // Important: the wrapper must be loaded first as it may monkey-patch
     // modules imported by the component module.
     wrapperModulePromise.then(wrapperModule => {
+      latestWrapperModule = wrapperModule;
       import(/* @vite-ignore */ "/${componentPath}").then(componentModule => {
+        latestComponentModule = componentModule;
         refresh = initPreview({
           componentModule,
           componentId: ${JSON.stringify(componentId)},
