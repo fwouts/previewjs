@@ -260,8 +260,8 @@ class ProjectService(private val project: Project) : Disposable {
                 it.start < start || it.start >= end
             }.map {
                 AnalyzedFileComponent(
-                    start = if (it.start < start) it.start else it.start + differenceDelta,
-                    end = if (it.end < start) it.end else it.end + differenceDelta,
+                    start = if (it.start < start) it.start else max(0, it.start + differenceDelta),
+                    end = if (it.end < start) it.end else max(0, it.end + differenceDelta),
                     componentId = it.componentId
                 )
             }
