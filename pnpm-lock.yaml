@@ -220,6 +220,9 @@ importers:
 
   core:
     dependencies:
+      '@fwouts/vite-tsconfig-paths':
+        specifier: ^4.2.1
+        version: 4.2.1(typescript@5.1.3)(vite@4.3.9)
       '@previewjs/api':
         specifier: ^12.0.1
         version: link:../api
@@ -289,9 +292,6 @@ importers:
       vite:
         specifier: ^4.3.9
         version: 4.3.9(@types/node@20.2.3)
-      vite-tsconfig-paths:
-        specifier: ^4.2.0
-        version: 4.2.0(typescript@5.1.3)(vite@4.3.9)
     devDependencies:
       '@rollup/plugin-alias':
         specifier: ^5.0.0
@@ -9013,6 +9013,24 @@ packages:
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 4.0.0
+    dev: false
+
+  /@fwouts/vite-tsconfig-paths@4.2.1(typescript@5.1.3)(vite@4.3.9):
+    resolution: {integrity: sha512-z18jfssqNPiMTiCgogWGF+KE0p0DgX4lBWr5dmeSI3sp0hFHG+h8rRUGCAdyTT0Ej79PxtjSLuL3up5uFi89EQ==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+    dependencies:
+      async-mutex: 0.4.0
+      debug: 4.3.4(supports-color@5.5.0)
+      globrex: 0.1.2
+      tsconfck: 2.1.1(typescript@5.1.3)
+      vite: 4.3.9(@types/node@20.2.3)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
     dev: false
 
   /@gar/promisify@1.1.3:
@@ -17989,9 +18007,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.22.5
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
+      '@babel/core': 7.21.8
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
       vite: 4.0.4(@types/node@20.2.3)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18247,23 +18265,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-
-  /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.5):
-    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
-    dependencies:
-      '@babel/helper-module-imports': 7.22.5
-      '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.5)
-      '@babel/template': 7.22.5
-      '@babel/traverse': 7.22.5
-      '@babel/types': 7.22.5
-      '@vue/babel-helper-vue-transform-on': 1.0.2
-      camelcase: 6.3.0
-      html-tags: 3.2.0
-      svg-tags: 1.0.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
-    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.21.8):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
@@ -19994,6 +19995,12 @@ packages:
 
   /async-limiter@1.0.1:
     resolution: {integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==}
+
+  /async-mutex@0.4.0:
+    resolution: {integrity: sha512-eJFZ1YhRR8UN8eBLoNzcDPcy/jqjsg6I1AP+KvWQX80BqOSW1oJPJXDylPUEeMr2ZQvHgnQ//Lp6f3RQ1zI7HA==}
+    dependencies:
+      tslib: 2.5.2
+    dev: false
 
   /async-sema@3.1.1:
     resolution: {integrity: sha512-tLRNUXati5MFePdAk8dw7Qt7DpxPB60ofAgn8WRhW6a2rcimZnYBP9oxHiv0OHy+Wz7kPMG+t4LGdt31+4EmGg==}

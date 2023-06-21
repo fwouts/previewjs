@@ -1,3 +1,4 @@
+import viteTsconfigPaths from "@fwouts/vite-tsconfig-paths";
 import { decodeComponentId } from "@previewjs/api";
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
@@ -12,7 +13,6 @@ import type { Tsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
-import viteTsconfigPaths from "vite-tsconfig-paths";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
