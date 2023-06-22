@@ -144,7 +144,6 @@ export class ViteManager {
     // If there is a top-level tsconfig.json, use it to infer aliases.
     // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
     let tsConfig: Tsconfig | null = null;
-    const tsProjectFiles: string[] = [];
     for (const potentialTsConfigFileName of [
       "tsconfig.json",
       "jsconfig.json",
@@ -156,7 +155,6 @@ export class ViteManager {
       if (await fs.pathExists(potentialTsConfigFilePath)) {
         tsConfig = loadTsconfig(potentialTsConfigFilePath) || null;
         if (tsConfig) {
-          tsProjectFiles.push(potentialTsConfigFilePath);
           break;
         }
       }
@@ -215,7 +213,6 @@ export class ViteManager {
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
         root: this.options.rootDirPath,
-        projects: tsProjectFiles,
       }),
       virtualPlugin({
         logger: this.options.logger,
