@@ -63,7 +63,7 @@ export async function extractSvelteComponents(
     ).map((c) => {
       if (
         c.info.kind !== "story" ||
-        !c.info.associatedComponent.componentId.includes(".svelte.ts:")
+        !c.info.associatedComponent?.componentId.includes(".svelte.ts:")
       ) {
         return c;
       }

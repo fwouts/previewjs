@@ -4,7 +4,7 @@ import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
   extractCsf3Stories,
-  extractDefaultComponent,
+  extractStoriesInfo,
   resolveComponentId,
 } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
@@ -86,7 +86,7 @@ export function extractVueComponents(
     }
   }
 
-  const storiesDefaultComponent = extractDefaultComponent(sourceFile);
+  const storiesInfo = extractStoriesInfo(sourceFile);
   const components: AnalyzableComponent[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = extractArgs(sourceFile);
@@ -97,16 +97,12 @@ export function extractVueComponents(
   ): ComponentTypeInfo | null {
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
-    if (storiesDefaultComponent && storyArgs && isExported) {
+    if (storiesInfo && storyArgs && isExported) {
       const associatedComponent = extractStoryAssociatedComponent(
         rootDirPath,
         resolver,
-        storiesDefaultComponent
+        storiesInfo.component
       );
-      if (!associatedComponent) {
-        // No detected associated component, give up.
-        return null;
-      }
       return {
         kind: "story",
         args: {
@@ -131,21 +127,13 @@ export function extractVueComponents(
           }),
         };
       }
-      if (
-        storiesDefaultComponent &&
-        isExported &&
-        returnType.getProperty("template")
-      ) {
+      if (storiesInfo && isExported && returnType.getProperty("template")) {
         // This is a story.
         const associatedComponent = extractStoryAssociatedComponent(
           rootDirPath,
           resolver,
-          storiesDefaultComponent
+          storiesInfo.component
         );
-        if (!associatedComponent) {
-          // No detected associated component, give up.
-          return null;
-        }
         return {
           kind: "story",
           args: null,
@@ -199,7 +187,7 @@ export function extractVueComponents(
     ).map((c) => {
       if (
         c.info.kind !== "story" ||
-        !c.info.associatedComponent.componentId.includes(".vue.ts:")
+        !c.info.associatedComponent?.componentId.includes(".vue.ts:")
       ) {
         return c;
       }
@@ -245,7 +233,7 @@ function extractVueFilePath(filePath: string) {
 function extractStoryAssociatedComponent(
   rootDirPath: string,
   resolver: TypeResolver,
-  component: ts.Expression
+  component: ts.Expression | null
 ) {
   const resolvedStoriesComponentId = resolveComponentId(
     rootDirPath,

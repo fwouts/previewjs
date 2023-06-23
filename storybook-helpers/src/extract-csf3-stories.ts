@@ -4,7 +4,7 @@ import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
-import { extractDefaultComponent } from "./extract-default-component";
+import { extractStoriesInfo } from "./extract-stories-info";
 import { resolveComponentId } from "./resolve-component";
 
 export function extractCsf3Stories(
@@ -13,10 +13,8 @@ export function extractCsf3Stories(
   sourceFile: ts.SourceFile,
   analyzeComponent: (componentId: string) => Promise<ComponentAnalysis>
 ): AnalyzableComponent[] {
-  // Detect if we're dealing with a CSF3 module.
-  // In particular, does it have a default export with a "component" property?
-  const defaultComponent = extractDefaultComponent(sourceFile);
-  if (!defaultComponent) {
+  const storiesInfo = extractStoriesInfo(sourceFile);
+  if (!storiesInfo) {
     return [];
   }
 
@@ -62,12 +60,8 @@ export function extractCsf3Stories(
       const associatedComponentId = resolveComponentId(
         rootDirPath,
         resolver.checker,
-        storyComponent || defaultComponent
+        storyComponent || storiesInfo.component || null
       );
-      if (!associatedComponentId) {
-        // No detected associated component, give up.
-        continue;
-      }
       components.push({
         componentId: generateComponentId({
           filePath: path.relative(rootDirPath, sourceFile.fileName),
@@ -83,10 +77,12 @@ export function extractCsf3Stories(
                 value: parseSerializableValue(args),
               }
             : null,
-          associatedComponent: {
-            componentId: associatedComponentId,
-            analyze: () => analyzeComponent(associatedComponentId),
-          },
+          associatedComponent: associatedComponentId
+            ? {
+                componentId: associatedComponentId,
+                analyze: () => analyzeComponent(associatedComponentId),
+              }
+            : null,
         },
       });
     }

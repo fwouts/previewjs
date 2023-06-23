@@ -54,5 +54,5 @@ export type ComponentInfo =
         end: number;
         value: SerializableValue;
       } | null;
-      associatedComponentId: string;
+      associatedComponentId: string | null;
     };

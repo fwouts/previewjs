@@ -4,7 +4,7 @@ import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
   extractCsf3Stories,
-  extractDefaultComponent,
+  extractStoriesInfo,
   resolveComponentId,
 } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
@@ -62,7 +62,7 @@ export function extractSolidComponents(
     }
   }
 
-  const storiesDefaultComponent = extractDefaultComponent(sourceFile);
+  const storiesInfo = extractStoriesInfo(sourceFile);
   const components: AnalyzableComponent[] = [];
   const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
@@ -71,14 +71,14 @@ export function extractSolidComponents(
     node: ts.Node,
     name: string
   ): ComponentTypeInfo | null {
-    if (name === "default" && storiesDefaultComponent) {
+    if (name === "default" && storiesInfo) {
       return null;
     }
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
     const signature = extractComponentSignature(resolver.checker, node);
     if (
-      storiesDefaultComponent &&
+      storiesInfo &&
       isExported &&
       (storyArgs || signature?.parameters.length === 0)
     ) {
@@ -86,12 +86,8 @@ export function extractSolidComponents(
         logger,
         resolver,
         rootDirPath,
-        storiesDefaultComponent
+        storiesInfo.component
       );
-      if (!associatedComponent) {
-        // No detected associated component, give up.
-        return null;
-      }
       return {
         kind: "story",
         args: storyArgs
@@ -158,14 +154,14 @@ function extractStoryAssociatedComponent(
   logger: Logger,
   resolver: TypeResolver,
   rootDirPath: string,
-  component: ts.Expression
+  component: ts.Expression | null
 ) {
   const resolvedStoriesComponentId = resolveComponentId(
     rootDirPath,
     resolver.checker,
     component
   );
-  return resolvedStoriesComponentId
+  return component && resolvedStoriesComponentId
     ? {
         componentId: resolvedStoriesComponentId,
         analyze: async () => {
