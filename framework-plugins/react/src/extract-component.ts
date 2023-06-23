@@ -86,10 +86,6 @@ export function extractReactComponents(
         rootDirPath,
         storiesInfo.component
       );
-      if (!associatedComponent) {
-        // No detected associated component, give up.
-        return null;
-      }
       return {
         kind: "story",
         args: storyArgs

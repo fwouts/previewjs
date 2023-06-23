@@ -103,10 +103,6 @@ export function extractVueComponents(
         resolver,
         storiesInfo.component
       );
-      if (!associatedComponent) {
-        // No detected associated component, give up.
-        return null;
-      }
       return {
         kind: "story",
         args: {
@@ -138,10 +134,6 @@ export function extractVueComponents(
           resolver,
           storiesInfo.component
         );
-        if (!associatedComponent) {
-          // No detected associated component, give up.
-          return null;
-        }
         return {
           kind: "story",
           args: null,

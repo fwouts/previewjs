@@ -208,11 +208,11 @@ export default function(){
     ]);
   });
 
-  it("detects CSF1 stories", async () => {
+  it("detects CSF1 stories (exported with component)", async () => {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from './MyComponent.vue';
+import Button from "./MyComponent.vue";
 
 export default {
   component: Button
@@ -224,6 +224,7 @@ export const Primary = () => ({
 });
 `
     );
+
     const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
@@ -249,11 +250,41 @@ export const Primary = () => ({
     });
   });
 
-  it("detects CSF2 stories", async () => {
+  it("detects CSF1 stories (exported with title)", async () => {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from './MyComponent.vue';
+import Button from "./MyComponent.vue";
+
+export default {
+  title: "Stories"
+}
+
+export const Primary = () => ({
+  components: { Button },
+  template: '<Button primary label="Button" />',
+});
+`
+    );
+
+    const extractedStories = extract(APP_STORIES_TSX);
+    expect(extractedStories).toMatchObject([
+      {
+        componentId: "App.stories.tsx:Primary",
+        info: {
+          kind: "story",
+          args: null,
+          associatedComponent: null,
+        },
+      },
+    ]);
+  });
+
+  it("detects CSF2 stories (exported with component)", async () => {
+    memoryReader.updateFile(
+      APP_STORIES_TSX,
+      `
+import Button from "./MyComponent.vue";
 
 export default {
   component: Button
@@ -268,12 +299,14 @@ const Template = (args) => ({
 });
 
 export const Primary = Template.bind({});
+
 Primary.args = {
   primary: true,
   label: 'Button',
 };
 `
     );
+
     const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
@@ -312,7 +345,60 @@ Primary.args = {
     });
   });
 
-  it("detects CSF3 stories", async () => {
+  it("detects CSF2 stories (exported with title)", async () => {
+    memoryReader.updateFile(
+      APP_STORIES_TSX,
+      `
+import Button from "./MyComponent.vue";
+
+export default {
+  title: "Stories"
+}
+
+const Template = (args) => ({
+  components: { Button },
+  setup() {
+    return { args };
+  },
+  template: '<Button v-bind="args" />',
+});
+
+export const Primary = Template.bind({});
+
+Primary.args = {
+  primary: true,
+  label: 'Button',
+};
+`
+    );
+
+    const extractedStories = extract(APP_STORIES_TSX);
+    expect(extractedStories).toMatchObject([
+      {
+        componentId: "App.stories.tsx:Primary",
+        info: {
+          kind: "story",
+          args: {
+            value: object([
+              {
+                kind: "key",
+                key: string("primary"),
+                value: TRUE,
+              },
+              {
+                kind: "key",
+                key: string("label"),
+                value: string("Button"),
+              },
+            ]),
+          },
+          associatedComponent: null,
+        },
+      },
+    ]);
+  });
+
+  it("detects CSF3 stories (exported with component)", async () => {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
@@ -321,6 +407,7 @@ import Button from './MyComponent.vue';
 export default {
   component: Button
 }
+
 export const Example = {
   args: {
     label: "Hello, World!"
@@ -330,6 +417,7 @@ export const NoArgs = {}
 export function NotStory() {}
 `
     );
+
     const extractedStories = extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
@@ -371,6 +459,55 @@ export function NotStory() {}
       }),
       types: {},
     });
+  });
+
+  it("detects CSF3 stories (exported with title)", async () => {
+    memoryReader.updateFile(
+      APP_STORIES_TSX,
+      `
+import Button from './MyComponent.vue';
+
+export default {
+  title: "Stories"
+}
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+export const NoArgs = {}
+export function NotStory() {}
+`
+    );
+
+    const extractedStories = extract(APP_STORIES_TSX);
+    expect(extractedStories).toMatchObject([
+      {
+        componentId: "App.stories.tsx:Example",
+        info: {
+          kind: "story",
+          args: {
+            value: object([
+              {
+                kind: "key",
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
+          associatedComponent: null,
+        },
+      },
+      {
+        componentId: "App.stories.tsx:NoArgs",
+        info: {
+          kind: "story",
+          args: null,
+          associatedComponent: null,
+        },
+      },
+    ]);
   });
 
   function extract(absoluteFilePath: string) {

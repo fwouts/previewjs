@@ -284,7 +284,7 @@ export default () => {
     expect(extract(APP_TSX)).toMatchObject([]);
   });
 
-  it("detects CSF1 stories", async () => {
+  it("detects CSF1 stories (exported with component)", async () => {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
@@ -332,14 +332,50 @@ export const NotStory = (props) => <Button {...props} />;
     });
   });
 
-  it("detects CSF2 stories", async () => {
+  it("detects CSF1 stories (exported with title)", async () => {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
 import Button from "./App";
 
 export default {
-  component: Button
+  title: "Stories"
+}
+
+export const Primary = () => <Button primary label="Button" />;
+
+export const NotStory = (props) => <Button {...props} />;
+`
+    );
+
+    const extractedStories = extract(APP_STORIES_TSX);
+    expect(extractedStories).toMatchObject([
+      {
+        componentId: "App.stories.tsx:Primary",
+        info: {
+          kind: "story",
+          args: null,
+          associatedComponent: null,
+        },
+      },
+      {
+        componentId: "App.stories.tsx:NotStory",
+        info: {
+          kind: "component",
+          exported: true,
+        },
+      },
+    ]);
+  });
+
+  it("detects CSF2 stories (exported with title)", async () => {
+    memoryReader.updateFile(
+      APP_STORIES_TSX,
+      `
+import Button from "./App";
+
+export default {
+  title: "Stories"
 }
 
 const Template = (args) => <Button {...args} />;
@@ -379,25 +415,13 @@ Primary.args = {
               },
             ]),
           },
-          associatedComponent: {
-            componentId: "App.tsx:default",
-          },
+          associatedComponent: null,
         },
       },
     ]);
-    const storyInfo = extractedStories[1]?.info;
-    if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
-      throw new Error();
-    }
-    expect(await storyInfo.associatedComponent.analyze()).toEqual({
-      propsType: objectType({
-        label: STRING_TYPE,
-      }),
-      types: {},
-    });
   });
 
-  it("detects CSF3 stories", async () => {
+  it("detects CSF3 stories (exported with component)", async () => {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
@@ -460,6 +484,57 @@ export function NotStory() {}
       }),
       types: {},
     });
+  });
+
+  it("detects CSF3 stories (exported with title)", async () => {
+    memoryReader.updateFile(
+      APP_STORIES_TSX,
+      `
+import Button from "./App";
+
+export default {
+  title: "Stories"
+}
+
+export const Example = {
+  args: {
+    label: "Hello, World!"
+  }
+}
+
+export const NoArgs = {}
+
+export function NotStory() {}
+`
+    );
+
+    const extractedStories = extract(APP_STORIES_TSX);
+    expect(extractedStories).toMatchObject([
+      {
+        componentId: "App.stories.tsx:Example",
+        info: {
+          kind: "story",
+          args: {
+            value: object([
+              {
+                kind: "key",
+                key: string("label"),
+                value: string("Hello, World!"),
+              },
+            ]),
+          },
+          associatedComponent: null,
+        },
+      },
+      {
+        componentId: "App.stories.tsx:NoArgs",
+        info: {
+          kind: "story",
+          args: null,
+          associatedComponent: null,
+        },
+      },
+    ]);
   });
 
   function extract(absoluteFilePath: string) {
