@@ -50,4 +50,4 @@ jobs:
       - run: pnpm check-licenses
       - run: pnpm check-deps
       - run: pnpm turbo run build --scope="@previewjs/app" --include-dependencies
-      - run: pnpm turbo run test
+      - run: pnpm turbo run test --concurrency=1
