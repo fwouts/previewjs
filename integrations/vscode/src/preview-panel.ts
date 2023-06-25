@@ -1,5 +1,4 @@
 import vscode from "vscode";
-import { ensurePreviewServerStopped } from "./preview-server";
 import type { PreviewJsState } from "./state";
 
 export function updatePreviewPanel(
@@ -46,7 +45,6 @@ export function updatePreviewPanel(
     });
     previewPanel.onDidDispose(() => {
       state.previewPanel = null;
-      ensurePreviewServerStopped(state).catch(onError);
     });
     previewPanel.webview.html = `<!DOCTYPE html>
   <html>

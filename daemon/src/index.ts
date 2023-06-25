@@ -364,9 +364,7 @@ export async function startDaemon({
       if (!preview) {
         throw new NotFoundError();
       }
-      await preview.stop({
-        onceUnused: true,
-      });
+      await preview.stop();
       delete previews[req.workspaceId];
       return {};
     }

@@ -52,18 +52,13 @@ const FILES_REQUIRING_RESTART = new Set([
   "svelte.config.js",
 ]);
 
-const SHUTDOWN_CHECK_INTERVAL = 3000;
-const SHUTDOWN_AFTER_INACTIVITY = 10000;
-
 export class Previewer {
   private readonly transformingReader: Reader;
   private appServer: Server | null = null;
   private viteManager: ViteManager | null = null;
   private status: PreviewerStatus = { kind: "stopped" };
-  private shutdownCheckInterval: NodeJS.Timeout | null = null;
   private disposeObserver: (() => Promise<void>) | null = null;
   private config: PreviewConfig | null = null;
-  private lastPingTimestamp = 0;
 
   constructor(
     private readonly options: {
@@ -119,10 +114,6 @@ export class Previewer {
         }
         break;
       case "started":
-        if (this.shutdownCheckInterval) {
-          clearInterval(this.shutdownCheckInterval);
-          this.shutdownCheckInterval = null;
-        }
         port = statusBeforeStart.port;
         break;
       case "stopping":
@@ -224,7 +215,6 @@ export class Previewer {
           }
         });
         router.use("/ping", async (req, res) => {
-          this.lastPingTimestamp = Date.now();
           res.json(
             JSON.stringify({
               pong: "match!",
@@ -299,12 +289,11 @@ export class Previewer {
     }
   }
 
-  async stop(
-    options: {
-      onceUnused?: boolean;
-      restarting?: boolean;
-    } = {}
-  ) {
+  async stop({
+    restarting,
+  }: {
+    restarting?: boolean;
+  } = {}) {
     if (this.status.kind === "starting") {
       try {
         await this.status.promise;
@@ -313,40 +302,6 @@ export class Previewer {
           kind: "stopped",
         };
       }
-    }
-    if (this.status.kind !== "started") {
-      return;
-    }
-    if (options.onceUnused) {
-      if (!(await this.shutdownCheck())) {
-        this.shutdownCheckInterval = setInterval(() => {
-          this.shutdownCheck().catch(this.options.logger.error);
-        }, SHUTDOWN_CHECK_INTERVAL);
-      }
-    } else {
-      await this.stopNow(options);
-    }
-  }
-
-  private async shutdownCheck() {
-    if (this.lastPingTimestamp + SHUTDOWN_AFTER_INACTIVITY > Date.now()) {
-      return false;
-    }
-    if (this.shutdownCheckInterval) {
-      clearInterval(this.shutdownCheckInterval);
-      this.shutdownCheckInterval = null;
-    }
-    await this.stopNow();
-    return true;
-  }
-
-  private async stopNow({
-    restarting,
-  }: {
-    restarting?: boolean;
-  } = {}) {
-    if (this.status.kind === "starting") {
-      await this.status.promise;
     }
     if (this.status.kind !== "started") {
       return;

@@ -214,8 +214,8 @@ export async function createWorkspace({
         });
         return {
           url: () => `http://localhost:${port}`,
-          stop: async (options) => {
-            await previewer.stop(options);
+          stop: async () => {
+            await previewer.stop();
           },
         };
       },
@@ -268,5 +268,5 @@ export interface Workspace {
 
 export interface Preview {
   url(): string;
-  stop(options?: { onceUnused?: boolean }): Promise<void>;
+  stop(): Promise<void>;
 }

@@ -4,7 +4,10 @@ import path from "path";
 import vscode from "vscode";
 import { clientId } from "./client-id";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
-import { ensurePreviewServerStarted } from "./preview-server";
+import {
+  ensurePreviewServerStarted,
+  ensurePreviewServerStopped,
+} from "./preview-server";
 import { daemonLockFilePath } from "./start-daemon";
 import { createState } from "./state";
 
@@ -38,8 +41,20 @@ let dispose = async () => {
   // Do nothing.
 };
 
-export async function activate() {
+export async function activate({ subscriptions }: vscode.ExtensionContext) {
+  const stopStatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  subscriptions.push(stopStatusBarItem);
+  stopStatusBarItem.command = "previewjs.stop";
+  stopStatusBarItem.backgroundColor = new vscode.ThemeColor(
+    "statusBarItem.warningBackground"
+  );
+  stopStatusBarItem.color = "#001409";
+
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
+  subscriptions.push(outputChannel);
   let currentState = createState({ outputChannel });
 
   const config = vscode.workspace.getConfiguration();
@@ -77,7 +92,6 @@ export async function activate() {
       });
       await closePreviewPanel(state);
     }
-    outputChannel.dispose();
   };
 
   vscode.window.onDidChangeActiveTextEditor(async (e) => {
@@ -108,7 +122,7 @@ export async function activate() {
             c.componentId.indexOf(":") + 1
           );
           lens.command = {
-            command: "previewjs.open",
+            command: "previewjs.start",
             arguments: [document, c.componentId],
             title: `Open ${componentName} in Preview.js`,
           };
@@ -152,6 +166,7 @@ export async function activate() {
   vscode.commands.registerCommand(
     "previewjs.reset",
     catchErrors(async () => {
+      stopStatusBarItem.hide();
       outputChannel.appendLine("Resetting Preview.js...");
       const state = await currentState;
       if (state) {
@@ -172,7 +187,7 @@ export async function activate() {
   );
 
   vscode.commands.registerCommand(
-    "previewjs.open",
+    "previewjs.start",
     catchErrors(
       async (document?: vscode.TextDocument, componentId?: string) => {
         const state = await currentState;
@@ -219,10 +234,25 @@ export async function activate() {
           componentId = component.componentId;
         }
         const preview = await ensurePreviewServerStarted(state, workspaceId);
+        // TODO: Handle server crash (e.g. killall node).
+        // TODO: Always show component explorer unless open inside VS Code / IntelliJ webviews (pass query param?)
+        // TODO: Also implement on IntelliJ.
+        stopStatusBarItem.text = `⏻ Preview.js: ${preview.url}`;
+        stopStatusBarItem.show();
         updatePreviewPanel(state, preview.url, componentId, onError);
       }
     )
   );
+
+  vscode.commands.registerCommand("previewjs.stop", async () => {
+    const state = await currentState;
+    if (!state) {
+      return;
+    }
+    closePreviewPanel(state);
+    await ensurePreviewServerStopped(state);
+    stopStatusBarItem.hide();
+  });
 }
 
 export async function deactivate() {
