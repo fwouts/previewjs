@@ -171,6 +171,9 @@ class ProjectService(private val project: Project) : Disposable {
 
     fun printToConsole(text: String) {
         app.invokeLater {
+            if (project.isDisposed) {
+                return@invokeLater
+            }
             getOrCreateConsole().print(text, ConsoleViewContentType.NORMAL_OUTPUT)
         }
     }
