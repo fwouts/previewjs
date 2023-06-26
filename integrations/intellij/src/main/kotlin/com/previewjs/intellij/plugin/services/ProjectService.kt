@@ -58,7 +58,6 @@ class ProjectService(private val project: Project) : Disposable {
     private val statusBar = WindowManager.getInstance().getStatusBar(project)
     private val smallLogo = IconLoader.getIcon("/logo.svg", javaClass)
     private val service = app.getService(PreviewJsSharedService::class.java)
-    private val stopPreviewWidget = StopPreviewStatusBarWidget(this)
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
@@ -311,8 +310,8 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
-            statusBar.addWidget(stopPreviewWidget)
-            StopPreviewStatusBarWidget.updateStatusBar(project, true)
+            @Suppress("DEPRECATION")
+            statusBar.addWidget(StopPreviewStatusBarWidget(previewBaseUrl) { closePreview() })
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
@@ -378,6 +377,7 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     fun closePreview() {
+        @Suppress("UnstableApiUsage")
         statusBar.removeWidget(StopPreviewStatusBarWidget.ID)
         previewToolWindow?.remove()
         previewToolWindow = null
