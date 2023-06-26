@@ -25,6 +25,7 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.openapi.wm.WindowManager
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener
 import com.intellij.psi.PsiFile
 import com.intellij.ui.content.ContentFactory
@@ -36,6 +37,7 @@ import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
+import com.previewjs.intellij.plugin.statusbar.StopPreviewStatusBarWidget
 import org.apache.commons.lang.StringUtils
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
@@ -53,8 +55,10 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     private val app = ApplicationManager.getApplication()
+    private val statusBar = WindowManager.getInstance().getStatusBar(project)
     private val smallLogo = IconLoader.getIcon("/logo.svg", javaClass)
     private val service = app.getService(PreviewJsSharedService::class.java)
+    private val stopPreviewWidget = StopPreviewStatusBarWidget(this)
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
     private var previewBrowser: JBCefBrowser? = null
@@ -307,13 +311,14 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
+            statusBar.addWidget(stopPreviewWidget)
+            StopPreviewStatusBarWidget.updateStatusBar(project, true)
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {
                     browser = JBCefBrowser()
                     previewBrowser = browser
-                    Disposer.register(this@ProjectService, browser)
                     val browserBase: JBCefBrowserBase = browser
                     val linkHandler = JBCefJSQuery.create(browserBase)
                     linkHandler.addHandler { link ->
@@ -337,6 +342,8 @@ class ProjectService(private val project: Project) : Disposable {
                         browser.cefBrowser
                     )
                     Disposer.register(browser, linkHandler)
+                }
+                if (previewToolWindow == null) {
                     previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
                         TOOL_WINDOW_ID
                     ) {
@@ -370,17 +377,28 @@ class ProjectService(private val project: Project) : Disposable {
         })
     }
 
-    override fun dispose() {
-        previewBrowser = null
+    fun closePreview() {
+        statusBar.removeWidget(StopPreviewStatusBarWidget.ID)
+        previewToolWindow?.remove()
         previewToolWindow = null
-        consoleView = null
-        consoleToolWindow = null
+        previewBrowser?.dispose()
+        previewBrowser = null
         service.enqueueAction(project, { api ->
             currentPreviewWorkspaceId?.let {
                 api.stopPreview(StopPreviewRequest(workspaceId = it))
             }
-            service.disposeWorkspaces(project)
             currentPreviewWorkspaceId = null
+        }, {
+            "Warning: unable to close preview"
+        })
+    }
+
+    override fun dispose() {
+        closePreview()
+        consoleView = null
+        consoleToolWindow = null
+        service.enqueueAction(project, { api ->
+            service.disposeWorkspaces(project)
         }, {
             "Warning: unable to dispose of workspaces"
         })
