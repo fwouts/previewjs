@@ -2087,7 +2087,7 @@ importers:
         version: 5.1.3
       vite-plugin-solid:
         specifier: ^2.7.0
-        version: 2.7.0(solid-js@1.7.6)(vite@4.3.9)
+        version: 2.7.0(solid-js@1.7.7)(vite@4.3.9)
     devDependencies:
       '@playwright/test':
         specifier: ^1.35.1
@@ -2108,8 +2108,8 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0
       solid-js:
-        specifier: ^1.7.6
-        version: 1.7.6
+        specifier: ^1.7.7
+        version: 1.7.7
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
@@ -38053,8 +38053,8 @@ packages:
       csstype: 3.1.2
       seroval: 0.5.1
 
-  /solid-js@1.7.6:
-    resolution: {integrity: sha512-DXVOTjUh/bIAhE0fIqu3ezGLyQaez7v8EOw3uPLIi87DmLjg+hsuCAgKyNIZ+o4jUetOk3ZORccvJmE1yZUk8g==}
+  /solid-js@1.7.7:
+    resolution: {integrity: sha512-SPdYVke/Z6Za24PBTbULyQYPrhGO1ZbPany76atO2zF2dmYn2pCotbsw1JtlgWnr9dK2JbwPGnA3ODTGPLhZNw==}
     dependencies:
       csstype: 3.1.2
       seroval: 0.5.1
@@ -38069,7 +38069,7 @@ packages:
       '@babel/types': 7.22.5
       solid-js: 1.7.5
 
-  /solid-refresh@0.5.1(solid-js@1.7.6):
+  /solid-refresh@0.5.1(solid-js@1.7.7):
     resolution: {integrity: sha512-kzfcoUYW6ZOUvk/7trfRbwLLBkQmMT2kGJUy9UMPnniMRYaMmyckjCxg1GuXCoSkrC3Bu2NK39I3iPJZYfqDXw==}
     peerDependencies:
       solid-js: ^1.3
@@ -38077,7 +38077,7 @@ packages:
       '@babel/generator': 7.22.5
       '@babel/helper-module-imports': 7.21.4
       '@babel/types': 7.22.5
-      solid-js: 1.7.6
+      solid-js: 1.7.7
     dev: false
 
   /solid-start-node@0.2.26(solid-start@0.2.26)(undici@5.22.1)(vite@3.2.6):
@@ -41283,7 +41283,7 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-solid@2.7.0(solid-js@1.7.6)(vite@4.3.9):
+  /vite-plugin-solid@2.7.0(solid-js@1.7.7)(vite@4.3.9):
     resolution: {integrity: sha512-avp/Jl5zOp/Itfo67xtDB2O61U7idviaIp4mLsjhCa13PjKNasz+IID0jYTyqUp9SFx6/PmBr6v4KgDppqompg==}
     peerDependencies:
       solid-js: ^1.7.2
@@ -41294,8 +41294,8 @@ packages:
       '@types/babel__core': 7.20.0
       babel-preset-solid: 1.7.3(@babel/core@7.21.8)
       merge-anything: 5.1.4
-      solid-js: 1.7.6
-      solid-refresh: 0.5.1(solid-js@1.7.6)
+      solid-js: 1.7.7
+      solid-refresh: 0.5.1(solid-js@1.7.7)
       vite: 4.3.9(@types/node@20.3.2)
       vitefu: 0.2.4(vite@4.3.9)
     transitivePeerDependencies:
