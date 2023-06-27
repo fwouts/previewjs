@@ -236,22 +236,25 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         const preview = await ensurePreviewServerStarted(state, workspaceId);
         // TODO: Handle server crash (e.g. killall node).
         // TODO: Always show component explorer unless open inside VS Code / IntelliJ webviews (pass query param?)
-        // TODO: Also implement on IntelliJ.
-        stopStatusBarItem.text = `⏻ Preview.js: ${preview.url}`;
+        stopStatusBarItem.text = `🛑 Preview.js running at ${preview.url}`;
         stopStatusBarItem.show();
         updatePreviewPanel(state, preview.url, componentId, onError);
       }
     )
   );
 
+  // TODO: Make sure we don't start a new server unnecessarily when reopening.
   vscode.commands.registerCommand("previewjs.stop", async () => {
+    // await vscode.window.showQuickPick(["shell", "fetch rows, list in table"], {
+    //   placeHolder: "select type of web page to make",
+    // });
+    stopStatusBarItem.hide();
     const state = await currentState;
     if (!state) {
       return;
     }
     closePreviewPanel(state);
     await ensurePreviewServerStopped(state);
-    stopStatusBarItem.hide();
   });
 }
 

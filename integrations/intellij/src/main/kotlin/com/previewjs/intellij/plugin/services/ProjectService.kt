@@ -379,12 +379,14 @@ class ProjectService(private val project: Project) : Disposable {
         })
     }
 
-    fun closePreview() {
+    private fun closePreview() {
         @Suppress("UnstableApiUsage")
         statusBar.removeWidget(StopPreviewStatusBarWidget.ID)
         previewToolWindow?.remove()
         previewToolWindow = null
-        previewBrowser?.dispose()
+        previewBrowser?.let {
+            Disposer.dispose(it)
+        }
         previewBrowser = null
         service.enqueueAction(project, { api ->
             currentPreviewWorkspaceId?.let {
