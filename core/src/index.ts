@@ -9,11 +9,11 @@ import { createTypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
-import getPort, { portNumbers } from "get-port";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
 import { detectComponents } from "./detect-components";
+import { getFreePort } from "./get-free-port";
 import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
@@ -205,12 +205,7 @@ export async function createWorkspace({
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
           const port = allocatePort ? await allocatePort() : 0;
-          return (
-            port ||
-            (await getPort({
-              port: portNumbers(3140, 4000),
-            }))
-          );
+          return port || (await getFreePort(3140));
         });
         return {
           url: () => `http://localhost:${port}`,
