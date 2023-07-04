@@ -163,8 +163,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       playwright:
         specifier: ^1.35.1
         version: 1.35.1
@@ -421,8 +421,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       preact:
         specifier: ^10.15.1
         version: 10.15.1
@@ -630,8 +630,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -2102,8 +2102,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       solid-js:
         specifier: ^1.7.7
         version: 1.7.7
@@ -2251,8 +2251,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
@@ -2528,8 +2528,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -2707,8 +2707,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -2995,8 +2995,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^10.0.1
+        version: 10.0.1
       pnpm:
         specifier: ^8.6.6
         version: 8.6.6
@@ -18354,7 +18354,7 @@ packages:
   /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.5):
     resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
     dependencies:
-      '@babel/helper-module-imports': 7.21.4
+      '@babel/helper-module-imports': 7.22.5
       '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.5)
       '@babel/template': 7.22.5
       '@babel/traverse': 7.22.5
@@ -21931,9 +21931,6 @@ packages:
 
   /colorette@1.4.0:
     resolution: {integrity: sha512-Y2oEozpomLn7Q3HFP7dpww7AtMJplbM9lGZP6RDfHqmbeRjiwRg4n6VM6j4KLmRke85uWEI7JqF17f3pqdRA0g==}
-
-  /colorette@2.0.19:
-    resolution: {integrity: sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==}
 
   /colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
@@ -33286,11 +33283,11 @@ packages:
       readable-stream: 4.4.0
       split2: 4.2.0
 
-  /pino-pretty@10.0.0:
-    resolution: {integrity: sha512-zKFjYXBzLaLTEAN1ayKpHXtL5UeRQC7R3lvhKe7fWs7hIVEjKGG/qIXwQt9HmeUp71ogUd/YcW+LmMwRp4KT6Q==}
+  /pino-pretty@10.0.1:
+    resolution: {integrity: sha512-yrn00+jNpkvZX/NrPVCPIVHAfTDy3ahF0PND9tKqZk4j9s+loK8dpzrJj4dGb7i+WLuR50ussuTAiWoMWU+qeA==}
     hasBin: true
     dependencies:
-      colorette: 2.0.19
+      colorette: 2.0.20
       dateformat: 4.6.3
       fast-copy: 3.0.1
       fast-safe-stringify: 2.1.1
