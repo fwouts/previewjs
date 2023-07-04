@@ -73,7 +73,9 @@ export function updatePreviewPanel(
         let iframe;
         window.addEventListener("load", () => {
           iframe = document.getElementById('preview-iframe');
-          iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(componentId)}";
+          iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(
+      componentId
+    )}#panel";
         });
         window.addEventListener("message", (event) => {
           const data = event.data;

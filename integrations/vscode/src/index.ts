@@ -11,6 +11,15 @@ import {
 import { daemonLockFilePath } from "./start-daemon";
 import { createState } from "./state";
 
+// Note: all commands in package.json must appear here. The reverse is not true.
+enum Command {
+  START = "previewjs.start",
+  STOP = "previewjs.stop",
+  RESET = "previewjs.reset",
+  OPEN_MENU = "previewjs.open-menu",
+  OPEN_IN_EXTERNAL_BROWSER = "previewjs.open-in-external-browser",
+}
+
 const codeLensLanguages = [
   "javascript",
   "javascriptreact",
@@ -42,20 +51,20 @@ let dispose = async () => {
 };
 
 export async function activate({ subscriptions }: vscode.ExtensionContext) {
-  const stopStatusBarItem = vscode.window.createStatusBarItem(
+  const runningServerStatusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     100
   );
-  subscriptions.push(stopStatusBarItem);
-  stopStatusBarItem.command = "previewjs.stop";
-  stopStatusBarItem.backgroundColor = new vscode.ThemeColor(
-    "statusBarItem.warningBackground"
-  );
-  stopStatusBarItem.color = "#001409";
+  subscriptions.push(runningServerStatusBarItem);
+  runningServerStatusBarItem.command = Command.OPEN_MENU;
+
+  const onDispose = () => {
+    runningServerStatusBarItem.hide();
+  };
 
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
   subscriptions.push(outputChannel);
-  let currentState = createState({ outputChannel });
+  let currentState = createState({ outputChannel, onDispose });
 
   const config = vscode.workspace.getConfiguration();
 
@@ -122,7 +131,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
             c.componentId.indexOf(":") + 1
           );
           lens.command = {
-            command: "previewjs.start",
+            command: Command.START,
             arguments: [document, c.componentId],
             title: `Open ${componentName} in Preview.js`,
           };
@@ -164,9 +173,9 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
   }
 
   vscode.commands.registerCommand(
-    "previewjs.reset",
+    Command.RESET,
     catchErrors(async () => {
-      stopStatusBarItem.hide();
+      runningServerStatusBarItem.hide();
       outputChannel.appendLine("Resetting Preview.js...");
       const state = await currentState;
       if (state) {
@@ -182,12 +191,12 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
           });
         }
       }
-      currentState = createState({ outputChannel });
+      currentState = createState({ outputChannel, onDispose });
     })
   );
 
   vscode.commands.registerCommand(
-    "previewjs.start",
+    Command.START,
     catchErrors(
       async (document?: vscode.TextDocument, componentId?: string) => {
         const state = await currentState;
@@ -234,21 +243,29 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
           componentId = component.componentId;
         }
         const preview = await ensurePreviewServerStarted(state, workspaceId);
-        // TODO: Handle server crash (e.g. killall node).
-        // TODO: Always show component explorer unless open inside VS Code / IntelliJ webviews (pass query param?)
-        stopStatusBarItem.text = `🛑 Preview.js running at ${preview.url}`;
-        stopStatusBarItem.show();
+        runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
+        runningServerStatusBarItem.show();
         updatePreviewPanel(state, preview.url, componentId, onError);
       }
     )
   );
 
-  // TODO: Make sure we don't start a new server unnecessarily when reopening.
-  vscode.commands.registerCommand("previewjs.stop", async () => {
-    // await vscode.window.showQuickPick(["shell", "fetch rows, list in table"], {
-    //   placeHolder: "select type of web page to make",
-    // });
-    stopStatusBarItem.hide();
+  vscode.commands.registerCommand(Command.OPEN_MENU, async () => {
+    const stopServerPick = "Stop Preview.js server";
+    const openExternalBrowserPick = "Open in external browser";
+    const pick = await vscode.window.showQuickPick([
+      stopServerPick,
+      openExternalBrowserPick,
+    ]);
+    if (pick === stopServerPick) {
+      vscode.commands.executeCommand(Command.STOP);
+    } else {
+      vscode.commands.executeCommand(Command.OPEN_IN_EXTERNAL_BROWSER);
+    }
+  });
+
+  vscode.commands.registerCommand(Command.STOP, async () => {
+    runningServerStatusBarItem.hide();
     const state = await currentState;
     if (!state) {
       return;
@@ -256,6 +273,18 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
     closePreviewPanel(state);
     await ensurePreviewServerStopped(state);
   });
+
+  vscode.commands.registerCommand(
+    Command.OPEN_IN_EXTERNAL_BROWSER,
+    async () => {
+      runningServerStatusBarItem.hide();
+      const state = await currentState;
+      if (!state?.currentPreview) {
+        return;
+      }
+      vscode.env.openExternal(vscode.Uri.parse(state.currentPreview.url));
+    }
+  );
 }
 
 export async function deactivate() {
