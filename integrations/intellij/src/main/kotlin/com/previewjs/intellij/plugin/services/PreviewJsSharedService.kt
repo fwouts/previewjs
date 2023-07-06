@@ -34,7 +34,7 @@ import java.util.TimerTask
 import java.util.WeakHashMap
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
-const val PING_INTERVAL_MILLIS = 1000L;
+const val PING_INTERVAL_MILLIS = 1000L
 
 @Service(Service.Level.APP)
 class PreviewJsSharedService : Disposable {
@@ -217,24 +217,28 @@ ${e.stackTraceToString()}""",
 
         val client = api("http://localhost:$port")
         pingTimer = Timer()
-        pingTimer?.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                if (!process.isAlive) {
-                    val exitCode = process.exitValue()
-                    app.invokeLater {
-                        pingTimer?.cancel()
-                        pingTimer = null
-                        api = null
-                        daemonProcess = null
-                        everyProject(project) {
-                            printToConsole("Preview.js daemon is no longer running (exit code ${exitCode}). Was it killed?\n")
-                            closePreview(processKilled = true)
+        pingTimer?.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    if (!process.isAlive) {
+                        val exitCode = process.exitValue()
+                        app.invokeLater {
+                            pingTimer?.cancel()
+                            pingTimer = null
+                            api = null
+                            daemonProcess = null
+                            everyProject(project) {
+                                printToConsole("Preview.js daemon is no longer running (exit code $exitCode). Was it killed?\n")
+                                closePreview(processKilled = true)
+                            }
+                            workspaceIds.clear()
                         }
-                        workspaceIds.clear()
                     }
                 }
-            }
-        }, 0, PING_INTERVAL_MILLIS)
+            },
+            0,
+            PING_INTERVAL_MILLIS
+        )
 
         return client
     }

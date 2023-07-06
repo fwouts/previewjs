@@ -63,6 +63,7 @@ class ProjectService(private val project: Project) : Disposable {
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var previewToolWindowActive = false
+
     @Volatile
     private var currentPreviewWorkspaceId: String? = null
     private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
@@ -377,7 +378,7 @@ class ProjectService(private val project: Project) : Disposable {
                         0
                     )
                 } else {
-                    browser.loadURL("${previewUrl}#panel")
+                    browser.loadURL("$previewUrl#panel")
                 }
                 previewToolWindow?.show()
             }
