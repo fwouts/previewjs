@@ -37,7 +37,7 @@ import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
-import com.previewjs.intellij.plugin.statusbar.StopPreviewStatusBarWidget
+import com.previewjs.intellij.plugin.statusbar.OpenMenuStatusBarWidget
 import org.apache.commons.lang.StringUtils
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
@@ -314,7 +314,13 @@ class ProjectService(private val project: Project) : Disposable {
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
             @Suppress("DEPRECATION")
-            statusBar.addWidget(StopPreviewStatusBarWidget(previewBaseUrl) { closePreview() })
+            statusBar.addWidget(
+                OpenMenuStatusBarWidget(
+                    url = previewBaseUrl,
+                    onStop = { closePreview() },
+                    onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
+                )
+            )
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
@@ -381,7 +387,7 @@ class ProjectService(private val project: Project) : Disposable {
 
     private fun closePreview() {
         @Suppress("UnstableApiUsage")
-        statusBar.removeWidget(StopPreviewStatusBarWidget.ID)
+        statusBar.removeWidget(OpenMenuStatusBarWidget.ID)
         previewToolWindow?.remove()
         previewToolWindow = null
         previewBrowser?.let {
