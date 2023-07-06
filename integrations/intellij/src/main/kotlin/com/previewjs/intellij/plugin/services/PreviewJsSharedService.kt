@@ -5,6 +5,7 @@ import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
@@ -28,15 +29,19 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.ServerSocket
 import java.util.Collections
+import java.util.Timer
+import java.util.TimerTask
 import java.util.WeakHashMap
 
 const val PLUGIN_ID = "com.previewjs.intellij.plugin"
+const val PING_INTERVAL_MILLIS = 1000L;
 
 @Service(Service.Level.APP)
 class PreviewJsSharedService : Disposable {
     private val coroutineContext = SupervisorJob() + Dispatchers.IO
     private val coroutineScope = CoroutineScope(coroutineContext)
 
+    private val app = ApplicationManager.getApplication()
     private val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Preview.js")
     private val plugin = PluginManagerCore.getPlugin(PluginId.getId(PLUGIN_ID))!!
     private val nodeDirPath = plugin.pluginPath.resolve("daemon")
@@ -45,8 +50,8 @@ class PreviewJsSharedService : Disposable {
 
     @Volatile
     private var disposed = false
-    private var initializeApiJob: Job? = null
     private var api: PreviewJsApi? = null
+    private var pingTimer: Timer? = null
 
     data class Message(
         val project: Project,
@@ -58,7 +63,7 @@ class PreviewJsSharedService : Disposable {
     private var actor = coroutineScope.actor<Message> {
         var errorCount = 0
         for (msg in channel) {
-            val api = awaitApiReady() ?: return@actor
+            val api = initializeApi(msg.project)
             try {
                 (msg.fn)(api)
             } catch (e: Throwable) {
@@ -79,15 +84,6 @@ Include the content of the Preview.js logs panel for easier debugging.
                     return@actor
                 }
             }
-        }
-    }
-
-    private fun ensureApiInitialized(project: Project) {
-        if (initializeApiJob != null) {
-            return
-        }
-        initializeApiJob = coroutineScope.launch {
-            initializeApi(project)
         }
     }
 
@@ -125,15 +121,9 @@ ${e.stackTraceToString()}""",
         fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
         getErrorMessage: (e: Throwable) -> String
     ): Job {
-        ensureApiInitialized(project)
         return coroutineScope.launch {
             actor.send(Message(project, fn, getErrorMessage))
         }
-    }
-
-    private suspend fun awaitApiReady(): PreviewJsApi? {
-        initializeApiJob?.join()
-        return api
     }
 
     private fun readInputStream(inputStream: InputStream): String {
@@ -218,16 +208,44 @@ ${e.stackTraceToString()}""",
                 if (line.contains("[ready]")) {
                     ready.complete(Unit)
                 }
-                for (p in workspaceIds.keys + setOf(project)) {
-                    if (p.isDisposed) {
-                        continue
-                    }
-                    p.service<ProjectService>().printToConsole(cleanStdOut(line + "\n"))
+                everyProject(project) {
+                    printToConsole(cleanStdOut(line + "\n"))
                 }
             }
         }
         ready.await()
-        return api("http://localhost:$port")
+
+        val client = api("http://localhost:$port")
+        pingTimer = Timer()
+        pingTimer?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                if (!process.isAlive) {
+                    val exitCode = process.exitValue()
+                    app.invokeLater {
+                        pingTimer?.cancel()
+                        pingTimer = null
+                        api = null
+                        daemonProcess = null
+                        everyProject(project) {
+                            printToConsole("Preview.js daemon is no longer running (exit code ${exitCode}). Was it killed?\n")
+                            closePreview(processKilled = true)
+                        }
+                        workspaceIds.clear()
+                    }
+                }
+            }
+        }, 0, PING_INTERVAL_MILLIS)
+
+        return client
+    }
+
+    private fun everyProject(project: Project, f: ProjectService.() -> Unit) {
+        for (p in workspaceIds.keys + setOf(project)) {
+            if (p.isDisposed) {
+                continue
+            }
+            f(p.service<ProjectService>())
+        }
     }
 
     private fun checkNodeVersion(process: Process) {
@@ -299,6 +317,7 @@ ${e.stackTraceToString()}""",
     }
 
     override fun dispose() {
+        pingTimer?.cancel()
         daemonProcess?.let {
             OSProcessUtil.killProcessTree(it)
         }

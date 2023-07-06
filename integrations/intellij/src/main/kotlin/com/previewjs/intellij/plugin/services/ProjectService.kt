@@ -63,6 +63,7 @@ class ProjectService(private val project: Project) : Disposable {
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var previewToolWindowActive = false
+    @Volatile
     private var currentPreviewWorkspaceId: String? = null
     private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
     private var pendingFileChanges = mutableMapOf<String, String>()
@@ -376,7 +377,7 @@ class ProjectService(private val project: Project) : Disposable {
                         0
                     )
                 } else {
-                    browser.loadURL(previewUrl)
+                    browser.loadURL("${previewUrl}#panel")
                 }
                 previewToolWindow?.show()
             }
@@ -385,7 +386,7 @@ class ProjectService(private val project: Project) : Disposable {
         })
     }
 
-    private fun closePreview() {
+    fun closePreview(processKilled: Boolean = false) {
         @Suppress("UnstableApiUsage")
         statusBar.removeWidget(OpenMenuStatusBarWidget.ID)
         previewToolWindow?.remove()
@@ -394,14 +395,17 @@ class ProjectService(private val project: Project) : Disposable {
             Disposer.dispose(it)
         }
         previewBrowser = null
-        service.enqueueAction(project, { api ->
-            currentPreviewWorkspaceId?.let {
-                api.stopPreview(StopPreviewRequest(workspaceId = it))
+        currentPreviewWorkspaceId?.let { workspaceId ->
+            if (processKilled) {
+                return
             }
-            currentPreviewWorkspaceId = null
-        }, {
-            "Warning: unable to close preview"
-        })
+            service.enqueueAction(project, { api ->
+                api.stopPreview(StopPreviewRequest(workspaceId = workspaceId))
+            }, {
+                "Warning: unable to close preview"
+            })
+        }
+        currentPreviewWorkspaceId = null
     }
 
     override fun dispose() {

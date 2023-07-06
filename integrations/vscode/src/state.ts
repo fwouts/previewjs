@@ -34,10 +34,10 @@ export async function createState({
   }
 
   const regularPing = setInterval(async () => {
-    try {
-      await daemon.client.info();
-    } catch {
-      // Ping unsuccessful, daemon has been killed.
+    if (daemon.daemonProcess.exitCode !== null) {
+      outputChannel.appendLine(
+        `Preview.js daemon is no longer running (exit code ${daemon.daemonProcess.exitCode}). Was it killed?`
+      );
       state.dispose();
     }
   }, PING_INTERVAL_MILLIS);
