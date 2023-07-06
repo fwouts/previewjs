@@ -2,6 +2,7 @@ package com.previewjs.intellij.plugin.statusbar
 
 import com.intellij.openapi.ui.popup.JBPopup
 import com.intellij.openapi.ui.popup.JBPopupFactory
+import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 
 class OpenMenuStatusBarWidget(private val url: String, private val onStop: () -> Unit, private val onOpenBrowser: () -> Unit) : StatusBarWidget {
@@ -41,5 +42,14 @@ class OpenMenuStatusBarWidget(private val url: String, private val onStop: () ->
                 return null
             }
         }
+    }
+
+    override fun install(statusBar: StatusBar) {
+        super.install(statusBar)
+        statusBar.addWidget(this)
+    }
+
+    override fun dispose() {
+        super.dispose()
     }
 }

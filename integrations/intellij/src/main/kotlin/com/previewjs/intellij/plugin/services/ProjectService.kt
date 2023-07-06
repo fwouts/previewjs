@@ -315,14 +315,11 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
-            @Suppress("DEPRECATION")
-            statusBar.addWidget(
-                OpenMenuStatusBarWidget(
-                    url = previewBaseUrl,
-                    onStop = { closePreview() },
-                    onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
-                )
-            )
+            OpenMenuStatusBarWidget(
+                url = previewBaseUrl,
+                onStop = { closePreview() },
+                onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
+            ).install(statusBar)
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
