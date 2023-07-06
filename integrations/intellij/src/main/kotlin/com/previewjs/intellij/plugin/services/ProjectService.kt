@@ -413,7 +413,7 @@ class ProjectService(private val project: Project) : Disposable {
         closePreview()
         consoleView = null
         consoleToolWindow = null
-        service.enqueueAction(project, { api ->
+        service.enqueueAction(project, {
             service.disposeWorkspaces(project)
         }, {
             "Warning: unable to dispose of workspaces"
