@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@previewjs/core':
-        specifier: 23.0.0
-        version: 23.0.0(@types/node@20.4.0)
+        specifier: 23.0.1
+        version: 23.0.1(@types/node@20.4.0)
       '@previewjs/plugin-preact':
         specifier: 5.0.0
         version: 5.0.0(@types/node@20.4.0)
@@ -756,8 +756,8 @@ packages:
     resolution: {integrity: sha512-31C3JyfBYysfG+LE5E6bVaemqx2H+mXuKsbWXiRaVu6n8C+CnHh725t/U+WHOn1eVFuS041FauhtRaNHxoi2tg==}
     dev: false
 
-  /@previewjs/core@23.0.0(@types/node@20.4.0):
-    resolution: {integrity: sha512-po2ucyvQlhCbOv9jPlo8BRw8LeBf7xUPC3c/Na3HzwfWJ/1TkBiZULcKKmpCo/TmhsVL1mFTa3QYSWt8IJMwNQ==}
+  /@previewjs/core@23.0.1(@types/node@20.4.0):
+    resolution: {integrity: sha512-WBbZMzDOsnsDdKXFi2zOSw0RpBp496zCYc56g4YskQikdS8A48UlBEE1oO8OOFHK4wwbVTH2HQ46ordDKyczBA==}
     dependencies:
       '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.1.6)(vite@4.4.2)
       '@previewjs/api': 13.0.0
@@ -773,7 +773,6 @@ packages:
       exclusive-promises: 1.0.3
       express: 4.18.2
       fs-extra: 11.1.1
-      get-port: 7.0.0
       globby: 13.2.2
       html-escaper: 3.0.3
       http-terminator: 3.2.0
@@ -966,7 +965,7 @@ packages:
     resolution: {integrity: sha512-aLAqwqwLXRJTavy5ps7g8++GiafsEDWSWQk+GG6osdvKNLri76aUvmA14ePKnRcPd1Hre09vd8q4rYkWCqpKMA==}
     dependencies:
       '@previewjs/api': 13.0.0
-      '@previewjs/core': 23.0.0(@types/node@20.4.0)
+      '@previewjs/core': 23.0.1(@types/node@20.4.0)
       '@previewjs/serializable-values': 7.0.2
       '@previewjs/storybook-helpers': 3.0.0(@types/node@20.4.0)
       axios: 1.4.0
@@ -1003,7 +1002,7 @@ packages:
     resolution: {integrity: sha512-u/FyVXKOWDU11mel0wEaY9zTSU5h9ULNovTTTBtTPXY6iHNL2DzqwzKWvHl/5ch96roNfIXpAtglWcxTDN1z6Q==}
     dependencies:
       '@previewjs/api': 13.0.0
-      '@previewjs/core': 23.0.0(@types/node@20.4.0)
+      '@previewjs/core': 23.0.1(@types/node@20.4.0)
       '@previewjs/serializable-values': 7.0.2
       '@previewjs/type-analyzer': 8.0.2
       typescript: 5.1.6
@@ -2065,11 +2064,6 @@ packages:
       has: 1.0.3
       has-proto: 1.0.1
       has-symbols: 1.0.3
-    dev: false
-
-  /get-port@7.0.0:
-    resolution: {integrity: sha512-mDHFgApoQd+azgMdwylJrv2DX47ywGq1i5VFJE7fZ0dttNq3iQMfsU4IvEgBHojA3KqEudyu7Vq+oN8kNaNkWw==}
-    engines: {node: '>=16'}
     dev: false
 
   /glob-parent@5.1.2:
