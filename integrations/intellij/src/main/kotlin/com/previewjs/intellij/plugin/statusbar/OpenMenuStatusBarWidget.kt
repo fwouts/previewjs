@@ -45,11 +45,10 @@ class OpenMenuStatusBarWidget(private val url: String, private val onStop: () ->
     }
 
     override fun install(statusBar: StatusBar) {
-        super.install(statusBar)
         statusBar.addWidget(this)
     }
 
     override fun dispose() {
-        super.dispose()
+        // Nothing to do.
     }
 }
