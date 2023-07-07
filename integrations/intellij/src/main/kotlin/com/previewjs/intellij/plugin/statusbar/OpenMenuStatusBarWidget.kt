@@ -10,6 +10,8 @@ class OpenMenuStatusBarWidget(private val url: String, private val onStop: () ->
         const val ID = "previewjs.open-menu"
     }
 
+    private var installed = false
+
     override fun ID(): String = ID
 
     override fun getPresentation(): StatusBarWidget.WidgetPresentation {
@@ -45,6 +47,10 @@ class OpenMenuStatusBarWidget(private val url: String, private val onStop: () ->
     }
 
     override fun install(statusBar: StatusBar) {
+        if (installed) {
+            return
+        }
+        installed = true
         statusBar.addWidget(this)
     }
 
