@@ -83,7 +83,7 @@ export function updatePreviewPanel(
             if (iframe.src.startsWith(data.previewBaseUrl)) {
               iframe.contentWindow.postMessage(data, data.previewBaseUrl);
             } else {
-              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.componentId)}\`;
+              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.componentId)}#panel\`;
             }
           } else {
             // Other messages come from the preview iframe.
