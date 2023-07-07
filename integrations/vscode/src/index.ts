@@ -277,7 +277,6 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
   vscode.commands.registerCommand(
     Command.OPEN_IN_EXTERNAL_BROWSER,
     async () => {
-      runningServerStatusBarItem.hide();
       const state = await currentState;
       if (!state?.currentPreview) {
         return;
