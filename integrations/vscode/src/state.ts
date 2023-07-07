@@ -6,10 +6,14 @@ import { ensureDaemonRunning } from "./start-daemon";
 import type { Workspaces } from "./workspaces";
 import { createWorkspaceGetter } from "./workspaces";
 
+const PING_INTERVAL_MILLIS = 1000;
+
 export async function createState({
   outputChannel,
+  onDispose,
 }: {
   outputChannel: vscode.OutputChannel;
+  onDispose: () => void;
 }): Promise<PreviewJsState | null> {
   const daemon = await ensureDaemonRunning(outputChannel)
     .catch((e) => {
@@ -29,6 +33,15 @@ export async function createState({
     return null;
   }
 
+  const regularPing = setInterval(async () => {
+    if (daemon.daemonProcess.exitCode !== null) {
+      outputChannel.appendLine(
+        `Preview.js daemon is no longer running (exit code ${daemon.daemonProcess.exitCode}). Was it killed?`
+      );
+      state.dispose();
+    }
+  }, PING_INTERVAL_MILLIS);
+
   const workspaces: Workspaces = {};
   const getWorkspaceId = createWorkspaceGetter(
     daemon.client,
@@ -44,6 +57,8 @@ export async function createState({
   const state: PreviewJsState = {
     client: daemon.client,
     dispose: () => {
+      onDispose();
+      clearInterval(regularPing);
       daemon.watcher.close();
       if (state.previewPanel) {
         state.previewPanel.dispose();

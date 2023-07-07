@@ -20,9 +20,11 @@ export async function ensureDaemonRunning(
 ): Promise<{
   client: Client;
   watcher: FSWatcher;
+  daemonProcess: ExecaChildProcess;
 } | null> {
   const client = createClient(`http://localhost:${port}`);
-  if (!(await startDaemon(outputChannel))) {
+  const daemon = await startDaemon(outputChannel);
+  if (!daemon) {
     return null;
   }
   // Note: we expect startDaemon().process to exit 1 almost immediately when there is another
@@ -37,6 +39,7 @@ export async function ensureDaemonRunning(
   return {
     client,
     watcher,
+    daemonProcess: daemon.daemonProcess,
   };
 }
 

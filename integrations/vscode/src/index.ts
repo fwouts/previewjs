@@ -4,9 +4,21 @@ import path from "path";
 import vscode from "vscode";
 import { clientId } from "./client-id";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
-import { ensurePreviewServerStarted } from "./preview-server";
+import {
+  ensurePreviewServerStarted,
+  ensurePreviewServerStopped,
+} from "./preview-server";
 import { daemonLockFilePath } from "./start-daemon";
 import { createState } from "./state";
+
+// Note: all commands in package.json must appear here. The reverse is not true.
+enum Command {
+  START = "previewjs.start",
+  STOP = "previewjs.stop",
+  RESET = "previewjs.reset",
+  OPEN_MENU = "previewjs.open-menu",
+  OPEN_IN_EXTERNAL_BROWSER = "previewjs.open-in-external-browser",
+}
 
 const codeLensLanguages = [
   "javascript",
@@ -38,9 +50,21 @@ let dispose = async () => {
   // Do nothing.
 };
 
-export async function activate() {
+export async function activate({ subscriptions }: vscode.ExtensionContext) {
+  const runningServerStatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  subscriptions.push(runningServerStatusBarItem);
+  runningServerStatusBarItem.command = Command.OPEN_MENU;
+
+  const onDispose = () => {
+    runningServerStatusBarItem.hide();
+  };
+
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
-  let currentState = createState({ outputChannel });
+  subscriptions.push(outputChannel);
+  let currentState = createState({ outputChannel, onDispose });
 
   const config = vscode.workspace.getConfiguration();
 
@@ -77,7 +101,6 @@ export async function activate() {
       });
       await closePreviewPanel(state);
     }
-    outputChannel.dispose();
   };
 
   vscode.window.onDidChangeActiveTextEditor(async (e) => {
@@ -108,7 +131,7 @@ export async function activate() {
             c.componentId.indexOf(":") + 1
           );
           lens.command = {
-            command: "previewjs.open",
+            command: Command.START,
             arguments: [document, c.componentId],
             title: `Open ${componentName} in Preview.js`,
           };
@@ -150,8 +173,9 @@ export async function activate() {
   }
 
   vscode.commands.registerCommand(
-    "previewjs.reset",
+    Command.RESET,
     catchErrors(async () => {
+      runningServerStatusBarItem.hide();
       outputChannel.appendLine("Resetting Preview.js...");
       const state = await currentState;
       if (state) {
@@ -167,12 +191,12 @@ export async function activate() {
           });
         }
       }
-      currentState = createState({ outputChannel });
+      currentState = createState({ outputChannel, onDispose });
     })
   );
 
   vscode.commands.registerCommand(
-    "previewjs.open",
+    Command.START,
     catchErrors(
       async (document?: vscode.TextDocument, componentId?: string) => {
         const state = await currentState;
@@ -219,9 +243,47 @@ export async function activate() {
           componentId = component.componentId;
         }
         const preview = await ensurePreviewServerStarted(state, workspaceId);
+        runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
+        runningServerStatusBarItem.show();
         updatePreviewPanel(state, preview.url, componentId, onError);
       }
     )
+  );
+
+  vscode.commands.registerCommand(Command.OPEN_MENU, async () => {
+    const stopServerPick = "Stop Preview.js server";
+    const openExternalBrowserPick = "Open in external browser";
+    const pick = await vscode.window.showQuickPick([
+      stopServerPick,
+      openExternalBrowserPick,
+    ]);
+    if (pick === stopServerPick) {
+      vscode.commands.executeCommand(Command.STOP);
+    } else {
+      vscode.commands.executeCommand(Command.OPEN_IN_EXTERNAL_BROWSER);
+    }
+  });
+
+  vscode.commands.registerCommand(Command.STOP, async () => {
+    runningServerStatusBarItem.hide();
+    const state = await currentState;
+    if (!state) {
+      return;
+    }
+    closePreviewPanel(state);
+    await ensurePreviewServerStopped(state);
+  });
+
+  vscode.commands.registerCommand(
+    Command.OPEN_IN_EXTERNAL_BROWSER,
+    async () => {
+      runningServerStatusBarItem.hide();
+      const state = await currentState;
+      if (!state?.currentPreview) {
+        return;
+      }
+      vscode.env.openExternal(vscode.Uri.parse(state.currentPreview.url));
+    }
   );
 }
 

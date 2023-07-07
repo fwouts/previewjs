@@ -56,10 +56,15 @@
     },
     "commands": [
       {
-        "command": "previewjs.open",
-        "title": "Open Preview.js",
+        "command": "previewjs.start",
+        "title": "Start Preview.js server",
         "category": "Preview.js",
         "icon": "./logo.png"
+      },
+      {
+        "command": "previewjs.stop",
+        "title": "Stop Preview.js server",
+        "category": "Preview.js"
       },
       {
         "command": "previewjs.reset",
@@ -69,7 +74,7 @@
     ],
     "keybindings": [
       {
-        "command": "previewjs.open",
+        "command": "previewjs.start",
         "key": "ctrl+k v",
         "mac": "cmd+k v",
         "when": "previewjs.componentsDetected"
@@ -79,7 +84,7 @@
       "editor/title": [
         {
           "when": "previewjs.componentsDetected",
-          "command": "previewjs.open",
+          "command": "previewjs.start",
           "group": "navigation"
         }
       ]

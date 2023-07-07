@@ -29,8 +29,8 @@ fun api(baseUrl: String): PreviewJsApi {
 }
 
 interface PreviewJsApi {
-    @GET("/health")
-    suspend fun checkHealth(): CheckHealthResponse
+    @GET("/previewjs/info")
+    suspend fun info(): InfoResponse
 
     @POST("/workspaces/get")
     suspend fun getWorkspace(@Body req: GetWorkspaceRequest): GetWorkspaceResponse
@@ -51,8 +51,10 @@ interface PreviewJsApi {
     suspend fun updatePendingFile(@Body req: UpdatePendingFileRequest): UpdatePendingFileResponse
 }
 
-data class CheckHealthResponse(
-    val ready: Boolean
+data class InfoResponse(
+    val loaderInstallDir: String,
+    val packageName: String,
+    val versionCode: String
 )
 
 data class GetWorkspaceRequest(

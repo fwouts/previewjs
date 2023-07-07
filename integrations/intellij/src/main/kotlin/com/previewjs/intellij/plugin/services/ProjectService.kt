@@ -25,6 +25,7 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.openapi.wm.WindowManager
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener
 import com.intellij.psi.PsiFile
 import com.intellij.ui.content.ContentFactory
@@ -36,6 +37,7 @@ import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
+import com.previewjs.intellij.plugin.statusbar.OpenMenuStatusBarWidget
 import org.apache.commons.lang.StringUtils
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
@@ -53,6 +55,7 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     private val app = ApplicationManager.getApplication()
+    private val statusBar = WindowManager.getInstance().getStatusBar(project)
     private val smallLogo = IconLoader.getIcon("/logo.svg", javaClass)
     private val service = app.getService(PreviewJsSharedService::class.java)
     private var consoleView: ConsoleView? = null
@@ -60,6 +63,8 @@ class ProjectService(private val project: Project) : Disposable {
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var previewToolWindowActive = false
+
+    @Volatile
     private var currentPreviewWorkspaceId: String? = null
     private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
     private var pendingFileChanges = mutableMapOf<String, String>()
@@ -310,13 +315,17 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
+            OpenMenuStatusBarWidget(
+                url = previewBaseUrl,
+                onStop = { closePreview() },
+                onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
+            ).install(statusBar)
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {
                     browser = JBCefBrowser()
                     previewBrowser = browser
-                    Disposer.register(this@ProjectService, browser)
                     val browserBase: JBCefBrowserBase = browser
                     val linkHandler = JBCefJSQuery.create(browserBase)
                     linkHandler.addHandler { link ->
@@ -340,6 +349,8 @@ class ProjectService(private val project: Project) : Disposable {
                         browser.cefBrowser
                     )
                     Disposer.register(browser, linkHandler)
+                }
+                if (previewToolWindow == null) {
                     previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
                         TOOL_WINDOW_ID
                     ) {
@@ -364,7 +375,7 @@ class ProjectService(private val project: Project) : Disposable {
                         0
                     )
                 } else {
-                    browser.loadURL(previewUrl)
+                    browser.loadURL("$previewUrl#panel")
                 }
                 previewToolWindow?.show()
             }
@@ -373,17 +384,34 @@ class ProjectService(private val project: Project) : Disposable {
         })
     }
 
-    override fun dispose() {
-        previewBrowser = null
+    fun closePreview(processKilled: Boolean = false) {
+        @Suppress("UnstableApiUsage")
+        statusBar.removeWidget(OpenMenuStatusBarWidget.ID)
+        previewToolWindow?.remove()
         previewToolWindow = null
+        previewBrowser?.let {
+            Disposer.dispose(it)
+        }
+        previewBrowser = null
+        currentPreviewWorkspaceId?.let { workspaceId ->
+            if (processKilled) {
+                return
+            }
+            service.enqueueAction(project, { api ->
+                api.stopPreview(StopPreviewRequest(workspaceId = workspaceId))
+            }, {
+                "Warning: unable to close preview"
+            })
+        }
+        currentPreviewWorkspaceId = null
+    }
+
+    override fun dispose() {
+        closePreview()
         consoleView = null
         consoleToolWindow = null
-        service.enqueueAction(project, { api ->
-            currentPreviewWorkspaceId?.let {
-                api.stopPreview(StopPreviewRequest(workspaceId = it))
-            }
+        service.enqueueAction(project, {
             service.disposeWorkspaces(project)
-            currentPreviewWorkspaceId = null
         }, {
             "Warning: unable to dispose of workspaces"
         })

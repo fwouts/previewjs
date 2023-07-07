@@ -1,5 +1,4 @@
 import vscode from "vscode";
-import { ensurePreviewServerStopped } from "./preview-server";
 import type { PreviewJsState } from "./state";
 
 export function updatePreviewPanel(
@@ -46,7 +45,6 @@ export function updatePreviewPanel(
     });
     previewPanel.onDidDispose(() => {
       state.previewPanel = null;
-      ensurePreviewServerStopped(state).catch(onError);
     });
     previewPanel.webview.html = `<!DOCTYPE html>
   <html>
@@ -75,7 +73,9 @@ export function updatePreviewPanel(
         let iframe;
         window.addEventListener("load", () => {
           iframe = document.getElementById('preview-iframe');
-          iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(componentId)}";
+          iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(
+      componentId
+    )}#panel";
         });
         window.addEventListener("message", (event) => {
           const data = event.data;
@@ -83,7 +83,7 @@ export function updatePreviewPanel(
             if (iframe.src.startsWith(data.previewBaseUrl)) {
               iframe.contentWindow.postMessage(data, data.previewBaseUrl);
             } else {
-              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.componentId)}\`;
+              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.componentId)}#panel\`;
             }
           } else {
             // Other messages come from the preview iframe.
