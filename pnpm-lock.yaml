@@ -596,8 +596,8 @@ importers:
         specifier: ^2.0.15
         version: link:../../vfs
       '@vitejs/plugin-react':
-        specifier: ^4.0.2
-        version: 4.0.2(vite@4.4.2)
+        specifier: ^4.0.3
+        version: 4.0.3(vite@4.4.2)
       typescript:
         specifier: ^5.1.6
         version: 5.1.6
@@ -3085,8 +3085,8 @@ importers:
         specifier: ^18.2.6
         version: 18.2.6
       '@vitejs/plugin-react':
-        specifier: ^4.0.2
-        version: 4.0.2(vite@4.4.2)
+        specifier: ^4.0.3
+        version: 4.0.3(vite@4.4.2)
       playwright:
         specifier: ^1.35.1
         version: 1.35.1
@@ -3497,19 +3497,6 @@ packages:
     dependencies:
       '@babel/compat-data': 7.22.5
       '@babel/core': 7.21.8
-      '@babel/helper-validator-option': 7.22.5
-      browserslist: 4.21.5
-      lru-cache: 5.1.1
-      semver: 6.3.0
-
-  /@babel/helper-compilation-targets@7.21.5(@babel/core@7.22.5):
-    resolution: {integrity: sha512-1RkbFGUKex4lvsB9yhIfWltJM5cZKUftB2eNajaDv3dCMEp49iBG0K14uH8NnX9IPux2+mK7JGEOB0jn48/J6w==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/compat-data': 7.22.5
-      '@babel/core': 7.22.5
       '@babel/helper-validator-option': 7.22.5
       browserslist: 4.21.5
       lru-cache: 5.1.1
@@ -6725,11 +6712,11 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.21.9
+      '@babel/compat-data': 7.22.5
       '@babel/core': 7.22.5
-      '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.22.5)
-      '@babel/helper-plugin-utils': 7.21.5
-      '@babel/helper-validator-option': 7.21.0
+      '@babel/helper-compilation-targets': 7.22.5(@babel/core@7.22.5)
+      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-validator-option': 7.22.5
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.22.5)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.22.5)
       '@babel/plugin-proposal-async-generator-functions': 7.20.7(@babel/core@7.22.5)
@@ -18070,8 +18057,8 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-react@4.0.2(vite@4.4.2):
-    resolution: {integrity: sha512-zbnVp3Esfg33zDaoLrjxG+p/dPiOtpvJA+1oOEQwSxMMTRL9zi1eghIcd2WtLjkcKnPsa3S15LzS/OzDn2BOCA==}
+  /@vitejs/plugin-react@4.0.3(vite@4.4.2):
+    resolution: {integrity: sha512-pwXDog5nwwvSIzwrvYYmA2Ljcd/ZNlcsSG2Q9CNDBwnsd55UGAyr2doXtB5j+2uymRCnCfExlznzzSFbBRcoCg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0
@@ -18091,9 +18078,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.21.8
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
+      '@babel/core': 7.22.5
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
       vite: 4.0.4(@types/node@20.4.1)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18107,9 +18094,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.21.8
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
+      '@babel/core': 7.22.5
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
       vite: 4.3.9(@types/node@20.4.1)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18377,6 +18364,23 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.5):
+    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
+    dependencies:
+      '@babel/helper-module-imports': 7.22.5
+      '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.5)
+      '@babel/template': 7.22.5
+      '@babel/traverse': 7.22.5
+      '@babel/types': 7.22.5
+      '@vue/babel-helper-vue-transform-on': 1.0.2
+      camelcase: 6.3.0
+      html-tags: 3.2.0
+      svg-tags: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
+    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.21.8):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
@@ -30505,7 +30509,7 @@ packages:
     resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
     engines: {node: '>=12'}
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.14
+      '@jridgewell/sourcemap-codec': 1.4.15
 
   /magic-string@0.30.0:
     resolution: {integrity: sha512-LA+31JYDJLs82r2ScLrlz1GjSgu66ZV518eyWT+S8VhyQn/JL0u9MeBOvQMGYiPk1DBiSN9DDMOcXvigJZaViQ==}
