@@ -169,7 +169,7 @@ async function detectComponentsCore(
 export function detectedComponentToApiComponent(
   component: AnalyzableComponent
 ): RPCs.Component {
-  const [start, end] = component.offsets[0]!;
+  const [start, end] = component.offsets;
   return {
     componentId: component.componentId,
     start,

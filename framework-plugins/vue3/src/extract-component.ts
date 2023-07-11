@@ -33,7 +33,7 @@ export function extractVueComponents(
           filePath: path.relative(rootDirPath, vueAbsoluteFilePath),
           name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
         }),
-        offsets: [[0, fileEntry.size()]],
+        offsets: [0, fileEntry.size()],
         info: {
           kind: "component",
           exported: true,
@@ -152,7 +152,7 @@ export function extractVueComponents(
           filePath: path.relative(rootDirPath, absoluteFilePath),
           name,
         }),
-        offsets: [[statement.getStart(), statement.getEnd()]],
+        offsets: [statement.getStart(), statement.getEnd()],
         info,
       });
     }

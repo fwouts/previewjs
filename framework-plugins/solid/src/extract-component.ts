@@ -118,7 +118,7 @@ export function extractSolidComponents(
           filePath: path.relative(rootDirPath, absoluteFilePath),
           name,
         }),
-        offsets: [[statement.getStart(), statement.getEnd()]],
+        offsets: [statement.getStart(), statement.getEnd()],
         info,
       });
     }

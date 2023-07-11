@@ -37,7 +37,7 @@ export interface FrameworkPlugin {
 
 export interface AnalyzableComponent {
   readonly componentId: string;
-  readonly offsets: Array<[start: number, end: number]>;
+  readonly offsets: [start: number, end: number];
   readonly info: ComponentTypeInfo;
 }
 

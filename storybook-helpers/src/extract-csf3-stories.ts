@@ -67,7 +67,7 @@ export function extractCsf3Stories(
           filePath: path.relative(rootDirPath, sourceFile.fileName),
           name,
         }),
-        offsets: [[statement.getStart(), statement.getEnd()]],
+        offsets: [statement.getStart(), statement.getEnd()],
         info: {
           kind: "story",
           args: args
