@@ -1,5 +1,8 @@
-import { generateComponentId } from "@previewjs/api";
-import type { AnalyzableComponent, ComponentAnalysis } from "@previewjs/core";
+import {
+  generateComponentId,
+  type ComponentProps,
+  type StoryComponent,
+} from "@previewjs/component-detection-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import path from "path";
@@ -11,14 +14,14 @@ export function extractCsf3Stories(
   rootDirPath: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
-  analyzeComponent: (componentId: string) => Promise<ComponentAnalysis>
-): AnalyzableComponent[] {
+  extractProps: (componentId: string) => Promise<ComponentProps>
+): StoryComponent[] {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
     return [];
   }
 
-  const components: AnalyzableComponent[] = [];
+  const components: StoryComponent[] = [];
   for (const statement of sourceFile.statements) {
     if (!ts.isVariableStatement(statement)) {
       continue;
@@ -63,27 +66,25 @@ export function extractCsf3Stories(
         storyComponent || storiesInfo.component || null
       );
       components.push({
+        kind: "story",
         componentId: generateComponentId({
           filePath: path.relative(rootDirPath, sourceFile.fileName),
           name,
         }),
-        offsets: [[statement.getStart(), statement.getEnd()]],
-        info: {
-          kind: "story",
-          args: args
-            ? {
-                start: args.getStart(),
-                end: args.getEnd(),
-                value: parseSerializableValue(args),
-              }
-            : null,
-          associatedComponent: associatedComponentId
-            ? {
-                componentId: associatedComponentId,
-                analyze: () => analyzeComponent(associatedComponentId),
-              }
-            : null,
-        },
+        offsets: [statement.getStart(), statement.getEnd()],
+        args: args
+          ? {
+              start: args.getStart(),
+              end: args.getEnd(),
+              value: parseSerializableValue(args),
+            }
+          : null,
+        associatedComponent: associatedComponentId
+          ? {
+              componentId: associatedComponentId,
+              extractProps: () => extractProps(associatedComponentId),
+            }
+          : null,
       });
     }
   }

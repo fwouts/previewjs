@@ -1,6 +1,6 @@
 {
-  "name": "@previewjs/storybook-helpers",
-  "version": "3.0.0",
+  "name": "@previewjs/component-detection-api",
+  "version": "0.0.0",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -18,21 +18,16 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && unbuild",
-    "test": "vitest"
+    "build": "tsc && unbuild"
   },
   "dependencies": {
-    "@previewjs/api": "^13.0.0",
-    "@previewjs/component-detection-api": "workspace:^0.0.0",
-    "@previewjs/core": "^23.0.1",
     "@previewjs/serializable-values": "^7.0.2",
     "@previewjs/type-analyzer": "^8.0.2",
-    "typescript": "^5.1.6"
+    "@previewjs/vfs": "^2.0.15",
+    "pino": "^8.14.1"
   },
   "devDependencies": {
-    "@previewjs/vfs": "workspace:*",
     "unbuild": "^1.2.1",
-    "vite": "^4.4.2",
-    "vitest": "^0.33.0"
+    "typescript": "^5.1.6"
   }
 }
