@@ -501,8 +501,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1
       preact:
-        specifier: ^10.15.1
-        version: 10.15.1
+        specifier: ^10.16.0
+        version: 10.16.0
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -673,8 +673,8 @@ importers:
         specifier: ^2.0.15
         version: link:../../vfs
       '@vitejs/plugin-react':
-        specifier: ^4.0.2
-        version: 4.0.2(vite@4.4.2)
+        specifier: ^4.0.3
+        version: 4.0.3(vite@4.4.2)
       typescript:
         specifier: ^5.1.6
         version: 5.1.6
@@ -2973,8 +2973,8 @@ importers:
         specifier: ^0.18.11
         version: 0.18.11
       nodemon:
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^3.0.1
+        version: 3.0.1
       open:
         specifier: ^9.1.0
         version: 9.1.0
@@ -3075,8 +3075,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1
       pnpm:
-        specifier: ^8.6.6
-        version: 8.6.6
+        specifier: ^8.6.7
+        version: 8.6.7
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -3162,8 +3162,8 @@ importers:
         specifier: ^18.2.6
         version: 18.2.6
       '@vitejs/plugin-react':
-        specifier: ^4.0.2
-        version: 4.0.2(vite@4.4.2)
+        specifier: ^4.0.3
+        version: 4.0.3(vite@4.4.2)
       playwright:
         specifier: ^1.35.1
         version: 1.35.1
@@ -6792,11 +6792,11 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.21.9
+      '@babel/compat-data': 7.22.5
       '@babel/core': 7.22.5
       '@babel/helper-compilation-targets': 7.22.5(@babel/core@7.22.5)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.21.0
+      '@babel/helper-validator-option': 7.22.5
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.22.5)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.22.5)
       '@babel/plugin-proposal-async-generator-functions': 7.20.7(@babel/core@7.22.5)
@@ -17417,7 +17417,7 @@ packages:
       graphemer: 1.4.0
       ignore: 5.2.4
       natural-compare-lite: 1.4.0
-      semver: 7.5.1
+      semver: 7.5.3
       tsutils: 3.21.0(typescript@4.9.5)
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -18048,8 +18048,8 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-react@4.0.2(vite@4.4.2):
-    resolution: {integrity: sha512-zbnVp3Esfg33zDaoLrjxG+p/dPiOtpvJA+1oOEQwSxMMTRL9zi1eghIcd2WtLjkcKnPsa3S15LzS/OzDn2BOCA==}
+  /@vitejs/plugin-react@4.0.3(vite@4.4.2):
+    resolution: {integrity: sha512-pwXDog5nwwvSIzwrvYYmA2Ljcd/ZNlcsSG2Q9CNDBwnsd55UGAyr2doXtB5j+2uymRCnCfExlznzzSFbBRcoCg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0
@@ -18069,9 +18069,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.21.8
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
+      '@babel/core': 7.22.5
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
       vite: 4.0.4(@types/node@20.4.1)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18085,9 +18085,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.21.8
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
+      '@babel/core': 7.22.5
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
       vite: 4.3.9(@types/node@20.4.1)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18355,6 +18355,23 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.5):
+    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
+    dependencies:
+      '@babel/helper-module-imports': 7.22.5
+      '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.5)
+      '@babel/template': 7.22.5
+      '@babel/traverse': 7.22.5
+      '@babel/types': 7.22.5
+      '@vue/babel-helper-vue-transform-on': 1.0.2
+      camelcase: 6.3.0
+      html-tags: 3.2.0
+      svg-tags: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
+    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.21.8):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
@@ -32134,8 +32151,8 @@ packages:
     engines: {node: '>=0.12.0'}
     dev: false
 
-  /nodemon@3.0.0:
-    resolution: {integrity: sha512-yU9NSp3n+DUSt3S2LmtXss+4kOsmC8ZLpXeGe5mKuLdqkoSRwmaplk2lo5cmve7TPw5MgMcd2cazL0KpUscoSQ==}
+  /nodemon@3.0.1:
+    resolution: {integrity: sha512-g9AZ7HmkhQkqXkRc20w+ZfQ73cHLbE8hnPbtaFbFtCumZsjyMhKk9LajQ07U5Ux28lvFjZ5X7HvWR1xzU8jHVw==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
@@ -33552,8 +33569,8 @@ packages:
       - typescript
     dev: true
 
-  /pnpm@8.6.6:
-    resolution: {integrity: sha512-a51bIJyCmvstgCvsWf6SgZnsXfWmwAW1pHWEaH2gN3vqQGC58yLFL/oKBwcZWH0mjpMzBWRXdS9dLdN6GAK2Rw==}
+  /pnpm@8.6.7:
+    resolution: {integrity: sha512-vRIWpD/L4phf9Bk2o/O2TDR8fFoJnpYrp2TKqTIZF/qZ2/rgL3qKXzHofHgbXsinwMoSEigz28sqk3pQ+yMEQQ==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
@@ -35823,8 +35840,8 @@ packages:
   /preact@10.15.0:
     resolution: {integrity: sha512-nZSa8M2R2m1n7nJSBlzDpxRJaIsejrTO1vlFbdpFvyC8qM1iU+On2y0otfoUm6SRB5o0lF0CKDFxg6grEFU0iQ==}
 
-  /preact@10.15.1:
-    resolution: {integrity: sha512-qs2ansoQEwzNiV5eAcRT1p1EC/dmEzaATVDJNiB3g2sRDWdA7b7MurXdJjB2+/WQktGWZwxvDrnuRFbWuIr64g==}
+  /preact@10.16.0:
+    resolution: {integrity: sha512-XTSj3dJ4roKIC93pald6rWuB2qQJO9gO2iLLyTe87MrjQN+HklueLsmskbywEWqCHlclgz3/M4YLL2iBr9UmMA==}
     dev: true
 
   /prebuild-install@7.1.1:

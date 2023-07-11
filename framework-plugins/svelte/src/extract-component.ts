@@ -24,7 +24,7 @@ export async function extractSvelteComponents(
           filePath: path.relative(rootDirPath, absoluteFilePath),
           name: inferComponentNameFromSveltePath(absoluteFilePath),
         }),
-        offsets: [[0, (await entry.read()).length]],
+        offsets: [0, (await entry.read()).length],
         info: {
           kind: "component",
           exported: true,
