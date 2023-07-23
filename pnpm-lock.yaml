@@ -163,8 +163,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       playwright:
         specifier: ^1.36.1
         version: 1.36.1
@@ -421,8 +421,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       preact:
         specifier: ^10.16.0
         version: 10.16.0
@@ -630,8 +630,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -2102,8 +2102,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       solid-js:
         specifier: ^1.7.8
         version: 1.7.8
@@ -2251,8 +2251,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
@@ -2528,8 +2528,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -2707,8 +2707,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -2995,8 +2995,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       pino-pretty:
-        specifier: ^10.0.1
-        version: 10.0.1
+        specifier: ^10.1.0
+        version: 10.1.0
       pnpm:
         specifier: ^8.6.9
         version: 8.6.9
@@ -6796,7 +6796,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.5)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.5)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.5)
-      '@babel/types': 7.22.5
+      '@babel/types': 7.21.5
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.5)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.5)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.5)
@@ -18333,9 +18333,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.22.5
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
+      '@babel/core': 7.21.8
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
       vite: 4.0.4(@types/node@20.4.2)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18349,9 +18349,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.22.5
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
+      '@babel/core': 7.21.8
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
       vite: 4.3.9(@types/node@20.4.2)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18619,23 +18619,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-
-  /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.5):
-    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
-    dependencies:
-      '@babel/helper-module-imports': 7.22.5
-      '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.5)
-      '@babel/template': 7.22.5
-      '@babel/traverse': 7.22.5
-      '@babel/types': 7.22.5
-      '@vue/babel-helper-vue-transform-on': 1.0.2
-      camelcase: 6.3.0
-      html-tags: 3.2.0
-      svg-tags: 1.0.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
-    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.21.8):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
@@ -33786,8 +33769,8 @@ packages:
       readable-stream: 4.4.0
       split2: 4.2.0
 
-  /pino-pretty@10.0.1:
-    resolution: {integrity: sha512-yrn00+jNpkvZX/NrPVCPIVHAfTDy3ahF0PND9tKqZk4j9s+loK8dpzrJj4dGb7i+WLuR50ussuTAiWoMWU+qeA==}
+  /pino-pretty@10.1.0:
+    resolution: {integrity: sha512-9gAgVHCVTEq0ThcjoXkOICYQgdqh1h90WSuVAnNeCrRrefJInUvMbpDfy6PlsI29Nbu9UW9CGkUHztrR1A9N+A==}
     hasBin: true
     dependencies:
       colorette: 2.0.20
@@ -42885,7 +42868,7 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.16.14
-      esbuild: 0.18.16
+      esbuild: 0.18.15
       postcss: 8.4.26
       rollup: 3.26.1
     optionalDependencies:
