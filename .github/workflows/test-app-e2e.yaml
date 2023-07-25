@@ -53,7 +53,7 @@ jobs:
           key: ${{ runner.os }}-full-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-full-
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: pnpm/action-setup@v2.3.0
         with:
           run_install: true
       - run: pnpm turbo build
