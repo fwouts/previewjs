@@ -35,8 +35,8 @@ importers:
         specifier: ^8.45.0
         version: 8.45.0
       eslint-config-prettier:
-        specifier: ^8.8.0
-        version: 8.8.0(eslint@8.45.0)
+        specifier: ^8.9.0
+        version: 8.9.0(eslint@8.45.0)
       execa:
         specifier: ^7.2.0
         version: 7.2.0
@@ -18332,9 +18332,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.22.5
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
+      '@babel/core': 7.21.8
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
       vite: 4.0.4(@types/node@20.4.5)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18348,9 +18348,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.22.5
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.5)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.5)
+      '@babel/core': 7.21.8
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
       vite: 4.3.9(@types/node@20.4.5)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18618,23 +18618,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-
-  /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.5):
-    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
-    dependencies:
-      '@babel/helper-module-imports': 7.21.4
-      '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.5)
-      '@babel/template': 7.22.5
-      '@babel/traverse': 7.22.5
-      '@babel/types': 7.22.5
-      '@vue/babel-helper-vue-transform-on': 1.0.2
-      camelcase: 6.3.0
-      html-tags: 3.2.0
-      svg-tags: 1.0.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
-    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.21.8):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
@@ -25357,8 +25340,8 @@ packages:
     optionalDependencies:
       source-map: 0.6.1
 
-  /eslint-config-prettier@8.8.0(eslint@8.45.0):
-    resolution: {integrity: sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA==}
+  /eslint-config-prettier@8.9.0(eslint@8.45.0):
+    resolution: {integrity: sha512-+sbni7NfVXnOpnRadUA8S28AUlsZt9GjgFvABIRL9Hkn8KqNzOp+7Lw4QWtrwn20KzU3wqu1QoOj2m+7rKRqkA==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
