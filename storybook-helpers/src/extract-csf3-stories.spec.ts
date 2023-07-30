@@ -414,7 +414,7 @@ export const NoArgs = {}
       resolver.sourceFile(absoluteFilePath)!,
       () =>
         Promise.resolve({
-          propsType: UNKNOWN_TYPE,
+          props: UNKNOWN_TYPE,
           types: {},
         })
     );

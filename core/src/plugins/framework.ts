@@ -32,37 +32,38 @@ export interface FrameworkPlugin {
     reader: Reader,
     typeAnalyzer: TypeAnalyzer,
     absoluteFilePaths: string[]
-  ) => Promise<AnalyzableComponent[]>;
+  ) => Promise<Component[]>;
 }
 
-export interface AnalyzableComponent {
-  readonly componentId: string;
-  readonly offsets: [start: number, end: number];
-  readonly info: ComponentTypeInfo;
+export interface BaseComponent {
+  componentId: string;
+  offsets: [start: number, end: number];
 }
 
-export type ComponentTypeInfo =
-  | {
-      kind: "component";
-      readonly exported: boolean;
-      readonly analyze: () => Promise<ComponentAnalysis>;
-    }
-  | {
-      kind: "story";
-      readonly args: {
-        start: number;
-        end: number;
-        value: SerializableValue;
-      } | null;
-      readonly associatedComponent: StoryAssociatedComponent | null;
-    };
+export type Component = FrameworkComponent | StoryComponent;
 
-export type StoryAssociatedComponent = {
-  readonly componentId: string;
-  readonly analyze: () => Promise<ComponentAnalysis>;
-};
+export interface FrameworkComponent extends BaseComponent {
+  kind: "component";
+  exported: boolean;
+  extractProps: () => Promise<ComponentProps>;
+}
 
-export interface ComponentAnalysis {
-  propsType: ValueType;
+export interface ComponentProps {
+  props: ValueType;
   types: CollectedTypes;
 }
+
+export interface StoryComponent extends BaseComponent {
+  kind: "story";
+  args: {
+    start: number;
+    end: number;
+    value: SerializableValue;
+  } | null;
+  associatedComponent: BasicFrameworkComponent | null;
+}
+
+export type BasicFrameworkComponent = Pick<
+  FrameworkComponent,
+  "componentId" | "extractProps"
+>;

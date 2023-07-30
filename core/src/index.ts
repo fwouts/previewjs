@@ -14,15 +14,15 @@ import path from "path";
 import type { Logger } from "pino";
 import { detectComponents } from "./detect-components";
 import { getFreePort } from "./get-free-port";
-import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
+import type { ComponentProps, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
-  AnalyzableComponent,
-  ComponentAnalysis,
-  ComponentTypeInfo,
+  BaseComponent,
+  Component,
+  ComponentProps,
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
@@ -84,7 +84,7 @@ export async function createWorkspace({
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     logger.debug(`Computing props for components: ${componentIds.join(", ")}`);
-    let analyze: () => Promise<ComponentAnalysis>;
+    let analyze: () => Promise<ComponentProps>;
     const detectedComponents = await frameworkPlugin.detectComponents(
       reader,
       typeAnalyzer,
@@ -113,32 +113,32 @@ export async function createWorkspace({
         const { filePath, name } = decodeComponentId(componentId);
         throw new Error(`Component ${name} not detected in ${filePath}.`);
       }
-      if (component.info.kind === "component") {
-        analyze = component.info.analyze;
+      if (component.kind === "component") {
+        analyze = component.extractProps;
       } else {
         analyze =
-          component.info.associatedComponent?.analyze ||
+          component.associatedComponent?.extractProps ||
           (() =>
             Promise.resolve({
-              propsType: UNKNOWN_TYPE,
+              props: UNKNOWN_TYPE,
               types: {},
             }));
       }
-      logger.debug(`Analyzing ${component.info.kind}: ${componentId}`);
-      const { propsType: props, types: componentTypes } = await analyze();
+      logger.debug(`Analyzing ${component.kind}: ${componentId}`);
+      const { props, types: componentTypes } = await analyze();
       logger.debug(`Done analyzing: ${componentId}`);
       components[componentId] = {
         info:
-          component.info.kind === "component"
+          component.kind === "component"
             ? {
                 kind: "component",
-                exported: component.info.exported,
+                exported: component.exported,
               }
             : {
                 kind: "story",
-                args: component.info.args,
+                args: component.args,
                 associatedComponentId:
-                  component.info.associatedComponent?.componentId || null,
+                  component.associatedComponent?.componentId || null,
               },
         props,
       };

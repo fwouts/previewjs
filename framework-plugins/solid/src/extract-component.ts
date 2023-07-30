@@ -1,5 +1,5 @@
 import { decodeComponentId, generateComponentId } from "@previewjs/api";
-import type { AnalyzableComponent, ComponentTypeInfo } from "@previewjs/core";
+import type { BaseComponent, Component } from "@previewjs/core";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
@@ -18,7 +18,7 @@ export function extractSolidComponents(
   resolver: TypeResolver,
   rootDirPath: string,
   absoluteFilePath: string
-): AnalyzableComponent[] {
+): Component[] {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -63,14 +63,15 @@ export function extractSolidComponents(
   }
 
   const storiesInfo = extractStoriesInfo(sourceFile);
-  const components: AnalyzableComponent[] = [];
+  const components: Component[] = [];
   const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
-  function extractComponentTypeInfo(
+  function extractComponent(
+    baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): ComponentTypeInfo | null {
+  ): Component | null {
     if (name === "default" && storiesInfo) {
       return null;
     }
@@ -89,6 +90,7 @@ export function extractSolidComponents(
         storiesInfo.component
       );
       return {
+        ...baseComponent,
         kind: "story",
         args: storyArgs
           ? {
@@ -102,25 +104,30 @@ export function extractSolidComponents(
     }
     if (signature) {
       return {
+        ...baseComponent,
         kind: "component",
         exported: isExported,
-        analyze: async () => analyzeSolidComponent(logger, resolver, signature),
+        extractProps: async () =>
+          analyzeSolidComponent(logger, resolver, signature),
       };
     }
     return null;
   }
 
   for (const [name, statement, node] of functions) {
-    const info = extractComponentTypeInfo(node, name);
-    if (info) {
-      components.push({
+    const component = extractComponent(
+      {
         componentId: generateComponentId({
           filePath: path.relative(rootDirPath, absoluteFilePath),
           name,
         }),
         offsets: [statement.getStart(), statement.getEnd()],
-        info,
-      });
+      },
+      node,
+      name
+    );
+    if (component) {
+      components.push(component);
     }
   }
 
@@ -138,13 +145,13 @@ export function extractSolidComponents(
           rootDirPath,
           path.join(rootDirPath, filePath)
         ).find((c) => c.componentId === componentId);
-        if (component?.info.kind !== "component") {
+        if (component?.kind !== "component") {
           return {
-            propsType: UNKNOWN_TYPE,
+            props: UNKNOWN_TYPE,
             types: {},
           };
         }
-        return component.info.analyze();
+        return component.extractProps();
       }
     ),
   ];
@@ -164,14 +171,14 @@ function extractStoryAssociatedComponent(
   return component && resolvedStoriesComponentId
     ? {
         componentId: resolvedStoriesComponentId,
-        analyze: async () => {
+        extractProps: async () => {
           const signature = extractComponentSignature(
             resolver.checker,
             component
           );
           if (!signature) {
             return {
-              propsType: UNKNOWN_TYPE,
+              props: UNKNOWN_TYPE,
               types: {},
             };
           }
