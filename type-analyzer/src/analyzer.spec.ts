@@ -34,7 +34,7 @@ import {
   unionType,
 } from ".";
 
-describe.concurrent("TypeAnalyzer", () => {
+describe("TypeAnalyzer", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 

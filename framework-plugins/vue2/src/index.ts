@@ -2,6 +2,7 @@ import type {
   AnalyzableComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
@@ -19,29 +20,32 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 2;
   },
-  async create({ rootDirPath, logger }) {
+  async create({ rootDirPath, reader, logger }) {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { default: vue2Plugin } = await import("@vitejs/plugin-vue2");
     const { default: vue2JsxPlugin } = await import("@vitejs/plugin-vue2-jsx");
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
+    const typeAnalyzer = createTypeAnalyzer({
+      rootDirPath,
+      reader: createStackedReader([
+        createVueTypeScriptReader(logger, reader),
+        createFileSystemReader({
+          mapping: {
+            from: path.join(previewDirPath, "modules"),
+            to: path.join(rootDirPath, "node_modules"),
+          },
+          watch: false,
+        }),
+      ]),
+    });
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
-      transformReader: (reader) =>
-        createStackedReader([
-          createVueTypeScriptReader(logger, reader),
-          createFileSystemReader({
-            mapping: {
-              from: path.join(previewDirPath, "modules"),
-              to: path.join(rootDirPath, "node_modules"),
-            },
-            watch: false,
-          }),
-        ]),
-      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+      typeAnalyzer,
+      detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
         );

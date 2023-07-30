@@ -6,7 +6,6 @@ import type {
 } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
-import type ts from "typescript";
 import type vite from "vite";
 import type { PackageDependencies } from "./dependencies";
 
@@ -14,6 +13,7 @@ export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
   create(options: {
     rootDirPath: string;
+    reader: Reader;
     logger: Logger;
     dependencies: PackageDependencies;
   }): Promise<FrameworkPlugin>;
@@ -24,13 +24,9 @@ export interface FrameworkPlugin {
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;
-  readonly transformReader?: (reader: Reader) => Reader;
-  readonly tsCompilerOptions?: Partial<ts.CompilerOptions>;
-  readonly specialTypes?: Record<string, ValueType>;
+  readonly typeAnalyzer: TypeAnalyzer;
   readonly viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
   readonly detectComponents: (
-    reader: Reader,
-    typeAnalyzer: TypeAnalyzer,
     absoluteFilePaths: string[]
   ) => Promise<AnalyzableComponent[]>;
 }

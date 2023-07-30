@@ -1,6 +1,5 @@
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import {
-  createTypeAnalyzer,
   objectType,
   STRING_TYPE,
   TypeAnalyzer,
@@ -24,7 +23,7 @@ const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const MY_COMPONENT_VUE = path.join(ROOT_DIR, "MyComponent.vue");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe.concurrent("extractVueComponents", () => {
+describe("extractVueComponents", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
@@ -49,14 +48,6 @@ const count = ref(0)
 `
     );
     const rootDirPath = path.join(__dirname, "virtual");
-    const frameworkPlugin = await vue3FrameworkPlugin.create({
-      rootDirPath,
-      dependencies: {},
-      logger: createLogger(
-        { level: "debug" },
-        prettyLogger({ colorize: true })
-      ),
-    });
     const reader = createStackedReader([
       createVueTypeScriptReader(memoryReader),
       createFileSystemReader({
@@ -70,11 +61,16 @@ const count = ref(0)
         watch: false,
       }), // required for TypeScript libs, e.g. Promise
     ]);
-    typeAnalyzer = createTypeAnalyzer({
+    const frameworkPlugin = await vue3FrameworkPlugin.create({
       rootDirPath,
+      dependencies: {},
       reader,
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger: createLogger(
+        { level: "debug" },
+        prettyLogger({ colorize: true })
+      ),
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {

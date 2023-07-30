@@ -1,6 +1,5 @@
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import {
-  createTypeAnalyzer,
   objectType,
   STRING_TYPE,
   TypeAnalyzer,
@@ -24,7 +23,7 @@ const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe.concurrent("extractPreactComponents", () => {
+describe("extractPreactComponents", () => {
   const logger = createLogger(
     { level: "debug" },
     prettyLogger({ colorize: true })
@@ -42,18 +41,15 @@ describe.concurrent("extractPreactComponents", () => {
     const frameworkPlugin = await reactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
       dependencies: {},
-      logger,
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
           watch: false,
         }), // required for TypeScript libs, e.g. Promise
       ]),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger,
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
