@@ -23,7 +23,7 @@ import { inferComponentNameFromSveltePath } from "./infer-component-name";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
 
-describe.concurrent("analyze Svelte component", () => {
+describe("analyze Svelte component", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;

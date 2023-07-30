@@ -32,7 +32,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe.concurrent("analyzeReactComponent", () => {
+describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;

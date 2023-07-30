@@ -23,7 +23,7 @@ const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe.concurrent("extractReactComponents", () => {
+describe("extractReactComponents", () => {
   const logger = createLogger(
     { level: "debug" },
     prettyLogger({ colorize: true })

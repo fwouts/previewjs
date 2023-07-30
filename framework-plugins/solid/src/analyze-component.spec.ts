@@ -25,7 +25,7 @@ import solidFrameworkPlugin from ".";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe.concurrent("analyzeSolidComponent", () => {
+describe("analyzeSolidComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;

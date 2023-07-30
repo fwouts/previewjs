@@ -6,23 +6,23 @@ import {
   string,
   unknown,
 } from "@previewjs/serializable-values";
+import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import {
+  NODE_TYPE,
   createTypeAnalyzer,
   functionType,
-  NODE_TYPE,
 } from "@previewjs/type-analyzer";
+import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
   createMemoryReader,
   createStackedReader,
 } from "@previewjs/vfs";
-import type { TypeAnalyzer } from "@previewjs/type-analyzer";
-import type { Reader, Writer } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { extractArgs } from "./extract-args";
 
-describe.concurrent("extractArgs", () => {
+describe("extractArgs", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
