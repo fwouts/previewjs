@@ -2,6 +2,7 @@ import type {
   AnalyzableComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -26,19 +27,24 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return major >= 17 || (major === 16 && minor >= 14);
   },
-  async create({ rootDirPath, logger, dependencies }) {
+  async create({ rootDirPath, reader, logger, dependencies }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.join(__dirname, "..", "preview");
-    return {
-      pluginApiVersion: 3,
-      name: "@previewjs/plugin-react",
-      defaultWrapperPath: "__previewjs__/Wrapper.tsx",
-      previewDirPath,
+    const typeAnalyzer = createTypeAnalyzer({
+      rootDirPath,
+      reader,
       specialTypes: REACT_SPECIAL_TYPES,
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
         jsxImportSource: "react",
       },
+    });
+    return {
+      pluginApiVersion: 3,
+      name: "@previewjs/plugin-react",
+      defaultWrapperPath: "__previewjs__/Wrapper.tsx",
+      previewDirPath,
+      typeAnalyzer,
       transformReader: (reader) =>
         createStackedReader([
           reader,
@@ -50,7 +56,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
             watch: false,
           }),
         ]),
-      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+      detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {

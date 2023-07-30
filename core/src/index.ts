@@ -5,7 +5,7 @@ import type {
   TypeAnalyzer,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { createTypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
@@ -72,30 +72,17 @@ export async function createWorkspace({
   if (frameworkPlugin.transformReader) {
     reader = frameworkPlugin.transformReader(reader);
   }
-  const collected: CollectedTypes = {};
-  const typeAnalyzer = createTypeAnalyzer({
-    reader,
-    rootDirPath,
-    collected,
-    specialTypes: frameworkPlugin.specialTypes,
-    tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-    warn: logger.warn.bind(logger),
-  });
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     logger.debug(`Computing props for components: ${componentIds.join(", ")}`);
     let analyze: () => Promise<ComponentAnalysis>;
-    const detectedComponents = await frameworkPlugin.detectComponents(
-      reader,
-      typeAnalyzer,
-      [
-        ...new Set(
-          componentIds.map((c) =>
-            path.join(rootDirPath, decodeComponentId(c).filePath)
-          )
-        ),
-      ]
-    );
+    const detectedComponents = await frameworkPlugin.detectComponents([
+      ...new Set(
+        componentIds.map((c) =>
+          path.join(rootDirPath, decodeComponentId(c).filePath)
+        )
+      ),
+    ]);
     logger.debug(`Detected ${detectedComponents.length} components`);
     const componentIdToDetectedComponent = Object.fromEntries(
       detectedComponents.map((c) => [c.componentId, c])
@@ -150,7 +137,7 @@ export async function createWorkspace({
     };
   });
   router.registerRPC(RPCs.DetectComponents, (options) =>
-    detectComponents(logger, workspace, frameworkPlugin, typeAnalyzer, options)
+    detectComponents(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
@@ -175,11 +162,7 @@ export async function createWorkspace({
     middlewares,
     onFileChanged: (absoluteFilePath) => {
       const filePath = path.relative(rootDirPath, absoluteFilePath);
-      for (const name of Object.keys(collected)) {
-        if (name.startsWith(`${filePath}:`)) {
-          delete collected[name];
-        }
-      }
+      frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
     },
   });
 
@@ -197,7 +180,7 @@ export async function createWorkspace({
   const workspace: Workspace = {
     rootDirPath,
     reader,
-    typeAnalyzer,
+    typeAnalyzer: frameworkPlugin.typeAnalyzer,
     detectComponents: (options = {}) =>
       localRpc(RPCs.DetectComponents, options),
     computeProps: (options) => localRpc(RPCs.ComputeProps, options),
@@ -216,7 +199,11 @@ export async function createWorkspace({
       },
     },
     dispose: async () => {
-      typeAnalyzer.dispose();
+      // TODO: Consider exposing a dispose() method on FrameworkPlugin instead.
+      //
+      // We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
+      // dispose() should not be called here?
+      frameworkPlugin.typeAnalyzer.dispose();
     },
   };
   if (setupEnvironment) {

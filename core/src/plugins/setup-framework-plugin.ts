@@ -1,3 +1,4 @@
+import type { Reader } from "@previewjs/vfs";
 import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
@@ -10,10 +11,12 @@ const require = createRequire(import.meta.url);
 export async function setupFrameworkPlugin({
   rootDirPath,
   frameworkPlugins,
+  reader,
   logger,
 }: {
   rootDirPath: string;
   frameworkPlugins: FrameworkPluginFactory[];
+  reader: Reader;
   logger: Logger;
 }) {
   const dependencies = await extractPackageDependencies(logger, rootDirPath);
@@ -21,8 +24,9 @@ export async function setupFrameworkPlugin({
     if (await candidate.isCompatible(dependencies)) {
       return candidate.create({
         rootDirPath,
-        dependencies,
+        reader,
         logger,
+        dependencies,
       });
     }
   }

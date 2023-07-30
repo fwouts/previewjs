@@ -1,5 +1,4 @@
 import { RPCs, decodeComponentId } from "@previewjs/api";
-import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
@@ -31,7 +30,6 @@ export function detectComponents(
   logger: Logger,
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
-  typeAnalyzer: TypeAnalyzer,
   options: {
     filePaths?: string[];
     forceRefresh?: boolean;
@@ -120,7 +118,6 @@ export function detectComponents(
       logger,
       workspace,
       frameworkPlugin,
-      typeAnalyzer,
       changedAbsoluteFilePaths
     );
     const components = [...recycledComponents, ...refreshedComponents];
@@ -140,7 +137,6 @@ async function detectComponentsCore(
   logger: Logger,
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
-  typeAnalyzer: TypeAnalyzer,
   changedAbsoluteFilePaths: string[]
 ): Promise<RPCs.Component[]> {
   const components: RPCs.Component[] = [];
@@ -155,8 +151,6 @@ async function detectComponentsCore(
       .join("\n- ")}`
   );
   const found = await frameworkPlugin.detectComponents(
-    workspace.reader,
-    typeAnalyzer,
     changedAbsoluteFilePaths
   );
   logger.debug(`Done running component detection`);
