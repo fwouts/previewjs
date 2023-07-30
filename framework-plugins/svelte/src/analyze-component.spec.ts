@@ -19,7 +19,6 @@ import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import svelteFrameworkPlugin from ".";
 import { inferComponentNameFromSveltePath } from "./infer-component-name";
-import { createSvelteTypeScriptReader } from "./svelte-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
@@ -34,21 +33,19 @@ describe.concurrent("analyze Svelte component", () => {
     frameworkPlugin = await svelteFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      reader: createSvelteTypeScriptReader(
-        createStackedReader([
-          memoryReader,
-          createFileSystemReader({
-            watch: false,
-          }), // required for TypeScript libs, e.g. Promise
-          createFileSystemReader({
-            mapping: {
-              from: path.join(__dirname, "..", "preview", "modules"),
-              to: path.join(ROOT_DIR_PATH, "node_modules"),
-            },
-            watch: false,
-          }),
-        ])
-      ),
+      reader: createStackedReader([
+        memoryReader,
+        createFileSystemReader({
+          watch: false,
+        }), // required for TypeScript libs, e.g. Promise
+        createFileSystemReader({
+          mapping: {
+            from: path.join(__dirname, "..", "preview", "modules"),
+            to: path.join(ROOT_DIR_PATH, "node_modules"),
+          },
+          watch: false,
+        }),
+      ]),
       logger: createLogger(
         { level: "debug" },
         prettyLogger({ colorize: true })
