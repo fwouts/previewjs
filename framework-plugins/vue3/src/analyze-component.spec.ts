@@ -2,7 +2,6 @@ import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   BOOLEAN_TYPE,
-  createTypeAnalyzer,
   objectType,
   optionalType,
   STRING_TYPE,
@@ -35,13 +34,6 @@ describe.concurrent("analyze Vue 3 component", () => {
     frameworkPlugin = await vue3FrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger(
-        { level: "debug" },
-        prettyLogger({ colorize: true })
-      ),
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
         createStackedReader([
           memoryReader,
@@ -57,8 +49,12 @@ describe.concurrent("analyze Vue 3 component", () => {
           }),
         ])
       ),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger: createLogger(
+        { level: "debug" },
+        prettyLogger({ colorize: true })
+      ),
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -314,9 +310,7 @@ export default defineComponent({
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromVuePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
-        MAIN_FILE,
-      ])
+      await frameworkPlugin.detectComponents([MAIN_FILE])
     ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

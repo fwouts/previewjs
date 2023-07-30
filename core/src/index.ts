@@ -69,9 +69,6 @@ export async function createWorkspace({
       `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
     );
   }
-  if (frameworkPlugin.transformReader) {
-    reader = frameworkPlugin.transformReader(reader);
-  }
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     logger.debug(`Computing props for components: ${componentIds.join(", ")}`);

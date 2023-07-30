@@ -1,6 +1,5 @@
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import {
-  createTypeAnalyzer,
   objectType,
   STRING_TYPE,
   TypeAnalyzer,
@@ -40,18 +39,15 @@ describe.concurrent("extractSolidComponents", () => {
     const frameworkPlugin = await solidFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
       dependencies: {},
-      logger,
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
           watch: false,
         }), // required for TypeScript libs, e.g. Promise
       ]),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger,
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {

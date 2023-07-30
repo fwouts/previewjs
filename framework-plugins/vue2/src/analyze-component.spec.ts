@@ -1,7 +1,6 @@
 import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
-  createTypeAnalyzer,
   literalType,
   NUMBER_TYPE,
   objectType,
@@ -43,10 +42,6 @@ describe.concurrent("analyze Vue 2 component", () => {
     frameworkPlugin = await vue2FrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger,
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR_PATH,
       reader: createVueTypeScriptReader(
         logger,
         createStackedReader([
@@ -63,8 +58,9 @@ describe.concurrent("analyze Vue 2 component", () => {
           }),
         ])
       ),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger,
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -198,9 +194,7 @@ export default class App extends Vue {
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromVuePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
-        MAIN_FILE,
-      ])
+      await frameworkPlugin.detectComponents([MAIN_FILE])
     ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

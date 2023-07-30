@@ -2,6 +2,7 @@ import type {
   AnalyzableComponent,
   FrameworkPluginFactory,
 } from "@previewjs/core";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
 import url from "url";
@@ -18,20 +19,25 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 1;
   },
-  async create({ rootDirPath, logger }) {
+  async create({ rootDirPath, reader, logger }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
-    return {
-      pluginApiVersion: 3,
-      name: "@previewjs/plugin-solid",
-      defaultWrapperPath: "__previewjs__/Wrapper.tsx",
-      previewDirPath,
+    const typeAnalyzer = createTypeAnalyzer({
+      rootDirPath,
+      reader,
       specialTypes: SOLID_SPECIAL_TYPES,
       tsCompilerOptions: {
         jsx: ts.JsxEmit.Preserve,
         jsxImportSource: "solid-js",
       },
-      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+    });
+    return {
+      pluginApiVersion: 3,
+      name: "@previewjs/plugin-solid",
+      defaultWrapperPath: "__previewjs__/Wrapper.tsx",
+      previewDirPath,
+      typeAnalyzer,
+      detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: AnalyzableComponent[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {

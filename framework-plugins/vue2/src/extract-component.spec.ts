@@ -1,6 +1,5 @@
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import {
-  createTypeAnalyzer,
   objectType,
   STRING_TYPE,
   TypeAnalyzer,
@@ -58,11 +57,6 @@ export default {
 `
     );
     const rootDirPath = path.join(__dirname, "virtual");
-    const frameworkPlugin = await vue2FrameworkPlugin.create({
-      rootDirPath,
-      dependencies: {},
-      logger,
-    });
     const reader = createStackedReader([
       createVueTypeScriptReader(logger, memoryReader),
       createFileSystemReader({
@@ -76,11 +70,13 @@ export default {
         watch: false,
       }), // required for TypeScript libs, e.g. Promise
     ]);
-    typeAnalyzer = createTypeAnalyzer({
+    const frameworkPlugin = await vue2FrameworkPlugin.create({
       rootDirPath,
+      dependencies: {},
       reader,
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger,
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {

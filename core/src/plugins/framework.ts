@@ -24,7 +24,6 @@ export interface FrameworkPlugin {
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;
-  readonly transformReader?: (reader: Reader) => Reader;
   readonly typeAnalyzer: TypeAnalyzer;
   readonly viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
   readonly detectComponents: (

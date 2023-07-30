@@ -2,7 +2,6 @@ import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   ANY_TYPE,
-  createTypeAnalyzer,
   NUMBER_TYPE,
   objectType,
   optionalType,
@@ -35,13 +34,6 @@ describe.concurrent("analyze Svelte component", () => {
     frameworkPlugin = await svelteFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger(
-        { level: "debug" },
-        prettyLogger({ colorize: true })
-      ),
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR_PATH,
       reader: createSvelteTypeScriptReader(
         createStackedReader([
           memoryReader,
@@ -57,8 +49,12 @@ describe.concurrent("analyze Svelte component", () => {
           }),
         ])
       ),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger: createLogger(
+        { level: "debug" },
+        prettyLogger({ colorize: true })
+      ),
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -184,9 +180,7 @@ describe.concurrent("analyze Svelte component", () => {
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromSveltePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
-        MAIN_FILE,
-      ])
+      await frameworkPlugin.detectComponents([MAIN_FILE])
     ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

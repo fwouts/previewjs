@@ -32,7 +32,16 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     const previewDirPath = path.join(__dirname, "..", "preview");
     const typeAnalyzer = createTypeAnalyzer({
       rootDirPath,
-      reader,
+      reader: createStackedReader([
+        reader,
+        createFileSystemReader({
+          mapping: {
+            from: path.join(previewDirPath, "types"),
+            to: path.join(rootDirPath, "node_modules", "@types"),
+          },
+          watch: false,
+        }),
+      ]),
       specialTypes: REACT_SPECIAL_TYPES,
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
@@ -45,17 +54,6 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,
-      transformReader: (reader) =>
-        createStackedReader([
-          reader,
-          createFileSystemReader({
-            mapping: {
-              from: path.join(previewDirPath, "types"),
-              to: path.join(rootDirPath, "node_modules", "@types"),
-            },
-            watch: false,
-          }),
-        ]),
       detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: AnalyzableComponent[] = [];
