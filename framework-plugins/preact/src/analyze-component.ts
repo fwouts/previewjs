@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/component-detection-api";
 import {
   dereferenceType,
   EMPTY_OBJECT_TYPE,

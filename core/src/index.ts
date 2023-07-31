@@ -1,5 +1,6 @@
 import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
 import { decodeComponentId, RPCs } from "@previewjs/api";
+import type { ComponentProps } from "@previewjs/component-detection-api";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -14,20 +15,14 @@ import path from "path";
 import type { Logger } from "pino";
 import { detectComponents } from "./detect-components";
 import { getFreePort } from "./get-free-port";
-import type { ComponentProps, FrameworkPlugin } from "./plugins/framework";
+import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
-  BaseComponent,
-  BasicFrameworkComponent,
-  Component,
-  ComponentProps,
-  FrameworkComponent,
   FrameworkPlugin,
   FrameworkPluginFactory,
-  StoryComponent,
 } from "./plugins/framework";
 export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 export type { SetupPreviewEnvironment } from "./preview-env";

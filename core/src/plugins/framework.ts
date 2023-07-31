@@ -1,9 +1,5 @@
-import type { SerializableValue } from "@previewjs/serializable-values";
-import type {
-  CollectedTypes,
-  TypeAnalyzer,
-  ValueType,
-} from "@previewjs/type-analyzer";
+import type { Component } from "@previewjs/component-detection-api";
+import type { TypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
 import type vite from "vite";
@@ -30,36 +26,3 @@ export interface FrameworkPlugin {
     absoluteFilePaths: string[]
   ) => Promise<Component[]>;
 }
-
-export interface BaseComponent {
-  componentId: string;
-  offsets: [start: number, end: number];
-}
-
-export type Component = FrameworkComponent | StoryComponent;
-
-export interface FrameworkComponent extends BaseComponent {
-  kind: "component";
-  exported: boolean;
-  extractProps: () => Promise<ComponentProps>;
-}
-
-export interface ComponentProps {
-  props: ValueType;
-  types: CollectedTypes;
-}
-
-export interface StoryComponent extends BaseComponent {
-  kind: "story";
-  args: {
-    start: number;
-    end: number;
-    value: SerializableValue;
-  } | null;
-  associatedComponent: BasicFrameworkComponent | null;
-}
-
-export type BasicFrameworkComponent = Pick<
-  FrameworkComponent,
-  "componentId" | "extractProps"
->;

@@ -1,5 +1,5 @@
 import { decodeComponentId, generateComponentId } from "@previewjs/api";
-import type { Component } from "@previewjs/core";
+import type { Component } from "@previewjs/component-detection-api";
 import { extractCsf3Stories } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";

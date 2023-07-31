@@ -1,4 +1,5 @@
 import { RPCs, decodeComponentId } from "@previewjs/api";
+import type { Component } from "@previewjs/component-detection-api";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
@@ -6,7 +7,6 @@ import type { Logger } from "pino";
 import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
-import type { Component } from "./plugins/framework";
 
 export const FILES_REQUIRING_REDETECTION = new Set([
   "jsconfig.json",

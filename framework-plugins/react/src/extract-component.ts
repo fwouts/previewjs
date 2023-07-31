@@ -3,7 +3,7 @@ import type {
   BaseComponent,
   BasicFrameworkComponent,
   Component,
-} from "@previewjs/core";
+} from "@previewjs/component-detection-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,

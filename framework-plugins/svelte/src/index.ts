@@ -1,4 +1,5 @@
-import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import type { Component } from "@previewjs/component-detection-api";
+import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type sveltekit from "@sveltejs/kit";
 import { svelte } from "@sveltejs/vite-plugin-svelte";

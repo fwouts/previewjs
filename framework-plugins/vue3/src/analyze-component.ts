@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/component-detection-api";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import {
   NODE_TYPE,
