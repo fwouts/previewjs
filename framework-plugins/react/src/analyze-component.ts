@@ -1,4 +1,4 @@
-import type { ComponentAnalysis } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/core";
 import type {
   CollectedTypes,
   OptionalType,
@@ -23,7 +23,7 @@ export function analyzeReactComponent(
   absoluteFilePath: string,
   componentName: string,
   signature: ts.Signature
-): ComponentAnalysis {
+): ComponentProps {
   const sourceFile = typeResolver.sourceFile(absoluteFilePath);
   let propTypes: ts.Expression | null = null;
   if (sourceFile) {
@@ -31,7 +31,7 @@ export function analyzeReactComponent(
   }
   const resolved = computePropsType(logger, typeResolver, signature, propTypes);
   return {
-    propsType: resolved.type,
+    props: resolved.type,
     types: { ...resolved.collected },
   };
 }

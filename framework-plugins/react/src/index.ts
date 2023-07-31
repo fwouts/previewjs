@@ -1,7 +1,4 @@
-import type {
-  AnalyzableComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
@@ -56,7 +53,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
       typeAnalyzer,
       detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
-        const components: AnalyzableComponent[] = [];
+        const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
             ...extractReactComponents(
