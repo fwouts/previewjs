@@ -21,10 +21,13 @@ import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
   BaseComponent,
+  BasicFrameworkComponent,
   Component,
   ComponentProps,
+  FrameworkComponent,
   FrameworkPlugin,
   FrameworkPluginFactory,
+  StoryComponent,
 } from "./plugins/framework";
 export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 export type { SetupPreviewEnvironment } from "./preview-env";

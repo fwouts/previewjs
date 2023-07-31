@@ -1,4 +1,4 @@
-import type { ComponentAnalysis } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/core";
 import {
   dereferenceType,
   EMPTY_OBJECT_TYPE,
@@ -14,17 +14,17 @@ export function analyzePreactComponent(
   logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
-): ComponentAnalysis {
+): ComponentProps {
   const firstParam = signature.getParameters()[0];
   if (!firstParam) {
     return {
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     };
   }
   if (!firstParam.valueDeclaration) {
     return {
-      propsType: UNKNOWN_TYPE,
+      props: UNKNOWN_TYPE,
       types: {},
     };
   }
@@ -33,10 +33,10 @@ export function analyzePreactComponent(
     firstParam.valueDeclaration
   );
   try {
-    let { type: propsType, collected: types } = typeResolver.resolveType(type);
-    [propsType] = dereferenceType(propsType, types, []);
+    let { type: props, collected: types } = typeResolver.resolveType(type);
+    [props] = dereferenceType(props, types, []);
     stripUnusedProps: if (
-      propsType.kind === "object" &&
+      props.kind === "object" &&
       ts.isParameter(firstParam.valueDeclaration)
     ) {
       if (ts.isObjectBindingPattern(firstParam.valueDeclaration.name)) {
@@ -57,9 +57,9 @@ export function analyzePreactComponent(
             propsWithDefault.add(elementName.text);
           }
         }
-        propsType = objectType(
+        props = objectType(
           Object.fromEntries(
-            Object.entries(propsType.fields)
+            Object.entries(props.fields)
               .filter(([key]) => usedProps.has(key))
               .map(([key, type]) => [
                 key,
@@ -69,17 +69,17 @@ export function analyzePreactComponent(
         );
       }
     }
-    if (propsType.kind === "object") {
-      propsType = {
+    if (props.kind === "object") {
+      props = {
         kind: "object",
         fields: Object.fromEntries(
-          Object.entries(propsType.fields).filter(
+          Object.entries(props.fields).filter(
             ([key]) => !["jsx", "key", "ref"].includes(key)
           )
         ),
       };
     }
-    return { propsType, types };
+    return { props, types };
   } catch (e) {
     logger.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(
@@ -89,7 +89,7 @@ export function analyzePreactComponent(
     );
   }
   return {
-    propsType: UNKNOWN_TYPE,
+    props: UNKNOWN_TYPE,
     types: {},
   };
 }

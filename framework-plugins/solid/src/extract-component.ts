@@ -1,5 +1,9 @@
 import { decodeComponentId, generateComponentId } from "@previewjs/api";
-import type { BaseComponent, Component } from "@previewjs/core";
+import type {
+  BaseComponent,
+  BasicFrameworkComponent,
+  Component,
+} from "@previewjs/core";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
@@ -162,7 +166,7 @@ function extractStoryAssociatedComponent(
   resolver: TypeResolver,
   rootDirPath: string,
   component: ts.Expression | null
-) {
+): BasicFrameworkComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
     rootDirPath,
     resolver.checker,
