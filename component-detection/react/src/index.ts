@@ -13,7 +13,6 @@ const componentDetectorFactory: ComponentDetectorFactory = ({
   reader,
   logger,
 }) => {
-  // TODO: pass collected to be able to invalidate type analysis cache of changed files?
   const typeAnalyzer = createTypeAnalyzer({
     reader,
     rootDirPath,
