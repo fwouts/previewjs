@@ -1,4 +1,4 @@
-import type { ComponentAnalysis } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/core";
 import type {
   CollectedTypes,
   OptionalType,
@@ -16,9 +16,9 @@ import ts from "typescript";
 export function analyzeSvelteComponentFromSFC(
   resolver: TypeResolver,
   virtualSvelteTsAbsoluteFilePath: string
-): ComponentAnalysis {
+): ComponentProps {
   const sourceFile = resolver.sourceFile(virtualSvelteTsAbsoluteFilePath);
-  const propsTypeFields: Record<string, ValueType | OptionalType> = {};
+  const props: Record<string, ValueType | OptionalType> = {};
   let collected: CollectedTypes = {};
   let slots: string[] = [];
   for (const statement of sourceFile?.statements || []) {
@@ -37,7 +37,7 @@ export function analyzeSvelteComponentFromSFC(
           resolver.resolveType(
             resolver.checker.getTypeAtLocation(declaration.name)
           );
-        propsTypeFields[declaration.name.text] = maybeOptionalType(
+        props[declaration.name.text] = maybeOptionalType(
           fieldType,
           !!declaration.initializer
         );
@@ -63,8 +63,8 @@ export function analyzeSvelteComponentFromSFC(
     }
   }
   return {
-    propsType: intersectionType([
-      objectType(propsTypeFields),
+    props: intersectionType([
+      objectType(props),
       objectType(
         Object.fromEntries(
           slots.map((slotName) => [`slot:${slotName}`, STRING_TYPE])

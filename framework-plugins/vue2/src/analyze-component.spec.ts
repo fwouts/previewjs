@@ -78,7 +78,7 @@ export default {
 `
       )
     ).toEqual({
-      propsType: objectType({}),
+      props: objectType({}),
       types: {},
     });
   });
@@ -109,7 +109,7 @@ export default {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         a: optionalType(STRING_TYPE),
         b: optionalType(STRING_TYPE),
         c: optionalType(STRING_TYPE),
@@ -140,7 +140,7 @@ export default {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         a: UNKNOWN_TYPE,
         b: UNKNOWN_TYPE,
         c: UNKNOWN_TYPE,
@@ -172,7 +172,7 @@ export default class App extends Vue {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         label: STRING_TYPE,
         size: optionalType(
           unionType([
@@ -195,9 +195,9 @@ export default class App extends Vue {
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    if (component.info.kind === "story") {
+    if (component.kind === "story") {
       throw new Error(`Component ${componentName} is a story`);
     }
-    return component.info.analyze();
+    return component.extractProps();
   }
 });

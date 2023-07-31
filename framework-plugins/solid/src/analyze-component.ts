@@ -1,4 +1,4 @@
-import type { ComponentAnalysis } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/core";
 import {
   dereferenceType,
   EMPTY_OBJECT_TYPE,
@@ -13,17 +13,17 @@ export function analyzeSolidComponent(
   logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
-): ComponentAnalysis {
+): ComponentProps {
   const firstParam = signature.getParameters()[0];
   if (!firstParam) {
     return {
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     };
   }
   if (!firstParam.valueDeclaration) {
     return {
-      propsType: UNKNOWN_TYPE,
+      props: UNKNOWN_TYPE,
       types: {},
     };
   }
@@ -32,10 +32,10 @@ export function analyzeSolidComponent(
     firstParam.valueDeclaration
   );
   try {
-    let { type: propsType, collected } = typeResolver.resolveType(type);
-    [propsType] = dereferenceType(propsType, collected, []);
+    let { type: props, collected } = typeResolver.resolveType(type);
+    [props] = dereferenceType(props, collected, []);
     stripUnusedProps: if (
-      propsType.kind === "object" &&
+      props.kind === "object" &&
       ts.isParameter(firstParam.valueDeclaration)
     ) {
       if (ts.isObjectBindingPattern(firstParam.valueDeclaration.name)) {
@@ -51,16 +51,14 @@ export function analyzeSolidComponent(
           }
           usedProps.add(elementName.text);
         }
-        propsType = objectType(
+        props = objectType(
           Object.fromEntries(
-            Object.entries(propsType.fields).filter(([key]) =>
-              usedProps.has(key)
-            )
+            Object.entries(props.fields).filter(([key]) => usedProps.has(key))
           )
         );
       }
     }
-    return { propsType, types: collected };
+    return { props, types: collected };
   } catch (e) {
     logger.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(
@@ -70,7 +68,7 @@ export function analyzeSolidComponent(
     );
   }
   return {
-    propsType: UNKNOWN_TYPE,
+    props: UNKNOWN_TYPE,
     types: {},
   };
 }

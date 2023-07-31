@@ -9,14 +9,14 @@ import { evaluateType } from "@previewjs/type-analyzer";
  * Generates top-level callbacks props, so callbacks such as `onClick` don't need to be set explicitly.
  */
 export function generateCallbackProps(
-  propsType: ValueType,
+  props: ValueType,
   types: CollectedTypes
 ): {
   source: string;
   keys: string[];
 } {
-  propsType = resolveType(propsType);
-  if (propsType.kind !== "object") {
+  props = resolveType(props);
+  if (props.kind !== "object") {
     return {
       source: "{}",
       keys: [],
@@ -25,7 +25,7 @@ export function generateCallbackProps(
   const propKeys = new Set<string>();
   let text = "";
   text += "{";
-  for (const [propertyName, propertyType] of Object.entries(propsType.fields)) {
+  for (const [propertyName, propertyType] of Object.entries(props.fields)) {
     if (propertyType.kind === "optional") {
       continue;
     }

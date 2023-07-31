@@ -1,7 +1,4 @@
-import type {
-  AnalyzableComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
@@ -51,7 +48,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
         );
-        const components: AnalyzableComponent[] = [];
+        const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
             ...extractVueComponents(

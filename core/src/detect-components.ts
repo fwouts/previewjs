@@ -6,7 +6,7 @@ import type { Logger } from "pino";
 import type { FrameworkPlugin, Workspace } from ".";
 import { getCacheDir } from "./caching";
 import { findFiles } from "./find-files";
-import type { AnalyzableComponent } from "./plugins/framework";
+import type { Component } from "./plugins/framework";
 
 export const FILES_REQUIRING_REDETECTION = new Set([
   "jsconfig.json",
@@ -161,7 +161,7 @@ async function detectComponentsCore(
 }
 
 export function detectedComponentToApiComponent(
-  component: AnalyzableComponent
+  component: Component
 ): RPCs.Component {
   const [start, end] = component.offsets;
   return {
@@ -169,16 +169,16 @@ export function detectedComponentToApiComponent(
     start,
     end,
     info:
-      component.info.kind === "component"
+      component.kind === "component"
         ? {
             kind: "component",
-            exported: component.info.exported,
+            exported: component.exported,
           }
         : {
             kind: "story",
-            args: component.info.args,
+            args: component.args,
             associatedComponentId:
-              component.info.associatedComponent?.componentId || null,
+              component.associatedComponent?.componentId || null,
           },
   };
 }

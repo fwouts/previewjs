@@ -1,7 +1,4 @@
-import type {
-  AnalyzableComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type sveltekit from "@sveltejs/kit";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
@@ -49,7 +46,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".svelte") ? `${p}.ts` : p))
         );
-        const components: AnalyzableComponent[] = [];
+        const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
             ...(await extractSvelteComponents(

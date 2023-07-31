@@ -66,7 +66,7 @@ export { A }
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -84,7 +84,7 @@ export { A as B }
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -102,7 +102,7 @@ export default A
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -118,7 +118,7 @@ export function A() {
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -134,7 +134,7 @@ export function A() {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -157,7 +157,7 @@ export function A() {
         "A"
       )
     ).toEqual({
-      propsType: objectType({ foo: STRING_TYPE }),
+      props: objectType({ foo: STRING_TYPE }),
       types: {
         "App.tsx:SomeProps": {
           type: objectType({ foo: STRING_TYPE }),
@@ -178,7 +178,7 @@ export const A = () => {
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -194,7 +194,7 @@ export const A = (props: { foo: string }) => {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -219,7 +219,7 @@ interface PanelTab {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         currentTab: namedType("App.tsx:PanelTab"),
         tabs: arrayType(namedType("App.tsx:PanelTab")),
       }),
@@ -250,7 +250,7 @@ export const A: Component<{ foo: string }> = (props) => {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -270,7 +270,7 @@ export const A: Component<{ foo: string }> = (props) => {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -288,7 +288,7 @@ export default function() {
         "default"
       )
     ).toEqual({
-      propsType: objectType({}),
+      props: objectType({}),
       types: {},
     });
   });
@@ -304,7 +304,7 @@ export default function A() {
         "default"
       )
     ).toEqual({
-      propsType: objectType({}),
+      props: objectType({}),
       types: {},
     });
   });
@@ -320,7 +320,7 @@ export default function A(props: { name: string }) {
         "default"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         name: STRING_TYPE,
       }),
       types: {},
@@ -343,7 +343,7 @@ A.args = {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
         bar: STRING_TYPE,
       }),
@@ -359,9 +359,9 @@ A.args = {
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    if (component.info.kind === "story") {
+    if (component.kind === "story") {
       throw new Error(`Component ${componentName} is a story`);
     }
-    return component.info.analyze();
+    return component.extractProps();
   }
 });

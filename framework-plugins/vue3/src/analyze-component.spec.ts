@@ -74,7 +74,7 @@ defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -99,7 +99,7 @@ withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -123,7 +123,7 @@ const props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -148,7 +148,7 @@ const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -173,7 +173,7 @@ props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -199,7 +199,7 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -227,7 +227,7 @@ export default defineComponent({
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -292,7 +292,7 @@ export default defineComponent({
   `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         label: STRING_TYPE,
         sublabel: optionalType(STRING_TYPE),
         primary: optionalType(BOOLEAN_TYPE),
@@ -312,9 +312,9 @@ export default defineComponent({
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    if (component.info.kind === "story") {
+    if (component.kind === "story") {
       throw new Error(`Component ${componentName} is a story`);
     }
-    return component.info.analyze();
+    return component.extractProps();
   }
 });
