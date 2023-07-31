@@ -1,5 +1,5 @@
 import { decodeComponentId, generateComponentId } from "@previewjs/api";
-import type { AnalyzableComponent } from "@previewjs/core";
+import type { Component } from "@previewjs/core";
 import { extractCsf3Stories } from "@previewjs/storybook-helpers";
 import { TypeResolver, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
@@ -12,7 +12,7 @@ export async function extractSvelteComponents(
   resolver: TypeResolver,
   rootDirPath: string,
   absoluteFilePath: string
-): Promise<AnalyzableComponent[]> {
+): Promise<Component[]> {
   if (absoluteFilePath.endsWith(".svelte")) {
     const entry = await reader.read(absoluteFilePath);
     if (entry?.kind !== "file") {
@@ -25,12 +25,10 @@ export async function extractSvelteComponents(
           name: inferComponentNameFromSveltePath(absoluteFilePath),
         }),
         offsets: [0, (await entry.read()).length],
-        info: {
-          kind: "component",
-          exported: true,
-          analyze: async () =>
-            analyzeSvelteComponentFromSFC(resolver, absoluteFilePath + ".ts"),
-        },
+        kind: "component",
+        exported: true,
+        extractProps: async () =>
+          analyzeSvelteComponentFromSFC(resolver, absoluteFilePath + ".ts"),
       },
     ];
   } else {
@@ -52,40 +50,37 @@ export async function extractSvelteComponents(
             path.join(rootDirPath, filePath)
           )
         ).find((c) => c.componentId === componentId);
-        if (component?.info.kind !== "component") {
+        if (component?.kind !== "component") {
           return {
-            propsType: UNKNOWN_TYPE,
+            props: UNKNOWN_TYPE,
             types: {},
           };
         }
-        return component.info.analyze();
+        return component.extractProps();
       }
     ).map((c) => {
       if (
-        c.info.kind !== "story" ||
-        !c.info.associatedComponent?.componentId.includes(".svelte.ts:")
+        c.kind !== "story" ||
+        !c.associatedComponent?.componentId.includes(".svelte.ts:")
       ) {
         return c;
       }
       const { filePath: associatedComponentFilePath } = decodeComponentId(
-        c.info.associatedComponent.componentId
+        c.associatedComponent.componentId
       );
       const associatedComponentSvelteFilePath = stripTsExtension(
         associatedComponentFilePath
       );
       return {
         ...c,
-        info: {
-          ...c.info,
-          associatedComponent: {
-            ...c.info.associatedComponent,
-            componentId: generateComponentId({
-              filePath: associatedComponentSvelteFilePath,
-              name: inferComponentNameFromSveltePath(
-                associatedComponentSvelteFilePath
-              ),
-            }),
-          },
+        associatedComponent: {
+          ...c.associatedComponent,
+          componentId: generateComponentId({
+            filePath: associatedComponentSvelteFilePath,
+            name: inferComponentNameFromSveltePath(
+              associatedComponentSvelteFilePath
+            ),
+          }),
         },
       };
     });

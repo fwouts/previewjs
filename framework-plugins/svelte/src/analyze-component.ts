@@ -1,4 +1,4 @@
-import type { ComponentAnalysis } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/core";
 import type {
   CollectedTypes,
   OptionalType,
@@ -16,7 +16,7 @@ import ts from "typescript";
 export function analyzeSvelteComponentFromSFC(
   resolver: TypeResolver,
   virtualSvelteTsAbsoluteFilePath: string
-): ComponentAnalysis {
+): ComponentProps {
   const sourceFile = resolver.sourceFile(virtualSvelteTsAbsoluteFilePath);
   const propsTypeFields: Record<string, ValueType | OptionalType> = {};
   let collected: CollectedTypes = {};
@@ -63,7 +63,7 @@ export function analyzeSvelteComponentFromSFC(
     }
   }
   return {
-    propsType: intersectionType([
+    props: intersectionType([
       objectType(propsTypeFields),
       objectType(
         Object.fromEntries(

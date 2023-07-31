@@ -74,7 +74,7 @@ describe("analyze Svelte component", () => {
 `
       )
     ).toEqual({
-      propsType: objectType({}),
+      props: objectType({}),
       types: {},
     });
   });
@@ -96,7 +96,7 @@ describe("analyze Svelte component", () => {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         count: ANY_TYPE,
       }),
       types: {},
@@ -120,7 +120,7 @@ describe("analyze Svelte component", () => {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         count: NUMBER_TYPE,
       }),
       types: {},
@@ -144,7 +144,7 @@ describe("analyze Svelte component", () => {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         count: optionalType(NUMBER_TYPE),
       }),
       types: {},
@@ -168,7 +168,7 @@ describe("analyze Svelte component", () => {
 `
       )
     ).toEqual({
-      propsType: objectType({}),
+      props: objectType({}),
       types: {},
     });
   });
@@ -182,9 +182,9 @@ describe("analyze Svelte component", () => {
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    if (component.info.kind === "story") {
+    if (component.kind === "story") {
       throw new Error(`Component ${componentName} is a story`);
     }
-    return component.info.analyze();
+    return component.extractProps();
   }
 });
