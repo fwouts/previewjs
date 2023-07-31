@@ -2,7 +2,6 @@ import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   arrayType,
-  createTypeAnalyzer,
   EMPTY_OBJECT_TYPE,
   namedType,
   NODE_TYPE,
@@ -24,13 +23,12 @@ import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import preactFrameworkPlugin from ".";
-import { PREACT_SPECIAL_TYPES } from "./special-types.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe.concurrent("analyzePreactComponent", () => {
+describe("analyzePreactComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -40,22 +38,18 @@ describe.concurrent("analyzePreactComponent", () => {
     frameworkPlugin = await preactFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger(
-        { level: "debug" },
-        prettyLogger({ colorize: true })
-      ),
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
           watch: false,
         }), // required for TypeScript libs, e.g. Promise
       ]),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-      specialTypes: PREACT_SPECIAL_TYPES,
+      logger: createLogger(
+        { level: "debug" },
+        prettyLogger({ colorize: true })
+      ),
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -343,9 +337,7 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
-        MAIN_FILE,
-      ])
+      await frameworkPlugin.detectComponents([MAIN_FILE])
     ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

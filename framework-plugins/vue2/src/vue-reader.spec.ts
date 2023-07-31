@@ -6,7 +6,7 @@ import prettyLogger from "pino-pretty";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader";
 
-describe.concurrent("createVueTypeScriptReader", () => {
+describe("createVueTypeScriptReader", () => {
   let memoryReader: Reader & Writer;
   let reader: Reader;
 

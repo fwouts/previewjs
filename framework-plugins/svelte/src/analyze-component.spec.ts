@@ -2,7 +2,6 @@ import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   ANY_TYPE,
-  createTypeAnalyzer,
   NUMBER_TYPE,
   objectType,
   optionalType,
@@ -20,12 +19,11 @@ import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import svelteFrameworkPlugin from ".";
 import { inferComponentNameFromSveltePath } from "./infer-component-name";
-import { createSvelteTypeScriptReader } from "./svelte-reader";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
 
-describe.concurrent("analyze Svelte component", () => {
+describe("analyze Svelte component", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -35,30 +33,25 @@ describe.concurrent("analyze Svelte component", () => {
     frameworkPlugin = await svelteFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
+      reader: createStackedReader([
+        memoryReader,
+        createFileSystemReader({
+          watch: false,
+        }), // required for TypeScript libs, e.g. Promise
+        createFileSystemReader({
+          mapping: {
+            from: path.join(__dirname, "..", "preview", "modules"),
+            to: path.join(ROOT_DIR_PATH, "node_modules"),
+          },
+          watch: false,
+        }),
+      ]),
       logger: createLogger(
         { level: "debug" },
         prettyLogger({ colorize: true })
       ),
     });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR_PATH,
-      reader: createSvelteTypeScriptReader(
-        createStackedReader([
-          memoryReader,
-          createFileSystemReader({
-            watch: false,
-          }), // required for TypeScript libs, e.g. Promise
-          createFileSystemReader({
-            mapping: {
-              from: path.join(__dirname, "..", "preview", "modules"),
-              to: path.join(ROOT_DIR_PATH, "node_modules"),
-            },
-            watch: false,
-          }),
-        ])
-      ),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-    });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -184,9 +177,7 @@ describe.concurrent("analyze Svelte component", () => {
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromSveltePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
-        MAIN_FILE,
-      ])
+      await frameworkPlugin.detectComponents([MAIN_FILE])
     ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

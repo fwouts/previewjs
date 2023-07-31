@@ -79,6 +79,14 @@ class TypeAnalyzer {
     );
   }
 
+  invalidateCachedTypesForFile(filePath: string) {
+    for (const name of Object.keys(this.collected)) {
+      if (name.startsWith(`${filePath}:`)) {
+        delete this.collected[name];
+      }
+    }
+  }
+
   analyze(filePaths: string[]) {
     if (!this.service) {
       throw new Error(`TypeAnalyzer already disposed of`);
