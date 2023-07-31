@@ -2,7 +2,6 @@ import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   arrayType,
-  createTypeAnalyzer,
   EMPTY_OBJECT_TYPE,
   namedType,
   NODE_TYPE,
@@ -22,12 +21,11 @@ import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import solidFrameworkPlugin from ".";
-import { SOLID_SPECIAL_TYPES } from "./special-types.js";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe.concurrent("analyzeSolidComponent", () => {
+describe("analyzeSolidComponent", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -37,22 +35,18 @@ describe.concurrent("analyzeSolidComponent", () => {
     frameworkPlugin = await solidFrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
-      logger: createLogger(
-        { level: "debug" },
-        prettyLogger({ colorize: true })
-      ),
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
           watch: false,
         }), // required for TypeScript libs, e.g. Promise
       ]),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-      specialTypes: SOLID_SPECIAL_TYPES,
+      logger: createLogger(
+        { level: "debug" },
+        prettyLogger({ colorize: true })
+      ),
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -72,7 +66,7 @@ export { A }
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -90,7 +84,7 @@ export { A as B }
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -108,7 +102,7 @@ export default A
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -124,7 +118,7 @@ export function A() {
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -140,7 +134,7 @@ export function A() {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -163,7 +157,7 @@ export function A() {
         "A"
       )
     ).toEqual({
-      propsType: objectType({ foo: STRING_TYPE }),
+      props: objectType({ foo: STRING_TYPE }),
       types: {
         "App.tsx:SomeProps": {
           type: objectType({ foo: STRING_TYPE }),
@@ -184,7 +178,7 @@ export const A = () => {
         "A"
       )
     ).toEqual({
-      propsType: EMPTY_OBJECT_TYPE,
+      props: EMPTY_OBJECT_TYPE,
       types: {},
     });
   });
@@ -200,7 +194,7 @@ export const A = (props: { foo: string }) => {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -225,7 +219,7 @@ interface PanelTab {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         currentTab: namedType("App.tsx:PanelTab"),
         tabs: arrayType(namedType("App.tsx:PanelTab")),
       }),
@@ -256,7 +250,7 @@ export const A: Component<{ foo: string }> = (props) => {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -276,7 +270,7 @@ export const A: Component<{ foo: string }> = (props) => {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -294,7 +288,7 @@ export default function() {
         "default"
       )
     ).toEqual({
-      propsType: objectType({}),
+      props: objectType({}),
       types: {},
     });
   });
@@ -310,7 +304,7 @@ export default function A() {
         "default"
       )
     ).toEqual({
-      propsType: objectType({}),
+      props: objectType({}),
       types: {},
     });
   });
@@ -326,7 +320,7 @@ export default function A(props: { name: string }) {
         "default"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         name: STRING_TYPE,
       }),
       types: {},
@@ -349,7 +343,7 @@ A.args = {
         "A"
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
         bar: STRING_TYPE,
       }),
@@ -360,16 +354,14 @@ A.args = {
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
-        MAIN_FILE,
-      ])
+      await frameworkPlugin.detectComponents([MAIN_FILE])
     ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    if (component.info.kind === "story") {
+    if (component.kind === "story") {
       throw new Error(`Component ${componentName} is a story`);
     }
-    return component.info.analyze();
+    return component.extractProps();
   }
 });

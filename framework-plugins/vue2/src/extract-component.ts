@@ -1,5 +1,9 @@
 import { decodeComponentId, generateComponentId } from "@previewjs/api";
-import type { AnalyzableComponent, ComponentTypeInfo } from "@previewjs/core";
+import type {
+  BaseComponent,
+  BasicFrameworkComponent,
+  Component,
+} from "@previewjs/core";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
@@ -19,7 +23,7 @@ export function extractVueComponents(
   resolver: TypeResolver,
   rootDirPath: string,
   absoluteFilePath: string
-): AnalyzableComponent[] {
+): Component[] {
   const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
   if (vueAbsoluteFilePath) {
     const virtualVueTsAbsoluteFilePath = vueAbsoluteFilePath + ".ts";
@@ -34,15 +38,13 @@ export function extractVueComponents(
           name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
         }),
         offsets: [0, fileEntry.size()],
-        info: {
-          kind: "component",
-          exported: true,
-          analyze: async () =>
-            analyzeVueComponentFromTemplate(
-              resolver,
-              virtualVueTsAbsoluteFilePath
-            ),
-        },
+        kind: "component",
+        exported: true,
+        extractProps: async () =>
+          analyzeVueComponentFromTemplate(
+            resolver,
+            virtualVueTsAbsoluteFilePath
+          ),
       },
     ];
   }
@@ -87,14 +89,15 @@ export function extractVueComponents(
   }
 
   const storiesInfo = extractStoriesInfo(sourceFile);
-  const components: AnalyzableComponent[] = [];
+  const components: Component[] = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = extractArgs(sourceFile);
 
-  function extractComponentTypeInfo(
+  function extractComponent(
+    baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): ComponentTypeInfo | null {
+  ): Component | null {
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
     if (storiesInfo && storyArgs && isExported) {
@@ -104,6 +107,7 @@ export function extractVueComponents(
         storiesInfo.component
       );
       return {
+        ...baseComponent,
         kind: "story",
         args: {
           start: storyArgs.getStart(),
@@ -118,11 +122,12 @@ export function extractVueComponents(
       const returnType = callSignature.getReturnType();
       if (isJsxElement(returnType)) {
         return {
+          ...baseComponent,
           kind: "component",
           exported: isExported,
-          analyze: async () => ({
+          extractProps: async () => ({
             // TODO: Handle JSX properties.
-            propsType: UNKNOWN_TYPE,
+            props: UNKNOWN_TYPE,
             types: {},
           }),
         };
@@ -135,6 +140,7 @@ export function extractVueComponents(
           storiesInfo.component
         );
         return {
+          ...baseComponent,
           kind: "story",
           args: null,
           associatedComponent,
@@ -145,16 +151,19 @@ export function extractVueComponents(
   }
 
   for (const [name, statement, node] of functions) {
-    const info = extractComponentTypeInfo(node, name);
-    if (info) {
-      components.push({
+    const component = extractComponent(
+      {
         componentId: generateComponentId({
           filePath: path.relative(rootDirPath, absoluteFilePath),
           name,
         }),
         offsets: [statement.getStart(), statement.getEnd()],
-        info,
-      });
+      },
+      node,
+      name
+    );
+    if (component) {
+      components.push(component);
     }
   }
 
@@ -176,40 +185,35 @@ export function extractVueComponents(
         const component = absoluteFilePath.endsWith(".vue.ts")
           ? vueComponents[0]
           : vueComponents.find((c) => c.componentId === componentId);
-        if (component?.info.kind !== "component") {
+        if (component?.kind !== "component") {
           return {
-            propsType: UNKNOWN_TYPE,
+            props: UNKNOWN_TYPE,
             types: {},
           };
         }
-        return component.info.analyze();
+        return component.extractProps();
       }
     ).map((c) => {
       if (
-        c.info.kind !== "story" ||
-        !c.info.associatedComponent?.componentId.includes(".vue.ts:")
+        c.kind !== "story" ||
+        !c.associatedComponent?.componentId.includes(".vue.ts:")
       ) {
         return c;
       }
       const { filePath: associatedComponentFilePath } = decodeComponentId(
-        c.info.associatedComponent.componentId
+        c.associatedComponent.componentId
       );
       const associatedComponentVueFilePath = stripTsExtension(
         associatedComponentFilePath
       );
       return {
         ...c,
-        info: {
-          ...c.info,
-          associatedComponent: {
-            ...c.info.associatedComponent,
-            componentId: generateComponentId({
-              filePath: associatedComponentVueFilePath,
-              name: inferComponentNameFromVuePath(
-                associatedComponentVueFilePath
-              ),
-            }),
-          },
+        associatedComponent: {
+          ...c.associatedComponent,
+          componentId: generateComponentId({
+            filePath: associatedComponentVueFilePath,
+            name: inferComponentNameFromVuePath(associatedComponentVueFilePath),
+          }),
         },
       };
     }),
@@ -234,7 +238,7 @@ function extractStoryAssociatedComponent(
   rootDirPath: string,
   resolver: TypeResolver,
   component: ts.Expression | null
-) {
+): BasicFrameworkComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
     rootDirPath,
     resolver.checker,
@@ -251,16 +255,16 @@ function extractStoryAssociatedComponent(
         filePath: vueFilePath,
         name: inferComponentNameFromVuePath(vueFilePath),
       }),
-      analyze: async () =>
+      extractProps: async () =>
         analyzeVueComponentFromTemplate(resolver, vueFilePath + ".ts"),
     };
   } else {
     return {
       componentId: resolvedStoriesComponentId,
-      analyze: async () =>
+      extractProps: async () =>
         // TODO: Handle JSX properties.
         ({
-          propsType: UNKNOWN_TYPE,
+          props: UNKNOWN_TYPE,
           types: {},
         }),
     };

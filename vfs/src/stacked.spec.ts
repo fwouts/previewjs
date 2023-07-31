@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { MemoryReader } from "./memory";
 import { StackedReader } from "./stacked";
 
-describe.concurrent("StackedReader", () => {
+describe("StackedReader", () => {
   it("merges directories recursively (async)", async () => {
     const reader1 = new MemoryReader();
     const reader2 = new MemoryReader();

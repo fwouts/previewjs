@@ -1,7 +1,5 @@
-import type {
-  AnalyzableComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
 import url from "url";
@@ -16,14 +14,12 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) >= 10;
   },
-  async create({ rootDirPath, logger }) {
+  async create({ rootDirPath, reader, logger }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
-    return {
-      pluginApiVersion: 3,
-      name: "@previewjs/plugin-preact",
-      defaultWrapperPath: "__previewjs__/Wrapper.tsx",
-      previewDirPath,
+    const typeAnalyzer = createTypeAnalyzer({
+      rootDirPath,
+      reader,
       specialTypes: PREACT_SPECIAL_TYPES,
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
@@ -31,9 +27,16 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
         jsxFactory: "h",
         jsxFragmentFactory: "Fragment",
       },
-      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+    });
+    return {
+      pluginApiVersion: 3,
+      name: "@previewjs/plugin-preact",
+      defaultWrapperPath: "__previewjs__/Wrapper.tsx",
+      previewDirPath,
+      typeAnalyzer,
+      detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
-        const components: AnalyzableComponent[] = [];
+        const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
             ...extractPreactComponents(

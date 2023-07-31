@@ -26,7 +26,7 @@ import {
 } from "./serializable-value";
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
-describe.concurrent("parseSerializableValue", () => {
+describe("parseSerializableValue", () => {
   it("parses null", () => {
     expectParsedExpression(`null`).toEqual<SerializableValue>(NULL);
   });

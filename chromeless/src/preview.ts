@@ -139,9 +139,9 @@ export async function startPreview({
       const computePropsResponse = await workspace.computeProps({
         componentIds: [componentId],
       });
-      const propsType = computePropsResponse.components[componentId]!.props;
+      const props = computePropsResponse.components[componentId]!.props;
       const autogenCallbackProps = generateCallbackProps(
-        propsType,
+        props,
         computePropsResponse.types
       );
       if (!propsAssignmentSource) {
@@ -149,7 +149,7 @@ export async function startPreview({
           matchingDetectedComponent.info.kind === "story"
             ? "properties = null"
             : generatePropsAssignmentSource(
-                propsType,
+                props,
                 autogenCallbackProps.keys,
                 computePropsResponse.types
               );

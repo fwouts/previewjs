@@ -2,8 +2,8 @@ import {
   generateSerializableValue,
   serializableValueToJavaScript,
 } from "@previewjs/serializable-values";
-import { dereferenceType, objectType } from "@previewjs/type-analyzer";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import { dereferenceType, objectType } from "@previewjs/type-analyzer";
 
 /**
  * Generates an invocation source for a specific component.
@@ -14,22 +14,22 @@ import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
  * ```
  */
 export function generatePropsAssignmentSource(
-  propsType: ValueType,
+  props: ValueType,
   providedKeys: string[],
   collected: CollectedTypes
 ) {
   const providedKeySet = new Set(providedKeys);
-  [propsType] = dereferenceType(propsType, collected, []);
-  if (propsType.kind === "object") {
-    propsType = objectType(
+  [props] = dereferenceType(props, collected, []);
+  if (props.kind === "object") {
+    props = objectType(
       Object.fromEntries(
-        Object.entries(propsType.fields).filter(
+        Object.entries(props.fields).filter(
           ([fieldName]) => !providedKeySet.has(fieldName)
         )
       )
     );
   }
-  const value = generateSerializableValue(propsType, collected);
+  const value = generateSerializableValue(props, collected);
   let valueSource = serializableValueToJavaScript(value);
   if (valueSource === "undefined") {
     valueSource = "{}";

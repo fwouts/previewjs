@@ -5,7 +5,7 @@ import type {
   TypeAnalyzer,
   ValueType,
 } from "@previewjs/type-analyzer";
-import { createTypeAnalyzer, UNKNOWN_TYPE } from "@previewjs/type-analyzer";
+import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
@@ -14,17 +14,20 @@ import path from "path";
 import type { Logger } from "pino";
 import { detectComponents } from "./detect-components";
 import { getFreePort } from "./get-free-port";
-import type { ComponentAnalysis, FrameworkPlugin } from "./plugins/framework";
+import type { ComponentProps, FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
-  AnalyzableComponent,
-  ComponentAnalysis,
-  ComponentTypeInfo,
+  BaseComponent,
+  BasicFrameworkComponent,
+  Component,
+  ComponentProps,
+  FrameworkComponent,
   FrameworkPlugin,
   FrameworkPluginFactory,
+  StoryComponent,
 } from "./plugins/framework";
 export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 export type { SetupPreviewEnvironment } from "./preview-env";
@@ -69,33 +72,17 @@ export async function createWorkspace({
       `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
     );
   }
-  if (frameworkPlugin.transformReader) {
-    reader = frameworkPlugin.transformReader(reader);
-  }
-  const collected: CollectedTypes = {};
-  const typeAnalyzer = createTypeAnalyzer({
-    reader,
-    rootDirPath,
-    collected,
-    specialTypes: frameworkPlugin.specialTypes,
-    tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-    warn: logger.warn.bind(logger),
-  });
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     logger.debug(`Computing props for components: ${componentIds.join(", ")}`);
-    let analyze: () => Promise<ComponentAnalysis>;
-    const detectedComponents = await frameworkPlugin.detectComponents(
-      reader,
-      typeAnalyzer,
-      [
-        ...new Set(
-          componentIds.map((c) =>
-            path.join(rootDirPath, decodeComponentId(c).filePath)
-          )
-        ),
-      ]
-    );
+    let analyze: () => Promise<ComponentProps>;
+    const detectedComponents = await frameworkPlugin.detectComponents([
+      ...new Set(
+        componentIds.map((c) =>
+          path.join(rootDirPath, decodeComponentId(c).filePath)
+        )
+      ),
+    ]);
     logger.debug(`Detected ${detectedComponents.length} components`);
     const componentIdToDetectedComponent = Object.fromEntries(
       detectedComponents.map((c) => [c.componentId, c])
@@ -113,32 +100,32 @@ export async function createWorkspace({
         const { filePath, name } = decodeComponentId(componentId);
         throw new Error(`Component ${name} not detected in ${filePath}.`);
       }
-      if (component.info.kind === "component") {
-        analyze = component.info.analyze;
+      if (component.kind === "component") {
+        analyze = component.extractProps;
       } else {
         analyze =
-          component.info.associatedComponent?.analyze ||
+          component.associatedComponent?.extractProps ||
           (() =>
             Promise.resolve({
-              propsType: UNKNOWN_TYPE,
+              props: UNKNOWN_TYPE,
               types: {},
             }));
       }
-      logger.debug(`Analyzing ${component.info.kind}: ${componentId}`);
-      const { propsType: props, types: componentTypes } = await analyze();
+      logger.debug(`Analyzing ${component.kind}: ${componentId}`);
+      const { props, types: componentTypes } = await analyze();
       logger.debug(`Done analyzing: ${componentId}`);
       components[componentId] = {
         info:
-          component.info.kind === "component"
+          component.kind === "component"
             ? {
                 kind: "component",
-                exported: component.info.exported,
+                exported: component.exported,
               }
             : {
                 kind: "story",
-                args: component.info.args,
+                args: component.args,
                 associatedComponentId:
-                  component.info.associatedComponent?.componentId || null,
+                  component.associatedComponent?.componentId || null,
               },
         props,
       };
@@ -150,7 +137,7 @@ export async function createWorkspace({
     };
   });
   router.registerRPC(RPCs.DetectComponents, (options) =>
-    detectComponents(logger, workspace, frameworkPlugin, typeAnalyzer, options)
+    detectComponents(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
@@ -175,11 +162,7 @@ export async function createWorkspace({
     middlewares,
     onFileChanged: (absoluteFilePath) => {
       const filePath = path.relative(rootDirPath, absoluteFilePath);
-      for (const name of Object.keys(collected)) {
-        if (name.startsWith(`${filePath}:`)) {
-          delete collected[name];
-        }
-      }
+      frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
     },
   });
 
@@ -197,7 +180,7 @@ export async function createWorkspace({
   const workspace: Workspace = {
     rootDirPath,
     reader,
-    typeAnalyzer,
+    typeAnalyzer: frameworkPlugin.typeAnalyzer,
     detectComponents: (options = {}) =>
       localRpc(RPCs.DetectComponents, options),
     computeProps: (options) => localRpc(RPCs.ComputeProps, options),
@@ -216,7 +199,11 @@ export async function createWorkspace({
       },
     },
     dispose: async () => {
-      typeAnalyzer.dispose();
+      // TODO: Consider exposing a dispose() method on FrameworkPlugin instead.
+      //
+      // We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
+      // dispose() should not be called here?
+      frameworkPlugin.typeAnalyzer.dispose();
     },
   };
   if (setupEnvironment) {

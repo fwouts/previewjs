@@ -15,7 +15,7 @@ const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_JSX = path.join(ROOT_DIR, "App.stories.jsx");
 
-describe.concurrent("extractCsf3Stories", () => {
+describe("extractCsf3Stories", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
 
@@ -63,30 +63,26 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Hello, World!"),
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: null,
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
     ]);
@@ -116,20 +112,18 @@ export const Example = {
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: UNKNOWN,
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: UNKNOWN,
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
     ]);
@@ -161,30 +155,26 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Hello, World!"),
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: null,
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
     ]);
@@ -217,30 +207,26 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Hello, World!"),
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:default",
-          },
+        kind: "story",
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:default",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: {
-            componentId: "App.tsx:default",
-          },
+        kind: "story",
+        args: null,
+        associatedComponent: {
+          componentId: "App.tsx:default",
         },
       },
     ]);
@@ -277,30 +263,26 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Hello, World!"),
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: null,
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
     ]);
@@ -337,30 +319,26 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Hello, World!"),
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        kind: "story",
+        args: null,
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
     ]);

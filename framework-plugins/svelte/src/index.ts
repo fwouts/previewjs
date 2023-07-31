@@ -1,7 +1,5 @@
-import type {
-  AnalyzableComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type sveltekit from "@sveltejs/kit";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
@@ -18,7 +16,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 3;
   },
-  async create({ rootDirPath }) {
+  async create({ rootDirPath, reader }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     const svelteConfigPath = path.join(rootDirPath, "svelte.config.js");
@@ -34,17 +32,21 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       alias = config.kit?.alias || {};
       isSvelteKit = Boolean(config.kit);
     }
+    const typeAnalyzer = createTypeAnalyzer({
+      rootDirPath,
+      reader: createSvelteTypeScriptReader(reader),
+    });
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-svelte",
-      transformReader: (reader) => createSvelteTypeScriptReader(reader),
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
-      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+      typeAnalyzer,
+      detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".svelte") ? `${p}.ts` : p))
         );
-        const components: AnalyzableComponent[] = [];
+        const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
             ...(await extractSvelteComponents(

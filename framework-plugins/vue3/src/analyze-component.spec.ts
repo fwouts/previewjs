@@ -2,7 +2,6 @@ import { decodeComponentId } from "@previewjs/api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   BOOLEAN_TYPE,
-  createTypeAnalyzer,
   objectType,
   optionalType,
   STRING_TYPE,
@@ -20,12 +19,11 @@ import prettyLogger from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue3FrameworkPlugin from ".";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
-import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
-describe.concurrent("analyze Vue 3 component", () => {
+describe("analyze Vue 3 component", () => {
   let memoryReader: Reader & Writer;
   let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
@@ -35,30 +33,25 @@ describe.concurrent("analyze Vue 3 component", () => {
     frameworkPlugin = await vue3FrameworkPlugin.create({
       rootDirPath: ROOT_DIR_PATH,
       dependencies: {},
+      reader: createStackedReader([
+        memoryReader,
+        createFileSystemReader({
+          watch: false,
+        }), // required for TypeScript libs, e.g. Promise
+        createFileSystemReader({
+          mapping: {
+            from: path.join(__dirname, "..", "preview", "modules"),
+            to: path.join(ROOT_DIR_PATH, "node_modules"),
+          },
+          watch: false,
+        }),
+      ]),
       logger: createLogger(
         { level: "debug" },
         prettyLogger({ colorize: true })
       ),
     });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR_PATH,
-      reader: createVueTypeScriptReader(
-        createStackedReader([
-          memoryReader,
-          createFileSystemReader({
-            watch: false,
-          }), // required for TypeScript libs, e.g. Promise
-          createFileSystemReader({
-            mapping: {
-              from: path.join(__dirname, "..", "preview", "modules"),
-              to: path.join(ROOT_DIR_PATH, "node_modules"),
-            },
-            watch: false,
-          }),
-        ])
-      ),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
-    });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -81,7 +74,7 @@ defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -106,7 +99,7 @@ withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -130,7 +123,7 @@ const props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -155,7 +148,7 @@ const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -180,7 +173,7 @@ props = defineProps<{ foo: string }>();
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: STRING_TYPE,
       }),
       types: {},
@@ -206,7 +199,7 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -234,7 +227,7 @@ export default defineComponent({
 `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         foo: optionalType(STRING_TYPE),
         bar: STRING_TYPE,
       }),
@@ -299,7 +292,7 @@ export default defineComponent({
   `
       )
     ).toEqual({
-      propsType: objectType({
+      props: objectType({
         label: STRING_TYPE,
         sublabel: optionalType(STRING_TYPE),
         primary: optionalType(BOOLEAN_TYPE),
@@ -314,16 +307,14 @@ export default defineComponent({
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromVuePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.detectComponents(memoryReader, typeAnalyzer, [
-        MAIN_FILE,
-      ])
+      await frameworkPlugin.detectComponents([MAIN_FILE])
     ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    if (component.info.kind === "story") {
+    if (component.kind === "story") {
       throw new Error(`Component ${componentName} is a story`);
     }
-    return component.info.analyze();
+    return component.extractProps();
   }
 });

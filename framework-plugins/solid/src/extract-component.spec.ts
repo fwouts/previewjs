@@ -1,6 +1,5 @@
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import {
-  createTypeAnalyzer,
   objectType,
   STRING_TYPE,
   TypeAnalyzer,
@@ -22,7 +21,7 @@ const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");
 const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
-describe.concurrent("extractSolidComponents", () => {
+describe("extractSolidComponents", () => {
   const logger = createLogger(
     { level: "debug" },
     prettyLogger({ colorize: true })
@@ -40,18 +39,15 @@ describe.concurrent("extractSolidComponents", () => {
     const frameworkPlugin = await solidFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
       dependencies: {},
-      logger,
-    });
-    typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
           watch: false,
         }), // required for TypeScript libs, e.g. Promise
       ]),
-      tsCompilerOptions: frameworkPlugin.tsCompilerOptions,
+      logger,
     });
+    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
@@ -87,24 +83,18 @@ export default Component1;
     expect(extract(APP_TSX)).toMatchObject([
       {
         componentId: "App.tsx:Component1",
-        info: {
-          kind: "component",
-          exported: true,
-        },
+        kind: "component",
+        exported: true,
       },
       {
         componentId: "App.tsx:Component2",
-        info: {
-          kind: "component",
-          exported: false,
-        },
+        kind: "component",
+        exported: false,
       },
       {
         componentId: "App.tsx:Component3",
-        info: {
-          kind: "component",
-          exported: false,
-        },
+        kind: "component",
+        exported: false,
       },
     ]);
   });
@@ -123,17 +113,13 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     expect(extract(APP_TSX)).toMatchObject([
       {
         componentId: "App.tsx:DeclaredFunction",
-        info: {
-          kind: "component",
-          exported: true,
-        },
+        kind: "component",
+        exported: true,
       },
       {
         componentId: "App.tsx:ConstantFunction",
-        info: {
-          kind: "component",
-          exported: false,
-        },
+        kind: "component",
+        exported: false,
       },
     ]);
   });
@@ -158,28 +144,23 @@ export const NotStory = (props) => <Button {...props} />;
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Primary",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        args: null,
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.tsx:NotStory",
-        info: {
-          kind: "component",
-          exported: true,
-        },
+        kind: "component",
+        exported: true,
       },
     ]);
-    const storyInfo = extractedStories[0]?.info;
+    const storyInfo = extractedStories[0];
     if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
-    expect(await storyInfo.associatedComponent.analyze()).toEqual({
-      propsType: objectType({
+    expect(await storyInfo.associatedComponent.extractProps()).toEqual({
+      props: objectType({
         label: STRING_TYPE,
       }),
       types: {},
@@ -206,18 +187,13 @@ export const NotStory = (props) => <Button {...props} />;
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Primary",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: null,
-        },
+        args: null,
+        associatedComponent: null,
       },
       {
         componentId: "App.stories.tsx:NotStory",
-        info: {
-          kind: "component",
-          exported: true,
-        },
+        kind: "component",
+        exported: true,
       },
     ]);
   });
@@ -246,41 +222,36 @@ Primary.args = {
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Template",
-        info: {
-          kind: "component",
-          exported: false,
-        },
+        kind: "component",
+        exported: false,
       },
       {
         componentId: "App.stories.tsx:Primary",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("primary"),
-                value: TRUE,
-              },
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Button"),
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("primary"),
+              value: TRUE,
+            },
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Button"),
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
     ]);
-    const storyInfo = extractedStories[1]?.info;
+    const storyInfo = extractedStories[1];
     if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
-    expect(await storyInfo.associatedComponent.analyze()).toEqual({
-      propsType: objectType({
+    expect(await storyInfo.associatedComponent.extractProps()).toEqual({
+      props: objectType({
         label: STRING_TYPE,
       }),
       types: {},
@@ -311,31 +282,26 @@ Primary.args = {
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Template",
-        info: {
-          kind: "component",
-          exported: false,
-        },
+        kind: "component",
+        exported: false,
       },
       {
         componentId: "App.stories.tsx:Primary",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("primary"),
-                value: TRUE,
-              },
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Button"),
-              },
-            ]),
-          },
-          associatedComponent: null,
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("primary"),
+              value: TRUE,
+            },
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Button"),
+            },
+          ]),
         },
+        associatedComponent: null,
       },
     ]);
   });
@@ -363,39 +329,33 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Hello, World!"),
-              },
-            ]),
-          },
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
+        },
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.tsx:NoArgs",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: {
-            componentId: "App.tsx:Button",
-          },
+        args: null,
+        associatedComponent: {
+          componentId: "App.tsx:Button",
         },
       },
     ]);
-    const storyInfo = extractedStories[0]?.info;
+    const storyInfo = extractedStories[0];
     if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
-    expect(await storyInfo.associatedComponent.analyze()).toEqual({
-      propsType: objectType({
+    expect(await storyInfo.associatedComponent.extractProps()).toEqual({
+      props: objectType({
         label: STRING_TYPE,
       }),
       types: {},
@@ -425,27 +385,21 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Example",
-        info: {
-          kind: "story",
-          args: {
-            value: object([
-              {
-                kind: "key",
-                key: string("label"),
-                value: string("Hello, World!"),
-              },
-            ]),
-          },
-          associatedComponent: null,
+        args: {
+          value: object([
+            {
+              kind: "key",
+              key: string("label"),
+              value: string("Hello, World!"),
+            },
+          ]),
         },
+        associatedComponent: null,
       },
       {
         componentId: "App.stories.tsx:NoArgs",
-        info: {
-          kind: "story",
-          args: null,
-          associatedComponent: null,
-        },
+        args: null,
+        associatedComponent: null,
       },
     ]);
   });

@@ -25,7 +25,7 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@nuxt/config": "^2.17.0",
+    "@nuxt/config": "^2.17.1",
     "@previewjs/api": "^13.0.0",
     "@previewjs/serializable-values": "^7.0.2",
     "@previewjs/storybook-helpers": "^3.0.0",
@@ -39,17 +39,17 @@
     "vue-template-compiler": "^2.7.14"
   },
   "devDependencies": {
-    "@playwright/test": "^1.35.1",
+    "@playwright/test": "^1.36.2",
     "@previewjs/core": "workspace:*",
     "@previewjs/iframe": "workspace:*",
     "@previewjs/testing": "workspace:*",
     "@types/fs-extra": "^11.0.1",
-    "pino": "^8.14.1",
-    "pino-pretty": "^10.0.1",
+    "pino": "^8.14.2",
+    "pino-pretty": "^10.2.0",
     "rimraf": "^5.0.1",
     "shx": "^0.3.4",
     "unbuild": "^1.2.1",
-    "vite": "^4.4.2",
+    "vite": "^4.4.7",
     "vitest": "^0.33.0"
   }
 }

@@ -82,6 +82,7 @@ export async function load({
         const frameworkPlugin = await core.setupFrameworkPlugin({
           rootDirPath,
           frameworkPlugins,
+          reader,
           logger,
         });
         if (!frameworkPlugin) {

@@ -42,16 +42,16 @@ async function onUrlChanged() {
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
     componentIds: [componentId],
   });
-  const propsType = computePropsResponse.components[componentId]!.props;
+  const props = computePropsResponse.components[componentId]!.props;
   const autogenCallbackProps = generateCallbackProps(
-    propsType,
+    props,
     computePropsResponse.types
   );
   iframeController.loadComponent({
     componentId,
     propsAssignmentSource: transpile(
       generatePropsAssignmentSource(
-        propsType,
+        props,
         autogenCallbackProps.keys,
         computePropsResponse.types
       )

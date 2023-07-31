@@ -1,7 +1,5 @@
-import type {
-  AnalyzableComponent,
-  FrameworkPluginFactory,
-} from "@previewjs/core";
+import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
 import url from "url";
@@ -19,35 +17,38 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 3;
   },
-  async create({ rootDirPath }) {
+  async create({ rootDirPath, reader }) {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
+    const typeAnalyzer = createTypeAnalyzer({
+      rootDirPath,
+      reader: createStackedReader([
+        createVueTypeScriptReader(reader),
+        createFileSystemReader({
+          mapping: {
+            from: path.join(previewDirPath, "modules"),
+            to: path.join(rootDirPath, "node_modules"),
+          },
+          watch: false,
+        }),
+      ]),
+      tsCompilerOptions: {
+        types: ["vue/jsx"],
+      },
+    });
     return {
       pluginApiVersion: 3,
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
-      tsCompilerOptions: {
-        types: ["vue/jsx"],
-      },
-      transformReader: (reader) =>
-        createStackedReader([
-          createVueTypeScriptReader(reader),
-          createFileSystemReader({
-            mapping: {
-              from: path.join(previewDirPath, "modules"),
-              to: path.join(rootDirPath, "node_modules"),
-            },
-            watch: false,
-          }),
-        ]),
-      detectComponents: async (reader, typeAnalyzer, absoluteFilePaths) => {
+      typeAnalyzer,
+      detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
         );
-        const components: AnalyzableComponent[] = [];
+        const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
             ...extractVueComponents(
