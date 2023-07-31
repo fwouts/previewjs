@@ -77,10 +77,10 @@ function computePropsTypeFromSignature(
     firstParam.valueDeclaration
   );
   try {
-    let { type: propsType, collected } = typeResolver.resolveType(type);
-    [propsType] = dereferenceType(propsType, collected, []);
+    let { type: props, collected } = typeResolver.resolveType(type);
+    [props] = dereferenceType(props, collected, []);
     stripUnusedProps: if (
-      propsType.kind === "object" &&
+      props.kind === "object" &&
       ts.isParameter(firstParam.valueDeclaration)
     ) {
       if (ts.isObjectBindingPattern(firstParam.valueDeclaration.name)) {
@@ -101,9 +101,9 @@ function computePropsTypeFromSignature(
             propsWithDefault.add(elementName.text);
           }
         }
-        propsType = objectType(
+        props = objectType(
           Object.fromEntries(
-            Object.entries(propsType.fields)
+            Object.entries(props.fields)
               .filter(([key]) => usedProps.has(key))
               .map(([key, type]) => [
                 key,
@@ -113,7 +113,7 @@ function computePropsTypeFromSignature(
         );
       }
     }
-    return { type: propsType, collected };
+    return { type: props, collected };
   } catch (e) {
     logger.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(

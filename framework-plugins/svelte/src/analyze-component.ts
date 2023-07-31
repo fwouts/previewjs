@@ -18,7 +18,7 @@ export function analyzeSvelteComponentFromSFC(
   virtualSvelteTsAbsoluteFilePath: string
 ): ComponentProps {
   const sourceFile = resolver.sourceFile(virtualSvelteTsAbsoluteFilePath);
-  const propsTypeFields: Record<string, ValueType | OptionalType> = {};
+  const props: Record<string, ValueType | OptionalType> = {};
   let collected: CollectedTypes = {};
   let slots: string[] = [];
   for (const statement of sourceFile?.statements || []) {
@@ -37,7 +37,7 @@ export function analyzeSvelteComponentFromSFC(
           resolver.resolveType(
             resolver.checker.getTypeAtLocation(declaration.name)
           );
-        propsTypeFields[declaration.name.text] = maybeOptionalType(
+        props[declaration.name.text] = maybeOptionalType(
           fieldType,
           !!declaration.initializer
         );
@@ -64,7 +64,7 @@ export function analyzeSvelteComponentFromSFC(
   }
   return {
     props: intersectionType([
-      objectType(propsTypeFields),
+      objectType(props),
       objectType(
         Object.fromEntries(
           slots.map((slotName) => [`slot:${slotName}`, STRING_TYPE])
