@@ -43,7 +43,7 @@ const componentDetectorFactory: ComponentDetectorFactory = ({
       }
       return components;
     },
-    dispose: async () => {
+    dispose: () => {
       typeAnalyzer.dispose();
     },
   };

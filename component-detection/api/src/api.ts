@@ -8,9 +8,9 @@ import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
 
 export type ComponentDetector = {
-  typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
+  typeAnalyzer: TypeAnalyzer;
   detectComponents: (filePaths: string[]) => Promise<Component[]>;
-  dispose: () => Promise<void>;
+  dispose: () => void;
 };
 
 export type ComponentDetectorFactory = (options: {
