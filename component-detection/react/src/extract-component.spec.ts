@@ -37,7 +37,7 @@ describe.concurrent("extractReactComponents", () => {
       APP_TSX,
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
-    detector = await createComponentDetector({
+    detector = createComponentDetector({
       rootDirPath: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,

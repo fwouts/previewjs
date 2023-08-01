@@ -38,7 +38,7 @@ describe.concurrent("analyzeReactComponent", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    detector = await createComponentDetector({
+    detector = createComponentDetector({
       rootDirPath: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,
