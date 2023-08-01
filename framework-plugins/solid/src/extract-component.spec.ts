@@ -34,7 +34,7 @@ describe("extractSolidComponents", () => {
       "export const Button = ({ label }: { label: string }) => <div>{label}</div>;"
     );
     frameworkPlugin = await solidFrameworkPlugin.create({
-      rootDirPath: ROOT_DIR,
+      rootDir: ROOT_DIR,
       dependencies: {},
       reader: createStackedReader([
         memoryReader,

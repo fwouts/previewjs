@@ -36,7 +36,7 @@ describe("extractPreactComponents", () => {
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
     frameworkPlugin = await reactFrameworkPlugin.create({
-      rootDirPath: ROOT_DIR,
+      rootDir: ROOT_DIR,
       dependencies: {},
       reader: createStackedReader([
         memoryReader,

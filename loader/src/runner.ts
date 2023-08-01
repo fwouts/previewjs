@@ -44,7 +44,7 @@ export async function load({
   });
   const reader = vfs.createStackedReader([memoryReader, fsReader]);
   const workspaces: {
-    [rootDirPath: string]: core.Workspace | null;
+    [rootDir: string]: core.Workspace | null;
   } = {};
 
   return {
@@ -60,8 +60,8 @@ export async function load({
       versionCode: string;
       absoluteFilePath: string;
     }) {
-      const rootDirPath = core.findWorkspaceRoot(absoluteFilePath);
-      if (!rootDirPath) {
+      const rootDir = core.findWorkspaceRoot(absoluteFilePath);
+      if (!rootDir) {
         globalLogger.info(
           `No workspace root detected from ${absoluteFilePath}`
         );
@@ -70,33 +70,33 @@ export async function load({
       // TODO: Load a proper configuration file containing the desired log level.
       // Pending https://twitter.com/fwouts/status/1658288168238735361
       let logger = globalLogger;
-      if (await fs.pathExists(path.join(rootDirPath, "previewjs-debug"))) {
+      if (await fs.pathExists(path.join(rootDir, "previewjs-debug"))) {
         // Show debug logs for this workspace.
         logger = createLogger({ level: "debug" }, prettyLoggerStream);
       }
-      const existingWorkspace = workspaces[rootDirPath];
+      const existingWorkspace = workspaces[rootDir];
       if (existingWorkspace !== undefined) {
         return existingWorkspace;
       }
       const created = await locking(async () => {
         const frameworkPlugin = await core.setupFrameworkPlugin({
-          rootDirPath,
+          rootDir,
           frameworkPlugins,
           reader,
           logger,
         });
         if (!frameworkPlugin) {
           logger.warn(
-            `No compatible Preview.js plugin for workspace: ${rootDirPath}`
+            `No compatible Preview.js plugin for workspace: ${rootDir}`
           );
           return null;
         }
         logger.info(
-          `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDirPath}`
+          `Creating Preview.js workspace (plugin: ${frameworkPlugin.name}) at ${rootDir}`
         );
         return await core.createWorkspace({
           logger,
-          rootDirPath,
+          rootDir,
           reader,
           frameworkPlugin,
           setupEnvironment: (options) =>
@@ -110,11 +110,11 @@ export async function load({
       // would be problematic especially when package.json is updated to a compatible
       // package version.
       // TODO: Find a smarter approach, perhaps checking last-modified time of package.json and node_modules.
-      return (workspaces[rootDirPath] = created
+      return (workspaces[rootDir] = created
         ? {
             ...created,
             dispose: async () => {
-              delete workspaces[rootDirPath];
+              delete workspaces[rootDir];
               await created.dispose();
             },
           }

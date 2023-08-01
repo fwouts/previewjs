@@ -64,7 +64,7 @@ export class Previewer {
     private readonly options: {
       reader: Reader;
       previewDirPath: string;
-      rootDirPath: string;
+      rootDir: string;
       logger: Logger;
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
@@ -76,18 +76,14 @@ export class Previewer {
       createFileSystemReader({
         mapping: {
           from: options.frameworkPlugin.previewDirPath,
-          to: path.join(
-            options.rootDirPath,
-            "__previewjs_internal__",
-            "renderer"
-          ),
+          to: path.join(options.rootDir, "__previewjs_internal__", "renderer"),
         },
         watch: false,
       }),
       createFileSystemReader({
         mapping: {
           from: options.previewDirPath,
-          to: options.rootDirPath,
+          to: options.rootDir,
         },
         watch: false,
       }),
@@ -148,8 +144,8 @@ export class Previewer {
       promise: (async () => {
         // PostCSS requires the current directory to change because it relies
         // on the `import-cwd` package to resolve plugins.
-        process.chdir(this.options.rootDirPath);
-        const configFromProject = await readConfig(this.options.rootDirPath);
+        process.chdir(this.options.rootDir);
+        const configFromProject = await readConfig(this.options.rootDir);
         const config = (this.config = {
           ...configFromProject,
           wrapper: configFromProject.wrapper || {
@@ -157,7 +153,7 @@ export class Previewer {
           },
         });
         const globalCssAbsoluteFilePaths = await findFiles(
-          this.options.rootDirPath,
+          this.options.rootDir,
           `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
             "|"
           )}).@(${GLOBAL_CSS_EXTS.join("|")})`,
@@ -237,23 +233,23 @@ export class Previewer {
           // and we will never know to restart.
           if (this.transformingReader.observe) {
             this.disposeObserver = await this.transformingReader.observe(
-              this.options.rootDirPath
+              this.options.rootDir
             );
           }
           this.transformingReader.listeners.add(this.onFileChangeListener);
         }
         this.viteManager = new ViteManager({
-          rootDirPath: this.options.rootDirPath,
+          rootDir: this.options.rootDir,
           shadowHtmlFilePath: path.join(
             this.options.previewDirPath,
             "index.html"
           ),
           detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
             (absoluteFilePath) =>
-              path.relative(this.options.rootDirPath, absoluteFilePath)
+              path.relative(this.options.rootDir, absoluteFilePath)
           ),
           reader: this.transformingReader,
-          cacheDir: path.join(getCacheDir(this.options.rootDirPath), "vite"),
+          cacheDir: path.join(getCacheDir(this.options.rootDir), "vite"),
           config,
           logger: this.options.logger,
           frameworkPlugin: this.options.frameworkPlugin,
@@ -336,7 +332,7 @@ export class Previewer {
         !info.virtual &&
         this.config?.wrapper &&
         absoluteFilePath ===
-          path.resolve(this.options.rootDirPath, this.config.wrapper.path)
+          path.resolve(this.options.rootDir, this.config.wrapper.path)
       ) {
         this.viteManager?.triggerFullReload();
       }

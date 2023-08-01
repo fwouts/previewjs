@@ -38,7 +38,7 @@ describe.concurrent("extractReactComponents", () => {
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
     detector = createComponentDetector({
-      rootDirPath: ROOT_DIR,
+      rootDir: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({

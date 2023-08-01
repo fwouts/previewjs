@@ -11,7 +11,7 @@ import { inferComponentNameFromSveltePath } from "./infer-component-name.js";
 export async function extractSvelteComponents(
   reader: Reader,
   resolver: TypeResolver,
-  rootDirPath: string,
+  rootDir: string,
   absoluteFilePath: string
 ): Promise<Component[]> {
   if (absoluteFilePath.endsWith(".svelte")) {
@@ -22,7 +22,7 @@ export async function extractSvelteComponents(
     return [
       {
         componentId: generateComponentId({
-          filePath: path.relative(rootDirPath, absoluteFilePath),
+          filePath: path.relative(rootDir, absoluteFilePath),
           name: inferComponentNameFromSveltePath(absoluteFilePath),
         }),
         offsets: [0, (await entry.read()).length],
@@ -38,7 +38,7 @@ export async function extractSvelteComponents(
       return [];
     }
     return extractCsf3Stories(
-      rootDirPath,
+      rootDir,
       resolver,
       sourceFile,
       async (componentId) => {
@@ -47,8 +47,8 @@ export async function extractSvelteComponents(
           await extractSvelteComponents(
             reader,
             resolver,
-            rootDirPath,
-            path.join(rootDirPath, filePath)
+            rootDir,
+            path.join(rootDir, filePath)
           )
         ).find((c) => c.componentId === componentId);
         if (component?.kind !== "component") {

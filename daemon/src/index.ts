@@ -303,7 +303,7 @@ export async function startDaemon({
       workspaces[workspaceId] = workspace;
       return {
         workspaceId,
-        rootDirPath: workspace.rootDirPath,
+        rootDir: workspace.rootDir,
       };
     }
   );
@@ -333,7 +333,7 @@ export async function startDaemon({
         filePaths: [
           path
             .relative(
-              workspace.rootDirPath,
+              workspace.rootDir,
               transformAbsoluteFilePath(absoluteFilePath)
             )
             .replace(/\\/g, "/"),

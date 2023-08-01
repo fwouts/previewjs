@@ -29,7 +29,7 @@ describe("analyze Vue 3 component", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await vue3FrameworkPlugin.create({
-      rootDirPath: ROOT_DIR_PATH,
+      rootDir: ROOT_DIR_PATH,
       dependencies: {},
       reader: createStackedReader([
         memoryReader,

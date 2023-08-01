@@ -29,7 +29,7 @@ export type GetWorkspaceResponse =
     }
   | {
       workspaceId: string;
-      rootDirPath: string;
+      rootDir: string;
     };
 
 export interface DisposeWorkspaceRequest {

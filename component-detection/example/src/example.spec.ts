@@ -4,11 +4,10 @@ import { describe, expect, test } from "vitest";
 describe("example", () => {
   test("foo", async () => {
     const detector = createComponentDetector({
-      rootDirPath: __dirname,
+      rootDir: __dirname,
     });
-    expect(
-      await detector.detectComponents(["components.tsx"])
-    ).toMatchInlineSnapshot(`
+    expect(await detector.detectComponents(["components.tsx"]))
+      .toMatchInlineSnapshot(`
       [
         {
           "componentId": "components.tsx:A",

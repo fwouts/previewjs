@@ -22,7 +22,7 @@ import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 export function extractVueComponents(
   reader: Reader,
   resolver: TypeResolver,
-  rootDirPath: string,
+  rootDir: string,
   absoluteFilePath: string
 ): Component[] {
   const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
@@ -35,7 +35,7 @@ export function extractVueComponents(
     return [
       {
         componentId: generateComponentId({
-          filePath: path.relative(rootDirPath, vueAbsoluteFilePath),
+          filePath: path.relative(rootDir, vueAbsoluteFilePath),
           name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
         }),
         offsets: [0, fileEntry.size()],
@@ -103,7 +103,7 @@ export function extractVueComponents(
     const isExported = name === "default" || !!nameToExportedName[name];
     if (storiesInfo && storyArgs && isExported) {
       const associatedComponent = extractStoryAssociatedComponent(
-        rootDirPath,
+        rootDir,
         resolver,
         storiesInfo.component
       );
@@ -136,7 +136,7 @@ export function extractVueComponents(
       if (storiesInfo && isExported && returnType.getProperty("template")) {
         // This is a story.
         const associatedComponent = extractStoryAssociatedComponent(
-          rootDirPath,
+          rootDir,
           resolver,
           storiesInfo.component
         );
@@ -155,7 +155,7 @@ export function extractVueComponents(
     const component = extractComponent(
       {
         componentId: generateComponentId({
-          filePath: path.relative(rootDirPath, absoluteFilePath),
+          filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
         offsets: [statement.getStart(), statement.getEnd()],
@@ -171,16 +171,16 @@ export function extractVueComponents(
   return [
     ...components,
     ...extractCsf3Stories(
-      rootDirPath,
+      rootDir,
       resolver,
       sourceFile,
       async (componentId) => {
         const { filePath } = decodeComponentId(componentId);
-        const absoluteFilePath = path.join(rootDirPath, filePath);
+        const absoluteFilePath = path.join(rootDir, filePath);
         const vueComponents = extractVueComponents(
           reader,
           resolver,
-          rootDirPath,
+          rootDir,
           absoluteFilePath
         );
         const component = absoluteFilePath.endsWith(".vue.ts")
@@ -236,12 +236,12 @@ function extractVueFilePath(filePath: string) {
 }
 
 function extractStoryAssociatedComponent(
-  rootDirPath: string,
+  rootDir: string,
   resolver: TypeResolver,
   component: ts.Expression | null
 ): BasicFrameworkComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
-    rootDirPath,
+    rootDir,
     resolver.checker,
     component
   );

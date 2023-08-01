@@ -21,7 +21,7 @@ import { analyzeSolidComponent } from "./analyze-component.js";
 export function extractSolidComponents(
   logger: Logger,
   resolver: TypeResolver,
-  rootDirPath: string,
+  rootDir: string,
   absoluteFilePath: string
 ): Component[] {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
@@ -91,7 +91,7 @@ export function extractSolidComponents(
       const associatedComponent = extractStoryAssociatedComponent(
         logger,
         resolver,
-        rootDirPath,
+        rootDir,
         storiesInfo.component
       );
       return {
@@ -123,7 +123,7 @@ export function extractSolidComponents(
     const component = extractComponent(
       {
         componentId: generateComponentId({
-          filePath: path.relative(rootDirPath, absoluteFilePath),
+          filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
         offsets: [statement.getStart(), statement.getEnd()],
@@ -139,7 +139,7 @@ export function extractSolidComponents(
   return [
     ...components,
     ...extractCsf3Stories(
-      rootDirPath,
+      rootDir,
       resolver,
       sourceFile,
       async (componentId) => {
@@ -147,8 +147,8 @@ export function extractSolidComponents(
         const component = extractSolidComponents(
           logger,
           resolver,
-          rootDirPath,
-          path.join(rootDirPath, filePath)
+          rootDir,
+          path.join(rootDir, filePath)
         ).find((c) => c.componentId === componentId);
         if (component?.kind !== "component") {
           return {
@@ -165,11 +165,11 @@ export function extractSolidComponents(
 function extractStoryAssociatedComponent(
   logger: Logger,
   resolver: TypeResolver,
-  rootDirPath: string,
+  rootDir: string,
   component: ts.Expression | null
 ): BasicFrameworkComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
-    rootDirPath,
+    rootDir,
     resolver.checker,
     component
   );

@@ -20,10 +20,10 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return major >= 17 || (major === 16 && minor >= 14);
   },
-  async create({ rootDirPath, reader, logger, dependencies }) {
+  async create({ rootDir, reader, logger, dependencies }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const componentDetectorPlugin = createComponentDetector({
-      rootDirPath,
+      rootDir,
       reader,
       logger,
     });

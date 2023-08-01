@@ -37,7 +37,7 @@ describe("analyze Vue 2 component", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await vue2FrameworkPlugin.create({
-      rootDirPath: ROOT_DIR_PATH,
+      rootDir: ROOT_DIR_PATH,
       dependencies: {},
       reader: createStackedReader([
         memoryReader,

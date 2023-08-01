@@ -23,7 +23,7 @@ describe("extractCsf3Stories", () => {
     memoryReader = createMemoryReader();
     memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: ROOT_DIR,
+      rootDir: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({

@@ -11,7 +11,7 @@ import { extractStoriesInfo } from "./extract-stories-info";
 import { resolveComponentId } from "./resolve-component";
 
 export function extractCsf3Stories(
-  rootDirPath: string,
+  rootDir: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
   extractProps: (componentId: string) => Promise<ComponentProps>
@@ -61,14 +61,14 @@ export function extractCsf3Stories(
       }
 
       const associatedComponentId = resolveComponentId(
-        rootDirPath,
+        rootDir,
         resolver.checker,
         storyComponent || storiesInfo.component || null
       );
       components.push({
         kind: "story",
         componentId: generateComponentId({
-          filePath: path.relative(rootDirPath, sourceFile.fileName),
+          filePath: path.relative(rootDir, sourceFile.fileName),
           name,
         }),
         offsets: [statement.getStart(), statement.getEnd()],

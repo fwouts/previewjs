@@ -20,18 +20,15 @@ export function createWorkspaceGetter(
     }
     if (!workspaces[workspace.workspaceId]) {
       outputChannel.appendLine(
-        `✨ Created Preview.js workspace for: ${workspace.rootDirPath}`
+        `✨ Created Preview.js workspace for: ${workspace.rootDir}`
       );
-      workspaces[workspace.workspaceId] = workspace.rootDirPath;
+      workspaces[workspace.workspaceId] = workspace.rootDir;
     }
     return workspace.workspaceId;
   };
 }
 
-export type Workspaces = Record<
-  string /* workspaceId */,
-  string /* rootDirPath */
->;
+export type Workspaces = Record<string /* workspaceId */, string /* rootDir */>;
 
 export type WorkspaceGetter = (
   document: vscode.TextDocument

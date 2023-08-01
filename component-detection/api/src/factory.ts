@@ -15,7 +15,7 @@ export function factoryWithDefaultOptions(
 ): ComponentDetectorFactory {
   return (options: ComponentDetectorFactoryOptions = {}) =>
     factory({
-      rootDirPath: options.rootDirPath || process.cwd(),
+      rootDir: options.rootDir || process.cwd(),
       reader: options.reader || createFileSystemReader(),
       logger:
         options.logger ||

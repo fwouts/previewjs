@@ -8,10 +8,10 @@ import type * as vite from "vite";
  * Example: `import viteLogo from "/vite.svg";`
  */
 export function publicAssetImportPluginPlugin({
-  rootDirPath,
+  rootDir,
   publicDir,
 }: {
-  rootDirPath: string;
+  rootDir: string;
   publicDir: string;
 }): vite.Plugin {
   return {
@@ -24,7 +24,7 @@ export function publicAssetImportPluginPlugin({
       ) {
         return;
       }
-      const publicDirAbsolutePath = path.join(rootDirPath, publicDir);
+      const publicDirAbsolutePath = path.join(rootDir, publicDir);
       const potentialPublicFilePath = path.join(publicDirAbsolutePath, source);
       if (
         !potentialPublicFilePath.startsWith(publicDirAbsolutePath + path.sep)

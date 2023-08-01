@@ -29,7 +29,7 @@ describe("extractArgs", () => {
   beforeEach(() => {
     memoryReader = createMemoryReader();
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: path.join(__dirname, "virtual"),
+      rootDir: path.join(__dirname, "virtual"),
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
@@ -140,8 +140,8 @@ describe("extractArgs", () => {
   });
 
   function extractArgsFromSource(source: string) {
-    const rootDirPath = path.join(__dirname, "virtual");
-    const mainSourceFilePath = path.join(rootDirPath, "main.ts");
+    const rootDir = path.join(__dirname, "virtual");
+    const mainSourceFilePath = path.join(rootDir, "main.ts");
     memoryReader.updateFile(mainSourceFilePath, source);
     const resolver = typeAnalyzer.analyze([mainSourceFilePath]);
     const sourceFile = resolver.sourceFile(mainSourceFilePath);

@@ -7,7 +7,7 @@ import type { PackageDependencies } from "./dependencies";
 export interface FrameworkPluginFactory {
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
   create(options: {
-    rootDirPath: string;
+    rootDir: string;
     reader: Reader;
     logger: Logger;
     dependencies: PackageDependencies;

@@ -4,21 +4,18 @@ import path from "path";
 
 export function duplicateProjectForTesting(testProjectDirPath: string) {
   const tmpDir = fs.realpathSync(os.tmpdir());
-  let rootDirPath = path.join(
+  let rootDir = path.join(
     tmpDir,
     `${path.basename(testProjectDirPath)}-${process.pid}`
   );
   // TODO: Remove this hack because Windows tests fail in CI
   // presumably because of different drives.
-  if (rootDirPath.startsWith("C:\\Users\\RUNNER~")) {
-    rootDirPath = rootDirPath.replace(
-      /C:\\Users\\RUNNER~\d+/g,
-      "D:\\a\\previewjs"
-    );
+  if (rootDir.startsWith("C:\\Users\\RUNNER~")) {
+    rootDir = rootDir.replace(/C:\\Users\\RUNNER~\d+/g, "D:\\a\\previewjs");
   }
-  fs.mkdirpSync(rootDirPath);
-  sync(testProjectDirPath, rootDirPath);
-  return rootDirPath;
+  fs.mkdirpSync(rootDir);
+  sync(testProjectDirPath, rootDir);
+  return rootDir;
 }
 
 function sync(srcPath: string, dstPath: string): void {

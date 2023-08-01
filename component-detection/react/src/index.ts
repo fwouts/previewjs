@@ -9,10 +9,10 @@ import { extractReactComponents } from "./extract-component.js";
 import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
 export const createComponentDetector = factoryWithDefaultOptions(
-  ({ rootDirPath, reader, logger }) => {
+  ({ rootDir, reader, logger }) => {
     const typeAnalyzer = createTypeAnalyzer({
       reader,
-      rootDirPath,
+      rootDir,
       specialTypes: REACT_SPECIAL_TYPES,
       tsCompilerOptions: {
         jsx: ts.JsxEmit.ReactJSX,
@@ -23,9 +23,7 @@ export const createComponentDetector = factoryWithDefaultOptions(
     return {
       typeAnalyzer,
       detectComponents: async (filePaths) => {
-        const absoluteFilePaths = filePaths.map((f) =>
-          path.join(rootDirPath, f)
-        );
+        const absoluteFilePaths = filePaths.map((f) => path.join(rootDir, f));
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
@@ -33,7 +31,7 @@ export const createComponentDetector = factoryWithDefaultOptions(
             ...extractReactComponents(
               logger,
               resolver,
-              rootDirPath,
+              rootDir,
               absoluteFilePath
             )
           );

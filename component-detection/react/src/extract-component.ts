@@ -23,7 +23,7 @@ import { analyzeReactComponent } from "./analyze-component.js";
 export function extractReactComponents(
   logger: Logger,
   resolver: TypeResolver,
-  rootDirPath: string,
+  rootDir: string,
   absoluteFilePath: string
 ): Component[] {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
@@ -92,7 +92,7 @@ export function extractReactComponents(
       const associatedComponent = extractStoryAssociatedComponent(
         logger,
         resolver,
-        rootDirPath,
+        rootDir,
         storiesInfo.component
       );
       return {
@@ -133,7 +133,7 @@ export function extractReactComponents(
       node,
       name,
       generateComponentId({
-        filePath: path.relative(rootDirPath, absoluteFilePath),
+        filePath: path.relative(rootDir, absoluteFilePath),
         name,
       }),
       [statement.getStart(), statement.getEnd()]
@@ -146,7 +146,7 @@ export function extractReactComponents(
   return [
     ...components,
     ...extractCsf3Stories(
-      rootDirPath,
+      rootDir,
       resolver,
       sourceFile,
       async (componentId) => {
@@ -154,8 +154,8 @@ export function extractReactComponents(
         const component = extractReactComponents(
           logger,
           resolver,
-          rootDirPath,
-          path.join(rootDirPath, filePath)
+          rootDir,
+          path.join(rootDir, filePath)
         ).find((c) => c.componentId === componentId);
         if (component?.kind !== "component") {
           return {
@@ -172,11 +172,11 @@ export function extractReactComponents(
 function extractStoryAssociatedComponent(
   logger: Logger,
   resolver: TypeResolver,
-  rootDirPath: string,
+  rootDir: string,
   component: ts.Expression | null
 ): BasicFrameworkComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
-    rootDirPath,
+    rootDir,
     resolver.checker,
     component
   );
@@ -200,7 +200,7 @@ function extractStoryAssociatedComponent(
           return analyzeReactComponent(
             logger,
             resolver,
-            path.join(rootDirPath, filePath),
+            path.join(rootDir, filePath),
             name,
             signature
           );

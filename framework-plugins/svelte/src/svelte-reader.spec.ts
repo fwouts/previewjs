@@ -19,7 +19,7 @@ describe("createSvelteTypeScriptReader", () => {
     memoryReader = createMemoryReader();
     reader = createSvelteTypeScriptReader(memoryReader);
     typeAnalyzer = createTypeAnalyzer({
-      rootDirPath: path.join(__dirname, "virtual"),
+      rootDir: path.join(__dirname, "virtual"),
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader(), // required for TypeScript libs, e.g. Promise

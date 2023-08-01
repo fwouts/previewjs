@@ -14,7 +14,7 @@ export type ComponentDetector = {
 };
 
 export type ComponentDetectorFactory = (options?: {
-  rootDirPath?: string;
+  rootDir?: string;
   reader?: Reader;
   logger?: Logger;
 }) => ComponentDetector;

@@ -17,10 +17,10 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 3;
   },
-  async create({ rootDirPath, reader }) {
+  async create({ rootDir, reader }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
-    const svelteConfigPath = path.join(rootDirPath, "svelte.config.js");
+    const svelteConfigPath = path.join(rootDir, "svelte.config.js");
     let alias: Record<string, string> = {};
     let isSvelteKit = false;
     if (await fs.pathExists(svelteConfigPath)) {
@@ -34,7 +34,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       isSvelteKit = Boolean(config.kit);
     }
     const typeAnalyzer = createTypeAnalyzer({
-      rootDirPath,
+      rootDir,
       reader: createSvelteTypeScriptReader(reader),
     });
     return {
@@ -53,7 +53,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
             ...(await extractSvelteComponents(
               reader,
               resolver,
-              rootDirPath,
+              rootDir,
               absoluteFilePath
             ))
           );
