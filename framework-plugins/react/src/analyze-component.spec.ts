@@ -1,5 +1,5 @@
 import { decodeComponentId } from "@previewjs/api";
-import type { ComponentDetector } from "@previewjs/component-detection-api";
+import type { FrameworkPlugin } from "@previewjs/core";
 import {
   ANY_TYPE,
   arrayType,
@@ -25,21 +25,21 @@ import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { createComponentDetector } from "./index.js";
+import reactFrameworkPlugin from "./index.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
-const MAIN_FILE_NAME = "App.tsx";
-const MAIN_FILE = path.join(ROOT_DIR_PATH, MAIN_FILE_NAME);
+const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
 describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
-  let detector: ComponentDetector;
+  let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    detector = createComponentDetector({
+    frameworkPlugin = await reactFrameworkPlugin.create({
       rootDir: ROOT_DIR_PATH,
+      dependencies: {},
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
@@ -54,7 +54,7 @@ describe("analyzeReactComponent", () => {
   });
 
   afterEach(() => {
-    detector.dispose();
+    frameworkPlugin.dispose();
   });
 
   test("local component with named export", async () => {
@@ -547,9 +547,9 @@ A.propTypes = {
 
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    const component = (await detector.detectComponents([MAIN_FILE_NAME])).find(
-      (c) => decodeComponentId(c.componentId).name === componentName
-    );
+    const component = (
+      await frameworkPlugin.detectComponents([MAIN_FILE])
+    ).find((c) => decodeComponentId(c.componentId).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
