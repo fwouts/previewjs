@@ -42,7 +42,7 @@ export const previewTest = (
         port = await getPort();
       }
       let showingComponent = false;
-      const { rootDirPath, reader, fileManager } = await prepareFileManager({
+      const { rootDir, reader, fileManager } = await prepareFileManager({
         testProjectDirPath,
         onBeforeFileUpdated: async () => {
           if (!showingComponent) {
@@ -79,7 +79,7 @@ export const previewTest = (
       });
       const workspace = await createChromelessWorkspace({
         frameworkPlugins,
-        rootDirPath,
+        rootDir,
         reader,
       });
       const preview = await workspace.preview.start(page, {

@@ -9,21 +9,21 @@ import type { FrameworkPluginFactory } from "./framework";
 const require = createRequire(import.meta.url);
 
 export async function setupFrameworkPlugin({
-  rootDirPath,
+  rootDir,
   frameworkPlugins,
   reader,
   logger,
 }: {
-  rootDirPath: string;
+  rootDir: string;
   frameworkPlugins: FrameworkPluginFactory[];
   reader: Reader;
   logger: Logger;
 }) {
-  const dependencies = await extractPackageDependencies(logger, rootDirPath);
+  const dependencies = await extractPackageDependencies(logger, rootDir);
   for (const candidate of frameworkPlugins) {
     if (await candidate.isCompatible(dependencies)) {
       return candidate.create({
-        rootDirPath,
+        rootDir,
         reader,
         logger,
         dependencies,
@@ -35,9 +35,9 @@ export async function setupFrameworkPlugin({
 
 async function extractPackageDependencies(
   logger: Logger,
-  rootDirPath: string
+  rootDir: string
 ): Promise<PackageDependencies> {
-  const packageJsonPath = path.join(rootDirPath, "package.json");
+  const packageJsonPath = path.join(rootDir, "package.json");
   if (!(await fs.pathExists(packageJsonPath))) {
     return {};
   }
@@ -62,7 +62,7 @@ async function extractPackageDependencies(
         }
         const readInstalledVersion = async () => {
           try {
-            const moduleEntryPath = findModuleEntryPath(name, rootDirPath);
+            const moduleEntryPath = findModuleEntryPath(name, rootDir);
             let packagePath = moduleEntryPath;
             let packageJsonPath: string | null = null;
             while (packagePath !== path.dirname(packagePath)) {
@@ -105,10 +105,10 @@ async function extractPackageDependencies(
   );
 }
 
-function findModuleEntryPath(name: string, rootDirPath: string): string {
+function findModuleEntryPath(name: string, rootDir: string): string {
   try {
     return require.resolve(name, {
-      paths: [rootDirPath],
+      paths: [rootDir],
     });
   } catch (e: any) {
     if (e.code === "ERR_PACKAGE_PATH_NOT_EXPORTED") {

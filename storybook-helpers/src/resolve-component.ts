@@ -3,7 +3,7 @@ import path from "path";
 import ts from "typescript";
 
 export function resolveComponentId(
-  rootDirPath: string,
+  rootDir: string,
   checker: ts.TypeChecker,
   expression: ts.Expression | null
 ): string | null {
@@ -14,11 +14,11 @@ export function resolveComponentId(
   if (!symbol) {
     return null;
   }
-  return resolveSymbolToComponentId(rootDirPath, checker, symbol);
+  return resolveSymbolToComponentId(rootDir, checker, symbol);
 }
 
 function resolveSymbolToComponentId(
-  rootDirPath: string,
+  rootDir: string,
   checker: ts.TypeChecker,
   symbol: ts.Symbol,
   isDefault = false
@@ -31,7 +31,7 @@ function resolveSymbolToComponentId(
       importClause.parent.moduleSpecifier
     );
     if (imported) {
-      return resolveSymbolToComponentId(rootDirPath, checker, imported, true);
+      return resolveSymbolToComponentId(rootDir, checker, imported, true);
     }
   }
   const importSpecifier = declarations.find(ts.isImportSpecifier);
@@ -41,7 +41,7 @@ function resolveSymbolToComponentId(
       ? checker.getSymbolAtLocation(importSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
     if (imported) {
-      return resolveSymbolToComponentId(rootDirPath, checker, imported);
+      return resolveSymbolToComponentId(rootDir, checker, imported);
     }
   }
   const exportSpecifier = declarations.find(ts.isExportSpecifier);
@@ -51,7 +51,7 @@ function resolveSymbolToComponentId(
       ? checker.getSymbolAtLocation(exportSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
     if (exported) {
-      return resolveSymbolToComponentId(rootDirPath, checker, exported);
+      return resolveSymbolToComponentId(rootDir, checker, exported);
     }
   }
   const firstDeclaration = declarations[0];
@@ -60,7 +60,7 @@ function resolveSymbolToComponentId(
   }
   const sourceFile = firstDeclaration.getSourceFile();
   return generateComponentId({
-    filePath: path.relative(rootDirPath, sourceFile.fileName),
+    filePath: path.relative(rootDir, sourceFile.fileName),
     name: isDefault ? "default" : symbol.getName(),
   });
 }

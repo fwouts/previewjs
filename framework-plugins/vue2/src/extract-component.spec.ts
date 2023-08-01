@@ -56,13 +56,13 @@ export default {
 </script>
 `
     );
-    const rootDirPath = path.join(__dirname, "virtual");
+    const rootDir = path.join(__dirname, "virtual");
     const reader = createStackedReader([
       createVueTypeScriptReader(logger, memoryReader),
       createFileSystemReader({
         mapping: {
           from: path.join(__dirname, "..", "preview", "modules"),
-          to: path.join(rootDirPath, "node_modules"),
+          to: path.join(rootDir, "node_modules"),
         },
         watch: false,
       }),
@@ -71,7 +71,7 @@ export default {
       }), // required for TypeScript libs, e.g. Promise
     ]);
     const frameworkPlugin = await vue2FrameworkPlugin.create({
-      rootDirPath,
+      rootDir,
       dependencies: {},
       reader,
       logger,

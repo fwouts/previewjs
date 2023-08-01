@@ -38,7 +38,7 @@ import { computeUnion } from "./union";
 export type { TypeAnalyzer, TypeResolver };
 
 export function createTypeAnalyzer(options: {
-  rootDirPath: string;
+  rootDir: string;
   reader: Reader;
   collected?: CollectedTypes;
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
@@ -46,7 +46,7 @@ export function createTypeAnalyzer(options: {
   warn?: (message: string) => void;
 }): TypeAnalyzer {
   return new TypeAnalyzer(
-    options.rootDirPath,
+    options.rootDir,
     options.reader,
     options.collected || {},
     options.specialTypes || {},
@@ -61,7 +61,7 @@ class TypeAnalyzer {
   private printedWarnings = new Set<string>();
 
   constructor(
-    private readonly rootDirPath: string,
+    private readonly rootDir: string,
     reader: Reader,
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
@@ -70,7 +70,7 @@ class TypeAnalyzer {
   ) {
     this.service = ts.createLanguageService(
       typescriptServiceHost({
-        rootDirPath,
+        rootDir,
         reader,
         getScriptFileNames: () => this.entryPointFilePaths,
         tsCompilerOptions,
@@ -116,14 +116,14 @@ class TypeAnalyzer {
         }
         if (diagnostic.file && lastFileName !== diagnostic.file.fileName) {
           lastFileName = diagnostic.file.fileName;
-          this.warn(`${path.relative(this.rootDirPath, lastFileName)}:`);
+          this.warn(`${path.relative(this.rootDir, lastFileName)}:`);
         }
         this.warn(messageText);
         this.printedWarnings.add(messageText);
       }
     }
     return new TypeResolver(
-      this.rootDirPath,
+      this.rootDir,
       this.collected,
       this.specialTypes,
       program,
@@ -141,7 +141,7 @@ class TypeResolver {
   readonly checker: ts.TypeChecker;
 
   constructor(
-    private readonly rootDirPath: string,
+    private readonly rootDir: string,
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
     private readonly program: ts.Program,
@@ -567,7 +567,7 @@ class TypeResolver {
     suffix = ""
   ): string {
     if (ts.isSourceFile(declaration)) {
-      return path.relative(this.rootDirPath, declaration.fileName) + suffix;
+      return path.relative(this.rootDir, declaration.fileName) + suffix;
     } else if (ts.isModuleDeclaration(declaration)) {
       suffix += ":" + declaration.name.text;
     }

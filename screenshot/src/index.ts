@@ -88,7 +88,7 @@ export async function generateScreenshots({
 }) {
   const workspace = await createChromelessWorkspace({
     frameworkPlugins,
-    rootDirPath: cwd,
+    rootDir: cwd,
   });
   const preview = await workspace.preview.start(page);
   const filePaths = await globby(filePathPattern, {

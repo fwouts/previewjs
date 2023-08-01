@@ -20,7 +20,7 @@ export function prepareFileManager({
   onBeforeFileUpdated?: () => void;
   onAfterFileUpdated?: () => void;
 }) {
-  const rootDirPath = duplicateProjectForTesting(testProjectDirPath);
+  const rootDir = duplicateProjectForTesting(testProjectDirPath);
   const memoryReader = createMemoryReader();
   const fsReader = createFileSystemReader({
     watch: true,
@@ -49,7 +49,7 @@ export function prepareFileManager({
         }
         lastDiskWriteMillis = Date.now();
       }
-      const absoluteFilePath = path.join(rootDirPath, f);
+      const absoluteFilePath = path.join(rootDir, f);
       let text: string;
       if (typeof content === "string") {
         text = content;
@@ -68,17 +68,17 @@ export function prepareFileManager({
     },
     rename: async (from, to) => {
       await onBeforeFileUpdated();
-      await fs.rename(path.join(rootDirPath, from), path.join(rootDirPath, to));
+      await fs.rename(path.join(rootDir, from), path.join(rootDir, to));
       await onAfterFileUpdated();
     },
     remove: async (f) => {
       await onBeforeFileUpdated();
-      await fs.unlink(path.join(rootDirPath, f));
+      await fs.unlink(path.join(rootDir, f));
       await onAfterFileUpdated();
     },
   };
   return {
-    rootDirPath,
+    rootDir,
     reader,
     fileManager,
   };

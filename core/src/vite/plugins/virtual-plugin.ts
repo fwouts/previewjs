@@ -12,12 +12,12 @@ const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
 export function virtualPlugin(options: {
   logger: Logger;
   reader: Reader;
-  rootDirPath: string;
+  rootDir: string;
   allowedAbsolutePaths: string[];
   moduleGraph: () => vite.ModuleGraph | null;
   esbuildOptions: vite.ESBuildOptions;
 }): vite.Plugin {
-  const { reader, rootDirPath } = options;
+  const { reader, rootDir } = options;
   return {
     name: "previewjs:virtual-fs",
     resolveId: async function (id, importer) {
@@ -120,7 +120,7 @@ export function virtualPlugin(options: {
                   loader: absoluteFilePath.endsWith(".ts") ? "ts" : "tsx",
                   format: "esm",
                   target: "es2020",
-                  sourcefile: path.relative(rootDirPath, absoluteFilePath),
+                  sourcefile: path.relative(rootDir, absoluteFilePath),
                   ...options.esbuildOptions,
                 })
               ).code
@@ -148,8 +148,8 @@ export function virtualPlugin(options: {
       if (!moduleGraph) {
         return;
       }
-      const filePath = path.relative(rootDirPath, context.file);
-      const absoluteFilePath = path.join(rootDirPath, filePath);
+      const filePath = path.relative(rootDir, context.file);
+      const absoluteFilePath = path.join(rootDir, filePath);
       const entry = await reader.read(absoluteFilePath);
       if (!entry || entry.kind !== "file") {
         return;
@@ -165,7 +165,7 @@ export function virtualPlugin(options: {
   async function resolveAbsoluteModuleId(id: string) {
     return (
       (await resolveBaseFilePath(id)) ||
-      (await resolveBaseFilePath(path.join(rootDirPath, id)))
+      (await resolveBaseFilePath(path.join(rootDir, id)))
     );
   }
 

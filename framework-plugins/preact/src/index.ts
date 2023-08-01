@@ -14,11 +14,11 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) >= 10;
   },
-  async create({ rootDirPath, reader, logger }) {
+  async create({ rootDir, reader, logger }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     const typeAnalyzer = createTypeAnalyzer({
-      rootDirPath,
+      rootDir,
       reader,
       specialTypes: PREACT_SPECIAL_TYPES,
       tsCompilerOptions: {
@@ -42,7 +42,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
             ...extractPreactComponents(
               logger,
               resolver,
-              rootDirPath,
+              rootDir,
               absoluteFilePath
             )
           );

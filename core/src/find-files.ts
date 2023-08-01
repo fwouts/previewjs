@@ -3,14 +3,14 @@ import { globby } from "globby";
 import path from "path";
 
 export async function findFiles(
-  rootDirPath: string,
+  rootDir: string,
   pattern: string,
   options: {
     maxDepth?: number;
   } = {}
 ) {
-  const gitRootPath = await findGitRoot(rootDirPath);
-  const relativePath = path.relative(gitRootPath, rootDirPath);
+  const gitRootPath = await findGitRoot(rootDir);
+  const relativePath = path.relative(gitRootPath, rootDir);
   const relativePrefix = relativePath ? relativePath + path.sep : "";
   const files: string[] = await globby(relativePrefix + pattern, {
     gitignore: true,
@@ -25,7 +25,7 @@ export async function findFiles(
   // Note: in some cases, presumably because of yarn using link
   // for faster node_modules, glob may return files in the parent
   // directory. We filter them out here.
-  let normalizedRootDirPath = rootDirPath.replace(/\\/g, "/");
+  let normalizedRootDirPath = rootDir.replace(/\\/g, "/");
   if (!normalizedRootDirPath.endsWith("/")) {
     normalizedRootDirPath += "/";
   }

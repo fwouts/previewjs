@@ -33,7 +33,7 @@ describe("analyzeSolidComponent", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await solidFrameworkPlugin.create({
-      rootDirPath: ROOT_DIR_PATH,
+      rootDir: ROOT_DIR_PATH,
       dependencies: {},
       reader: createStackedReader([
         memoryReader,

@@ -17,19 +17,19 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 3;
   },
-  async create({ rootDirPath, reader }) {
+  async create({ rootDir, reader }) {
     const { default: createVuePlugin } = await import("@vitejs/plugin-vue");
     const { default: vueJsxPlugin } = await import("@vitejs/plugin-vue-jsx");
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     const typeAnalyzer = createTypeAnalyzer({
-      rootDirPath,
+      rootDir,
       reader: createStackedReader([
         createVueTypeScriptReader(reader),
         createFileSystemReader({
           mapping: {
             from: path.join(previewDirPath, "modules"),
-            to: path.join(rootDirPath, "node_modules"),
+            to: path.join(rootDir, "node_modules"),
           },
           watch: false,
         }),
@@ -51,12 +51,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractVueComponents(
-              reader,
-              resolver,
-              rootDirPath,
-              absoluteFilePath
-            )
+            ...extractVueComponents(reader, resolver, rootDir, absoluteFilePath)
           );
           // Ensure this potentially long-running function doesn't block the thread.
           await 0;

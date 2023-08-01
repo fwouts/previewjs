@@ -184,8 +184,8 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
       currentState = Promise.resolve(null);
       destroyDaemon(daemonLockFilePath);
       if (state) {
-        for (const rootDirPath of Object.values(state.workspaces)) {
-          fs.rmSync(path.join(rootDirPath, "node_modules", ".previewjs"), {
+        for (const rootDir of Object.values(state.workspaces)) {
+          fs.rmSync(path.join(rootDir, "node_modules", ".previewjs"), {
             recursive: true,
             force: true,
           });

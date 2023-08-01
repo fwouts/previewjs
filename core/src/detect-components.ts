@@ -41,20 +41,18 @@ export function detectComponents(
     );
     const detectionStartTimestamp = Date.now();
     const cacheFilePath = path.join(
-      getCacheDir(workspace.rootDirPath),
+      getCacheDir(workspace.rootDir),
       "components.json"
     );
     const absoluteFilePaths = await (async () => {
       if (options.filePaths) {
         return options.filePaths.map((filePath) =>
-          path.join(workspace.rootDirPath, filePath)
+          path.join(workspace.rootDir, filePath)
         );
       } else {
-        logger.debug(
-          `Finding component files from root: ${workspace.rootDirPath}`
-        );
+        logger.debug(`Finding component files from root: ${workspace.rootDir}`);
         const filePaths = await findFiles(
-          workspace.rootDirPath,
+          workspace.rootDir,
           "**/*.@(js|jsx|ts|tsx|svelte|vue)"
         );
         logger.debug(`Found ${filePaths.length} component files`);
@@ -63,9 +61,7 @@ export function detectComponents(
     })();
     const filePathsSet = new Set(
       absoluteFilePaths.map((absoluteFilePath) =>
-        path
-          .relative(workspace.rootDirPath, absoluteFilePath)
-          .replace(/\\/g, "/")
+        path.relative(workspace.rootDir, absoluteFilePath).replace(/\\/g, "/")
       )
     );
     let existingCache: CachedProjectComponents = {
@@ -83,7 +79,7 @@ export function detectComponents(
     }
     if (
       existingCache.detectionStartTimestamp <
-      (await detectionMinimalTimestamp(workspace.rootDirPath))
+      (await detectionMinimalTimestamp(workspace.rootDir))
     ) {
       // Cache cannot be used as it was generated before detection-impacted files were updated.
       existingCache = {
@@ -103,9 +99,7 @@ export function detectComponents(
     );
     const refreshedFilePaths = new Set(
       changedAbsoluteFilePaths.map((absoluteFilePath) =>
-        path
-          .relative(workspace.rootDirPath, absoluteFilePath)
-          .replace(/\\/g, "/")
+        path.relative(workspace.rootDir, absoluteFilePath).replace(/\\/g, "/")
       )
     );
     const recycledComponents = existingCache.components.filter(
@@ -146,7 +140,7 @@ async function detectComponentsCore(
   logger.debug(
     `Running component detection with file paths:\n- ${changedAbsoluteFilePaths
       .map((absoluteFilePath) =>
-        path.relative(workspace.rootDirPath, absoluteFilePath)
+        path.relative(workspace.rootDir, absoluteFilePath)
       )
       .join("\n- ")}`
   );
@@ -183,8 +177,8 @@ export function detectedComponentToApiComponent(
   };
 }
 
-async function detectionMinimalTimestamp(rootDirPath: string) {
-  const nodeModulesPath = path.join(rootDirPath, "node_modules");
+async function detectionMinimalTimestamp(rootDir: string) {
+  const nodeModulesPath = path.join(rootDir, "node_modules");
   let lastModifiedMillis = 0;
   if (await fs.pathExists(nodeModulesPath)) {
     // Find the latest subdirectory or symlink (important for pnpm).
@@ -197,7 +191,7 @@ async function detectionMinimalTimestamp(rootDirPath: string) {
     }
   }
   for (const f of FILES_REQUIRING_REDETECTION) {
-    const filePath = path.join(rootDirPath, f);
+    const filePath = path.join(rootDir, f);
     if (await fs.pathExists(filePath)) {
       const stat = await fs.stat(filePath);
       lastModifiedMillis = Math.max(lastModifiedMillis, stat.mtimeMs);

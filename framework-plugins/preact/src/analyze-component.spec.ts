@@ -36,7 +36,7 @@ describe("analyzePreactComponent", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await preactFrameworkPlugin.create({
-      rootDirPath: ROOT_DIR_PATH,
+      rootDir: ROOT_DIR_PATH,
       dependencies: {},
       reader: createStackedReader([
         memoryReader,

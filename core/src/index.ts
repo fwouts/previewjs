@@ -44,20 +44,20 @@ process.on("unhandledRejection", (e) => {
 });
 
 export async function createWorkspace({
-  rootDirPath,
+  rootDir,
   reader,
   frameworkPlugin,
   logger,
   setupEnvironment,
 }: {
-  rootDirPath: string;
+  rootDir: string;
   frameworkPlugin: FrameworkPlugin;
   logger: Logger;
   reader: Reader;
   setupEnvironment?: SetupPreviewEnvironment;
 }): Promise<Workspace> {
   logger.debug(
-    `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDirPath}`
+    `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDir}`
   );
   const expectedPluginApiVersion = 3;
   if (
@@ -79,7 +79,7 @@ export async function createWorkspace({
     const detectedComponents = await frameworkPlugin.detectComponents([
       ...new Set(
         componentIds.map((c) =>
-          path.join(rootDirPath, decodeComponentId(c).filePath)
+          path.join(rootDir, decodeComponentId(c).filePath)
         )
       ),
     ]);
@@ -151,7 +151,7 @@ export async function createWorkspace({
   ];
   const previewer = new Previewer({
     reader,
-    rootDirPath,
+    rootDir,
     // TODO: Use a cleaner approach.
     previewDirPath: path.join(
       path.dirname(path.dirname(require.resolve("@previewjs/iframe"))),
@@ -161,7 +161,7 @@ export async function createWorkspace({
     logger,
     middlewares,
     onFileChanged: (absoluteFilePath) => {
-      const filePath = path.relative(rootDirPath, absoluteFilePath);
+      const filePath = path.relative(rootDir, absoluteFilePath);
       frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
     },
   });
@@ -178,7 +178,7 @@ export async function createWorkspace({
   }
 
   const workspace: Workspace = {
-    rootDirPath,
+    rootDir,
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
     detectComponents: (options = {}) =>
@@ -233,7 +233,7 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 }
 
 export interface Workspace {
-  rootDirPath: string;
+  rootDir: string;
   reader: Reader;
   typeAnalyzer: TypeAnalyzer;
   detectComponents(

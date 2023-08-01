@@ -16,11 +16,11 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 1;
   },
-  async create({ rootDirPath, reader, logger }) {
+  async create({ rootDir, reader, logger }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     const typeAnalyzer = createTypeAnalyzer({
-      rootDirPath,
+      rootDir,
       reader,
       specialTypes: SOLID_SPECIAL_TYPES,
       tsCompilerOptions: {
@@ -42,7 +42,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
             ...extractSolidComponents(
               logger,
               resolver,
-              rootDirPath,
+              rootDir,
               absoluteFilePath
             )
           );

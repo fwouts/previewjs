@@ -12,7 +12,7 @@ import url from "url";
 import { startPreview } from "./preview";
 
 export async function createChromelessWorkspace({
-  rootDirPath,
+  rootDir,
   frameworkPlugins,
   reader = createFileSystemReader(),
   logger = createLogger(
@@ -24,7 +24,7 @@ export async function createChromelessWorkspace({
     prettyLogger({ colorize: true, destination: process.stdout })
   ),
 }: {
-  rootDirPath: string;
+  rootDir: string;
   frameworkPlugins: FrameworkPluginFactory[];
   logger?: Logger;
   reader?: Reader;
@@ -40,20 +40,20 @@ export async function createChromelessWorkspace({
   }
 > {
   const frameworkPlugin = await setupFrameworkPlugin({
-    rootDirPath,
+    rootDir,
     frameworkPlugins,
     reader,
     logger,
   });
   if (!frameworkPlugin) {
     throw new Error(
-      `No compatible framework plugin found for directory: ${rootDirPath}`
+      `No compatible framework plugin found for directory: ${rootDir}`
     );
   }
   const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   const clientDirPath = path.join(__dirname, "..", "client", "dist");
   const workspace = await createWorkspace({
-    rootDirPath,
+    rootDir,
     frameworkPlugin,
     logger,
     reader,
@@ -62,9 +62,7 @@ export async function createChromelessWorkspace({
     }),
   });
   if (!workspace) {
-    throw new Error(
-      `No workspace could be created for directory: ${rootDirPath}`
-    );
+    throw new Error(`No workspace could be created for directory: ${rootDir}`);
   }
   return {
     ...workspace,

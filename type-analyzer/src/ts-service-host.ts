@@ -3,7 +3,7 @@ import path from "path";
 import ts from "typescript";
 
 export function typescriptServiceHost(options: {
-  rootDirPath: string;
+  rootDir: string;
   reader: Reader;
   getScriptFileNames: () => string[];
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
@@ -31,20 +31,20 @@ export function typescriptServiceHost(options: {
       }
       return ts.ScriptSnapshot.fromString(entry.read());
     },
-    getCurrentDirectory: () => options.rootDirPath,
+    getCurrentDirectory: () => options.rootDir,
     getCompilationSettings: () => {
       const paths: ts.MapLike<string[]> = {};
-      const configPath = path.join(options.rootDirPath, "tsconfig.json");
+      const configPath = path.join(options.rootDir, "tsconfig.json");
       const { config } = ts.readConfigFile(configPath, readFile);
       // TypeScript doesn't seem to be happy with relative paths,
-      // even if we set getCurrentDirectory() to rootDirPath.
+      // even if we set getCurrentDirectory() to rootDir.
       // Instead, we convert all path mappings to absolute paths.
       const baseUrl = config.compilerOptions?.baseUrl || ".";
       const originalPaths: ts.MapLike<string[]> =
         config.compilerOptions?.paths || {};
       for (const [mapFrom, mapTo] of Object.entries(originalPaths)) {
         paths[mapFrom] = mapTo.map((m) =>
-          path.join(options.rootDirPath, baseUrl, m)
+          path.join(options.rootDir, baseUrl, m)
         );
       }
       return {

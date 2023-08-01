@@ -17,20 +17,20 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
     }
     return parseInt(version) === 2;
   },
-  async create({ rootDirPath, reader, logger }) {
+  async create({ rootDir, reader, logger }) {
     const { loadNuxtConfig } = await import("@nuxt/config");
     const { default: vue2Plugin } = await import("@vitejs/plugin-vue2");
     const { default: vue2JsxPlugin } = await import("@vitejs/plugin-vue2-jsx");
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.resolve(__dirname, "..", "preview");
     const typeAnalyzer = createTypeAnalyzer({
-      rootDirPath,
+      rootDir,
       reader: createStackedReader([
         createVueTypeScriptReader(logger, reader),
         createFileSystemReader({
           mapping: {
             from: path.join(previewDirPath, "modules"),
-            to: path.join(rootDirPath, "node_modules"),
+            to: path.join(rootDir, "node_modules"),
           },
           watch: false,
         }),
@@ -49,12 +49,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractVueComponents(
-              reader,
-              resolver,
-              rootDirPath,
-              absoluteFilePath
-            )
+            ...extractVueComponents(reader, resolver, rootDir, absoluteFilePath)
           );
           // Ensure this potentially long-running function doesn't block the thread.
           await 0;
@@ -62,7 +57,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
         return components;
       },
       viteConfig: (configuredPlugins) => {
-        let rootDirPath: string;
+        let rootDir: string;
         return {
           resolve: {
             alias: {
@@ -81,13 +76,13 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
-                rootDirPath = config.root;
+                rootDir = config.root;
               },
               async resolveId(source, importer) {
                 const potentialVueFilePath = path.join(
                   importer && source.startsWith(".")
                     ? path.dirname(importer)
-                    : rootDirPath,
+                    : rootDir,
                   source + ".vue"
                 );
                 if (await fs.pathExists(potentialVueFilePath)) {

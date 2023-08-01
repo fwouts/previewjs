@@ -24,17 +24,17 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     }
     return major >= 17 || (major === 16 && minor >= 14);
   },
-  async create({ rootDirPath, reader, logger, dependencies }) {
+  async create({ rootDir, reader, logger, dependencies }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const previewDirPath = path.join(__dirname, "..", "preview");
     const typeAnalyzer = createTypeAnalyzer({
-      rootDirPath,
+      rootDir,
       reader: createStackedReader([
         reader,
         createFileSystemReader({
           mapping: {
             from: path.join(previewDirPath, "types"),
-            to: path.join(rootDirPath, "node_modules", "@types"),
+            to: path.join(rootDir, "node_modules", "@types"),
           },
           watch: false,
         }),
@@ -59,7 +59,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
             ...extractReactComponents(
               logger,
               resolver,
-              rootDirPath,
+              rootDir,
               absoluteFilePath
             )
           );

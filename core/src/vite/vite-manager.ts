@@ -29,7 +29,7 @@ export class ViteManager {
     private readonly options: {
       logger: Logger;
       reader: Reader;
-      rootDirPath: string;
+      rootDir: string;
       shadowHtmlFilePath: string;
       detectedGlobalCssFilePaths: string[];
       cacheDir: string;
@@ -61,7 +61,7 @@ export class ViteManager {
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
       wrapper &&
-      (await fs.pathExists(path.join(this.options.rootDirPath, wrapper.path)))
+      (await fs.pathExists(path.join(this.options.rootDir, wrapper.path)))
         ? wrapper.path.replace(/\\/g, "/")
         : null;
     return await viteServer.transformIndexHtml(
@@ -149,7 +149,7 @@ export class ViteManager {
       "jsconfig.json",
     ]) {
       const potentialTsConfigFilePath = path.join(
-        this.options.rootDirPath,
+        this.options.rootDir,
         potentialTsConfigFileName
       );
       if (await fs.pathExists(potentialTsConfigFilePath)) {
@@ -182,7 +182,7 @@ export class ViteManager {
       tsInferredAlias.push({
         find: matchNoWildcard,
         replacement: path.join(
-          this.options.rootDirPath,
+          this.options.rootDir,
           baseUrl,
           firstMappingNoWildcard
         ),
@@ -194,7 +194,7 @@ export class ViteManager {
         mode: "development",
       },
       undefined,
-      this.options.rootDirPath
+      this.options.rootDir
     );
     const defaultLogger = vite.createLogger(
       viteLogLevelFromPinoLogger(this.options.logger)
@@ -212,14 +212,14 @@ export class ViteManager {
       this.options.config.publicDir;
     const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
       viteTsconfigPaths({
-        root: this.options.rootDirPath,
+        root: this.options.rootDir,
       }),
       virtualPlugin({
         logger: this.options.logger,
         reader: this.options.reader,
-        rootDirPath: this.options.rootDirPath,
+        rootDir: this.options.rootDir,
         allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow || [
-          searchForWorkspaceRoot(this.options.rootDirPath),
+          searchForWorkspaceRoot(this.options.rootDir),
         ],
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
@@ -237,7 +237,7 @@ export class ViteManager {
       }),
       cssModulesWithoutSuffixPlugin(),
       publicAssetImportPluginPlugin({
-        rootDirPath: this.options.rootDirPath,
+        rootDir: this.options.rootDir,
         publicDir,
       }),
       frameworkPluginViteConfig.plugins,
@@ -283,7 +283,7 @@ export class ViteManager {
       ...existingViteConfig?.config,
       ...this.options.config.vite,
       configFile: false,
-      root: this.options.rootDirPath,
+      root: this.options.rootDir,
       base: "/preview/",
       optimizeDeps: {
         entries: [],

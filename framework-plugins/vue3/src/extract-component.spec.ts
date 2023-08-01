@@ -47,13 +47,13 @@ const count = ref(0)
 </template>
 `
     );
-    const rootDirPath = path.join(__dirname, "virtual");
+    const rootDir = path.join(__dirname, "virtual");
     const reader = createStackedReader([
       createVueTypeScriptReader(memoryReader),
       createFileSystemReader({
         mapping: {
           from: path.join(__dirname, "..", "preview", "modules"),
-          to: path.join(rootDirPath, "node_modules"),
+          to: path.join(rootDir, "node_modules"),
         },
         watch: false,
       }),
@@ -62,7 +62,7 @@ const count = ref(0)
       }), // required for TypeScript libs, e.g. Promise
     ]);
     const frameworkPlugin = await vue3FrameworkPlugin.create({
-      rootDirPath,
+      rootDir,
       dependencies: {},
       reader,
       logger: createLogger(

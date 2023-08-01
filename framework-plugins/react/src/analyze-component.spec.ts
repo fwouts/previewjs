@@ -40,7 +40,7 @@ describe("analyzeReactComponent", () => {
   beforeEach(async () => {
     memoryReader = createMemoryReader();
     frameworkPlugin = await reactFrameworkPlugin.create({
-      rootDirPath: ROOT_DIR_PATH,
+      rootDir: ROOT_DIR_PATH,
       dependencies: {},
       reader: createStackedReader([
         memoryReader,

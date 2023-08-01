@@ -8,13 +8,13 @@ const require = createRequire(import.meta.url);
 
 export const PREVIEW_CONFIG_NAME = "preview.config.js";
 
-export async function readConfig(rootDirPath: string): Promise<PreviewConfig> {
-  const configPath = path.join(rootDirPath, PREVIEW_CONFIG_NAME);
+export async function readConfig(rootDir: string): Promise<PreviewConfig> {
+  const configPath = path.join(rootDir, PREVIEW_CONFIG_NAME);
   let config: Partial<PreviewConfig> = {};
   const configFileExists = fs.existsSync(configPath);
   if (configFileExists) {
     let isModule = false;
-    const packageJsonPath = path.join(rootDirPath, "package.json");
+    const packageJsonPath = path.join(rootDir, "package.json");
     if (fs.existsSync(packageJsonPath)) {
       const { type } = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
       isModule = type === "module";
