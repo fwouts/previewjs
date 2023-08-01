@@ -3,15 +3,28 @@ import {
   type Component,
 } from "@previewjs/component-detection-api";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
+import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
+import url from "url";
 import { extractReactComponents } from "./extract-component.js";
 import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
 export const createComponentDetector = factoryWithDefaultOptions(
   ({ rootDir, reader, logger }) => {
+    const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+    const typesDirPath = path.join(__dirname, "..", "types");
     const typeAnalyzer = createTypeAnalyzer({
-      reader,
+      reader: createStackedReader([
+        reader,
+        createFileSystemReader({
+          mapping: {
+            from: typesDirPath,
+            to: path.join(rootDir, "node_modules", "@types"),
+          },
+          watch: false,
+        }),
+      ]),
       rootDir,
       specialTypes: REACT_SPECIAL_TYPES,
       tsCompilerOptions: {
