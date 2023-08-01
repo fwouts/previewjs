@@ -1,11 +1,9 @@
+import { decodeComponentId, generateComponentId } from "@previewjs/api";
 import type {
+  BaseComponent,
   BasicFrameworkComponent,
   Component,
-} from "@previewjs/component-detection-api";
-import {
-  decodeComponentId,
-  generateComponentId,
-} from "@previewjs/component-detection-api";
+} from "@previewjs/core";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
@@ -13,8 +11,7 @@ import {
   extractStoriesInfo,
   resolveComponentId,
 } from "@previewjs/storybook-helpers";
-import type { TypeResolver } from "@previewjs/type-analyzer";
-import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
+import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
 import type { Logger } from "pino";
 import ts from "typescript";
@@ -73,10 +70,9 @@ export function extractReactComponents(
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
   function extractComponent(
+    baseComponent: BaseComponent,
     node: ts.Node,
-    name: string,
-    componentId: string,
-    offsets: [number, number]
+    name: string
   ): Component | null {
     if (name === "default" && storiesInfo) {
       return null;
@@ -96,8 +92,7 @@ export function extractReactComponents(
         storiesInfo.component
       );
       return {
-        componentId,
-        offsets,
+        ...baseComponent,
         kind: "story",
         args: storyArgs
           ? {
@@ -111,8 +106,7 @@ export function extractReactComponents(
     }
     if (signature) {
       return {
-        componentId,
-        offsets,
+        ...baseComponent,
         kind: "component",
         exported: isExported,
         extractProps: async () =>
@@ -130,13 +124,15 @@ export function extractReactComponents(
 
   for (const [name, statement, node] of functions) {
     const component = extractComponent(
+      {
+        componentId: generateComponentId({
+          filePath: path.relative(rootDir, absoluteFilePath),
+          name,
+        }),
+        offsets: [statement.getStart(), statement.getEnd()],
+      },
       node,
-      name,
-      generateComponentId({
-        filePath: path.relative(rootDir, absoluteFilePath),
-        name,
-      }),
-      [statement.getStart(), statement.getEnd()]
+      name
     );
     if (component) {
       components.push(component);

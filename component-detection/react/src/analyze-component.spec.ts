@@ -1,5 +1,5 @@
+import { decodeComponentId } from "@previewjs/api";
 import type { ComponentDetector } from "@previewjs/component-detection-api";
-import { decodeComponentId } from "@previewjs/component-detection-api";
 import {
   ANY_TYPE,
   arrayType,
@@ -32,7 +32,7 @@ const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE_NAME = "App.tsx";
 const MAIN_FILE = path.join(ROOT_DIR_PATH, MAIN_FILE_NAME);
 
-describe.concurrent("analyzeReactComponent", () => {
+describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
   let detector: ComponentDetector;
 
