@@ -47,7 +47,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
