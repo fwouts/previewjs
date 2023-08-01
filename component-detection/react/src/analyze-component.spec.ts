@@ -25,7 +25,7 @@ import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import createComponentDetector from "./index.js";
+import { createComponentDetector } from "./index.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");

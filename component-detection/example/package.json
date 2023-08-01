@@ -1,5 +1,5 @@
 {
-  "name": "@previewjs/component-detection-api",
+  "name": "@previewjs/component-detection-example",
   "version": "0.0.0",
   "license": "MIT",
   "author": {
@@ -18,17 +18,15 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && unbuild"
+    "test": "vitest"
   },
   "dependencies": {
-    "@previewjs/serializable-values": "^7.0.2",
-    "@previewjs/type-analyzer": "^8.0.2",
-    "@previewjs/vfs": "^2.0.15",
-    "pino": "^8.14.2",
-    "pino-pretty": "^10.2.0"
+    "@previewjs/component-detection-react": "^0.0.0"
   },
   "devDependencies": {
+    "@types/react": "^18.2.18",
+    "react": "^18.2.0",
     "typescript": "^5.1.6",
-    "unbuild": "^1.2.1"
+    "vitest": "^0.33.0"
   }
 }
