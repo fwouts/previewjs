@@ -1,4 +1,4 @@
-import type { FrameworkPlugin } from "@previewjs/core";
+import type { ComponentDetector } from "@previewjs/component-detection-api";
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import { objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
@@ -13,7 +13,7 @@ import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { extractReactComponents } from "./extract-component.js";
-import reactFrameworkPlugin from "./index.js";
+import { createComponentDetector } from "./index.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR = path.join(__dirname, "virtual");
@@ -27,7 +27,7 @@ describe("extractReactComponents", () => {
   );
 
   let memoryReader: Reader & Writer;
-  let frameworkPlugin: FrameworkPlugin;
+  let detector: ComponentDetector;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
@@ -35,9 +35,8 @@ describe("extractReactComponents", () => {
       APP_TSX,
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
-    frameworkPlugin = await reactFrameworkPlugin.create({
+    detector = createComponentDetector({
       rootDir: ROOT_DIR,
-      dependencies: {},
       reader: createStackedReader([
         memoryReader,
         createFileSystemReader({
@@ -49,7 +48,7 @@ describe("extractReactComponents", () => {
   });
 
   afterEach(() => {
-    frameworkPlugin.dispose();
+    detector.dispose();
   });
 
   it("detects expected components", async () => {
@@ -571,7 +570,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractReactComponents(
       logger,
-      frameworkPlugin.typeAnalyzer.analyze([absoluteFilePath]),
+      detector.typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath
     );

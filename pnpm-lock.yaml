@@ -210,6 +210,83 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
 
+  component-detection/example:
+    dependencies:
+      '@previewjs/component-detection-react':
+        specifier: ^0.0.0
+        version: link:../react
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.18
+        version: 18.2.18
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      typescript:
+        specifier: ^5.1.6
+        version: 5.1.6
+      vitest:
+        specifier: ^0.33.0
+        version: 0.33.0
+
+  component-detection/react:
+    dependencies:
+      '@previewjs/component-detection-api':
+        specifier: ^0.0.0
+        version: link:../api
+      '@previewjs/serializable-values':
+        specifier: ^7.0.2
+        version: link:../../serializable-values
+      '@previewjs/storybook-helpers':
+        specifier: ^3.0.0
+        version: link:../../storybook-helpers
+      '@previewjs/type-analyzer':
+        specifier: ^8.0.2
+        version: link:../../type-analyzer
+      '@previewjs/vfs':
+        specifier: ^2.0.15
+        version: link:../../vfs
+      '@vitejs/plugin-react':
+        specifier: ^4.0.2
+        version: 4.0.2(vite@4.4.7)
+      typescript:
+        specifier: ^5.1.6
+        version: 5.1.6
+    devDependencies:
+      '@previewjs/properties':
+        specifier: workspace:*
+        version: link:../../properties
+      '@types/prop-types':
+        specifier: ^15.7.5
+        version: 15.7.5
+      '@types/react':
+        specifier: ^18.2.14
+        version: 18.2.18
+      '@types/react-dom':
+        specifier: ^18.2.6
+        version: 18.2.6
+      pino:
+        specifier: ^8.14.2
+        version: 8.14.2
+      pino-pretty:
+        specifier: ^10.0.1
+        version: 10.2.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      shx:
+        specifier: ^0.3.4
+        version: 0.3.4
+      unbuild:
+        specifier: ^1.2.1
+        version: 1.2.1
+      vitest:
+        specifier: ^0.33.0
+        version: 0.33.0
+
   config:
     devDependencies:
       '@types/node':
@@ -617,6 +694,9 @@ importers:
       '@previewjs/component-detection-api':
         specifier: ^0.0.0
         version: link:../../component-detection/api
+      '@previewjs/component-detection-react':
+        specifier: ^0.0.0
+        version: link:../../component-detection/react
       '@previewjs/serializable-values':
         specifier: ^7.0.2
         version: link:../../serializable-values
@@ -681,9 +761,6 @@ importers:
       vite:
         specifier: ^4.4.7
         version: 4.4.7(@types/node@20.4.5)
-      vitest:
-        specifier: ^0.33.0
-        version: 0.33.0
 
   framework-plugins/react/tests/apps/aliases:
     dependencies:
@@ -18595,6 +18672,12 @@ packages:
       '@types/react': 18.2.18
     dev: true
 
+  /@types/react-dom@18.2.6:
+    resolution: {integrity: sha512-2et4PDvg6PVCyS7fuTc4gPoksV58bW0RwSxWKcPRcHZf0PRUGq03TKcD/rUHe3azfV6/5/biUBJw+HhCQjaP0A==}
+    dependencies:
+      '@types/react': 18.2.18
+    dev: true
+
   /@types/react-dom@18.2.7:
     resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
     dependencies:
@@ -18816,7 +18899,7 @@ packages:
   /@types/webpack-sources@3.2.0:
     resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
     dependencies:
-      '@types/node': 20.4.5
+      '@types/node': 18.16.14
       '@types/source-list-map': 0.1.2
       source-map: 0.7.4
 
@@ -19540,6 +19623,21 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@vitejs/plugin-react@4.0.2(vite@4.4.7):
+    resolution: {integrity: sha512-zbnVp3Esfg33zDaoLrjxG+p/dPiOtpvJA+1oOEQwSxMMTRL9zi1eghIcd2WtLjkcKnPsa3S15LzS/OzDn2BOCA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.2.0
+    dependencies:
+      '@babel/core': 7.22.9
+      '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.9)
+      '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.9)
+      react-refresh: 0.14.0
+      vite: 4.4.7(@types/node@20.4.5)
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@vitejs/plugin-react@4.0.4(vite@4.4.7):
     resolution: {integrity: sha512-7wU921ABnNYkETiMaZy7XqpueMnpu5VxvVps13MjmCo+utBdD79sZzrApHawHtVX66cCJQQTXFcjH0y9dSUK8g==}
@@ -22811,7 +22909,7 @@ packages:
     dependencies:
       chokidar: 3.5.3
       defu: 6.1.2
-      dotenv: 16.3.1
+      dotenv: 16.1.4
       giget: 1.1.2
       jiti: 1.19.1
       mlly: 1.4.0
@@ -22819,7 +22917,7 @@ packages:
       pathe: 1.1.1
       perfect-debounce: 0.1.3
       pkg-types: 1.0.3
-      rc9: 2.1.1
+      rc9: 2.1.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -25179,7 +25277,6 @@ packages:
   /decompress-response@6.0.0:
     resolution: {integrity: sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==}
     engines: {node: '>=10'}
-    requiresBuild: true
     dependencies:
       mimic-response: 3.1.0
     dev: true
@@ -25443,6 +25540,7 @@ packages:
 
   /destr@2.0.0:
     resolution: {integrity: sha512-FJ9RDpf3GicEBvzI3jxc2XhHzbqD8p4ANw/1kPsFBfTvP1b7Gn/Lg1vO7R9J4IVgoMbyUmFrFGZafJ1hPZpvlg==}
+    dev: false
 
   /destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
@@ -27302,7 +27400,6 @@ packages:
   /expand-template@2.0.3:
     resolution: {integrity: sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==}
     engines: {node: '>=6'}
-    requiresBuild: true
     dev: true
 
   /expect@27.5.1:
@@ -28647,7 +28744,6 @@ packages:
 
   /github-from-package@0.0.0:
     resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
-    requiresBuild: true
     dev: true
 
   /github-slugger@1.5.0:
@@ -31129,7 +31225,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.4.5
+      '@types/node': 18.16.14
       merge-stream: 2.0.0
       supports-color: 7.2.0
 
@@ -32849,7 +32945,6 @@ packages:
   /mimic-response@3.1.0:
     resolution: {integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==}
     engines: {node: '>=10'}
-    requiresBuild: true
     dev: true
 
   /min-document@2.19.0:
@@ -33216,7 +33311,6 @@ packages:
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
-    requiresBuild: true
     dev: true
 
   /native-url@0.3.4:
@@ -33661,14 +33755,12 @@ packages:
   /node-abi@3.33.0:
     resolution: {integrity: sha512-7GGVawqyHF4pfd0YFybhv/eM9JwTtPqx0mAanQ146O3FlSh3pA24zf9IRQTOsfTSqXTNzPSP5iagAJ94jjuVog==}
     engines: {node: '>=10'}
-    requiresBuild: true
     dependencies:
       semver: 7.5.4
     dev: true
 
   /node-addon-api@4.3.0:
     resolution: {integrity: sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==}
-    requiresBuild: true
     dev: true
 
   /node-dir@0.1.17:
@@ -37508,7 +37600,6 @@ packages:
     resolution: {integrity: sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==}
     engines: {node: '>=10'}
     hasBin: true
-    requiresBuild: true
     dependencies:
       detect-libc: 2.0.1
       expand-template: 2.0.3
@@ -38089,6 +38180,7 @@ packages:
       defu: 6.1.2
       destr: 2.0.0
       flat: 5.0.2
+    dev: false
 
   /rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
@@ -40204,12 +40296,10 @@ packages:
 
   /simple-concat@1.0.1:
     resolution: {integrity: sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==}
-    requiresBuild: true
     dev: true
 
   /simple-get@4.0.1:
     resolution: {integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==}
-    requiresBuild: true
     dependencies:
       decompress-response: 6.0.0
       once: 1.4.0
