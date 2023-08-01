@@ -29,7 +29,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     });
     const previewDirPath = path.join(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,

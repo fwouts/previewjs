@@ -38,7 +38,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       reader: createSvelteTypeScriptReader(reader),
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-svelte",
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
@@ -126,6 +126,9 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
           },
         ],
       }),
+      dispose: () => {
+        typeAnalyzer.dispose();
+      },
     };
   },
 };

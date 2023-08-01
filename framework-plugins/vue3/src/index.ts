@@ -40,7 +40,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
@@ -107,6 +107,9 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
             },
           },
         };
+      },
+      dispose: () => {
+        typeAnalyzer.dispose();
       },
     };
   },

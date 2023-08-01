@@ -54,7 +54,7 @@ export async function createWorkspace({
   logger.debug(
     `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDirPath}`
   );
-  const expectedPluginApiVersion = 3;
+  const expectedPluginApiVersion = 4;
   if (
     !frameworkPlugin.pluginApiVersion ||
     frameworkPlugin.pluginApiVersion < expectedPluginApiVersion
@@ -194,11 +194,9 @@ export async function createWorkspace({
       },
     },
     dispose: async () => {
-      // TODO: Consider exposing a dispose() method on FrameworkPlugin instead.
-      //
-      // We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
+      // Note: We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
       // dispose() should not be called here?
-      frameworkPlugin.typeAnalyzer.dispose();
+      frameworkPlugin.dispose();
     },
   };
   if (setupEnvironment) {

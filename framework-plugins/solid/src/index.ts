@@ -30,7 +30,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-solid",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
@@ -81,6 +81,9 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
         };
+      },
+      dispose: () => {
+        typeAnalyzer.dispose();
       },
     };
   },

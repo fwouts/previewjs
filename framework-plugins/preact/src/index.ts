@@ -30,7 +30,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-preact",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
@@ -83,6 +83,9 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
             },
           ],
         };
+      },
+      dispose: () => {
+        typeAnalyzer.dispose();
       },
     };
   },
