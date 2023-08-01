@@ -13,7 +13,8 @@ import {
   extractStoriesInfo,
   resolveComponentId,
 } from "@previewjs/storybook-helpers";
-import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
+import type { TypeResolver } from "@previewjs/type-analyzer";
+import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
 import type { Logger } from "pino";
 import ts from "typescript";

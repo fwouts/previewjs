@@ -2,11 +2,11 @@ import type { ComponentProps } from "@previewjs/component-detection-api";
 import type {
   CollectedTypes,
   OptionalType,
+  TypeResolver,
   ValueType,
 } from "@previewjs/type-analyzer";
 import {
   EMPTY_OBJECT_TYPE,
-  TypeResolver,
   UNKNOWN_TYPE,
   dereferenceType,
   maybeOptionalType,

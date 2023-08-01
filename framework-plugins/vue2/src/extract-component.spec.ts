@@ -1,9 +1,6 @@
+import type { FrameworkPlugin } from "@previewjs/core";
 import { object, string, TRUE } from "@previewjs/serializable-values";
-import {
-  objectType,
-  STRING_TYPE,
-  TypeAnalyzer,
-} from "@previewjs/type-analyzer";
+import { objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
@@ -30,7 +27,7 @@ describe("extractVueComponents", () => {
   );
 
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
+  let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
@@ -70,17 +67,16 @@ export default {
         watch: false,
       }), // required for TypeScript libs, e.g. Promise
     ]);
-    const frameworkPlugin = await vue2FrameworkPlugin.create({
+    frameworkPlugin = await vue2FrameworkPlugin.create({
       rootDirPath,
       dependencies: {},
       reader,
       logger,
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   it("detects expected components", async () => {
@@ -479,7 +475,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractVueComponents(
       memoryReader,
-      typeAnalyzer.analyze([absoluteFilePath]),
+      frameworkPlugin.typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath
     );

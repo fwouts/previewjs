@@ -1,9 +1,6 @@
+import type { FrameworkPlugin } from "@previewjs/core";
 import { object, string, TRUE } from "@previewjs/serializable-values";
-import {
-  objectType,
-  STRING_TYPE,
-  TypeAnalyzer,
-} from "@previewjs/type-analyzer";
+import { objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
@@ -25,7 +22,7 @@ const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 describe("extractVueComponents", () => {
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
+  let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
@@ -61,7 +58,7 @@ const count = ref(0)
         watch: false,
       }), // required for TypeScript libs, e.g. Promise
     ]);
-    const frameworkPlugin = await vue3FrameworkPlugin.create({
+    frameworkPlugin = await vue3FrameworkPlugin.create({
       rootDirPath,
       dependencies: {},
       reader,
@@ -70,11 +67,10 @@ const count = ref(0)
         prettyLogger({ colorize: true })
       ),
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   it("detects expected components", async () => {
@@ -479,7 +475,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractVueComponents(
       memoryReader,
-      typeAnalyzer.analyze([absoluteFilePath]),
+      frameworkPlugin.typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath
     );

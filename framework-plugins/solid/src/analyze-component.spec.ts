@@ -8,7 +8,6 @@ import {
   NUMBER_TYPE,
   objectType,
   STRING_TYPE,
-  TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
@@ -27,7 +26,6 @@ const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
 describe("analyzeSolidComponent", () => {
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
@@ -46,11 +44,10 @@ describe("analyzeSolidComponent", () => {
         prettyLogger({ colorize: true })
       ),
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   test("local component with named export", async () => {

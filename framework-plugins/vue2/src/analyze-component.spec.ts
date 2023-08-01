@@ -6,7 +6,6 @@ import {
   objectType,
   optionalType,
   STRING_TYPE,
-  TypeAnalyzer,
   unionType,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
@@ -33,7 +32,6 @@ describe("analyze Vue 2 component", () => {
   );
 
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
@@ -56,11 +54,10 @@ describe("analyze Vue 2 component", () => {
       ]),
       logger,
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   test("export default {} without props", async () => {

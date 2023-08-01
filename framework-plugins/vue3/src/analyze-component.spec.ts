@@ -5,7 +5,6 @@ import {
   objectType,
   optionalType,
   STRING_TYPE,
-  TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
@@ -25,7 +24,6 @@ const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
 describe("analyze Vue 3 component", () => {
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
@@ -51,11 +49,10 @@ describe("analyze Vue 3 component", () => {
         prettyLogger({ colorize: true })
       ),
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   test("defineProps<Props>()", async () => {

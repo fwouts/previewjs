@@ -1,10 +1,10 @@
 import type { ComponentProps } from "@previewjs/component-detection-api";
+import type { TypeResolver } from "@previewjs/type-analyzer";
 import {
   dereferenceType,
   EMPTY_OBJECT_TYPE,
   maybeOptionalType,
   objectType,
-  TypeResolver,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Logger } from "pino";

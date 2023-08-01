@@ -11,7 +11,8 @@ import {
   extractStoriesInfo,
   resolveComponentId,
 } from "@previewjs/storybook-helpers";
-import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
+import type { TypeResolver } from "@previewjs/type-analyzer";
+import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";

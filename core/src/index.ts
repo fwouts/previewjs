@@ -228,7 +228,7 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace {
   rootDirPath: string;
   reader: Reader;
-  typeAnalyzer: TypeAnalyzer;
+  typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
   detectComponents(
     options?: RequestOf<typeof RPCs.DetectComponents>
   ): Promise<ResponseOf<typeof RPCs.DetectComponents>>;

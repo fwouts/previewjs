@@ -21,7 +21,6 @@
   "scripts": {
     "prepare": "rimraf preview/types && shx mkdir preview/types && shx cp -rL node_modules/@types/react preview/types/react && shx cp -rL node_modules/@types/prop-types preview/types/prop-types",
     "build": "tsc && unbuild",
-    "test": "vitest",
     "e2e-test": "playwright test"
   },
   "dependencies": {
@@ -51,7 +50,6 @@
     "rimraf": "^5.0.1",
     "shx": "^0.3.4",
     "unbuild": "^1.2.1",
-    "vite": "^4.4.7",
-    "vitest": "^0.33.0"
+    "vite": "^4.4.7"
   }
 }

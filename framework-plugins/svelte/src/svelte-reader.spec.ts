@@ -1,4 +1,5 @@
-import { createTypeAnalyzer, TypeAnalyzer } from "@previewjs/type-analyzer";
+import type { TypeAnalyzer } from "@previewjs/type-analyzer";
+import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,

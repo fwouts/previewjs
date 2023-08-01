@@ -1,9 +1,6 @@
+import type { FrameworkPlugin } from "@previewjs/core";
 import { object, string, TRUE } from "@previewjs/serializable-values";
-import {
-  objectType,
-  STRING_TYPE,
-  TypeAnalyzer,
-} from "@previewjs/type-analyzer";
+import { objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
@@ -28,7 +25,7 @@ describe("extractSolidComponents", () => {
   );
 
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
+  let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
@@ -36,7 +33,7 @@ describe("extractSolidComponents", () => {
       APP_TSX,
       "export const Button = ({ label }: { label: string }) => <div>{label}</div>;"
     );
-    const frameworkPlugin = await solidFrameworkPlugin.create({
+    frameworkPlugin = await solidFrameworkPlugin.create({
       rootDirPath: ROOT_DIR,
       dependencies: {},
       reader: createStackedReader([
@@ -47,11 +44,10 @@ describe("extractSolidComponents", () => {
       ]),
       logger,
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   it("detects expected components", async () => {
@@ -407,7 +403,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractSolidComponents(
       logger,
-      typeAnalyzer.analyze([absoluteFilePath]),
+      frameworkPlugin.typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath
     );
