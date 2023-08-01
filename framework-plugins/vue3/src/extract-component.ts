@@ -1,8 +1,11 @@
-import { decodeComponentId, generateComponentId } from "@previewjs/api";
 import type {
   BaseComponent,
   BasicFrameworkComponent,
   Component,
+} from "@previewjs/component-detection-api";
+import {
+  decodeComponentId,
+  generateComponentId,
 } from "@previewjs/component-detection-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {

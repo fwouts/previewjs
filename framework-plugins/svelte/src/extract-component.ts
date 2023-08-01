@@ -1,5 +1,8 @@
-import { decodeComponentId, generateComponentId } from "@previewjs/api";
 import type { Component } from "@previewjs/component-detection-api";
+import {
+  decodeComponentId,
+  generateComponentId,
+} from "@previewjs/component-detection-api";
 import { extractCsf3Stories } from "@previewjs/storybook-helpers";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";

@@ -1,6 +1,9 @@
 import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
-import { decodeComponentId, RPCs } from "@previewjs/api";
-import type { ComponentProps } from "@previewjs/component-detection-api";
+import { RPCs } from "@previewjs/api";
+import {
+  decodeComponentId,
+  type ComponentProps,
+} from "@previewjs/component-detection-api";
 import type {
   CollectedTypes,
   TypeAnalyzer,

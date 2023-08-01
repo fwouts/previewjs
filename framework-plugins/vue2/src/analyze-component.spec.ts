@@ -1,4 +1,4 @@
-import { decodeComponentId } from "@previewjs/api";
+import { decodeComponentId } from "@previewjs/component-detection-api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   literalType,

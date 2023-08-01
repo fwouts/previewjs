@@ -1,5 +1,8 @@
-import { RPCs, decodeComponentId } from "@previewjs/api";
-import type { Component } from "@previewjs/component-detection-api";
+import { RPCs } from "@previewjs/api";
+import {
+  decodeComponentId,
+  type Component,
+} from "@previewjs/component-detection-api";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
