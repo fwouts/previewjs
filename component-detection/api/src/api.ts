@@ -13,8 +13,8 @@ export type ComponentDetector = {
   dispose: () => void;
 };
 
-export type ComponentDetectorFactory = (options?: {
-  rootDir?: string;
+export type ComponentDetectorFactory = (options: {
+  rootDir: string;
   reader?: Reader;
   logger?: Logger;
 }) => ComponentDetector;

@@ -3,19 +3,16 @@ import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import type { ComponentDetector, ComponentDetectorFactory } from "./api";
 
-type ComponentDetectorFactoryOptions = Exclude<
-  Parameters<ComponentDetectorFactory>[0],
-  undefined
->;
+type ComponentDetectorFactoryOptions = Parameters<ComponentDetectorFactory>[0];
 
 export function factoryWithDefaultOptions(
   factory: (
     options: Required<ComponentDetectorFactoryOptions>
   ) => ComponentDetector
 ): ComponentDetectorFactory {
-  return (options: ComponentDetectorFactoryOptions = {}) =>
+  return (options: ComponentDetectorFactoryOptions) =>
     factory({
-      rootDir: options.rootDir || process.cwd(),
+      ...options,
       reader: options.reader || createFileSystemReader(),
       logger:
         options.logger ||
