@@ -27,7 +27,7 @@ describe("extractReactComponents", () => {
   );
 
   let memoryReader: Reader & Writer;
-  let detector: ComponentAnalyzer;
+  let analyzer: ComponentAnalyzer;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
@@ -35,7 +35,7 @@ describe("extractReactComponents", () => {
       APP_TSX,
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
-    detector = createComponentAnalyzer({
+    analyzer = createComponentAnalyzer({
       rootDir: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
@@ -48,7 +48,7 @@ describe("extractReactComponents", () => {
   });
 
   afterEach(() => {
-    detector.dispose();
+    analyzer.dispose();
   });
 
   it("detects expected components", async () => {
@@ -570,7 +570,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractReactComponents(
       logger,
-      detector.typeAnalyzer.analyze([absoluteFilePath]),
+      analyzer.typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath
     );

@@ -3,10 +3,10 @@ import { describe, expect, test } from "vitest";
 
 describe("example", () => {
   test("foo", async () => {
-    const detector = createComponentAnalyzer({
+    const analyzer = createComponentAnalyzer({
       rootDir: __dirname,
     });
-    expect(await detector.detectComponents(["components.tsx"]))
+    expect(await analyzer.detectComponents(["components.tsx"]))
       .toMatchInlineSnapshot(`
       [
         {
@@ -31,6 +31,6 @@ describe("example", () => {
         },
       ]
     `);
-    detector.dispose();
+    analyzer.dispose();
   });
 });

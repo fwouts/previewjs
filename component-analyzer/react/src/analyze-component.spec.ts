@@ -34,11 +34,11 @@ const MAIN_FILE = path.join(ROOT_DIR_PATH, MAIN_FILE_NAME);
 
 describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
-  let detector: ComponentAnalyzer;
+  let analyzer: ComponentAnalyzer;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    detector = createComponentAnalyzer({
+    analyzer = createComponentAnalyzer({
       rootDir: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,
@@ -54,7 +54,7 @@ describe("analyzeReactComponent", () => {
   });
 
   afterEach(() => {
-    detector.dispose();
+    analyzer.dispose();
   });
 
   test("local component with named export", async () => {
@@ -547,7 +547,7 @@ A.propTypes = {
 
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    const component = (await detector.detectComponents([MAIN_FILE_NAME])).find(
+    const component = (await analyzer.detectComponents([MAIN_FILE_NAME])).find(
       (c) => decodeComponentId(c.componentId).name === componentName
     );
     if (!component) {
