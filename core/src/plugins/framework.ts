@@ -1,4 +1,4 @@
-import type { ComponentAnalyzer } from "@previewjs/component-detection-api";
+import type { ComponentAnalyzer } from "@previewjs/component-analyzer-api";
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
 import type vite from "vite";

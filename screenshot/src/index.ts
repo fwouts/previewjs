@@ -1,5 +1,5 @@
 import { createChromelessWorkspace } from "@previewjs/chromeless";
-import { decodeComponentId } from "@previewjs/component-detection-api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { globby } from "globby";
 import type playwright from "playwright";

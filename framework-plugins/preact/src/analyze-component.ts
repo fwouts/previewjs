@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/component-detection-api";
+import type { ComponentProps } from "@previewjs/component-analyzer-api";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import {
   dereferenceType,

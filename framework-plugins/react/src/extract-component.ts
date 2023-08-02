@@ -2,11 +2,11 @@ import type {
   BaseComponent,
   BasicFrameworkComponent,
   Component,
-} from "@previewjs/component-detection-api";
+} from "@previewjs/component-analyzer-api";
 import {
   decodeComponentId,
   generateComponentId,
-} from "@previewjs/component-detection-api";
+} from "@previewjs/component-analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,

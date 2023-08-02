@@ -1,4 +1,4 @@
-import type { Component } from "@previewjs/component-detection-api";
+import type { Component } from "@previewjs/component-analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";

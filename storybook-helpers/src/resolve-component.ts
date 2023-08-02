@@ -1,4 +1,4 @@
-import { generateComponentId } from "@previewjs/component-detection-api";
+import { generateComponentId } from "@previewjs/component-analyzer-api";
 import path from "path";
 import ts from "typescript";
 

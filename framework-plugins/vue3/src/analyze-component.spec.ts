@@ -1,4 +1,4 @@
-import { decodeComponentId } from "@previewjs/component-detection-api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   BOOLEAN_TYPE,
