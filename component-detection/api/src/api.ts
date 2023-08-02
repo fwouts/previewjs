@@ -7,17 +7,17 @@ import type {
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
 
-export type ComponentDetector = {
+export type ComponentAnalyzer = {
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
   detectComponents: (filePaths: string[]) => Promise<Component[]>;
   dispose: () => void;
 };
 
-export type ComponentDetectorFactory = (options: {
+export type ComponentAnalyzerFactory = (options: {
   rootDir: string;
   reader?: Reader;
   logger?: Logger;
-}) => ComponentDetector;
+}) => ComponentAnalyzer;
 
 export interface BaseComponent {
   componentId: string;

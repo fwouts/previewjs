@@ -1,4 +1,4 @@
-import type { ComponentDetector } from "@previewjs/component-detection-api";
+import type { ComponentAnalyzer } from "@previewjs/component-detection-api";
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
 import type vite from "vite";
@@ -14,7 +14,7 @@ export interface FrameworkPluginFactory {
   }): Promise<FrameworkPlugin>;
 }
 
-export interface FrameworkPlugin extends ComponentDetector {
+export interface FrameworkPlugin extends ComponentAnalyzer {
   readonly pluginApiVersion?: number;
   readonly name: string;
   readonly defaultWrapperPath: string;
