@@ -3,7 +3,7 @@ import { RPCs } from "@previewjs/api";
 import {
   decodeComponentId,
   type ComponentProps,
-} from "@previewjs/component-detection-api";
+} from "@previewjs/component-analyzer-api";
 import type {
   CollectedTypes,
   TypeAnalyzer,

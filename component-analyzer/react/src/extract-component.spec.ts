@@ -1,4 +1,4 @@
-import type { ComponentAnalyzer } from "@previewjs/component-detection-api";
+import type { ComponentAnalyzer } from "@previewjs/component-analyzer-api";
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import { objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";

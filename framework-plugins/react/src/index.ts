@@ -1,4 +1,4 @@
-import { createComponentAnalyzer } from "@previewjs/component-detection-react";
+import { createComponentAnalyzer } from "@previewjs/component-analyzer-react";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import react from "@vitejs/plugin-react";
 import path from "path";

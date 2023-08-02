@@ -1,4 +1,4 @@
-import { createComponentAnalyzer } from "@previewjs/component-detection-react";
+import { createComponentAnalyzer } from "@previewjs/component-analyzer-react";
 import { describe, expect, test } from "vitest";
 
 describe("example", () => {

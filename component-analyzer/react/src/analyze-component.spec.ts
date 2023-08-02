@@ -1,5 +1,5 @@
-import type { ComponentAnalyzer } from "@previewjs/component-detection-api";
-import { decodeComponentId } from "@previewjs/component-detection-api";
+import type { ComponentAnalyzer } from "@previewjs/component-analyzer-api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import {
   ANY_TYPE,
   arrayType,

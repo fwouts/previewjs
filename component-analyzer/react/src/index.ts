@@ -1,7 +1,7 @@
 import {
   factoryWithDefaultOptions,
   type Component,
-} from "@previewjs/component-detection-api";
+} from "@previewjs/component-analyzer-api";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
