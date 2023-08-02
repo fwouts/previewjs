@@ -1,9 +1,4 @@
-import type { SerializableValue } from "@previewjs/serializable-values";
-import type {
-  CollectedTypes,
-  TypeAnalyzer,
-  ValueType,
-} from "@previewjs/type-analyzer";
+import type { ComponentAnalyzer } from "@previewjs/component-analyzer-api";
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
 import type vite from "vite";
@@ -19,47 +14,11 @@ export interface FrameworkPluginFactory {
   }): Promise<FrameworkPlugin>;
 }
 
-export interface FrameworkPlugin {
+export interface FrameworkPlugin extends ComponentAnalyzer {
   readonly pluginApiVersion?: number;
   readonly name: string;
   readonly defaultWrapperPath: string;
   readonly previewDirPath: string;
-  readonly typeAnalyzer: TypeAnalyzer;
   readonly viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
-  readonly detectComponents: (
-    absoluteFilePaths: string[]
-  ) => Promise<Component[]>;
+  dispose(): void;
 }
-
-export interface BaseComponent {
-  componentId: string;
-  offsets: [start: number, end: number];
-}
-
-export type Component = FrameworkComponent | StoryComponent;
-
-export interface FrameworkComponent extends BaseComponent {
-  kind: "component";
-  exported: boolean;
-  extractProps: () => Promise<ComponentProps>;
-}
-
-export interface ComponentProps {
-  props: ValueType;
-  types: CollectedTypes;
-}
-
-export interface StoryComponent extends BaseComponent {
-  kind: "story";
-  args: {
-    start: number;
-    end: number;
-    value: SerializableValue;
-  } | null;
-  associatedComponent: BasicFrameworkComponent | null;
-}
-
-export type BasicFrameworkComponent = Pick<
-  FrameworkComponent,
-  "componentId" | "extractProps"
->;

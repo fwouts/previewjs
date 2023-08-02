@@ -1,9 +1,12 @@
-import { decodeComponentId, generateComponentId } from "@previewjs/api";
 import type {
   BaseComponent,
   BasicFrameworkComponent,
   Component,
-} from "@previewjs/core";
+} from "@previewjs/component-analyzer-api";
+import {
+  decodeComponentId,
+  generateComponentId,
+} from "@previewjs/component-analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
@@ -11,7 +14,8 @@ import {
   extractStoriesInfo,
   resolveComponentId,
 } from "@previewjs/storybook-helpers";
-import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
+import type { TypeResolver } from "@previewjs/type-analyzer";
+import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
 import type { Logger } from "pino";
 import ts from "typescript";

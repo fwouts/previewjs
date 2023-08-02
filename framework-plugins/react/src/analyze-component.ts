@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/component-analyzer-api";
 import type {
   CollectedTypes,
   OptionalType,

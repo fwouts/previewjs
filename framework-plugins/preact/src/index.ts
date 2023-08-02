@@ -1,4 +1,5 @@
-import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import type { Component } from "@previewjs/component-analyzer-api";
+import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
@@ -29,7 +30,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-preact",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
@@ -82,6 +83,9 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
             },
           ],
         };
+      },
+      dispose: () => {
+        typeAnalyzer.dispose();
       },
     };
   },

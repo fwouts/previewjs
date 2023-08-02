@@ -1,4 +1,4 @@
-import { decodeComponentId } from "@previewjs/api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   arrayType,
@@ -9,7 +9,6 @@ import {
   objectType,
   optionalType,
   STRING_TYPE,
-  TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
@@ -30,7 +29,6 @@ const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
 describe("analyzePreactComponent", () => {
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
@@ -49,11 +47,10 @@ describe("analyzePreactComponent", () => {
         prettyLogger({ colorize: true })
       ),
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   test("local component with named export", async () => {

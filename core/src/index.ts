@@ -1,5 +1,9 @@
 import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
-import { decodeComponentId, RPCs } from "@previewjs/api";
+import { RPCs } from "@previewjs/api";
+import {
+  decodeComponentId,
+  type ComponentProps,
+} from "@previewjs/component-analyzer-api";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -14,20 +18,14 @@ import path from "path";
 import type { Logger } from "pino";
 import { detectComponents } from "./detect-components";
 import { getFreePort } from "./get-free-port";
-import type { ComponentProps, FrameworkPlugin } from "./plugins/framework";
+import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
 export type {
-  BaseComponent,
-  BasicFrameworkComponent,
-  Component,
-  ComponentProps,
-  FrameworkComponent,
   FrameworkPlugin,
   FrameworkPluginFactory,
-  StoryComponent,
 } from "./plugins/framework";
 export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 export type { SetupPreviewEnvironment } from "./preview-env";
@@ -59,7 +57,7 @@ export async function createWorkspace({
   logger.debug(
     `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDir}`
   );
-  const expectedPluginApiVersion = 3;
+  const expectedPluginApiVersion = 4;
   if (
     !frameworkPlugin.pluginApiVersion ||
     frameworkPlugin.pluginApiVersion < expectedPluginApiVersion
@@ -199,11 +197,9 @@ export async function createWorkspace({
       },
     },
     dispose: async () => {
-      // TODO: Consider exposing a dispose() method on FrameworkPlugin instead.
-      //
-      // We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
+      // Note: We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
       // dispose() should not be called here?
-      frameworkPlugin.typeAnalyzer.dispose();
+      frameworkPlugin.dispose();
     },
   };
   if (setupEnvironment) {
@@ -235,7 +231,7 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace {
   rootDir: string;
   reader: Reader;
-  typeAnalyzer: TypeAnalyzer;
+  typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
   detectComponents(
     options?: RequestOf<typeof RPCs.DetectComponents>
   ): Promise<ResponseOf<typeof RPCs.DetectComponents>>;

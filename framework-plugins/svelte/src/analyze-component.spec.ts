@@ -1,11 +1,10 @@
-import { decodeComponentId } from "@previewjs/api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   ANY_TYPE,
   NUMBER_TYPE,
   objectType,
   optionalType,
-  TypeAnalyzer,
 } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
@@ -25,7 +24,6 @@ const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
 
 describe("analyze Svelte component", () => {
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
@@ -51,11 +49,10 @@ describe("analyze Svelte component", () => {
         prettyLogger({ colorize: true })
       ),
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   test("no props", async () => {

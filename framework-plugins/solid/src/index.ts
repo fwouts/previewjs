@@ -1,4 +1,5 @@
-import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import type { Component } from "@previewjs/component-analyzer-api";
+import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
@@ -29,7 +30,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-solid",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
@@ -80,6 +81,9 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
         };
+      },
+      dispose: () => {
+        typeAnalyzer.dispose();
       },
     };
   },

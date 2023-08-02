@@ -1,4 +1,5 @@
-import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import type { Component } from "@previewjs/component-analyzer-api";
+import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
@@ -46,7 +47,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
@@ -118,6 +119,9 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
         };
+      },
+      dispose: () => {
+        typeAnalyzer.dispose();
       },
     };
   },

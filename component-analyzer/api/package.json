@@ -1,7 +1,7 @@
 {
-  "name": "@previewjs/screenshot",
-  "version": "0.2.3",
-  "license": "AGPL-3.0",
+  "name": "@previewjs/component-analyzer-api",
+  "version": "0.0.0",
+  "license": "MIT",
   "author": {
     "name": "François Wouts",
     "email": "f@zenc.io"
@@ -18,22 +18,16 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && unbuild",
-    "e2e-test": "cd test-app && node generate-screenshots.js"
-  },
-  "engines": {
-    "node": "^14.18.0 || >=16.0.0"
+    "build": "tsc && unbuild"
   },
   "dependencies": {
-    "@previewjs/chromeless": "^7.0.3",
-    "@previewjs/component-analyzer-api": "^0.0.0",
-    "@previewjs/core": "^23.0.1",
-    "@previewjs/plugin-react": "^11.0.0",
-    "globby": "^13.2.2",
-    "playwright": "^1.36.2"
+    "@previewjs/serializable-values": "^7.0.2",
+    "@previewjs/type-analyzer": "^8.0.2",
+    "@previewjs/vfs": "^2.0.15",
+    "pino": "^8.14.2",
+    "pino-pretty": "^10.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.4.5",
     "typescript": "^5.1.6",
     "unbuild": "^1.2.1"
   }

@@ -1,5 +1,8 @@
-import { generateComponentId } from "@previewjs/api";
-import type { Component, ComponentProps } from "@previewjs/core";
+import {
+  generateComponentId,
+  type ComponentProps,
+  type StoryComponent,
+} from "@previewjs/component-analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import path from "path";
@@ -11,14 +14,14 @@ export function extractCsf3Stories(
   rootDir: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
-  analyzeComponent: (componentId: string) => Promise<ComponentProps>
-): Component[] {
+  extractProps: (componentId: string) => Promise<ComponentProps>
+): StoryComponent[] {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
     return [];
   }
 
-  const components: Component[] = [];
+  const components: StoryComponent[] = [];
   for (const statement of sourceFile.statements) {
     if (!ts.isVariableStatement(statement)) {
       continue;
@@ -63,12 +66,12 @@ export function extractCsf3Stories(
         storyComponent || storiesInfo.component || null
       );
       components.push({
+        kind: "story",
         componentId: generateComponentId({
           filePath: path.relative(rootDir, sourceFile.fileName),
           name,
         }),
         offsets: [statement.getStart(), statement.getEnd()],
-        kind: "story",
         args: args
           ? {
               start: args.getStart(),
@@ -79,7 +82,7 @@ export function extractCsf3Stories(
         associatedComponent: associatedComponentId
           ? {
               componentId: associatedComponentId,
-              extractProps: () => analyzeComponent(associatedComponentId),
+              extractProps: () => extractProps(associatedComponentId),
             }
           : null,
       });

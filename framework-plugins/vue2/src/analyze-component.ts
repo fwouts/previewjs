@@ -1,8 +1,11 @@
-import type { ComponentProps } from "@previewjs/core";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type { ComponentProps } from "@previewjs/component-analyzer-api";
+import type {
+  CollectedTypes,
+  TypeResolver,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import {
   STRING_TYPE,
-  TypeResolver,
   UNKNOWN_TYPE,
   intersectionType,
   objectType,

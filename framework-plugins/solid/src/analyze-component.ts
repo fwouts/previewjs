@@ -1,9 +1,9 @@
-import type { ComponentProps } from "@previewjs/core";
+import type { ComponentProps } from "@previewjs/component-analyzer-api";
+import type { TypeResolver } from "@previewjs/type-analyzer";
 import {
   dereferenceType,
   EMPTY_OBJECT_TYPE,
   objectType,
-  TypeResolver,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Logger } from "pino";

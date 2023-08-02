@@ -1,9 +1,6 @@
+import type { FrameworkPlugin } from "@previewjs/core";
 import { object, string, TRUE } from "@previewjs/serializable-values";
-import {
-  objectType,
-  STRING_TYPE,
-  TypeAnalyzer,
-} from "@previewjs/type-analyzer";
+import { objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
@@ -30,7 +27,7 @@ describe("extractPreactComponents", () => {
   );
 
   let memoryReader: Reader & Writer;
-  let typeAnalyzer: TypeAnalyzer;
+  let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
@@ -38,7 +35,7 @@ describe("extractPreactComponents", () => {
       APP_TSX,
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
-    const frameworkPlugin = await reactFrameworkPlugin.create({
+    frameworkPlugin = await reactFrameworkPlugin.create({
       rootDir: ROOT_DIR,
       dependencies: {},
       reader: createStackedReader([
@@ -49,11 +46,10 @@ describe("extractPreactComponents", () => {
       ]),
       logger,
     });
-    typeAnalyzer = frameworkPlugin.typeAnalyzer;
   });
 
   afterEach(() => {
-    typeAnalyzer.dispose();
+    frameworkPlugin.dispose();
   });
 
   it("detects expected components", async () => {
@@ -492,7 +488,7 @@ export function NotStory() {}
   function extract(absoluteFilePath: string) {
     return extractPreactComponents(
       logger,
-      typeAnalyzer.analyze([absoluteFilePath]),
+      frameworkPlugin.typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
       absoluteFilePath
     );

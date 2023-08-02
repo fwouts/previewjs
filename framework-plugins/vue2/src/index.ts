@@ -1,4 +1,5 @@
-import type { Component, FrameworkPluginFactory } from "@previewjs/core";
+import type { Component } from "@previewjs/component-analyzer-api";
+import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import fs from "fs-extra";
@@ -37,7 +38,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
       ]),
     });
     return {
-      pluginApiVersion: 3,
+      pluginApiVersion: 4,
       name: "@previewjs/plugin-vue2",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
@@ -146,6 +147,9 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             },
           ],
         };
+      },
+      dispose: () => {
+        typeAnalyzer.dispose();
       },
     };
   },

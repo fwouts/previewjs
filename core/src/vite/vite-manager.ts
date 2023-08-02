@@ -1,5 +1,5 @@
 import viteTsconfigPaths from "@fwouts/vite-tsconfig-paths";
-import { decodeComponentId } from "@previewjs/api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
