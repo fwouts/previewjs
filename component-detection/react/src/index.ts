@@ -10,7 +10,7 @@ import url from "url";
 import { extractReactComponents } from "./extract-component.js";
 import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
-export const createComponentDetector = factoryWithDefaultOptions(
+export const createComponentAnalyzer = factoryWithDefaultOptions(
   ({ rootDir, reader, logger }) => {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const typesDirPath = path.join(__dirname, "..", "types");

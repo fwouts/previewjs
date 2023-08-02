@@ -1,7 +1,7 @@
 import type { Client } from "@previewjs/daemon/client";
 import vscode from "vscode";
-import type { ComponentDetector } from "./component-detector";
-import { createComponentDetector } from "./component-detector";
+import type { ComponentAnalyzer } from "./component-detector";
+import { createComponentAnalyzer } from "./component-detector";
 import { ensureDaemonRunning } from "./start-daemon";
 import type { Workspaces } from "./workspaces";
 import { createWorkspaceGetter } from "./workspaces";
@@ -49,7 +49,7 @@ export async function createState({
     workspaces
   );
   const pendingFileChanges = new Map<string, string>();
-  const getComponents = createComponentDetector(
+  const getComponents = createComponentAnalyzer(
     daemon.client,
     getWorkspaceId,
     pendingFileChanges
@@ -85,6 +85,6 @@ export type PreviewJsState = {
     workspaceId: string;
     url: string;
   } | null;
-  getComponents: ComponentDetector;
+  getComponents: ComponentAnalyzer;
   getWorkspaceId: (document: vscode.TextDocument) => Promise<string | null>;
 };

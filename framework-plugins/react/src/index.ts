@@ -1,4 +1,4 @@
-import { createComponentDetector } from "@previewjs/component-detection-react";
+import { createComponentAnalyzer } from "@previewjs/component-detection-react";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -22,7 +22,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
   },
   async create({ rootDir, reader, logger, dependencies }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-    const componentDetectorPlugin = createComponentDetector({
+    const componentAnalyzerPlugin = createComponentAnalyzer({
       rootDir,
       reader,
       logger,
@@ -33,7 +33,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
-      ...componentDetectorPlugin,
+      ...componentAnalyzerPlugin,
       viteConfig: (configuredPlugins) => {
         const hasReactPlugin = configuredPlugins.find((plugin) =>
           plugin.name.startsWith("vite:react-")

@@ -1,4 +1,4 @@
-import type { ComponentDetector } from "@previewjs/component-detection-api";
+import type { ComponentAnalyzer } from "@previewjs/component-detection-api";
 import { decodeComponentId } from "@previewjs/component-detection-api";
 import {
   ANY_TYPE,
@@ -25,7 +25,7 @@ import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { createComponentDetector } from "./index.js";
+import { createComponentAnalyzer } from "./index.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
@@ -34,11 +34,11 @@ const MAIN_FILE = path.join(ROOT_DIR_PATH, MAIN_FILE_NAME);
 
 describe("analyzeReactComponent", () => {
   let memoryReader: Reader & Writer;
-  let detector: ComponentDetector;
+  let detector: ComponentAnalyzer;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    detector = createComponentDetector({
+    detector = createComponentAnalyzer({
       rootDir: ROOT_DIR_PATH,
       reader: createStackedReader([
         memoryReader,

@@ -1,4 +1,4 @@
-import type { ComponentDetector } from "@previewjs/component-detection-api";
+import type { ComponentAnalyzer } from "@previewjs/component-detection-api";
 import { object, string, TRUE } from "@previewjs/serializable-values";
 import { objectType, STRING_TYPE } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
@@ -13,7 +13,7 @@ import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { extractReactComponents } from "./extract-component.js";
-import { createComponentDetector } from "./index.js";
+import { createComponentAnalyzer } from "./index.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR = path.join(__dirname, "virtual");
@@ -27,7 +27,7 @@ describe("extractReactComponents", () => {
   );
 
   let memoryReader: Reader & Writer;
-  let detector: ComponentDetector;
+  let detector: ComponentAnalyzer;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
@@ -35,7 +35,7 @@ describe("extractReactComponents", () => {
       APP_TSX,
       "export default ({ label }: { label: string }) => <div>{label}</div>;"
     );
-    detector = createComponentDetector({
+    detector = createComponentAnalyzer({
       rootDir: ROOT_DIR,
       reader: createStackedReader([
         memoryReader,
