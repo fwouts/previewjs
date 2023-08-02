@@ -2,11 +2,11 @@ import type { AnalyzeFileResponse, Client } from "@previewjs/daemon/client";
 import type vscode from "vscode";
 import type { WorkspaceGetter } from "./workspaces";
 
-export function createComponentAnalyzer(
+export function createComponentDetector(
   client: Client,
   getWorkspaceId: WorkspaceGetter,
   pendingFileChanges: Map<string, string>
-): ComponentAnalyzer {
+): ComponentDetector {
   return async function (
     document?: vscode.TextDocument
   ): Promise<AnalyzeFileResponse["components"]> {
@@ -33,6 +33,6 @@ export function createComponentAnalyzer(
   };
 }
 
-export type ComponentAnalyzer = (
+export type ComponentDetector = (
   document?: vscode.TextDocument
 ) => Promise<AnalyzeFileResponse["components"]>;
