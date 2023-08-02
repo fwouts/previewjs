@@ -1,14 +1,9 @@
-import type { Component } from "@previewjs/component-analyzer-api";
+import { createComponentAnalyzer } from "@previewjs/component-analyzer-react";
 import type { FrameworkPluginFactory } from "@previewjs/core";
-import { createTypeAnalyzer } from "@previewjs/type-analyzer";
-import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import ts from "typescript";
 import url from "url";
-import { extractReactComponents } from "./extract-component.js";
 import { reactImportsPlugin } from "./react-js-imports-plugin.js";
-import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
 const reactFrameworkPlugin: FrameworkPluginFactory = {
   isCompatible: async (dependencies) => {
@@ -27,48 +22,18 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
   },
   async create({ rootDir, reader, logger, dependencies }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-    const previewDirPath = path.join(__dirname, "..", "preview");
-    const typeAnalyzer = createTypeAnalyzer({
+    const componentAnalyzerPlugin = createComponentAnalyzer({
       rootDir,
-      reader: createStackedReader([
-        reader,
-        createFileSystemReader({
-          mapping: {
-            from: path.join(previewDirPath, "types"),
-            to: path.join(rootDir, "node_modules", "@types"),
-          },
-          watch: false,
-        }),
-      ]),
-      specialTypes: REACT_SPECIAL_TYPES,
-      tsCompilerOptions: {
-        jsx: ts.JsxEmit.ReactJSX,
-        jsxImportSource: "react",
-      },
+      reader,
+      logger,
     });
+    const previewDirPath = path.join(__dirname, "..", "preview");
     return {
       pluginApiVersion: 4,
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
-      typeAnalyzer,
-      detectComponents: async (absoluteFilePaths) => {
-        const resolver = typeAnalyzer.analyze(absoluteFilePaths);
-        const components: Component[] = [];
-        for (const absoluteFilePath of absoluteFilePaths) {
-          components.push(
-            ...extractReactComponents(
-              logger,
-              resolver,
-              rootDir,
-              absoluteFilePath
-            )
-          );
-          // Ensure this potentially long-running function doesn't block the thread.
-          await 0;
-        }
-        return components;
-      },
+      ...componentAnalyzerPlugin,
       viteConfig: (configuredPlugins) => {
         const hasReactPlugin = configuredPlugins.find((plugin) =>
           plugin.name.startsWith("vite:react-")
@@ -119,9 +84,6 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
             "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
           },
         };
-      },
-      dispose: () => {
-        typeAnalyzer.dispose();
       },
     };
   },

@@ -210,6 +210,61 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
 
+  component-analyzer/react:
+    dependencies:
+      '@previewjs/component-analyzer-api':
+        specifier: ^0.0.0
+        version: link:../api
+      '@previewjs/serializable-values':
+        specifier: ^7.0.2
+        version: link:../../serializable-values
+      '@previewjs/storybook-helpers':
+        specifier: ^3.0.0
+        version: link:../../storybook-helpers
+      '@previewjs/type-analyzer':
+        specifier: ^8.0.2
+        version: link:../../type-analyzer
+      '@previewjs/vfs':
+        specifier: ^2.0.15
+        version: link:../../vfs
+      '@vitejs/plugin-react':
+        specifier: ^4.0.2
+        version: 4.0.2(vite@4.4.8)
+      typescript:
+        specifier: ^5.1.6
+        version: 5.1.6
+    devDependencies:
+      '@types/prop-types':
+        specifier: ^15.7.5
+        version: 15.7.5
+      '@types/react':
+        specifier: ^18.2.14
+        version: 18.2.18
+      '@types/react-dom':
+        specifier: ^18.2.6
+        version: 18.2.6
+      pino:
+        specifier: ^8.14.2
+        version: 8.14.2
+      pino-pretty:
+        specifier: ^10.0.1
+        version: 10.2.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      shx:
+        specifier: ^0.3.4
+        version: 0.3.4
+      unbuild:
+        specifier: ^1.2.1
+        version: 1.2.1
+      vitest:
+        specifier: ^0.34.1
+        version: 0.34.1
+
   config:
     devDependencies:
       '@types/node':
@@ -442,9 +497,6 @@ importers:
       '@previewjs/iframe':
         specifier: workspace:*
         version: link:../../iframe
-      '@previewjs/properties':
-        specifier: workspace:*
-        version: link:../../properties
       '@previewjs/testing':
         specifier: workspace:*
         version: link:../../testing
@@ -611,49 +663,28 @@ importers:
 
   framework-plugins/react:
     dependencies:
-      '@previewjs/api':
-        specifier: ^13.0.0
-        version: link:../../api
-      '@previewjs/component-analyzer-api':
+      '@previewjs/component-analyzer-react':
         specifier: ^0.0.0
-        version: link:../../component-analyzer/api
-      '@previewjs/serializable-values':
-        specifier: ^7.0.2
-        version: link:../../serializable-values
-      '@previewjs/storybook-helpers':
-        specifier: ^3.0.0
-        version: link:../../storybook-helpers
-      '@previewjs/type-analyzer':
-        specifier: ^8.0.2
-        version: link:../../type-analyzer
-      '@previewjs/vfs':
-        specifier: ^2.0.15
-        version: link:../../vfs
+        version: link:../../component-analyzer/react
       '@vitejs/plugin-react':
         specifier: ^4.0.4
         version: 4.0.4(vite@4.4.8)
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
     devDependencies:
       '@playwright/test':
         specifier: ^1.36.2
         version: 1.36.2
+      '@previewjs/api':
+        specifier: workspace:*
+        version: link:../../api
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
       '@previewjs/iframe':
         specifier: workspace:*
         version: link:../../iframe
-      '@previewjs/properties':
-        specifier: workspace:*
-        version: link:../../properties
       '@previewjs/testing':
         specifier: workspace:*
         version: link:../../testing
-      '@types/prop-types':
-        specifier: ^15.7.5
-        version: 15.7.5
       '@types/react':
         specifier: ^18.2.18
         version: 18.2.18
@@ -669,21 +700,12 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.2.0
-      rimraf:
-        specifier: ^5.0.1
-        version: 5.0.1
-      shx:
-        specifier: ^0.3.4
-        version: 0.3.4
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
       vite:
         specifier: ^4.4.8
         version: 4.4.8(@types/node@20.4.5)
-      vitest:
-        specifier: ^0.34.1
-        version: 0.34.1
 
   framework-plugins/react/tests/apps/aliases:
     dependencies:
@@ -18434,6 +18456,12 @@ packages:
       '@types/react': 18.2.18
     dev: true
 
+  /@types/react-dom@18.2.6:
+    resolution: {integrity: sha512-2et4PDvg6PVCyS7fuTc4gPoksV58bW0RwSxWKcPRcHZf0PRUGq03TKcD/rUHe3azfV6/5/biUBJw+HhCQjaP0A==}
+    dependencies:
+      '@types/react': 18.2.18
+    dev: true
+
   /@types/react-dom@18.2.7:
     resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
     dependencies:
@@ -19379,6 +19407,21 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@vitejs/plugin-react@4.0.2(vite@4.4.8):
+    resolution: {integrity: sha512-zbnVp3Esfg33zDaoLrjxG+p/dPiOtpvJA+1oOEQwSxMMTRL9zi1eghIcd2WtLjkcKnPsa3S15LzS/OzDn2BOCA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.2.0
+    dependencies:
+      '@babel/core': 7.22.9
+      '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.9)
+      '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.9)
+      react-refresh: 0.14.0
+      vite: 4.4.8(@types/node@20.4.5)
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@vitejs/plugin-react@4.0.4(vite@4.4.8):
     resolution: {integrity: sha512-7wU921ABnNYkETiMaZy7XqpueMnpu5VxvVps13MjmCo+utBdD79sZzrApHawHtVX66cCJQQTXFcjH0y9dSUK8g==}
@@ -43046,7 +43089,7 @@ packages:
     resolution: {integrity: sha512-z219Z65rOGD6jXIvIhpZFfwWdqQckB8sdZec2NO+TkcH1Bph7gL0hwLzRJs1KsOo4Jz4mF9guBXhsEnyEBGVfw==}
     hasBin: true
     dependencies:
-      '@babel/core': 7.22.5
+      '@babel/core': 7.22.9
       '@babel/standalone': 7.21.4
       '@babel/types': 7.22.5
       defu: 6.1.2
