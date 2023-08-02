@@ -210,25 +210,6 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
 
-  component-analyzer/example:
-    dependencies:
-      '@previewjs/component-analyzer-react':
-        specifier: ^0.0.0
-        version: link:../react
-    devDependencies:
-      '@types/react':
-        specifier: ^18.2.18
-        version: 18.2.18
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      typescript:
-        specifier: ^5.1.6
-        version: 5.1.6
-      vitest:
-        specifier: ^0.33.0
-        version: 0.33.0
-
   component-analyzer/react:
     dependencies:
       '@previewjs/component-analyzer-api':
@@ -306,7 +287,7 @@ importers:
         version: 18.2.18
       next:
         specifier: ^13.4.7
-        version: 13.4.7(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.7(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -394,7 +375,7 @@ importers:
     devDependencies:
       '@rollup/plugin-alias':
         specifier: ^5.0.0
-        version: 5.0.0(rollup@3.20.2)
+        version: 5.0.0(rollup@3.26.1)
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.17
@@ -2579,7 +2560,7 @@ importers:
         version: 2.2.0(vite@4.4.8)(vue@2.7.14)
       '@vitejs/plugin-vue2-jsx':
         specifier: ^1.1.0
-        version: 1.1.0(rollup@3.20.2)(vite@4.4.8)(vue@2.7.14)
+        version: 1.1.0(rollup@3.26.1)(vite@4.4.8)(vue@2.7.14)
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
@@ -3560,19 +3541,6 @@ packages:
       eslint-visitor-keys: 2.1.0
       semver: 6.3.1
 
-  /@babel/eslint-parser@7.19.1(@babel/core@7.22.9)(eslint@8.46.0):
-    resolution: {integrity: sha512-AqNf2QWt1rtu2/1rLswy6CDP7H9Oh3mMhk177Y67Rg8d7RD9WfOLLv8CGn6tisFvS2htm86yIe1yLF6I1UDaGQ==}
-    engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
-    peerDependencies:
-      '@babel/core': '>=7.11.0'
-      eslint: ^7.5.0 || ^8.0.0
-    dependencies:
-      '@babel/core': 7.22.9
-      '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
-      eslint: 8.46.0
-      eslint-visitor-keys: 2.1.0
-      semver: 6.3.1
-
   /@babel/generator@7.21.9:
     resolution: {integrity: sha512-F3fZga2uv09wFdEjEQIJxXALXfz0+JaOb7SabvVMmjHxeVTuGW8wgE8Vp1Hd7O+zMTYtcfEISGRzPkeiaPPsvg==}
     engines: {node: '>=6.9.0'}
@@ -3686,7 +3654,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
     dependencies:
-      '@babel/compat-data': 7.22.5
+      '@babel/compat-data': 7.22.9
       '@babel/core': 7.21.8
       '@babel/helper-validator-option': 7.22.5
       browserslist: 4.21.10
@@ -12999,19 +12967,6 @@ packages:
       slash: 4.0.0
     dev: true
 
-  /@rollup/plugin-alias@5.0.0(rollup@3.20.2):
-    resolution: {integrity: sha512-l9hY5chSCjuFRPsnRm16twWBiSApl2uYFLsepQYwtBuAxNMQ/1dJqADld40P0Jkqm65GRTLy/AC6hnpVebtLsA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      rollup: 3.20.2
-      slash: 4.0.0
-    dev: true
-
   /@rollup/plugin-alias@5.0.0(rollup@3.26.1):
     resolution: {integrity: sha512-l9hY5chSCjuFRPsnRm16twWBiSApl2uYFLsepQYwtBuAxNMQ/1dJqADld40P0Jkqm65GRTLy/AC6hnpVebtLsA==}
     engines: {node: '>=14.0.0'}
@@ -13183,7 +13138,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       magic-string: 0.27.0
     dev: true
 
@@ -13262,20 +13217,6 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@rollup/pluginutils@5.0.2(rollup@3.20.2):
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.0
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-      rollup: 3.20.2
-
   /@rollup/pluginutils@5.0.2(rollup@3.21.0):
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
     engines: {node: '>=14.0.0'}
@@ -13303,7 +13244,6 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 3.26.1
-    dev: true
 
   /@rushstack/eslint-patch@1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
@@ -19295,7 +19235,7 @@ packages:
       - supports-color
     dev: false
 
-  /@vitejs/plugin-vue2-jsx@1.1.0(rollup@3.20.2)(vite@4.4.8)(vue@2.7.14):
+  /@vitejs/plugin-vue2-jsx@1.1.0(rollup@3.26.1)(vite@4.4.8)(vue@2.7.14):
     resolution: {integrity: sha512-Mxg24oJVGXlu33p4fx1nHgG7jW+beK7cK1Xb6IP6tAPXrZ9N/mldFPKKhftBsITgOIKXzHeldKY6iOGEttzjEQ==}
     engines: {node: '>=14.18.0'}
     peerDependencies:
@@ -19305,7 +19245,7 @@ packages:
       '@babel/core': 7.21.8
       '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.21.8)
       '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
-      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      '@rollup/pluginutils': 5.0.2(rollup@3.26.1)
       '@vue/babel-preset-jsx': 1.4.0(@babel/core@7.21.8)(vue@2.7.14)
       vite: 4.4.8(@types/node@20.4.5)
       vue: 2.7.14
@@ -19510,7 +19450,7 @@ packages:
         optional: true
     dependencies:
       '@babel/types': 7.22.5
-      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       '@vue/compiler-sfc': 3.3.4
       local-pkg: 0.4.3
       magic-string-ast: 0.1.2
@@ -26486,8 +26426,8 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@babel/core': 7.22.9
-      '@babel/eslint-parser': 7.19.1(@babel/core@7.22.9)(eslint@8.46.0)
+      '@babel/core': 7.22.5
+      '@babel/eslint-parser': 7.19.1(@babel/core@7.22.5)(eslint@8.46.0)
       '@rushstack/eslint-patch': 1.2.0
       '@typescript-eslint/eslint-plugin': 5.61.0(@typescript-eslint/parser@5.61.0)(eslint@8.46.0)(typescript@5.1.6)
       '@typescript-eslint/parser': 5.61.0(eslint@8.46.0)(typescript@5.1.6)
@@ -33188,7 +33128,7 @@ packages:
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(@babel/core@7.22.5)(react@18.2.0)
+      styled-jsx: 5.1.1(@babel/core@7.22.9)(react@18.2.0)
       zod: 3.21.4
     optionalDependencies:
       '@next/swc-darwin-arm64': 13.4.3
@@ -33205,7 +33145,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /next@13.4.7(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.4.7(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-M8z3k9VmG51SRT6v5uDKdJXcAqLzP3C+vaKfLIAM0Mhx1um1G7MDnO63+m52qPdZfrTFzMZNzfsgvm3ghuVHIQ==}
     engines: {node: '>=16.8.0'}
     hasBin: true
@@ -33230,7 +33170,7 @@ packages:
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(@babel/core@7.22.5)(react@18.2.0)
+      styled-jsx: 5.1.1(@babel/core@7.22.9)(react@18.2.0)
       watchpack: 2.4.0
       zod: 3.21.4
     optionalDependencies:
@@ -39381,13 +39321,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /rollup@3.20.2:
-    resolution: {integrity: sha512-3zwkBQl7Ai7MFYQE0y1MeQ15+9jsi7XxfrqwTb/9EK8D9C9+//EBR4M+CuA1KODRaNbFez/lWxA5vhEGZp4MUg==}
-    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
-    hasBin: true
-    optionalDependencies:
-      fsevents: 2.3.2
-
   /rollup@3.21.0:
     resolution: {integrity: sha512-ANPhVcyeHvYdQMUyCbczy33nbLzI7RzrBje4uvNiTDJGIMtlKoOStmympwr9OtS1LZxiDmE2wvxHyVhoLtf1KQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
@@ -40952,7 +40885,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /styled-jsx@5.1.1(@babel/core@7.22.5)(react@18.2.0):
+  /styled-jsx@5.1.1(@babel/core@7.22.9)(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -40965,7 +40898,7 @@ packages:
       babel-plugin-macros:
         optional: true
     dependencies:
-      '@babel/core': 7.22.5
+      '@babel/core': 7.22.9
       client-only: 0.0.1
       react: 18.2.0
 
@@ -42557,7 +42490,7 @@ packages:
   /unimport@1.3.0:
     resolution: {integrity: sha512-fOkrdxglsHd428yegH0wPH/6IfaSdDeMXtdRGn6en/ccyzc2aaoxiUTMrJyc6Bu+xoa18RJRPMfLUHEzjz8atw==}
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       escape-string-regexp: 5.0.0
       fast-glob: 3.3.0
       local-pkg: 0.4.3
@@ -42593,7 +42526,7 @@ packages:
   /unimport@3.0.7:
     resolution: {integrity: sha512-2dVQUxJEGcrSZ0U4qtwJVODrlfyGcwmIOoHVqbAFFUx7kPoEN5JWr1cZFhLwoAwTmZOvqAm3YIkzv1engIQocg==}
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       escape-string-regexp: 5.0.0
       fast-glob: 3.3.0
       local-pkg: 0.4.3
@@ -42750,7 +42683,7 @@ packages:
         optional: true
     dependencies:
       '@babel/types': 7.22.5
-      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       '@vue-macros/common': 1.3.2(vue@3.3.4)
       ast-walker-scope: 0.4.1
       chokidar: 3.5.3
@@ -43445,7 +43378,7 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || 3 || 4
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       '@svgr/core': 6.5.1
       vite: 4.3.8(@types/node@20.4.5)
     transitivePeerDependencies:
