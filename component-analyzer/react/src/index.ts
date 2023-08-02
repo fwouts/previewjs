@@ -36,7 +36,9 @@ export const createComponentAnalyzer = factoryWithDefaultOptions(
     return {
       typeAnalyzer,
       detectComponents: async (filePaths) => {
-        const absoluteFilePaths = filePaths.map((f) => path.join(rootDir, f));
+        const absoluteFilePaths = filePaths.map((f) =>
+          path.isAbsolute(f) ? f : path.join(rootDir, f)
+        );
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
