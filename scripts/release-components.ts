@@ -39,6 +39,16 @@ const packages: Package[] = [
     tagName: "core",
   },
   {
+    name: "component-analyzer-api",
+    dirPath: "component-analyzer/api",
+    tagName: "component-analyzer/api",
+  },
+  {
+    name: "component-analyzer-react",
+    dirPath: "component-analyzer/react",
+    tagName: "component-analyzer/react",
+  },
+  {
     name: "config",
     dirPath: "config",
     tagName: "config",
