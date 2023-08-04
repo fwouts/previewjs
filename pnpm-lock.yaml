@@ -62,10 +62,10 @@ importers:
   api:
     dependencies:
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../type-analyzer
       axios:
         specifier: ^1.4.0
@@ -142,19 +142,19 @@ importers:
   chromeless:
     dependencies:
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../api
       '@previewjs/core':
-        specifier: ^23.0.1
+        specifier: ^24.0.0
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^11.0.0
+        specifier: ^11.0.1
         version: link:../iframe
       '@previewjs/properties':
-        specifier: ^3.0.2
+        specifier: ^3.0.3
         version: link:../properties
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../vfs
       express:
         specifier: ^4.18.2
@@ -188,13 +188,13 @@ importers:
   component-analyzer/api:
     dependencies:
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../../vfs
       pino:
         specifier: ^8.15.0
@@ -213,19 +213,19 @@ importers:
   component-analyzer/react:
     dependencies:
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../api
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^3.0.0
+        specifier: ^4.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../../vfs
       '@vitejs/plugin-react':
         specifier: ^4.0.4
@@ -304,25 +304,25 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1(typescript@5.1.6)(vite@4.4.8)
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../api
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../component-analyzer/api
       '@previewjs/config':
-        specifier: ^4.9.16
+        specifier: ^5.0.0
         version: link:../config
       '@previewjs/iframe':
-        specifier: ^11.0.0
+        specifier: ^11.0.1
         version: link:../iframe
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../vfs
       acorn:
         specifier: ^8.10.0
@@ -467,22 +467,22 @@ importers:
   framework-plugins/preact:
     dependencies:
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../../api
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../../component-analyzer/api
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^3.0.0
+        specifier: ^4.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../../vfs
       typescript:
         specifier: ^5.1.6
@@ -664,7 +664,7 @@ importers:
   framework-plugins/react:
     dependencies:
       '@previewjs/component-analyzer-react':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../../component-analyzer/react
       '@vitejs/plugin-react':
         specifier: ^4.0.4
@@ -2057,7 +2057,7 @@ importers:
         version: 7.21.8
       '@previewjs/config':
         specifier: ^4.0.2
-        version: link:../../../../../config
+        version: 4.9.16
 
   framework-plugins/react/tests/apps/wrapper-custom-esm:
     dependencies:
@@ -2088,7 +2088,7 @@ importers:
         version: 7.21.8
       '@previewjs/config':
         specifier: ^4.0.2
-        version: link:../../../../../config
+        version: 4.9.16
 
   framework-plugins/react/tests/apps/wrapper-default:
     dependencies:
@@ -2121,22 +2121,22 @@ importers:
   framework-plugins/solid:
     dependencies:
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../../api
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../../component-analyzer/api
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^3.0.0
+        specifier: ^4.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../../vfs
       typescript:
         specifier: ^5.1.6
@@ -2258,22 +2258,22 @@ importers:
   framework-plugins/svelte:
     dependencies:
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../../api
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../../component-analyzer/api
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^3.0.0
+        specifier: ^4.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../../vfs
       '@sveltejs/vite-plugin-svelte':
         specifier: ^2.4.3
@@ -2538,22 +2538,22 @@ importers:
         specifier: ^2.17.1
         version: 2.17.1
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../../api
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../../component-analyzer/api
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^3.0.0
+        specifier: ^4.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../../vfs
       '@vitejs/plugin-vue2':
         specifier: ^2.2.0
@@ -2705,22 +2705,22 @@ importers:
   framework-plugins/vue3:
     dependencies:
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../../api
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../../component-analyzer/api
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^3.0.0
+        specifier: ^4.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../../vfs
       '@vitejs/plugin-vue':
         specifier: ^4.2.3
@@ -3081,10 +3081,10 @@ importers:
   properties:
     dependencies:
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../type-analyzer
     devDependencies:
       typescript:
@@ -3103,16 +3103,16 @@ importers:
   screenshot:
     dependencies:
       '@previewjs/chromeless':
-        specifier: ^7.0.3
+        specifier: ^8.0.0
         version: link:../chromeless
       '@previewjs/component-analyzer-api':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../component-analyzer/api
       '@previewjs/core':
-        specifier: ^23.0.1
+        specifier: ^24.0.0
         version: link:../core
       '@previewjs/plugin-react':
-        specifier: ^11.0.0
+        specifier: ^12.0.0
         version: link:../framework-plugins/react
       globby:
         specifier: ^13.2.2
@@ -3171,7 +3171,7 @@ importers:
         specifier: ^8.0.2
         version: 8.0.2
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../type-analyzer
       assert-never:
         specifier: ^1.2.1
@@ -3199,19 +3199,19 @@ importers:
   storybook-helpers:
     dependencies:
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../api
       '@previewjs/component-analyzer-api':
-        specifier: workspace:^0.0.0
+        specifier: ^0.0.1
         version: link:../component-analyzer/api
       '@previewjs/core':
-        specifier: ^23.0.1
+        specifier: ^24.0.0
         version: link:../core
       '@previewjs/serializable-values':
-        specifier: ^7.0.2
+        specifier: ^7.0.3
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^8.0.2
+        specifier: ^9.0.0
         version: link:../type-analyzer
       typescript:
         specifier: ^5.1.6
@@ -3236,19 +3236,19 @@ importers:
         specifier: ^1.36.2
         version: 1.36.2
       '@previewjs/api':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../api
       '@previewjs/chromeless':
-        specifier: ^7.0.3
+        specifier: ^8.0.0
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^23.0.1
+        specifier: ^24.0.0
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^11.0.0
+        specifier: ^11.0.1
         version: link:../iframe
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../vfs
       assert-never:
         specifier: ^1.2.1
@@ -3279,7 +3279,7 @@ importers:
   type-analyzer:
     dependencies:
       '@previewjs/vfs':
-        specifier: ^2.0.15
+        specifier: ^2.0.16
         version: link:../vfs
       assert-never:
         specifier: ^1.2.1
@@ -11509,7 +11509,6 @@ packages:
 
   /@previewjs/config@4.9.16:
     resolution: {integrity: sha512-31C3JyfBYysfG+LE5E6bVaemqx2H+mXuKsbWXiRaVu6n8C+CnHh725t/U+WHOn1eVFuS041FauhtRaNHxoi2tg==}
-    dev: false
 
   /@previewjs/core@20.0.9(@types/node@20.4.6):
     resolution: {integrity: sha512-uHikWUybzNlb5+J3a/jhyAzoDy+idBf31+0gRamV5QpV5sQdmFYaeUdVZ6H9L6lQQOl2qm5MVZUwv0vNMN/E/w==}
@@ -18478,10 +18477,10 @@ packages:
   /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.9):
     resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
     dependencies:
-      '@babel/helper-module-imports': 7.22.5
+      '@babel/helper-module-imports': 7.21.4
       '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.9)
       '@babel/template': 7.22.5
-      '@babel/traverse': 7.22.8
+      '@babel/traverse': 7.22.5
       '@babel/types': 7.22.5
       '@vue/babel-helper-vue-transform-on': 1.0.2
       camelcase: 6.3.0

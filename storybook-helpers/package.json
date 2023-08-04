@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/storybook-helpers",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -22,11 +22,11 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@previewjs/api": "^13.0.0",
-    "@previewjs/component-analyzer-api": "workspace:^0.0.0",
-    "@previewjs/core": "^23.0.1",
-    "@previewjs/serializable-values": "^7.0.2",
-    "@previewjs/type-analyzer": "^8.0.2",
+    "@previewjs/api": "^14.0.0",
+    "@previewjs/component-analyzer-api": "^0.0.1",
+    "@previewjs/core": "^24.0.0",
+    "@previewjs/serializable-values": "^7.0.3",
+    "@previewjs/type-analyzer": "^9.0.0",
     "typescript": "^5.1.6"
   },
   "devDependencies": {

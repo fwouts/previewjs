@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/component-analyzer-api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -21,9 +21,9 @@
     "build": "tsc && unbuild"
   },
   "dependencies": {
-    "@previewjs/serializable-values": "^7.0.2",
-    "@previewjs/type-analyzer": "^8.0.2",
-    "@previewjs/vfs": "^2.0.15",
+    "@previewjs/serializable-values": "^7.0.3",
+    "@previewjs/type-analyzer": "^9.0.0",
+    "@previewjs/vfs": "^2.0.16",
     "pino": "^8.15.0",
     "pino-pretty": "^10.2.0"
   },
