@@ -352,12 +352,11 @@ A.args = {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
       await frameworkPlugin.detectComponents([MAIN_FILE])
-    ).find((c) => decodeComponentId(c.componentId).name === componentName);
+    ).components.find(
+      (c) => decodeComponentId(c.componentId).name === componentName
+    );
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
-    }
-    if (component.kind === "story") {
-      throw new Error(`Component ${componentName} is a story`);
     }
     return component.extractProps();
   }

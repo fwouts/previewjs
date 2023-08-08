@@ -1,6 +1,7 @@
 import {
   factoryWithDefaultOptions,
   type Component,
+  type Story,
 } from "@previewjs/component-analyzer-api";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
@@ -40,20 +41,29 @@ export const createComponentAnalyzer = factoryWithDefaultOptions(
           path.isAbsolute(f) ? f : path.join(rootDir, f)
         );
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
+
         const components: Component[] = [];
+        const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          components.push(
-            ...extractReactComponents(
-              logger,
-              resolver,
-              rootDir,
-              absoluteFilePath
-            )
-          );
+          for (const componentOrStory of extractReactComponents(
+            logger,
+            resolver,
+            rootDir,
+            absoluteFilePath
+          )) {
+            if (componentOrStory.kind === "component") {
+              components.push(componentOrStory);
+            } else {
+              stories.push(componentOrStory);
+            }
+          }
           // Ensure this potentially long-running function doesn't block the thread.
           await 0;
         }
-        return components;
+        return {
+          components,
+          stories,
+        };
       },
       dispose: () => {
         typeAnalyzer.dispose();

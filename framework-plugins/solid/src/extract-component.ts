@@ -1,7 +1,8 @@
 import type {
   BaseComponent,
-  BasicFrameworkComponent,
+  BasicComponent,
   Component,
+  Story,
 } from "@previewjs/component-analyzer-api";
 import {
   decodeComponentId,
@@ -26,7 +27,7 @@ export function extractSolidComponents(
   resolver: TypeResolver,
   rootDir: string,
   absoluteFilePath: string
-): Component[] {
+): Array<Component | Story> {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -71,15 +72,15 @@ export function extractSolidComponents(
   }
 
   const storiesInfo = extractStoriesInfo(sourceFile);
-  const components: Component[] = [];
+  const componentsOrStories: Array<Component | Story> = [];
   const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
-  function extractComponent(
+  function extractComponentOrStory(
     baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): Component | null {
+  ): Component | Story | null {
     if (name === "default" && storiesInfo) {
       return null;
     }
@@ -123,7 +124,7 @@ export function extractSolidComponents(
   }
 
   for (const [name, statement, node] of functions) {
-    const component = extractComponent(
+    const component = extractComponentOrStory(
       {
         componentId: generateComponentId({
           filePath: path.relative(rootDir, absoluteFilePath),
@@ -135,12 +136,12 @@ export function extractSolidComponents(
       name
     );
     if (component) {
-      components.push(component);
+      componentsOrStories.push(component);
     }
   }
 
   return [
-    ...components,
+    ...componentsOrStories,
     ...extractCsf3Stories(
       rootDir,
       resolver,
@@ -170,7 +171,7 @@ function extractStoryAssociatedComponent(
   resolver: TypeResolver,
   rootDir: string,
   component: ts.Expression | null
-): BasicFrameworkComponent | null {
+): BasicComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
     rootDir,
     resolver.checker,

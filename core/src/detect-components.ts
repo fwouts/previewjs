@@ -1,8 +1,5 @@
 import { RPCs } from "@previewjs/api";
-import {
-  decodeComponentId,
-  type Component,
-} from "@previewjs/component-analyzer-api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
@@ -23,6 +20,7 @@ export const FILES_REQUIRING_REDETECTION = new Set([
 type CachedProjectComponents = {
   detectionStartTimestamp: number;
   components: RPCs.Component[];
+  stories: RPCs.Story[];
 };
 
 // Prevent concurrent running of detectComponents()
@@ -70,6 +68,7 @@ export function detectComponents(
     let existingCache: CachedProjectComponents = {
       detectionStartTimestamp: 0,
       components: [],
+      stories: [],
     };
     if (fs.existsSync(cacheFilePath)) {
       try {
@@ -88,6 +87,7 @@ export function detectComponents(
       existingCache = {
         detectionStartTimestamp: 0,
         components: [],
+        stories: [],
       };
     }
     const changedAbsoluteFilePaths = absoluteFilePaths.filter(
@@ -105,28 +105,31 @@ export function detectComponents(
         path.relative(workspace.rootDir, absoluteFilePath).replace(/\\/g, "/")
       )
     );
-    const recycledComponents = existingCache.components.filter(
-      ({ componentId }) => {
-        const filePath = decodeComponentId(componentId).filePath;
-        return filePathsSet.has(filePath) && !refreshedFilePaths.has(filePath);
-      }
-    );
-    const refreshedComponents = await detectComponentsCore(
-      logger,
-      workspace,
-      frameworkPlugin,
-      changedAbsoluteFilePaths
-    );
+    const shouldRecycle = ({ componentId }: { componentId: string }) => {
+      const filePath = decodeComponentId(componentId).filePath;
+      return filePathsSet.has(filePath) && !refreshedFilePaths.has(filePath);
+    };
+    const recycledComponents = existingCache.components.filter(shouldRecycle);
+    const recycledStories = existingCache.stories.filter(shouldRecycle);
+    const { components: refreshedComponents, stories: refreshedStories } =
+      await detectComponentsCore(
+        logger,
+        workspace,
+        frameworkPlugin,
+        changedAbsoluteFilePaths
+      );
     const components = [...recycledComponents, ...refreshedComponents];
+    const stories = [...recycledStories, ...refreshedStories];
     if (!options.filePaths) {
       await fs.mkdirp(path.dirname(cacheFilePath));
       const updatedCache: CachedProjectComponents = {
         detectionStartTimestamp,
         components,
+        stories,
       };
       await fs.writeFile(cacheFilePath, JSON.stringify(updatedCache));
     }
-    return { components };
+    return { components, stories };
   });
 }
 
@@ -135,10 +138,14 @@ async function detectComponentsCore(
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
   changedAbsoluteFilePaths: string[]
-): Promise<RPCs.Component[]> {
+): Promise<{
+  components: RPCs.Component[];
+  stories: RPCs.Story[];
+}> {
   const components: RPCs.Component[] = [];
+  const stories: RPCs.Story[] = [];
   if (changedAbsoluteFilePaths.length === 0) {
-    return components;
+    return { components, stories };
   }
   logger.debug(
     `Running component detection with file paths:\n- ${changedAbsoluteFilePaths
@@ -151,33 +158,28 @@ async function detectComponentsCore(
     changedAbsoluteFilePaths
   );
   logger.debug(`Done running component detection`);
-  for (const component of found) {
-    components.push(detectedComponentToApiComponent(component));
+  for (const component of found.components) {
+    const [start, end] = component.offsets;
+    components.push({
+      componentId: component.componentId,
+      start,
+      end,
+      kind: "component",
+      exported: component.exported,
+    });
   }
-  return components;
-}
-
-export function detectedComponentToApiComponent(
-  component: Component
-): RPCs.Component {
-  const [start, end] = component.offsets;
-  return {
-    componentId: component.componentId,
-    start,
-    end,
-    info:
-      component.kind === "component"
-        ? {
-            kind: "component",
-            exported: component.exported,
-          }
-        : {
-            kind: "story",
-            args: component.args,
-            associatedComponentId:
-              component.associatedComponent?.componentId || null,
-          },
-  };
+  for (const story of found.stories) {
+    const [start, end] = story.offsets;
+    stories.push({
+      componentId: story.componentId,
+      start,
+      end,
+      kind: "story",
+      args: story.args,
+      associatedComponentId: story.associatedComponent?.componentId || null,
+    });
+  }
+  return { components, stories };
 }
 
 async function detectionMinimalTimestamp(rootDir: string) {
