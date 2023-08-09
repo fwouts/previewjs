@@ -3289,8 +3289,8 @@ importers:
         version: 5.1.6
     devDependencies:
       '@types/lodash':
-        specifier: ^4.14.196
-        version: 4.14.196
+        specifier: ^4.14.197
+        version: 4.14.197
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -6916,7 +6916,7 @@ packages:
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.9)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.9)
       core-js-compat: 3.29.0
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
 
@@ -15575,7 +15575,7 @@ packages:
       '@babel/preset-env': 7.21.5(@babel/core@7.21.8)
       '@babel/types': 7.22.5
       '@mdx-js/mdx': 1.6.22
-      '@types/lodash': 4.14.196
+      '@types/lodash': 4.14.197
       js-string-escape: 1.0.1
       loader-utils: 2.0.4
       lodash: 4.17.21
@@ -15594,7 +15594,7 @@ packages:
       '@babel/preset-env': 7.21.5(@babel/core@7.22.9)
       '@babel/types': 7.22.5
       '@mdx-js/mdx': 1.6.22
-      '@types/lodash': 4.14.196
+      '@types/lodash': 4.14.197
       js-string-escape: 1.0.1
       loader-utils: 2.0.4
       lodash: 4.17.21
@@ -17502,8 +17502,8 @@ packages:
     resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
     dev: true
 
-  /@types/lodash@4.14.196:
-    resolution: {integrity: sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ==}
+  /@types/lodash@4.14.197:
+    resolution: {integrity: sha512-BMVOiWs0uNxHVlHBgzTIqJYmj+PgCo4euloGF+5m4okL3rEYzM2EEv78mw8zWSMM57dM7kVIgJ2QDvwHSoCI5g==}
     dev: true
 
   /@types/mdast@3.0.10:
@@ -18586,9 +18586,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.21.8
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
+      '@babel/core': 7.22.9
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.9)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.9)
       vite: 4.0.4(@types/node@20.4.9)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18602,9 +18602,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.21.8
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
+      '@babel/core': 7.22.9
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.9)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.9)
       vite: 4.3.9(@types/node@20.4.9)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18872,6 +18872,23 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+
+  /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.9):
+    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
+    dependencies:
+      '@babel/helper-module-imports': 7.22.5
+      '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.9)
+      '@babel/template': 7.22.5
+      '@babel/traverse': 7.22.8
+      '@babel/types': 7.22.5
+      '@vue/babel-helper-vue-transform-on': 1.0.2
+      camelcase: 6.3.0
+      html-tags: 3.2.0
+      svg-tags: 1.0.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
+    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.21.8):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
