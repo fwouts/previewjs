@@ -15,7 +15,7 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
     if (!version) {
       return false;
     }
-    return parseInt(version) === 3;
+    return parseInt(version) >= 3;
   },
   async create({ rootDir, reader }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));

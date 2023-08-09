@@ -1,5 +1,6 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import { SvelteComponent } from "svelte";
+// @ts-ignore
 import * as si from "svelte/internal";
 
 const root = document.getElementById("root")!;
