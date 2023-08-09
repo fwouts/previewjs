@@ -12,11 +12,8 @@ export const ComputeProps: RPC<
 };
 
 export type ComputePropsResponse = {
-  components: {
-    [componentId: string]: {
-      info: ComponentInfo;
-      props: ValueType;
-    };
+  props: {
+    [componentId: string]: ValueType;
   };
   types: CollectedTypes;
 };
@@ -33,26 +30,26 @@ export const DetectComponents: RPC<
 
 export type DetectComponentsResponse = {
   components: Component[];
+  stories: Story[];
 };
 
 export type Component = {
   componentId: string;
   start: number;
   end: number;
-  info: ComponentInfo;
+  kind: "component";
+  exported: boolean;
 };
 
-export type ComponentInfo =
-  | {
-      kind: "component";
-      exported: boolean;
-    }
-  | {
-      kind: "story";
-      args: {
-        start: number;
-        end: number;
-        value: SerializableValue;
-      } | null;
-      associatedComponentId: string | null;
-    };
+export type Story = {
+  componentId: string;
+  start: number;
+  end: number;
+  kind: "story";
+  args: {
+    start: number;
+    end: number;
+    value: SerializableValue;
+  } | null;
+  associatedComponentId: string | null;
+};

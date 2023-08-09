@@ -547,14 +547,13 @@ A.propTypes = {
 
   async function analyze(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
-    const component = (await analyzer.detectComponents([MAIN_FILE_NAME])).find(
+    const component = (
+      await analyzer.detectComponents([MAIN_FILE_NAME])
+    ).components.find(
       (c) => decodeComponentId(c.componentId).name === componentName
     );
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
-    }
-    if (component.kind === "story") {
-      throw new Error(`Component ${componentName} is a story`);
     }
     return component.extractProps();
   }
