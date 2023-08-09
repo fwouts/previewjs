@@ -13,7 +13,7 @@ import { dereferenceType, objectType } from "@previewjs/type-analyzer";
  * properties = { title: "foo" }
  * ```
  */
-export function generatePropsAssignmentSource(
+export async function generatePropsAssignmentSource(
   props: ValueType,
   providedKeys: string[],
   collected: CollectedTypes
@@ -29,8 +29,8 @@ export function generatePropsAssignmentSource(
       )
     );
   }
-  const value = generateSerializableValue(props, collected);
-  let valueSource = serializableValueToJavaScript(value);
+  const value = await generateSerializableValue(props, collected);
+  let valueSource = await serializableValueToJavaScript(value);
   if (valueSource === "undefined") {
     valueSource = "{}";
   }

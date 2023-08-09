@@ -53,7 +53,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of extractVueComponents(
+          for (const componentOrStory of await extractVueComponents(
             reader,
             resolver,
             rootDir,
@@ -65,8 +65,6 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
               stories.push(componentOrStory);
             }
           }
-          // Ensure this potentially long-running function doesn't block the thread.
-          await 0;
         }
         return {
           components,

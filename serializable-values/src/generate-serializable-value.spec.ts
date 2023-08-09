@@ -26,9 +26,9 @@ import { describe, expect, test } from "vitest";
 import { generateSerializableValue } from "./generate-serializable-value";
 
 describe("generateSerializableValue", () => {
-  test("simple props with object type", () => {
+  test("simple props with object type", async () => {
     expect(
-      generateSerializableValue(
+      await generateSerializableValue(
         objectType({
           foo: STRING_TYPE,
         }),
@@ -55,9 +55,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("simple props with named type", () => {
+  test("simple props with named type", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:MyComponentProps"), {
+      await generateSerializableValue(namedType("/foo.tsx:MyComponentProps"), {
         "/foo.tsx:MyComponentProps": {
           type: objectType({
             foo: STRING_TYPE,
@@ -86,9 +86,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("recursive named type", () => {
+  test("recursive named type", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:Foo"), {
+      await generateSerializableValue(namedType("/foo.tsx:Foo"), {
         "/foo.tsx:Foo": {
           type: objectType({
             child: namedType("/foo.tsx:Bar"),
@@ -135,9 +135,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("recursive function type", () => {
+  test("recursive function type", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:MyComponentProps"), {
+      await generateSerializableValue(namedType("/foo.tsx:MyComponentProps"), {
         "/foo.tsx:MyComponentProps": {
           type: objectType({
             foo: namedType("/foo.tsx:Fn"),
@@ -174,9 +174,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("self-returning type", () => {
+  test("self-returning type", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:User"), {
+      await generateSerializableValue(namedType("/foo.tsx:User"), {
         "/foo.tsx:User": {
           type: objectType({
             target: namedType("/foo.tsx:User"),
@@ -220,9 +220,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("all types", () => {
+  test("all types", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:Foo"), {
+      await generateSerializableValue(namedType("/foo.tsx:Foo"), {
         "/foo.tsx:Foo": {
           type: objectType({
             anyType: ANY_TYPE,
@@ -585,9 +585,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("optional props in object type", () => {
+  test("optional props in object type", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:Foo"), {
+      await generateSerializableValue(namedType("/foo.tsx:Foo"), {
         "/foo.tsx:Foo": {
           type: objectType({
             a: STRING_TYPE,
@@ -632,9 +632,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("missing named type", () => {
+  test("missing named type", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:Foo"), {
+      await generateSerializableValue(namedType("/foo.tsx:Foo"), {
         "/foo.tsx:Foo": {
           type: objectType({
             a: namedType("/foo.tsx:Missing"),
@@ -651,9 +651,9 @@ describe("generateSerializableValue", () => {
     `);
   });
 
-  test("generic types", () => {
+  test("generic types", async () => {
     expect(
-      generateSerializableValue(namedType("/foo.tsx:A"), {
+      await generateSerializableValue(namedType("/foo.tsx:A"), {
         "/foo.tsx:A": {
           type: namedType("/foo.tsx:C", [namedType("T")]),
           parameters: { T: NUMBER_TYPE },

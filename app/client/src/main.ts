@@ -43,14 +43,14 @@ async function onUrlChanged() {
     componentIds: [componentId],
   });
   const props = computePropsResponse.props[componentId]!;
-  const autogenCallbackProps = generateCallbackProps(
+  const autogenCallbackProps = await generateCallbackProps(
     props,
     computePropsResponse.types
   );
   iframeController.loadComponent({
     componentId,
     propsAssignmentSource: transpile(
-      generatePropsAssignmentSource(
+      await generatePropsAssignmentSource(
         props,
         autogenCallbackProps.keys,
         computePropsResponse.types

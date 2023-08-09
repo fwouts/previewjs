@@ -22,31 +22,35 @@ import {
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 describe("serializableValueToJavaScript", () => {
-  test("array", () => {
-    expect(serializableValueToJavaScript(array([]))).toMatchInlineSnapshot(
-      '"[]"'
-    );
+  test("array", async () => {
     expect(
-      serializableValueToJavaScript(array([string("foo"), number(123)]))
+      await serializableValueToJavaScript(array([]))
+    ).toMatchInlineSnapshot('"[]"');
+    expect(
+      await serializableValueToJavaScript(array([string("foo"), number(123)]))
     ).toMatchInlineSnapshot('"[\\"foo\\", 123]"');
   });
 
-  test("boolean", () => {
-    expect(serializableValueToJavaScript(TRUE)).toMatchInlineSnapshot('"true"');
-    expect(serializableValueToJavaScript(FALSE)).toMatchInlineSnapshot(
+  test("boolean", async () => {
+    expect(await serializableValueToJavaScript(TRUE)).toMatchInlineSnapshot(
+      '"true"'
+    );
+    expect(await serializableValueToJavaScript(FALSE)).toMatchInlineSnapshot(
       '"false"'
     );
   });
 
-  test("function", () => {
-    expect(serializableValueToJavaScript(fn("() => { return foo; }")))
+  test("function", async () => {
+    expect(await serializableValueToJavaScript(fn("() => { return foo; }")))
       .toMatchInlineSnapshot(`
         "() => {
           return foo;
         }"
       `);
     expect(
-      serializableValueToJavaScript(fn("function foo(a, b) { return a + b; }"))
+      await serializableValueToJavaScript(
+        fn("function foo(a, b) { return a + b; }")
+      )
     ).toMatchInlineSnapshot(`
       "function foo(a, b) {
         return a + b;
@@ -54,12 +58,12 @@ describe("serializableValueToJavaScript", () => {
     `);
   });
 
-  test("map", () => {
-    expect(serializableValueToJavaScript(EMPTY_MAP)).toMatchInlineSnapshot(
-      '"new Map()"'
-    );
+  test("map", async () => {
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(EMPTY_MAP)
+    ).toMatchInlineSnapshot('"new Map()"');
+    expect(
+      await serializableValueToJavaScript(
         map(
           object([
             {
@@ -79,27 +83,31 @@ describe("serializableValueToJavaScript", () => {
     `);
   });
 
-  test("node", () => {
+  test("node", async () => {
     expect(
-      serializableValueToJavaScript(node("", EMPTY_OBJECT, []))
+      await serializableValueToJavaScript(node("", EMPTY_OBJECT, []))
     ).toMatchInlineSnapshot('"<></>"');
     expect(
-      serializableValueToJavaScript(node("div", EMPTY_OBJECT))
+      await serializableValueToJavaScript(node("div", EMPTY_OBJECT))
     ).toMatchInlineSnapshot('"<div />"');
     expect(
-      serializableValueToJavaScript(node("A", EMPTY_OBJECT))
+      await serializableValueToJavaScript(node("A", EMPTY_OBJECT))
     ).toMatchInlineSnapshot('"<A />"');
     expect(
-      serializableValueToJavaScript(node("A", EMPTY_OBJECT, []))
+      await serializableValueToJavaScript(node("A", EMPTY_OBJECT, []))
     ).toMatchInlineSnapshot('"<A></A>"');
     expect(
-      serializableValueToJavaScript(node("A", EMPTY_OBJECT, [string("foo")]))
+      await serializableValueToJavaScript(
+        node("A", EMPTY_OBJECT, [string("foo")])
+      )
     ).toMatchInlineSnapshot('"<A>foo</A>"');
     expect(
-      serializableValueToJavaScript(node("A", EMPTY_OBJECT, [unknown("foo")]))
+      await serializableValueToJavaScript(
+        node("A", EMPTY_OBJECT, [unknown("foo")])
+      )
     ).toMatchInlineSnapshot('"<A>{foo}</A>"');
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         node("A", EMPTY_OBJECT, [string("foo"), unknown("bar"), string("baz")])
       )
     ).toMatchInlineSnapshot(`
@@ -110,7 +118,7 @@ describe("serializableValueToJavaScript", () => {
       </A>"
     `);
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         node("A", EMPTY_OBJECT, [
           node("b", EMPTY_OBJECT, [string("Hello")]),
           string(" "),
@@ -123,17 +131,17 @@ describe("serializableValueToJavaScript", () => {
       </A>"
     `);
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         node("A", EMPTY_OBJECT, [string("foo"), string("bar")])
       )
     ).toMatchInlineSnapshot('"<A>foo bar</A>"');
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         node("A", EMPTY_OBJECT, [string("foo"), string(" "), string("bar")])
       )
     ).toMatchInlineSnapshot('"<A>foo bar</A>"');
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         node("A", EMPTY_OBJECT, [string("foo"), string("   "), string("bar")])
       )
     ).toMatchInlineSnapshot(`
@@ -185,7 +193,7 @@ describe("serializableValueToJavaScript", () => {
         value: fn("() => { /* function source */ }"),
       },
     ]);
-    expect(serializableValueToJavaScript(node("A", complexProps)))
+    expect(await serializableValueToJavaScript(node("A", complexProps)))
       .toMatchInlineSnapshot(`
         "<A
           {...{
@@ -201,7 +209,7 @@ describe("serializableValueToJavaScript", () => {
           }}
         />"
       `);
-    expect(serializableValueToJavaScript(node("A", complexProps, [])))
+    expect(await serializableValueToJavaScript(node("A", complexProps, [])))
       .toMatchInlineSnapshot(`
         "<A
           {...{
@@ -218,7 +226,7 @@ describe("serializableValueToJavaScript", () => {
         ></A>"
       `);
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         node("A", complexProps, [node("div", EMPTY_OBJECT)])
       )
     ).toMatchInlineSnapshot(`
@@ -240,28 +248,30 @@ describe("serializableValueToJavaScript", () => {
     `);
   });
 
-  test("null", () => {
-    expect(serializableValueToJavaScript(NULL)).toMatchInlineSnapshot('"null"');
-  });
-
-  test("number", () => {
-    expect(serializableValueToJavaScript(number(0))).toMatchInlineSnapshot(
-      '"0"'
-    );
-    expect(serializableValueToJavaScript(number(123))).toMatchInlineSnapshot(
-      '"123"'
-    );
-    expect(serializableValueToJavaScript(number(-45.6))).toMatchInlineSnapshot(
-      '"-45.6"'
+  test("null", async () => {
+    expect(await serializableValueToJavaScript(NULL)).toMatchInlineSnapshot(
+      '"null"'
     );
   });
 
-  test("object", () => {
-    expect(serializableValueToJavaScript(EMPTY_OBJECT)).toMatchInlineSnapshot(
-      '"{}"'
-    );
+  test("number", async () => {
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(number(0))
+    ).toMatchInlineSnapshot('"0"');
+    expect(
+      await serializableValueToJavaScript(number(123))
+    ).toMatchInlineSnapshot('"123"');
+    expect(
+      await serializableValueToJavaScript(number(-45.6))
+    ).toMatchInlineSnapshot('"-45.6"');
+  });
+
+  test("object", async () => {
+    expect(
+      await serializableValueToJavaScript(EMPTY_OBJECT)
+    ).toMatchInlineSnapshot('"{}"');
+    expect(
+      await serializableValueToJavaScript(
         object([
           {
             kind: "key",
@@ -277,9 +287,9 @@ describe("serializableValueToJavaScript", () => {
     `);
   });
 
-  test("promise", () => {
+  test("promise", async () => {
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         promise({
           type: "resolve",
           value: UNDEFINED,
@@ -287,7 +297,7 @@ describe("serializableValueToJavaScript", () => {
       )
     ).toMatchInlineSnapshot('"Promise.resolve(undefined)"');
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         promise({
           type: "resolve",
           value: number(123),
@@ -295,7 +305,7 @@ describe("serializableValueToJavaScript", () => {
       )
     ).toMatchInlineSnapshot('"Promise.resolve(123)"');
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         promise({
           type: "reject",
           message: null,
@@ -303,7 +313,7 @@ describe("serializableValueToJavaScript", () => {
       )
     ).toMatchInlineSnapshot('"Promise.reject()"');
     expect(
-      serializableValueToJavaScript(
+      await serializableValueToJavaScript(
         promise({
           type: "reject",
           message: "an error occurred",
@@ -314,54 +324,56 @@ describe("serializableValueToJavaScript", () => {
     );
   });
 
-  test("set", () => {
-    expect(serializableValueToJavaScript(EMPTY_SET)).toMatchInlineSnapshot(
-      '"new Set()"'
-    );
+  test("set", async () => {
     expect(
-      serializableValueToJavaScript(set(array([number(123), string("foo")])))
+      await serializableValueToJavaScript(EMPTY_SET)
+    ).toMatchInlineSnapshot('"new Set()"');
+    expect(
+      await serializableValueToJavaScript(
+        set(array([number(123), string("foo")]))
+      )
     ).toMatchInlineSnapshot('"new Set([123, \\"foo\\"])"');
   });
 
-  test("string", () => {
-    expect(serializableValueToJavaScript(string(""))).toMatchInlineSnapshot(
-      '"\\"\\""'
-    );
-    expect(serializableValueToJavaScript(string("foo"))).toMatchInlineSnapshot(
-      '"\\"foo\\""'
-    );
+  test("string", async () => {
     expect(
-      serializableValueToJavaScript(string("a'b\"c`"))
+      await serializableValueToJavaScript(string(""))
+    ).toMatchInlineSnapshot('"\\"\\""');
+    expect(
+      await serializableValueToJavaScript(string("foo"))
+    ).toMatchInlineSnapshot('"\\"foo\\""');
+    expect(
+      await serializableValueToJavaScript(string("a'b\"c`"))
     ).toMatchInlineSnapshot('"\\"a\'b\\\\\\"c`\\""');
   });
 
-  test("undefined", () => {
-    expect(serializableValueToJavaScript(UNDEFINED)).toMatchInlineSnapshot(
-      '"undefined"'
-    );
+  test("undefined", async () => {
+    expect(
+      await serializableValueToJavaScript(UNDEFINED)
+    ).toMatchInlineSnapshot('"undefined"');
   });
 
-  test("unknown", () => {
-    expect(serializableValueToJavaScript(UNKNOWN)).toMatchInlineSnapshot(
+  test("unknown", async () => {
+    expect(await serializableValueToJavaScript(UNKNOWN)).toMatchInlineSnapshot(
       '"{}"'
     );
     expect(
-      serializableValueToJavaScript(unknown('{ foo: "bar" }'))
+      await serializableValueToJavaScript(unknown('{ foo: "bar" }'))
     ).toMatchInlineSnapshot('"{ foo: \\"bar\\" }"');
-    expect(serializableValueToJavaScript(unknown("foo"))).toMatchInlineSnapshot(
-      '"foo"'
-    );
     expect(
-      serializableValueToJavaScript(unknown("foo bar"))
+      await serializableValueToJavaScript(unknown("foo"))
+    ).toMatchInlineSnapshot('"foo"');
+    expect(
+      await serializableValueToJavaScript(unknown("foo bar"))
     ).toMatchInlineSnapshot('"foo bar"');
-    expect(serializableValueToJavaScript(unknown("new"))).toMatchInlineSnapshot(
-      '"new"'
-    );
-    expect(serializableValueToJavaScript(unknown("'"))).toMatchInlineSnapshot(
-      '"\'"'
-    );
-    expect(serializableValueToJavaScript(unknown(""))).toMatchInlineSnapshot(
-      '""'
-    );
+    expect(
+      await serializableValueToJavaScript(unknown("new"))
+    ).toMatchInlineSnapshot('"new"');
+    expect(
+      await serializableValueToJavaScript(unknown("'"))
+    ).toMatchInlineSnapshot('"\'"');
+    expect(
+      await serializableValueToJavaScript(unknown(""))
+    ).toMatchInlineSnapshot('""');
   });
 });

@@ -8,13 +8,13 @@ import { evaluateType } from "@previewjs/type-analyzer";
 /**
  * Generates top-level callbacks props, so callbacks such as `onClick` don't need to be set explicitly.
  */
-export function generateCallbackProps(
+export async function generateCallbackProps(
   props: ValueType,
   types: CollectedTypes
-): {
+): Promise<{
   source: string;
   keys: string[];
-} {
+}> {
   props = resolveType(props);
   if (props.kind !== "object") {
     return {
@@ -35,8 +35,8 @@ export function generateCallbackProps(
       text += `"${propertyName.replace(
         /"/g,
         '\\"'
-      )}": ${serializableValueToJavaScript(
-        generateSerializableValue(resolvedPropertyType, types, {
+      )}": ${await serializableValueToJavaScript(
+        await generateSerializableValue(resolvedPropertyType, types, {
           fieldName: propertyName,
         })
       )},`;

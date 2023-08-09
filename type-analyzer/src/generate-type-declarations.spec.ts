@@ -26,9 +26,9 @@ import {
 import { generateTypeDeclarations } from "./generate-type-declarations";
 
 describe("generateTypeDeclarations", () => {
-  test("no types", () => {
+  test("no types", async () => {
     expect(
-      generateTypeDeclarations([], {
+      await generateTypeDeclarations([], {
         A: {
           type: objectType({
             foo: STRING_TYPE,
@@ -39,9 +39,9 @@ describe("generateTypeDeclarations", () => {
     ).toMatchInlineSnapshot('""');
   });
 
-  test("simple object type", () => {
+  test("simple object type", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:Foo"], {
+      await generateTypeDeclarations(["/foo.tsx:Foo"], {
         "/foo.tsx:Foo": {
           type: objectType({
             foo: STRING_TYPE,
@@ -56,9 +56,9 @@ describe("generateTypeDeclarations", () => {
     `);
   });
 
-  test("recursive named type", () => {
+  test("recursive named type", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:Foo"], {
+      await generateTypeDeclarations(["/foo.tsx:Foo"], {
         "/foo.tsx:Foo": {
           type: objectType({
             child: optionalType(namedType("/foo.tsx:Foo")),
@@ -75,9 +75,9 @@ describe("generateTypeDeclarations", () => {
     `);
   });
 
-  test("recursive function type", () => {
+  test("recursive function type", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:MyComponentProps"], {
+      await generateTypeDeclarations(["/foo.tsx:MyComponentProps"], {
         "/foo.tsx:MyComponentProps": {
           type: objectType({
             foo: namedType("/foo.tsx:Fn"),
@@ -98,9 +98,9 @@ describe("generateTypeDeclarations", () => {
     `);
   });
 
-  test("all types", () => {
+  test("all types", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:Foo"], {
+      await generateTypeDeclarations(["/foo.tsx:Foo"], {
         "/foo.tsx:Foo": {
           type: objectType({
             anyType: ANY_TYPE,
@@ -179,9 +179,9 @@ describe("generateTypeDeclarations", () => {
     `);
   });
 
-  test("duplicate types in different files", () => {
+  test("duplicate types in different files", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:Foo"], {
+      await generateTypeDeclarations(["/foo.tsx:Foo"], {
         "/foo.tsx:Foo": {
           type: objectType({
             foo: namedType("/bar.tsx:Foo"),
@@ -216,9 +216,9 @@ describe("generateTypeDeclarations", () => {
     `);
   });
 
-  test("optional props in object type", () => {
+  test("optional props in object type", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:Foo"], {
+      await generateTypeDeclarations(["/foo.tsx:Foo"], {
         "/foo.tsx:Foo": {
           type: objectType({
             a: STRING_TYPE,
@@ -243,9 +243,9 @@ describe("generateTypeDeclarations", () => {
     `);
   });
 
-  test("generic types", () => {
+  test("generic types", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:A"], {
+      await generateTypeDeclarations(["/foo.tsx:A"], {
         "/foo.tsx:A": {
           type: namedType("T"),
           parameters: { T: namedType("/foo.tsx:B") },
@@ -281,9 +281,9 @@ describe("generateTypeDeclarations", () => {
     `);
   });
 
-  test("reserved type names", () => {
+  test("reserved type names", async () => {
     expect(
-      generateTypeDeclarations(["/foo.tsx:default"], {
+      await generateTypeDeclarations(["/foo.tsx:default"], {
         "/foo.tsx:default": {
           type: namedType("T"),
           parameters: { T: namedType("/foo.tsx:for") },
