@@ -9,7 +9,10 @@ import type { Logger } from "pino";
 
 export type ComponentAnalyzer = {
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  detectComponents: (filePaths: string[]) => Promise<Component[]>;
+  detectComponents: (filePaths: string[]) => Promise<{
+    components: Component[];
+    stories: Story[];
+  }>;
   dispose: () => void;
 };
 
@@ -24,9 +27,7 @@ export interface BaseComponent {
   offsets: [start: number, end: number];
 }
 
-export type Component = FrameworkComponent | StoryComponent;
-
-export interface FrameworkComponent extends BaseComponent {
+export interface Component extends BaseComponent {
   kind: "component";
   exported: boolean;
   extractProps: () => Promise<ComponentProps>;
@@ -37,17 +38,14 @@ export interface ComponentProps {
   types: CollectedTypes;
 }
 
-export interface StoryComponent extends BaseComponent {
+export interface Story extends BaseComponent {
   kind: "story";
   args: {
     start: number;
     end: number;
     value: SerializableValue;
   } | null;
-  associatedComponent: BasicFrameworkComponent | null;
+  associatedComponent: BasicComponent | null;
 }
 
-export type BasicFrameworkComponent = Pick<
-  FrameworkComponent,
-  "componentId" | "extractProps"
->;
+export type BasicComponent = Pick<Component, "componentId" | "extractProps">;
