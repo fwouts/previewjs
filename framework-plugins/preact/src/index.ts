@@ -40,7 +40,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of extractPreactComponents(
+          for (const componentOrStory of await extractPreactComponents(
             logger,
             resolver,
             rootDir,
@@ -52,8 +52,6 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
               stories.push(componentOrStory);
             }
           }
-          // Ensure this potentially long-running function doesn't block the thread.
-          await 0;
         }
         return {
           components,

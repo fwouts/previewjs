@@ -1,16 +1,16 @@
 import prettier from "prettier";
-import parserBabel from "prettier/parser-babel.js";
+import parserBabel from "prettier/plugins/babel";
 
-export function formatExpression(expressionSource: string) {
+export async function formatExpression(expressionSource: string) {
   try {
-    const formattedStatement = prettier
+    const formattedStatement = await prettier
       .format(`value = ${expressionSource}`, {
         parser: "babel",
         plugins: [parserBabel],
         filepath: "component.js",
         trailingComma: "none",
       })
-      .trim();
+      .then((code) => code.trim());
     if (formattedStatement.startsWith("value = (\n")) {
       // In the case of JSX, it gets formatted as "value = (<div>...</div>);".
       // This is the same regex as below, but with the extra parens.

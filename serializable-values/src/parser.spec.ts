@@ -27,63 +27,71 @@ import {
 import { serializableValueToJavaScript } from "./serializable-value-to-js";
 
 describe("parseSerializableValue", () => {
-  it("parses null", () => {
-    expectParsedExpression(`null`).toEqual<SerializableValue>(NULL);
+  it("parses null", async () => {
+    (await expectParsedExpression(`null`)).toEqual<SerializableValue>(NULL);
   });
 
-  it("parses parenthesized expression", () => {
-    expectParsedExpression(`(null)`).toEqual<SerializableValue>(NULL);
+  it("parses parenthesized expression", async () => {
+    (await expectParsedExpression(`(null)`)).toEqual<SerializableValue>(NULL);
   });
 
-  it("parses arrays", () => {
-    expectParsedExpression(`[]`).toEqual(EMPTY_ARRAY);
-    expectParsedExpression(`["foo", 123]`).toEqual(
+  it("parses arrays", async () => {
+    (await expectParsedExpression(`[]`)).toEqual(EMPTY_ARRAY);
+    (await expectParsedExpression(`["foo", 123]`)).toEqual(
       array([string("foo"), number(123)])
     );
   });
 
-  it("parses booleans", () => {
-    expectParsedExpression("true").toEqual(TRUE);
-    expectParsedExpression("false").toEqual(FALSE);
+  it("parses booleans", async () => {
+    (await expectParsedExpression("true")).toEqual(TRUE);
+    (await expectParsedExpression("false")).toEqual(FALSE);
   });
 
-  it("parses arrow expression functions", () => {
-    expectParsedExpression(`() => 123`).toEqual(fn(`() => 123`));
-    expectParsedExpression(`(a) => a`).toEqual(fn(`(a) => a`));
+  it("parses arrow expression functions", async () => {
+    (await expectParsedExpression(`() => 123`)).toEqual(fn(`() => 123`));
+    (await expectParsedExpression(`(a) => a`)).toEqual(fn(`(a) => a`));
   });
 
-  it("parses arrow block functions", () => {
-    expectParsedExpression(`() => {
-  return;
-}`).toEqual(
-      fn(`() => {
+  it("parses arrow block functions", async () => {
+    (
+      await expectParsedExpression(`() => {
   return;
 }`)
+    ).toEqual(
+      fn(`() => {
+  return;
+}`)
     );
-    expectParsedExpression(`() => {
+    (
+      await expectParsedExpression(`() => {
   return 123;
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`() => {
   return 123;
 }`)
     );
-    expectParsedExpression(`() => {
+    (
+      await expectParsedExpression(`() => {
   console.log("foo");
   return 123;
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`() => {
   console.log("foo");
   return 123;
 }`)
     );
-    expectParsedExpression(`(a) => {
+    (
+      await expectParsedExpression(`(a) => {
   console.log("foo");
   if (a) {
     return 123;
   } else {
     return 456;
   }
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`(a) => {
   console.log("foo");
   if (a) {
@@ -93,65 +101,79 @@ describe("parseSerializableValue", () => {
   }
 }`)
     );
-    expectParsedExpression(`(a) => {
+    (
+      await expectParsedExpression(`(a) => {
   return a;
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`(a) => {
   return a;
 }`)
     );
-    expectParsedExpression(`() => {
+    (
+      await expectParsedExpression(`() => {
   console.log("foo");
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`() => {
   console.log("foo");
 }`)
     );
   });
 
-  it("parses classic functions", () => {
-    expectParsedExpression(`function () {
-  return;
-}`).toEqual(
-      fn(`function () {
+  it("parses classic functions", async () => {
+    (
+      await expectParsedExpression(`function () {
   return;
 }`)
+    ).toEqual(
+      fn(`function () {
+  return;
+}`)
     );
-    expectParsedExpression(`function () {
+    (
+      await expectParsedExpression(`function () {
   return 123;
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`function () {
   return 123;
 }`)
     );
-    expectParsedExpression(`function () {
+    (
+      await expectParsedExpression(`function () {
   console.log("foo");
   return 123;
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`function () {
   console.log("foo");
   return 123;
 }`)
     );
-    expectParsedExpression(`function (a) {
+    (
+      await expectParsedExpression(`function (a) {
   return a;
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`function (a) {
   return a;
 }`)
     );
-    expectParsedExpression(`function () {
+    (
+      await expectParsedExpression(`function () {
   console.log("foo");
-}`).toEqual(
+}`)
+    ).toEqual(
       fn(`function () {
   console.log("foo");
 }`)
     );
   });
 
-  it("parses maps", () => {
-    expectParsedExpression(`new Map()`).toEqual(EMPTY_MAP);
-    expectParsedExpression(`new Map([["foo", "bar"]])`).toEqual(
+  it("parses maps", async () => {
+    (await expectParsedExpression(`new Map()`)).toEqual(EMPTY_MAP);
+    (await expectParsedExpression(`new Map([["foo", "bar"]])`)).toEqual(
       map(
         object([
           {
@@ -162,7 +184,9 @@ describe("parseSerializableValue", () => {
         ])
       )
     );
-    expectParsedExpression(`new Map(Object.entries({ foo: "bar" }))`).toEqual(
+    (
+      await expectParsedExpression(`new Map(Object.entries({ foo: "bar" }))`)
+    ).toEqual(
       map(
         object([
           {
@@ -173,7 +197,9 @@ describe("parseSerializableValue", () => {
         ])
       )
     );
-    expectParsedExpression(`new Map(Object.entries({ 0: "bar" }))`).toEqual(
+    (
+      await expectParsedExpression(`new Map(Object.entries({ 0: "bar" }))`)
+    ).toEqual(
       map(
         object([
           {
@@ -186,14 +212,14 @@ describe("parseSerializableValue", () => {
     );
   });
 
-  it("parses numbers", () => {
-    expectParsedExpression(`123`).toEqual(number(123));
-    expectParsedExpression(`-5.3`).toEqual(number(-5.3));
+  it("parses numbers", async () => {
+    (await expectParsedExpression(`123`)).toEqual(number(123));
+    (await expectParsedExpression(`-5.3`)).toEqual(number(-5.3));
   });
 
-  it("parses objects", () => {
-    expectParsedExpression(`{}`).toEqual(EMPTY_OBJECT);
-    expectParsedExpression(`{ "foo": "bar" }`).toEqual(
+  it("parses objects", async () => {
+    (await expectParsedExpression(`{}`)).toEqual(EMPTY_OBJECT);
+    (await expectParsedExpression(`{ "foo": "bar" }`)).toEqual(
       object([
         {
           kind: "key",
@@ -202,7 +228,7 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    expectParsedExpression(`{ foo: "bar" }`).toEqual(
+    (await expectParsedExpression(`{ foo: "bar" }`)).toEqual(
       object([
         {
           kind: "key",
@@ -211,7 +237,7 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    expectParsedExpression(`{ 0: "bar" }`).toEqual(
+    (await expectParsedExpression(`{ 0: "bar" }`)).toEqual(
       object([
         {
           kind: "key",
@@ -220,7 +246,7 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    expectParsedExpression(`{ foo }`, false).toEqual(
+    (await expectParsedExpression(`{ foo }`, false)).toEqual(
       object([
         {
           kind: "key",
@@ -229,7 +255,7 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    expectParsedExpression(`{ ["foo"]: 123 }`, false).toEqual(
+    (await expectParsedExpression(`{ ["foo"]: 123 }`, false)).toEqual(
       object([
         {
           kind: "key",
@@ -238,7 +264,7 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    expectParsedExpression(`{ ...123 }`, false).toEqual(
+    (await expectParsedExpression(`{ ...123 }`, false)).toEqual(
       object([
         {
           kind: "spread",
@@ -246,7 +272,7 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    expectParsedExpression(`{ ...foo }`, false).toEqual(
+    (await expectParsedExpression(`{ ...foo }`, false)).toEqual(
       object([
         {
           kind: "spread",
@@ -254,7 +280,7 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    expectParsedExpression(`{ ...foo.args }`, false).toEqual(
+    (await expectParsedExpression(`{ ...foo.args }`, false)).toEqual(
       object([
         {
           kind: "spread",
@@ -262,68 +288,70 @@ describe("parseSerializableValue", () => {
         },
       ])
     );
-    checkParsedExpressionIsUnknownWithSource(`{ foo() {} }`);
+    await checkParsedExpressionIsUnknownWithSource(`{ foo() {} }`);
   });
 
-  it("parses promises", () => {
-    expectParsedExpression(`Promise.resolve()`).toEqual(
+  it("parses promises", async () => {
+    (await expectParsedExpression(`Promise.resolve()`)).toEqual(
       promise({
         type: "resolve",
         value: UNDEFINED,
       })
     );
-    expectParsedExpression(`Promise.resolve(123)`).toEqual(
+    (await expectParsedExpression(`Promise.resolve(123)`)).toEqual(
       promise({
         type: "resolve",
         value: number(123),
       })
     );
-    expectParsedExpression(`Promise.reject()`).toEqual(
+    (await expectParsedExpression(`Promise.reject()`)).toEqual(
       promise({
         type: "reject",
         message: null,
       })
     );
-    expectParsedExpression(`Promise.reject(new Error("foo"))`).toEqual(
+    (await expectParsedExpression(`Promise.reject(new Error("foo"))`)).toEqual(
       promise({
         type: "reject",
         message: "foo",
       })
     );
-    checkParsedExpressionIsUnknownWithSource(`Promise.reject("foo")`);
-    checkParsedExpressionIsUnknownWithSource(
+    await checkParsedExpressionIsUnknownWithSource(`Promise.reject("foo")`);
+    await checkParsedExpressionIsUnknownWithSource(
       `Promise.reject(new UnknownError())`
     );
   });
 
-  it("parses sets", () => {
-    expectParsedExpression(`new Set()`).toEqual(EMPTY_SET);
-    expectParsedExpression(`new Set([123])`).toEqual(set(array([number(123)])));
+  it("parses sets", async () => {
+    (await expectParsedExpression(`new Set()`)).toEqual(EMPTY_SET);
+    (await expectParsedExpression(`new Set([123])`)).toEqual(
+      set(array([number(123)]))
+    );
   });
 
-  it("parses strings", () => {
-    expectParsedExpression(`""`).toEqual(string(""));
-    expectParsedExpression(`''`).toEqual(string(""));
-    expectParsedExpression("``").toEqual(string(""));
-    expectParsedExpression(`"foo"`).toEqual(string("foo"));
-    expectParsedExpression(`'foo'`).toEqual(string("foo"));
-    expectParsedExpression("`foo`").toEqual(string("foo"));
-    expectParsedExpression(`"f'o\\"o"`).toEqual(string("f'o\"o"));
-    expectParsedExpression(`'f\\'o"o'`).toEqual(string("f'o\"o"));
-    expectParsedExpression("`f'o\"o`").toEqual(string("f'o\"o"));
-    checkParsedExpressionIsUnknownWithSource("`foo${foo}`");
+  it("parses strings", async () => {
+    (await expectParsedExpression(`""`)).toEqual(string(""));
+    (await expectParsedExpression(`''`)).toEqual(string(""));
+    (await expectParsedExpression("``")).toEqual(string(""));
+    (await expectParsedExpression(`"foo"`)).toEqual(string("foo"));
+    (await expectParsedExpression(`'foo'`)).toEqual(string("foo"));
+    (await expectParsedExpression("`foo`")).toEqual(string("foo"));
+    (await expectParsedExpression(`"f'o\\"o"`)).toEqual(string("f'o\"o"));
+    (await expectParsedExpression(`'f\\'o"o'`)).toEqual(string("f'o\"o"));
+    (await expectParsedExpression("`f'o\"o`")).toEqual(string("f'o\"o"));
+    await checkParsedExpressionIsUnknownWithSource("`foo${foo}`");
   });
 
-  it("parses undefined", () => {
-    expectParsedExpression(`undefined`).toEqual(UNDEFINED);
+  it("parses undefined", async () => {
+    (await expectParsedExpression(`undefined`)).toEqual(UNDEFINED);
   });
 
-  it("parses JSX", () => {
-    expectParsedExpression(`<></>`).toEqual(node("", EMPTY_OBJECT, []));
-    expectParsedExpression(`<><div>foo</div></>`).toEqual(
+  it("parses JSX", async () => {
+    (await expectParsedExpression(`<></>`)).toEqual(node("", EMPTY_OBJECT, []));
+    (await expectParsedExpression(`<><div>foo</div></>`)).toEqual(
       node("", EMPTY_OBJECT, [node("div", EMPTY_OBJECT, [string("foo")])])
     );
-    expectParsedExpression(`<><div>foo{bar}baz</div></>`).toEqual(
+    (await expectParsedExpression(`<><div>foo{bar}baz</div></>`)).toEqual(
       node("", EMPTY_OBJECT, [
         node("div", EMPTY_OBJECT, [
           string("foo"),
@@ -332,7 +360,7 @@ describe("parseSerializableValue", () => {
         ]),
       ])
     );
-    expectParsedExpression(`<><div>{foo}{" "}{baz}</div></>`).toEqual(
+    (await expectParsedExpression(`<><div>{foo}{" "}{baz}</div></>`)).toEqual(
       node("", EMPTY_OBJECT, [
         node("div", EMPTY_OBJECT, [
           unknown("foo"),
@@ -341,11 +369,13 @@ describe("parseSerializableValue", () => {
         ]),
       ])
     );
-    expectParsedExpression(`<div></div>`).toEqual(
+    (await expectParsedExpression(`<div></div>`)).toEqual(
       node("div", EMPTY_OBJECT, [])
     );
-    expectParsedExpression(
-      `<div foo bar="str" baz={123} obj={{a: "b"}} {...qux}></div>`
+    (
+      await expectParsedExpression(
+        `<div foo bar="str" baz={123} obj={{a: "b"}} {...qux}></div>`
+      )
     ).toEqual(
       node(
         "div",
@@ -380,17 +410,22 @@ describe("parseSerializableValue", () => {
         []
       )
     );
-    expectParsedExpression(`<div>hello '"world\\" &lt;</div>`).toEqual(
+    (await expectParsedExpression(`<div>hello '"world\\" &lt;</div>`)).toEqual(
       node("div", EMPTY_OBJECT, [string(`hello '"world\\" &lt;`)])
     );
   });
 });
 
-function expectParsedExpression(expressionSource: string, reversible = true) {
-  const parsedValue = parseSerializableValue(parseExpression(expressionSource));
+async function expectParsedExpression(
+  expressionSource: string,
+  reversible = true
+) {
+  const parsedValue = await parseSerializableValue(
+    parseExpression(expressionSource)
+  );
   if (reversible) {
-    const regeneratedSource = serializableValueToJavaScript(parsedValue);
-    const reparsedValue = parseSerializableValue(
+    const regeneratedSource = await serializableValueToJavaScript(parsedValue);
+    const reparsedValue = await parseSerializableValue(
       parseExpression(regeneratedSource)
     );
     try {
@@ -424,6 +459,10 @@ function parseExpression(expressionSource: string) {
   return statement.expression;
 }
 
-function checkParsedExpressionIsUnknownWithSource(expressionSource: string) {
-  expectParsedExpression(expressionSource).toEqual(unknown(expressionSource));
+async function checkParsedExpressionIsUnknownWithSource(
+  expressionSource: string
+) {
+  (await expectParsedExpression(expressionSource)).toEqual(
+    unknown(expressionSource)
+  );
 }

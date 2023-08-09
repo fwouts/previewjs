@@ -40,7 +40,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of extractSolidComponents(
+          for (const componentOrStory of await extractSolidComponents(
             logger,
             resolver,
             rootDir,
@@ -52,8 +52,6 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
               stories.push(componentOrStory);
             }
           }
-          // Ensure this potentially long-running function doesn't block the thread.
-          await 0;
         }
         return {
           components,

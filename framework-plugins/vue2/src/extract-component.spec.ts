@@ -99,7 +99,7 @@ export default Component1;
 
 `
     );
-    expect(extract(APP_TSX)).toMatchObject([
+    expect(await extract(APP_TSX)).toMatchObject([
       {
         componentId: "App.tsx:Component1",
         kind: "component",
@@ -124,7 +124,7 @@ export function DeclaredFunction() {
 const ConstantFunction = () => <div>Hello, World!</div>;
 `
     );
-    expect(extract(APP_TSX)).toMatchObject([
+    expect(await extract(APP_TSX)).toMatchObject([
       {
         componentId: "App.tsx:DeclaredFunction",
         kind: "component",
@@ -147,7 +147,7 @@ export default () => {
 }
 `
     );
-    expect(extract(APP_TSX)).toMatchObject([
+    expect(await extract(APP_TSX)).toMatchObject([
       {
         componentId: "App.tsx:default",
         kind: "component",
@@ -165,7 +165,7 @@ export default function test(){
 }
 `
     );
-    expect(extract(APP_TSX)).toMatchObject([
+    expect(await extract(APP_TSX)).toMatchObject([
       {
         componentId: "App.tsx:test",
         kind: "component",
@@ -183,7 +183,7 @@ export default function(){
 }
 `
     );
-    expect(extract(APP_TSX)).toMatchObject([
+    expect(await extract(APP_TSX)).toMatchObject([
       {
         componentId: "App.tsx:default",
         kind: "component",
@@ -209,7 +209,7 @@ export const Primary = () => ({
 `
     );
 
-    const extractedStories = extract(APP_STORIES_TSX);
+    const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Primary",
@@ -220,7 +220,7 @@ export const Primary = () => ({
         },
       },
     ]);
-    const storyInfo = extractedStories[0];
+    const storyInfo = await extractedStories[0];
     if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
@@ -249,7 +249,7 @@ export const Primary = () => ({
 `
     );
 
-    const extractedStories = extract(APP_STORIES_TSX);
+    const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Primary",
@@ -284,7 +284,7 @@ Primary.args = {
 `
     );
 
-    const extractedStories = extract(APP_STORIES_TSX);
+    const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Primary",
@@ -308,7 +308,7 @@ Primary.args = {
         },
       },
     ]);
-    const storyInfo = extractedStories[0];
+    const storyInfo = await extractedStories[0];
     if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
@@ -344,7 +344,7 @@ Primary.args = {
 `
     );
 
-    const extractedStories = extract(APP_STORIES_TSX);
+    const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Primary",
@@ -388,7 +388,7 @@ export function NotStory() {}
 `
     );
 
-    const extractedStories = extract(APP_STORIES_TSX);
+    const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Example",
@@ -415,7 +415,7 @@ export function NotStory() {}
         },
       },
     ]);
-    const storyInfo = extractedStories[0];
+    const storyInfo = await extractedStories[0];
     if (storyInfo?.kind !== "story" || !storyInfo.associatedComponent) {
       throw new Error();
     }
@@ -447,7 +447,7 @@ export function NotStory() {}
 `
     );
 
-    const extractedStories = extract(APP_STORIES_TSX);
+    const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.tsx:Example",

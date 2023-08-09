@@ -49,7 +49,7 @@ describe("extractArgs", () => {
 
   test("no args", async () => {
     expect(
-      extractArgsFromSource(`
+      await extractArgsFromSource(`
       export const Foo = () => {};
     `)
     ).toEqual({});
@@ -57,7 +57,7 @@ describe("extractArgs", () => {
 
   test("empty args", async () => {
     expect(
-      extractArgsFromSource(`
+      await extractArgsFromSource(`
       export const Foo = () => {};
       Foo.args = {};
     `)
@@ -68,7 +68,7 @@ describe("extractArgs", () => {
 
   test("explicit args", async () => {
     expect(
-      extractArgsFromSource(`
+      await extractArgsFromSource(`
       export const Foo = () => {};
       Foo.args = {
         name: "foo",
@@ -93,7 +93,7 @@ describe("extractArgs", () => {
 
   test("spread args", async () => {
     expect(
-      extractArgsFromSource(`
+      await extractArgsFromSource(`
       export const Bar = () = {};
       Bar.args = {
         name: "foo",
@@ -139,7 +139,7 @@ describe("extractArgs", () => {
     });
   });
 
-  function extractArgsFromSource(source: string) {
+  async function extractArgsFromSource(source: string) {
     const rootDir = path.join(__dirname, "virtual");
     const mainSourceFilePath = path.join(rootDir, "main.ts");
     memoryReader.updateFile(mainSourceFilePath, source);
@@ -149,9 +149,11 @@ describe("extractArgs", () => {
       throw new Error(`No source file found`);
     }
     return Object.fromEntries(
-      Object.entries(extractArgs(sourceFile)).map(([name, node]) => {
-        return [name, parseSerializableValue(node)];
-      })
+      await Promise.all(
+        Object.entries(extractArgs(sourceFile)).map(async ([name, node]) => {
+          return [name, await parseSerializableValue(node)];
+        })
+      )
     );
   }
 });

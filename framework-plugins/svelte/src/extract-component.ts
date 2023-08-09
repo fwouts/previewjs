@@ -40,28 +40,30 @@ export async function extractSvelteComponents(
     if (!sourceFile) {
       return [];
     }
-    return extractCsf3Stories(
-      rootDir,
-      resolver,
-      sourceFile,
-      async (componentId) => {
-        const { filePath } = decodeComponentId(componentId);
-        const component = (
-          await extractSvelteComponents(
-            reader,
-            resolver,
-            rootDir,
-            path.join(rootDir, filePath)
-          )
-        ).find((c) => c.componentId === componentId);
-        if (component?.kind !== "component") {
-          return {
-            props: UNKNOWN_TYPE,
-            types: {},
-          };
+    return (
+      await extractCsf3Stories(
+        rootDir,
+        resolver,
+        sourceFile,
+        async (componentId) => {
+          const { filePath } = decodeComponentId(componentId);
+          const component = (
+            await extractSvelteComponents(
+              reader,
+              resolver,
+              rootDir,
+              path.join(rootDir, filePath)
+            )
+          ).find((c) => c.componentId === componentId);
+          if (component?.kind !== "component") {
+            return {
+              props: UNKNOWN_TYPE,
+              types: {},
+            };
+          }
+          return component.extractProps();
         }
-        return component.extractProps();
-      }
+      )
     ).map((c) => {
       if (
         c.kind !== "story" ||

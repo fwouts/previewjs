@@ -6,20 +6,26 @@ import type {
 } from "./serializable-value";
 import { object } from "./serializable-value";
 
-export function serializableValueToJavaScript(
+export async function serializableValueToJavaScript(
   value: SerializableValue
-): string {
-  return formatExpression(serializableValueToUnformattedJavaScript(value));
+): Promise<string> {
+  return await formatExpression(
+    await serializableValueToUnformattedJavaScript(value)
+  );
 }
 
-function serializableValueToUnformattedJavaScript(
+async function serializableValueToUnformattedJavaScript(
   value: SerializableValue
-): string {
+): Promise<string> {
   switch (value.kind) {
     case "array":
-      return `[${value.items
-        .map((item) => serializableValueToUnformattedJavaScript(item))
-        .join(", ")}]`;
+      return `[${(
+        await Promise.all(
+          value.items.map((item) =>
+            serializableValueToUnformattedJavaScript(item)
+          )
+        )
+      ).join(", ")}]`;
     case "boolean":
       return value.value ? "true" : "false";
     case "function":
@@ -27,29 +33,31 @@ function serializableValueToUnformattedJavaScript(
     case "map":
       return `new Map(${
         value.values.entries.length > 0
-          ? `Object.entries(${serializableValueToUnformattedJavaScript(
+          ? `Object.entries(${await serializableValueToUnformattedJavaScript(
               value.values
             )})`
           : ""
       })`;
     case "node":
       return value.children
-        ? `<${value.tag} ${unformattedJsxProps(value.props)}>${value.children
-            .map((child) => {
-              if (
-                child.kind === "string" &&
-                // Whitespaces aren't safe to inline.
-                child.value.trim() === child.value
-              ) {
-                return child.value;
-              } else if (child.kind === "node") {
-                return serializableValueToJavaScript(child);
-              } else {
-                return `{${serializableValueToJavaScript(child)}}`;
-              }
-            })
-            .join("\n")}</${value.tag}>`
-        : `<${value.tag} ${unformattedJsxProps(value.props)} />`;
+        ? `<${value.tag} ${await unformattedJsxProps(value.props)}>${(
+            await Promise.all(
+              value.children.map(async (child) => {
+                if (
+                  child.kind === "string" &&
+                  // Whitespaces aren't safe to inline.
+                  child.value.trim() === child.value
+                ) {
+                  return child.value;
+                } else if (child.kind === "node") {
+                  return await serializableValueToJavaScript(child);
+                } else {
+                  return `{${await serializableValueToJavaScript(child)}}`;
+                }
+              })
+            )
+          ).join("\n")}</${value.tag}>`
+        : `<${value.tag} ${await unformattedJsxProps(value.props)} />`;
     case "null":
       return "null";
     case "number":
@@ -65,10 +73,10 @@ function serializableValueToUnformattedJavaScript(
           text += `${
             entry.key.kind === "string"
               ? JSON.stringify(entry.key.value)
-              : `[${serializableValueToUnformattedJavaScript(entry.key)}]`
-          }: ${serializableValueToUnformattedJavaScript(entry.value)},\n`;
+              : `[${await serializableValueToUnformattedJavaScript(entry.key)}]`
+          }: ${await serializableValueToUnformattedJavaScript(entry.value)},\n`;
         } else if (entry.kind === "spread") {
-          text += `...${serializableValueToJavaScript(entry.value)},\n`;
+          text += `...${await serializableValueToJavaScript(entry.value)},\n`;
         } else {
           throw assertNever(entry);
         }
@@ -84,14 +92,14 @@ function serializableValueToUnformattedJavaScript(
             : `new Error(${JSON.stringify(value.value.message)})`
         })`;
       } else {
-        return `Promise.resolve(${serializableValueToUnformattedJavaScript(
+        return `Promise.resolve(${await serializableValueToUnformattedJavaScript(
           value.value.value
         )})`;
       }
     case "set":
       return `new Set(${
         value.values.items.length > 0
-          ? serializableValueToUnformattedJavaScript(value.values)
+          ? await serializableValueToUnformattedJavaScript(value.values)
           : ""
       })`;
     case "string":
@@ -105,20 +113,26 @@ function serializableValueToUnformattedJavaScript(
   }
 }
 
-function unformattedJsxProps(props: SerializableObjectValue): string {
+async function unformattedJsxProps(
+  props: SerializableObjectValue
+): Promise<string> {
   const attributes: string[] = [];
   for (const prop of props.entries) {
     if (prop.kind === "spread") {
-      attributes.push(`{...(${serializableValueToJavaScript(prop.value)})}`);
+      attributes.push(
+        `{...(${await serializableValueToJavaScript(prop.value)})}`
+      );
     } else if (prop.key.kind !== "string") {
-      attributes.push(`...(${serializableValueToJavaScript(object([prop]))})`);
+      attributes.push(
+        `...(${await serializableValueToJavaScript(object([prop]))})`
+      );
     } else if (prop.value.kind === "boolean" && prop.value.value === true) {
       attributes.push(`${prop.key.value}`);
     } else if (prop.value.kind === "string") {
       attributes.push(`${prop.key.value}=${JSON.stringify(prop.value.value)}`);
     } else {
       attributes.push(
-        `${prop.key.value}={${serializableValueToJavaScript(prop.value)}}`
+        `${prop.key.value}={${await serializableValueToJavaScript(prop.value)}}`
       );
     }
   }

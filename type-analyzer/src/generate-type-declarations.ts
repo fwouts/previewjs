@@ -1,10 +1,10 @@
 import prettier from "prettier";
-import parserTypescript from "prettier/parser-typescript.js";
+import parserTypescript from "prettier/plugins/typescript";
 import type { CollectedTypes } from "./definitions";
 import { generateTypeInternal } from "./generate-type";
 import { safeTypeName } from "./type-names";
 
-export function generateTypeDeclarations(
+export async function generateTypeDeclarations(
   names: string[],
   collected: CollectedTypes,
   typeNameMapping: {
@@ -68,5 +68,5 @@ type ${safeTypeName(
       filepath: "types.ts",
       trailingComma: "none",
     })
-    .trim();
+    .then((code) => code.trim());
 }

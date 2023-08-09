@@ -21,12 +21,12 @@ import type { Logger } from "pino";
 import ts from "typescript";
 import { analyzeReactComponent } from "./analyze-component.js";
 
-export function extractReactComponents(
+export async function extractReactComponents(
   logger: Logger,
   resolver: TypeResolver,
   rootDir: string,
   absoluteFilePath: string
-): Array<Component | Story> {
+): Promise<Array<Component | Story>> {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -73,11 +73,11 @@ export function extractReactComponents(
   const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
-  function extractComponentOrStory(
+  async function extractComponentOrStory(
     baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): Component | Story | null {
+  ): Promise<Component | Story | null> {
     if (name === "default" && storiesInfo) {
       return null;
     }
@@ -102,7 +102,7 @@ export function extractReactComponents(
           ? {
               start: storyArgs.getStart(),
               end: storyArgs.getEnd(),
-              value: parseSerializableValue(storyArgs),
+              value: await parseSerializableValue(storyArgs),
             }
           : null,
         associatedComponent,
@@ -127,7 +127,7 @@ export function extractReactComponents(
   }
 
   for (const [name, statement, node] of functions) {
-    const component = extractComponentOrStory(
+    const component = await extractComponentOrStory(
       {
         componentId: generateComponentId({
           filePath: path.relative(rootDir, absoluteFilePath),
@@ -145,17 +145,19 @@ export function extractReactComponents(
 
   return [
     ...componentsOrStories,
-    ...extractCsf3Stories(
+    ...(await extractCsf3Stories(
       rootDir,
       resolver,
       sourceFile,
       async (componentId) => {
         const { filePath } = decodeComponentId(componentId);
-        const component = extractReactComponents(
-          logger,
-          resolver,
-          rootDir,
-          path.join(rootDir, filePath)
+        const component = (
+          await extractReactComponents(
+            logger,
+            resolver,
+            rootDir,
+            path.join(rootDir, filePath)
+          )
         ).find((c) => c.componentId === componentId);
         if (component?.kind !== "component") {
           return {
@@ -165,7 +167,7 @@ export function extractReactComponents(
         }
         return component.extractProps();
       }
-    ),
+    )),
   ];
 }
 
