@@ -1,4 +1,4 @@
-import type { Component } from "@previewjs/component-analyzer-api";
+import type { Component, Story } from "@previewjs/component-analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
@@ -38,17 +38,25 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
       detectComponents: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
+        const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          components.push(
-            ...(await extractSolidComponents(
-              logger,
-              resolver,
-              rootDir,
-              absoluteFilePath
-            ))
-          );
+          for (const componentOrStory of await extractSolidComponents(
+            logger,
+            resolver,
+            rootDir,
+            absoluteFilePath
+          )) {
+            if (componentOrStory.kind === "component") {
+              components.push(componentOrStory);
+            } else {
+              stories.push(componentOrStory);
+            }
+          }
         }
-        return components;
+        return {
+          components,
+          stories,
+        };
       },
       viteConfig: (configuredPlugins) => {
         return {

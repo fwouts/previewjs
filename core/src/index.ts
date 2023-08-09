@@ -1,9 +1,6 @@
 import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
 import { RPCs } from "@previewjs/api";
-import {
-  decodeComponentId,
-  type ComponentProps,
-} from "@previewjs/component-analyzer-api";
+import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -73,64 +70,56 @@ export async function createWorkspace({
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
     logger.debug(`Computing props for components: ${componentIds.join(", ")}`);
-    let analyze: () => Promise<ComponentProps>;
-    const detectedComponents = await frameworkPlugin.detectComponents([
+    const detected = await frameworkPlugin.detectComponents([
       ...new Set(
         componentIds.map((c) =>
           path.join(rootDir, decodeComponentId(c).filePath)
         )
       ),
     ]);
-    logger.debug(`Detected ${detectedComponents.length} components`);
-    const componentIdToDetectedComponent = Object.fromEntries(
-      detectedComponents.map((c) => [c.componentId, c])
+    logger.debug(
+      `Detected ${detected.components.length} components and ${detected.stories.length} stories`
     );
-    const components: {
-      [componentId: string]: {
-        info: RPCs.ComponentInfo;
-        props: ValueType;
-      };
+    const componentIdToDetectedComponent = Object.fromEntries(
+      detected.components.map((c) => [c.componentId, c])
+    );
+    const componentIdToDetectedStory = Object.fromEntries(
+      detected.stories.map((c) => [c.componentId, c])
+    );
+    const propsPerComponentId: {
+      [componentId: string]: ValueType;
     } = {};
     let types: CollectedTypes = {};
     for (const componentId of componentIds) {
       const component = componentIdToDetectedComponent[componentId];
-      if (!component) {
+      const story = componentIdToDetectedStory[componentId];
+      let props: ValueType;
+      let componentTypes: CollectedTypes;
+      if (component) {
+        logger.debug(`Analyzing component: ${componentId}`);
+        ({ props, types: componentTypes } = await component.extractProps());
+        propsPerComponentId[componentId] = props;
+        logger.debug(`Done analyzing: ${componentId}`);
+      } else if (story) {
+        if (story.associatedComponent) {
+          logger.debug(`Analyzing story: ${componentId}`);
+          ({ props, types: componentTypes } =
+            await story.associatedComponent.extractProps());
+          logger.debug(`Done analyzing: ${componentId}`);
+        } else {
+          logger.debug(`No associated component for story: ${componentId}`);
+          props = UNKNOWN_TYPE;
+          componentTypes = {};
+        }
+      } else {
         const { filePath, name } = decodeComponentId(componentId);
         throw new Error(`Component ${name} not detected in ${filePath}.`);
       }
-      if (component.kind === "component") {
-        analyze = component.extractProps;
-      } else {
-        analyze =
-          component.associatedComponent?.extractProps ||
-          (() =>
-            Promise.resolve({
-              props: UNKNOWN_TYPE,
-              types: {},
-            }));
-      }
-      logger.debug(`Analyzing ${component.kind}: ${componentId}`);
-      const { props, types: componentTypes } = await analyze();
-      logger.debug(`Done analyzing: ${componentId}`);
-      components[componentId] = {
-        info:
-          component.kind === "component"
-            ? {
-                kind: "component",
-                exported: component.exported,
-              }
-            : {
-                kind: "story",
-                args: component.args,
-                associatedComponentId:
-                  component.associatedComponent?.componentId || null,
-              },
-        props,
-      };
+      propsPerComponentId[componentId] = props;
       types = { ...types, ...componentTypes };
     }
     return {
-      components,
+      props: propsPerComponentId,
       types,
     };
   });

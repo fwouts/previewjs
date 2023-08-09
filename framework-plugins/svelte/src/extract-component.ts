@@ -1,4 +1,4 @@
-import type { Component } from "@previewjs/component-analyzer-api";
+import type { Component, Story } from "@previewjs/component-analyzer-api";
 import {
   decodeComponentId,
   generateComponentId,
@@ -16,7 +16,7 @@ export async function extractSvelteComponents(
   resolver: TypeResolver,
   rootDir: string,
   absoluteFilePath: string
-): Promise<Component[]> {
+): Promise<Array<Component | Story>> {
   if (absoluteFilePath.endsWith(".svelte")) {
     const entry = await reader.read(absoluteFilePath);
     if (entry?.kind !== "file") {

@@ -42,7 +42,7 @@ async function onUrlChanged() {
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
     componentIds: [componentId],
   });
-  const props = computePropsResponse.components[componentId]!.props;
+  const props = computePropsResponse.props[componentId]!;
   const autogenCallbackProps = await generateCallbackProps(
     props,
     computePropsResponse.types

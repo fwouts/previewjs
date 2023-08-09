@@ -1,7 +1,8 @@
 import type {
   BaseComponent,
-  BasicFrameworkComponent,
+  BasicComponent,
   Component,
+  Story,
 } from "@previewjs/component-analyzer-api";
 import {
   decodeComponentId,
@@ -27,7 +28,7 @@ export async function extractVueComponents(
   resolver: TypeResolver,
   rootDir: string,
   absoluteFilePath: string
-): Promise<Component[]> {
+): Promise<Array<Component | Story>> {
   const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
   if (vueAbsoluteFilePath) {
     const virtualVueTsAbsoluteFilePath = vueAbsoluteFilePath + ".ts";
@@ -93,15 +94,15 @@ export async function extractVueComponents(
   }
 
   const storiesInfo = extractStoriesInfo(sourceFile);
-  const components: Component[] = [];
+  const componentsOrStories: Array<Component | Story> = [];
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = extractArgs(sourceFile);
 
-  async function extractComponent(
+  async function extractComponentOrStory(
     baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): Promise<Component | null> {
+  ): Promise<Component | Story | null> {
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
     if (storiesInfo && storyArgs && isExported) {
@@ -155,7 +156,7 @@ export async function extractVueComponents(
   }
 
   for (const [name, statement, node] of functions) {
-    const component = await extractComponent(
+    const component = await extractComponentOrStory(
       {
         componentId: generateComponentId({
           filePath: path.relative(rootDir, absoluteFilePath),
@@ -167,12 +168,12 @@ export async function extractVueComponents(
       name
     );
     if (component) {
-      components.push(component);
+      componentsOrStories.push(component);
     }
   }
 
   return [
-    ...components,
+    ...componentsOrStories,
     ...(
       await extractCsf3Stories(
         rootDir,
@@ -244,7 +245,7 @@ function extractStoryAssociatedComponent(
   rootDir: string,
   resolver: TypeResolver,
   component: ts.Expression | null
-): BasicFrameworkComponent | null {
+): BasicComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
     rootDir,
     resolver.checker,

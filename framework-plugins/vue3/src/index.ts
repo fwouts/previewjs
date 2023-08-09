@@ -1,4 +1,4 @@
-import type { Component } from "@previewjs/component-analyzer-api";
+import type { Component, Story } from "@previewjs/component-analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
@@ -49,18 +49,27 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
         );
+
         const components: Component[] = [];
+        const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          components.push(
-            ...(await extractVueComponents(
-              reader,
-              resolver,
-              rootDir,
-              absoluteFilePath
-            ))
-          );
+          for (const componentOrStory of await extractVueComponents(
+            reader,
+            resolver,
+            rootDir,
+            absoluteFilePath
+          )) {
+            if (componentOrStory.kind === "component") {
+              components.push(componentOrStory);
+            } else {
+              stories.push(componentOrStory);
+            }
+          }
         }
-        return components;
+        return {
+          components,
+          stories,
+        };
       },
       viteConfig: (configuredPlugins) => {
         return {

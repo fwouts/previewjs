@@ -1,7 +1,8 @@
 import type {
   BaseComponent,
-  BasicFrameworkComponent,
+  BasicComponent,
   Component,
+  Story,
 } from "@previewjs/component-analyzer-api";
 import {
   decodeComponentId,
@@ -26,7 +27,7 @@ export async function extractPreactComponents(
   resolver: TypeResolver,
   rootDir: string,
   absoluteFilePath: string
-): Promise<Component[]> {
+): Promise<Array<Component | Story>> {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -69,15 +70,15 @@ export async function extractPreactComponents(
   }
 
   const storiesInfo = extractStoriesInfo(sourceFile);
-  const components: Component[] = [];
+  const componentsOrStories: Array<Component | Story> = [];
   const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
-  async function extractComponent(
+  async function extractComponentOrStory(
     baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): Promise<Component | null> {
+  ): Promise<Component | Story | null> {
     if (name === "default" && storiesInfo) {
       return null;
     }
@@ -121,7 +122,7 @@ export async function extractPreactComponents(
   }
 
   for (const [name, statement, node] of functions) {
-    const component = await extractComponent(
+    const component = await extractComponentOrStory(
       {
         componentId: generateComponentId({
           filePath: path.relative(rootDir, absoluteFilePath),
@@ -133,12 +134,12 @@ export async function extractPreactComponents(
       name
     );
     if (component) {
-      components.push(component);
+      componentsOrStories.push(component);
     }
   }
 
   return [
-    ...components,
+    ...componentsOrStories,
     ...(await extractCsf3Stories(
       rootDir,
       resolver,
@@ -170,7 +171,7 @@ function extractStoryAssociatedComponent(
   resolver: TypeResolver,
   rootDir: string,
   component: ts.Expression | null
-): BasicFrameworkComponent | null {
+): BasicComponent | null {
   const resolvedStoriesComponentId = resolveComponentId(
     rootDir,
     resolver.checker,

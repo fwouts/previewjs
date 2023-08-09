@@ -1,7 +1,7 @@
 import {
   generateComponentId,
   type ComponentProps,
-  type StoryComponent,
+  type Story,
 } from "@previewjs/component-analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
@@ -15,13 +15,13 @@ export async function extractCsf3Stories(
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
   extractProps: (componentId: string) => Promise<ComponentProps>
-): Promise<StoryComponent[]> {
+): Promise<Story[]> {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
     return [];
   }
 
-  const components: StoryComponent[] = [];
+  const stories: Story[] = [];
   for (const statement of sourceFile.statements) {
     if (!ts.isVariableStatement(statement)) {
       continue;
@@ -65,7 +65,7 @@ export async function extractCsf3Stories(
         resolver.checker,
         storyComponent || storiesInfo.component || null
       );
-      components.push({
+      stories.push({
         kind: "story",
         componentId: generateComponentId({
           filePath: path.relative(rootDir, sourceFile.fileName),
@@ -89,5 +89,5 @@ export async function extractCsf3Stories(
     }
   }
 
-  return components;
+  return stories;
 }
