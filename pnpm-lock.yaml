@@ -3183,9 +3183,6 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
     devDependencies:
-      '@types/prettier':
-        specifier: ^2.7.3
-        version: 2.7.3
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
@@ -3294,9 +3291,6 @@ importers:
       '@types/lodash':
         specifier: ^4.14.196
         version: 4.14.196
-      '@types/prettier':
-        specifier: ^2.7.3
-        version: 2.7.3
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -20741,7 +20735,6 @@ packages:
       '@babel/types': 7.22.5
       html-entities: 2.3.3
       validate-html-nesting: 1.2.1
-    dev: false
 
   /babel-plugin-jsx-dom-expressions@0.36.9(@babel/core@7.22.9):
     resolution: {integrity: sha512-4ACO10PoUvqRcBEErbhVGv5vAHXgkz7epvULHfqJXw5TPtDYwjhmhGxGNGSK6220ec/b85ElLrGHlqQiJxI0WQ==}
@@ -21122,7 +21115,6 @@ packages:
     dependencies:
       '@babel/core': 7.21.8
       babel-plugin-jsx-dom-expressions: 0.36.9(@babel/core@7.21.8)
-    dev: false
 
   /babel-preset-solid@1.7.3(@babel/core@7.22.9):
     resolution: {integrity: sha512-HOdyrij99zo+CBrmtDxSexBAl54vCBCfBoyueLBvcfVniaEXNd4ftKqSN6XQcLvFfCY28UFO+DHaigXzWKOfzg==}
@@ -42369,10 +42361,10 @@ packages:
       solid-js: ^1.7.2
       vite: ^3.0.0 || ^4.0.0
     dependencies:
-      '@babel/core': 7.22.9
-      '@babel/preset-typescript': 7.21.0(@babel/core@7.22.9)
+      '@babel/core': 7.21.8
+      '@babel/preset-typescript': 7.21.0(@babel/core@7.21.8)
       '@types/babel__core': 7.20.0
-      babel-preset-solid: 1.7.3(@babel/core@7.22.9)
+      babel-preset-solid: 1.7.3(@babel/core@7.21.8)
       merge-anything: 5.1.4
       solid-js: 1.7.5
       solid-refresh: 0.5.1(solid-js@1.7.5)
@@ -42387,10 +42379,10 @@ packages:
       solid-js: ^1.7.2
       vite: ^3.0.0 || ^4.0.0
     dependencies:
-      '@babel/core': 7.22.9
-      '@babel/preset-typescript': 7.21.0(@babel/core@7.22.9)
+      '@babel/core': 7.21.8
+      '@babel/preset-typescript': 7.21.0(@babel/core@7.21.8)
       '@types/babel__core': 7.20.0
-      babel-preset-solid: 1.7.3(@babel/core@7.22.9)
+      babel-preset-solid: 1.7.3(@babel/core@7.21.8)
       merge-anything: 5.1.4
       solid-js: 1.7.5
       solid-refresh: 0.5.1(solid-js@1.7.5)

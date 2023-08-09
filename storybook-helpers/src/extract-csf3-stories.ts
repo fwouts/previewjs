@@ -10,12 +10,12 @@ import ts from "typescript";
 import { extractStoriesInfo } from "./extract-stories-info";
 import { resolveComponentId } from "./resolve-component";
 
-export function extractCsf3Stories(
+export async function extractCsf3Stories(
   rootDir: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
   extractProps: (componentId: string) => Promise<ComponentProps>
-): StoryComponent[] {
+): Promise<StoryComponent[]> {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
     return [];
@@ -76,7 +76,7 @@ export function extractCsf3Stories(
           ? {
               start: args.getStart(),
               end: args.getEnd(),
-              value: parseSerializableValue(args),
+              value: await parseSerializableValue(args),
             }
           : null,
         associatedComponent: associatedComponentId

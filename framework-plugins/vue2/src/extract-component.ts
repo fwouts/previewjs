@@ -22,12 +22,12 @@ import ts from "typescript";
 import { analyzeVueComponentFromTemplate } from "./analyze-component.js";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
-export function extractVueComponents(
+export async function extractVueComponents(
   reader: Reader,
   resolver: TypeResolver,
   rootDir: string,
   absoluteFilePath: string
-): Component[] {
+): Promise<Component[]> {
   const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
   if (vueAbsoluteFilePath) {
     const virtualVueTsAbsoluteFilePath = vueAbsoluteFilePath + ".ts";
@@ -97,11 +97,11 @@ export function extractVueComponents(
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
   const args = extractArgs(sourceFile);
 
-  function extractComponent(
+  async function extractComponent(
     baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): Component | null {
+  ): Promise<Component | null> {
     const storyArgs = args[name];
     const isExported = name === "default" || !!nameToExportedName[name];
     if (storiesInfo && storyArgs && isExported) {
@@ -116,7 +116,7 @@ export function extractVueComponents(
         args: {
           start: storyArgs.getStart(),
           end: storyArgs.getEnd(),
-          value: parseSerializableValue(storyArgs),
+          value: await parseSerializableValue(storyArgs),
         },
         associatedComponent,
       };
@@ -155,7 +155,7 @@ export function extractVueComponents(
   }
 
   for (const [name, statement, node] of functions) {
-    const component = extractComponent(
+    const component = await extractComponent(
       {
         componentId: generateComponentId({
           filePath: path.relative(rootDir, absoluteFilePath),
@@ -173,30 +173,32 @@ export function extractVueComponents(
 
   return [
     ...components,
-    ...extractCsf3Stories(
-      rootDir,
-      resolver,
-      sourceFile,
-      async (componentId) => {
-        const { filePath } = decodeComponentId(componentId);
-        const absoluteFilePath = path.join(rootDir, filePath);
-        const vueComponents = extractVueComponents(
-          reader,
-          resolver,
-          rootDir,
-          absoluteFilePath
-        );
-        const component = absoluteFilePath.endsWith(".vue.ts")
-          ? vueComponents[0]
-          : vueComponents.find((c) => c.componentId === componentId);
-        if (component?.kind !== "component") {
-          return {
-            props: UNKNOWN_TYPE,
-            types: {},
-          };
+    ...(
+      await extractCsf3Stories(
+        rootDir,
+        resolver,
+        sourceFile,
+        async (componentId) => {
+          const { filePath } = decodeComponentId(componentId);
+          const absoluteFilePath = path.join(rootDir, filePath);
+          const vueComponents = await extractVueComponents(
+            reader,
+            resolver,
+            rootDir,
+            absoluteFilePath
+          );
+          const component = absoluteFilePath.endsWith(".vue.ts")
+            ? vueComponents[0]
+            : vueComponents.find((c) => c.componentId === componentId);
+          if (component?.kind !== "component") {
+            return {
+              props: UNKNOWN_TYPE,
+              types: {},
+            };
+          }
+          return component.extractProps();
         }
-        return component.extractProps();
-      }
+      )
     ).map((c) => {
       if (
         c.kind !== "story" ||

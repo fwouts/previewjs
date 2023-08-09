@@ -140,7 +140,7 @@ export async function startPreview({
         componentIds: [componentId],
       });
       const props = computePropsResponse.components[componentId]!.props;
-      const autogenCallbackProps = generateCallbackProps(
+      const autogenCallbackProps = await generateCallbackProps(
         props,
         computePropsResponse.types
       );
@@ -148,7 +148,7 @@ export async function startPreview({
         propsAssignmentSource =
           matchingDetectedComponent.info.kind === "story"
             ? "properties = null"
-            : generatePropsAssignmentSource(
+            : await generatePropsAssignmentSource(
                 props,
                 autogenCallbackProps.keys,
                 computePropsResponse.types

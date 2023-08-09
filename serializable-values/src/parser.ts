@@ -26,9 +26,9 @@ import {
   unknown,
 } from "./serializable-value";
 
-export function parseSerializableValue(
+export async function parseSerializableValue(
   expression: ts.Expression
-): SerializableValue {
+): Promise<SerializableValue> {
   const fallbackValue = unknown(expression.getText());
 
   // (...)
@@ -93,7 +93,9 @@ export function parseSerializableValue(
 
   // [1, 2, 3]
   if (ts.isArrayLiteralExpression(expression)) {
-    return array(expression.elements.map(parseSerializableValue));
+    return array(
+      await Promise.all(expression.elements.map(parseSerializableValue))
+    );
   }
 
   if (
@@ -107,7 +109,13 @@ export function parseSerializableValue(
         if (!firstArgument) {
           return EMPTY_SET;
         } else if (ts.isArrayLiteralExpression(firstArgument)) {
-          return set(array(firstArgument.elements.map(parseSerializableValue)));
+          return set(
+            array(
+              await Promise.all(
+                firstArgument.elements.map(parseSerializableValue)
+              )
+            )
+          );
         }
       }
 
@@ -127,8 +135,8 @@ export function parseSerializableValue(
             }
             entries.push({
               kind: "key",
-              key: parseSerializableValue(element.elements[0]!),
-              value: parseSerializableValue(element.elements[1]!),
+              key: await parseSerializableValue(element.elements[0]!),
+              value: await parseSerializableValue(element.elements[1]!),
             });
           }
           return map(object(entries));
@@ -140,7 +148,9 @@ export function parseSerializableValue(
           firstArgument.expression.name.text === "entries" &&
           firstArgument.arguments.length === 1
         ) {
-          const object = parseSerializableValue(firstArgument.arguments[0]!);
+          const object = await parseSerializableValue(
+            firstArgument.arguments[0]!
+          );
           if (object.kind !== "object") {
             return fallbackValue;
           }
@@ -163,7 +173,7 @@ export function parseSerializableValue(
     const firstArgument = expression.arguments[0];
     if (expression.expression.name.text === "resolve") {
       const value = firstArgument
-        ? parseSerializableValue(firstArgument)
+        ? await parseSerializableValue(firstArgument)
         : UNDEFINED;
       return promise({
         type: "resolve",
@@ -209,14 +219,14 @@ export function parseSerializableValue(
           value: UNKNOWN,
         });
       } else if (ts.isPropertyAssignment(property)) {
-        const key = extractKeyFromPropertyName(property.name);
+        const key = await extractKeyFromPropertyName(property.name);
         if (key.kind === "unknown") {
           return fallbackValue;
         }
         entries.push({
           kind: "key",
           key,
-          value: parseSerializableValue(property.initializer),
+          value: await parseSerializableValue(property.initializer),
         });
       } else if (ts.isSpreadAssignment(property)) {
         entries.push({
@@ -224,7 +234,7 @@ export function parseSerializableValue(
           value: property.name
             ? // TODO: Property access off property.expression.
               UNKNOWN
-            : parseSerializableValue(property.expression),
+            : await parseSerializableValue(property.expression),
         });
       } else if (ts.isFunctionLike(property)) {
         // TODO: Handle this better, e.g. { foo() { ... } }
@@ -239,33 +249,37 @@ export function parseSerializableValue(
   // arrow function: () => 123
   // function expression: function() { return 123 }
   if (ts.isArrowFunction(expression) || ts.isFunctionExpression(expression)) {
-    return fn(formatExpression(expression.getText()));
+    return fn(await formatExpression(expression.getText()));
   }
 
   if (ts.isJsxElement(expression)) {
     return node(
       expression.openingElement.tagName.getText(),
-      object(extractPropertiesFromJsxElement(expression.openingElement)),
-      extractChildrenFromJsxElement(expression)
+      object(await extractPropertiesFromJsxElement(expression.openingElement)),
+      await extractChildrenFromJsxElement(expression)
     );
   }
 
   if (ts.isJsxSelfClosingElement(expression)) {
     return node(
       expression.tagName.getText(),
-      object(extractPropertiesFromJsxElement(expression)),
+      object(await extractPropertiesFromJsxElement(expression)),
       null
     );
   }
 
   if (ts.isJsxFragment(expression)) {
-    return node("", EMPTY_OBJECT, extractChildrenFromJsxElement(expression));
+    return node(
+      "",
+      EMPTY_OBJECT,
+      await extractChildrenFromJsxElement(expression)
+    );
   }
 
   return fallbackValue;
 }
 
-function extractPropertiesFromJsxElement(
+async function extractPropertiesFromJsxElement(
   element: ts.JsxOpeningElement | ts.JsxSelfClosingElement
 ) {
   const objectEntries: SerializableObjectValueEntry[] = [];
@@ -273,7 +287,7 @@ function extractPropertiesFromJsxElement(
     if (ts.isJsxSpreadAttribute(property)) {
       objectEntries.push({
         kind: "spread",
-        value: parseSerializableValue(property.expression),
+        value: await parseSerializableValue(property.expression),
       });
     } else if (ts.isJsxNamespacedName(property.name)) {
       continue;
@@ -284,10 +298,10 @@ function extractPropertiesFromJsxElement(
         value = TRUE;
       } else if (ts.isJsxExpression(property.initializer)) {
         value = property.initializer.expression
-          ? parseSerializableValue(property.initializer.expression)
+          ? await parseSerializableValue(property.initializer.expression)
           : unknown("");
       } else {
-        value = parseSerializableValue(property.initializer);
+        value = await parseSerializableValue(property.initializer);
       }
       objectEntries.push({
         kind: "key",
@@ -299,7 +313,7 @@ function extractPropertiesFromJsxElement(
   return objectEntries;
 }
 
-function extractChildrenFromJsxElement(
+async function extractChildrenFromJsxElement(
   element: ts.JsxElement | ts.JsxFragment
 ) {
   const children: SerializableValue[] = [];
@@ -317,21 +331,21 @@ function extractChildrenFromJsxElement(
       );
     } else if (ts.isJsxExpression(child)) {
       if (child.expression) {
-        children.push(parseSerializableValue(child.expression));
+        children.push(await parseSerializableValue(child.expression));
       } else {
         // Example: {/* this is just a comment without any expression */}
         children.push(unknown(""));
       }
     } else {
-      children.push(parseSerializableValue(child));
+      children.push(await parseSerializableValue(child));
     }
   }
   return children;
 }
 
-function extractKeyFromPropertyName(
+async function extractKeyFromPropertyName(
   propertyName: ts.PropertyName
-): SerializableValue {
+): Promise<SerializableValue> {
   if (
     ts.isIdentifier(propertyName) ||
     ts.isStringLiteral(propertyName) ||
@@ -339,7 +353,7 @@ function extractKeyFromPropertyName(
   ) {
     return string(propertyName.text);
   } else if (ts.isComputedPropertyName(propertyName)) {
-    return parseSerializableValue(propertyName.expression);
+    return await parseSerializableValue(propertyName.expression);
   }
   return UNKNOWN;
 }

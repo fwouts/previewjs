@@ -37,7 +37,7 @@ describe("extractCsf3Stories", () => {
     typeAnalyzer.dispose();
   });
 
-  it("detects CSF 3 stories", () => {
+  it("detects CSF 3 stories", async () => {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
@@ -59,7 +59,7 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
@@ -88,7 +88,7 @@ export function NotStory() {}
     ]);
   });
 
-  it("resolves args to UNKNOWN when too complex", () => {
+  it("resolves args to UNKNOWN when too complex", async () => {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
@@ -108,7 +108,7 @@ export const Example = {
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
@@ -129,7 +129,7 @@ export const Example = {
     ]);
   });
 
-  it("detects CSF 3 stories when export default uses cast", () => {
+  it("detects CSF 3 stories when export default uses cast", async () => {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
@@ -151,7 +151,7 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
@@ -180,7 +180,7 @@ export function NotStory() {}
     ]);
   });
 
-  it("follows default imported component definition", () => {
+  it("follows default imported component definition", async () => {
     memoryReader.updateFile(APP_TSX, `export default "foo";`);
     memoryReader.updateFile(
       APP_STORIES_JSX,
@@ -203,7 +203,7 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
@@ -232,7 +232,7 @@ export function NotStory() {}
     ]);
   });
 
-  it("follows wildcard re-exported component definition", () => {
+  it("follows wildcard re-exported component definition", async () => {
     memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
@@ -259,7 +259,7 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
@@ -288,7 +288,7 @@ export function NotStory() {}
     ]);
   });
 
-  it("follows named re-exported component definition", () => {
+  it("follows named re-exported component definition", async () => {
     memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
@@ -315,7 +315,7 @@ export function NotStory() {}
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
@@ -344,7 +344,7 @@ export function NotStory() {}
     ]);
   });
 
-  it("ignores objects that look like CSF 3 stories when default export doesn't have component", () => {
+  it("ignores objects that look like CSF 3 stories when default export doesn't have component", async () => {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
@@ -362,11 +362,11 @@ export const NoArgs = {}
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([]);
   });
 
-  it("ignores objects that look like CSF 3 stories when no default export", () => {
+  it("ignores objects that look like CSF 3 stories when no default export", async () => {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
@@ -380,11 +380,11 @@ export const NoArgs = {}
     `
     );
 
-    const extractedStories = extract(APP_STORIES_JSX);
+    const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([]);
   });
 
-  function extract(absoluteFilePath: string) {
+  async function extract(absoluteFilePath: string) {
     const resolver = typeAnalyzer.analyze([absoluteFilePath]);
     return extractCsf3Stories(
       ROOT_DIR,

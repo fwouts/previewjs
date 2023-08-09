@@ -52,10 +52,13 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractVueComponents(reader, resolver, rootDir, absoluteFilePath)
+            ...(await extractVueComponents(
+              reader,
+              resolver,
+              rootDir,
+              absoluteFilePath
+            ))
           );
-          // Ensure this potentially long-running function doesn't block the thread.
-          await 0;
         }
         return components;
       },

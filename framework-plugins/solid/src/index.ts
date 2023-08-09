@@ -40,15 +40,13 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
           components.push(
-            ...extractSolidComponents(
+            ...(await extractSolidComponents(
               logger,
               resolver,
               rootDir,
               absoluteFilePath
-            )
+            ))
           );
-          // Ensure this potentially long-running function doesn't block the thread.
-          await 0;
         }
         return components;
       },

@@ -21,12 +21,12 @@ import type { Logger } from "pino";
 import ts from "typescript";
 import { analyzeSolidComponent } from "./analyze-component.js";
 
-export function extractSolidComponents(
+export async function extractSolidComponents(
   logger: Logger,
   resolver: TypeResolver,
   rootDir: string,
   absoluteFilePath: string
-): Component[] {
+): Promise<Component[]> {
   const sourceFile = resolver.sourceFile(absoluteFilePath);
   if (!sourceFile) {
     return [];
@@ -75,11 +75,11 @@ export function extractSolidComponents(
   const args = extractArgs(sourceFile);
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
-  function extractComponent(
+  async function extractComponent(
     baseComponent: BaseComponent,
     node: ts.Node,
     name: string
-  ): Component | null {
+  ): Promise<Component | null> {
     if (name === "default" && storiesInfo) {
       return null;
     }
@@ -91,7 +91,7 @@ export function extractSolidComponents(
       isExported &&
       (storyArgs || signature?.parameters.length === 0)
     ) {
-      const associatedComponent = extractStoryAssociatedComponent(
+      const associatedComponent = await extractStoryAssociatedComponent(
         logger,
         resolver,
         rootDir,
@@ -104,7 +104,7 @@ export function extractSolidComponents(
           ? {
               start: storyArgs.getStart(),
               end: storyArgs.getEnd(),
-              value: parseSerializableValue(storyArgs),
+              value: await parseSerializableValue(storyArgs),
             }
           : null,
         associatedComponent,
@@ -123,7 +123,7 @@ export function extractSolidComponents(
   }
 
   for (const [name, statement, node] of functions) {
-    const component = extractComponent(
+    const component = await extractComponent(
       {
         componentId: generateComponentId({
           filePath: path.relative(rootDir, absoluteFilePath),
@@ -141,17 +141,19 @@ export function extractSolidComponents(
 
   return [
     ...components,
-    ...extractCsf3Stories(
+    ...(await extractCsf3Stories(
       rootDir,
       resolver,
       sourceFile,
       async (componentId) => {
         const { filePath } = decodeComponentId(componentId);
-        const component = extractSolidComponents(
-          logger,
-          resolver,
-          rootDir,
-          path.join(rootDir, filePath)
+        const component = (
+          await extractSolidComponents(
+            logger,
+            resolver,
+            rootDir,
+            path.join(rootDir, filePath)
+          )
         ).find((c) => c.componentId === componentId);
         if (component?.kind !== "component") {
           return {
@@ -161,7 +163,7 @@ export function extractSolidComponents(
         }
         return component.extractProps();
       }
-    ),
+    )),
   ];
 }
 
