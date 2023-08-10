@@ -10,7 +10,8 @@ test.describe.parallel("smoke tests", () => {
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
     componentIdsPerProject: {
-      "svelte-app": ["src/App.svelte:App"],
+      svelte3: ["src/App.svelte:App"],
+      svelte4: ["src/App.svelte:App"],
       ...(parseInt(process.versions.node.split(".")[0]!) >= 16
         ? {
             // SvelteKit requires Node 16.
