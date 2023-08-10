@@ -2143,7 +2143,7 @@ importers:
         version: 5.1.6
       vite-plugin-solid:
         specifier: ^2.7.0
-        version: 2.7.0(solid-js@1.7.9)(vite@4.4.9)
+        version: 2.7.0(solid-js@1.7.10)(vite@4.4.9)
     devDependencies:
       '@playwright/test':
         specifier: ^1.36.2
@@ -2164,8 +2164,8 @@ importers:
         specifier: ^10.2.0
         version: 10.2.0
       solid-js:
-        specifier: ^1.7.9
-        version: 1.7.9
+        specifier: ^1.7.10
+        version: 1.7.10
       unbuild:
         specifier: ^1.2.1
         version: 1.2.1
@@ -18586,9 +18586,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.22.9
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.9)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.9)
+      '@babel/core': 7.21.8
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
       vite: 4.0.4(@types/node@20.4.9)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18602,9 +18602,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.22.9
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.9)
-      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.22.9)
+      '@babel/core': 7.21.8
+      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.21.8)
+      '@vue/babel-plugin-jsx': 1.1.1(@babel/core@7.21.8)
       vite: 4.3.9(@types/node@20.4.9)
       vue: 3.3.4
     transitivePeerDependencies:
@@ -18872,23 +18872,6 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
-
-  /@vue/babel-plugin-jsx@1.1.1(@babel/core@7.22.9):
-    resolution: {integrity: sha512-j2uVfZjnB5+zkcbc/zsOc0fSNGCMMjaEXP52wdwdIfn0qjFfEYpYZBFKFg+HHnQeJCVrjOeO0YxgaL7DMrym9w==}
-    dependencies:
-      '@babel/helper-module-imports': 7.22.5
-      '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.9)
-      '@babel/template': 7.22.5
-      '@babel/traverse': 7.22.8
-      '@babel/types': 7.22.5
-      '@vue/babel-helper-vue-transform-on': 1.0.2
-      camelcase: 6.3.0
-      html-tags: 3.2.0
-      svg-tags: 1.0.0
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
-    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.21.8):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
@@ -39391,17 +39374,28 @@ packages:
       uuid: 8.3.2
       websocket-driver: 0.7.4
 
+  /solid-js@1.7.10:
+    resolution: {integrity: sha512-myc4UeC1DeQl4jfcA1bF0X4fUn3tDfHz7QGFMN9PJ77ldG7zzD0CtDz1a2u27gPBSFNjyNL/mJ0N9/6uCuh63A==}
+    dependencies:
+      csstype: 3.1.2
+      seroval: 0.5.1
+
   /solid-js@1.7.5:
     resolution: {integrity: sha512-GfJ8na1e9FG1oAF5xC24BM+ATLym0sfH+ZblkbBFpueYdq3fWAoA5Ve+jGeIeLI7jmMGfa0rUaKruszNm2sH8w==}
     dependencies:
       csstype: 3.1.2
       seroval: 0.5.1
 
-  /solid-js@1.7.9:
-    resolution: {integrity: sha512-p1orXnauMQmwYULZtuPAXyKNRGEN2qh60kLX4YURa3jvulxAqjlh2kWEljXCtAVR6UZPC16NXdj9ASHcH383Fg==}
+  /solid-refresh@0.5.1(solid-js@1.7.10):
+    resolution: {integrity: sha512-kzfcoUYW6ZOUvk/7trfRbwLLBkQmMT2kGJUy9UMPnniMRYaMmyckjCxg1GuXCoSkrC3Bu2NK39I3iPJZYfqDXw==}
+    peerDependencies:
+      solid-js: ^1.3
     dependencies:
-      csstype: 3.1.2
-      seroval: 0.5.1
+      '@babel/generator': 7.22.9
+      '@babel/helper-module-imports': 7.22.5
+      '@babel/types': 7.22.5
+      solid-js: 1.7.10
+    dev: false
 
   /solid-refresh@0.5.1(solid-js@1.7.5):
     resolution: {integrity: sha512-kzfcoUYW6ZOUvk/7trfRbwLLBkQmMT2kGJUy9UMPnniMRYaMmyckjCxg1GuXCoSkrC3Bu2NK39I3iPJZYfqDXw==}
@@ -39412,17 +39406,6 @@ packages:
       '@babel/helper-module-imports': 7.22.5
       '@babel/types': 7.22.5
       solid-js: 1.7.5
-
-  /solid-refresh@0.5.1(solid-js@1.7.9):
-    resolution: {integrity: sha512-kzfcoUYW6ZOUvk/7trfRbwLLBkQmMT2kGJUy9UMPnniMRYaMmyckjCxg1GuXCoSkrC3Bu2NK39I3iPJZYfqDXw==}
-    peerDependencies:
-      solid-js: ^1.3
-    dependencies:
-      '@babel/generator': 7.22.9
-      '@babel/helper-module-imports': 7.22.5
-      '@babel/types': 7.22.5
-      solid-js: 1.7.9
-    dev: false
 
   /solid-start-node@0.2.26(solid-start@0.2.26)(undici@5.22.1)(vite@3.2.6):
     resolution: {integrity: sha512-8vciTGoQV+lIlCUSVHJPazlaoKDRfBowDkPeBr/EZdmtbcMOKoJYf/APPQWFspylF+nhzunMf0+zJP90VtMEYg==}
@@ -42630,6 +42613,25 @@ packages:
       - supports-color
     dev: true
 
+  /vite-plugin-solid@2.7.0(solid-js@1.7.10)(vite@4.4.9):
+    resolution: {integrity: sha512-avp/Jl5zOp/Itfo67xtDB2O61U7idviaIp4mLsjhCa13PjKNasz+IID0jYTyqUp9SFx6/PmBr6v4KgDppqompg==}
+    peerDependencies:
+      solid-js: ^1.7.2
+      vite: ^3.0.0 || ^4.0.0
+    dependencies:
+      '@babel/core': 7.21.8
+      '@babel/preset-typescript': 7.21.0(@babel/core@7.21.8)
+      '@types/babel__core': 7.20.0
+      babel-preset-solid: 1.7.3(@babel/core@7.21.8)
+      merge-anything: 5.1.4
+      solid-js: 1.7.10
+      solid-refresh: 0.5.1(solid-js@1.7.10)
+      vite: 4.4.9(@types/node@20.4.9)
+      vitefu: 0.2.4(vite@4.4.9)
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /vite-plugin-solid@2.7.0(solid-js@1.7.5)(vite@3.2.6):
     resolution: {integrity: sha512-avp/Jl5zOp/Itfo67xtDB2O61U7idviaIp4mLsjhCa13PjKNasz+IID0jYTyqUp9SFx6/PmBr6v4KgDppqompg==}
     peerDependencies:
@@ -42666,25 +42668,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /vite-plugin-solid@2.7.0(solid-js@1.7.9)(vite@4.4.9):
-    resolution: {integrity: sha512-avp/Jl5zOp/Itfo67xtDB2O61U7idviaIp4mLsjhCa13PjKNasz+IID0jYTyqUp9SFx6/PmBr6v4KgDppqompg==}
-    peerDependencies:
-      solid-js: ^1.7.2
-      vite: ^3.0.0 || ^4.0.0
-    dependencies:
-      '@babel/core': 7.21.8
-      '@babel/preset-typescript': 7.21.0(@babel/core@7.21.8)
-      '@types/babel__core': 7.20.0
-      babel-preset-solid: 1.7.3(@babel/core@7.21.8)
-      merge-anything: 5.1.4
-      solid-js: 1.7.9
-      solid-refresh: 0.5.1(solid-js@1.7.9)
-      vite: 4.4.9(@types/node@20.4.9)
-      vitefu: 0.2.4(vite@4.4.9)
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /vite-plugin-svgr@2.4.0(vite@4.3.8):
     resolution: {integrity: sha512-q+mJJol6ThvqkkJvvVFEndI4EaKIjSI0I3jNFgSoC9fXAz1M7kYTVUin8fhUsFojFDKZ9VHKtX6NXNaOLpbsHA==}
