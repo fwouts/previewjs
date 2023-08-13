@@ -1,3 +1,4 @@
+import type { SerializableValue } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import type { RPC } from "./rpc";
 
@@ -13,6 +14,9 @@ export const ComputeProps: RPC<
 export type ComputePropsResponse = {
   props: {
     [componentId: string]: ValueType;
+  };
+  args: {
+    [storyComponentId: string]: SerializableValue;
   };
   types: CollectedTypes;
 };
@@ -36,7 +40,6 @@ export type Component = {
   componentId: string;
   start: number;
   end: number;
-  kind: "component";
   exported: boolean;
 };
 
@@ -44,6 +47,5 @@ export type Story = {
   componentId: string;
   start: number;
   end: number;
-  kind: "story";
   associatedComponentId: string | null;
 };

@@ -128,10 +128,13 @@ export async function startPreview({
       const { components, stories } = await workspace.detectComponents({
         filePaths: [filePath],
       });
-      const matchingDetectedComponent =
-        components.find((c) => componentId === c.componentId) ||
-        stories.find((c) => componentId === c.componentId);
-      if (!matchingDetectedComponent) {
+      const matchingDetectedComponent = components.find(
+        (c) => componentId === c.componentId
+      );
+      const matchingDetectedStory = stories.find(
+        (c) => componentId === c.componentId
+      );
+      if (!matchingDetectedComponent && !matchingDetectedStory) {
         throw new Error(
           `Component may be previewable but was not detected by framework plugin: ${componentId}`
         );
@@ -145,14 +148,13 @@ export async function startPreview({
         computePropsResponse.types
       );
       if (!propsAssignmentSource) {
-        propsAssignmentSource =
-          matchingDetectedComponent.kind === "story"
-            ? "properties = null"
-            : await generatePropsAssignmentSource(
-                props,
-                autogenCallbackProps.keys,
-                computePropsResponse.types
-              );
+        propsAssignmentSource = matchingDetectedStory
+          ? "properties = null"
+          : await generatePropsAssignmentSource(
+              props,
+              autogenCallbackProps.keys,
+              computePropsResponse.types
+            );
       }
       const donePromise = new Promise<void>((resolve, reject) => {
         onRenderingDone = resolve;
