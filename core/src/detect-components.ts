@@ -164,7 +164,6 @@ async function detectComponentsCore(
       componentId: component.componentId,
       start,
       end,
-      kind: "component",
       exported: component.exported,
     });
   }
@@ -174,7 +173,6 @@ async function detectComponentsCore(
       componentId: story.componentId,
       start,
       end,
-      kind: "story",
       args: story.args,
       associatedComponentId: story.associatedComponent?.componentId || null,
     });

@@ -37,7 +37,6 @@ export type Component = {
   componentId: string;
   start: number;
   end: number;
-  kind: "component";
   exported: boolean;
 };
 
@@ -45,7 +44,6 @@ export type Story = {
   componentId: string;
   start: number;
   end: number;
-  kind: "story";
   args: {
     start: number;
     end: number;
