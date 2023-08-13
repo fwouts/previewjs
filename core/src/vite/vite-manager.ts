@@ -218,9 +218,10 @@ export class ViteManager {
         logger: this.options.logger,
         reader: this.options.reader,
         rootDir: this.options.rootDir,
-        allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow || [
-          searchForWorkspaceRoot(this.options.rootDir),
-        ],
+        allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow ||
+          existingViteConfig?.config.server?.fs?.allow || [
+            searchForWorkspaceRoot(this.options.rootDir),
+          ],
         moduleGraph: () => this.viteServer?.moduleGraph || null,
         esbuildOptions: frameworkPluginViteConfig.esbuild || {},
       }),
