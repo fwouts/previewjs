@@ -98,7 +98,6 @@ export async function extractPreactComponents(
       );
       return {
         ...baseComponent,
-        kind: "story",
         args: storyArgs
           ? {
               start: storyArgs.getStart(),
@@ -112,7 +111,6 @@ export async function extractPreactComponents(
     if (signature) {
       return {
         ...baseComponent,
-        kind: "component",
         exported: isExported,
         extractProps: async () =>
           analyzePreactComponent(logger, resolver, signature),
@@ -154,7 +152,7 @@ export async function extractPreactComponents(
             path.join(rootDir, filePath)
           )
         ).find((c) => c.componentId === componentId);
-        if (component?.kind !== "component") {
+        if (!component || !("extractProps" in component)) {
           return {
             props: UNKNOWN_TYPE,
             types: {},

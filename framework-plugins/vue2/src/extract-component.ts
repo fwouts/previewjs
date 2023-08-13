@@ -43,7 +43,6 @@ export async function extractVueComponents(
           name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
         }),
         offsets: [0, fileEntry.size()],
-        kind: "component",
         exported: true,
         extractProps: async () =>
           analyzeVueComponentFromTemplate(
@@ -113,7 +112,6 @@ export async function extractVueComponents(
       );
       return {
         ...baseComponent,
-        kind: "story",
         args: {
           start: storyArgs.getStart(),
           end: storyArgs.getEnd(),
@@ -128,7 +126,6 @@ export async function extractVueComponents(
       if (isJsxElement(returnType)) {
         return {
           ...baseComponent,
-          kind: "component",
           exported: isExported,
           extractProps: async () => ({
             // TODO: Handle JSX properties.
@@ -146,7 +143,6 @@ export async function extractVueComponents(
         );
         return {
           ...baseComponent,
-          kind: "story",
           args: null,
           associatedComponent,
         };
@@ -191,7 +187,7 @@ export async function extractVueComponents(
           const component = absoluteFilePath.endsWith(".vue.ts")
             ? vueComponents[0]
             : vueComponents.find((c) => c.componentId === componentId);
-          if (component?.kind !== "component") {
+          if (!component || !("extractProps" in component)) {
             return {
               props: UNKNOWN_TYPE,
               types: {},
@@ -202,7 +198,7 @@ export async function extractVueComponents(
       )
     ).map((c) => {
       if (
-        c.kind !== "story" ||
+        !("associatedComponent" in c) ||
         !c.associatedComponent?.componentId.includes(".vue.ts:")
       ) {
         return c;

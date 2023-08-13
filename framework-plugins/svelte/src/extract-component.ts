@@ -29,7 +29,6 @@ export async function extractSvelteComponents(
           name: inferComponentNameFromSveltePath(absoluteFilePath),
         }),
         offsets: [0, (await entry.read()).length],
-        kind: "component",
         exported: true,
         extractProps: async () =>
           analyzeSvelteComponentFromSFC(resolver, absoluteFilePath + ".ts"),
@@ -55,7 +54,7 @@ export async function extractSvelteComponents(
               path.join(rootDir, filePath)
             )
           ).find((c) => c.componentId === componentId);
-          if (component?.kind !== "component") {
+          if (!component || !("extractProps" in component)) {
             return {
               props: UNKNOWN_TYPE,
               types: {},
@@ -66,7 +65,7 @@ export async function extractSvelteComponents(
       )
     ).map((c) => {
       if (
-        c.kind !== "story" ||
+        !("associatedComponent" in c) ||
         !c.associatedComponent?.componentId.includes(".svelte.ts:")
       ) {
         return c;
