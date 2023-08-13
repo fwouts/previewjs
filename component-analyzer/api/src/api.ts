@@ -38,11 +38,11 @@ export interface ComponentProps {
 }
 
 export interface Story extends BaseComponent {
-  args: {
+  extractArgs: () => Promise<{
     start: number;
     end: number;
     value: SerializableValue;
-  } | null;
+  } | null>;
   associatedComponent: BasicComponent | null;
 }
 
