@@ -25,9 +25,9 @@ describe("find files", () => {
     await fs.writeFile(path.join(dirPath, "b a r", "foo"), "", "utf8");
     await fs.writeFile(path.join(dirPath, "b a r", "qux", "foo"), "", "utf8");
     expect(await findFiles(dirPath, "**/*")).toEqual([
-      path.join(path.join(dirPath, "foo")),
       path.join(path.join(dirPath, "b a r", "foo")),
       path.join(path.join(dirPath, "bar", "foo")),
+      path.join(path.join(dirPath, "foo")),
     ]);
     expect(await findFiles(path.join(dirPath, "bar"), "**/*")).toEqual([
       path.join(path.join(dirPath, "bar", "foo")),

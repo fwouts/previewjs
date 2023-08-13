@@ -100,7 +100,6 @@ export async function extractSolidComponents(
       );
       return {
         ...baseComponent,
-        kind: "story",
         args: storyArgs
           ? {
               start: storyArgs.getStart(),
@@ -114,7 +113,6 @@ export async function extractSolidComponents(
     if (signature) {
       return {
         ...baseComponent,
-        kind: "component",
         exported: isExported,
         extractProps: async () =>
           analyzeSolidComponent(logger, resolver, signature),
@@ -156,7 +154,7 @@ export async function extractSolidComponents(
             path.join(rootDir, filePath)
           )
         ).find((c) => c.componentId === componentId);
-        if (component?.kind !== "component") {
+        if (!component || !("extractProps" in component)) {
           return {
             props: UNKNOWN_TYPE,
             types: {},

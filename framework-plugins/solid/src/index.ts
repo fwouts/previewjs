@@ -46,7 +46,7 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
             rootDir,
             absoluteFilePath
           )) {
-            if (componentOrStory.kind === "component") {
+            if ("extractProps" in componentOrStory) {
               components.push(componentOrStory);
             } else {
               stories.push(componentOrStory);

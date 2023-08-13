@@ -29,7 +29,7 @@ export async function findFiles(
   if (!normalizedRootDirPath.endsWith("/")) {
     normalizedRootDirPath += "/";
   }
-  return files.filter((f) => f.startsWith(normalizedRootDirPath));
+  return files.filter((f) => f.startsWith(normalizedRootDirPath)).sort();
 }
 
 async function findGitRoot(

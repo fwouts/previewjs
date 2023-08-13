@@ -28,7 +28,6 @@ export interface BaseComponent {
 }
 
 export interface Component extends BaseComponent {
-  kind: "component";
   exported: boolean;
   extractProps: () => Promise<ComponentProps>;
 }
@@ -39,7 +38,6 @@ export interface ComponentProps {
 }
 
 export interface Story extends BaseComponent {
-  kind: "story";
   args: {
     start: number;
     end: number;

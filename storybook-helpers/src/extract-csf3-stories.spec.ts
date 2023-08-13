@@ -63,7 +63,6 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        kind: "story",
         args: {
           value: object([
             {
@@ -79,7 +78,6 @@ export function NotStory() {}
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        kind: "story",
         args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",
@@ -112,7 +110,6 @@ export const Example = {
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        kind: "story",
         args: {
           value: object([
             {
@@ -155,7 +152,6 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        kind: "story",
         args: {
           value: object([
             {
@@ -171,7 +167,6 @@ export function NotStory() {}
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        kind: "story",
         args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",
@@ -207,7 +202,6 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        kind: "story",
         args: {
           value: object([
             {
@@ -223,7 +217,6 @@ export function NotStory() {}
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        kind: "story",
         args: null,
         associatedComponent: {
           componentId: "App.tsx:default",
@@ -263,7 +256,6 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        kind: "story",
         args: {
           value: object([
             {
@@ -279,7 +271,6 @@ export function NotStory() {}
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        kind: "story",
         args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",
@@ -319,7 +310,6 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        kind: "story",
         args: {
           value: object([
             {
@@ -335,7 +325,6 @@ export function NotStory() {}
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        kind: "story",
         args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",

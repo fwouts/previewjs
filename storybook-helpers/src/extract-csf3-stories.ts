@@ -66,7 +66,6 @@ export async function extractCsf3Stories(
         storyComponent || storiesInfo.component || null
       );
       stories.push({
-        kind: "story",
         componentId: generateComponentId({
           filePath: path.relative(rootDir, sourceFile.fileName),
           name,

@@ -97,7 +97,6 @@ export async function extractReactComponents(
       );
       return {
         ...baseComponent,
-        kind: "story",
         args: storyArgs
           ? {
               start: storyArgs.getStart(),
@@ -111,7 +110,6 @@ export async function extractReactComponents(
     if (signature) {
       return {
         ...baseComponent,
-        kind: "component",
         exported: isExported,
         extractProps: async () =>
           analyzeReactComponent(
@@ -159,7 +157,7 @@ export async function extractReactComponents(
             path.join(rootDir, filePath)
           )
         ).find((c) => c.componentId === componentId);
-        if (component?.kind !== "component") {
+        if (!component || !("extractProps" in component)) {
           return {
             props: UNKNOWN_TYPE,
             types: {},
