@@ -105,8 +105,8 @@ export function detectComponents(
         path.relative(workspace.rootDir, absoluteFilePath).replace(/\\/g, "/")
       )
     );
-    const shouldRecycle = ({ previewableId }: { previewableId: string }) => {
-      const filePath = decodePreviewableId(previewableId).filePath;
+    const shouldRecycle = ({ id }: { id: string }) => {
+      const filePath = decodePreviewableId(id).filePath;
       return filePathsSet.has(filePath) && !refreshedFilePaths.has(filePath);
     };
     const recycledComponents = existingCache.components.filter(shouldRecycle);
@@ -160,16 +160,16 @@ async function detectComponentsCore(
   logger.debug(`Done running component detection`);
   for (const component of found.components) {
     components.push({
-      previewableId: component.previewableId,
+      id: component.id,
       sourcePosition: component.sourcePosition,
       exported: component.exported,
     });
   }
   for (const story of found.stories) {
     stories.push({
-      previewableId: story.previewableId,
+      id: story.id,
       sourcePosition: story.sourcePosition,
-      associatedComponentId: story.associatedComponent?.previewableId || null,
+      associatedComponentId: story.associatedComponent?.id || null,
     });
   }
   return { components, stories };

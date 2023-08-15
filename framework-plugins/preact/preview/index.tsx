@@ -8,11 +8,11 @@ export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   componentModule,
-  previewableId,
+  id,
   renderId,
   shouldAbortRender,
 }) => {
-  const componentName = previewableId.substring(previewableId.indexOf(":") + 1);
+  const componentName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) || Fragment;

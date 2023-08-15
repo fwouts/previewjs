@@ -5,25 +5,20 @@ import { previewTest } from "./preview-test";
 export function smokeTests({
   projectsDir,
   pluginFactory,
-  previewableIdsPerProject,
+  idsPerProject,
 }: {
   projectsDir: string;
   pluginFactory: FrameworkPluginFactory;
-  previewableIdsPerProject: Record<string, string[]>;
+  idsPerProject: Record<string, string[]>;
 }) {
-  for (const [projectName, previewableIds] of Object.entries(
-    previewableIdsPerProject
-  )) {
+  for (const [projectName, ids] of Object.entries(idsPerProject)) {
     const appDir = path.join(projectsDir, projectName);
-    for (const previewableId of previewableIds) {
-      const [filePath, componentName] = previewableId.split(":") as [
-        string,
-        string,
-      ];
+    for (const id of ids) {
+      const [filePath, componentName] = id.split(":") as [string, string];
       previewTest([pluginFactory], appDir)(
-        `${projectName}/${previewableId}`,
+        `${projectName}/${id}`,
         async (preview) => {
-          await preview.show(previewableId);
+          await preview.show(id);
           await preview.iframe.waitForSelector("#ready");
           const fileExt = path.extname(filePath);
           const filePrefix = filePath.substring(

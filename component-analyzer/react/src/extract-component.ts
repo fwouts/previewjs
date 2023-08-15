@@ -130,7 +130,7 @@ export async function extractReactComponents(
   for (const [name, statement, node] of functions) {
     const component = await extractComponentOrStory(
       {
-        previewableId: generatePreviewableId({
+        id: generatePreviewableId({
           filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
@@ -149,29 +149,24 @@ export async function extractReactComponents(
 
   return [
     ...componentsOrStories,
-    ...(await extractCsf3Stories(
-      rootDir,
-      resolver,
-      sourceFile,
-      async (previewableId) => {
-        const { filePath } = decodePreviewableId(previewableId);
-        const component = (
-          await extractReactComponents(
-            logger,
-            resolver,
-            rootDir,
-            path.join(rootDir, filePath)
-          )
-        ).find((c) => c.previewableId === previewableId);
-        if (!component || !("extractProps" in component)) {
-          return {
-            props: UNKNOWN_TYPE,
-            types: {},
-          };
-        }
-        return component.extractProps();
+    ...(await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
+      const { filePath } = decodePreviewableId(id);
+      const component = (
+        await extractReactComponents(
+          logger,
+          resolver,
+          rootDir,
+          path.join(rootDir, filePath)
+        )
+      ).find((c) => c.id === id);
+      if (!component || !("extractProps" in component)) {
+        return {
+          props: UNKNOWN_TYPE,
+          types: {},
+        };
       }
-    )),
+      return component.extractProps();
+    })),
   ];
 }
 
@@ -188,7 +183,7 @@ function extractStoryAssociatedComponent(
   );
   return component && resolvedStoriesPreviewableId
     ? {
-        previewableId: resolvedStoriesPreviewableId,
+        id: resolvedStoriesPreviewableId,
         extractProps: async () => {
           const signature = extractComponentSignature(
             resolver.checker,

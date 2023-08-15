@@ -175,9 +175,7 @@ describe("analyze Svelte component", () => {
     const componentName = inferComponentNameFromSveltePath(MAIN_FILE);
     const component = (
       await frameworkPlugin.detectComponents([MAIN_FILE])
-    ).components.find(
-      (c) => decodePreviewableId(c.previewableId).name === componentName
-    );
+    ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }

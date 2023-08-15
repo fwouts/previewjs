@@ -38,7 +38,7 @@ export async function extractVueComponents(
     }
     return [
       {
-        previewableId: generatePreviewableId({
+        id: generatePreviewableId({
           filePath: path.relative(rootDir, vueAbsoluteFilePath),
           name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
         }),
@@ -159,7 +159,7 @@ export async function extractVueComponents(
   for (const [name, statement, node] of functions) {
     const component = await extractComponentOrStory(
       {
-        previewableId: generatePreviewableId({
+        id: generatePreviewableId({
           filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
@@ -179,40 +179,35 @@ export async function extractVueComponents(
   return [
     ...componentsOrStories,
     ...(
-      await extractCsf3Stories(
-        rootDir,
-        resolver,
-        sourceFile,
-        async (previewableId) => {
-          const { filePath } = decodePreviewableId(previewableId);
-          const absoluteFilePath = path.join(rootDir, filePath);
-          const vueComponents = await extractVueComponents(
-            reader,
-            resolver,
-            rootDir,
-            absoluteFilePath
-          );
-          const component = absoluteFilePath.endsWith(".vue.ts")
-            ? vueComponents[0]
-            : vueComponents.find((c) => c.previewableId === previewableId);
-          if (!component || !("extractProps" in component)) {
-            return {
-              props: UNKNOWN_TYPE,
-              types: {},
-            };
-          }
-          return component.extractProps();
+      await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
+        const { filePath } = decodePreviewableId(id);
+        const absoluteFilePath = path.join(rootDir, filePath);
+        const vueComponents = await extractVueComponents(
+          reader,
+          resolver,
+          rootDir,
+          absoluteFilePath
+        );
+        const component = absoluteFilePath.endsWith(".vue.ts")
+          ? vueComponents[0]
+          : vueComponents.find((c) => c.id === id);
+        if (!component || !("extractProps" in component)) {
+          return {
+            props: UNKNOWN_TYPE,
+            types: {},
+          };
         }
-      )
+        return component.extractProps();
+      })
     ).map((c) => {
       if (
         !("associatedComponent" in c) ||
-        !c.associatedComponent?.previewableId.includes(".vue.ts:")
+        !c.associatedComponent?.id.includes(".vue.ts:")
       ) {
         return c;
       }
       const { filePath: associatedComponentFilePath } = decodePreviewableId(
-        c.associatedComponent.previewableId
+        c.associatedComponent.id
       );
       const associatedComponentVueFilePath = stripTsExtension(
         associatedComponentFilePath
@@ -221,7 +216,7 @@ export async function extractVueComponents(
         ...c,
         associatedComponent: {
           ...c.associatedComponent,
-          previewableId: generatePreviewableId({
+          id: generatePreviewableId({
             filePath: associatedComponentVueFilePath,
             name: inferComponentNameFromVuePath(associatedComponentVueFilePath),
           }),
@@ -262,7 +257,7 @@ function extractStoryAssociatedComponent(
   const vueFilePath = extractVueFilePath(filePath);
   if (vueFilePath) {
     return {
-      previewableId: generatePreviewableId({
+      id: generatePreviewableId({
         filePath: vueFilePath,
         name: inferComponentNameFromVuePath(vueFilePath),
       }),
@@ -271,7 +266,7 @@ function extractStoryAssociatedComponent(
     };
   } else {
     return {
-      previewableId: resolvedStoriesPreviewableId,
+      id: resolvedStoriesPreviewableId,
       extractProps: async () =>
         // TODO: Handle JSX properties.
         ({

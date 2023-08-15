@@ -18,11 +18,7 @@ const iframeController = createController({
 
 window.addEventListener("message", (event: MessageEvent) => {
   if (event.data && event.data.kind === "navigate") {
-    history.pushState(
-      null,
-      "",
-      `/?p=${encodeURIComponent(event.data.previewableId)}`
-    );
+    history.pushState(null, "", `/?p=${encodeURIComponent(event.data.id)}`);
     onUrlChanged().catch(console.error);
   }
 });
@@ -34,21 +30,21 @@ onUrlChanged().catch(console.error);
 
 async function onUrlChanged() {
   const urlParams = new URLSearchParams(document.location.search);
-  const previewableId = urlParams.get("p") || "";
-  if (!previewableId.includes(":")) {
+  const id = urlParams.get("p") || "";
+  if (!id.includes(":")) {
     return;
   }
-  iframeController.resetIframe(previewableId);
+  iframeController.resetIframe(id);
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
-    previewableIds: [previewableId],
+    ids: [id],
   });
-  const props = computePropsResponse.props[previewableId]!;
+  const props = computePropsResponse.props[id]!;
   const autogenCallbackProps = await generateCallbackProps(
     props,
     computePropsResponse.types
   );
   iframeController.loadComponent({
-    previewableId,
+    id,
     propsAssignmentSource: transpile(
       await generatePropsAssignmentSource(
         props,

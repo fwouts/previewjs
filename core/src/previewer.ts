@@ -163,7 +163,7 @@ export class Previewer {
         );
         const router = express.Router();
         router.get(/^\/preview\/.*:[^/]+\/$/, async (req, res) => {
-          const previewableId = req.path.substring(9, req.path.length - 1);
+          const id = req.path.substring(9, req.path.length - 1);
           if (req.header("Accept") === "text/x-vite-ping") {
             // This is triggered as part of HMR. Exit early.
             res.writeHead(204).end();
@@ -177,12 +177,7 @@ export class Previewer {
             res
               .status(200)
               .set({ "Content-Type": "text/html" })
-              .end(
-                await this.viteManager.loadIndexHtml(
-                  req.originalUrl,
-                  previewableId
-                )
-              );
+              .end(await this.viteManager.loadIndexHtml(req.originalUrl, id));
           } catch (e: any) {
             res
               .status(500)

@@ -9,20 +9,18 @@ export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   componentModule,
-  previewableId,
+  id,
   shouldAbortRender,
 }) => {
-  const componentName = previewableId.substring(previewableId.indexOf(":") + 1);
+  const componentName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   let ComponentOrStory: any;
-  if (previewableId.includes(".vue:")) {
+  if (id.includes(".vue:")) {
     ComponentOrStory = componentModule.default;
     if (!ComponentOrStory) {
-      throw new Error(
-        `No default component could be found for ${previewableId}`
-      );
+      throw new Error(`No default component could be found for ${id}`);
     }
   } else {
     ComponentOrStory = componentModule[`__previewjs__${componentName}`];

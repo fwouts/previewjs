@@ -68,25 +68,21 @@ export async function createWorkspace({
     );
   }
   const router = new ApiRouter(logger);
-  router.registerRPC(RPCs.ComputeProps, async ({ previewableIds }) => {
-    logger.debug(
-      `Computing props for components: ${previewableIds.join(", ")}`
-    );
+  router.registerRPC(RPCs.ComputeProps, async ({ ids }) => {
+    logger.debug(`Computing props for components: ${ids.join(", ")}`);
     const detected = await frameworkPlugin.detectComponents([
       ...new Set(
-        previewableIds.map((c) =>
-          path.join(rootDir, decodePreviewableId(c).filePath)
-        )
+        ids.map((c) => path.join(rootDir, decodePreviewableId(c).filePath))
       ),
     ]);
     logger.debug(
       `Detected ${detected.components.length} components and ${detected.stories.length} stories`
     );
-    const previewableIdToDetectedComponent = Object.fromEntries(
-      detected.components.map((c) => [c.previewableId, c])
+    const idToDetectedComponent = Object.fromEntries(
+      detected.components.map((c) => [c.id, c])
     );
-    const previewableIdToDetectedStory = Object.fromEntries(
-      detected.stories.map((c) => [c.previewableId, c])
+    const idToDetectedStory = Object.fromEntries(
+      detected.stories.map((c) => [c.id, c])
     );
     const propsPerComponentId: {
       [componentId: string]: ValueType;
@@ -95,33 +91,33 @@ export async function createWorkspace({
       [storyId: string]: RPCs.StoryArgs | null;
     } = {};
     let types: CollectedTypes = {};
-    for (const previewableId of previewableIds) {
-      const component = previewableIdToDetectedComponent[previewableId];
-      const story = previewableIdToDetectedStory[previewableId];
+    for (const id of ids) {
+      const component = idToDetectedComponent[id];
+      const story = idToDetectedStory[id];
       let props: ValueType;
       let componentTypes: CollectedTypes;
       if (component) {
-        logger.debug(`Analyzing component: ${previewableId}`);
+        logger.debug(`Analyzing component: ${id}`);
         ({ props, types: componentTypes } = await component.extractProps());
-        propsPerComponentId[previewableId] = props;
-        logger.debug(`Done analyzing: ${previewableId}`);
+        propsPerComponentId[id] = props;
+        logger.debug(`Done analyzing: ${id}`);
       } else if (story) {
         if (story.associatedComponent) {
-          logger.debug(`Analyzing story: ${previewableId}`);
+          logger.debug(`Analyzing story: ${id}`);
           ({ props, types: componentTypes } =
             await story.associatedComponent.extractProps());
-          logger.debug(`Done analyzing: ${previewableId}`);
+          logger.debug(`Done analyzing: ${id}`);
         } else {
-          logger.debug(`No associated component for story: ${previewableId}`);
+          logger.debug(`No associated component for story: ${id}`);
           props = UNKNOWN_TYPE;
           componentTypes = {};
         }
-        argsPerStoryId[previewableId] = await story.extractArgs();
+        argsPerStoryId[id] = await story.extractArgs();
       } else {
-        const { filePath, name } = decodePreviewableId(previewableId);
+        const { filePath, name } = decodePreviewableId(id);
         throw new Error(`Component ${name} not detected in ${filePath}.`);
       }
-      propsPerComponentId[previewableId] = props;
+      propsPerComponentId[id] = props;
       types = { ...types, ...componentTypes };
     }
     return {

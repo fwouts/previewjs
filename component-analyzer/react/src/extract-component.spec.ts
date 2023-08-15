@@ -119,11 +119,11 @@ export const AlsoNotAStory = {
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:DeclaredFunction",
+        id: "App.tsx:DeclaredFunction",
         exported: false,
       },
       {
-        previewableId: "App.tsx:ConstantFunction",
+        id: "App.tsx:ConstantFunction",
         exported: false,
       },
       // Note: this isn't detected as of October 2021.
@@ -132,31 +132,31 @@ export const AlsoNotAStory = {
       //   exported: false,
       // },
       {
-        previewableId: "App.tsx:ClassComponent1",
+        id: "App.tsx:ClassComponent1",
         exported: false,
       },
       {
-        previewableId: "App.tsx:ClassComponent2",
+        id: "App.tsx:ClassComponent2",
         exported: false,
       },
       {
-        previewableId: "App.tsx:ForwardRef",
+        id: "App.tsx:ForwardRef",
         exported: false,
       },
       {
-        previewableId: "App.tsx:NextComponent",
+        id: "App.tsx:NextComponent",
         exported: false,
       },
       {
-        previewableId: "App.tsx:Pure",
+        id: "App.tsx:Pure",
         exported: true,
       },
       {
-        previewableId: "App.tsx:NotObjectProps",
+        id: "App.tsx:NotObjectProps",
         exported: true,
       },
       {
-        previewableId: "App.tsx:MissingType",
+        id: "App.tsx:MissingType",
         exported: true,
       },
     ]);
@@ -175,11 +175,11 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:DeclaredFunction",
+        id: "App.tsx:DeclaredFunction",
         exported: false,
       },
       {
-        previewableId: "App.tsx:ConstantFunction",
+        id: "App.tsx:ConstantFunction",
         exported: false,
       },
     ]);
@@ -198,7 +198,7 @@ export default A;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:A",
+        id: "App.tsx:A",
         exported: true,
       },
     ]);
@@ -215,7 +215,7 @@ export default () => {
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:default",
+        id: "App.tsx:default",
         exported: true,
       },
     ]);
@@ -232,7 +232,7 @@ export default function test(){
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:test",
+        id: "App.tsx:test",
         exported: true,
       },
     ]);
@@ -249,7 +249,7 @@ export default function(){
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:default",
+        id: "App.tsx:default",
         exported: true,
       },
     ]);
@@ -286,13 +286,13 @@ export const NotStory = (props) => <Button {...props} />;
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: {
-          previewableId: "App.tsx:default",
+          id: "App.tsx:default",
         },
       },
       {
-        previewableId: "App.stories.tsx:NotStory",
+        id: "App.stories.tsx:NotStory",
         exported: true,
       },
     ]);
@@ -326,11 +326,11 @@ export const NotStory = (props) => <Button {...props} />;
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
       {
-        previewableId: "App.stories.tsx:NotStory",
+        id: "App.stories.tsx:NotStory",
         exported: true,
       },
     ]);
@@ -362,13 +362,13 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Template",
+        id: "App.stories.tsx:Template",
         exported: false,
       },
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: {
-          previewableId: "App.tsx:default",
+          id: "App.tsx:default",
         },
       },
     ]);
@@ -419,11 +419,11 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Template",
+        id: "App.stories.tsx:Template",
         exported: false,
       },
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
     ]);
@@ -470,15 +470,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Example",
+        id: "App.stories.tsx:Example",
         associatedComponent: {
-          previewableId: "App.tsx:default",
+          id: "App.tsx:default",
         },
       },
       {
-        previewableId: "App.stories.tsx:NoArgs",
+        id: "App.stories.tsx:NoArgs",
         associatedComponent: {
-          previewableId: "App.tsx:default",
+          id: "App.tsx:default",
         },
       },
     ]);
@@ -528,11 +528,11 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Example",
+        id: "App.stories.tsx:Example",
         associatedComponent: null,
       },
       {
-        previewableId: "App.stories.tsx:NoArgs",
+        id: "App.stories.tsx:NoArgs",
         associatedComponent: null,
       },
     ]);

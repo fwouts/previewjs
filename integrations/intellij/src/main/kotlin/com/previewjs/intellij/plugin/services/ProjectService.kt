@@ -252,7 +252,7 @@ class ProjectService(private val project: Project) : Disposable {
                 AnalyzedFileComponent(
                     start = if (it.start < exactCharacterDifferenceIndex) it.start else it.start + differenceDelta,
                     end = if (it.end < exactCharacterDifferenceIndex) it.end else it.end + differenceDelta,
-                    previewableId = it.previewableId
+                    id = it.id
                 )
             }
         } else {
@@ -270,7 +270,7 @@ class ProjectService(private val project: Project) : Disposable {
                 AnalyzedFileComponent(
                     start = if (it.start < start) it.start else max(0, it.start + differenceDelta),
                     end = if (it.end < start) it.end else max(0, it.end + differenceDelta),
-                    previewableId = it.previewableId
+                    id = it.id
                 )
             }
         }
@@ -304,7 +304,7 @@ class ProjectService(private val project: Project) : Disposable {
         })
     }
 
-    fun openPreview(absoluteFilePath: String, previewableId: String) {
+    fun openPreview(absoluteFilePath: String, id: String) {
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
             currentPreviewWorkspaceId?.let {
@@ -320,7 +320,7 @@ class ProjectService(private val project: Project) : Disposable {
                 onStop = { closePreview() },
                 onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
             ).install(statusBar)
-            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(previewableId, "utf-8")}"
+            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(id, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {
@@ -370,7 +370,7 @@ class ProjectService(private val project: Project) : Disposable {
                 val currentBrowserUrl = browser.cefBrowser.url
                 if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
                     browser.cefBrowser.executeJavaScript(
-                        "window.postMessage({ kind: \"navigate\", previewableId: \"${previewableId}\" });",
+                        "window.postMessage({ kind: \"navigate\", id: \"${id}\" });",
                         previewUrl,
                         0
                     )
@@ -380,7 +380,7 @@ class ProjectService(private val project: Project) : Disposable {
                 previewToolWindow?.show()
             }
         }, {
-            "Warning: unable to open preview with component ID: $previewableId"
+            "Warning: unable to open preview with component ID: $id"
         })
     }
 

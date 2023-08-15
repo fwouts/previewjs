@@ -62,15 +62,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.jsx:Example",
+        id: "App.stories.jsx:Example",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
       {
-        previewableId: "App.stories.jsx:NoArgs",
+        id: "App.stories.jsx:NoArgs",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
     ]);
@@ -109,9 +109,9 @@ export const Example = {
     const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.jsx:Example",
+        id: "App.stories.jsx:Example",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
     ]);
@@ -151,15 +151,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.jsx:Example",
+        id: "App.stories.jsx:Example",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
       {
-        previewableId: "App.stories.jsx:NoArgs",
+        id: "App.stories.jsx:NoArgs",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
     ]);
@@ -201,15 +201,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.jsx:Example",
+        id: "App.stories.jsx:Example",
         associatedComponent: {
-          previewableId: "App.tsx:default",
+          id: "App.tsx:default",
         },
       },
       {
-        previewableId: "App.stories.jsx:NoArgs",
+        id: "App.stories.jsx:NoArgs",
         associatedComponent: {
-          previewableId: "App.tsx:default",
+          id: "App.tsx:default",
         },
       },
     ]);
@@ -255,15 +255,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.jsx:Example",
+        id: "App.stories.jsx:Example",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
       {
-        previewableId: "App.stories.jsx:NoArgs",
+        id: "App.stories.jsx:NoArgs",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
     ]);
@@ -309,15 +309,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_JSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.jsx:Example",
+        id: "App.stories.jsx:Example",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
       {
-        previewableId: "App.stories.jsx:NoArgs",
+        id: "App.stories.jsx:NoArgs",
         associatedComponent: {
-          previewableId: "App.tsx:Button",
+          id: "App.tsx:Button",
         },
       },
     ]);

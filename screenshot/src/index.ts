@@ -101,9 +101,9 @@ export async function generateScreenshots({
     filePaths,
   });
   for (const component of components) {
-    const { filePath, name } = decodePreviewableId(component.previewableId);
+    const { filePath, name } = decodePreviewableId(component.id);
     try {
-      await preview.show(component.previewableId);
+      await preview.show(component.id);
       const screenshotPath = generateScreenshotPath({ filePath, name });
       await preview.iframe.takeScreenshot(screenshotPath);
       if (onScreenshotGenerated) {
@@ -117,7 +117,7 @@ export async function generateScreenshots({
         }
       } else {
         throw new Error(
-          `Unable to generate screenshot for ${component.previewableId}`,
+          `Unable to generate screenshot for ${component.id}`,
           // https://stackoverflow.com/a/42755876
           // @ts-ignore
           { cause: e }

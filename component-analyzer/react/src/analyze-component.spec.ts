@@ -549,9 +549,7 @@ A.propTypes = {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
       await analyzer.detectComponents([MAIN_FILE_NAME])
-    ).components.find(
-      (c) => decodePreviewableId(c.previewableId).name === componentName
-    );
+    ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }

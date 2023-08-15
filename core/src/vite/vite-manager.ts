@@ -50,13 +50,13 @@ export class ViteManager {
     this.middleware = router;
   }
 
-  async loadIndexHtml(url: string, previewableId: string) {
+  async loadIndexHtml(url: string, id: string) {
     const template = await fs.readFile(
       this.options.shadowHtmlFilePath,
       "utf-8"
     );
     const viteServer = await this.awaitViteServerReady();
-    const { filePath } = decodePreviewableId(previewableId);
+    const { filePath } = decodePreviewableId(id);
     const componentPath = filePath.replace(/\\/g, "/");
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
@@ -113,7 +113,7 @@ export class ViteManager {
         latestComponentModule = componentModule;
         refresh = initPreview({
           componentModule,
-          previewableId: ${JSON.stringify(previewableId)},
+          id: ${JSON.stringify(id)},
           wrapperModule,
           wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
         });

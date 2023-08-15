@@ -19,12 +19,12 @@ export function initListeners() {
 
 export function initPreview({
   componentModule,
-  previewableId,
+  id,
   wrapperModule,
   wrapperName,
 }: {
   componentModule: any;
-  previewableId: string;
+  id: string;
   wrapperModule: any;
   wrapperName: string;
 }) {
@@ -45,7 +45,7 @@ export function initPreview({
         wrapperModule,
         wrapperName,
         componentModule,
-        previewableId,
+        id,
         renderId,
         shouldAbortRender: () => renderId !== thisRenderId,
         load: loadRenderer,

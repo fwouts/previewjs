@@ -127,12 +127,10 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         return components.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
-          const componentName = c.previewableId.substring(
-            c.previewableId.indexOf(":") + 1
-          );
+          const componentName = c.id.substring(c.id.indexOf(":") + 1);
           lens.command = {
             command: Command.START,
-            arguments: [document, c.previewableId],
+            arguments: [document, c.id],
             title: `Open ${componentName} in Preview.js`,
           };
           return lens;
@@ -197,57 +195,55 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
 
   vscode.commands.registerCommand(
     Command.START,
-    catchErrors(
-      async (document?: vscode.TextDocument, previewableId?: string) => {
-        const state = await currentState;
-        if (!state) {
-          vscode.window.showErrorMessage(
-            "Preview.js was unable to start successfully. Please check Preview.js output panel and consider filing a bug at https://github.com/fwouts/previewjs/issues."
-          );
-          return;
-        }
-        if (typeof previewableId !== "string") {
-          // If invoked from clicking the button, the value may be { groupId: 0 }.
-          previewableId = undefined;
-        }
-        const editor = vscode.window.activeTextEditor;
-        if (!document?.fileName) {
-          if (editor?.document) {
-            document = editor.document;
-          } else {
-            vscode.window.showErrorMessage("No document selected.");
-            return;
-          }
-        }
-        const workspaceId = await state.getWorkspaceId(document);
-        if (!workspaceId) {
-          vscode.window.showErrorMessage(
-            `No compatible workspace detected from ${document.fileName}`
-          );
-          return;
-        }
-        if (previewableId === undefined) {
-          const offset = editor?.selection.active
-            ? document.offsetAt(editor.selection.active)
-            : 0;
-          const components = await state.getComponents(document);
-          const component =
-            components.find((c) => offset >= c.start && offset <= c.end) ||
-            components[0];
-          if (!component) {
-            vscode.window.showErrorMessage(
-              `No component was found at offset ${offset}`
-            );
-            return;
-          }
-          previewableId = component.previewableId;
-        }
-        const preview = await ensurePreviewServerStarted(state, workspaceId);
-        runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
-        runningServerStatusBarItem.show();
-        updatePreviewPanel(state, preview.url, previewableId, onError);
+    catchErrors(async (document?: vscode.TextDocument, id?: string) => {
+      const state = await currentState;
+      if (!state) {
+        vscode.window.showErrorMessage(
+          "Preview.js was unable to start successfully. Please check Preview.js output panel and consider filing a bug at https://github.com/fwouts/previewjs/issues."
+        );
+        return;
       }
-    )
+      if (typeof id !== "string") {
+        // If invoked from clicking the button, the value may be { groupId: 0 }.
+        id = undefined;
+      }
+      const editor = vscode.window.activeTextEditor;
+      if (!document?.fileName) {
+        if (editor?.document) {
+          document = editor.document;
+        } else {
+          vscode.window.showErrorMessage("No document selected.");
+          return;
+        }
+      }
+      const workspaceId = await state.getWorkspaceId(document);
+      if (!workspaceId) {
+        vscode.window.showErrorMessage(
+          `No compatible workspace detected from ${document.fileName}`
+        );
+        return;
+      }
+      if (id === undefined) {
+        const offset = editor?.selection.active
+          ? document.offsetAt(editor.selection.active)
+          : 0;
+        const components = await state.getComponents(document);
+        const component =
+          components.find((c) => offset >= c.start && offset <= c.end) ||
+          components[0];
+        if (!component) {
+          vscode.window.showErrorMessage(
+            `No component was found at offset ${offset}`
+          );
+          return;
+        }
+        id = component.id;
+      }
+      const preview = await ensurePreviewServerStarted(state, workspaceId);
+      runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
+      runningServerStatusBarItem.show();
+      updatePreviewPanel(state, preview.url, id, onError);
+    })
   );
 
   vscode.commands.registerCommand(Command.OPEN_MENU, async () => {

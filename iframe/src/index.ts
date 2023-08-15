@@ -12,17 +12,17 @@ export interface PreviewIframeController {
   start(): void;
   stop(): void;
   loadComponent(options: LoadComponentOptions): void;
-  resetIframe(previewableId: string): void;
+  resetIframe(id: string): void;
 }
 
 export interface LoadComponentOptions {
-  previewableId: string;
+  id: string;
   propsAssignmentSource: string;
   autogenCallbackPropsSource: string;
 }
 
 class PreviewIframeControllerImpl implements PreviewIframeController {
-  private previewableIdBootstrapped: string | null = null;
+  private idBootstrapped: string | null = null;
   private pendingPreviewableIdBootstrap: string | null = null;
   private lastMessage: AppToPreviewMessage | null = null;
   private expectRenderTimeout?: any;
@@ -52,10 +52,10 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   private send(message: AppToPreviewMessage) {
     this.lastMessage = message;
     if (
-      this.previewableIdBootstrapped !== message.previewableId &&
-      this.pendingPreviewableIdBootstrap !== message.previewableId
+      this.idBootstrapped !== message.id &&
+      this.pendingPreviewableIdBootstrap !== message.id
     ) {
-      this.resetIframe(message.previewableId);
+      this.resetIframe(message.id);
       return;
     }
     const iframeWindow = this.options.getIframe()?.contentWindow;
@@ -70,19 +70,19 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         console.warn(
           "Expected render did not occur after 5 seconds. Reloading iframe..."
         );
-        this.resetIframe(message.previewableId);
+        this.resetIframe(message.id);
       }, 5000);
     }
   }
 
-  resetIframe(previewableId: string) {
+  resetIframe(id: string) {
     const iframe = this.options.getIframe();
-    this.previewableIdBootstrapped = null;
+    this.idBootstrapped = null;
     if (!iframe) {
       return;
     }
-    this.pendingPreviewableIdBootstrap = previewableId;
-    iframe.src = `/preview/${previewableId}/?t=${Date.now()}`;
+    this.pendingPreviewableIdBootstrap = id;
+    iframe.src = `/preview/${id}/?t=${Date.now()}`;
   }
 
   private onWindowMessage = (event: MessageEvent<PreviewToAppMessage>) => {
@@ -141,7 +141,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   };
 
   private onBootstrapped() {
-    this.previewableIdBootstrapped = this.pendingPreviewableIdBootstrap;
+    this.idBootstrapped = this.pendingPreviewableIdBootstrap;
     this.pendingPreviewableIdBootstrap = null;
     if (this.lastMessage) {
       this.send(this.lastMessage);
@@ -248,7 +248,7 @@ export type RendererLoader = (options: {
   wrapperModule: any;
   wrapperName?: string;
   componentModule: any;
-  previewableId: string;
+  id: string;
   renderId: number;
   shouldAbortRender: () => boolean;
 }) => Promise<{

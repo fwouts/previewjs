@@ -5,18 +5,15 @@ export function generatePreviewableId(options: {
   return `${options.filePath.replace(/\\/g, "/")}:${options.name}`;
 }
 
-export function decodePreviewableId(previewableId: string): {
+export function decodePreviewableId(id: string): {
   filePath: string;
   name: string;
 } {
-  const colonPosition = previewableId.lastIndexOf(":");
+  const colonPosition = id.lastIndexOf(":");
   if (colonPosition === -1) {
-    throw new Error(`Invalid component ID: "${previewableId}"`);
+    throw new Error(`Invalid component ID: "${id}"`);
   }
-  const [filePath, componentName] = previewableId.split(":") as [
-    string,
-    string,
-  ];
+  const [filePath, componentName] = id.split(":") as [string, string];
   return {
     filePath,
     name: componentName,

@@ -4,7 +4,7 @@ import type { RPC } from "./rpc";
 
 export const ComputeProps: RPC<
   {
-    previewableIds: string[];
+    ids: string[];
   },
   ComputePropsResponse
 > = {
@@ -37,13 +37,13 @@ export type DetectComponentsResponse = {
 };
 
 export type Component = {
-  previewableId: string;
+  id: string;
   sourcePosition: FileSourcePosition;
   exported: boolean;
 };
 
 export type Story = {
-  previewableId: string;
+  id: string;
   sourcePosition: FileSourcePosition;
   associatedComponentId: string | null;
 };

@@ -47,7 +47,7 @@ export interface AnalyzeFileResponse {
   components: Array<{
     start: number;
     end: number;
-    previewableId: string;
+    id: string;
   }>;
 }
 

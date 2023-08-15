@@ -14,7 +14,7 @@ export async function extractCsf3Stories(
   rootDir: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
-  extractProps: (previewableId: string) => Promise<ComponentProps>
+  extractProps: (id: string) => Promise<ComponentProps>
 ): Promise<Story[]> {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
@@ -66,7 +66,7 @@ export async function extractCsf3Stories(
         storyComponent || storiesInfo.component || null
       );
       stories.push({
-        previewableId: generatePreviewableId({
+        id: generatePreviewableId({
           filePath: path.relative(rootDir, sourceFile.fileName),
           name,
         }),
@@ -86,7 +86,7 @@ export async function extractCsf3Stories(
             : null,
         associatedComponent: associatedComponentId
           ? {
-              previewableId: associatedComponentId,
+              id: associatedComponentId,
               extractProps: () => extractProps(associatedComponentId),
             }
           : null,

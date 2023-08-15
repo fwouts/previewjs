@@ -2,7 +2,7 @@ import type { PreviewEvent } from "@previewjs/iframe";
 import { createController } from "@previewjs/iframe";
 
 export type Component = {
-  previewableId: string;
+  id: string;
   autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 };

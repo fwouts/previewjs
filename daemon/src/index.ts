@@ -341,7 +341,7 @@ export async function startDaemon({
       });
       return {
         components: [...components, ...stories].map((c) => ({
-          previewableId: c.previewableId,
+          id: c.id,
           start: c.sourcePosition.start,
           end: c.sourcePosition.end,
         })),

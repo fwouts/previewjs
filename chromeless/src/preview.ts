@@ -123,26 +123,22 @@ export async function startPreview({
         });
       },
     },
-    async show(previewableId: string, propsAssignmentSource?: string) {
-      const filePath = previewableId.split(":")[0]!;
+    async show(id: string, propsAssignmentSource?: string) {
+      const filePath = id.split(":")[0]!;
       const { components, stories } = await workspace.detectComponents({
         filePaths: [filePath],
       });
-      const matchingDetectedComponent = components.find(
-        (c) => previewableId === c.previewableId
-      );
-      const matchingDetectedStory = stories.find(
-        (c) => previewableId === c.previewableId
-      );
+      const matchingDetectedComponent = components.find((c) => id === c.id);
+      const matchingDetectedStory = stories.find((c) => id === c.id);
       if (!matchingDetectedComponent && !matchingDetectedStory) {
         throw new Error(
-          `Component may be previewable but was not detected by framework plugin: ${previewableId}`
+          `Component may be previewable but was not detected by framework plugin: ${id}`
         );
       }
       const computePropsResponse = await workspace.computeProps({
-        previewableIds: [previewableId],
+        ids: [id],
       });
-      const props = computePropsResponse.props[previewableId]!;
+      const props = computePropsResponse.props[id]!;
       const autogenCallbackProps = await generateCallbackProps(
         props,
         computePropsResponse.types
@@ -181,7 +177,7 @@ export async function startPreview({
           window.renderComponent(component);
         },
         {
-          previewableId,
+          id,
           autogenCallbackPropsSource: transpile(
             `autogenCallbackProps = ${autogenCallbackProps.source}`
           ),

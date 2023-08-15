@@ -102,11 +102,11 @@ export default Component1;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:Component1",
+        id: "App.tsx:Component1",
         exported: true,
       },
       {
-        previewableId: "App.tsx:Component2",
+        id: "App.tsx:Component2",
         exported: false,
       },
     ]);
@@ -125,11 +125,11 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:DeclaredFunction",
+        id: "App.tsx:DeclaredFunction",
         exported: true,
       },
       {
-        previewableId: "App.tsx:ConstantFunction",
+        id: "App.tsx:ConstantFunction",
         exported: false,
       },
     ]);
@@ -146,7 +146,7 @@ export default () => {
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:default",
+        id: "App.tsx:default",
         exported: true,
       },
     ]);
@@ -163,7 +163,7 @@ export default function test(){
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:test",
+        id: "App.tsx:test",
         exported: true,
       },
     ]);
@@ -180,7 +180,7 @@ export default function(){
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        previewableId: "App.tsx:default",
+        id: "App.tsx:default",
         exported: true,
       },
     ]);
@@ -206,9 +206,9 @@ export const Primary = () => ({
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: {
-          previewableId: "MyComponent.vue:MyComponent",
+          id: "MyComponent.vue:MyComponent",
         },
       },
     ]);
@@ -243,7 +243,7 @@ export const Primary = () => ({
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
     ]);
@@ -282,9 +282,9 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: {
-          previewableId: "MyComponent.vue:MyComponent",
+          id: "MyComponent.vue:MyComponent",
         },
       },
     ]);
@@ -342,7 +342,7 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Primary",
+        id: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
     ]);
@@ -387,15 +387,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Example",
+        id: "App.stories.tsx:Example",
         associatedComponent: {
-          previewableId: "MyComponent.vue:MyComponent",
+          id: "MyComponent.vue:MyComponent",
         },
       },
       {
-        previewableId: "App.stories.tsx:NoArgs",
+        id: "App.stories.tsx:NoArgs",
         associatedComponent: {
-          previewableId: "MyComponent.vue:MyComponent",
+          id: "MyComponent.vue:MyComponent",
         },
       },
     ]);
@@ -443,11 +443,11 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        previewableId: "App.stories.tsx:Example",
+        id: "App.stories.tsx:Example",
         associatedComponent: null,
       },
       {
-        previewableId: "App.stories.tsx:NoArgs",
+        id: "App.stories.tsx:NoArgs",
         associatedComponent: null,
       },
     ]);

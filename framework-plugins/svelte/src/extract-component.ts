@@ -24,7 +24,7 @@ export async function extractSvelteComponents(
     }
     return [
       {
-        previewableId: generatePreviewableId({
+        id: generatePreviewableId({
           filePath: path.relative(rootDir, absoluteFilePath),
           name: inferComponentNameFromSveltePath(absoluteFilePath),
         }),
@@ -43,38 +43,33 @@ export async function extractSvelteComponents(
       return [];
     }
     return (
-      await extractCsf3Stories(
-        rootDir,
-        resolver,
-        sourceFile,
-        async (previewableId) => {
-          const { filePath } = decodePreviewableId(previewableId);
-          const component = (
-            await extractSvelteComponents(
-              reader,
-              resolver,
-              rootDir,
-              path.join(rootDir, filePath)
-            )
-          ).find((c) => c.previewableId === previewableId);
-          if (!component || !("extractProps" in component)) {
-            return {
-              props: UNKNOWN_TYPE,
-              types: {},
-            };
-          }
-          return component.extractProps();
+      await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
+        const { filePath } = decodePreviewableId(id);
+        const component = (
+          await extractSvelteComponents(
+            reader,
+            resolver,
+            rootDir,
+            path.join(rootDir, filePath)
+          )
+        ).find((c) => c.id === id);
+        if (!component || !("extractProps" in component)) {
+          return {
+            props: UNKNOWN_TYPE,
+            types: {},
+          };
         }
-      )
+        return component.extractProps();
+      })
     ).map((c) => {
       if (
         !("associatedComponent" in c) ||
-        !c.associatedComponent?.previewableId.includes(".svelte.ts:")
+        !c.associatedComponent?.id.includes(".svelte.ts:")
       ) {
         return c;
       }
       const { filePath: associatedComponentFilePath } = decodePreviewableId(
-        c.associatedComponent.previewableId
+        c.associatedComponent.id
       );
       const associatedComponentSvelteFilePath = stripTsExtension(
         associatedComponentFilePath
@@ -83,7 +78,7 @@ export async function extractSvelteComponents(
         ...c,
         associatedComponent: {
           ...c.associatedComponent,
-          previewableId: generatePreviewableId({
+          id: generatePreviewableId({
             filePath: associatedComponentSvelteFilePath,
             name: inferComponentNameFromSveltePath(
               associatedComponentSvelteFilePath
