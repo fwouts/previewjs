@@ -1,5 +1,5 @@
 import type {
-  BaseComponent,
+  BasePreviewable,
   BasicComponent,
   Component,
   Story,
@@ -101,7 +101,7 @@ export async function extractVueComponents(
   const args = extractArgs(sourceFile);
 
   async function extractComponentOrStory(
-    baseComponent: BaseComponent,
+    basePreviewable: BasePreviewable,
     node: ts.Node,
     name: string
   ): Promise<Component | Story | null> {
@@ -114,7 +114,7 @@ export async function extractVueComponents(
         storiesInfo.component
       );
       return {
-        ...baseComponent,
+        ...basePreviewable,
         extractArgs: async () => ({
           sourcePosition: {
             start: storyArgs.getStart(),
@@ -130,7 +130,7 @@ export async function extractVueComponents(
       const returnType = callSignature.getReturnType();
       if (isJsxElement(returnType)) {
         return {
-          ...baseComponent,
+          ...basePreviewable,
           exported: isExported,
           extractProps: async () => ({
             // TODO: Handle JSX properties.
@@ -147,7 +147,7 @@ export async function extractVueComponents(
           storiesInfo.component
         );
         return {
-          ...baseComponent,
+          ...basePreviewable,
           extractArgs: async () => null,
           associatedComponent,
         };

@@ -22,12 +22,12 @@ export type ComponentAnalyzerFactory = (options: {
   logger?: Logger;
 }) => ComponentAnalyzer;
 
-export interface BaseComponent {
+export interface BasePreviewable {
   previewableId: string;
   sourcePosition: FileSourcePosition;
 }
 
-export interface Component extends BaseComponent {
+export interface Component extends BasePreviewable {
   exported: boolean;
   extractProps: () => Promise<ComponentProps>;
 }
@@ -37,7 +37,7 @@ export interface ComponentProps {
   types: CollectedTypes;
 }
 
-export interface Story extends BaseComponent {
+export interface Story extends BasePreviewable {
   extractArgs: () => Promise<StoryArgs | null>;
   associatedComponent: BasicComponent | null;
 }

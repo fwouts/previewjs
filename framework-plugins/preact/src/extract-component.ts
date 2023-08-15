@@ -1,5 +1,5 @@
 import type {
-  BaseComponent,
+  BasePreviewable,
   BasicComponent,
   Component,
   Story,
@@ -75,7 +75,7 @@ export async function extractPreactComponents(
   const nameToExportedName = helpers.extractExportedNames(sourceFile);
 
   async function extractComponentOrStory(
-    baseComponent: BaseComponent,
+    basePreviewable: BasePreviewable,
     node: ts.Node,
     name: string
   ): Promise<Component | Story | null> {
@@ -97,7 +97,7 @@ export async function extractPreactComponents(
         storiesInfo.component
       );
       return {
-        ...baseComponent,
+        ...basePreviewable,
         extractArgs: async () =>
           storyArgs
             ? {
@@ -113,7 +113,7 @@ export async function extractPreactComponents(
     }
     if (signature) {
       return {
-        ...baseComponent,
+        ...basePreviewable,
         exported: isExported,
         extractProps: async () =>
           analyzePreactComponent(logger, resolver, signature),
