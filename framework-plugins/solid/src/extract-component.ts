@@ -5,15 +5,15 @@ import type {
   Story,
 } from "@previewjs/component-analyzer-api";
 import {
-  decodeComponentId,
-  generateComponentId,
+  decodePreviewableId,
+  generatePreviewableId,
 } from "@previewjs/component-analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
   extractCsf3Stories,
   extractStoriesInfo,
-  resolveComponentId,
+  resolvePreviewableId,
 } from "@previewjs/storybook-helpers";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
@@ -127,7 +127,7 @@ export async function extractSolidComponents(
   for (const [name, statement, node] of functions) {
     const component = await extractComponentOrStory(
       {
-        componentId: generateComponentId({
+        previewableId: generatePreviewableId({
           filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
@@ -150,8 +150,8 @@ export async function extractSolidComponents(
       rootDir,
       resolver,
       sourceFile,
-      async (componentId) => {
-        const { filePath } = decodeComponentId(componentId);
+      async (previewableId) => {
+        const { filePath } = decodePreviewableId(previewableId);
         const component = (
           await extractSolidComponents(
             logger,
@@ -159,7 +159,7 @@ export async function extractSolidComponents(
             rootDir,
             path.join(rootDir, filePath)
           )
-        ).find((c) => c.componentId === componentId);
+        ).find((c) => c.previewableId === previewableId);
         if (!component || !("extractProps" in component)) {
           return {
             props: UNKNOWN_TYPE,
@@ -178,14 +178,14 @@ function extractStoryAssociatedComponent(
   rootDir: string,
   component: ts.Expression | null
 ): BasicComponent | null {
-  const resolvedStoriesComponentId = resolveComponentId(
+  const resolvedStoriesPreviewableId = resolvePreviewableId(
     rootDir,
     resolver.checker,
     component
   );
-  return component && resolvedStoriesComponentId
+  return component && resolvedStoriesPreviewableId
     ? {
-        componentId: resolvedStoriesComponentId,
+        previewableId: resolvedStoriesPreviewableId,
         extractProps: async () => {
           const signature = extractComponentSignature(
             resolver.checker,

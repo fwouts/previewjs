@@ -1,5 +1,5 @@
 import { RPCs } from "@previewjs/api";
-import { decodeComponentId } from "@previewjs/component-analyzer-api";
+import { decodePreviewableId } from "@previewjs/component-analyzer-api";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
@@ -105,8 +105,8 @@ export function detectComponents(
         path.relative(workspace.rootDir, absoluteFilePath).replace(/\\/g, "/")
       )
     );
-    const shouldRecycle = ({ componentId }: { componentId: string }) => {
-      const filePath = decodeComponentId(componentId).filePath;
+    const shouldRecycle = ({ previewableId }: { previewableId: string }) => {
+      const filePath = decodePreviewableId(previewableId).filePath;
       return filePathsSet.has(filePath) && !refreshedFilePaths.has(filePath);
     };
     const recycledComponents = existingCache.components.filter(shouldRecycle);
@@ -160,16 +160,16 @@ async function detectComponentsCore(
   logger.debug(`Done running component detection`);
   for (const component of found.components) {
     components.push({
-      componentId: component.componentId,
+      previewableId: component.previewableId,
       sourcePosition: component.sourcePosition,
       exported: component.exported,
     });
   }
   for (const story of found.stories) {
     stories.push({
-      componentId: story.componentId,
+      previewableId: story.previewableId,
       sourcePosition: story.sourcePosition,
-      associatedComponentId: story.associatedComponent?.componentId || null,
+      associatedComponentId: story.associatedComponent?.previewableId || null,
     });
   }
   return { components, stories };

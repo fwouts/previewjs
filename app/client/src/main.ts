@@ -21,7 +21,7 @@ window.addEventListener("message", (event: MessageEvent) => {
     history.pushState(
       null,
       "",
-      `/?p=${encodeURIComponent(event.data.componentId)}`
+      `/?p=${encodeURIComponent(event.data.previewableId)}`
     );
     onUrlChanged().catch(console.error);
   }
@@ -34,21 +34,21 @@ onUrlChanged().catch(console.error);
 
 async function onUrlChanged() {
   const urlParams = new URLSearchParams(document.location.search);
-  const componentId = urlParams.get("p") || "";
-  if (!componentId.includes(":")) {
+  const previewableId = urlParams.get("p") || "";
+  if (!previewableId.includes(":")) {
     return;
   }
-  iframeController.resetIframe(componentId);
+  iframeController.resetIframe(previewableId);
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
-    componentIds: [componentId],
+    previewableIds: [previewableId],
   });
-  const props = computePropsResponse.props[componentId]!;
+  const props = computePropsResponse.props[previewableId]!;
   const autogenCallbackProps = await generateCallbackProps(
     props,
     computePropsResponse.types
   );
   iframeController.loadComponent({
-    componentId,
+    previewableId,
     propsAssignmentSource: transpile(
       await generatePropsAssignmentSource(
         props,

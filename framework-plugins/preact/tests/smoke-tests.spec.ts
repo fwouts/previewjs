@@ -9,7 +9,7 @@ test.describe.parallel("smoke tests", () => {
   smokeTests({
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
-    componentIdsPerProject: {
+    previewableIdsPerProject: {
       "preact-ts": ["src/components/app.tsx:App"],
       "vite-storybook-js": [
         "src/stories/Button.stories.jsx:Primary",

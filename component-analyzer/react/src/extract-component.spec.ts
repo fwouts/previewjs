@@ -119,11 +119,11 @@ export const AlsoNotAStory = {
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:DeclaredFunction",
+        previewableId: "App.tsx:DeclaredFunction",
         exported: false,
       },
       {
-        componentId: "App.tsx:ConstantFunction",
+        previewableId: "App.tsx:ConstantFunction",
         exported: false,
       },
       // Note: this isn't detected as of October 2021.
@@ -132,31 +132,31 @@ export const AlsoNotAStory = {
       //   exported: false,
       // },
       {
-        componentId: "App.tsx:ClassComponent1",
+        previewableId: "App.tsx:ClassComponent1",
         exported: false,
       },
       {
-        componentId: "App.tsx:ClassComponent2",
+        previewableId: "App.tsx:ClassComponent2",
         exported: false,
       },
       {
-        componentId: "App.tsx:ForwardRef",
+        previewableId: "App.tsx:ForwardRef",
         exported: false,
       },
       {
-        componentId: "App.tsx:NextComponent",
+        previewableId: "App.tsx:NextComponent",
         exported: false,
       },
       {
-        componentId: "App.tsx:Pure",
+        previewableId: "App.tsx:Pure",
         exported: true,
       },
       {
-        componentId: "App.tsx:NotObjectProps",
+        previewableId: "App.tsx:NotObjectProps",
         exported: true,
       },
       {
-        componentId: "App.tsx:MissingType",
+        previewableId: "App.tsx:MissingType",
         exported: true,
       },
     ]);
@@ -175,11 +175,11 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:DeclaredFunction",
+        previewableId: "App.tsx:DeclaredFunction",
         exported: false,
       },
       {
-        componentId: "App.tsx:ConstantFunction",
+        previewableId: "App.tsx:ConstantFunction",
         exported: false,
       },
     ]);
@@ -198,7 +198,7 @@ export default A;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:A",
+        previewableId: "App.tsx:A",
         exported: true,
       },
     ]);
@@ -215,7 +215,7 @@ export default () => {
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:default",
+        previewableId: "App.tsx:default",
         exported: true,
       },
     ]);
@@ -232,7 +232,7 @@ export default function test(){
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:test",
+        previewableId: "App.tsx:test",
         exported: true,
       },
     ]);
@@ -249,7 +249,7 @@ export default function(){
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:default",
+        previewableId: "App.tsx:default",
         exported: true,
       },
     ]);
@@ -286,13 +286,13 @@ export const NotStory = (props) => <Button {...props} />;
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: {
-          componentId: "App.tsx:default",
+          previewableId: "App.tsx:default",
         },
       },
       {
-        componentId: "App.stories.tsx:NotStory",
+        previewableId: "App.stories.tsx:NotStory",
         exported: true,
       },
     ]);
@@ -326,11 +326,11 @@ export const NotStory = (props) => <Button {...props} />;
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
       {
-        componentId: "App.stories.tsx:NotStory",
+        previewableId: "App.stories.tsx:NotStory",
         exported: true,
       },
     ]);
@@ -362,13 +362,13 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Template",
+        previewableId: "App.stories.tsx:Template",
         exported: false,
       },
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: {
-          componentId: "App.tsx:default",
+          previewableId: "App.tsx:default",
         },
       },
     ]);
@@ -419,11 +419,11 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Template",
+        previewableId: "App.stories.tsx:Template",
         exported: false,
       },
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
     ]);
@@ -470,15 +470,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Example",
+        previewableId: "App.stories.tsx:Example",
         associatedComponent: {
-          componentId: "App.tsx:default",
+          previewableId: "App.tsx:default",
         },
       },
       {
-        componentId: "App.stories.tsx:NoArgs",
+        previewableId: "App.stories.tsx:NoArgs",
         associatedComponent: {
-          componentId: "App.tsx:default",
+          previewableId: "App.tsx:default",
         },
       },
     ]);
@@ -528,11 +528,11 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Example",
+        previewableId: "App.stories.tsx:Example",
         associatedComponent: null,
       },
       {
-        componentId: "App.stories.tsx:NoArgs",
+        previewableId: "App.stories.tsx:NoArgs",
         associatedComponent: null,
       },
     ]);

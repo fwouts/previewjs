@@ -5,15 +5,15 @@ import type {
   Story,
 } from "@previewjs/component-analyzer-api";
 import {
-  decodeComponentId,
-  generateComponentId,
+  decodePreviewableId,
+  generatePreviewableId,
 } from "@previewjs/component-analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import {
   extractArgs,
   extractCsf3Stories,
   extractStoriesInfo,
-  resolveComponentId,
+  resolvePreviewableId,
 } from "@previewjs/storybook-helpers";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
@@ -38,7 +38,7 @@ export async function extractVueComponents(
     }
     return [
       {
-        componentId: generateComponentId({
+        previewableId: generatePreviewableId({
           filePath: path.relative(rootDir, absoluteFilePath),
           name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
         }),
@@ -159,7 +159,7 @@ export async function extractVueComponents(
   for (const [name, statement, node] of functions) {
     const component = await extractComponentOrStory(
       {
-        componentId: generateComponentId({
+        previewableId: generatePreviewableId({
           filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
@@ -183,8 +183,8 @@ export async function extractVueComponents(
         rootDir,
         resolver,
         sourceFile,
-        async (componentId) => {
-          const { filePath } = decodeComponentId(componentId);
+        async (previewableId) => {
+          const { filePath } = decodePreviewableId(previewableId);
           const absoluteFilePath = path.join(rootDir, filePath);
           const vueComponents = await extractVueComponents(
             reader,
@@ -194,7 +194,7 @@ export async function extractVueComponents(
           );
           const component = absoluteFilePath.endsWith(".vue.ts")
             ? vueComponents[0]
-            : vueComponents.find((c) => c.componentId === componentId);
+            : vueComponents.find((c) => c.previewableId === previewableId);
           if (!component || !("extractProps" in component)) {
             return {
               props: UNKNOWN_TYPE,
@@ -207,12 +207,12 @@ export async function extractVueComponents(
     ).map((c) => {
       if (
         !("associatedComponent" in c) ||
-        !c.associatedComponent?.componentId.includes(".vue.ts:")
+        !c.associatedComponent?.previewableId.includes(".vue.ts:")
       ) {
         return c;
       }
-      const { filePath: associatedComponentFilePath } = decodeComponentId(
-        c.associatedComponent.componentId
+      const { filePath: associatedComponentFilePath } = decodePreviewableId(
+        c.associatedComponent.previewableId
       );
       const associatedComponentVueFilePath = stripTsExtension(
         associatedComponentFilePath
@@ -221,7 +221,7 @@ export async function extractVueComponents(
         ...c,
         associatedComponent: {
           ...c.associatedComponent,
-          componentId: generateComponentId({
+          previewableId: generatePreviewableId({
             filePath: associatedComponentVueFilePath,
             name: inferComponentNameFromVuePath(associatedComponentVueFilePath),
           }),
@@ -250,19 +250,19 @@ function extractStoryAssociatedComponent(
   resolver: TypeResolver,
   component: ts.Expression | null
 ): BasicComponent | null {
-  const resolvedStoriesComponentId = resolveComponentId(
+  const resolvedStoriesPreviewableId = resolvePreviewableId(
     rootDir,
     resolver.checker,
     component
   );
-  if (!resolvedStoriesComponentId) {
+  if (!resolvedStoriesPreviewableId) {
     return null;
   }
-  const { filePath } = decodeComponentId(resolvedStoriesComponentId);
+  const { filePath } = decodePreviewableId(resolvedStoriesPreviewableId);
   const vueFilePath = extractVueFilePath(filePath);
   if (vueFilePath) {
     return {
-      componentId: generateComponentId({
+      previewableId: generatePreviewableId({
         filePath: vueFilePath,
         name: inferComponentNameFromVuePath(vueFilePath),
       }),
@@ -271,7 +271,7 @@ function extractStoryAssociatedComponent(
     };
   } else {
     return {
-      componentId: resolvedStoriesComponentId,
+      previewableId: resolvedStoriesPreviewableId,
       extractProps: async () =>
         // TODO: Handle JSX properties.
         ({

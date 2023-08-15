@@ -23,7 +23,7 @@ export type ComponentAnalyzerFactory = (options: {
 }) => ComponentAnalyzer;
 
 export interface BaseComponent {
-  componentId: string;
+  previewableId: string;
   sourcePosition: FileSourcePosition;
 }
 
@@ -52,4 +52,4 @@ export type FileSourcePosition = {
   end: number;
 };
 
-export type BasicComponent = Pick<Component, "componentId" | "extractProps">;
+export type BasicComponent = Pick<Component, "previewableId" | "extractProps">;

@@ -6,7 +6,7 @@ export async function updateComponent({
   wrapperModule,
   wrapperName,
   componentModule,
-  componentId,
+  previewableId,
   renderId,
   shouldAbortRender,
   load,
@@ -14,7 +14,7 @@ export async function updateComponent({
   wrapperModule: any;
   wrapperName: string;
   componentModule: any;
-  componentId: string;
+  previewableId: string;
   renderId: number;
   shouldAbortRender: () => boolean;
   load: RendererLoader;
@@ -31,7 +31,7 @@ export async function updateComponent({
       wrapperModule,
       wrapperName,
       componentModule,
-      componentId,
+      previewableId,
       renderId,
       shouldAbortRender,
     });
@@ -46,7 +46,7 @@ export async function updateComponent({
       );
     sendMessageFromPreview({
       kind: "rendering-setup",
-      componentId,
+      previewableId,
     });
     await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),

@@ -83,7 +83,7 @@ data class AnalyzeFileResponse(
 data class AnalyzedFileComponent(
     val start: Int,
     val end: Int,
-    val componentId: String
+    val previewableId: String
 )
 
 data class StartPreviewRequest(

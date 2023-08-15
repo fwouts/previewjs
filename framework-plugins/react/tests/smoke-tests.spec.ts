@@ -9,7 +9,7 @@ test.describe.parallel("smoke tests", () => {
   smokeTests({
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
-    componentIdsPerProject: {
+    previewableIdsPerProject: {
       aliases: ["src/App.tsx:App"],
       "aliases-via-jsconfig": ["src/App.js:App"],
       "class-components-js": ["src/App.jsx:App"],

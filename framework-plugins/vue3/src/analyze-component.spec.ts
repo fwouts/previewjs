@@ -1,4 +1,4 @@
-import { decodeComponentId } from "@previewjs/component-analyzer-api";
+import { decodePreviewableId } from "@previewjs/component-analyzer-api";
 import type { FrameworkPlugin } from "@previewjs/core";
 import {
   BOOLEAN_TYPE,
@@ -306,7 +306,7 @@ export default defineComponent({
     const component = (
       await frameworkPlugin.detectComponents([MAIN_FILE])
     ).components.find(
-      (c) => decodeComponentId(c.componentId).name === componentName
+      (c) => decodePreviewableId(c.previewableId).name === componentName
     );
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

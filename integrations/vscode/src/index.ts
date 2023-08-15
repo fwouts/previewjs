@@ -127,12 +127,12 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         return components.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
-          const componentName = c.componentId.substring(
-            c.componentId.indexOf(":") + 1
+          const componentName = c.previewableId.substring(
+            c.previewableId.indexOf(":") + 1
           );
           lens.command = {
             command: Command.START,
-            arguments: [document, c.componentId],
+            arguments: [document, c.previewableId],
             title: `Open ${componentName} in Preview.js`,
           };
           return lens;
@@ -198,7 +198,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
   vscode.commands.registerCommand(
     Command.START,
     catchErrors(
-      async (document?: vscode.TextDocument, componentId?: string) => {
+      async (document?: vscode.TextDocument, previewableId?: string) => {
         const state = await currentState;
         if (!state) {
           vscode.window.showErrorMessage(
@@ -206,9 +206,9 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
           );
           return;
         }
-        if (typeof componentId !== "string") {
+        if (typeof previewableId !== "string") {
           // If invoked from clicking the button, the value may be { groupId: 0 }.
-          componentId = undefined;
+          previewableId = undefined;
         }
         const editor = vscode.window.activeTextEditor;
         if (!document?.fileName) {
@@ -226,7 +226,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
           );
           return;
         }
-        if (componentId === undefined) {
+        if (previewableId === undefined) {
           const offset = editor?.selection.active
             ? document.offsetAt(editor.selection.active)
             : 0;
@@ -240,12 +240,12 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
             );
             return;
           }
-          componentId = component.componentId;
+          previewableId = component.previewableId;
         }
         const preview = await ensurePreviewServerStarted(state, workspaceId);
         runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
         runningServerStatusBarItem.show();
-        updatePreviewPanel(state, preview.url, componentId, onError);
+        updatePreviewPanel(state, preview.url, previewableId, onError);
       }
     )
   );

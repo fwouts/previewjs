@@ -4,7 +4,7 @@ import type { PreviewJsState } from "./state";
 export function updatePreviewPanel(
   state: PreviewJsState,
   previewBaseUrl: string,
-  componentId: string,
+  previewableId: string,
   onError: (e: unknown) => void
 ) {
   if (!state.previewPanel) {
@@ -74,8 +74,8 @@ export function updatePreviewPanel(
         window.addEventListener("load", () => {
           iframe = document.getElementById('preview-iframe');
           iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(
-      componentId
-    )}#panel";
+            previewableId
+          )}#panel";
         });
         window.addEventListener("message", (event) => {
           const data = event.data;
@@ -83,7 +83,7 @@ export function updatePreviewPanel(
             if (iframe.src.startsWith(data.previewBaseUrl)) {
               iframe.contentWindow.postMessage(data, data.previewBaseUrl);
             } else {
-              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.componentId)}#panel\`;
+              iframe.src = \`\${data.previewBaseUrl}?p=\${encodeURIComponent(data.previewableId)}#panel\`;
             }
           } else {
             // Other messages come from the preview iframe.
@@ -100,7 +100,7 @@ export function updatePreviewPanel(
     state.previewPanel.webview.postMessage({
       kind: "navigate",
       previewBaseUrl,
-      componentId,
+      previewableId,
     });
   }
   state.previewPanel.reveal(vscode.ViewColumn.Beside, true);

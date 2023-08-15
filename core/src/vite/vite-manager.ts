@@ -1,5 +1,5 @@
 import viteTsconfigPaths from "@fwouts/vite-tsconfig-paths";
-import { decodeComponentId } from "@previewjs/component-analyzer-api";
+import { decodePreviewableId } from "@previewjs/component-analyzer-api";
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
@@ -50,13 +50,13 @@ export class ViteManager {
     this.middleware = router;
   }
 
-  async loadIndexHtml(url: string, componentId: string) {
+  async loadIndexHtml(url: string, previewableId: string) {
     const template = await fs.readFile(
       this.options.shadowHtmlFilePath,
       "utf-8"
     );
     const viteServer = await this.awaitViteServerReady();
-    const { filePath } = decodeComponentId(componentId);
+    const { filePath } = decodePreviewableId(previewableId);
     const componentPath = filePath.replace(/\\/g, "/");
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
@@ -113,7 +113,7 @@ export class ViteManager {
         latestComponentModule = componentModule;
         refresh = initPreview({
           componentModule,
-          componentId: ${JSON.stringify(componentId)},
+          previewableId: ${JSON.stringify(previewableId)},
           wrapperModule,
           wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
         });

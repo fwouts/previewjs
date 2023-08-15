@@ -85,15 +85,15 @@ export default Component1;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:Component1",
+        previewableId: "App.tsx:Component1",
         exported: true,
       },
       {
-        componentId: "App.tsx:Component2",
+        previewableId: "App.tsx:Component2",
         exported: false,
       },
       {
-        componentId: "App.tsx:Component3",
+        previewableId: "App.tsx:Component3",
         exported: false,
       },
     ]);
@@ -112,11 +112,11 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     );
     expect(await extract(APP_TSX)).toMatchObject([
       {
-        componentId: "App.tsx:DeclaredFunction",
+        previewableId: "App.tsx:DeclaredFunction",
         exported: true,
       },
       {
-        componentId: "App.tsx:ConstantFunction",
+        previewableId: "App.tsx:ConstantFunction",
         exported: false,
       },
     ]);
@@ -141,13 +141,13 @@ export const NotStory = (props) => <Button {...props} />;
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: {
-          componentId: "App.tsx:Button",
+          previewableId: "App.tsx:Button",
         },
       },
       {
-        componentId: "App.stories.tsx:NotStory",
+        previewableId: "App.stories.tsx:NotStory",
         exported: true,
       },
     ]);
@@ -181,11 +181,11 @@ export const NotStory = (props) => <Button {...props} />;
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
       {
-        componentId: "App.stories.tsx:NotStory",
+        previewableId: "App.stories.tsx:NotStory",
         exported: true,
       },
     ]);
@@ -217,13 +217,13 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Template",
+        previewableId: "App.stories.tsx:Template",
         exported: false,
       },
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: {
-          componentId: "App.tsx:Button",
+          previewableId: "App.tsx:Button",
         },
       },
     ]);
@@ -274,11 +274,11 @@ Primary.args = {
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Template",
+        previewableId: "App.stories.tsx:Template",
         exported: false,
       },
       {
-        componentId: "App.stories.tsx:Primary",
+        previewableId: "App.stories.tsx:Primary",
         associatedComponent: null,
       },
     ]);
@@ -322,15 +322,15 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Example",
+        previewableId: "App.stories.tsx:Example",
         associatedComponent: {
-          componentId: "App.tsx:Button",
+          previewableId: "App.tsx:Button",
         },
       },
       {
-        componentId: "App.stories.tsx:NoArgs",
+        previewableId: "App.stories.tsx:NoArgs",
         associatedComponent: {
-          componentId: "App.tsx:Button",
+          previewableId: "App.tsx:Button",
         },
       },
     ]);
@@ -377,11 +377,11 @@ export function NotStory() {}
     const extractedStories = await extract(APP_STORIES_TSX);
     expect(extractedStories).toMatchObject([
       {
-        componentId: "App.stories.tsx:Example",
+        previewableId: "App.stories.tsx:Example",
         associatedComponent: null,
       },
       {
-        componentId: "App.stories.tsx:NoArgs",
+        previewableId: "App.stories.tsx:NoArgs",
         associatedComponent: null,
       },
     ]);

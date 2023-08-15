@@ -1,5 +1,5 @@
 import type { ComponentAnalyzer } from "@previewjs/component-analyzer-api";
-import { decodeComponentId } from "@previewjs/component-analyzer-api";
+import { decodePreviewableId } from "@previewjs/component-analyzer-api";
 import {
   ANY_TYPE,
   arrayType,
@@ -550,7 +550,7 @@ A.propTypes = {
     const component = (
       await analyzer.detectComponents([MAIN_FILE_NAME])
     ).components.find(
-      (c) => decodeComponentId(c.componentId).name === componentName
+      (c) => decodePreviewableId(c.previewableId).name === componentName
     );
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

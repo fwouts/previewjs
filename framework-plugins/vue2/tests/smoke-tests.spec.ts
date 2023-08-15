@@ -9,7 +9,7 @@ test.describe.parallel("smoke tests", () => {
   smokeTests({
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
-    componentIdsPerProject: {
+    previewableIdsPerProject: {
       "nuxt2-app": ["pages/index.vue:index"],
       "vue2-app": ["src/App.vue:App"],
       "vue2-storybook": [

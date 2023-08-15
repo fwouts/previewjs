@@ -9,7 +9,7 @@ test.describe.parallel("smoke tests", () => {
   smokeTests({
     projectsDir: path.join(__dirname, "apps"),
     pluginFactory,
-    componentIdsPerProject: {
+    previewableIdsPerProject: {
       svelte3: ["src/App.svelte:App"],
       svelte4: ["src/App.svelte:App"],
       ...(parseInt(process.versions.node.split(".")[0]!) >= 16

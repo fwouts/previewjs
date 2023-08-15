@@ -35,7 +35,7 @@ class OpenPreviewAction : AnAction() {
             }
             val component =
                 components.find { c -> offset != null && offset >= c.start && offset <= c.end } ?: components[0]
-            projectService.openPreview(selectedFile.path, component.componentId)
+            projectService.openPreview(selectedFile.path, component.previewableId)
         }
     }
 

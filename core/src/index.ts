@@ -1,6 +1,6 @@
 import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
 import { RPCs } from "@previewjs/api";
-import { decodeComponentId } from "@previewjs/component-analyzer-api";
+import { decodePreviewableId } from "@previewjs/component-analyzer-api";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -68,63 +68,65 @@ export async function createWorkspace({
     );
   }
   const router = new ApiRouter(logger);
-  router.registerRPC(RPCs.ComputeProps, async ({ componentIds }) => {
-    logger.debug(`Computing props for components: ${componentIds.join(", ")}`);
+  router.registerRPC(RPCs.ComputeProps, async ({ previewableIds }) => {
+    logger.debug(
+      `Computing props for components: ${previewableIds.join(", ")}`
+    );
     const detected = await frameworkPlugin.detectComponents([
       ...new Set(
-        componentIds.map((c) =>
-          path.join(rootDir, decodeComponentId(c).filePath)
+        previewableIds.map((c) =>
+          path.join(rootDir, decodePreviewableId(c).filePath)
         )
       ),
     ]);
     logger.debug(
       `Detected ${detected.components.length} components and ${detected.stories.length} stories`
     );
-    const componentIdToDetectedComponent = Object.fromEntries(
-      detected.components.map((c) => [c.componentId, c])
+    const previewableIdToDetectedComponent = Object.fromEntries(
+      detected.components.map((c) => [c.previewableId, c])
     );
-    const componentIdToDetectedStory = Object.fromEntries(
-      detected.stories.map((c) => [c.componentId, c])
+    const previewableIdToDetectedStory = Object.fromEntries(
+      detected.stories.map((c) => [c.previewableId, c])
     );
     const propsPerComponentId: {
       [componentId: string]: ValueType;
     } = {};
-    const argsPerStoryComponentId: {
-      [storyComponentId: string]: RPCs.StoryArgs | null;
+    const argsPerStoryId: {
+      [storyId: string]: RPCs.StoryArgs | null;
     } = {};
     let types: CollectedTypes = {};
-    for (const componentId of componentIds) {
-      const component = componentIdToDetectedComponent[componentId];
-      const story = componentIdToDetectedStory[componentId];
+    for (const previewableId of previewableIds) {
+      const component = previewableIdToDetectedComponent[previewableId];
+      const story = previewableIdToDetectedStory[previewableId];
       let props: ValueType;
       let componentTypes: CollectedTypes;
       if (component) {
-        logger.debug(`Analyzing component: ${componentId}`);
+        logger.debug(`Analyzing component: ${previewableId}`);
         ({ props, types: componentTypes } = await component.extractProps());
-        propsPerComponentId[componentId] = props;
-        logger.debug(`Done analyzing: ${componentId}`);
+        propsPerComponentId[previewableId] = props;
+        logger.debug(`Done analyzing: ${previewableId}`);
       } else if (story) {
         if (story.associatedComponent) {
-          logger.debug(`Analyzing story: ${componentId}`);
+          logger.debug(`Analyzing story: ${previewableId}`);
           ({ props, types: componentTypes } =
             await story.associatedComponent.extractProps());
-          logger.debug(`Done analyzing: ${componentId}`);
+          logger.debug(`Done analyzing: ${previewableId}`);
         } else {
-          logger.debug(`No associated component for story: ${componentId}`);
+          logger.debug(`No associated component for story: ${previewableId}`);
           props = UNKNOWN_TYPE;
           componentTypes = {};
         }
-        argsPerStoryComponentId[componentId] = await story.extractArgs();
+        argsPerStoryId[previewableId] = await story.extractArgs();
       } else {
-        const { filePath, name } = decodeComponentId(componentId);
+        const { filePath, name } = decodePreviewableId(previewableId);
         throw new Error(`Component ${name} not detected in ${filePath}.`);
       }
-      propsPerComponentId[componentId] = props;
+      propsPerComponentId[previewableId] = props;
       types = { ...types, ...componentTypes };
     }
     return {
       props: propsPerComponentId,
-      args: argsPerStoryComponentId,
+      args: argsPerStoryId,
       types,
     };
   });
