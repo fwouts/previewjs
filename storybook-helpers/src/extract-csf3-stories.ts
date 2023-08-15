@@ -71,13 +71,14 @@ export async function extractCsf3Stories(
           name,
         }),
         offsets: [statement.getStart(), statement.getEnd()],
-        args: args
-          ? {
-              start: args.getStart(),
-              end: args.getEnd(),
-              value: await parseSerializableValue(args),
-            }
-          : null,
+        extractArgs: async () =>
+          args
+            ? {
+                start: args.getStart(),
+                end: args.getEnd(),
+                value: await parseSerializableValue(args),
+              }
+            : null,
         associatedComponent: associatedComponentId
           ? {
               componentId: associatedComponentId,

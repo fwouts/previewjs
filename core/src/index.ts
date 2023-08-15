@@ -89,6 +89,9 @@ export async function createWorkspace({
     const propsPerComponentId: {
       [componentId: string]: ValueType;
     } = {};
+    const argsPerStoryComponentId: {
+      [storyComponentId: string]: RPCs.StoryArgs | null;
+    } = {};
     let types: CollectedTypes = {};
     for (const componentId of componentIds) {
       const component = componentIdToDetectedComponent[componentId];
@@ -111,6 +114,7 @@ export async function createWorkspace({
           props = UNKNOWN_TYPE;
           componentTypes = {};
         }
+        argsPerStoryComponentId[componentId] = await story.extractArgs();
       } else {
         const { filePath, name } = decodeComponentId(componentId);
         throw new Error(`Component ${name} not detected in ${filePath}.`);
@@ -120,6 +124,7 @@ export async function createWorkspace({
     }
     return {
       props: propsPerComponentId,
+      args: argsPerStoryComponentId,
       types,
     };
   });

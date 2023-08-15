@@ -112,11 +112,11 @@ export async function extractVueComponents(
       );
       return {
         ...baseComponent,
-        args: {
+        extractArgs: async () => ({
           start: storyArgs.getStart(),
           end: storyArgs.getEnd(),
           value: await parseSerializableValue(storyArgs),
-        },
+        }),
         associatedComponent,
       };
     }
@@ -143,7 +143,7 @@ export async function extractVueComponents(
         );
         return {
           ...baseComponent,
-          args: null,
+          extractArgs: async () => null,
           associatedComponent,
         };
       }

@@ -173,7 +173,6 @@ async function detectComponentsCore(
       componentId: story.componentId,
       start,
       end,
-      args: story.args,
       associatedComponentId: story.associatedComponent?.componentId || null,
     });
   }

@@ -15,6 +15,9 @@ export type ComputePropsResponse = {
   props: {
     [componentId: string]: ValueType;
   };
+  args: {
+    [storyComponentId: string]: StoryArgs | null;
+  };
   types: CollectedTypes;
 };
 
@@ -44,10 +47,11 @@ export type Story = {
   componentId: string;
   start: number;
   end: number;
-  args: {
-    start: number;
-    end: number;
-    value: SerializableValue;
-  } | null;
   associatedComponentId: string | null;
+};
+
+export type StoryArgs = {
+  start: number;
+  end: number;
+  value: SerializableValue;
 };
