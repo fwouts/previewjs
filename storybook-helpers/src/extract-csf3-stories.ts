@@ -70,12 +70,17 @@ export async function extractCsf3Stories(
           filePath: path.relative(rootDir, sourceFile.fileName),
           name,
         }),
-        offsets: [statement.getStart(), statement.getEnd()],
+        sourcePosition: {
+          start: statement.getStart(),
+          end: statement.getEnd(),
+        },
         extractArgs: async () =>
           args
             ? {
-                start: args.getStart(),
-                end: args.getEnd(),
+                sourcePosition: {
+                  start: args.getStart(),
+                  end: args.getEnd(),
+                },
                 value: await parseSerializableValue(args),
               }
             : null,

@@ -28,7 +28,10 @@ export async function extractSvelteComponents(
           filePath: path.relative(rootDir, absoluteFilePath),
           name: inferComponentNameFromSveltePath(absoluteFilePath),
         }),
-        offsets: [0, (await entry.read()).length],
+        sourcePosition: {
+          start: 0,
+          end: (await entry.read()).length,
+        },
         exported: true,
         extractProps: async () =>
           analyzeSvelteComponentFromSFC(resolver, absoluteFilePath + ".ts"),

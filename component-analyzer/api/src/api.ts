@@ -24,7 +24,7 @@ export type ComponentAnalyzerFactory = (options: {
 
 export interface BaseComponent {
   componentId: string;
-  offsets: [start: number, end: number];
+  sourcePosition: FileSourcePosition;
 }
 
 export interface Component extends BaseComponent {
@@ -43,9 +43,13 @@ export interface Story extends BaseComponent {
 }
 
 export type StoryArgs = {
+  sourcePosition: FileSourcePosition;
+  value: SerializableValue;
+};
+
+export type FileSourcePosition = {
   start: number;
   end: number;
-  value: SerializableValue;
 };
 
 export type BasicComponent = Pick<Component, "componentId" | "extractProps">;

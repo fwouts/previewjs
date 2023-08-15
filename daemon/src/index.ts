@@ -329,7 +329,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      return workspace.detectComponents({
+      const { components, stories } = await workspace.detectComponents({
         filePaths: [
           path
             .relative(
@@ -339,6 +339,13 @@ export async function startDaemon({
             .replace(/\\/g, "/"),
         ],
       });
+      return {
+        components: [...components, ...stories].map((c) => ({
+          componentId: c.componentId,
+          start: c.sourcePosition.start,
+          end: c.sourcePosition.end,
+        })),
+      };
     }
   );
 

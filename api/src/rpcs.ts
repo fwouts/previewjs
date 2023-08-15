@@ -38,20 +38,22 @@ export type DetectComponentsResponse = {
 
 export type Component = {
   componentId: string;
-  start: number;
-  end: number;
+  sourcePosition: FileSourcePosition;
   exported: boolean;
 };
 
 export type Story = {
   componentId: string;
-  start: number;
-  end: number;
+  sourcePosition: FileSourcePosition;
   associatedComponentId: string | null;
 };
 
 export type StoryArgs = {
+  sourcePosition: FileSourcePosition;
+  value: SerializableValue;
+};
+
+export type FileSourcePosition = {
   start: number;
   end: number;
-  value: SerializableValue;
 };

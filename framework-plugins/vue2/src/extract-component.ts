@@ -42,7 +42,10 @@ export async function extractVueComponents(
           filePath: path.relative(rootDir, absoluteFilePath),
           name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
         }),
-        offsets: [0, fileEntry.size()],
+        sourcePosition: {
+          start: 0,
+          end: fileEntry.size(),
+        },
         exported: true,
         extractProps: async () =>
           analyzeVueComponentFromTemplate(
@@ -113,8 +116,10 @@ export async function extractVueComponents(
       return {
         ...baseComponent,
         extractArgs: async () => ({
-          start: storyArgs.getStart(),
-          end: storyArgs.getEnd(),
+          sourcePosition: {
+            start: storyArgs.getStart(),
+            end: storyArgs.getEnd(),
+          },
           value: await parseSerializableValue(storyArgs),
         }),
         associatedComponent,
@@ -158,7 +163,10 @@ export async function extractVueComponents(
           filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
-        offsets: [statement.getStart(), statement.getEnd()],
+        sourcePosition: {
+          start: statement.getStart(),
+          end: statement.getEnd(),
+        },
       },
       node,
       name

@@ -121,7 +121,6 @@ export const AlsoNotAStory = {
       // {
       //   name: "HocComponent",
       //   exported: false,
-      //   offsets: expect.anything(),
       // },
       {
         componentId: "App.tsx:ClassComponent1",

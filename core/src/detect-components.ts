@@ -159,20 +159,16 @@ async function detectComponentsCore(
   );
   logger.debug(`Done running component detection`);
   for (const component of found.components) {
-    const [start, end] = component.offsets;
     components.push({
       componentId: component.componentId,
-      start,
-      end,
+      sourcePosition: component.sourcePosition,
       exported: component.exported,
     });
   }
   for (const story of found.stories) {
-    const [start, end] = story.offsets;
     stories.push({
       componentId: story.componentId,
-      start,
-      end,
+      sourcePosition: story.sourcePosition,
       associatedComponentId: story.associatedComponent?.componentId || null,
     });
   }

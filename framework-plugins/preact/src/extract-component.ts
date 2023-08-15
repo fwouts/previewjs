@@ -101,8 +101,10 @@ export async function extractPreactComponents(
         extractArgs: async () =>
           storyArgs
             ? {
-                start: storyArgs.getStart(),
-                end: storyArgs.getEnd(),
+                sourcePosition: {
+                  start: storyArgs.getStart(),
+                  end: storyArgs.getEnd(),
+                },
                 value: await parseSerializableValue(storyArgs),
               }
             : null,
@@ -127,7 +129,10 @@ export async function extractPreactComponents(
           filePath: path.relative(rootDir, absoluteFilePath),
           name,
         }),
-        offsets: [statement.getStart(), statement.getEnd()],
+        sourcePosition: {
+          start: statement.getStart(),
+          end: statement.getEnd(),
+        },
       },
       node,
       name
