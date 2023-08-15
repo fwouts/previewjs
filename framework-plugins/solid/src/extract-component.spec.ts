@@ -21,7 +21,7 @@ const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
 
 function assertStory(story?: Story | Component): asserts story is Story {
   if (!story || !("associatedComponent" in story)) {
-    throw new Error();
+    throw new Error("Expected a story");
   }
 }
 
