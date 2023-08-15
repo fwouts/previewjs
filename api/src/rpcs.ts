@@ -16,7 +16,7 @@ export type ComputePropsResponse = {
     [componentId: string]: ValueType;
   };
   args: {
-    [storyComponentId: string]: SerializableValue;
+    [storyComponentId: string]: StoryArgs | null;
   };
   types: CollectedTypes;
 };
@@ -48,4 +48,10 @@ export type Story = {
   start: number;
   end: number;
   associatedComponentId: string | null;
+};
+
+export type StoryArgs = {
+  start: number;
+  end: number;
+  value: SerializableValue;
 };

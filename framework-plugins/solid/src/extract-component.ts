@@ -100,13 +100,14 @@ export async function extractSolidComponents(
       );
       return {
         ...baseComponent,
-        args: storyArgs
-          ? {
-              start: storyArgs.getStart(),
-              end: storyArgs.getEnd(),
-              value: await parseSerializableValue(storyArgs),
-            }
-          : null,
+        extractArgs: async () =>
+          storyArgs
+            ? {
+                start: storyArgs.getStart(),
+                end: storyArgs.getEnd(),
+                value: await parseSerializableValue(storyArgs),
+              }
+            : null,
         associatedComponent,
       };
     }

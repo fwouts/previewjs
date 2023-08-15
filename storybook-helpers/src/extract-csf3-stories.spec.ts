@@ -63,27 +63,27 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        args: {
-          value: object([
-            {
-              kind: "key",
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
-        },
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
     ]);
+    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+      value: object([
+        {
+          kind: "key",
+          key: string("label"),
+          value: string("Hello, World!"),
+        },
+      ]),
+    });
+    expect(await extractedStories[1]?.extractArgs()).toBeNull();
   });
 
   it("resolves args to UNKNOWN when too complex", async () => {
@@ -110,20 +110,20 @@ export const Example = {
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        args: {
-          value: object([
-            {
-              kind: "key",
-              key: string("label"),
-              value: UNKNOWN,
-            },
-          ]),
-        },
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
     ]);
+    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+      value: object([
+        {
+          kind: "key",
+          key: string("label"),
+          value: UNKNOWN,
+        },
+      ]),
+    });
   });
 
   it("detects CSF 3 stories when export default uses cast", async () => {
@@ -152,27 +152,27 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        args: {
-          value: object([
-            {
-              kind: "key",
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
-        },
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
     ]);
+    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+      value: object([
+        {
+          kind: "key",
+          key: string("label"),
+          value: string("Hello, World!"),
+        },
+      ]),
+    });
+    expect(await extractedStories[1]?.extractArgs()).toBeNull();
   });
 
   it("follows default imported component definition", async () => {
@@ -202,27 +202,27 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        args: {
-          value: object([
-            {
-              kind: "key",
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
-        },
         associatedComponent: {
           componentId: "App.tsx:default",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        args: null,
         associatedComponent: {
           componentId: "App.tsx:default",
         },
       },
     ]);
+    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+      value: object([
+        {
+          kind: "key",
+          key: string("label"),
+          value: string("Hello, World!"),
+        },
+      ]),
+    });
+    expect(await extractedStories[1]?.extractArgs()).toBeNull();
   });
 
   it("follows wildcard re-exported component definition", async () => {
@@ -256,27 +256,27 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        args: {
-          value: object([
-            {
-              kind: "key",
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
-        },
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
     ]);
+    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+      value: object([
+        {
+          kind: "key",
+          key: string("label"),
+          value: string("Hello, World!"),
+        },
+      ]),
+    });
+    expect(await extractedStories[1]?.extractArgs()).toBeNull();
   });
 
   it("follows named re-exported component definition", async () => {
@@ -310,27 +310,27 @@ export function NotStory() {}
     expect(extractedStories).toMatchObject([
       {
         componentId: "App.stories.jsx:Example",
-        args: {
-          value: object([
-            {
-              kind: "key",
-              key: string("label"),
-              value: string("Hello, World!"),
-            },
-          ]),
-        },
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
       {
         componentId: "App.stories.jsx:NoArgs",
-        args: null,
         associatedComponent: {
           componentId: "App.tsx:Button",
         },
       },
     ]);
+    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+      value: object([
+        {
+          kind: "key",
+          key: string("label"),
+          value: string("Hello, World!"),
+        },
+      ]),
+    });
+    expect(await extractedStories[1]?.extractArgs()).toBeNull();
   });
 
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", async () => {

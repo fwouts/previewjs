@@ -38,12 +38,14 @@ export interface ComponentProps {
 }
 
 export interface Story extends BaseComponent {
-  extractArgs: () => Promise<{
-    start: number;
-    end: number;
-    value: SerializableValue;
-  } | null>;
+  extractArgs: () => Promise<StoryArgs | null>;
   associatedComponent: BasicComponent | null;
 }
+
+export type StoryArgs = {
+  start: number;
+  end: number;
+  value: SerializableValue;
+};
 
 export type BasicComponent = Pick<Component, "componentId" | "extractProps">;
