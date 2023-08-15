@@ -380,7 +380,7 @@ class ProjectService(private val project: Project) : Disposable {
                 previewToolWindow?.show()
             }
         }, {
-            "Warning: unable to open preview with component ID: $id"
+            "Warning: unable to open preview for $id"
         })
     }
 

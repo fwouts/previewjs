@@ -11,7 +11,7 @@ export function decodePreviewableId(id: string): {
 } {
   const colonPosition = id.lastIndexOf(":");
   if (colonPosition === -1) {
-    throw new Error(`Invalid component ID: "${id}"`);
+    throw new Error(`Invalid previewable ID: "${id}"`);
   }
   const [filePath, componentName] = id.split(":") as [string, string];
   return {
