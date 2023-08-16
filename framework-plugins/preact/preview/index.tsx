@@ -16,29 +16,29 @@ export const load: RendererLoader = async ({
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) || Fragment;
-  const ComponentOrStory =
+  const Previewable =
     componentModule[
       previewableName === "default"
         ? "default"
         : `__previewjs__${previewableName}`
     ];
-  if (!ComponentOrStory) {
+  if (!Previewable) {
     throw new Error(`No component or story named '${previewableName}'`);
   }
   const decorators = [
-    ...(ComponentOrStory.decorators || []),
+    ...(Previewable.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
 
   const RenderComponent = isStoryModule
-    ? typeof ComponentOrStory === "function"
-      ? ComponentOrStory
-      : ComponentOrStory.render ||
-        ComponentOrStory.component ||
+    ? typeof Previewable === "function"
+      ? Previewable
+      : Previewable.render ||
+        Previewable.component ||
         componentModule.default?.render ||
         componentModule.default?.component ||
-        ComponentOrStory
-    : ComponentOrStory;
+        Previewable
+    : Previewable;
   return {
     render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
@@ -54,7 +54,7 @@ export const load: RendererLoader = async ({
                 <RenderComponent
                   {...getProps({
                     presetGlobalProps: componentModule.default?.args || {},
-                    presetProps: ComponentOrStory.args || {},
+                    presetProps: Previewable.args || {},
                   })}
                 />
               )
@@ -76,8 +76,8 @@ export const load: RendererLoader = async ({
       if (errorBoundary.state.error) {
         throw errorBoundary.state.error;
       }
-      if (ComponentOrStory.play) {
-        await ComponentOrStory.play({ canvasElement: container });
+      if (Previewable.play) {
+        await Previewable.play({ canvasElement: container });
       }
     },
     jsxFactory: createElement,

@@ -20,28 +20,28 @@ export const load: RendererLoader = async ({
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     (({ children }: { children: JSX.Element }) => <>{children}</>);
-  const ComponentOrStory =
+  const Previewable =
     componentModule[
       previewableName === "default"
         ? "default"
         : `__previewjs__${previewableName}`
     ];
-  if (!ComponentOrStory) {
+  if (!Previewable) {
     throw new Error(`No component or story named '${previewableName}'`);
   }
   const decorators = [
-    ...(ComponentOrStory.decorators || []),
+    ...(Previewable.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
   const RenderComponent = isStoryModule
-    ? typeof ComponentOrStory === "function"
-      ? ComponentOrStory
-      : ComponentOrStory.render ||
-        ComponentOrStory.component ||
+    ? typeof Previewable === "function"
+      ? Previewable
+      : Previewable.render ||
+        Previewable.component ||
         componentModule.default?.render ||
         componentModule.default?.component ||
-        ComponentOrStory
-    : ComponentOrStory;
+        Previewable
+    : Previewable;
   return {
     render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
@@ -51,7 +51,7 @@ export const load: RendererLoader = async ({
       container.innerHTML = "";
       const props = getProps({
         presetGlobalProps: componentModule.default?.args || {},
-        presetProps: ComponentOrStory.args || {},
+        presetProps: Previewable.args || {},
       });
       detachFn = Solid.render(
         () => (
@@ -64,8 +64,8 @@ export const load: RendererLoader = async ({
         ),
         container
       );
-      if (ComponentOrStory.play) {
-        await ComponentOrStory.play({ canvasElement: container });
+      if (Previewable.play) {
+        await Previewable.play({ canvasElement: container });
       }
     },
     jsxFactory: h,

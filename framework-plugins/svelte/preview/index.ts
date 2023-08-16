@@ -19,16 +19,16 @@ export const load: RendererLoader = async ({
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
-  const ComponentOrStory =
+  const Previewable =
     componentModule[isStoryModule ? previewableName : "default"];
-  if (!ComponentOrStory) {
+  if (!Previewable) {
     throw new Error(`No component or story named '${previewableName}'`);
   }
   const RenderComponent = isStoryModule
-    ? ComponentOrStory.component || componentModule.default?.component
-    : ComponentOrStory;
+    ? Previewable.component || componentModule.default?.component
+    : Previewable;
   const decorators = [
-    ...(ComponentOrStory.decorators || []),
+    ...(Previewable.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
   return {
@@ -44,7 +44,7 @@ export const load: RendererLoader = async ({
       const props = wrapSlotProps(
         getProps({
           presetGlobalProps: componentModule.default?.args || {},
-          presetProps: ComponentOrStory.args || {},
+          presetProps: Previewable.args || {},
         })
       );
       const [Decorated, decoratedProps] = decorate(
@@ -66,9 +66,9 @@ export const load: RendererLoader = async ({
             target: root,
             props: decoratedProps,
           });
-      if (ComponentOrStory.play) {
+      if (Previewable.play) {
         try {
-          await ComponentOrStory.play({ canvasElement: root });
+          await Previewable.play({ canvasElement: root });
         } catch (e: any) {
           // For some reason, Storybook expects to throw exceptions that should be ignored.
           if (!e.message?.startsWith("ignoredException")) {

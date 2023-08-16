@@ -18,28 +18,28 @@ export const load: RendererLoader = async ({
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     React.Fragment;
-  const ComponentOrStory =
+  const Previewable =
     componentModule[
       previewableName === "default"
         ? "default"
         : `__previewjs__${previewableName}`
     ];
-  if (!ComponentOrStory) {
+  if (!Previewable) {
     throw new Error(`No component or story named '${previewableName}'`);
   }
   const decorators = [
-    ...(ComponentOrStory.decorators || []),
+    ...(Previewable.decorators || []),
     ...(componentModule.default?.decorators || []),
   ];
   const RenderComponent = isStoryModule
-    ? typeof ComponentOrStory === "function"
-      ? ComponentOrStory
-      : ComponentOrStory.render ||
-        ComponentOrStory.component ||
+    ? typeof Previewable === "function"
+      ? Previewable
+      : Previewable.render ||
+        Previewable.component ||
         componentModule.default?.render ||
         componentModule.default?.component ||
-        ComponentOrStory
-    : ComponentOrStory;
+        Previewable
+    : Previewable;
   const Renderer = (props: any) => {
     return (
       <ErrorBoundary key={renderId} renderId={renderId}>
@@ -61,7 +61,7 @@ export const load: RendererLoader = async ({
         Renderer,
         getProps({
           presetGlobalProps: componentModule.default?.args || {},
-          presetProps: ComponentOrStory.args || {},
+          presetProps: Previewable.args || {},
         })
       );
       if (shouldAbortRender()) {
@@ -77,8 +77,8 @@ export const load: RendererLoader = async ({
       if (errorBoundary.state.error) {
         throw errorBoundary.state.error;
       }
-      if (ComponentOrStory.play) {
-        await ComponentOrStory.play({ canvasElement: rootContainer });
+      if (Previewable.play) {
+        await Previewable.play({ canvasElement: rootContainer });
       }
     },
     jsxFactory: React.createElement,

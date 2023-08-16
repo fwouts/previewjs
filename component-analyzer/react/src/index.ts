@@ -45,16 +45,16 @@ export const createComponentAnalyzer = factoryWithDefaultOptions(
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of await extractReactComponents(
+          for (const previewable of await extractReactComponents(
             logger,
             resolver,
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in componentOrStory) {
-              components.push(componentOrStory);
+            if ("extractProps" in previewable) {
+              components.push(previewable);
             } else {
-              stories.push(componentOrStory);
+              stories.push(previewable);
             }
           }
         }

@@ -50,16 +50,16 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of await extractSvelteComponents(
+          for (const previewable of await extractSvelteComponents(
             reader,
             resolver,
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in componentOrStory) {
-              components.push(componentOrStory);
+            if ("extractProps" in previewable) {
+              components.push(previewable);
             } else {
-              stories.push(componentOrStory);
+              stories.push(previewable);
             }
           }
         }

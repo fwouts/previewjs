@@ -40,16 +40,16 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of await extractSolidComponents(
+          for (const previewable of await extractSolidComponents(
             logger,
             resolver,
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in componentOrStory) {
-              components.push(componentOrStory);
+            if ("extractProps" in previewable) {
+              components.push(previewable);
             } else {
-              stories.push(componentOrStory);
+              stories.push(previewable);
             }
           }
         }

@@ -16,27 +16,27 @@ export const load: RendererLoader = async ({
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
-  let ComponentOrStory: any;
+  let Previewable: any;
   if (id.includes(".vue:")) {
-    ComponentOrStory = componentModule.default;
-    if (!ComponentOrStory) {
+    Previewable = componentModule.default;
+    if (!Previewable) {
       throw new Error(`No default component could be found for ${id}`);
     }
   } else {
-    ComponentOrStory = componentModule[`__previewjs__${previewableName}`];
-    if (!ComponentOrStory) {
+    Previewable = componentModule[`__previewjs__${previewableName}`];
+    if (!Previewable) {
       throw new Error(`No component or story named '${previewableName}'`);
     }
   }
-  let storyDecorators = ComponentOrStory.decorators || [];
-  let RenderComponent = ComponentOrStory;
-  if (ComponentOrStory.render && !isStoryModule) {
+  let storyDecorators = Previewable.decorators || [];
+  let RenderComponent = Previewable;
+  if (Previewable.render && !isStoryModule) {
     // Vue component. Nothing to do.
   } else {
     // JSX or Storybook story, either CSF2 or CSF3.
-    if (typeof ComponentOrStory === "function") {
+    if (typeof Previewable === "function") {
       RenderComponent = (props: any) => {
-        const storyReturnValue = ComponentOrStory(props);
+        const storyReturnValue = Previewable(props);
         if (storyReturnValue.template) {
           // CSF2 story.
           // @ts-ignore
@@ -48,7 +48,7 @@ export const load: RendererLoader = async ({
       };
     } else {
       // CSF3 story.
-      const csf3Story = ComponentOrStory;
+      const csf3Story = Previewable;
       RenderComponent =
         csf3Story.component || componentModule.default?.component;
       if (!RenderComponent) {
@@ -78,7 +78,7 @@ export const load: RendererLoader = async ({
       }
       const props = getProps({
         presetGlobalProps: componentModule.default?.args || {},
-        presetProps: ComponentOrStory.args || {},
+        presetProps: Previewable.args || {},
       });
       app = createApp(() => {
         // @ts-ignore
@@ -89,9 +89,9 @@ export const load: RendererLoader = async ({
           : decoratedNode;
       }, {});
       app.mount(root);
-      if (ComponentOrStory.play) {
+      if (Previewable.play) {
         try {
-          await ComponentOrStory.play({ canvasElement: root });
+          await Previewable.play({ canvasElement: root });
         } catch (e: any) {
           // For some reason, Storybook expects to throw exceptions that should be ignored.
           if (!e.message?.startsWith("ignoredException")) {

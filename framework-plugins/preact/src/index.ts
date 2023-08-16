@@ -40,16 +40,16 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of await extractPreactComponents(
+          for (const previewable of await extractPreactComponents(
             logger,
             resolver,
             rootDir,
             absoluteFilePath
           )) {
-            if ('extractProps' in componentOrStory) {
-              components.push(componentOrStory);
+            if ("extractProps" in previewable) {
+              components.push(previewable);
             } else {
-              stories.push(componentOrStory);
+              stories.push(previewable);
             }
           }
         }
