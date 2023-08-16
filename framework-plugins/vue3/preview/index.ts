@@ -12,7 +12,7 @@ export const load: RendererLoader = async ({
   id,
   shouldAbortRender,
 }) => {
-  const componentName = id.substring(id.indexOf(":") + 1);
+  const previewableName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
@@ -23,9 +23,9 @@ export const load: RendererLoader = async ({
       throw new Error(`No default component could be found for ${id}`);
     }
   } else {
-    ComponentOrStory = componentModule[`__previewjs__${componentName}`];
+    ComponentOrStory = componentModule[`__previewjs__${previewableName}`];
     if (!ComponentOrStory) {
-      throw new Error(`No component named '${componentName}'`);
+      throw new Error(`No component or story named '${previewableName}'`);
     }
   }
   let storyDecorators = ComponentOrStory.decorators || [];

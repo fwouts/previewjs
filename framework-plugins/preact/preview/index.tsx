@@ -12,16 +12,18 @@ export const load: RendererLoader = async ({
   renderId,
   shouldAbortRender,
 }) => {
-  const componentName = id.substring(id.indexOf(":") + 1);
+  const previewableName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) || Fragment;
   const ComponentOrStory =
     componentModule[
-      componentName === "default" ? "default" : `__previewjs__${componentName}`
+      previewableName === "default"
+        ? "default"
+        : `__previewjs__${previewableName}`
     ];
   if (!ComponentOrStory) {
-    throw new Error(`No component named '${componentName}'`);
+    throw new Error(`No component or story named '${previewableName}'`);
   }
   const decorators = [
     ...(ComponentOrStory.decorators || []),

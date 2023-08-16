@@ -21,13 +21,13 @@ export function analyzeReactComponent(
   logger: Logger,
   typeResolver: TypeResolver,
   absoluteFilePath: string,
-  componentName: string,
+  previewableName: string,
   signature: ts.Signature
 ): ComponentProps {
   const sourceFile = typeResolver.sourceFile(absoluteFilePath);
   let propTypes: ts.Expression | null = null;
   if (sourceFile) {
-    propTypes = detectPropTypes(sourceFile, componentName);
+    propTypes = detectPropTypes(sourceFile, previewableName);
   }
   const resolved = computePropsType(logger, typeResolver, signature, propTypes);
   return {

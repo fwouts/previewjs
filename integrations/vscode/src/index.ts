@@ -127,11 +127,11 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         return components.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
-          const componentName = c.id.substring(c.id.indexOf(":") + 1);
+          const previewableName = c.id.substring(c.id.indexOf(":") + 1);
           lens.command = {
             command: Command.START,
             arguments: [document, c.id],
-            title: `Open ${componentName} in Preview.js`,
+            title: `Open ${previewableName} in Preview.js`,
           };
           return lens;
         });

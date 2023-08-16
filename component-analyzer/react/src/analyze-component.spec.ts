@@ -545,13 +545,15 @@ A.propTypes = {
     });
   });
 
-  async function analyze(source: string, componentName: string) {
+  async function analyze(source: string, previewableName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
       await analyzer.detectComponents([MAIN_FILE_NAME])
-    ).components.find((c) => decodePreviewableId(c.id).name === componentName);
+    ).components.find(
+      (c) => decodePreviewableId(c.id).name === previewableName
+    );
     if (!component) {
-      throw new Error(`Component ${componentName} not found`);
+      throw new Error(`Previewable ${previewableName} not found`);
     }
     return component.extractProps();
   }

@@ -77,14 +77,14 @@ class InlayProviderFactory : InlayHintsProviderFactory {
                 val projectService = file.project.service<ProjectService>()
                 val components = projectService.getPrecomputedComponents(file)
                 for (component in components) {
-                    val componentName = component.id.substring(component.id.indexOf(":") + 1)
+                    val previewableName = component.id.substring(component.id.indexOf(":") + 1)
                     sink.addBlockElement(
                         component.start,
                         relatesToPrecedingText = false,
                         showAbove = true,
                         priority = 0,
                         presentation = factory.referenceOnHover(
-                            factory.roundWithBackground(factory.smallText("Open $componentName in Preview.js"))
+                            factory.roundWithBackground(factory.smallText("Open $previewableName in Preview.js"))
                         ) { _, _ ->
                             projectService.openPreview(file.virtualFile.path, component.id)
                         }

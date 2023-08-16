@@ -15,14 +15,14 @@ export const load: RendererLoader = async ({
   id,
   shouldAbortRender,
 }) => {
-  const componentName = id.substring(id.indexOf(":") + 1);
+  const previewableName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!componentModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   const ComponentOrStory =
-    componentModule[isStoryModule ? componentName : "default"];
+    componentModule[isStoryModule ? previewableName : "default"];
   if (!ComponentOrStory) {
-    throw new Error(`No component named '${componentName}'`);
+    throw new Error(`No component or story named '${previewableName}'`);
   }
   const RenderComponent = isStoryModule
     ? ComponentOrStory.component || componentModule.default?.component

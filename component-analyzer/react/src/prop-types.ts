@@ -12,8 +12,8 @@ export function detectPropTypes(
       ts.isPropertyAccessExpression(statement.expression.left) &&
       ts.isIdentifier(statement.expression.left.expression)
     ) {
-      const componentName = statement.expression.left.expression.text;
-      if (componentName !== name) {
+      const previewableName = statement.expression.left.expression.text;
+      if (previewableName !== name) {
         continue;
       }
       // Look for prop types assignments such as Button.propTypes = {...}.
@@ -21,8 +21,8 @@ export function detectPropTypes(
         return statement.expression.right;
       }
     } else if (ts.isClassDeclaration(statement) && statement.name) {
-      const componentName = statement.name.text;
-      if (componentName !== name) {
+      const previewableName = statement.name.text;
+      if (previewableName !== name) {
         continue;
       }
       for (const classMember of statement.members) {
