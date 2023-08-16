@@ -54,7 +54,7 @@ export type AppToPreviewMessage = RenderMessage;
 
 export interface RenderMessage {
   kind: "render";
-  id: string;
+  previewableId: string;
   autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 }

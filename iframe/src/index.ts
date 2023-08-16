@@ -11,12 +11,12 @@ export function createController(options: {
 export interface PreviewIframeController {
   start(): void;
   stop(): void;
-  loadComponent(options: LoadComponentOptions): void;
+  load(options: LoadPreviewOptions): void;
   resetIframe(id: string): void;
 }
 
-export interface LoadComponentOptions {
-  id: string;
+export interface LoadPreviewOptions {
+  previewableId: string;
   propsAssignmentSource: string;
   autogenCallbackPropsSource: string;
 }
@@ -42,7 +42,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     window.removeEventListener("message", this.onWindowMessage);
   }
 
-  loadComponent(options: LoadComponentOptions) {
+  load(options: LoadPreviewOptions) {
     this.send({
       kind: "render",
       ...options,
@@ -52,10 +52,10 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   private send(message: AppToPreviewMessage) {
     this.lastMessage = message;
     if (
-      this.idBootstrapped !== message.id &&
-      this.pendingPreviewableIdBootstrap !== message.id
+      this.idBootstrapped !== message.previewableId &&
+      this.pendingPreviewableIdBootstrap !== message.previewableId
     ) {
-      this.resetIframe(message.id);
+      this.resetIframe(message.previewableId);
       return;
     }
     const iframeWindow = this.options.getIframe()?.contentWindow;
@@ -70,7 +70,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         console.warn(
           "Expected render did not occur after 5 seconds. Reloading iframe..."
         );
-        this.resetIframe(message.id);
+        this.resetIframe(message.previewableId);
       }, 5000);
     }
   }

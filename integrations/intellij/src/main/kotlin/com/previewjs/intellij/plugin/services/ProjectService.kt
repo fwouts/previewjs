@@ -304,7 +304,7 @@ class ProjectService(private val project: Project) : Disposable {
         })
     }
 
-    fun openPreview(absoluteFilePath: String, id: String) {
+    fun openPreview(absoluteFilePath: String, previewableId: String) {
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
             currentPreviewWorkspaceId?.let {
@@ -320,7 +320,7 @@ class ProjectService(private val project: Project) : Disposable {
                 onStop = { closePreview() },
                 onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
             ).install(statusBar)
-            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(id, "utf-8")}"
+            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(previewableId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {
@@ -370,7 +370,7 @@ class ProjectService(private val project: Project) : Disposable {
                 val currentBrowserUrl = browser.cefBrowser.url
                 if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
                     browser.cefBrowser.executeJavaScript(
-                        "window.postMessage({ kind: \"navigate\", id: \"${id}\" });",
+                        "window.postMessage({ kind: \"navigate\", previewableId: \"${previewableId}\" });",
                         previewUrl,
                         0
                     )
@@ -380,7 +380,7 @@ class ProjectService(private val project: Project) : Disposable {
                 previewToolWindow?.show()
             }
         }, {
-            "Warning: unable to open preview for $id"
+            "Warning: unable to open preview for $previewableId"
         })
     }
 

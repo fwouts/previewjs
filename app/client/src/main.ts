@@ -34,21 +34,21 @@ onUrlChanged().catch(console.error);
 
 async function onUrlChanged() {
   const urlParams = new URLSearchParams(document.location.search);
-  const id = urlParams.get("p") || "";
-  if (!id.includes(":")) {
+  const previewableId = urlParams.get("p") || "";
+  if (!previewableId.includes(":")) {
     return;
   }
-  iframeController.resetIframe(id);
+  iframeController.resetIframe(previewableId);
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
-    previewableIds: [id],
+    previewableIds: [previewableId],
   });
-  const props = computePropsResponse.props[id]!;
+  const props = computePropsResponse.props[previewableId]!;
   const autogenCallbackProps = await generateCallbackProps(
     props,
     computePropsResponse.types
   );
-  iframeController.loadComponent({
-    id,
+  iframeController.load({
+    previewableId,
     propsAssignmentSource: transpile(
       await generatePropsAssignmentSource(
         props,
