@@ -36,7 +36,7 @@ async function onUrlChanged() {
   }
   iframeController.resetIframe(id);
   const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
-    ids: [id],
+    previewableIds: [id],
   });
   const props = computePropsResponse.props[id]!;
   const autogenCallbackProps = await generateCallbackProps(

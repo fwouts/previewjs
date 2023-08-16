@@ -136,7 +136,7 @@ export async function startPreview({
         );
       }
       const computePropsResponse = await workspace.computeProps({
-        ids: [id],
+        previewableIds: [id],
       });
       const props = computePropsResponse.props[id]!;
       const autogenCallbackProps = await generateCallbackProps(

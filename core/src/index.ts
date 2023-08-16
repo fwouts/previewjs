@@ -68,11 +68,15 @@ export async function createWorkspace({
     );
   }
   const router = new ApiRouter(logger);
-  router.registerRPC(RPCs.ComputeProps, async ({ ids }) => {
-    logger.debug(`Computing props for components: ${ids.join(", ")}`);
+  router.registerRPC(RPCs.ComputeProps, async ({ previewableIds }) => {
+    logger.debug(
+      `Computing props for components: ${previewableIds.join(", ")}`
+    );
     const detected = await frameworkPlugin.detectComponents([
       ...new Set(
-        ids.map((c) => path.join(rootDir, decodePreviewableId(c).filePath))
+        previewableIds.map((c) =>
+          path.join(rootDir, decodePreviewableId(c).filePath)
+        )
       ),
     ]);
     logger.debug(
@@ -91,7 +95,7 @@ export async function createWorkspace({
       [storyId: string]: RPCs.StoryArgs | null;
     } = {};
     let types: CollectedTypes = {};
-    for (const id of ids) {
+    for (const id of previewableIds) {
       const component = idToDetectedComponent[id];
       const story = idToDetectedStory[id];
       let props: ValueType;

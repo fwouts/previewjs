@@ -4,7 +4,7 @@ import type { RPC } from "./rpc";
 
 export const ComputeProps: RPC<
   {
-    ids: string[];
+    previewableIds: string[];
   },
   ComputePropsResponse
 > = {
