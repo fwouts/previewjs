@@ -18,7 +18,11 @@ const iframeController = createController({
 
 window.addEventListener("message", (event: MessageEvent) => {
   if (event.data && event.data.kind === "navigate") {
-    history.pushState(null, "", `/?p=${encodeURIComponent(event.data.id)}`);
+    history.pushState(
+      null,
+      "",
+      `/?p=${encodeURIComponent(event.data.previewableId)}`
+    );
     onUrlChanged().catch(console.error);
   }
 });
