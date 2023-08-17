@@ -298,7 +298,7 @@ class ProjectService(private val project: Project) : Disposable {
                     absoluteFilePath = file.path
                 )
             )
-            callback(analysisResponse.components)
+            callback(analysisResponse.previewables)
         }, {
             "Warning: unable to compute components for ${file.path}"
         })
