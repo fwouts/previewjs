@@ -49,7 +49,7 @@ export async function createState({
     workspaces
   );
   const pendingFileChanges = new Map<string, string>();
-  const getComponents = createFileAnalyzer(
+  const analyzeFile = createFileAnalyzer(
     daemon.client,
     getWorkspaceId,
     pendingFileChanges
@@ -67,7 +67,7 @@ export async function createState({
     },
     workspaces,
     pendingFileChanges,
-    getComponents,
+    analyzeFile,
     getWorkspaceId,
     previewPanel: null,
     currentPreview: null,
@@ -85,6 +85,6 @@ export type PreviewJsState = {
     workspaceId: string;
     url: string;
   } | null;
-  getComponents: FileAnalyzer;
+  analyzeFile: FileAnalyzer;
   getWorkspaceId: (document: vscode.TextDocument) => Promise<string | null>;
 };

@@ -25,17 +25,17 @@ class OpenPreviewAction : AnAction() {
         val selectedFile = selectedFiles[0]
         val offset = manager.selectedTextEditor?.selectionModel?.selectionStart
         val projectService = project.getService(ProjectService::class.java)
-        projectService.computeComponents(selectedFile) { components ->
-            if (components.isEmpty()) {
+        projectService.analyzeFile(selectedFile) { previewables ->
+            if (previewables.isEmpty()) {
                 notificationGroup.createNotification(
-                    "No components detected in ${selectedFile.path}",
+                    "No components or stories detected in ${selectedFile.path}",
                     NotificationType.ERROR
                 ).notify(project)
-                return@computeComponents
+                return@analyzeFile
             }
-            val component =
-                components.find { c -> offset != null && offset >= c.start && offset <= c.end } ?: components[0]
-            projectService.openPreview(selectedFile.path, component.id)
+            val previewable =
+                previewables.find { c -> offset != null && offset >= c.start && offset <= c.end } ?: previewables[0]
+            projectService.openPreview(selectedFile.path, previewable.id)
         }
     }
 

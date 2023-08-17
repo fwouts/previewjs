@@ -108,11 +108,11 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
     if (!state) {
       return;
     }
-    const components = await state.getComponents(e?.document);
+    const previewables = await state.analyzeFile(e?.document);
     vscode.commands.executeCommand(
       "setContext",
-      "previewjs.componentsDetected",
-      components.length > 0
+      "previewjs.previewablesDetected",
+      previewables.length > 0
     );
   });
 
@@ -123,8 +123,8 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         if (!state) {
           return;
         }
-        const components = await state.getComponents(document);
-        return components.map((c) => {
+        const previewables = await state.analyzeFile(document);
+        return previewables.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
           const previewableName = c.id.substring(c.id.indexOf(":") + 1);
@@ -227,17 +227,17 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         const offset = editor?.selection.active
           ? document.offsetAt(editor.selection.active)
           : 0;
-        const components = await state.getComponents(document);
-        const component =
-          components.find((c) => offset >= c.start && offset <= c.end) ||
-          components[0];
-        if (!component) {
+        const previewables = await state.analyzeFile(document);
+        const previewable =
+          previewables.find((c) => offset >= c.start && offset <= c.end) ||
+          previewables[0];
+        if (!previewable) {
           vscode.window.showErrorMessage(
-            `No component was found at offset ${offset}`
+            `No component or story was found at offset ${offset}`
           );
           return;
         }
-        id = component.id;
+        id = previewable.id;
       }
       const preview = await ensurePreviewServerStarted(state, workspaceId);
       runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
