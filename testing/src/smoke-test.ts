@@ -5,13 +5,13 @@ import { previewTest } from "./preview-test";
 export function smokeTests({
   projectsDir,
   pluginFactory,
-  idsPerProject,
+  ids,
 }: {
   projectsDir: string;
   pluginFactory: FrameworkPluginFactory;
-  idsPerProject: Record<string, string[]>;
+  ids: Record<string, string[]>;
 }) {
-  for (const [projectName, ids] of Object.entries(idsPerProject)) {
+  for (const [projectName, ids] of Object.entries(ids)) {
     const appDir = path.join(projectsDir, projectName);
     for (const id of ids) {
       const [filePath, previewableName] = id.split(":") as [string, string];
