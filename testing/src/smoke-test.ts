@@ -11,9 +11,9 @@ export function smokeTests({
   pluginFactory: FrameworkPluginFactory;
   ids: Record<string, string[]>;
 }) {
-  for (const [projectName, ids] of Object.entries(ids)) {
+  for (const [projectName, previewableIds] of Object.entries(ids)) {
     const appDir = path.join(projectsDir, projectName);
-    for (const id of ids) {
+    for (const id of previewableIds) {
       const [filePath, previewableName] = id.split(":") as [string, string];
       previewTest([pluginFactory], appDir)(
         `${projectName}/${id}`,
