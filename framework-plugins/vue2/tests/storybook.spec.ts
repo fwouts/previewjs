@@ -349,7 +349,7 @@ test.describe.parallel("vue2/storybook", () => {
       with: "Renamed",
     });
     await await preview.expectLoggedMessages.toMatch([
-      "Error: No component named 'Primary'",
+      "Error: No component or story named 'Primary'",
     ]);
   });
 });

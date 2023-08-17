@@ -1,11 +1,11 @@
-import type { Component, Story } from "@previewjs/component-analyzer-api";
+import type { Component, Story } from "@previewjs/analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
 import url from "url";
 import vitePluginSolid from "vite-plugin-solid";
-import { extractSolidComponents } from "./extract-component.js";
+import { analyze } from "./analyze.js";
 import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin.js";
 import { SOLID_SPECIAL_TYPES } from "./special-types.js";
 
@@ -35,21 +35,21 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,
-      detectComponents: async (absoluteFilePaths) => {
+      analyze: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of await extractSolidComponents(
+          for (const previewable of await analyze(
             logger,
             resolver,
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in componentOrStory) {
-              components.push(componentOrStory);
+            if ("extractProps" in previewable) {
+              components.push(previewable);
             } else {
-              stories.push(componentOrStory);
+              stories.push(previewable);
             }
           }
         }

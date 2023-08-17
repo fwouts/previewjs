@@ -1,20 +1,20 @@
 import {
-  generateComponentId,
+  generatePreviewableId,
   type ComponentProps,
   type Story,
-} from "@previewjs/component-analyzer-api";
+} from "@previewjs/analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
 import { extractStoriesInfo } from "./extract-stories-info";
-import { resolveComponentId } from "./resolve-component";
+import { resolvePreviewableId } from "./resolve-component";
 
 export async function extractCsf3Stories(
   rootDir: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
-  extractProps: (componentId: string) => Promise<ComponentProps>
+  extractProps: (id: string) => Promise<ComponentProps>
 ): Promise<Story[]> {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
@@ -60,13 +60,13 @@ export async function extractCsf3Stories(
         }
       }
 
-      const associatedComponentId = resolveComponentId(
+      const associatedComponentId = resolvePreviewableId(
         rootDir,
         resolver.checker,
         storyComponent || storiesInfo.component || null
       );
       stories.push({
-        componentId: generateComponentId({
+        id: generatePreviewableId({
           filePath: path.relative(rootDir, sourceFile.fileName),
           name,
         }),
@@ -86,7 +86,7 @@ export async function extractCsf3Stories(
             : null,
         associatedComponent: associatedComponentId
           ? {
-              componentId: associatedComponentId,
+              id: associatedComponentId,
               extractProps: () => extractProps(associatedComponentId),
             }
           : null,

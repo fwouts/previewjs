@@ -33,7 +33,7 @@ import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
 import com.previewjs.intellij.plugin.api.AnalyzeFileRequest
-import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
+import com.previewjs.intellij.plugin.api.Previewable
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
@@ -66,7 +66,7 @@ class ProjectService(private val project: Project) : Disposable {
 
     @Volatile
     private var currentPreviewWorkspaceId: String? = null
-    private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
+    private var componentMap = mutableMapOf<String, Pair<String, List<Previewable>>>()
     private var pendingFileChanges = mutableMapOf<String, String>()
 
     init {
@@ -128,7 +128,7 @@ class ProjectService(private val project: Project) : Disposable {
                     if (textEditor.file != file) {
                         return
                     }
-                    recomputeComponents(file, textEditor.editor.document.text)
+                    reanalyzeFile(file, textEditor.editor.document.text)
                 }
 
                 override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
@@ -140,7 +140,7 @@ class ProjectService(private val project: Project) : Disposable {
             if (textEditor !is TextEditor) {
                 return@forEach
             }
-            recomputeComponents(textEditor.file, textEditor.editor.document.text)
+            reanalyzeFile(textEditor.file, textEditor.editor.document.text)
         }
     }
 
@@ -209,8 +209,8 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-    private fun recomputeComponents(file: VirtualFile, text: String) {
-        computeComponents(file) { components ->
+    private fun reanalyzeFile(file: VirtualFile, text: String) {
+        analyzeFile(file) { components ->
             componentMap[file.path] = Pair(text, components)
             @Suppress("UnstableApiUsage")
             app.invokeLater {
@@ -223,7 +223,7 @@ class ProjectService(private val project: Project) : Disposable {
         componentMap.remove(file.path)
     }
 
-    fun getPrecomputedComponents(psiFile: PsiFile): List<AnalyzedFileComponent> {
+    fun getPrecomputedComponents(psiFile: PsiFile): List<Previewable> {
         val currentText = psiFile.text
         val computed = componentMap[psiFile.virtualFile.path] ?: return emptyList()
         val (computedText, components) = computed
@@ -232,7 +232,7 @@ class ProjectService(private val project: Project) : Disposable {
         }
 
         // Since it's not an exact match, trigger recomputing in the background.
-        recomputeComponents(psiFile.virtualFile, currentText)
+        reanalyzeFile(psiFile.virtualFile, currentText)
 
         // Keep going to see if we can show something useful in the meantime to avoid unnecessary flickering.
         // If a chunk of text was either added or removed, then we can still show our old results by shifting
@@ -249,10 +249,10 @@ class ProjectService(private val project: Project) : Disposable {
         if (differenceDelta > 0) {
             // A chunk of text was added.
             return components.map {
-                AnalyzedFileComponent(
+                Previewable(
                     start = if (it.start < exactCharacterDifferenceIndex) it.start else it.start + differenceDelta,
                     end = if (it.end < exactCharacterDifferenceIndex) it.end else it.end + differenceDelta,
-                    componentId = it.componentId
+                    id = it.id
                 )
             }
         } else {
@@ -267,16 +267,16 @@ class ProjectService(private val project: Project) : Disposable {
             return components.filter {
                 it.start < start || it.start >= end
             }.map {
-                AnalyzedFileComponent(
+                Previewable(
                     start = if (it.start < start) it.start else max(0, it.start + differenceDelta),
                     end = if (it.end < start) it.end else max(0, it.end + differenceDelta),
-                    componentId = it.componentId
+                    id = it.id
                 )
             }
         }
     }
 
-    fun computeComponents(file: VirtualFile, callback: (result: List<AnalyzedFileComponent>) -> Unit) {
+    fun analyzeFile(file: VirtualFile, callback: (result: List<Previewable>) -> Unit) {
         if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
             return callback(emptyList())
         }
@@ -298,13 +298,13 @@ class ProjectService(private val project: Project) : Disposable {
                     absoluteFilePath = file.path
                 )
             )
-            callback(analysisResponse.components)
+            callback(analysisResponse.previewables)
         }, {
             "Warning: unable to compute components for ${file.path}"
         })
     }
 
-    fun openPreview(absoluteFilePath: String, componentId: String) {
+    fun openPreview(absoluteFilePath: String, previewableId: String) {
         service.enqueueAction(project, { api ->
             val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
             currentPreviewWorkspaceId?.let {
@@ -320,7 +320,7 @@ class ProjectService(private val project: Project) : Disposable {
                 onStop = { closePreview() },
                 onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
             ).install(statusBar)
-            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(componentId, "utf-8")}"
+            val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(previewableId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
                 if (browser == null) {
@@ -370,7 +370,7 @@ class ProjectService(private val project: Project) : Disposable {
                 val currentBrowserUrl = browser.cefBrowser.url
                 if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
                     browser.cefBrowser.executeJavaScript(
-                        "window.postMessage({ kind: \"navigate\", componentId: \"${componentId}\" });",
+                        "window.postMessage({ kind: \"navigate\", previewableId: \"${previewableId}\" });",
                         previewUrl,
                         0
                     )
@@ -380,7 +380,7 @@ class ProjectService(private val project: Project) : Disposable {
                 previewToolWindow?.show()
             }
         }, {
-            "Warning: unable to open preview with component ID: $componentId"
+            "Warning: unable to open preview for $previewableId"
         })
     }
 

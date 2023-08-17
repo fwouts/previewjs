@@ -286,7 +286,7 @@ test.describe.parallel("react/error handling", () => {
           export const App2 = () => <div>Hello, World!</div>;`
         );
         await preview.expectLoggedMessages.toMatch([
-          "Error: No component named 'App'",
+          "Error: No component or story named 'App'",
         ]);
       });
 

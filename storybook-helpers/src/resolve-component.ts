@@ -1,8 +1,8 @@
-import { generateComponentId } from "@previewjs/component-analyzer-api";
+import { generatePreviewableId } from "@previewjs/analyzer-api";
 import path from "path";
 import ts from "typescript";
 
-export function resolveComponentId(
+export function resolvePreviewableId(
   rootDir: string,
   checker: ts.TypeChecker,
   expression: ts.Expression | null
@@ -14,10 +14,10 @@ export function resolveComponentId(
   if (!symbol) {
     return null;
   }
-  return resolveSymbolToComponentId(rootDir, checker, symbol);
+  return resolveSymbolToPreviewableId(rootDir, checker, symbol);
 }
 
-function resolveSymbolToComponentId(
+function resolveSymbolToPreviewableId(
   rootDir: string,
   checker: ts.TypeChecker,
   symbol: ts.Symbol,
@@ -31,7 +31,7 @@ function resolveSymbolToComponentId(
       importClause.parent.moduleSpecifier
     );
     if (imported) {
-      return resolveSymbolToComponentId(rootDir, checker, imported, true);
+      return resolveSymbolToPreviewableId(rootDir, checker, imported, true);
     }
   }
   const importSpecifier = declarations.find(ts.isImportSpecifier);
@@ -41,7 +41,7 @@ function resolveSymbolToComponentId(
       ? checker.getSymbolAtLocation(importSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
     if (imported) {
-      return resolveSymbolToComponentId(rootDir, checker, imported);
+      return resolveSymbolToPreviewableId(rootDir, checker, imported);
     }
   }
   const exportSpecifier = declarations.find(ts.isExportSpecifier);
@@ -51,7 +51,7 @@ function resolveSymbolToComponentId(
       ? checker.getSymbolAtLocation(exportSpecifier.propertyName)
       : checker.getAliasedSymbol(symbol);
     if (exported) {
-      return resolveSymbolToComponentId(rootDir, checker, exported);
+      return resolveSymbolToPreviewableId(rootDir, checker, exported);
     }
   }
   const firstDeclaration = declarations[0];
@@ -59,7 +59,7 @@ function resolveSymbolToComponentId(
     return null;
   }
   const sourceFile = firstDeclaration.getSourceFile();
-  return generateComponentId({
+  return generatePreviewableId({
     filePath: path.relative(rootDir, sourceFile.fileName),
     name: isDefault ? "default" : symbol.getName(),
   });

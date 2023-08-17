@@ -77,13 +77,13 @@
         "command": "previewjs.start",
         "key": "ctrl+k v",
         "mac": "cmd+k v",
-        "when": "previewjs.componentsDetected"
+        "when": "previewjs.previewablesDetected"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "when": "previewjs.componentsDetected",
+          "when": "previewjs.previewablesDetected",
           "command": "previewjs.start",
           "group": "navigation"
         }

@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../client/src/index.ts" />
+
 import type { Workspace } from "@previewjs/core";
 import {
   generateCallbackProps,
@@ -22,7 +25,7 @@ export async function startPreview({
   );
   await page.goto(preview.url());
 
-  // This callback will be invoked each time a component is done rendering.
+  // This callback will be invoked each time a previewable is done rendering.
   let onRenderingDone = () => {
     // No-op by default.
   };
@@ -123,32 +126,28 @@ export async function startPreview({
         });
       },
     },
-    async show(componentId: string, propsAssignmentSource?: string) {
-      const filePath = componentId.split(":")[0]!;
-      const { components, stories } = await workspace.detectComponents({
+    async show(previewableId: string, propsAssignmentSource?: string) {
+      const filePath = previewableId.split(":")[0]!;
+      const { components, stories } = await workspace.analyze({
         filePaths: [filePath],
       });
-      const matchingDetectedComponent = components.find(
-        (c) => componentId === c.componentId
-      );
-      const matchingDetectedStory = stories.find(
-        (c) => componentId === c.componentId
-      );
-      if (!matchingDetectedComponent && !matchingDetectedStory) {
+      const matchingComponent = components.find((c) => previewableId === c.id);
+      const matchingStory = stories.find((c) => previewableId === c.id);
+      if (!matchingComponent && !matchingStory) {
         throw new Error(
-          `Component may be previewable but was not detected by framework plugin: ${componentId}`
+          `Component may be previewable but was not detected by framework plugin: ${previewableId}`
         );
       }
       const computePropsResponse = await workspace.computeProps({
-        componentIds: [componentId],
+        previewableIds: [previewableId],
       });
-      const props = computePropsResponse.props[componentId]!;
+      const props = computePropsResponse.props[previewableId]!;
       const autogenCallbackProps = await generateCallbackProps(
         props,
         computePropsResponse.types
       );
       if (!propsAssignmentSource) {
-        propsAssignmentSource = matchingDetectedStory
+        propsAssignmentSource = matchingStory
           ? "properties = null"
           : await generatePropsAssignmentSource(
               props,
@@ -163,25 +162,25 @@ export async function startPreview({
       await waitUntilNetworkIdle(page);
       renderSucceeded = false;
       await page.evaluate(
-        async (component) => {
-          // It's possible that window.renderComponent isn't ready yet.
+        async (options) => {
+          // It's possible that window.loadIframePreview isn't ready yet.
           let waitStart = Date.now();
           const timeoutSeconds = 10;
           while (
-            !window.renderComponent &&
+            !window.loadIframePreview &&
             Date.now() - waitStart < timeoutSeconds * 1000
           ) {
             await new Promise((resolve) => setTimeout(resolve, 100));
           }
-          if (!window.renderComponent) {
+          if (!window.loadIframePreview) {
             throw new Error(
-              `window.renderComponent() isn't available after waiting ${timeoutSeconds} seconds`
+              `window.loadIframePreview() isn't available after waiting ${timeoutSeconds} seconds`
             );
           }
-          window.renderComponent(component);
+          window.loadIframePreview(options);
         },
         {
-          componentId,
+          previewableId,
           autogenCallbackPropsSource: transpile(
             `autogenCallbackProps = ${autogenCallbackProps.source}`
           ),

@@ -1,5 +1,5 @@
+import { decodePreviewableId } from "@previewjs/analyzer-api";
 import { createChromelessWorkspace } from "@previewjs/chromeless";
-import { decodeComponentId } from "@previewjs/component-analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { globby } from "globby";
 import type playwright from "playwright";
@@ -97,13 +97,13 @@ export async function generateScreenshots({
     cwd,
     followSymbolicLinks: false,
   });
-  const { components } = await workspace.detectComponents({
+  const { components } = await workspace.analyze({
     filePaths,
   });
   for (const component of components) {
-    const { filePath, name } = decodeComponentId(component.componentId);
+    const { filePath, name } = decodePreviewableId(component.id);
     try {
-      await preview.show(component.componentId);
+      await preview.show(component.id);
       const screenshotPath = generateScreenshotPath({ filePath, name });
       await preview.iframe.takeScreenshot(screenshotPath);
       if (onScreenshotGenerated) {
@@ -117,7 +117,7 @@ export async function generateScreenshots({
         }
       } else {
         throw new Error(
-          `Unable to generate screenshot for ${component.componentId}`,
+          `Unable to generate screenshot for ${component.id}`,
           // https://stackoverflow.com/a/42755876
           // @ts-ignore
           { cause: e }

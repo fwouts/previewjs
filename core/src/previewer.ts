@@ -9,7 +9,7 @@ import { escape } from "html-escaper";
 import path from "path";
 import type { Logger } from "pino";
 import { getCacheDir } from "./caching";
-import { FILES_REQUIRING_REDETECTION } from "./detect-components";
+import { FILES_REQUIRING_REDETECTION } from "./detect-previewables";
 import { findFiles } from "./find-files";
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";
@@ -163,7 +163,7 @@ export class Previewer {
         );
         const router = express.Router();
         router.get(/^\/preview\/.*:[^/]+\/$/, async (req, res) => {
-          const componentId = req.path.substring(9, req.path.length - 1);
+          const previewableId = req.path.substring(9, req.path.length - 1);
           if (req.header("Accept") === "text/x-vite-ping") {
             // This is triggered as part of HMR. Exit early.
             res.writeHead(204).end();
@@ -180,7 +180,7 @@ export class Previewer {
               .end(
                 await this.viteManager.loadIndexHtml(
                   req.originalUrl,
-                  componentId
+                  previewableId
                 )
               );
           } catch (e: any) {

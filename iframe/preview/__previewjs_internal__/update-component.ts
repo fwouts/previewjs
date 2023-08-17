@@ -5,16 +5,16 @@ import { getState } from "./state";
 export async function updateComponent({
   wrapperModule,
   wrapperName,
-  componentModule,
-  componentId,
+  previewableModule,
+  id,
   renderId,
   shouldAbortRender,
   load,
 }: {
   wrapperModule: any;
   wrapperName: string;
-  componentModule: any;
-  componentId: string;
+  previewableModule: any;
+  id: string;
   renderId: number;
   shouldAbortRender: () => boolean;
   load: RendererLoader;
@@ -30,8 +30,8 @@ export async function updateComponent({
     const { render, jsxFactory } = await load({
       wrapperModule,
       wrapperName,
-      componentModule,
-      componentId,
+      previewableModule,
+      id,
       renderId,
       shouldAbortRender,
     });
@@ -39,14 +39,14 @@ export async function updateComponent({
       return;
     }
     const { autogenCallbackProps, properties } =
-      await componentModule.PreviewJsEvaluateLocally(
+      await previewableModule.PreviewJsEvaluateLocally(
         currentState.autogenCallbackPropsSource,
         currentState.propsAssignmentSource,
         jsxFactory
       );
     sendMessageFromPreview({
       kind: "rendering-setup",
-      componentId,
+      id,
     });
     await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),

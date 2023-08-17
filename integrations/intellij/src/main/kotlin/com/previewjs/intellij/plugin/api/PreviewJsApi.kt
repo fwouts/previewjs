@@ -77,13 +77,13 @@ data class AnalyzeFileRequest(
 )
 
 data class AnalyzeFileResponse(
-    val components: List<AnalyzedFileComponent>
+    val previewables: List<Previewable>
 )
 
-data class AnalyzedFileComponent(
+data class Previewable(
     val start: Int,
     val end: Int,
-    val componentId: String
+    val id: String
 )
 
 data class StartPreviewRequest(

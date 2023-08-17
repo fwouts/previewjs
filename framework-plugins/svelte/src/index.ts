@@ -1,4 +1,4 @@
-import type { Component, Story } from "@previewjs/component-analyzer-api";
+import type { Component, Story } from "@previewjs/analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type sveltekit from "@sveltejs/kit";
@@ -6,7 +6,7 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
 import url from "url";
-import { extractSvelteComponents } from "./extract-component.js";
+import { analyze } from "./analyze.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
@@ -43,23 +43,23 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
       typeAnalyzer,
-      detectComponents: async (absoluteFilePaths) => {
+      analyze: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".svelte") ? `${p}.ts` : p))
         );
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const componentOrStory of await extractSvelteComponents(
+          for (const previewable of await analyze(
             reader,
             resolver,
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in componentOrStory) {
-              components.push(componentOrStory);
+            if ("extractProps" in previewable) {
+              components.push(previewable);
             } else {
-              stories.push(componentOrStory);
+              stories.push(previewable);
             }
           }
         }

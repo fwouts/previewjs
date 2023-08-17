@@ -18,13 +18,13 @@ export function initListeners() {
 }
 
 export function initPreview({
-  componentModule,
-  componentId,
+  previewableModule,
+  id,
   wrapperModule,
   wrapperName,
 }: {
-  componentModule: any;
-  componentId: string;
+  previewableModule: any;
+  id: string;
   wrapperModule: any;
   wrapperName: string;
 }) {
@@ -44,8 +44,8 @@ export function initPreview({
       await updateComponent({
         wrapperModule,
         wrapperName,
-        componentModule,
-        componentId,
+        previewableModule,
+        id,
         renderId,
         shouldAbortRender: () => renderId !== thisRenderId,
         load: loadRenderer,
@@ -82,8 +82,8 @@ export function initPreview({
     kind: "bootstrapped",
   });
 
-  return (updatedComponentModule: any, updatedWrapperModule: any) => {
-    componentModule = updatedComponentModule;
+  return (updatedPreviewableModule: any, updatedWrapperModule: any) => {
+    previewableModule = updatedPreviewableModule;
     wrapperModule = updatedWrapperModule;
     if (lastRenderMessage) {
       // eslint-disable-next-line no-console

@@ -11,35 +11,37 @@ let detachFn: () => void = () => {
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
-  componentModule,
-  componentId,
+  previewableModule,
+  id,
   shouldAbortRender,
 }) => {
-  const componentName = componentId.substring(componentId.indexOf(":") + 1);
-  const isStoryModule = !!componentModule.default?.component;
+  const previewableName = id.substring(id.indexOf(":") + 1);
+  const isStoryModule = !!previewableModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     (({ children }: { children: JSX.Element }) => <>{children}</>);
-  const ComponentOrStory =
-    componentModule[
-      componentName === "default" ? "default" : `__previewjs__${componentName}`
+  const Previewable =
+    previewableModule[
+      previewableName === "default"
+        ? "default"
+        : `__previewjs__${previewableName}`
     ];
-  if (!ComponentOrStory) {
-    throw new Error(`No component named '${componentName}'`);
+  if (!Previewable) {
+    throw new Error(`No component or story named '${previewableName}'`);
   }
   const decorators = [
-    ...(ComponentOrStory.decorators || []),
-    ...(componentModule.default?.decorators || []),
+    ...(Previewable.decorators || []),
+    ...(previewableModule.default?.decorators || []),
   ];
   const RenderComponent = isStoryModule
-    ? typeof ComponentOrStory === "function"
-      ? ComponentOrStory
-      : ComponentOrStory.render ||
-        ComponentOrStory.component ||
-        componentModule.default?.render ||
-        componentModule.default?.component ||
-        ComponentOrStory
-    : ComponentOrStory;
+    ? typeof Previewable === "function"
+      ? Previewable
+      : Previewable.render ||
+        Previewable.component ||
+        previewableModule.default?.render ||
+        previewableModule.default?.component ||
+        Previewable
+    : Previewable;
   return {
     render: async (getProps: GetPropsFn) => {
       if (shouldAbortRender()) {
@@ -48,8 +50,8 @@ export const load: RendererLoader = async ({
       detachFn();
       container.innerHTML = "";
       const props = getProps({
-        presetGlobalProps: componentModule.default?.args || {},
-        presetProps: ComponentOrStory.args || {},
+        presetGlobalProps: previewableModule.default?.args || {},
+        presetProps: Previewable.args || {},
       });
       detachFn = Solid.render(
         () => (
@@ -62,8 +64,8 @@ export const load: RendererLoader = async ({
         ),
         container
       );
-      if (ComponentOrStory.play) {
-        await ComponentOrStory.play({ canvasElement: container });
+      if (Previewable.play) {
+        await Previewable.play({ canvasElement: container });
       }
     },
     jsxFactory: h,

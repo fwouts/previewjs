@@ -7,37 +7,37 @@ let app: Vue | null = null;
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
-  componentModule,
-  componentId,
+  previewableModule,
+  id,
   shouldAbortRender,
 }) => {
-  const componentName = componentId.substring(componentId.indexOf(":") + 1);
+  const previewableName = id.substring(id.indexOf(":") + 1);
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
-  let ComponentOrStory: any;
-  if (componentId.includes(".vue:")) {
-    ComponentOrStory = componentModule.default;
-    if (!ComponentOrStory) {
-      throw new Error(`No default component could be found for ${componentId}`);
+  let Previewable: any;
+  if (id.includes(".vue:")) {
+    Previewable = previewableModule.default;
+    if (!Previewable) {
+      throw new Error(`No default component could be found for ${id}`);
     }
   } else {
-    ComponentOrStory = componentModule[`__previewjs__${componentName}`];
-    if (!ComponentOrStory) {
-      throw new Error(`No component named '${componentName}'`);
+    Previewable = previewableModule[`__previewjs__${previewableName}`];
+    if (!Previewable) {
+      throw new Error(`No component or story named '${previewableName}'`);
     }
   }
-  let storyDecorators = ComponentOrStory.decorators || [];
-  let RenderComponent = ComponentOrStory;
-  if (ComponentOrStory.render || ComponentOrStory.name === "VueComponent") {
+  let storyDecorators = Previewable.decorators || [];
+  let RenderComponent = Previewable;
+  if (Previewable.render || Previewable.name === "VueComponent") {
     // Vue or JSX component. Nothing to do.
   } else {
     // Storybook story, either CSF2 or CSF3.
-    if (typeof ComponentOrStory === "function") {
+    if (typeof Previewable === "function") {
       // CSF2 story.
       RenderComponent = {
         functional: true,
         render: (h: any, data: any) => {
-          const storyReturnValue = ComponentOrStory(data.props, {
+          const storyReturnValue = Previewable(data.props, {
             argTypes: data.props,
           });
           if (storyReturnValue.template) {
@@ -45,7 +45,7 @@ export const load: RendererLoader = async ({
           }
           const component =
             Object.values(storyReturnValue.components || {})[0] ||
-            componentModule.default?.component;
+            previewableModule.default?.component;
           if (!component) {
             throw new Error(
               "Encountered a story with no template or components"
@@ -56,9 +56,9 @@ export const load: RendererLoader = async ({
       };
     } else {
       // CSF3 story.
-      const csf3Story = ComponentOrStory;
+      const csf3Story = Previewable;
       RenderComponent =
-        csf3Story.component || componentModule.default?.component;
+        csf3Story.component || previewableModule.default?.component;
       if (!RenderComponent) {
         throw new Error("Encountered a story with no component");
       }
@@ -66,7 +66,7 @@ export const load: RendererLoader = async ({
   }
   const decorators = [
     ...storyDecorators,
-    ...(componentModule.default?.decorators || []),
+    ...(previewableModule.default?.decorators || []),
   ];
   const Decorated = decorators.reduce((component, decorator) => {
     const decorated = decorator();
@@ -85,8 +85,8 @@ export const load: RendererLoader = async ({
         app = null;
       }
       const props = getProps({
-        presetGlobalProps: componentModule.default?.args || {},
-        presetProps: ComponentOrStory.args || {},
+        presetGlobalProps: previewableModule.default?.args || {},
+        presetProps: Previewable.args || {},
       });
       app = new Vue({
         render: (h) =>
@@ -119,8 +119,8 @@ export const load: RendererLoader = async ({
         root.removeChild(root.firstChild);
       }
       root.appendChild(app.$el);
-      if (ComponentOrStory.play) {
-        await ComponentOrStory.play({ canvasElement: root });
+      if (Previewable.play) {
+        await Previewable.play({ canvasElement: root });
       }
     },
     // While Vue 2 exposes h(), it can only be used when a component is already being rendered.

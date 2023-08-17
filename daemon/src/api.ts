@@ -44,10 +44,10 @@ export interface AnalyzeFileRequest {
 }
 
 export interface AnalyzeFileResponse {
-  components: Array<{
+  previewables: Array<{
     start: number;
     end: number;
-    componentId: string;
+    id: string;
   }>;
 }
 
