@@ -247,7 +247,7 @@ export interface FileChanged {
 export type RendererLoader = (options: {
   wrapperModule: any;
   wrapperName?: string;
-  componentModule: any;
+  previewableModule: any;
   id: string;
   renderId: number;
   shouldAbortRender: () => boolean;

@@ -329,7 +329,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components, stories } = await workspace.detectComponents({
+      const { components, stories } = await workspace.analyze({
         filePaths: [
           path
             .relative(
@@ -340,7 +340,7 @@ export async function startDaemon({
         ],
       });
       return {
-        components: [...components, ...stories].map((c) => ({
+        previewables: [...components, ...stories].map((c) => ({
           id: c.id,
           start: c.sourcePosition.start,
           end: c.sourcePosition.end,

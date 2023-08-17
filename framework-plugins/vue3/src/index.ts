@@ -1,10 +1,10 @@
-import type { Component, Story } from "@previewjs/component-analyzer-api";
+import type { Component, Story } from "@previewjs/analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
 import url from "url";
-import { extractVueComponents } from "./extract-component.js";
+import { analyze } from "./analyze.js";
 import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const vue3FrameworkPlugin: FrameworkPluginFactory = {
@@ -45,7 +45,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
       typeAnalyzer,
-      detectComponents: async (absoluteFilePaths) => {
+      analyze: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
         );
@@ -53,7 +53,7 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const previewable of await extractVueComponents(
+          for (const previewable of await analyze(
             reader,
             resolver,
             rootDir,

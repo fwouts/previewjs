@@ -1,5 +1,5 @@
+import { decodePreviewableId } from "@previewjs/analyzer-api";
 import { createChromelessWorkspace } from "@previewjs/chromeless";
-import { decodePreviewableId } from "@previewjs/component-analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { globby } from "globby";
 import type playwright from "playwright";
@@ -97,7 +97,7 @@ export async function generateScreenshots({
     cwd,
     followSymbolicLinks: false,
   });
-  const { components } = await workspace.detectComponents({
+  const { components } = await workspace.analyze({
     filePaths,
   });
   for (const component of components) {

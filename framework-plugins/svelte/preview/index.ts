@@ -11,25 +11,25 @@ type Component = any;
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
-  componentModule,
+  previewableModule,
   id,
   shouldAbortRender,
 }) => {
   const previewableName = id.substring(id.indexOf(":") + 1);
-  const isStoryModule = !!componentModule.default?.component;
+  const isStoryModule = !!previewableModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   const Previewable =
-    componentModule[isStoryModule ? previewableName : "default"];
+    previewableModule[isStoryModule ? previewableName : "default"];
   if (!Previewable) {
     throw new Error(`No component or story named '${previewableName}'`);
   }
   const RenderComponent = isStoryModule
-    ? Previewable.component || componentModule.default?.component
+    ? Previewable.component || previewableModule.default?.component
     : Previewable;
   const decorators = [
     ...(Previewable.decorators || []),
-    ...(componentModule.default?.decorators || []),
+    ...(previewableModule.default?.decorators || []),
   ];
   return {
     render: async (getProps: GetPropsFn) => {
@@ -43,7 +43,7 @@ export const load: RendererLoader = async ({
       root.innerHTML = "";
       const props = wrapSlotProps(
         getProps({
-          presetGlobalProps: componentModule.default?.args || {},
+          presetGlobalProps: previewableModule.default?.args || {},
           presetProps: Previewable.args || {},
         })
       );

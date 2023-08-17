@@ -7,17 +7,17 @@ const container = document.getElementById("root")!;
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
-  componentModule,
+  previewableModule,
   id,
   renderId,
   shouldAbortRender,
 }) => {
   const previewableName = id.substring(id.indexOf(":") + 1);
-  const isStoryModule = !!componentModule.default?.component;
+  const isStoryModule = !!previewableModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) || Fragment;
   const Previewable =
-    componentModule[
+    previewableModule[
       previewableName === "default"
         ? "default"
         : `__previewjs__${previewableName}`
@@ -27,7 +27,7 @@ export const load: RendererLoader = async ({
   }
   const decorators = [
     ...(Previewable.decorators || []),
-    ...(componentModule.default?.decorators || []),
+    ...(previewableModule.default?.decorators || []),
   ];
 
   const RenderComponent = isStoryModule
@@ -35,8 +35,8 @@ export const load: RendererLoader = async ({
       ? Previewable
       : Previewable.render ||
         Previewable.component ||
-        componentModule.default?.render ||
-        componentModule.default?.component ||
+        previewableModule.default?.render ||
+        previewableModule.default?.component ||
         Previewable
     : Previewable;
   return {
@@ -53,7 +53,7 @@ export const load: RendererLoader = async ({
               () => (
                 <RenderComponent
                   {...getProps({
-                    presetGlobalProps: componentModule.default?.args || {},
+                    presetGlobalProps: previewableModule.default?.args || {},
                     presetProps: Previewable.args || {},
                   })}
                 />

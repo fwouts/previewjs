@@ -1,4 +1,4 @@
-import { generatePreviewableId } from "@previewjs/component-analyzer-api";
+import { generatePreviewableId } from "@previewjs/analyzer-api";
 import path from "path";
 import ts from "typescript";
 

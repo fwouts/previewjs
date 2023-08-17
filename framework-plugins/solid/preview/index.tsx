@@ -11,17 +11,17 @@ let detachFn: () => void = () => {
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
-  componentModule,
+  previewableModule,
   id,
   shouldAbortRender,
 }) => {
   const previewableName = id.substring(id.indexOf(":") + 1);
-  const isStoryModule = !!componentModule.default?.component;
+  const isStoryModule = !!previewableModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     (({ children }: { children: JSX.Element }) => <>{children}</>);
   const Previewable =
-    componentModule[
+    previewableModule[
       previewableName === "default"
         ? "default"
         : `__previewjs__${previewableName}`
@@ -31,15 +31,15 @@ export const load: RendererLoader = async ({
   }
   const decorators = [
     ...(Previewable.decorators || []),
-    ...(componentModule.default?.decorators || []),
+    ...(previewableModule.default?.decorators || []),
   ];
   const RenderComponent = isStoryModule
     ? typeof Previewable === "function"
       ? Previewable
       : Previewable.render ||
         Previewable.component ||
-        componentModule.default?.render ||
-        componentModule.default?.component ||
+        previewableModule.default?.render ||
+        previewableModule.default?.component ||
         Previewable
     : Previewable;
   return {
@@ -50,7 +50,7 @@ export const load: RendererLoader = async ({
       detachFn();
       container.innerHTML = "";
       const props = getProps({
-        presetGlobalProps: componentModule.default?.args || {},
+        presetGlobalProps: previewableModule.default?.args || {},
         presetProps: Previewable.args || {},
       });
       detachFn = Solid.render(

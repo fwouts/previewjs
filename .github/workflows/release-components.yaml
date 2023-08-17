@@ -65,7 +65,7 @@ jobs:
             fi
           fi
       - run: |
-          cd component-analyzer/api
+          cd analyzer/api
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"
@@ -76,7 +76,7 @@ jobs:
             fi
           fi
       - run: |
-          cd component-analyzer/react
+          cd analyzer/react
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
               echo "Package is already published. Ignoring the following:"

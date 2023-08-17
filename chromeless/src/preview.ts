@@ -25,7 +25,7 @@ export async function startPreview({
   );
   await page.goto(preview.url());
 
-  // This callback will be invoked each time a component is done rendering.
+  // This callback will be invoked each time a previewable is done rendering.
   let onRenderingDone = () => {
     // No-op by default.
   };
@@ -128,14 +128,12 @@ export async function startPreview({
     },
     async show(previewableId: string, propsAssignmentSource?: string) {
       const filePath = previewableId.split(":")[0]!;
-      const { components, stories } = await workspace.detectComponents({
+      const { components, stories } = await workspace.analyze({
         filePaths: [filePath],
       });
-      const matchingDetectedComponent = components.find(
-        (c) => previewableId === c.id
-      );
-      const matchingDetectedStory = stories.find((c) => previewableId === c.id);
-      if (!matchingDetectedComponent && !matchingDetectedStory) {
+      const matchingComponent = components.find((c) => previewableId === c.id);
+      const matchingStory = stories.find((c) => previewableId === c.id);
+      if (!matchingComponent && !matchingStory) {
         throw new Error(
           `Component may be previewable but was not detected by framework plugin: ${previewableId}`
         );
@@ -149,7 +147,7 @@ export async function startPreview({
         computePropsResponse.types
       );
       if (!propsAssignmentSource) {
-        propsAssignmentSource = matchingDetectedStory
+        propsAssignmentSource = matchingStory
           ? "properties = null"
           : await generatePropsAssignmentSource(
               props,

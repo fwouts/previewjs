@@ -1,6 +1,6 @@
+import { decodePreviewableId } from "@previewjs/analyzer-api";
 import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
 import { RPCs } from "@previewjs/api";
-import { decodePreviewableId } from "@previewjs/component-analyzer-api";
 import type {
   CollectedTypes,
   TypeAnalyzer,
@@ -13,7 +13,7 @@ import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
-import { detectComponents } from "./detect-components";
+import { analyze } from "./detect-previewables";
 import { getFreePort } from "./get-free-port";
 import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
@@ -72,7 +72,7 @@ export async function createWorkspace({
     logger.debug(
       `Computing props for components: ${previewableIds.join(", ")}`
     );
-    const detected = await frameworkPlugin.detectComponents([
+    const detected = await frameworkPlugin.analyze([
       ...new Set(
         previewableIds.map((c) =>
           path.join(rootDir, decodePreviewableId(c).filePath)
@@ -130,8 +130,8 @@ export async function createWorkspace({
       types,
     };
   });
-  router.registerRPC(RPCs.DetectComponents, (options) =>
-    detectComponents(logger, workspace, frameworkPlugin, options)
+  router.registerRPC(RPCs.DetectPreviewables, (options) =>
+    analyze(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
@@ -175,8 +175,7 @@ export async function createWorkspace({
     rootDir,
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
-    detectComponents: (options = {}) =>
-      localRpc(RPCs.DetectComponents, options),
+    analyze: (options = {}) => localRpc(RPCs.DetectPreviewables, options),
     computeProps: (options) => localRpc(RPCs.ComputeProps, options),
     preview: {
       start: async (allocatePort) => {
@@ -228,9 +227,9 @@ export interface Workspace {
   rootDir: string;
   reader: Reader;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  detectComponents(
-    options?: RequestOf<typeof RPCs.DetectComponents>
-  ): Promise<ResponseOf<typeof RPCs.DetectComponents>>;
+  analyze(
+    options?: RequestOf<typeof RPCs.DetectPreviewables>
+  ): Promise<ResponseOf<typeof RPCs.DetectPreviewables>>;
   computeProps(
     options: RequestOf<typeof RPCs.ComputeProps>
   ): Promise<ResponseOf<typeof RPCs.ComputeProps>>;

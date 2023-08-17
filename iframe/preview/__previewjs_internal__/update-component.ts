@@ -5,7 +5,7 @@ import { getState } from "./state";
 export async function updateComponent({
   wrapperModule,
   wrapperName,
-  componentModule,
+  previewableModule,
   id,
   renderId,
   shouldAbortRender,
@@ -13,7 +13,7 @@ export async function updateComponent({
 }: {
   wrapperModule: any;
   wrapperName: string;
-  componentModule: any;
+  previewableModule: any;
   id: string;
   renderId: number;
   shouldAbortRender: () => boolean;
@@ -30,7 +30,7 @@ export async function updateComponent({
     const { render, jsxFactory } = await load({
       wrapperModule,
       wrapperName,
-      componentModule,
+      previewableModule,
       id,
       renderId,
       shouldAbortRender,
@@ -39,7 +39,7 @@ export async function updateComponent({
       return;
     }
     const { autogenCallbackProps, properties } =
-      await componentModule.PreviewJsEvaluateLocally(
+      await previewableModule.PreviewJsEvaluateLocally(
         currentState.autogenCallbackPropsSource,
         currentState.propsAssignmentSource,
         jsxFactory

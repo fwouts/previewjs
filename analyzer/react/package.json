@@ -1,0 +1,47 @@
+{
+  "name": "@previewjs/analyzer-react",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "prepare": "rimraf types && shx mkdir types && shx cp -rL node_modules/@types/react types/react && shx cp -rL node_modules/@types/prop-types types/prop-types",
+    "build": "tsc && unbuild",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@previewjs/analyzer-api": "^0.0.1",
+    "@previewjs/serializable-values": "^7.0.3",
+    "@previewjs/storybook-helpers": "^4.0.0",
+    "@previewjs/type-analyzer": "^9.0.0",
+    "@previewjs/vfs": "^2.0.16",
+    "@vitejs/plugin-react": "^4.0.4",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/prop-types": "^15.7.5",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "pino": "^8.15.0",
+    "pino-pretty": "^10.2.0",
+    "react": "^18.2.0",
+    "rimraf": "^5.0.1",
+    "shx": "^0.3.4",
+    "unbuild": "^1.2.1",
+    "vitest": "^0.34.1"
+  }
+}

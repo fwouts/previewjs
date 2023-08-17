@@ -7,7 +7,7 @@ let app: Vue | null = null;
 export const load: RendererLoader = async ({
   wrapperModule,
   wrapperName,
-  componentModule,
+  previewableModule,
   id,
   shouldAbortRender,
 }) => {
@@ -16,12 +16,12 @@ export const load: RendererLoader = async ({
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   let Previewable: any;
   if (id.includes(".vue:")) {
-    Previewable = componentModule.default;
+    Previewable = previewableModule.default;
     if (!Previewable) {
       throw new Error(`No default component could be found for ${id}`);
     }
   } else {
-    Previewable = componentModule[`__previewjs__${previewableName}`];
+    Previewable = previewableModule[`__previewjs__${previewableName}`];
     if (!Previewable) {
       throw new Error(`No component or story named '${previewableName}'`);
     }
@@ -45,7 +45,7 @@ export const load: RendererLoader = async ({
           }
           const component =
             Object.values(storyReturnValue.components || {})[0] ||
-            componentModule.default?.component;
+            previewableModule.default?.component;
           if (!component) {
             throw new Error(
               "Encountered a story with no template or components"
@@ -58,7 +58,7 @@ export const load: RendererLoader = async ({
       // CSF3 story.
       const csf3Story = Previewable;
       RenderComponent =
-        csf3Story.component || componentModule.default?.component;
+        csf3Story.component || previewableModule.default?.component;
       if (!RenderComponent) {
         throw new Error("Encountered a story with no component");
       }
@@ -66,7 +66,7 @@ export const load: RendererLoader = async ({
   }
   const decorators = [
     ...storyDecorators,
-    ...(componentModule.default?.decorators || []),
+    ...(previewableModule.default?.decorators || []),
   ];
   const Decorated = decorators.reduce((component, decorator) => {
     const decorated = decorator();
@@ -85,7 +85,7 @@ export const load: RendererLoader = async ({
         app = null;
       }
       const props = getProps({
-        presetGlobalProps: componentModule.default?.args || {},
+        presetGlobalProps: previewableModule.default?.args || {},
         presetProps: Previewable.args || {},
       });
       app = new Vue({

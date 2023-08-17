@@ -1,5 +1,5 @@
 import viteTsconfigPaths from "@fwouts/vite-tsconfig-paths";
-import { decodePreviewableId } from "@previewjs/component-analyzer-api";
+import { decodePreviewableId } from "@previewjs/analyzer-api";
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
@@ -70,14 +70,14 @@ export class ViteManager {
         switch (matched) {
           case "%INIT_PREVIEW_BLOCK%":
             return `
-    let latestComponentModule;
+    let latestPreviewableModule;
     let latestWrapperModule;
     let refresh;
     
-    import.meta.hot.accept(["/${componentPath}"], ([componentModule]) => {
-      if (componentModule && refresh) {
-        latestComponentModule = componentModule;
-        refresh(latestComponentModule, latestWrapperModule);
+    import.meta.hot.accept(["/${componentPath}"], ([previewableModule]) => {
+      if (previewableModule && refresh) {
+        latestPreviewableModule = previewableModule;
+        refresh(latestPreviewableModule, latestWrapperModule);
       }
     });
 
@@ -88,7 +88,7 @@ export class ViteManager {
     import.meta.hot.accept(["/${wrapperPath}"], ([wrapperModule]) => {
       if (wrapperModule && refresh) {
         latestWrapperModule = wrapperModule;
-        refresh(latestComponentModule, latestWrapperModule);
+        refresh(latestPreviewableModule, latestWrapperModule);
       }
     });
     `
@@ -109,10 +109,10 @@ export class ViteManager {
     // modules imported by the component module.
     wrapperModulePromise.then(wrapperModule => {
       latestWrapperModule = wrapperModule;
-      import(/* @vite-ignore */ "/${componentPath}").then(componentModule => {
-        latestComponentModule = componentModule;
+      import(/* @vite-ignore */ "/${componentPath}").then(previewableModule => {
+        latestPreviewableModule = previewableModule;
         refresh = initPreview({
-          componentModule,
+          previewableModule,
           id: ${JSON.stringify(id)},
           wrapperModule,
           wrapperName: ${JSON.stringify(wrapper?.componentName || null)},

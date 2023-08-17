@@ -2,7 +2,7 @@ import {
   generatePreviewableId,
   type ComponentProps,
   type Story,
-} from "@previewjs/component-analyzer-api";
+} from "@previewjs/analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import path from "path";

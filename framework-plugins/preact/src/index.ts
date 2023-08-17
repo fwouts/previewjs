@@ -1,10 +1,10 @@
-import type { Component, Story } from "@previewjs/component-analyzer-api";
+import type { Component, Story } from "@previewjs/analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
 import url from "url";
-import { extractPreactComponents } from "./extract-component.js";
+import { analyze } from "./analyze.js";
 import { PREACT_SPECIAL_TYPES } from "./special-types.js";
 
 const preactFrameworkPlugin: FrameworkPluginFactory = {
@@ -35,12 +35,12 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,
-      detectComponents: async (absoluteFilePaths) => {
+      analyze: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const previewable of await extractPreactComponents(
+          for (const previewable of await analyze(
             logger,
             resolver,
             rootDir,

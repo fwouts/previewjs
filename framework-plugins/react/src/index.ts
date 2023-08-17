@@ -1,4 +1,4 @@
-import { createComponentAnalyzer } from "@previewjs/component-analyzer-react";
+import { createAnalyzer } from "@previewjs/analyzer-react";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -13,7 +13,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     }
     const [major, minor] = version.split(".").map((n) => parseInt(n)) as [
       number,
-      number
+      number,
     ];
     if (isNaN(major) || isNaN(minor)) {
       return false;
@@ -22,7 +22,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
   },
   async create({ rootDir, reader, logger, dependencies }) {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-    const componentAnalyzerPlugin = createComponentAnalyzer({
+    const analyzerPlugin = createAnalyzer({
       rootDir,
       reader,
       logger,
@@ -33,7 +33,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
       name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
-      ...componentAnalyzerPlugin,
+      ...analyzerPlugin,
       viteConfig: (configuredPlugins) => {
         const hasReactPlugin = configuredPlugins.find((plugin) =>
           plugin.name.startsWith("vite:react-")

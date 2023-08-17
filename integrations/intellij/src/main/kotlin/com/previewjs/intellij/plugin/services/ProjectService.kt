@@ -33,7 +33,7 @@ import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
 import com.previewjs.intellij.plugin.api.AnalyzeFileRequest
-import com.previewjs.intellij.plugin.api.AnalyzedFileComponent
+import com.previewjs.intellij.plugin.api.Previewable
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
@@ -66,7 +66,7 @@ class ProjectService(private val project: Project) : Disposable {
 
     @Volatile
     private var currentPreviewWorkspaceId: String? = null
-    private var componentMap = mutableMapOf<String, Pair<String, List<AnalyzedFileComponent>>>()
+    private var componentMap = mutableMapOf<String, Pair<String, List<Previewable>>>()
     private var pendingFileChanges = mutableMapOf<String, String>()
 
     init {
@@ -223,7 +223,7 @@ class ProjectService(private val project: Project) : Disposable {
         componentMap.remove(file.path)
     }
 
-    fun getPrecomputedComponents(psiFile: PsiFile): List<AnalyzedFileComponent> {
+    fun getPrecomputedComponents(psiFile: PsiFile): List<Previewable> {
         val currentText = psiFile.text
         val computed = componentMap[psiFile.virtualFile.path] ?: return emptyList()
         val (computedText, components) = computed
@@ -249,7 +249,7 @@ class ProjectService(private val project: Project) : Disposable {
         if (differenceDelta > 0) {
             // A chunk of text was added.
             return components.map {
-                AnalyzedFileComponent(
+                Previewable(
                     start = if (it.start < exactCharacterDifferenceIndex) it.start else it.start + differenceDelta,
                     end = if (it.end < exactCharacterDifferenceIndex) it.end else it.end + differenceDelta,
                     id = it.id
@@ -267,7 +267,7 @@ class ProjectService(private val project: Project) : Disposable {
             return components.filter {
                 it.start < start || it.start >= end
             }.map {
-                AnalyzedFileComponent(
+                Previewable(
                     start = if (it.start < start) it.start else max(0, it.start + differenceDelta),
                     end = if (it.end < start) it.end else max(0, it.end + differenceDelta),
                     id = it.id
@@ -276,7 +276,7 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    fun computeComponents(file: VirtualFile, callback: (result: List<AnalyzedFileComponent>) -> Unit) {
+    fun computeComponents(file: VirtualFile, callback: (result: List<Previewable>) -> Unit) {
         if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
             return callback(emptyList())
         }
