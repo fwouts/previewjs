@@ -375,18 +375,20 @@ Primary.args = {
     const story = extractedStories[1];
     assertStory(story);
     expect(await story.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("primary"),
-          value: TRUE,
-        },
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Button"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("primary"),
+            value: TRUE,
+          },
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Button"),
+          },
+        ]),
+      },
     });
     expect(await story.associatedComponent?.analyze()).toEqual({
       props: objectType({
@@ -430,18 +432,20 @@ Primary.args = {
     const story = extractedStories[1];
     assertStory(story);
     expect(await story.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("primary"),
-          value: TRUE,
-        },
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Button"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("primary"),
+            value: TRUE,
+          },
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Button"),
+          },
+        ]),
+      },
     });
   });
 
@@ -486,13 +490,15 @@ export function NotStory() {}
     assertStory(story1);
     assertStory(story2);
     expect(await story1.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
     expect(await story1.associatedComponent?.analyze()).toEqual({
       props: objectType({
@@ -542,13 +548,15 @@ export function NotStory() {}
     assertStory(story1);
     assertStory(story2);
     expect(await story1.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
     expect(await story2.analyze()).toEqual({
       args: null,

@@ -75,13 +75,15 @@ export function NotStory() {}
       },
     ]);
     expect(await extractedStories[0]?.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
     expect(await extractedStories[1]?.analyze()).toEqual({
       args: null,
@@ -118,13 +120,15 @@ export const Example = {
       },
     ]);
     expect(await extractedStories[0]?.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: UNKNOWN,
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: UNKNOWN,
+          },
+        ]),
+      },
     });
   });
 
@@ -166,13 +170,15 @@ export function NotStory() {}
       },
     ]);
     expect(await extractedStories[0]?.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
     expect(await extractedStories[1]?.analyze()).toEqual({
       args: null,
@@ -218,13 +224,15 @@ export function NotStory() {}
       },
     ]);
     expect(await extractedStories[0]?.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
     expect(await extractedStories[1]?.analyze()).toEqual({
       args: null,
@@ -274,13 +282,15 @@ export function NotStory() {}
       },
     ]);
     expect(await extractedStories[0]?.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
     expect(await extractedStories[1]?.analyze()).toEqual({
       args: null,
@@ -330,13 +340,15 @@ export function NotStory() {}
       },
     ]);
     expect(await extractedStories[0]?.analyze()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
     expect(await extractedStories[1]?.analyze()).toEqual({
       args: null,
