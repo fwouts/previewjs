@@ -97,13 +97,13 @@ export async function generateScreenshots({
     cwd,
     followSymbolicLinks: false,
   });
-  const { components } = await workspace.analyze({
+  const { components, stories } = await workspace.analyze({
     filePaths,
   });
-  for (const component of components) {
-    const { filePath, name } = decodePreviewableId(component.id);
+  for (const previewable of [...components, ...stories]) {
+    const { filePath, name } = decodePreviewableId(previewable.id);
     try {
-      await preview.show(component.id);
+      await preview.show(previewable.id);
       const screenshotPath = generateScreenshotPath({ filePath, name });
       await preview.iframe.takeScreenshot(screenshotPath);
       if (onScreenshotGenerated) {
@@ -117,7 +117,7 @@ export async function generateScreenshots({
         }
       } else {
         throw new Error(
-          `Unable to generate screenshot for ${component.id}`,
+          `Unable to generate screenshot for ${previewable.id}`,
           // https://stackoverflow.com/a/42755876
           // @ts-ignore
           { cause: e }
