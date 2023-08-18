@@ -56,23 +56,20 @@ export async function analyze(
         }
         return component.extractProps();
       })
-    ).map((c) => {
-      if (
-        !("associatedComponent" in c) ||
-        !c.associatedComponent?.id.includes(".svelte.ts:")
-      ) {
-        return c;
+    ).map((story) => {
+      if (!story.associatedComponent?.id.includes(".svelte.ts:")) {
+        return story;
       }
       const { filePath: associatedComponentFilePath } = decodePreviewableId(
-        c.associatedComponent.id
+        story.associatedComponent.id
       );
       const associatedComponentSvelteFilePath = stripTsExtension(
         associatedComponentFilePath
       );
       return {
-        ...c,
+        ...story,
         associatedComponent: {
-          ...c.associatedComponent,
+          ...story.associatedComponent,
           id: generatePreviewableId({
             filePath: associatedComponentSvelteFilePath,
             name: inferComponentNameFromSveltePath(

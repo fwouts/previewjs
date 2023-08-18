@@ -196,23 +196,20 @@ export async function analyze(
         }
         return component.extractProps();
       })
-    ).map((c) => {
-      if (
-        !("associatedComponent" in c) ||
-        !c.associatedComponent?.id.includes(".vue.ts:")
-      ) {
-        return c;
+    ).map((story) => {
+      if (!story.associatedComponent?.id.includes(".vue.ts:")) {
+        return story;
       }
       const { filePath: associatedComponentFilePath } = decodePreviewableId(
-        c.associatedComponent.id
+        story.associatedComponent.id
       );
       const associatedComponentVueFilePath = stripTsExtension(
         associatedComponentFilePath
       );
       return {
-        ...c,
+        ...story,
         associatedComponent: {
-          ...c.associatedComponent,
+          ...story.associatedComponent,
           id: generatePreviewableId({
             filePath: associatedComponentVueFilePath,
             name: inferComponentNameFromVuePath(associatedComponentVueFilePath),
