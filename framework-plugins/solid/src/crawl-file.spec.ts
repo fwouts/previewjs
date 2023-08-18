@@ -153,8 +153,8 @@ export const NotStory = (props) => <Button {...props} />;
     ]);
     const story = extractedStories[0];
     assertStory(story);
-    expect(await story.extractArgs()).toBeNull();
-    expect(await story.associatedComponent?.extractProps()).toEqual({
+    expect(await story.analyze()).toBeNull();
+    expect(await story.associatedComponent?.analyze()).toEqual({
       props: objectType({
         label: STRING_TYPE,
       }),
@@ -191,7 +191,7 @@ export const NotStory = (props) => <Button {...props} />;
     ]);
     const story = extractedStories[0];
     assertStory(story);
-    expect(await story.extractArgs()).toBeNull();
+    expect(await story.analyze()).toBeNull();
   });
 
   it("detects CSF2 stories (exported with component)", async () => {
@@ -229,7 +229,7 @@ Primary.args = {
     ]);
     const story = extractedStories[1];
     assertStory(story);
-    expect(await story.extractArgs()).toMatchObject({
+    expect(await story.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -243,7 +243,7 @@ Primary.args = {
         },
       ]),
     });
-    expect(await story.associatedComponent?.extractProps()).toEqual({
+    expect(await story.associatedComponent?.analyze()).toEqual({
       props: objectType({
         label: STRING_TYPE,
       }),
@@ -284,7 +284,7 @@ Primary.args = {
     ]);
     const story = extractedStories[1];
     assertStory(story);
-    expect(await story.extractArgs()).toMatchObject({
+    expect(await story.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -337,7 +337,7 @@ export function NotStory() {}
     const [story1, story2] = extractedStories;
     assertStory(story1);
     assertStory(story2);
-    expect(await story1.extractArgs()).toMatchObject({
+    expect(await story1.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -346,13 +346,13 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await story1.associatedComponent?.extractProps()).toEqual({
+    expect(await story1.associatedComponent?.analyze()).toEqual({
       props: objectType({
         label: STRING_TYPE,
       }),
       types: {},
     });
-    expect(await story2.extractArgs()).toBeNull();
+    expect(await story2.analyze()).toBeNull();
   });
 
   it("detects CSF3 stories (exported with title)", async () => {
@@ -388,7 +388,7 @@ export function NotStory() {}
     const [story1, story2] = extractedStories;
     assertStory(story1);
     assertStory(story2);
-    expect(await story1.extractArgs()).toMatchObject({
+    expect(await story1.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -397,7 +397,7 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await story2.extractArgs()).toBeNull();
+    expect(await story2.analyze()).toBeNull();
   });
 
   function extract(absoluteFilePath: string) {

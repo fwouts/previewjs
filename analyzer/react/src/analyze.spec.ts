@@ -553,6 +553,6 @@ A.propTypes = {
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    return component.extractProps();
+    return component.analyze();
   }
 });

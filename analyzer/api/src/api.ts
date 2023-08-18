@@ -29,7 +29,7 @@ export interface BasePreviewable {
 
 export interface Component extends BasePreviewable {
   exported: boolean;
-  extractProps: () => Promise<ComponentProps>;
+  analyze: () => Promise<ComponentProps>;
 }
 
 export interface ComponentProps {
@@ -38,7 +38,7 @@ export interface ComponentProps {
 }
 
 export interface Story extends BasePreviewable {
-  extractArgs: () => Promise<StoryArgs | null>;
+  analyze: () => Promise<StoryArgs | null>;
   associatedComponent: BasicComponent | null;
 }
 
@@ -52,4 +52,4 @@ export type FileSourcePosition = {
   end: number;
 };
 
-export type BasicComponent = Pick<Component, "id" | "extractProps">;
+export type BasicComponent = Pick<Component, "id" | "analyze">;

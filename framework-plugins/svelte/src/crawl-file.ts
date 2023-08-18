@@ -33,8 +33,7 @@ export async function crawlFile(
           end: (await entry.read()).length,
         },
         exported: true,
-        extractProps: async () =>
-          analyzeFromSFC(resolver, absoluteFilePath + ".ts"),
+        analyze: async () => analyzeFromSFC(resolver, absoluteFilePath + ".ts"),
       },
     ];
   } else {
@@ -59,7 +58,7 @@ export async function crawlFile(
             types: {},
           };
         }
-        return component.extractProps();
+        return component.analyze();
       })
     ).map((story) => {
       if (!story.associatedComponent?.id.includes(".svelte.ts:")) {

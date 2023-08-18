@@ -100,21 +100,21 @@ export async function createWorkspace({
       let componentTypes: CollectedTypes;
       if (component) {
         logger.debug(`Analyzing component: ${id}`);
-        ({ props, types: componentTypes } = await component.extractProps());
+        ({ props, types: componentTypes } = await component.analyze());
         propsPerComponentId[id] = props;
         logger.debug(`Done analyzing: ${id}`);
       } else if (story) {
         if (story.associatedComponent) {
           logger.debug(`Analyzing story: ${id}`);
           ({ props, types: componentTypes } =
-            await story.associatedComponent.extractProps());
+            await story.associatedComponent.analyze());
           logger.debug(`Done analyzing: ${id}`);
         } else {
           logger.debug(`No associated component for story: ${id}`);
           props = UNKNOWN_TYPE;
           componentTypes = {};
         }
-        argsPerStoryId[id] = await story.extractArgs();
+        argsPerStoryId[id] = await story.analyze();
       } else {
         const { filePath, name } = decodePreviewableId(id);
         throw new Error(`Component ${name} not detected in ${filePath}.`);

@@ -341,6 +341,6 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     if (!component) {
       throw new Error(`Previewable ${previewableName} not found`);
     }
-    return component.extractProps();
+    return component.analyze();
   }
 });

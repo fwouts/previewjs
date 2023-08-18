@@ -74,7 +74,7 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -83,7 +83,7 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toBeNull();
   });
 
   it("resolves args to UNKNOWN when too complex", async () => {
@@ -115,7 +115,7 @@ export const Example = {
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -163,7 +163,7 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -172,7 +172,7 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toBeNull();
   });
 
   it("follows default imported component definition", async () => {
@@ -213,7 +213,7 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -222,7 +222,7 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toBeNull();
   });
 
   it("follows wildcard re-exported component definition", async () => {
@@ -267,7 +267,7 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -276,7 +276,7 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toBeNull();
   });
 
   it("follows named re-exported component definition", async () => {
@@ -321,7 +321,7 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
       value: object([
         {
           kind: "key",
@@ -330,7 +330,7 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toBeNull();
   });
 
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", async () => {

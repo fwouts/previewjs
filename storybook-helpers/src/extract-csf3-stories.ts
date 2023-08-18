@@ -14,7 +14,7 @@ export async function extractCsf3Stories(
   rootDir: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
-  extractProps: (id: string) => Promise<ComponentProps>
+  analyze: (id: string) => Promise<ComponentProps>
 ): Promise<Story[]> {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
@@ -74,7 +74,7 @@ export async function extractCsf3Stories(
           start: statement.getStart(),
           end: statement.getEnd(),
         },
-        extractArgs: async () =>
+        analyze: async () =>
           args
             ? {
                 sourcePosition: {
@@ -87,7 +87,7 @@ export async function extractCsf3Stories(
         associatedComponent: associatedComponentId
           ? {
               id: associatedComponentId,
-              extractProps: () => extractProps(associatedComponentId),
+              analyze: () => analyze(associatedComponentId),
             }
           : null,
       });

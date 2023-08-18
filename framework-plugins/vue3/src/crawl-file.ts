@@ -47,7 +47,7 @@ export async function crawlFile(
           end: fileEntry.size(),
         },
         exported: true,
-        extractProps: async () =>
+        analyze: async () =>
           analyzeFromTemplate(resolver, virtualVueTsAbsoluteFilePath),
       },
     ];
@@ -112,7 +112,7 @@ export async function crawlFile(
       );
       return {
         ...basePreviewable,
-        extractArgs: async () => ({
+        analyze: async () => ({
           sourcePosition: {
             start: storyArgs.getStart(),
             end: storyArgs.getEnd(),
@@ -129,7 +129,7 @@ export async function crawlFile(
         return {
           ...basePreviewable,
           exported: isExported,
-          extractProps: async () => ({
+          analyze: async () => ({
             // TODO: Handle JSX properties.
             props: UNKNOWN_TYPE,
             types: {},
@@ -145,7 +145,7 @@ export async function crawlFile(
         );
         return {
           ...basePreviewable,
-          extractArgs: async () => null,
+          analyze: async () => null,
           associatedComponent,
         };
       }
@@ -194,7 +194,7 @@ export async function crawlFile(
             types: {},
           };
         }
-        return component.extractProps();
+        return component.analyze();
       })
     ).map((story) => {
       if (!story.associatedComponent?.id.includes(".vue.ts:")) {
@@ -255,13 +255,12 @@ function extractStoryAssociatedComponent(
         filePath: vueFilePath,
         name: inferComponentNameFromVuePath(vueFilePath),
       }),
-      extractProps: async () =>
-        analyzeFromTemplate(resolver, vueFilePath + ".ts"),
+      analyze: async () => analyzeFromTemplate(resolver, vueFilePath + ".ts"),
     };
   } else {
     return {
       id: resolvedStoriesPreviewableId,
-      extractProps: async () =>
+      analyze: async () =>
         // TODO: Handle JSX properties.
         ({
           props: UNKNOWN_TYPE,

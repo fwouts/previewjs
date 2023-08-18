@@ -97,7 +97,7 @@ export async function crawlFile(
       );
       return {
         ...basePreviewable,
-        extractArgs: async () =>
+        analyze: async () =>
           storyArgs
             ? {
                 sourcePosition: {
@@ -114,7 +114,7 @@ export async function crawlFile(
       return {
         ...basePreviewable,
         exported: isExported,
-        extractProps: async () =>
+        analyze: async () =>
           analyze(logger, resolver, absoluteFilePath, name, signature),
       };
     }
@@ -154,7 +154,7 @@ export async function crawlFile(
           types: {},
         };
       }
-      return component.extractProps();
+      return component.analyze();
     })),
   ];
 }
@@ -173,7 +173,7 @@ function extractStoryAssociatedComponent(
   return component && resolvedStoriesPreviewableId
     ? {
         id: resolvedStoriesPreviewableId,
-        extractProps: async () => {
+        analyze: async () => {
           const signature = extractComponentSignature(
             resolver.checker,
             component
