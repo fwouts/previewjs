@@ -13,7 +13,7 @@ import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
-import { analyze } from "./detect-previewables";
+import { crawl } from "./crawl";
 import { getFreePort } from "./get-free-port";
 import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
@@ -72,7 +72,7 @@ export async function createWorkspace({
     logger.debug(
       `Computing props for components: ${previewableIds.join(", ")}`
     );
-    const detected = await frameworkPlugin.analyze([
+    const detected = await frameworkPlugin.crawl([
       ...new Set(
         previewableIds.map((c) =>
           path.join(rootDir, decodePreviewableId(c).filePath)
@@ -130,8 +130,8 @@ export async function createWorkspace({
       types,
     };
   });
-  router.registerRPC(RPCs.DetectPreviewables, (options) =>
-    analyze(logger, workspace, frameworkPlugin, options)
+  router.registerRPC(RPCs.AnalyzeFile, (options) =>
+    crawl(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
@@ -175,7 +175,7 @@ export async function createWorkspace({
     rootDir,
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
-    analyze: (options = {}) => localRpc(RPCs.DetectPreviewables, options),
+    crawl: (options = {}) => localRpc(RPCs.AnalyzeFile, options),
     computeProps: (options) => localRpc(RPCs.ComputeProps, options),
     preview: {
       start: async (allocatePort) => {
@@ -227,9 +227,9 @@ export interface Workspace {
   rootDir: string;
   reader: Reader;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  analyze(
-    options?: RequestOf<typeof RPCs.DetectPreviewables>
-  ): Promise<ResponseOf<typeof RPCs.DetectPreviewables>>;
+  crawl(
+    options?: RequestOf<typeof RPCs.AnalyzeFile>
+  ): Promise<ResponseOf<typeof RPCs.AnalyzeFile>>;
   computeProps(
     options: RequestOf<typeof RPCs.ComputeProps>
   ): Promise<ResponseOf<typeof RPCs.ComputeProps>>;

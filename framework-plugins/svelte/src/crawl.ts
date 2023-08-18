@@ -11,7 +11,7 @@ import path from "path";
 import { computePropsFromSFC } from "./compute-props.js";
 import { inferComponentNameFromSveltePath } from "./infer-component-name.js";
 
-export async function analyze(
+export async function crawl(
   reader: Reader,
   resolver: TypeResolver,
   rootDir: string,
@@ -46,7 +46,7 @@ export async function analyze(
       await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
         const { filePath } = decodePreviewableId(id);
         const component = (
-          await analyze(reader, resolver, rootDir, path.join(rootDir, filePath))
+          await crawl(reader, resolver, rootDir, path.join(rootDir, filePath))
         ).find((c) => c.id === id);
         if (!component || !("extractProps" in component)) {
           return {

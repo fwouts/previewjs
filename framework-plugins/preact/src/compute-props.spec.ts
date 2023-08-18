@@ -55,7 +55,7 @@ describe("computeProps", () => {
 
   test("local component with named export", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 function A() {
   return <div>Hello, World!</div>;
@@ -73,7 +73,7 @@ export { A }
 
   test("local component with named aliased export", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 function A() {
   return <div>Hello, World!</div>;
@@ -91,7 +91,7 @@ export { A as B }
 
   test("local component with default export", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 export function A() {
   return <div>Hello, World!</div>;
@@ -109,7 +109,7 @@ export default A
 
   test("declared function with empty props", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 export function A() {
   return <div>Hello, World!</div>;
@@ -125,7 +125,7 @@ export function A() {
 
   test("declared function with typed props parameter", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
   export function A(props: { foo: string }) {
     return <div>Hello, World!</div>;
@@ -143,7 +143,7 @@ export function A() {
 
   test("declared function with type alias props parameter", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 
   type SomeProps = {
@@ -169,7 +169,7 @@ export function A() {
 
   test("default exported function with no name", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 export default function() {
   return <div>Hello, World!</div>;
@@ -185,7 +185,7 @@ export default function() {
 
   test("default exported function with no parameter", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 export default function A() {
   return <div>Hello, World!</div>;
@@ -201,7 +201,7 @@ export default function A() {
 
   test("default exported function with props", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 export default function A(props: { name: string }) {
   return <div>Hello, {name}!</div>;
@@ -219,7 +219,7 @@ export default function A(props: { name: string }) {
 
   test("constant function with empty props", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 export const A = () => {
   return <div>Hello, World!</div>;
@@ -235,7 +235,7 @@ export const A = () => {
 
   test("constant function with typed props parameter", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 export const A = (props: { foo: string }) => {
   return <div>Hello, World!</div>;
@@ -253,7 +253,7 @@ export const A = (props: { foo: string }) => {
 
   test("constant function with complex typed props parameter", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 import { ComponentChildren } from "preact";
 
@@ -291,7 +291,7 @@ interface PanelTab {
 
   test("constant function with FunctionComponent type and no parameter", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 import { FunctionComponent } from 'preact';
 
@@ -312,7 +312,7 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
 
   test("constant function with FunctionComponent type and a parameter", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 import { FunctionComponent } from 'preact';
 
@@ -331,10 +331,10 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
     });
   });
 
-  async function analyze(source: string, previewableName: string) {
+  async function crawl(source: string, previewableName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.analyze([MAIN_FILE])
+      await frameworkPlugin.crawl([MAIN_FILE])
     ).components.find(
       (c) => decodePreviewableId(c.id).name === previewableName
     );

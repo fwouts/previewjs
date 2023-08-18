@@ -38,7 +38,7 @@ interface PreviewJsApi {
     @POST("/workspaces/dispose")
     suspend fun disposeWorkspace(@Body req: DisposeWorkspaceRequest): DisposeWorkspaceResponse
 
-    @POST("/analyze/file")
+    @POST("/crawl/file")
     suspend fun analyzeFile(@Body req: AnalyzeFileRequest): AnalyzeFileResponse
 
     @POST("/previews/start")

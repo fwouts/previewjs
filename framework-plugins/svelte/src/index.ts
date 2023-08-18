@@ -6,7 +6,7 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import fs from "fs-extra";
 import path from "path";
 import url from "url";
-import { analyze } from "./analyze.js";
+import { crawl } from "./crawl.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
@@ -43,14 +43,14 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
       typeAnalyzer,
-      analyze: async (absoluteFilePaths) => {
+      crawl: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".svelte") ? `${p}.ts` : p))
         );
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const previewable of await analyze(
+          for (const previewable of await crawl(
             reader,
             resolver,
             rootDir,

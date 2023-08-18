@@ -22,7 +22,7 @@ import { inferComponentNameFromSveltePath } from "./infer-component-name";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
 
-describe("analyze Svelte component", () => {
+describe("crawl Svelte component", () => {
   let memoryReader: Reader & Writer;
   let frameworkPlugin: FrameworkPlugin;
 
@@ -57,7 +57,7 @@ describe("analyze Svelte component", () => {
 
   test("no props", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 <script lang="ts">
   const increment = () => {
@@ -78,7 +78,7 @@ describe("analyze Svelte component", () => {
 
   test("props without type", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 <script lang="ts">
   export let count;
@@ -102,7 +102,7 @@ describe("analyze Svelte component", () => {
 
   test("props without default", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 <script lang="ts">
   export let count: number;
@@ -126,7 +126,7 @@ describe("analyze Svelte component", () => {
 
   test("props with default", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 <script lang="ts">
   export let count = 12;
@@ -150,7 +150,7 @@ describe("analyze Svelte component", () => {
 
   test("readonly props", async () => {
     expect(
-      await analyze(
+      await crawl(
         `
 <script lang="ts">
   export const count = 12;
@@ -170,11 +170,11 @@ describe("analyze Svelte component", () => {
     });
   });
 
-  async function analyze(source: string) {
+  async function crawl(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromSveltePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.analyze([MAIN_FILE])
+      await frameworkPlugin.crawl([MAIN_FILE])
     ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

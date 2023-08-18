@@ -86,7 +86,7 @@ export function createClient(baseUrl: string): Client {
     updateClientStatus: makeRPC("/previewjs/clients/status"),
     getWorkspace: makeRPC("/workspaces/get"),
     disposeWorkspace: makeRPC("/workspaces/dispose"),
-    analyzeFile: makeRPC("/analyze/file"),
+    analyzeFile: makeRPC("/crawl/file"),
     startPreview: makeRPC("/previews/start"),
     stopPreview: makeRPC("/previews/stop"),
     updatePendingFile: makeRPC("/pending-files/update"),

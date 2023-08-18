@@ -9,7 +9,7 @@ import type { Logger } from "pino";
 
 export type Analyzer = {
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  analyze: (filePaths: string[]) => Promise<{
+  crawl: (filePaths: string[]) => Promise<{
     components: Component[];
     stories: Story[];
   }>;

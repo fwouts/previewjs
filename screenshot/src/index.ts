@@ -97,7 +97,7 @@ export async function generateScreenshots({
     cwd,
     followSymbolicLinks: false,
   });
-  const { components, stories } = await workspace.analyze({
+  const { components, stories } = await workspace.crawl({
     filePaths,
   });
   for (const previewable of [...components, ...stories]) {

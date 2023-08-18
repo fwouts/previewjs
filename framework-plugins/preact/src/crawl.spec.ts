@@ -14,7 +14,7 @@ import prettyLogger from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import reactFrameworkPlugin from ".";
-import { analyze } from "./analyze.js";
+import { crawl } from "./crawl.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR = path.join(__dirname, "virtual");
@@ -27,7 +27,7 @@ function assertStory(story?: Story | Component): asserts story is Story {
   }
 }
 
-describe("analyze", () => {
+describe("crawl", () => {
   const logger = createLogger(
     { level: "debug" },
     prettyLogger({ colorize: true })
@@ -474,7 +474,7 @@ export function NotStory() {}
   });
 
   function extract(absoluteFilePath: string) {
-    return analyze(
+    return crawl(
       logger,
       frameworkPlugin.typeAnalyzer.analyze([absoluteFilePath]),
       ROOT_DIR,
