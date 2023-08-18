@@ -28,7 +28,7 @@ export const CrawlFile: RPC<
   },
   CrawlFileResponse
 > = {
-  path: "detect-previewables",
+  path: "crawl-file",
 };
 
 export type CrawlFileResponse = {
