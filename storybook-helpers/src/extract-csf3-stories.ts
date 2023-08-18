@@ -74,8 +74,8 @@ export async function extractCsf3Stories(
           start: statement.getStart(),
           end: statement.getEnd(),
         },
-        analyze: async () =>
-          args
+        analyze: async () => ({
+          args: args
             ? {
                 sourcePosition: {
                   start: args.getStart(),
@@ -84,6 +84,7 @@ export async function extractCsf3Stories(
                 value: await parseSerializableValue(args),
               }
             : null,
+        }),
         associatedComponent: associatedComponentId
           ? {
               id: associatedComponentId,

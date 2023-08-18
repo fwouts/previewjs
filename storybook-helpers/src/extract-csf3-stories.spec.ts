@@ -83,7 +83,9 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.analyze()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("resolves args to UNKNOWN when too complex", async () => {
@@ -172,7 +174,9 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.analyze()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("follows default imported component definition", async () => {
@@ -222,7 +226,9 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.analyze()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("follows wildcard re-exported component definition", async () => {
@@ -276,7 +282,9 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.analyze()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("follows named re-exported component definition", async () => {
@@ -330,7 +338,9 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await extractedStories[1]?.analyze()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", async () => {

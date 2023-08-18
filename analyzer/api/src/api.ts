@@ -38,8 +38,12 @@ export interface ComponentAnalysis {
 }
 
 export interface Story extends BasePreviewable {
-  analyze: () => Promise<StoryArgs | null>;
+  analyze: () => Promise<StoryAnalysis>;
   associatedComponent: BasicComponent | null;
+}
+
+export interface StoryAnalysis {
+  args: StoryArgs | null;
 }
 
 export type StoryArgs = {

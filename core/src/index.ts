@@ -114,7 +114,7 @@ export async function createWorkspace({
           props = UNKNOWN_TYPE;
           componentTypes = {};
         }
-        argsPerStoryId[id] = await story.analyze();
+        argsPerStoryId[id] = (await story.analyze()).args;
       } else {
         const { filePath, name } = decodePreviewableId(id);
         throw new Error(`Component ${name} not detected in ${filePath}.`);

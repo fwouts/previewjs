@@ -100,8 +100,8 @@ export async function crawlFile(
       );
       return {
         ...basePreviewable,
-        analyze: async () =>
-          storyArgs
+        analyze: async () => ({
+          args: storyArgs
             ? {
                 sourcePosition: {
                   start: storyArgs.getStart(),
@@ -110,6 +110,7 @@ export async function crawlFile(
                 value: await parseSerializableValue(storyArgs),
               }
             : null,
+        }),
         associatedComponent,
       };
     }

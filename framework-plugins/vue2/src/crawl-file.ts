@@ -113,11 +113,13 @@ export async function crawlFile(
       return {
         ...basePreviewable,
         analyze: async () => ({
-          sourcePosition: {
-            start: storyArgs.getStart(),
-            end: storyArgs.getEnd(),
+          args: {
+            sourcePosition: {
+              start: storyArgs.getStart(),
+              end: storyArgs.getEnd(),
+            },
+            value: await parseSerializableValue(storyArgs),
           },
-          value: await parseSerializableValue(storyArgs),
         }),
         associatedComponent,
       };
@@ -145,7 +147,7 @@ export async function crawlFile(
         );
         return {
           ...basePreviewable,
-          analyze: async () => null,
+          analyze: async () => ({ args: null }),
           associatedComponent,
         };
       }

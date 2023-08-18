@@ -153,7 +153,9 @@ export const NotStory = (props) => <Button {...props} />;
     ]);
     const story = extractedStories[0];
     assertStory(story);
-    expect(await story.analyze()).toBeNull();
+    expect(await story.analyze()).toEqual({
+      args: null,
+    });
     expect(await story.associatedComponent?.analyze()).toEqual({
       props: objectType({
         label: STRING_TYPE,
@@ -191,7 +193,9 @@ export const NotStory = (props) => <Button {...props} />;
     ]);
     const story = extractedStories[0];
     assertStory(story);
-    expect(await story.analyze()).toBeNull();
+    expect(await story.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("detects CSF2 stories (exported with component)", async () => {
@@ -352,7 +356,9 @@ export function NotStory() {}
       }),
       types: {},
     });
-    expect(await story2.analyze()).toBeNull();
+    expect(await story2.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("detects CSF3 stories (exported with title)", async () => {
@@ -397,7 +403,9 @@ export function NotStory() {}
         },
       ]),
     });
-    expect(await story2.analyze()).toBeNull();
+    expect(await story2.analyze()).toEqual({
+      args: null,
+    });
   });
 
   function extract(absoluteFilePath: string) {
