@@ -329,16 +329,15 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components, stories } = await workspace.crawlFiles({
-        filePaths: [
+      const { components, stories } =
+        await workspace.frameworkPlugin.crawlFiles([
           path
             .relative(
               workspace.rootDir,
               transformAbsoluteFilePath(absoluteFilePath)
             )
             .replace(/\\/g, "/"),
-        ],
-      });
+        ]);
       return {
         previewables: [...components, ...stories].map((c) => ({
           id: c.id,

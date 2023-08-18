@@ -128,9 +128,8 @@ export async function startPreview({
     },
     async show(previewableId: string, propsAssignmentSource?: string) {
       const filePath = previewableId.split(":")[0]!;
-      const { components, stories } = await workspace.crawlFiles({
-        filePaths: [filePath],
-      });
+      const { components, stories } =
+        await workspace.frameworkPlugin.crawlFiles([filePath]);
       const matchingComponent = components.find((c) => previewableId === c.id);
       const matchingStory = stories.find((c) => previewableId === c.id);
       if (!matchingComponent && !matchingStory) {
@@ -138,22 +137,25 @@ export async function startPreview({
           `Component may be previewable but was not detected by framework plugin: ${previewableId}`
         );
       }
-      const analyzeResponse = await workspace.analyze({
-        previewableIds: [previewableId],
+      const component = matchingComponent || matchingStory?.associatedComponent;
+      const { props, types } = await (component?.analyze() || {
+        props: { kind: "unknown" as const },
+        types: {},
       });
-      const props = analyzeResponse.props[previewableId]!;
-      const autogenCallbackProps = await generateCallbackProps(
-        props,
-        analyzeResponse.types
+      const autogenCallbackProps = await generateCallbackProps(props, types);
+      const autogenCallbackPropsSource = transpile(
+        `autogenCallbackProps = ${autogenCallbackProps.source}`
       );
       if (!propsAssignmentSource) {
-        propsAssignmentSource = matchingStory
-          ? "properties = null"
-          : await generatePropsAssignmentSource(
-              props,
-              autogenCallbackProps.keys,
-              analyzeResponse.types
-            );
+        if (matchingStory) {
+          propsAssignmentSource = "properties = null";
+        } else {
+          propsAssignmentSource = await generatePropsAssignmentSource(
+            props,
+            autogenCallbackProps.keys,
+            types
+          );
+        }
       }
       const donePromise = new Promise<void>((resolve, reject) => {
         onRenderingDone = resolve;
@@ -181,9 +183,7 @@ export async function startPreview({
         },
         {
           previewableId,
-          autogenCallbackPropsSource: transpile(
-            `autogenCallbackProps = ${autogenCallbackProps.source}`
-          ),
+          autogenCallbackPropsSource,
           propsAssignmentSource: transpile(propsAssignmentSource!),
         }
       );
