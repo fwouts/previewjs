@@ -80,9 +80,6 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
               },
             },
           ],
-          define: {
-            "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
-          },
         };
       },
     };

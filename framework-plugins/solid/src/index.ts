@@ -83,9 +83,6 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
               },
             },
           ],
-          define: {
-            "process.env.RUNNING_INSIDE_PREVIEWJS": "1",
-          },
         };
       },
       dispose: () => {
