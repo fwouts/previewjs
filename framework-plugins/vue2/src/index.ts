@@ -56,7 +56,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in previewable) {
+            if ("exported" in previewable) {
               components.push(previewable);
             } else {
               stories.push(previewable);

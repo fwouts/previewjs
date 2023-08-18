@@ -51,7 +51,7 @@ export const createAnalyzer = factoryWithDefaultOptions(
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in previewable) {
+            if ("exported" in previewable) {
               components.push(previewable);
             } else {
               stories.push(previewable);

@@ -53,7 +53,7 @@ export async function crawlFile(
             path.join(rootDir, filePath)
           )
         ).find((c) => c.id === id);
-        if (!component || !("extractProps" in component)) {
+        if (!component || !("exported" in component)) {
           return {
             props: UNKNOWN_TYPE,
             types: {},
