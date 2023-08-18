@@ -334,7 +334,7 @@ export const A: FunctionComponent<{ foo: string }> = (props) => {
   async function analyzeComponent(source: string, previewableName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.crawlFile([MAIN_FILE])
+      await frameworkPlugin.crawlFiles([MAIN_FILE])
     ).components.find(
       (c) => decodePreviewableId(c.id).name === previewableName
     );

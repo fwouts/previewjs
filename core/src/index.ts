@@ -13,7 +13,7 @@ import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
-import { crawlFile } from "./crawl-file";
+import { crawlFiles } from "./crawl-files";
 import { getFreePort } from "./get-free-port";
 import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
@@ -70,7 +70,7 @@ export async function createWorkspace({
   const router = new ApiRouter(logger);
   router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
     logger.debug(`Analyzing: ${previewableIds.join(", ")}`);
-    const detected = await frameworkPlugin.crawlFile([
+    const detected = await frameworkPlugin.crawlFiles([
       ...new Set(
         previewableIds.map((c) =>
           path.join(rootDir, decodePreviewableId(c).filePath)
@@ -128,8 +128,8 @@ export async function createWorkspace({
       types,
     };
   });
-  router.registerRPC(RPCs.CrawlFile, (options) =>
-    crawlFile(logger, workspace, frameworkPlugin, options)
+  router.registerRPC(RPCs.CrawlFiles, (options) =>
+    crawlFiles(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
@@ -173,7 +173,7 @@ export async function createWorkspace({
     rootDir,
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
-    crawlFile: (options = {}) => localRpc(RPCs.CrawlFile, options),
+    crawlFiles: (options = {}) => localRpc(RPCs.CrawlFiles, options),
     analyze: (options) => localRpc(RPCs.Analyze, options),
     preview: {
       start: async (allocatePort) => {
@@ -225,9 +225,9 @@ export interface Workspace {
   rootDir: string;
   reader: Reader;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  crawlFile(
-    options?: RequestOf<typeof RPCs.CrawlFile>
-  ): Promise<ResponseOf<typeof RPCs.CrawlFile>>;
+  crawlFiles(
+    options?: RequestOf<typeof RPCs.CrawlFiles>
+  ): Promise<ResponseOf<typeof RPCs.CrawlFiles>>;
   analyze(
     options: RequestOf<typeof RPCs.Analyze>
   ): Promise<ResponseOf<typeof RPCs.Analyze>>;

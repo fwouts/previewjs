@@ -36,7 +36,7 @@ export const createAnalyzer = factoryWithDefaultOptions(
     });
     return {
       typeAnalyzer,
-      crawlFile: async (filePaths) => {
+      crawlFiles: async (filePaths) => {
         const absoluteFilePaths = filePaths.map((f) =>
           path.isAbsolute(f) ? f : path.join(rootDir, f)
         );

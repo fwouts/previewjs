@@ -304,7 +304,7 @@ export default defineComponent({
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromVuePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.crawlFile([MAIN_FILE])
+      await frameworkPlugin.crawlFiles([MAIN_FILE])
     ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

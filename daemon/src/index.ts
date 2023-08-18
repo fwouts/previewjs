@@ -329,7 +329,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components, stories } = await workspace.crawlFile({
+      const { components, stories } = await workspace.crawlFiles({
         filePaths: [
           path
             .relative(

@@ -35,7 +35,7 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,
-      crawlFile: async (absoluteFilePaths) => {
+      crawlFiles: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         const stories: Story[] = [];

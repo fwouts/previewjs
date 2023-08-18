@@ -548,7 +548,7 @@ A.propTypes = {
   async function analyzeComponent(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await analyzer.crawlFile([MAIN_FILE_NAME])
+      await analyzer.crawlFiles([MAIN_FILE_NAME])
     ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

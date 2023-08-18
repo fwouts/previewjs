@@ -351,7 +351,7 @@ A.args = {
   async function analyzeComponent(source: string, componentName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
-      await frameworkPlugin.crawlFile([MAIN_FILE])
+      await frameworkPlugin.crawlFiles([MAIN_FILE])
     ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

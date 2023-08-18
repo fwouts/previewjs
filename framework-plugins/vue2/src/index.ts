@@ -43,7 +43,7 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
       typeAnalyzer,
-      crawlFile: async (absoluteFilePaths) => {
+      crawlFiles: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
         );

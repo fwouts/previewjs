@@ -21,17 +21,17 @@ export type AnalyzeResponse = {
   types: CollectedTypes;
 };
 
-export const CrawlFile: RPC<
+export const CrawlFiles: RPC<
   {
     filePaths?: string[];
     forceRefresh?: boolean;
   },
-  CrawlFileResponse
+  CrawlFilesResponse
 > = {
-  path: "crawl-file",
+  path: "crawl-files",
 };
 
-export type CrawlFileResponse = {
+export type CrawlFilesResponse = {
   components: Component[];
   stories: Story[];
 };
