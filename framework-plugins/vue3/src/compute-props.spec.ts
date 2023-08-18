@@ -22,7 +22,7 @@ import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
-describe("crawl Vue 3 component", () => {
+describe("analyze Vue 3 component", () => {
   let memoryReader: Reader & Writer;
   let frameworkPlugin: FrameworkPlugin;
 
@@ -57,7 +57,7 @@ describe("crawl Vue 3 component", () => {
 
   test("defineProps<Props>()", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <script setup lang="ts">
 defineProps<{ foo: string }>();
@@ -80,7 +80,7 @@ defineProps<{ foo: string }>();
 
   test("withDefaults(defineProps<Props>(), ...)", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <script setup lang="ts">
 withDefaults(defineProps<{ foo: string, bar: string }>(), {
@@ -106,7 +106,7 @@ withDefaults(defineProps<{ foo: string, bar: string }>(), {
 
   test("const props = defineProps<Props>()", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <script setup lang="ts">
 const props = defineProps<{ foo: string }>();
@@ -129,7 +129,7 @@ const props = defineProps<{ foo: string }>();
 
   test("const props = withDefaults(defineProps<Props>(), ...)", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <script setup lang="ts">
 const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
@@ -155,7 +155,7 @@ const props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 
   test("props = defineProps<Props>()", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <script setup lang="ts">
 let props;
@@ -179,7 +179,7 @@ props = defineProps<{ foo: string }>();
 
   test("props = withDefaults(defineProps<Props>(), ...)", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <script setup lang="ts">
 let props;
@@ -206,7 +206,7 @@ props = withDefaults(defineProps<{ foo: string, bar: string }>(), {
 
   test("export default defineComponent() simple case", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <template>
   <div>{{ label }}</div>
@@ -235,7 +235,7 @@ export default defineComponent({
   test("export default defineComponent() complex case", async () => {
     // Source: https://github.com/storybookjs/storybook/blob/4aa1f9944c9ede050c23afcc6861acf99cf5e841/examples/vue-3-cli/src/stories/Button.vue
     expect(
-      await crawl(
+      await analyze(
         `
   <template>
     <div>{{ label }}</div>
@@ -300,11 +300,11 @@ export default defineComponent({
     });
   });
 
-  async function crawl(source: string) {
+  async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromVuePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.crawl([MAIN_FILE])
+      await frameworkPlugin.crawlFile([MAIN_FILE])
     ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

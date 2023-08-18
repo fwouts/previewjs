@@ -13,7 +13,7 @@ import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
-import { crawl } from "./crawl";
+import { crawlFile } from "./crawl-file";
 import { getFreePort } from "./get-free-port";
 import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
@@ -72,7 +72,7 @@ export async function createWorkspace({
     logger.debug(
       `Computing props for components: ${previewableIds.join(", ")}`
     );
-    const detected = await frameworkPlugin.crawl([
+    const detected = await frameworkPlugin.crawlFile([
       ...new Set(
         previewableIds.map((c) =>
           path.join(rootDir, decodePreviewableId(c).filePath)
@@ -131,7 +131,7 @@ export async function createWorkspace({
     };
   });
   router.registerRPC(RPCs.CrawlFile, (options) =>
-    crawl(logger, workspace, frameworkPlugin, options)
+    crawlFile(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
@@ -175,7 +175,7 @@ export async function createWorkspace({
     rootDir,
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
-    crawl: (options = {}) => localRpc(RPCs.CrawlFile, options),
+    crawlFile: (options = {}) => localRpc(RPCs.CrawlFile, options),
     computeProps: (options) => localRpc(RPCs.ComputeProps, options),
     preview: {
       start: async (allocatePort) => {
@@ -227,7 +227,7 @@ export interface Workspace {
   rootDir: string;
   reader: Reader;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  crawl(
+  crawlFile(
     options?: RequestOf<typeof RPCs.CrawlFile>
   ): Promise<ResponseOf<typeof RPCs.CrawlFile>>;
   computeProps(

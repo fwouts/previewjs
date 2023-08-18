@@ -23,11 +23,11 @@ type CachedPreviewables = {
   stories: RPCs.Story[];
 };
 
-// Prevent concurrent running of crawl()
+// Prevent concurrent running of crawlFile()
 // to avoid corrupting the cache and optimise for cache hits.
 const oneAtATime = exclusivePromiseRunner();
 
-export function crawl(
+export function crawlFile(
   logger: Logger,
   workspace: Workspace,
   frameworkPlugin: FrameworkPlugin,
@@ -154,7 +154,7 @@ async function analyzeCore(
       )
       .join("\n- ")}`
   );
-  const found = await frameworkPlugin.crawl(changedAbsoluteFilePaths);
+  const found = await frameworkPlugin.crawlFile(changedAbsoluteFilePaths);
   logger.debug(`Done running component detection`);
   for (const component of found.components) {
     components.push({

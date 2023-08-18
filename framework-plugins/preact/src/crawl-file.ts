@@ -22,7 +22,7 @@ import type { Logger } from "pino";
 import ts from "typescript";
 import { computeProps } from "./compute-props.js";
 
-export async function crawl(
+export async function crawlFile(
   logger: Logger,
   resolver: TypeResolver,
   rootDir: string,
@@ -62,12 +62,10 @@ export async function crawl(
         );
       const name = statement.name?.text;
       if (isDefaultExport || name) {
-        functions.push([
-          isDefaultExport || !name ? "default" : name,
-          statement,
-          statement,
-        ]);
+        functions.push([name || "default", statement, statement]);
       }
+    } else if (ts.isClassDeclaration(statement) && statement.name) {
+      functions.push([statement.name.text, statement, statement]);
     }
   }
 
@@ -92,7 +90,7 @@ export async function crawl(
       isExported &&
       (storyArgs || signature?.parameters.length === 0)
     ) {
-      const associatedComponent = await extractStoryAssociatedComponent(
+      const associatedComponent = extractStoryAssociatedComponent(
         logger,
         resolver,
         rootDir,
@@ -148,7 +146,7 @@ export async function crawl(
     ...(await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
       const { filePath } = decodePreviewableId(id);
       const component = (
-        await crawl(logger, resolver, rootDir, path.join(rootDir, filePath))
+        await crawlFile(logger, resolver, rootDir, path.join(rootDir, filePath))
       ).find((c) => c.id === id);
       if (!component || !("extractProps" in component)) {
         return {
@@ -197,11 +195,24 @@ function extractComponentSignature(
   node: ts.Node
 ): ts.Signature | null {
   const type = checker.getTypeAtLocation(node);
+
+  // Function component.
   for (const callSignature of type.getCallSignatures()) {
     if (isValidComponentReturnType(callSignature.getReturnType())) {
       return callSignature;
     }
   }
+  // Class component.
+  if (type.symbol) {
+    const classType = checker.getTypeOfSymbolAtLocation(type.symbol, node);
+    for (const constructSignature of classType.getConstructSignatures()) {
+      const returnType = constructSignature.getReturnType();
+      if (returnType.getProperty("render")) {
+        return constructSignature;
+      }
+    }
+  }
+
   return null;
 }
 
@@ -212,7 +223,7 @@ function isValidComponentReturnType(type: ts.Type): boolean {
   return false;
 }
 
-const jsxElementTypes = new Set(["Element", "FunctionElement"]);
+const jsxElementTypes = new Set(["Element", "VNode"]);
 function isJsxElement(type: ts.Type): boolean {
   if (type.isUnion()) {
     for (const subtype of type.types) {
@@ -221,8 +232,5 @@ function isJsxElement(type: ts.Type): boolean {
       }
     }
   }
-  return (
-    jsxElementTypes.has(type.symbol?.getEscapedName().toString()) ||
-    jsxElementTypes.has(type.aliasSymbol?.getEscapedName().toString() || "")
-  );
+  return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
 }

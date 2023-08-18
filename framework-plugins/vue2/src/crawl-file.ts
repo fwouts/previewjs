@@ -23,7 +23,7 @@ import ts from "typescript";
 import { computePropsFromTemplate } from "./compute-props.js";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
-export async function crawl(
+export async function crawlFile(
   reader: Reader,
   resolver: TypeResolver,
   rootDir: string,
@@ -179,7 +179,7 @@ export async function crawl(
       await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
         const { filePath } = decodePreviewableId(id);
         const absoluteFilePath = path.join(rootDir, filePath);
-        const vueComponents = await crawl(
+        const vueComponents = await crawlFile(
           reader,
           resolver,
           rootDir,

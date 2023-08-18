@@ -25,7 +25,7 @@ import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
-describe("crawl Vue 2 component", () => {
+describe("analyze Vue 2 component", () => {
   const logger = createLogger(
     { level: "debug" },
     prettyLogger({ colorize: true })
@@ -62,7 +62,7 @@ describe("crawl Vue 2 component", () => {
 
   test("export default {} without props", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <template>
   <div>{{ label }}</div>
@@ -82,7 +82,7 @@ export default {
 
   test("export default {} with object props", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <template>
   <div>{{ label }}</div>
@@ -123,7 +123,7 @@ export default {
 
   test("export default {} with array props", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <template>
   <div>{{ label }}</div>
@@ -148,7 +148,7 @@ export default {
 
   test("export default class with vue-property-decorator", async () => {
     expect(
-      await crawl(
+      await analyze(
         `
 <template>
   <div :class="\`size-\${size}\`">{{ label }}</div>
@@ -183,11 +183,11 @@ export default class App extends Vue {
     });
   });
 
-  async function crawl(source: string) {
+  async function analyze(source: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromVuePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.crawl([MAIN_FILE])
+      await frameworkPlugin.crawlFile([MAIN_FILE])
     ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);

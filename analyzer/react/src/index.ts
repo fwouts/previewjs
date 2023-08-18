@@ -8,7 +8,7 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
 import url from "url";
-import { crawl } from "./crawl.js";
+import { crawlFile } from "./crawl-file.js";
 import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
 export const createAnalyzer = factoryWithDefaultOptions(
@@ -36,7 +36,7 @@ export const createAnalyzer = factoryWithDefaultOptions(
     });
     return {
       typeAnalyzer,
-      crawl: async (filePaths) => {
+      crawlFile: async (filePaths) => {
         const absoluteFilePaths = filePaths.map((f) =>
           path.isAbsolute(f) ? f : path.join(rootDir, f)
         );
@@ -45,7 +45,7 @@ export const createAnalyzer = factoryWithDefaultOptions(
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const previewable of await crawl(
+          for (const previewable of await crawlFile(
             logger,
             resolver,
             rootDir,

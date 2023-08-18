@@ -9,7 +9,7 @@ import { escape } from "html-escaper";
 import path from "path";
 import type { Logger } from "pino";
 import { getCacheDir } from "./caching";
-import { FILES_REQUIRING_REDETECTION } from "./crawl";
+import { FILES_REQUIRING_REDETECTION } from "./crawl-file";
 import { findFiles } from "./find-files";
 import type { FrameworkPlugin } from "./plugins/framework";
 import { Server } from "./server";

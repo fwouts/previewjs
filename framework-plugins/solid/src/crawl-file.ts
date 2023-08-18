@@ -15,13 +15,14 @@ import {
   extractStoriesInfo,
   resolvePreviewableId,
 } from "@previewjs/storybook-helpers";
-import { TypeResolver, UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
+import type { TypeResolver } from "@previewjs/type-analyzer";
+import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
 import type { Logger } from "pino";
 import ts from "typescript";
 import { computeProps } from "./compute-props.js";
 
-export async function crawl(
+export async function crawlFile(
   logger: Logger,
   resolver: TypeResolver,
   rootDir: string,
@@ -61,10 +62,12 @@ export async function crawl(
         );
       const name = statement.name?.text;
       if (isDefaultExport || name) {
-        functions.push([name || "default", statement, statement]);
+        functions.push([
+          isDefaultExport || !name ? "default" : name,
+          statement,
+          statement,
+        ]);
       }
-    } else if (ts.isClassDeclaration(statement) && statement.name) {
-      functions.push([statement.name.text, statement, statement]);
     }
   }
 
@@ -89,7 +92,7 @@ export async function crawl(
       isExported &&
       (storyArgs || signature?.parameters.length === 0)
     ) {
-      const associatedComponent = extractStoryAssociatedComponent(
+      const associatedComponent = await extractStoryAssociatedComponent(
         logger,
         resolver,
         rootDir,
@@ -114,8 +117,7 @@ export async function crawl(
       return {
         ...basePreviewable,
         exported: isExported,
-        extractProps: async () =>
-          computeProps(logger, resolver, absoluteFilePath, name, signature),
+        extractProps: async () => computeProps(logger, resolver, signature),
       };
     }
     return null;
@@ -146,7 +148,7 @@ export async function crawl(
     ...(await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
       const { filePath } = decodePreviewableId(id);
       const component = (
-        await crawl(logger, resolver, rootDir, path.join(rootDir, filePath))
+        await crawlFile(logger, resolver, rootDir, path.join(rootDir, filePath))
       ).find((c) => c.id === id);
       if (!component || !("extractProps" in component)) {
         return {
@@ -184,16 +186,7 @@ function extractStoryAssociatedComponent(
               types: {},
             };
           }
-          const { filePath, name } = decodePreviewableId(
-            resolvedStoriesPreviewableId
-          );
-          return computeProps(
-            logger,
-            resolver,
-            path.join(rootDir, filePath),
-            name,
-            signature
-          );
+          return computeProps(logger, resolver, signature);
         },
       }
     : null;
@@ -203,41 +196,10 @@ function extractComponentSignature(
   checker: ts.TypeChecker,
   node: ts.Node
 ): ts.Signature | null {
-  let type = checker.getTypeAtLocation(node);
-
-  // When we encounter a story defined as ... = Template.bind({}) where the
-  // type cannot be detected, fall back to the type of Template.
-  if (
-    type.flags === ts.TypeFlags.Any &&
-    ts.isCallExpression(node) &&
-    ts.isPropertyAccessExpression(node.expression) &&
-    ts.isIdentifier(node.expression.name) &&
-    node.expression.name.text === "bind"
-  ) {
-    const symbol = checker.getSymbolAtLocation(node.expression.expression);
-    if (
-      symbol?.valueDeclaration &&
-      ts.isVariableDeclaration(symbol.valueDeclaration) &&
-      symbol.valueDeclaration.initializer
-    ) {
-      type = checker.getTypeAtLocation(symbol.valueDeclaration.initializer);
-    }
-  }
-
-  // Function component.
+  const type = checker.getTypeAtLocation(node);
   for (const callSignature of type.getCallSignatures()) {
     if (isValidComponentReturnType(callSignature.getReturnType())) {
       return callSignature;
-    }
-  }
-  // Class component.
-  if (type.symbol) {
-    const classType = checker.getTypeOfSymbolAtLocation(type.symbol, node);
-    for (const constructSignature of classType.getConstructSignatures()) {
-      const returnType = constructSignature.getReturnType();
-      if (returnType.getProperty("render")) {
-        return constructSignature;
-      }
     }
   }
   return null;
@@ -250,7 +212,7 @@ function isValidComponentReturnType(type: ts.Type): boolean {
   return false;
 }
 
-const jsxElementTypes = new Set(["Element", "ReactElement"]);
+const jsxElementTypes = new Set(["Element", "FunctionElement"]);
 function isJsxElement(type: ts.Type): boolean {
   if (type.isUnion()) {
     for (const subtype of type.types) {
@@ -259,5 +221,8 @@ function isJsxElement(type: ts.Type): boolean {
       }
     }
   }
-  return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
+  return (
+    jsxElementTypes.has(type.symbol?.getEscapedName().toString()) ||
+    jsxElementTypes.has(type.aliasSymbol?.getEscapedName().toString() || "")
+  );
 }

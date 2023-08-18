@@ -4,7 +4,7 @@ import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
 import url from "url";
-import { crawl } from "./crawl.js";
+import { crawlFile } from "./crawl-file.js";
 import { PREACT_SPECIAL_TYPES } from "./special-types.js";
 
 const preactFrameworkPlugin: FrameworkPluginFactory = {
@@ -35,12 +35,12 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,
-      crawl: async (absoluteFilePaths) => {
+      crawlFile: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const previewable of await crawl(
+          for (const previewable of await crawlFile(
             logger,
             resolver,
             rootDir,

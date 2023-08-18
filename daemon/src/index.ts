@@ -323,13 +323,13 @@ export async function startDaemon({
   );
 
   endpoint<CrawlFileRequest, CrawlFileResponse>(
-    "/crawl/file",
+    "/crawl-file",
     async ({ workspaceId, absoluteFilePath }) => {
       const workspace = workspaces[workspaceId];
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components, stories } = await workspace.crawl({
+      const { components, stories } = await workspace.crawlFile({
         filePaths: [
           path
             .relative(
