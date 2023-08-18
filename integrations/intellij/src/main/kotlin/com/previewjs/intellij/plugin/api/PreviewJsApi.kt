@@ -38,8 +38,8 @@ interface PreviewJsApi {
     @POST("/workspaces/dispose")
     suspend fun disposeWorkspace(@Body req: DisposeWorkspaceRequest): DisposeWorkspaceResponse
 
-    @POST("/analyze/file")
-    suspend fun analyzeFile(@Body req: AnalyzeFileRequest): AnalyzeFileResponse
+    @POST("/crawl-file")
+    suspend fun crawlFile(@Body req: CrawlFileRequest): CrawlFileResponse
 
     @POST("/previews/start")
     suspend fun startPreview(@Body req: StartPreviewRequest): StartPreviewResponse
@@ -71,12 +71,12 @@ data class DisposeWorkspaceRequest(
 
 class DisposeWorkspaceResponse
 
-data class AnalyzeFileRequest(
+data class CrawlFileRequest(
     val workspaceId: String,
     val absoluteFilePath: String
 )
 
-data class AnalyzeFileResponse(
+data class CrawlFileResponse(
     val previewables: List<Previewable>
 )
 

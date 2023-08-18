@@ -1,87 +1,76 @@
-import type { Component, Story } from "@previewjs/analyzer-api";
+import type { ComponentAnalysis } from "@previewjs/analyzer-api";
+import type {
+  CollectedTypes,
+  OptionalType,
+  TypeResolver,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import {
-  decodePreviewableId,
-  generatePreviewableId,
-} from "@previewjs/analyzer-api";
-import { extractCsf3Stories } from "@previewjs/storybook-helpers";
-import type { TypeResolver } from "@previewjs/type-analyzer";
-import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
-import type { Reader } from "@previewjs/vfs";
-import path from "path";
-import { computePropsFromSFC } from "./compute-props.js";
-import { inferComponentNameFromSveltePath } from "./infer-component-name.js";
+  STRING_TYPE,
+  intersectionType,
+  maybeOptionalType,
+  objectType,
+} from "@previewjs/type-analyzer";
+import ts from "typescript";
 
-export async function analyze(
-  reader: Reader,
+export function analyzeFromSFC(
   resolver: TypeResolver,
-  rootDir: string,
-  absoluteFilePath: string
-): Promise<Array<Component | Story>> {
-  if (absoluteFilePath.endsWith(".svelte")) {
-    const entry = await reader.read(absoluteFilePath);
-    if (entry?.kind !== "file") {
-      return [];
-    }
-    return [
-      {
-        id: generatePreviewableId({
-          filePath: path.relative(rootDir, absoluteFilePath),
-          name: inferComponentNameFromSveltePath(absoluteFilePath),
-        }),
-        sourcePosition: {
-          start: 0,
-          end: (await entry.read()).length,
-        },
-        exported: true,
-        extractProps: async () =>
-          computePropsFromSFC(resolver, absoluteFilePath + ".ts"),
-      },
-    ];
-  } else {
-    const sourceFile = resolver.sourceFile(absoluteFilePath);
-    if (!sourceFile) {
-      return [];
-    }
-    return (
-      await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
-        const { filePath } = decodePreviewableId(id);
-        const component = (
-          await analyze(reader, resolver, rootDir, path.join(rootDir, filePath))
-        ).find((c) => c.id === id);
-        if (!component || !("extractProps" in component)) {
-          return {
-            props: UNKNOWN_TYPE,
-            types: {},
-          };
+  virtualSvelteTsAbsoluteFilePath: string
+): ComponentAnalysis {
+  const sourceFile = resolver.sourceFile(virtualSvelteTsAbsoluteFilePath);
+  const props: Record<string, ValueType | OptionalType> = {};
+  let collected: CollectedTypes = {};
+  let slots: string[] = [];
+  for (const statement of sourceFile?.statements || []) {
+    if (
+      ts.isVariableStatement(statement) &&
+      statement.modifiers?.find(
+        (m) => m.kind === ts.SyntaxKind.ExportKeyword
+      ) &&
+      statement.declarationList.flags ^ ts.NodeFlags.Const
+    ) {
+      for (const declaration of statement.declarationList.declarations) {
+        if (!ts.isIdentifier(declaration.name)) {
+          continue;
         }
-        return component.extractProps();
-      })
-    ).map((story) => {
-      if (!story.associatedComponent?.id.includes(".svelte.ts:")) {
-        return story;
+        const { type: fieldType, collected: fieldCollected } =
+          resolver.resolveType(
+            resolver.checker.getTypeAtLocation(declaration.name)
+          );
+        props[declaration.name.text] = maybeOptionalType(
+          fieldType,
+          !!declaration.initializer
+        );
+        collected = { ...collected, ...fieldCollected };
       }
-      const { filePath: associatedComponentFilePath } = decodePreviewableId(
-        story.associatedComponent.id
-      );
-      const associatedComponentSvelteFilePath = stripTsExtension(
-        associatedComponentFilePath
-      );
-      return {
-        ...story,
-        associatedComponent: {
-          ...story.associatedComponent,
-          id: generatePreviewableId({
-            filePath: associatedComponentSvelteFilePath,
-            name: inferComponentNameFromSveltePath(
-              associatedComponentSvelteFilePath
-            ),
-          }),
-        },
-      };
-    });
+    } else if (
+      ts.isTypeAliasDeclaration(statement) &&
+      statement.name.text === "PJS_Slots"
+    ) {
+      const slotsType = resolver.checker.getTypeAtLocation(statement);
+      const resolvedSlotsTypeName = resolver.resolveType(slotsType);
+      if (resolvedSlotsTypeName.type.kind === "name") {
+        const resolvedSlotsType =
+          resolvedSlotsTypeName.collected[resolvedSlotsTypeName.type.name];
+        if (resolvedSlotsType?.type.kind === "tuple") {
+          for (const item of resolvedSlotsType.type.items) {
+            if (item.kind === "literal" && typeof item.value === "string") {
+              slots.push(item.value);
+            }
+          }
+        }
+      }
+    }
   }
-}
-
-function stripTsExtension(filePath: string) {
-  return filePath.substring(0, filePath.length - 3);
+  return {
+    props: intersectionType([
+      objectType(props),
+      objectType(
+        Object.fromEntries(
+          slots.map((slotName) => [`slot:${slotName}`, STRING_TYPE])
+        )
+      ),
+    ]),
+    types: collected,
+  };
 }

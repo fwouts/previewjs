@@ -1,6 +1,6 @@
 import {
   generatePreviewableId,
-  type ComponentProps,
+  type ComponentAnalysis,
   type Story,
 } from "@previewjs/analyzer-api";
 import { parseSerializableValue } from "@previewjs/serializable-values";
@@ -14,7 +14,7 @@ export async function extractCsf3Stories(
   rootDir: string,
   resolver: TypeResolver,
   sourceFile: ts.SourceFile,
-  extractProps: (id: string) => Promise<ComponentProps>
+  analyze: (id: string) => Promise<ComponentAnalysis>
 ): Promise<Story[]> {
   const storiesInfo = extractStoriesInfo(sourceFile);
   if (!storiesInfo) {
@@ -74,8 +74,8 @@ export async function extractCsf3Stories(
           start: statement.getStart(),
           end: statement.getEnd(),
         },
-        extractArgs: async () =>
-          args
+        analyze: async () => ({
+          args: args
             ? {
                 sourcePosition: {
                   start: args.getStart(),
@@ -84,10 +84,11 @@ export async function extractCsf3Stories(
                 value: await parseSerializableValue(args),
               }
             : null,
+        }),
         associatedComponent: associatedComponentId
           ? {
               id: associatedComponentId,
-              extractProps: () => extractProps(associatedComponentId),
+              analyze: () => analyze(associatedComponentId),
             }
           : null,
       });

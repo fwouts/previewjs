@@ -5,7 +5,7 @@ import path from "path";
 import ts from "typescript";
 import url from "url";
 import vitePluginSolid from "vite-plugin-solid";
-import { analyze } from "./analyze.js";
+import { crawlFile } from "./crawl-file.js";
 import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin.js";
 import { SOLID_SPECIAL_TYPES } from "./special-types.js";
 
@@ -35,18 +35,18 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,
-      analyze: async (absoluteFilePaths) => {
+      crawlFile: async (absoluteFilePaths) => {
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         const stories: Story[] = [];
         for (const absoluteFilePath of absoluteFilePaths) {
-          for (const previewable of await analyze(
+          for (const previewable of await crawlFile(
             logger,
             resolver,
             rootDir,
             absoluteFilePath
           )) {
-            if ("extractProps" in previewable) {
+            if ("exported" in previewable) {
               components.push(previewable);
             } else {
               stories.push(previewable);

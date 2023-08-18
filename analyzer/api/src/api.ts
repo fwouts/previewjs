@@ -9,7 +9,7 @@ import type { Logger } from "pino";
 
 export type Analyzer = {
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  analyze: (filePaths: string[]) => Promise<{
+  crawlFile: (filePaths: string[]) => Promise<{
     components: Component[];
     stories: Story[];
   }>;
@@ -29,17 +29,21 @@ export interface BasePreviewable {
 
 export interface Component extends BasePreviewable {
   exported: boolean;
-  extractProps: () => Promise<ComponentProps>;
+  analyze: () => Promise<ComponentAnalysis>;
 }
 
-export interface ComponentProps {
+export interface ComponentAnalysis {
   props: ValueType;
   types: CollectedTypes;
 }
 
 export interface Story extends BasePreviewable {
-  extractArgs: () => Promise<StoryArgs | null>;
+  analyze: () => Promise<StoryAnalysis>;
   associatedComponent: BasicComponent | null;
+}
+
+export interface StoryAnalysis {
+  args: StoryArgs | null;
 }
 
 export type StoryArgs = {
@@ -52,4 +56,4 @@ export type FileSourcePosition = {
   end: number;
 };
 
-export type BasicComponent = Pick<Component, "id" | "extractProps">;
+export type BasicComponent = Pick<Component, "id" | "analyze">;

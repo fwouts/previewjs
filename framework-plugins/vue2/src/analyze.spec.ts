@@ -1,7 +1,14 @@
-import type { Component, Story } from "@previewjs/analyzer-api";
+import { decodePreviewableId } from "@previewjs/analyzer-api";
 import type { FrameworkPlugin } from "@previewjs/core";
-import { TRUE, object, string } from "@previewjs/serializable-values";
-import { STRING_TYPE, objectType } from "@previewjs/type-analyzer";
+import {
+  literalType,
+  NUMBER_TYPE,
+  objectType,
+  optionalType,
+  STRING_TYPE,
+  unionType,
+  UNKNOWN_TYPE,
+} from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
 import {
   createFileSystemReader,
@@ -11,23 +18,14 @@ import {
 import path from "path";
 import createLogger from "pino";
 import prettyLogger from "pino-pretty";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue2FrameworkPlugin from ".";
-import { analyze } from "./analyze.js";
-import { createVueTypeScriptReader } from "./vue-reader";
+import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
-const ROOT_DIR = path.join(__dirname, "virtual");
-const APP_TSX = path.join(ROOT_DIR, "App.tsx");
-const MY_COMPONENT_VUE = path.join(ROOT_DIR, "MyComponent.vue");
-const APP_STORIES_TSX = path.join(ROOT_DIR, "App.stories.tsx");
+const ROOT_DIR_PATH = path.join(__dirname, "virtual");
+const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");
 
-function assertStory(story?: Story | Component): asserts story is Story {
-  if (!story || !("extractArgs" in story)) {
-    throw new Error("Expected a story");
-  }
-}
-
-describe("analyze", () => {
+describe("analyze Vue 2 component", () => {
   const logger = createLogger(
     { level: "debug" },
     prettyLogger({ colorize: true })
@@ -38,46 +36,22 @@ describe("analyze", () => {
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    memoryReader.updateFile(
-      MY_COMPONENT_VUE,
-      `
-<template>
-  <div>
-    {{ label }}
-  </div>
-</template>
-
-<script>
-export default {
-  name: "App",
-  props: {
-    label: {
-      type: String,
-      required: true
-    }
-  }
-};
-</script>
-`
-    );
-    const rootDir = path.join(__dirname, "virtual");
-    const reader = createStackedReader([
-      createVueTypeScriptReader(logger, memoryReader),
-      createFileSystemReader({
-        mapping: {
-          from: path.join(__dirname, "..", "preview", "modules"),
-          to: path.join(rootDir, "node_modules"),
-        },
-        watch: false,
-      }),
-      createFileSystemReader({
-        watch: false,
-      }), // required for TypeScript libs, e.g. Promise
-    ]);
     frameworkPlugin = await vue2FrameworkPlugin.create({
-      rootDir,
+      rootDir: ROOT_DIR_PATH,
       dependencies: {},
-      reader,
+      reader: createStackedReader([
+        memoryReader,
+        createFileSystemReader({
+          watch: false,
+        }), // required for TypeScript libs, e.g. Promise
+        createFileSystemReader({
+          mapping: {
+            from: path.join(__dirname, "..", "preview", "modules"),
+            to: path.join(ROOT_DIR_PATH, "node_modules"),
+          },
+          watch: false,
+        }),
+      ]),
       logger,
     });
   });
@@ -86,392 +60,138 @@ export default {
     frameworkPlugin.dispose();
   });
 
-  it("detects expected components", async () => {
-    memoryReader.updateFile(
-      APP_TSX,
-      `
-const Component1 = () => {
-  return <div>Hello, World!</div>;
-};
-
-function Component2() {
-  return <div>Hello, World!</div>;
-};
-
-export const NotAStory = {
-  args: {}
-};
-
-export default Component1;
-
-`
-    );
-    expect(await extract(APP_TSX)).toMatchObject([
-      {
-        id: "App.tsx:Component1",
-        exported: true,
-      },
-      {
-        id: "App.tsx:Component2",
-        exported: false,
-      },
-    ]);
-  });
-
-  it("detects components without any Vue import", async () => {
-    memoryReader.updateFile(
-      APP_TSX,
-      `
-export function DeclaredFunction() {
-  return <div>Hello, World!</div>;
-}
-
-const ConstantFunction = () => <div>Hello, World!</div>;
-`
-    );
-    expect(await extract(APP_TSX)).toMatchObject([
-      {
-        id: "App.tsx:DeclaredFunction",
-        exported: true,
-      },
-      {
-        id: "App.tsx:ConstantFunction",
-        exported: false,
-      },
-    ]);
-  });
-
-  it("detects default export component (arrow function)", async () => {
-    memoryReader.updateFile(
-      APP_TSX,
-      `
-export default () => {
-  return <div>Hello, World!</div>;
-}
-`
-    );
-    expect(await extract(APP_TSX)).toMatchObject([
-      {
-        id: "App.tsx:default",
-        exported: true,
-      },
-    ]);
-  });
-
-  it("detects default export component (named function)", async () => {
-    memoryReader.updateFile(
-      APP_TSX,
-      `
-export default function test(){
-  return <div>Hello, World!</div>;
-}
-`
-    );
-    expect(await extract(APP_TSX)).toMatchObject([
-      {
-        id: "App.tsx:test",
-        exported: true,
-      },
-    ]);
-  });
-
-  it("detects default export component (anonymous function)", async () => {
-    memoryReader.updateFile(
-      APP_TSX,
-      `
-export default function(){
-  return <div>Hello, World!</div>;
-}
-`
-    );
-    expect(await extract(APP_TSX)).toMatchObject([
-      {
-        id: "App.tsx:default",
-        exported: true,
-      },
-    ]);
-  });
-
-  it("detects CSF1 stories (exported with component)", async () => {
-    memoryReader.updateFile(
-      APP_STORIES_TSX,
-      `
-import Button from "./MyComponent.vue";
-
+  test("export default {} without props", async () => {
+    expect(
+      await analyze(
+        `
+<template>
+  <div>{{ label }}</div>
+</template>
+<script>
 export default {
-  component: Button
+  name: "App"
 }
-
-export const Primary = () => ({
-  components: { Button },
-  template: '<Button primary label="Button" />',
-});
+</script>
 `
-    );
-
-    const extractedStories = await extract(APP_STORIES_TSX);
-    expect(extractedStories).toMatchObject([
-      {
-        id: "App.stories.tsx:Primary",
-        associatedComponent: {
-          id: "MyComponent.vue:MyComponent",
-        },
-      },
-    ]);
-    const story = await extractedStories[0];
-    assertStory(story);
-    expect(await story.extractArgs()).toBeNull();
-    expect(await story.associatedComponent?.extractProps()).toEqual({
-      props: objectType({
-        label: STRING_TYPE,
-      }),
+      )
+    ).toEqual({
+      props: objectType({}),
       types: {},
     });
   });
 
-  it("detects CSF1 stories (exported with title)", async () => {
-    memoryReader.updateFile(
-      APP_STORIES_TSX,
-      `
-import Button from "./MyComponent.vue";
-
+  test("export default {} with object props", async () => {
+    expect(
+      await analyze(
+        `
+<template>
+  <div>{{ label }}</div>
+</template>
+<script>
 export default {
-  title: "Stories"
-}
 
-export const Primary = () => ({
-  components: { Button },
-  template: '<Button primary label="Button" />',
-});
-`
-    );
-
-    const extractedStories = await extract(APP_STORIES_TSX);
-    expect(extractedStories).toMatchObject([
-      {
-        id: "App.stories.tsx:Primary",
-        associatedComponent: null,
-      },
-    ]);
-    const story = extractedStories[0];
-    assertStory(story);
-    expect(await story.extractArgs()).toBeNull();
-  });
-
-  it("detects CSF2 stories (exported with component)", async () => {
-    memoryReader.updateFile(
-      APP_STORIES_TSX,
-      `
-import Button from "./MyComponent.vue";
-
-export default {
-  component: Button
-}
-
-const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
-  components: { Button },
-});
-
-export const Primary = Template.bind({});
-
-Primary.args = {
-  primary: true,
-  label: 'Button',
-};
-`
-    );
-
-    const extractedStories = await extract(APP_STORIES_TSX);
-    expect(extractedStories).toMatchObject([
-      {
-        id: "App.stories.tsx:Primary",
-        associatedComponent: {
-          id: "MyComponent.vue:MyComponent",
-        },
-      },
-    ]);
-    const story = await extractedStories[0];
-    assertStory(story);
-    expect(await story.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("primary"),
-          value: TRUE,
-        },
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Button"),
-        },
-      ]),
-    });
-    expect(await story.associatedComponent?.extractProps()).toEqual({
-      props: objectType({
-        label: STRING_TYPE,
-      }),
-      types: {},
-    });
-  });
-
-  it("detects CSF2 stories (exported with title)", async () => {
-    memoryReader.updateFile(
-      APP_STORIES_TSX,
-      `
-import Button from "./MyComponent.vue";
-
-export default {
-  title: "Stories"
-}
-
-const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
-  components: { Button },
-});
-
-export const Primary = Template.bind({});
-
-Primary.args = {
-  primary: true,
-  label: 'Button',
-};
-`
-    );
-
-    const extractedStories = await extract(APP_STORIES_TSX);
-    expect(extractedStories).toMatchObject([
-      {
-        id: "App.stories.tsx:Primary",
-        associatedComponent: null,
-      },
-    ]);
-    const story = extractedStories[0];
-    assertStory(story);
-    expect(await story.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("primary"),
-          value: TRUE,
-        },
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Button"),
-        },
-      ]),
-    });
-  });
-
-  it("detects CSF3 stories (exported with component)", async () => {
-    memoryReader.updateFile(
-      APP_STORIES_TSX,
-      `
-import Button from './MyComponent.vue';
-
-export default {
-  component: Button
-}
-
-export const Example = {
-  args: {
-    label: "Hello, World!"
+  props: {
+    a: String,
+    b: { type: String },
+    c: { type: String, default: "foo" },
+    d: { type: String, required: true },
+    e: { type: String, default: "foo", required: false },
+    f: [String, Number],
+    g: { type: [String, Number], default: "foo" },
+    h: { type: [String, Number], required: true },
+    i: { type: [String, Number], default: "foo", required: false },
   }
 }
-export const NoArgs = {}
-export function NotStory() {}
+</script>
 `
-    );
-
-    const extractedStories = await extract(APP_STORIES_TSX);
-    expect(extractedStories).toMatchObject([
-      {
-        id: "App.stories.tsx:Example",
-        associatedComponent: {
-          id: "MyComponent.vue:MyComponent",
-        },
-      },
-      {
-        id: "App.stories.tsx:NoArgs",
-        associatedComponent: {
-          id: "MyComponent.vue:MyComponent",
-        },
-      },
-    ]);
-    const [story1, story2] = extractedStories;
-    assertStory(story1);
-    assertStory(story2);
-    expect(await story1.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
-    });
-    expect(await story1.associatedComponent?.extractProps()).toEqual({
+      )
+    ).toEqual({
       props: objectType({
-        label: STRING_TYPE,
+        a: optionalType(STRING_TYPE),
+        b: optionalType(STRING_TYPE),
+        c: optionalType(STRING_TYPE),
+        d: STRING_TYPE,
+        e: optionalType(STRING_TYPE),
+        f: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
+        g: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
+        h: unionType([STRING_TYPE, NUMBER_TYPE]),
+        i: optionalType(unionType([STRING_TYPE, NUMBER_TYPE])),
       }),
       types: {},
     });
-    expect(await story2.extractArgs()).toBeNull();
   });
 
-  it("detects CSF3 stories (exported with title)", async () => {
-    memoryReader.updateFile(
-      APP_STORIES_TSX,
-      `
-import Button from './MyComponent.vue';
-
+  test("export default {} with array props", async () => {
+    expect(
+      await analyze(
+        `
+<template>
+  <div>{{ label }}</div>
+</template>
+<script>
 export default {
-  title: "Stories"
-}
 
-export const Example = {
-  args: {
-    label: "Hello, World!"
-  }
+  props: ["a", "b", "c"]
 }
-export const NoArgs = {}
-export function NotStory() {}
+</script>
 `
-    );
-
-    const extractedStories = await extract(APP_STORIES_TSX);
-    expect(extractedStories).toMatchObject([
-      {
-        id: "App.stories.tsx:Example",
-        associatedComponent: null,
-      },
-      {
-        id: "App.stories.tsx:NoArgs",
-        associatedComponent: null,
-      },
-    ]);
-    const [story1, story2] = extractedStories;
-    assertStory(story1);
-    assertStory(story2);
-    expect(await story1.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+      )
+    ).toEqual({
+      props: objectType({
+        a: UNKNOWN_TYPE,
+        b: UNKNOWN_TYPE,
+        c: UNKNOWN_TYPE,
+      }),
+      types: {},
     });
-    expect(await story2.extractArgs()).toBeNull();
   });
 
-  function extract(absoluteFilePath: string) {
-    return analyze(
-      memoryReader,
-      frameworkPlugin.typeAnalyzer.analyze([absoluteFilePath]),
-      ROOT_DIR,
-      absoluteFilePath
-    );
+  test("export default class with vue-property-decorator", async () => {
+    expect(
+      await analyze(
+        `
+<template>
+  <div :class="\`size-\${size}\`">{{ label }}</div>
+</template>
+<script>
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
+
+type Size = "default" | "small" | "big";
+
+@Component
+export default class App extends Vue {
+  @Prop({ type: String, required: true }) readonly label;
+  @Prop({ type: String, default: 'default' }) readonly size!: Size;
+}
+</script>
+`
+      )
+    ).toEqual({
+      props: objectType({
+        label: STRING_TYPE,
+        size: optionalType(
+          unionType([
+            literalType("default"),
+            literalType("small"),
+            literalType("big"),
+          ])
+        ),
+      }),
+      types: {},
+    });
+  });
+
+  async function analyze(source: string) {
+    memoryReader.updateFile(MAIN_FILE, source);
+    const componentName = inferComponentNameFromVuePath(MAIN_FILE);
+    const component = (
+      await frameworkPlugin.crawlFile([MAIN_FILE])
+    ).components.find((c) => decodePreviewableId(c.id).name === componentName);
+    if (!component) {
+      throw new Error(`Component ${componentName} not found`);
+    }
+    return component.analyze();
   }
 });

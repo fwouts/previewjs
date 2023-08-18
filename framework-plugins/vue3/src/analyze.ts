@@ -1,284 +1,169 @@
+import type { ComponentAnalysis } from "@previewjs/analyzer-api";
 import type {
-  BasePreviewable,
-  BasicComponent,
-  Component,
-  Story,
-} from "@previewjs/analyzer-api";
+  CollectedTypes,
+  TypeResolver,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import {
-  decodePreviewableId,
-  generatePreviewableId,
-} from "@previewjs/analyzer-api";
-import { parseSerializableValue } from "@previewjs/serializable-values";
-import {
-  extractArgs,
-  extractCsf3Stories,
-  extractStoriesInfo,
-  resolvePreviewableId,
-} from "@previewjs/storybook-helpers";
-import type { TypeResolver } from "@previewjs/type-analyzer";
-import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
-import type { Reader } from "@previewjs/vfs";
-import path from "path";
+  NODE_TYPE,
+  UNKNOWN_TYPE,
+  intersectionType,
+  maybeOptionalType,
+  objectType,
+} from "@previewjs/type-analyzer";
 import ts from "typescript";
-import { computePropsFromTemplate } from "./compute-props.js";
-import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
-export async function analyze(
-  reader: Reader,
+export function analyzeFromTemplate(
   resolver: TypeResolver,
-  rootDir: string,
-  absoluteFilePath: string
-): Promise<Array<Component | Story>> {
-  const vueAbsoluteFilePath = extractVueFilePath(absoluteFilePath);
-  if (vueAbsoluteFilePath) {
-    const virtualVueTsAbsoluteFilePath = vueAbsoluteFilePath + ".ts";
-    const fileEntry = reader.readSync(vueAbsoluteFilePath);
-    if (fileEntry?.kind !== "file") {
-      return [];
+  virtualVueTsAbsoluteFilePath: string
+): ComponentAnalysis {
+  const sourceFile = resolver.sourceFile(virtualVueTsAbsoluteFilePath);
+  let props: ValueType = UNKNOWN_TYPE;
+  let types: CollectedTypes = {};
+  let slots: string[] = [];
+  for (const statement of sourceFile?.statements || []) {
+    const definedProps = extractDefinePropsFromStatement(resolver, statement);
+    if (definedProps) {
+      return {
+        props: definedProps.type,
+        types: definedProps.collected,
+      };
     }
-    return [
-      {
-        id: generatePreviewableId({
-          filePath: path.relative(rootDir, vueAbsoluteFilePath),
-          name: inferComponentNameFromVuePath(vueAbsoluteFilePath),
-        }),
-        sourcePosition: {
-          start: 0,
-          end: fileEntry.size(),
-        },
-        exported: true,
-        extractProps: async () =>
-          computePropsFromTemplate(resolver, virtualVueTsAbsoluteFilePath),
-      },
-    ];
+    if (ts.isTypeAliasDeclaration(statement)) {
+      if (statement.name.text === "PJS_Props") {
+        const type = resolver.checker.getTypeAtLocation(statement);
+        const defineComponentProps = resolver.resolveType(type);
+        props = defineComponentProps.type;
+        types = defineComponentProps.collected;
+      } else if (statement.name.text === "PJS_Slots") {
+        const slotsType = resolver.checker.getTypeAtLocation(statement);
+        const resolvedSlotsTypeName = resolver.resolveType(slotsType);
+        if (resolvedSlotsTypeName.type.kind === "name") {
+          const resolvedSlotsType =
+            resolvedSlotsTypeName.collected[resolvedSlotsTypeName.type.name];
+          if (resolvedSlotsType?.type.kind === "tuple") {
+            for (const item of resolvedSlotsType.type.items) {
+              if (item.kind === "literal" && typeof item.value === "string") {
+                slots.push(item.value);
+              }
+            }
+          }
+        }
+      }
+    }
   }
+  return {
+    props: intersectionType([
+      props,
+      objectType(
+        Object.fromEntries(
+          slots.map((slotName) => [`slot:${slotName}`, NODE_TYPE])
+        )
+      ),
+    ]),
+    types,
+  };
+}
 
-  const sourceFile = resolver.sourceFile(absoluteFilePath);
-  if (!sourceFile) {
-    return [];
+function extractDefinePropsFromStatement(
+  resolver: TypeResolver,
+  statement: ts.Statement
+) {
+  if (ts.isExpressionStatement(statement)) {
+    // This may be a statement such as `defineProps()`.
+    const definedProps = extractDefinePropsFromExpression(
+      resolver,
+      statement.expression
+    );
+    if (definedProps) {
+      return definedProps;
+    }
   }
-
-  const functions: Array<[string, ts.Statement, ts.Node]> = [];
-  for (const statement of sourceFile.statements) {
-    if (ts.isExportAssignment(statement)) {
-      if (ts.isIdentifier(statement.expression)) {
-        // Avoid duplicates.
+  if (ts.isVariableStatement(statement)) {
+    for (const variableDeclaration of statement.declarationList.declarations) {
+      if (!variableDeclaration.initializer) {
         continue;
       }
-      functions.push(["default", statement, statement.expression]);
-    } else if (ts.isVariableStatement(statement)) {
-      for (const declaration of statement.declarationList.declarations) {
-        if (!ts.isIdentifier(declaration.name) || !declaration.initializer) {
-          continue;
-        }
-        functions.push([
-          declaration.name.text,
-          statement,
-          declaration.initializer,
-        ]);
-      }
-    } else if (ts.isFunctionDeclaration(statement)) {
-      const isDefaultExport =
-        !!statement.modifiers?.find(
-          (m) => m.kind === ts.SyntaxKind.ExportKeyword
-        ) &&
-        !!statement.modifiers?.find(
-          (m) => m.kind === ts.SyntaxKind.DefaultKeyword
-        );
-      const name = statement.name?.text;
-      if (isDefaultExport || name) {
-        functions.push([name || "default", statement, statement]);
-      }
-    }
-  }
-
-  const storiesInfo = extractStoriesInfo(sourceFile);
-  const previewables: Array<Component | Story> = [];
-  const nameToExportedName = helpers.extractExportedNames(sourceFile);
-  const args = extractArgs(sourceFile);
-
-  async function extractPreviewable(
-    basePreviewable: BasePreviewable,
-    node: ts.Node,
-    name: string
-  ): Promise<Component | Story | null> {
-    const storyArgs = args[name];
-    const isExported = name === "default" || !!nameToExportedName[name];
-    if (storiesInfo && storyArgs && isExported) {
-      const associatedComponent = extractStoryAssociatedComponent(
-        rootDir,
+      const definedProps = extractDefinePropsFromExpression(
         resolver,
-        storiesInfo.component
+        variableDeclaration.initializer
       );
-      return {
-        ...basePreviewable,
-        extractArgs: async () => ({
-          sourcePosition: {
-            start: storyArgs.getStart(),
-            end: storyArgs.getEnd(),
-          },
-          value: await parseSerializableValue(storyArgs),
-        }),
-        associatedComponent,
-      };
-    }
-    const type = resolver.checker.getTypeAtLocation(node);
-    for (const callSignature of type.getCallSignatures()) {
-      const returnType = callSignature.getReturnType();
-      if (isJsxElement(returnType)) {
-        return {
-          ...basePreviewable,
-          exported: isExported,
-          extractProps: async () => ({
-            // TODO: Handle JSX properties.
-            props: UNKNOWN_TYPE,
-            types: {},
-          }),
-        };
-      }
-      if (storiesInfo && isExported && returnType.getProperty("template")) {
-        // This is a story.
-        const associatedComponent = extractStoryAssociatedComponent(
-          rootDir,
-          resolver,
-          storiesInfo.component
-        );
-        return {
-          ...basePreviewable,
-          extractArgs: async () => null,
-          associatedComponent,
-        };
+      if (definedProps) {
+        return definedProps;
       }
     }
-    return null;
-  }
-
-  for (const [name, statement, node] of functions) {
-    const previewable = await extractPreviewable(
-      {
-        id: generatePreviewableId({
-          filePath: path.relative(rootDir, absoluteFilePath),
-          name,
-        }),
-        sourcePosition: {
-          start: statement.getStart(),
-          end: statement.getEnd(),
-        },
-      },
-      node,
-      name
-    );
-    if (previewable) {
-      previewables.push(previewable);
-    }
-  }
-
-  return [
-    ...previewables,
-    ...(
-      await extractCsf3Stories(rootDir, resolver, sourceFile, async (id) => {
-        const { filePath } = decodePreviewableId(id);
-        const absoluteFilePath = path.join(rootDir, filePath);
-        const vueComponents = await analyze(
-          reader,
-          resolver,
-          rootDir,
-          absoluteFilePath
-        );
-        const component = absoluteFilePath.endsWith(".vue.ts")
-          ? vueComponents[0]
-          : vueComponents.find((c) => c.id === id);
-        if (!component || !("extractProps" in component)) {
-          return {
-            props: UNKNOWN_TYPE,
-            types: {},
-          };
-        }
-        return component.extractProps();
-      })
-    ).map((story) => {
-      if (!story.associatedComponent?.id.includes(".vue.ts:")) {
-        return story;
-      }
-      const { filePath: associatedComponentFilePath } = decodePreviewableId(
-        story.associatedComponent.id
-      );
-      const associatedComponentVueFilePath = stripTsExtension(
-        associatedComponentFilePath
-      );
-      return {
-        ...story,
-        associatedComponent: {
-          ...story.associatedComponent,
-          id: generatePreviewableId({
-            filePath: associatedComponentVueFilePath,
-            name: inferComponentNameFromVuePath(associatedComponentVueFilePath),
-          }),
-        },
-      };
-    }),
-  ];
-}
-
-function stripTsExtension(filePath: string) {
-  return filePath.substring(0, filePath.length - 3);
-}
-
-function extractVueFilePath(filePath: string) {
-  if (filePath.endsWith(".vue")) {
-    return filePath;
-  }
-  if (filePath.endsWith(".vue.ts")) {
-    return filePath.substring(0, filePath.length - 3);
   }
   return null;
 }
 
-function extractStoryAssociatedComponent(
-  rootDir: string,
+function extractDefinePropsFromExpression(
   resolver: TypeResolver,
-  component: ts.Expression | null
-): BasicComponent | null {
-  const resolvedStoriesPreviewableId = resolvePreviewableId(
-    rootDir,
-    resolver.checker,
-    component
-  );
-  if (!resolvedStoriesPreviewableId) {
+  expression: ts.Expression
+): {
+  type: ValueType;
+  collected: CollectedTypes;
+} | null {
+  if (
+    ts.isBinaryExpression(expression) &&
+    expression.operatorToken.kind === ts.SyntaxKind.EqualsToken
+  ) {
+    // This may be an assignment such as `props = defineProps()`.
+    return extractDefinePropsFromExpression(resolver, expression.right);
+  }
+  if (
+    !ts.isCallExpression(expression) ||
+    !ts.isIdentifier(expression.expression)
+  ) {
     return null;
   }
-  const { filePath } = decodePreviewableId(resolvedStoriesPreviewableId);
-  const vueFilePath = extractVueFilePath(filePath);
-  if (vueFilePath) {
-    return {
-      id: generatePreviewableId({
-        filePath: vueFilePath,
-        name: inferComponentNameFromVuePath(vueFilePath),
-      }),
-      extractProps: async () =>
-        computePropsFromTemplate(resolver, vueFilePath + ".ts"),
-    };
-  } else {
-    return {
-      id: resolvedStoriesPreviewableId,
-      extractProps: async () =>
-        // TODO: Handle JSX properties.
-        ({
-          props: UNKNOWN_TYPE,
-          types: {},
-        }),
-    };
-  }
-}
-
-const jsxElementTypes = new Set(["Element"]);
-function isJsxElement(type: ts.Type): boolean {
-  if (type.isUnion()) {
-    for (const subtype of type.types) {
-      if (isJsxElement(subtype)) {
-        return true;
-      }
+  const functionName = expression.expression.text;
+  if (functionName === "defineProps") {
+    const signature = resolver.checker.getResolvedSignature(expression);
+    if (signature) {
+      return resolver.resolveType(signature.getReturnType());
     }
   }
-  return jsxElementTypes.has(type.symbol?.getEscapedName().toString());
+  if (functionName === "withDefaults") {
+    const [firstArgument, secondArgument] = expression.arguments;
+    if (!firstArgument || !secondArgument) {
+      return null;
+    }
+    const definePropsType = extractDefinePropsFromExpression(
+      resolver,
+      firstArgument
+    );
+    if (!definePropsType) {
+      return null;
+    }
+    const defaultsType = resolver.resolveType(
+      resolver.checker.getTypeAtLocation(secondArgument)
+    );
+    if (
+      defaultsType.type.kind !== "object" ||
+      definePropsType.type.kind !== "object"
+    ) {
+      // Unsure what to do here, ignore defaults.
+      return definePropsType;
+    }
+    const fieldsWithDefaultValue = new Set(
+      Object.keys(defaultsType.type.fields)
+    );
+    return {
+      type: objectType(
+        Object.fromEntries(
+          Object.entries(definePropsType.type.fields).map(
+            ([fieldKey, fieldType]) => [
+              fieldKey,
+              maybeOptionalType(
+                fieldType,
+                fieldsWithDefaultValue.has(fieldKey)
+              ),
+            ]
+          )
+        )
+      ),
+      collected: definePropsType.collected,
+    };
+  }
+  return null;
 }

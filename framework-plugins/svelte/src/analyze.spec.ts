@@ -22,7 +22,7 @@ import { inferComponentNameFromSveltePath } from "./infer-component-name";
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.svelte");
 
-describe("analyze Svelte component", () => {
+describe("crawlFile Svelte component", () => {
   let memoryReader: Reader & Writer;
   let frameworkPlugin: FrameworkPlugin;
 
@@ -174,11 +174,11 @@ describe("analyze Svelte component", () => {
     memoryReader.updateFile(MAIN_FILE, source);
     const componentName = inferComponentNameFromSveltePath(MAIN_FILE);
     const component = (
-      await frameworkPlugin.analyze([MAIN_FILE])
+      await frameworkPlugin.crawlFile([MAIN_FILE])
     ).components.find((c) => decodePreviewableId(c.id).name === componentName);
     if (!component) {
       throw new Error(`Component ${componentName} not found`);
     }
-    return component.extractProps();
+    return component.analyze();
   }
 });

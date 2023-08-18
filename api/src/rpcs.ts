@@ -2,16 +2,16 @@ import type { SerializableValue } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import type { RPC } from "./rpc";
 
-export const ComputeProps: RPC<
+export const Analyze: RPC<
   {
     previewableIds: string[];
   },
-  ComputePropsResponse
+  AnalyzeResponse
 > = {
-  path: "compute-props",
+  path: "analyze",
 };
 
-export type ComputePropsResponse = {
+export type AnalyzeResponse = {
   props: {
     [componentId: string]: ValueType;
   };
@@ -21,17 +21,17 @@ export type ComputePropsResponse = {
   types: CollectedTypes;
 };
 
-export const DetectPreviewables: RPC<
+export const CrawlFile: RPC<
   {
     filePaths?: string[];
     forceRefresh?: boolean;
   },
-  DetectPreviewablesResponse
+  CrawlFileResponse
 > = {
-  path: "detect-previewables",
+  path: "crawl-file",
 };
 
-export type DetectPreviewablesResponse = {
+export type CrawlFileResponse = {
   components: Component[];
   stories: Story[];
 };

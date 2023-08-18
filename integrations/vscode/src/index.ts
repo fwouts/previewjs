@@ -108,7 +108,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
     if (!state) {
       return;
     }
-    const previewables = await state.analyzeFile(e?.document);
+    const previewables = await state.crawlFile(e?.document);
     vscode.commands.executeCommand(
       "setContext",
       "previewjs.previewablesDetected",
@@ -123,7 +123,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         if (!state) {
           return;
         }
-        const previewables = await state.analyzeFile(document);
+        const previewables = await state.crawlFile(document);
         return previewables.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
@@ -227,7 +227,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         const offset = editor?.selection.active
           ? document.offsetAt(editor.selection.active)
           : 0;
-        const previewables = await state.analyzeFile(document);
+        const previewables = await state.crawlFile(document);
         const previewable =
           previewables.find((c) => offset >= c.start && offset <= c.end) ||
           previewables[0];

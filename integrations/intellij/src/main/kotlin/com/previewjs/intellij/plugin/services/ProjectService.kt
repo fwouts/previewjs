@@ -32,7 +32,7 @@ import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefJSQuery
-import com.previewjs.intellij.plugin.api.AnalyzeFileRequest
+import com.previewjs.intellij.plugin.api.CrawlFileRequest
 import com.previewjs.intellij.plugin.api.Previewable
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
@@ -128,7 +128,7 @@ class ProjectService(private val project: Project) : Disposable {
                     if (textEditor.file != file) {
                         return
                     }
-                    reanalyzeFile(file, textEditor.editor.document.text)
+                    recrawlFile(file, textEditor.editor.document.text)
                 }
 
                 override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
@@ -140,7 +140,7 @@ class ProjectService(private val project: Project) : Disposable {
             if (textEditor !is TextEditor) {
                 return@forEach
             }
-            reanalyzeFile(textEditor.file, textEditor.editor.document.text)
+            recrawlFile(textEditor.file, textEditor.editor.document.text)
         }
     }
 
@@ -209,8 +209,8 @@ class ProjectService(private val project: Project) : Disposable {
         return consoleView
     }
 
-    private fun reanalyzeFile(file: VirtualFile, text: String) {
-        analyzeFile(file) { components ->
+    private fun recrawlFile(file: VirtualFile, text: String) {
+        crawlFile(file) { components ->
             componentMap[file.path] = Pair(text, components)
             @Suppress("UnstableApiUsage")
             app.invokeLater {
@@ -232,7 +232,7 @@ class ProjectService(private val project: Project) : Disposable {
         }
 
         // Since it's not an exact match, trigger recomputing in the background.
-        reanalyzeFile(psiFile.virtualFile, currentText)
+        recrawlFile(psiFile.virtualFile, currentText)
 
         // Keep going to see if we can show something useful in the meantime to avoid unnecessary flickering.
         // If a chunk of text was either added or removed, then we can still show our old results by shifting
@@ -276,7 +276,7 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    fun analyzeFile(file: VirtualFile, callback: (result: List<Previewable>) -> Unit) {
+    fun crawlFile(file: VirtualFile, callback: (result: List<Previewable>) -> Unit) {
         if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
             return callback(emptyList())
         }
@@ -292,8 +292,8 @@ class ProjectService(private val project: Project) : Disposable {
                     )
                 )
             }
-            val analysisResponse = api.analyzeFile(
-                AnalyzeFileRequest(
+            val analysisResponse = api.crawlFile(
+                CrawlFileRequest(
                     workspaceId,
                     absoluteFilePath = file.path
                 )

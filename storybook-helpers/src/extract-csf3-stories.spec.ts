@@ -74,16 +74,20 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("resolves args to UNKNOWN when too complex", async () => {
@@ -115,14 +119,16 @@ export const Example = {
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: UNKNOWN,
-        },
-      ]),
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: UNKNOWN,
+          },
+        ]),
+      },
     });
   });
 
@@ -163,16 +169,20 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("follows default imported component definition", async () => {
@@ -213,16 +223,20 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("follows wildcard re-exported component definition", async () => {
@@ -267,16 +281,20 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("follows named re-exported component definition", async () => {
@@ -321,16 +339,20 @@ export function NotStory() {}
         },
       },
     ]);
-    expect(await extractedStories[0]?.extractArgs()).toMatchObject({
-      value: object([
-        {
-          kind: "key",
-          key: string("label"),
-          value: string("Hello, World!"),
-        },
-      ]),
+    expect(await extractedStories[0]?.analyze()).toMatchObject({
+      args: {
+        value: object([
+          {
+            kind: "key",
+            key: string("label"),
+            value: string("Hello, World!"),
+          },
+        ]),
+      },
     });
-    expect(await extractedStories[1]?.extractArgs()).toBeNull();
+    expect(await extractedStories[1]?.analyze()).toEqual({
+      args: null,
+    });
   });
 
   it("ignores objects that look like CSF 3 stories when default export doesn't have component", async () => {

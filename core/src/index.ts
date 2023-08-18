@@ -13,7 +13,7 @@ import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
-import { analyze } from "./detect-previewables";
+import { crawlFile } from "./crawl-file";
 import { getFreePort } from "./get-free-port";
 import type { FrameworkPlugin } from "./plugins/framework";
 import type { SetupPreviewEnvironment } from "./preview-env";
@@ -68,11 +68,9 @@ export async function createWorkspace({
     );
   }
   const router = new ApiRouter(logger);
-  router.registerRPC(RPCs.ComputeProps, async ({ previewableIds }) => {
-    logger.debug(
-      `Computing props for components: ${previewableIds.join(", ")}`
-    );
-    const detected = await frameworkPlugin.analyze([
+  router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
+    logger.debug(`Analyzing: ${previewableIds.join(", ")}`);
+    const detected = await frameworkPlugin.crawlFile([
       ...new Set(
         previewableIds.map((c) =>
           path.join(rootDir, decodePreviewableId(c).filePath)
@@ -102,21 +100,21 @@ export async function createWorkspace({
       let componentTypes: CollectedTypes;
       if (component) {
         logger.debug(`Analyzing component: ${id}`);
-        ({ props, types: componentTypes } = await component.extractProps());
+        ({ props, types: componentTypes } = await component.analyze());
         propsPerComponentId[id] = props;
         logger.debug(`Done analyzing: ${id}`);
       } else if (story) {
         if (story.associatedComponent) {
           logger.debug(`Analyzing story: ${id}`);
           ({ props, types: componentTypes } =
-            await story.associatedComponent.extractProps());
+            await story.associatedComponent.analyze());
           logger.debug(`Done analyzing: ${id}`);
         } else {
           logger.debug(`No associated component for story: ${id}`);
           props = UNKNOWN_TYPE;
           componentTypes = {};
         }
-        argsPerStoryId[id] = await story.extractArgs();
+        argsPerStoryId[id] = (await story.analyze()).args;
       } else {
         const { filePath, name } = decodePreviewableId(id);
         throw new Error(`Component ${name} not detected in ${filePath}.`);
@@ -130,8 +128,8 @@ export async function createWorkspace({
       types,
     };
   });
-  router.registerRPC(RPCs.DetectPreviewables, (options) =>
-    analyze(logger, workspace, frameworkPlugin, options)
+  router.registerRPC(RPCs.CrawlFile, (options) =>
+    crawlFile(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
     express.json(),
@@ -175,8 +173,8 @@ export async function createWorkspace({
     rootDir,
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
-    analyze: (options = {}) => localRpc(RPCs.DetectPreviewables, options),
-    computeProps: (options) => localRpc(RPCs.ComputeProps, options),
+    crawlFile: (options = {}) => localRpc(RPCs.CrawlFile, options),
+    analyze: (options) => localRpc(RPCs.Analyze, options),
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -227,12 +225,12 @@ export interface Workspace {
   rootDir: string;
   reader: Reader;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
+  crawlFile(
+    options?: RequestOf<typeof RPCs.CrawlFile>
+  ): Promise<ResponseOf<typeof RPCs.CrawlFile>>;
   analyze(
-    options?: RequestOf<typeof RPCs.DetectPreviewables>
-  ): Promise<ResponseOf<typeof RPCs.DetectPreviewables>>;
-  computeProps(
-    options: RequestOf<typeof RPCs.ComputeProps>
-  ): Promise<ResponseOf<typeof RPCs.ComputeProps>>;
+    options: RequestOf<typeof RPCs.Analyze>
+  ): Promise<ResponseOf<typeof RPCs.Analyze>>;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
