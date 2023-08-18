@@ -7,6 +7,7 @@ import {
   NODE_TYPE,
   NUMBER_TYPE,
   objectType,
+  optionalType,
   STRING_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Reader, Writer } from "@previewjs/vfs";
@@ -18,19 +19,21 @@ import {
 import path from "path";
 import createLogger from "pino";
 import prettyLogger from "pino-pretty";
+import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import solidFrameworkPlugin from ".";
+import preactFrameworkPlugin from ".";
 
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.tsx");
 
-describe("computeProps", () => {
+describe("analyze", () => {
   let memoryReader: Reader & Writer;
   let frameworkPlugin: FrameworkPlugin;
 
   beforeEach(async () => {
     memoryReader = createMemoryReader();
-    frameworkPlugin = await solidFrameworkPlugin.create({
+    frameworkPlugin = await preactFrameworkPlugin.create({
       rootDir: ROOT_DIR_PATH,
       dependencies: {},
       reader: createStackedReader([
@@ -164,6 +167,56 @@ export function A() {
     });
   });
 
+  test("default exported function with no name", async () => {
+    expect(
+      await crawlFile(
+        `
+export default function() {
+  return <div>Hello, World!</div>;
+};
+`,
+        "default"
+      )
+    ).toEqual({
+      props: objectType({}),
+      types: {},
+    });
+  });
+
+  test("default exported function with no parameter", async () => {
+    expect(
+      await crawlFile(
+        `
+export default function A() {
+  return <div>Hello, World!</div>;
+};
+`,
+        "A"
+      )
+    ).toEqual({
+      props: objectType({}),
+      types: {},
+    });
+  });
+
+  test("default exported function with props", async () => {
+    expect(
+      await crawlFile(
+        `
+export default function A(props: { name: string }) {
+  return <div>Hello, {name}!</div>;
+};
+`,
+        "A"
+      )
+    ).toEqual({
+      props: objectType({
+        name: STRING_TYPE,
+      }),
+      types: {},
+    });
+  });
+
   test("constant function with empty props", async () => {
     expect(
       await crawlFile(
@@ -202,6 +255,8 @@ export const A = (props: { foo: string }) => {
     expect(
       await crawlFile(
         `
+import { ComponentChildren } from "preact";
+
 export const A = (props: { currentTab: PanelTab, tabs: PanelTab[] }) => {
   return <div>Hello, World!</div>;
 };
@@ -210,7 +265,7 @@ interface PanelTab {
   label: string;
   key: string;
   notificationCount: number;
-  panel: JSX.Element;
+  panel: ComponentChildren;
 }
 `,
         "A"
@@ -234,13 +289,13 @@ interface PanelTab {
     });
   });
 
-  test("constant function with Component type and no parameter", async () => {
+  test("constant function with FunctionComponent type and no parameter", async () => {
     expect(
       await crawlFile(
         `
-import { Component } from 'solid-js';
+import { FunctionComponent } from 'preact';
 
-export const A: Component<{ foo: string }> = (props) => {
+export const A: FunctionComponent<{ foo: string }> = (props) => {
   return <div>Hello, World!</div>;
 };
 `,
@@ -249,18 +304,19 @@ export const A: Component<{ foo: string }> = (props) => {
     ).toEqual({
       props: objectType({
         foo: STRING_TYPE,
+        children: optionalType(NODE_TYPE),
       }),
       types: {},
     });
   });
 
-  test("constant function with Component type and a parameter", async () => {
+  test("constant function with FunctionComponent type and a parameter", async () => {
     expect(
       await crawlFile(
         `
-import { Component } from 'solid-js';
+import { FunctionComponent } from 'preact';
 
-export const A: Component<{ foo: string }> = (props) => {
+export const A: FunctionComponent<{ foo: string }> = (props) => {
   return <div>Hello, {foo}!</div>;
 };
 `,
@@ -269,92 +325,21 @@ export const A: Component<{ foo: string }> = (props) => {
     ).toEqual({
       props: objectType({
         foo: STRING_TYPE,
+        children: optionalType(NODE_TYPE),
       }),
       types: {},
     });
   });
 
-  test("default exported function with no name", async () => {
-    expect(
-      await crawlFile(
-        `
-export default function() {
-  return <div>Hello, World!</div>;
-};
-`,
-        "default"
-      )
-    ).toEqual({
-      props: objectType({}),
-      types: {},
-    });
-  });
-
-  test("default exported function with no parameter", async () => {
-    expect(
-      await crawlFile(
-        `
-export default function A() {
-  return <div>Hello, World!</div>;
-};
-`,
-        "default"
-      )
-    ).toEqual({
-      props: objectType({}),
-      types: {},
-    });
-  });
-
-  test("default exported function with props", async () => {
-    expect(
-      await crawlFile(
-        `
-export default function A(props: { name: string }) {
-  return <div>Hello, {name}!</div>;
-};
-`,
-        "default"
-      )
-    ).toEqual({
-      props: objectType({
-        name: STRING_TYPE,
-      }),
-      types: {},
-    });
-  });
-
-  test("Storybook args support", async () => {
-    expect(
-      await crawlFile(
-        `
-import Solid from 'solid-js';
-
-export const A: Solid.Component<{ foo: string, bar: string }> = (props) => {
-  return <div>{foo}</div>;
-};
-A.args = {
-  foo: "Hello, World!"
-};
-`,
-        "A"
-      )
-    ).toEqual({
-      props: objectType({
-        foo: STRING_TYPE,
-        bar: STRING_TYPE,
-      }),
-      types: {},
-    });
-  });
-
-  async function crawlFile(source: string, componentName: string) {
+  async function crawlFile(source: string, previewableName: string) {
     memoryReader.updateFile(MAIN_FILE, source);
     const component = (
       await frameworkPlugin.crawlFile([MAIN_FILE])
-    ).components.find((c) => decodePreviewableId(c.id).name === componentName);
+    ).components.find(
+      (c) => decodePreviewableId(c.id).name === previewableName
+    );
     if (!component) {
-      throw new Error(`Component ${componentName} not found`);
+      throw new Error(`Previewable ${previewableName} not found`);
     }
     return component.extractProps();
   }

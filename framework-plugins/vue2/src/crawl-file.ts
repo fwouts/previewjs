@@ -20,7 +20,7 @@ import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import path from "path";
 import ts from "typescript";
-import { computePropsFromTemplate } from "./compute-props.js";
+import { analyzeFromTemplate } from "./analyze.js";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
 export async function crawlFile(
@@ -48,7 +48,7 @@ export async function crawlFile(
         },
         exported: true,
         extractProps: async () =>
-          computePropsFromTemplate(resolver, virtualVueTsAbsoluteFilePath),
+          analyzeFromTemplate(resolver, virtualVueTsAbsoluteFilePath),
       },
     ];
   }
@@ -256,7 +256,7 @@ function extractStoryAssociatedComponent(
         name: inferComponentNameFromVuePath(vueFilePath),
       }),
       extractProps: async () =>
-        computePropsFromTemplate(resolver, vueFilePath + ".ts"),
+        analyzeFromTemplate(resolver, vueFilePath + ".ts"),
     };
   } else {
     return {

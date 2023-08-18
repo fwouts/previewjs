@@ -39,13 +39,13 @@ async function onUrlChanged() {
     return;
   }
   iframeController.resetIframe(previewableId);
-  const computePropsResponse = await rpcApi.request(RPCs.ComputeProps, {
+  const analyzeResponse = await rpcApi.request(RPCs.Analyze, {
     previewableIds: [previewableId],
   });
-  const props = computePropsResponse.props[previewableId]!;
+  const props = analyzeResponse.props[previewableId]!;
   const autogenCallbackProps = await generateCallbackProps(
     props,
-    computePropsResponse.types
+    analyzeResponse.types
   );
   iframeController.load({
     previewableId,
@@ -53,7 +53,7 @@ async function onUrlChanged() {
       await generatePropsAssignmentSource(
         props,
         autogenCallbackProps.keys,
-        computePropsResponse.types
+        analyzeResponse.types
       )
     ),
     autogenCallbackPropsSource: transpile(

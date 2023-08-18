@@ -8,7 +8,7 @@ import type { TypeResolver } from "@previewjs/type-analyzer";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import path from "path";
-import { computePropsFromSFC } from "./compute-props.js";
+import { analyzeFromSFC } from "./analyze.js";
 import { inferComponentNameFromSveltePath } from "./infer-component-name.js";
 
 export async function crawlFile(
@@ -34,7 +34,7 @@ export async function crawlFile(
         },
         exported: true,
         extractProps: async () =>
-          computePropsFromSFC(resolver, absoluteFilePath + ".ts"),
+          analyzeFromSFC(resolver, absoluteFilePath + ".ts"),
       },
     ];
   } else {

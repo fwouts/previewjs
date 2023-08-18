@@ -13,7 +13,7 @@ import {
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
-export function computePropsFromSFC(
+export function analyzeFromSFC(
   resolver: TypeResolver,
   virtualSvelteTsAbsoluteFilePath: string
 ): ComponentProps {

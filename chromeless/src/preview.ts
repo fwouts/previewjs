@@ -138,13 +138,13 @@ export async function startPreview({
           `Component may be previewable but was not detected by framework plugin: ${previewableId}`
         );
       }
-      const computePropsResponse = await workspace.computeProps({
+      const analyzeResponse = await workspace.analyze({
         previewableIds: [previewableId],
       });
-      const props = computePropsResponse.props[previewableId]!;
+      const props = analyzeResponse.props[previewableId]!;
       const autogenCallbackProps = await generateCallbackProps(
         props,
-        computePropsResponse.types
+        analyzeResponse.types
       );
       if (!propsAssignmentSource) {
         propsAssignmentSource = matchingStory
@@ -152,7 +152,7 @@ export async function startPreview({
           : await generatePropsAssignmentSource(
               props,
               autogenCallbackProps.keys,
-              computePropsResponse.types
+              analyzeResponse.types
             );
       }
       const donePromise = new Promise<void>((resolve, reject) => {

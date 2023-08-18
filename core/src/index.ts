@@ -68,10 +68,8 @@ export async function createWorkspace({
     );
   }
   const router = new ApiRouter(logger);
-  router.registerRPC(RPCs.ComputeProps, async ({ previewableIds }) => {
-    logger.debug(
-      `Computing props for components: ${previewableIds.join(", ")}`
-    );
+  router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
+    logger.debug(`Analyzing: ${previewableIds.join(", ")}`);
     const detected = await frameworkPlugin.crawlFile([
       ...new Set(
         previewableIds.map((c) =>
@@ -176,7 +174,7 @@ export async function createWorkspace({
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
     crawlFile: (options = {}) => localRpc(RPCs.CrawlFile, options),
-    computeProps: (options) => localRpc(RPCs.ComputeProps, options),
+    analyze: (options) => localRpc(RPCs.Analyze, options),
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -230,9 +228,9 @@ export interface Workspace {
   crawlFile(
     options?: RequestOf<typeof RPCs.CrawlFile>
   ): Promise<ResponseOf<typeof RPCs.CrawlFile>>;
-  computeProps(
-    options: RequestOf<typeof RPCs.ComputeProps>
-  ): Promise<ResponseOf<typeof RPCs.ComputeProps>>;
+  analyze(
+    options: RequestOf<typeof RPCs.Analyze>
+  ): Promise<ResponseOf<typeof RPCs.Analyze>>;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };

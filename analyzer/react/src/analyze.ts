@@ -17,7 +17,7 @@ import type { Logger } from "pino";
 import ts from "typescript";
 import { detectPropTypes } from "./prop-types.js";
 
-export function computeProps(
+export function analyze(
   logger: Logger,
   typeResolver: TypeResolver,
   absoluteFilePath: string,
@@ -29,14 +29,14 @@ export function computeProps(
   if (sourceFile) {
     propTypes = detectPropTypes(sourceFile, componentName);
   }
-  const resolved = computePropsType(logger, typeResolver, signature, propTypes);
+  const resolved = analyzeType(logger, typeResolver, signature, propTypes);
   return {
     props: resolved.type,
     types: { ...resolved.collected },
   };
 }
 
-function computePropsType(
+function analyzeType(
   logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature,
@@ -46,12 +46,12 @@ function computePropsType(
   collected: CollectedTypes;
 } {
   if (propTypes) {
-    return computePropsTypeFromPropTypes(typeResolver, propTypes);
+    return analyzeTypeFromPropTypes(typeResolver, propTypes);
   }
-  return computePropsTypeFromSignature(logger, typeResolver, signature);
+  return analyzeTypeFromSignature(logger, typeResolver, signature);
 }
 
-function computePropsTypeFromSignature(
+function analyzeTypeFromSignature(
   logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
@@ -128,7 +128,7 @@ function computePropsTypeFromSignature(
   };
 }
 
-function computePropsTypeFromPropTypes(
+function analyzeTypeFromPropTypes(
   typeResolver: TypeResolver,
   propTypes: ts.Expression
 ): {

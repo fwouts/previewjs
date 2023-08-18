@@ -3,14 +3,13 @@ import type { TypeResolver } from "@previewjs/type-analyzer";
 import {
   dereferenceType,
   EMPTY_OBJECT_TYPE,
-  maybeOptionalType,
   objectType,
   UNKNOWN_TYPE,
 } from "@previewjs/type-analyzer";
 import type { Logger } from "pino";
 import ts from "typescript";
 
-export function computeProps(
+export function analyze(
   logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
@@ -33,8 +32,8 @@ export function computeProps(
     firstParam.valueDeclaration
   );
   try {
-    let { type: props, collected: types } = typeResolver.resolveType(type);
-    [props] = dereferenceType(props, types, []);
+    let { type: props, collected } = typeResolver.resolveType(type);
+    [props] = dereferenceType(props, collected, []);
     stripUnusedProps: if (
       props.kind === "object" &&
       ts.isParameter(firstParam.valueDeclaration)
@@ -42,8 +41,6 @@ export function computeProps(
       if (ts.isObjectBindingPattern(firstParam.valueDeclaration.name)) {
         const bindingPattern = firstParam.valueDeclaration.name;
         const usedProps = new Set<string>();
-        // TODO: Integrate this into Solid plugin as well.
-        const propsWithDefault = new Set<string>();
         for (const element of bindingPattern.elements) {
           if (element.dotDotDotToken) {
             break stripUnusedProps;
@@ -53,33 +50,15 @@ export function computeProps(
             break stripUnusedProps;
           }
           usedProps.add(elementName.text);
-          if (element.initializer) {
-            propsWithDefault.add(elementName.text);
-          }
         }
         props = objectType(
           Object.fromEntries(
-            Object.entries(props.fields)
-              .filter(([key]) => usedProps.has(key))
-              .map(([key, type]) => [
-                key,
-                maybeOptionalType(type, propsWithDefault.has(key)),
-              ])
+            Object.entries(props.fields).filter(([key]) => usedProps.has(key))
           )
         );
       }
     }
-    if (props.kind === "object") {
-      props = {
-        kind: "object",
-        fields: Object.fromEntries(
-          Object.entries(props.fields).filter(
-            ([key]) => !["jsx", "key", "ref"].includes(key)
-          )
-        ),
-      };
-    }
-    return { props, types };
+    return { props, types: collected };
   } catch (e) {
     logger.warn(
       `Unable to resolve props type for ${typeResolver.checker.typeToString(

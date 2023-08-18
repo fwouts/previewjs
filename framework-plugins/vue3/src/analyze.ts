@@ -13,7 +13,7 @@ import {
 } from "@previewjs/type-analyzer";
 import ts from "typescript";
 
-export function computePropsFromTemplate(
+export function analyzeFromTemplate(
   resolver: TypeResolver,
   virtualVueTsAbsoluteFilePath: string
 ): ComponentProps {

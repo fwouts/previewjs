@@ -32,7 +32,7 @@ const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE_NAME = "App.tsx";
 const MAIN_FILE = path.join(ROOT_DIR_PATH, MAIN_FILE_NAME);
 
-describe("computeProps", () => {
+describe("analyze", () => {
   let memoryReader: Reader & Writer;
   let analyzer: Analyzer;
 

@@ -2,16 +2,16 @@ import type { SerializableValue } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import type { RPC } from "./rpc";
 
-export const ComputeProps: RPC<
+export const Analyze: RPC<
   {
     previewableIds: string[];
   },
-  ComputePropsResponse
+  AnalyzeResponse
 > = {
-  path: "compute-props",
+  path: "analyze",
 };
 
-export type ComputePropsResponse = {
+export type AnalyzeResponse = {
   props: {
     [componentId: string]: ValueType;
   };

@@ -20,7 +20,7 @@ import { UNKNOWN_TYPE, helpers } from "@previewjs/type-analyzer";
 import path from "path";
 import type { Logger } from "pino";
 import ts from "typescript";
-import { computeProps } from "./compute-props.js";
+import { analyze } from "./analyze.js";
 
 export async function crawlFile(
   logger: Logger,
@@ -117,7 +117,7 @@ export async function crawlFile(
       return {
         ...basePreviewable,
         exported: isExported,
-        extractProps: async () => computeProps(logger, resolver, signature),
+        extractProps: async () => analyze(logger, resolver, signature),
       };
     }
     return null;
@@ -186,7 +186,7 @@ function extractStoryAssociatedComponent(
               types: {},
             };
           }
-          return computeProps(logger, resolver, signature);
+          return analyze(logger, resolver, signature);
         },
       }
     : null;
