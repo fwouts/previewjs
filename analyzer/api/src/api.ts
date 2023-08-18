@@ -29,10 +29,10 @@ export interface BasePreviewable {
 
 export interface Component extends BasePreviewable {
   exported: boolean;
-  analyze: () => Promise<ComponentProps>;
+  analyze: () => Promise<ComponentAnalysis>;
 }
 
-export interface ComponentProps {
+export interface ComponentAnalysis {
   props: ValueType;
   types: CollectedTypes;
 }

@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/analyzer-api";
+import type { ComponentAnalysis } from "@previewjs/analyzer-api";
 import type {
   CollectedTypes,
   OptionalType,
@@ -16,7 +16,7 @@ import ts from "typescript";
 export function analyzeFromSFC(
   resolver: TypeResolver,
   virtualSvelteTsAbsoluteFilePath: string
-): ComponentProps {
+): ComponentAnalysis {
   const sourceFile = resolver.sourceFile(virtualSvelteTsAbsoluteFilePath);
   const props: Record<string, ValueType | OptionalType> = {};
   let collected: CollectedTypes = {};

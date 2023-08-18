@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/analyzer-api";
+import type { ComponentAnalysis } from "@previewjs/analyzer-api";
 import type {
   CollectedTypes,
   OptionalType,
@@ -23,7 +23,7 @@ export function analyze(
   absoluteFilePath: string,
   componentName: string,
   signature: ts.Signature
-): ComponentProps {
+): ComponentAnalysis {
   const sourceFile = typeResolver.sourceFile(absoluteFilePath);
   let propTypes: ts.Expression | null = null;
   if (sourceFile) {

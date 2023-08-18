@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/analyzer-api";
+import type { ComponentAnalysis } from "@previewjs/analyzer-api";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import {
   dereferenceType,
@@ -14,7 +14,7 @@ export function analyze(
   logger: Logger,
   typeResolver: TypeResolver,
   signature: ts.Signature
-): ComponentProps {
+): ComponentAnalysis {
   const firstParam = signature.getParameters()[0];
   if (!firstParam) {
     return {

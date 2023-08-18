@@ -1,4 +1,4 @@
-import type { ComponentProps } from "@previewjs/analyzer-api";
+import type { ComponentAnalysis } from "@previewjs/analyzer-api";
 import type {
   CollectedTypes,
   TypeResolver,
@@ -16,7 +16,7 @@ import ts from "typescript";
 export function analyzeFromTemplate(
   resolver: TypeResolver,
   virtualVueTsAbsoluteFilePath: string
-): ComponentProps {
+): ComponentAnalysis {
   const sourceFile = resolver.sourceFile(virtualVueTsAbsoluteFilePath);
   let props: ValueType = UNKNOWN_TYPE;
   let types: CollectedTypes = {};
