@@ -1,4 +1,4 @@
-import type { AnalyzeFileResponse, Client } from "@previewjs/daemon/client";
+import type { Client, CrawlFileResponse } from "@previewjs/daemon/client";
 import type vscode from "vscode";
 import type { WorkspaceGetter } from "./workspaces";
 
@@ -9,7 +9,7 @@ export function createFileAnalyzer(
 ): FileAnalyzer {
   return async function (
     document?: vscode.TextDocument
-  ): Promise<AnalyzeFileResponse["previewables"]> {
+  ): Promise<CrawlFileResponse["previewables"]> {
     if (!document || !document.fileName) {
       return [];
     }
@@ -25,7 +25,7 @@ export function createFileAnalyzer(
         utf8Content: pendingText,
       });
     }
-    const { previewables } = await client.analyzeFile({
+    const { previewables } = await client.crawlFile({
       workspaceId,
       absoluteFilePath: document.fileName,
     });
@@ -35,4 +35,4 @@ export function createFileAnalyzer(
 
 export type FileAnalyzer = (
   document?: vscode.TextDocument
-) => Promise<AnalyzeFileResponse["previewables"]>;
+) => Promise<CrawlFileResponse["previewables"]>;

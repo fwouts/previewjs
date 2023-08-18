@@ -35,7 +35,7 @@ export function crawl(
     filePaths?: string[];
     forceRefresh?: boolean;
   } = {}
-): Promise<RPCs.AnalyzeFileResponse> {
+): Promise<RPCs.CrawlFileResponse> {
   return oneAtATime(async () => {
     logger.debug(
       `Detecting components with options: ${JSON.stringify(options)}`

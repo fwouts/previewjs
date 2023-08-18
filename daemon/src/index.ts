@@ -13,8 +13,8 @@ import http from "http";
 import isWsl from "is-wsl";
 import path from "path";
 import type {
-  AnalyzeFileRequest,
-  AnalyzeFileResponse,
+  CrawlFileRequest,
+  CrawlFileResponse,
   DisposeWorkspaceRequest,
   DisposeWorkspaceResponse,
   GetWorkspaceRequest,
@@ -322,7 +322,7 @@ export async function startDaemon({
     }
   );
 
-  endpoint<AnalyzeFileRequest, AnalyzeFileResponse>(
+  endpoint<CrawlFileRequest, CrawlFileResponse>(
     "/crawl/file",
     async ({ workspaceId, absoluteFilePath }) => {
       const workspace = workspaces[workspaceId];

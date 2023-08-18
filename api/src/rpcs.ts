@@ -21,17 +21,17 @@ export type ComputePropsResponse = {
   types: CollectedTypes;
 };
 
-export const AnalyzeFile: RPC<
+export const CrawlFile: RPC<
   {
     filePaths?: string[];
     forceRefresh?: boolean;
   },
-  AnalyzeFileResponse
+  CrawlFileResponse
 > = {
   path: "detect-previewables",
 };
 
-export type AnalyzeFileResponse = {
+export type CrawlFileResponse = {
   components: Component[];
   stories: Story[];
 };

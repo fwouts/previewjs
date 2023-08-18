@@ -38,12 +38,12 @@ export interface DisposeWorkspaceRequest {
 
 export type DisposeWorkspaceResponse = Record<string, never>;
 
-export interface AnalyzeFileRequest {
+export interface CrawlFileRequest {
   workspaceId: string;
   absoluteFilePath: string;
 }
 
-export interface AnalyzeFileResponse {
+export interface CrawlFileResponse {
   previewables: Array<{
     start: number;
     end: number;

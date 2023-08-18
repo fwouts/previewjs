@@ -130,7 +130,7 @@ export async function createWorkspace({
       types,
     };
   });
-  router.registerRPC(RPCs.AnalyzeFile, (options) =>
+  router.registerRPC(RPCs.CrawlFile, (options) =>
     crawl(logger, workspace, frameworkPlugin, options)
   );
   const middlewares: express.Handler[] = [
@@ -175,7 +175,7 @@ export async function createWorkspace({
     rootDir,
     reader,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
-    crawl: (options = {}) => localRpc(RPCs.AnalyzeFile, options),
+    crawl: (options = {}) => localRpc(RPCs.CrawlFile, options),
     computeProps: (options) => localRpc(RPCs.ComputeProps, options),
     preview: {
       start: async (allocatePort) => {
@@ -228,8 +228,8 @@ export interface Workspace {
   reader: Reader;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
   crawl(
-    options?: RequestOf<typeof RPCs.AnalyzeFile>
-  ): Promise<ResponseOf<typeof RPCs.AnalyzeFile>>;
+    options?: RequestOf<typeof RPCs.CrawlFile>
+  ): Promise<ResponseOf<typeof RPCs.CrawlFile>>;
   computeProps(
     options: RequestOf<typeof RPCs.ComputeProps>
   ): Promise<ResponseOf<typeof RPCs.ComputeProps>>;
