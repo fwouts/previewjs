@@ -3,6 +3,7 @@ import { decodePreviewableId } from "@previewjs/analyzer-api";
 import type { PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
+import { polyfillNode } from "esbuild-plugin-polyfill-node";
 import express from "express";
 import fs from "fs-extra";
 import type { Server } from "http";
@@ -288,6 +289,10 @@ export class ViteManager {
       base: "/preview/",
       optimizeDeps: {
         entries: [],
+        esbuildOptions: {
+          // @ts-expect-error incompatible esbuild versions?
+          plugins: [polyfillNode()],
+        },
       },
       server: {
         middlewareMode: true,
