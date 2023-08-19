@@ -97,9 +97,7 @@ export async function generateScreenshots({
     cwd,
     followSymbolicLinks: false,
   });
-  const { components, stories } = await workspace.crawlFiles({
-    filePaths,
-  });
+  const { components, stories } = await workspace.crawlFiles(filePaths);
   for (const previewable of [...components, ...stories]) {
     const { filePath, name } = decodePreviewableId(previewable.id);
     try {

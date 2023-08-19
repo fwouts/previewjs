@@ -1,11 +1,6 @@
 import { decodePreviewableId } from "@previewjs/analyzer-api";
-import type { RequestOf, ResponseOf, RPC } from "@previewjs/api";
 import { RPCs } from "@previewjs/api";
-import type {
-  CollectedTypes,
-  TypeAnalyzer,
-  ValueType,
-} from "@previewjs/type-analyzer";
+import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
@@ -158,23 +153,10 @@ export async function createWorkspace({
     },
   });
 
-  async function localRpc<E extends RPC<any, any>>(
-    endpoint: E,
-    request: RequestOf<E>
-  ): Promise<ResponseOf<E>> {
-    const result = await router.handle(endpoint.path, request);
-    if (result.kind === "success") {
-      return result.response as ResponseOf<E>;
-    }
-    throw new Error(result.message);
-  }
-
   const workspace: Workspace = {
+    ...frameworkPlugin,
     rootDir,
     reader,
-    typeAnalyzer: frameworkPlugin.typeAnalyzer,
-    crawlFiles: (options = {}) => localRpc(RPCs.CrawlFiles, options),
-    analyze: (options) => localRpc(RPCs.Analyze, options),
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -221,16 +203,9 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
   return null;
 }
 
-export interface Workspace {
+export interface Workspace extends Omit<FrameworkPlugin, "dispose"> {
   rootDir: string;
   reader: Reader;
-  typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
-  crawlFiles(
-    options?: RequestOf<typeof RPCs.CrawlFiles>
-  ): Promise<ResponseOf<typeof RPCs.CrawlFiles>>;
-  analyze(
-    options: RequestOf<typeof RPCs.Analyze>
-  ): Promise<ResponseOf<typeof RPCs.Analyze>>;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };
