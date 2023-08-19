@@ -154,9 +154,9 @@ export async function createWorkspace({
   });
 
   const workspace: Workspace = {
+    ...frameworkPlugin,
     rootDir,
     reader,
-    frameworkPlugin,
     preview: {
       start: async (allocatePort) => {
         const port = await previewer.start(async () => {
@@ -203,10 +203,9 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
   return null;
 }
 
-export interface Workspace {
+export interface Workspace extends Omit<FrameworkPlugin, "dispose"> {
   rootDir: string;
   reader: Reader;
-  frameworkPlugin: Omit<FrameworkPlugin, "dispose">;
   preview: {
     start(allocatePort?: () => Promise<number>): Promise<Preview>;
   };

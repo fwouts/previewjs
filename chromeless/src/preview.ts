@@ -128,8 +128,7 @@ export async function startPreview({
     },
     async show(previewableId: string, propsAssignmentSource?: string) {
       const filePath = previewableId.split(":")[0]!;
-      const { components, stories } =
-        await workspace.frameworkPlugin.crawlFiles([filePath]);
+      const { components, stories } = await workspace.crawlFiles([filePath]);
       const matchingComponent = components.find((c) => previewableId === c.id);
       const matchingStory = stories.find((c) => previewableId === c.id);
       if (!matchingComponent && !matchingStory) {
