@@ -162,21 +162,22 @@ export async function startPreview({
       renderSucceeded = false;
       await page.evaluate(
         async (options) => {
-          // It's possible that window.loadIframePreview isn't ready yet.
+          // It's possible that window.__PREVIEWJS__ isn't ready yet.
           let waitStart = Date.now();
           const timeoutSeconds = 10;
+          const iframe = document.getElementById("iframe") as HTMLIFrameElement;
           while (
-            !window.loadIframePreview &&
+            !iframe.contentWindow?.__PREVIEWJS__ &&
             Date.now() - waitStart < timeoutSeconds * 1000
           ) {
             await new Promise((resolve) => setTimeout(resolve, 100));
           }
-          if (!window.loadIframePreview) {
+          if (!iframe.contentWindow?.__PREVIEWJS__) {
             throw new Error(
               `window.loadIframePreview() isn't available after waiting ${timeoutSeconds} seconds`
             );
           }
-          window.loadIframePreview(options);
+          iframe.contentWindow.__PREVIEWJS__.render(options);
         },
         {
           previewableId,

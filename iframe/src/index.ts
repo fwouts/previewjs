@@ -1,5 +1,19 @@
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
-import type { AppToPreviewMessage, PreviewToAppMessage } from "./messages";
+import type { PreviewToAppMessage } from "./messages";
+
+declare global {
+  interface Window {
+    __PREVIEWJS__: {
+      render(options: RenderOptions): Promise<void>;
+    };
+  }
+}
+
+export interface RenderOptions {
+  previewableId: string;
+  autogenCallbackPropsSource: string;
+  propsAssignmentSource: string;
+}
 
 export function createController(options: {
   getIframe: () => HTMLIFrameElement | null;
@@ -11,20 +25,14 @@ export function createController(options: {
 export interface PreviewIframeController {
   start(): void;
   stop(): void;
-  load(options: LoadPreviewOptions): void;
+  render(options: RenderOptions): void;
   resetIframe(id: string): void;
-}
-
-export interface LoadPreviewOptions {
-  previewableId: string;
-  propsAssignmentSource: string;
-  autogenCallbackPropsSource: string;
 }
 
 class PreviewIframeControllerImpl implements PreviewIframeController {
   private idBootstrapped: string | null = null;
   private pendingPreviewableIdBootstrap: string | null = null;
-  private lastMessage: AppToPreviewMessage | null = null;
+  private lastRenderOptions: RenderOptions | null = null;
   private expectRenderTimeout?: any;
 
   constructor(
@@ -42,37 +50,29 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     window.removeEventListener("message", this.onWindowMessage);
   }
 
-  load(options: LoadPreviewOptions) {
-    this.send({
-      kind: "render",
-      ...options,
-    });
-  }
-
-  private send(message: AppToPreviewMessage) {
-    this.lastMessage = message;
+  async render(options: RenderOptions) {
+    this.lastRenderOptions = options;
     if (
-      this.idBootstrapped !== message.previewableId &&
-      this.pendingPreviewableIdBootstrap !== message.previewableId
+      this.idBootstrapped !== options.previewableId &&
+      this.pendingPreviewableIdBootstrap !== options.previewableId
     ) {
-      this.resetIframe(message.previewableId);
+      this.resetIframe(options.previewableId);
       return;
     }
     const iframeWindow = this.options.getIframe()?.contentWindow;
     if (!iframeWindow) {
       return;
     }
-    iframeWindow.postMessage(message, document.location.href);
-    if (message.kind === "render") {
-      this.clearExpectRenderTimeout();
-      this.expectRenderTimeout = setTimeout(() => {
-        // eslint-disable-next-line no-console
-        console.warn(
-          "Expected render did not occur after 5 seconds. Reloading iframe..."
-        );
-        this.resetIframe(message.previewableId);
-      }, 5000);
-    }
+    const renderPromise = iframeWindow.__PREVIEWJS__.render(options);
+    this.clearExpectRenderTimeout();
+    this.expectRenderTimeout = setTimeout(() => {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "Expected render did not occur after 5 seconds. Reloading iframe..."
+      );
+      this.resetIframe(options.previewableId);
+    }, 5000);
+    await renderPromise;
   }
 
   resetIframe(id: string) {
@@ -143,8 +143,9 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   private onBootstrapped() {
     this.idBootstrapped = this.pendingPreviewableIdBootstrap;
     this.pendingPreviewableIdBootstrap = null;
-    if (this.lastMessage) {
-      this.send(this.lastMessage);
+    if (this.lastRenderOptions) {
+      // eslint-disable-next-line no-console
+      this.render(this.lastRenderOptions).catch(console.error);
     }
     this.options.listener({
       kind: "bootstrapped",

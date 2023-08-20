@@ -49,12 +49,3 @@ export interface ViteBeforeUpdateMessage {
   kind: "vite-before-update";
   payload: UpdatePayload;
 }
-
-export type AppToPreviewMessage = RenderMessage;
-
-export interface RenderMessage {
-  kind: "render";
-  previewableId: string;
-  autogenCallbackPropsSource: string;
-  propsAssignmentSource: string;
-}
