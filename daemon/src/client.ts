@@ -8,8 +8,8 @@ import type {
   DisposeWorkspaceResponse,
   GetWorkspaceRequest,
   GetWorkspaceResponse,
-  InfoRequest,
-  InfoResponse,
+  HealthyRequest,
+  HealthyResponse,
   KillRequest,
   KillResponse,
   StartPreviewRequest,
@@ -21,7 +21,7 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api.js";
-import { waitForSuccessfulPromise } from "./wait-for-successful-promise";
+import { waitForTruePromise } from "./wait-for-successful-promise";
 export * from "./api.js";
 
 export function createClient(baseUrl: string): Client {
@@ -79,9 +79,13 @@ export function createClient(baseUrl: string): Client {
 
   const client: Client = {
     waitForReady: async () => {
-      await waitForSuccessfulPromise(() => client.info());
+      await waitForTruePromise(() =>
+        makeRequest<HealthyRequest, HealthyResponse>(
+          "/previewjs/healthy",
+          {}
+        ).then(({ healthy }) => healthy)
+      );
     },
-    info: () => makeRPC<InfoRequest, InfoResponse>("/previewjs/info")({}),
     kill: () => makeRPC<KillRequest, KillResponse>("/previewjs/kill")({}),
     updateClientStatus: makeRPC("/previewjs/clients/status"),
     getWorkspace: makeRPC("/workspaces/get"),
@@ -108,7 +112,6 @@ export function destroyDaemon(lockFilePath: string) {
 
 export interface Client {
   waitForReady(): Promise<void>;
-  info(): Promise<InfoResponse>;
   kill(): Promise<KillResponse>;
   updateClientStatus(
     request: UpdateClientStatusRequest

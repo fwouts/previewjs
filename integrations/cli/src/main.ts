@@ -27,13 +27,10 @@ program
   .arguments("[dir-path]")
   .option(...PORT_OPTION)
   .action(async (dirPath: string | undefined, options: SharedOptions) => {
-    const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
-    if (!packageName) {
-      throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
-    }
+    const onServerStartModuleName = process.env.PREVIEWJS_PACKAGE_NAME;
     const previewjs = await load({
       installDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
-      packageName,
+      onServerStartModuleName,
     });
     const workspace = await previewjs.getWorkspace({
       versionCode: `cli-${version}`,

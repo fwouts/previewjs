@@ -9,11 +9,11 @@ import url from "url";
 export async function loadModules({
   logger,
   installDir,
-  packageName,
+  onServerStartModuleName,
 }: {
   logger: Logger;
   installDir: string;
-  packageName: string;
+  onServerStartModuleName?: string;
 }) {
   if (
     fs.existsSync(path.join(installDir, "pnpm")) &&
@@ -35,9 +35,6 @@ export async function loadModules({
   }
   const coreModule: typeof core = await importModule("@previewjs/core");
   const vfsModule: typeof vfs = await importModule("@previewjs/vfs");
-  const setupEnvironment: core.SetupPreviewEnvironment = await importModule(
-    packageName
-  );
   const frameworkPlugins: core.FrameworkPluginFactory[] = [
     await importModule("@previewjs/plugin-solid"),
     await importModule("@previewjs/plugin-svelte"),
@@ -67,7 +64,8 @@ export async function loadModules({
   return {
     core: coreModule,
     vfs: vfsModule,
-    setupEnvironment,
+    onServerStart:
+      onServerStartModuleName && (await importModule(onServerStartModuleName)),
     frameworkPlugins,
   };
 }

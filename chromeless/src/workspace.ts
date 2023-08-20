@@ -54,7 +54,7 @@ export async function createChromelessWorkspace({
     frameworkPlugin,
     logger,
     reader,
-    setupEnvironment: async () => ({
+    onServerStart: async () => ({
       middlewares: [express.static(clientDirPath)],
     }),
   });

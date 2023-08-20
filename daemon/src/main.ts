@@ -2,7 +2,8 @@ import { startDaemon } from "./index.js";
 
 const port = parseInt(process.env.PORT || "9100");
 
-const packageName = process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/pro";
+const onServerStartModuleName =
+  process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/pro";
 const loaderInstallDir = process.env.PREVIEWJS_LOADER_INSTALL_DIR!;
 
 if (!loaderInstallDir) {
@@ -16,7 +17,7 @@ if (!versionCode) {
 
 startDaemon({
   loaderInstallDir,
-  packageName,
+  onServerStartModuleName,
   versionCode,
   port,
 }).catch((e) => {

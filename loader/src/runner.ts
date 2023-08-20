@@ -12,10 +12,10 @@ const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 
 export async function load({
   installDir,
-  packageName,
+  onServerStartModuleName,
 }: {
   installDir: string;
-  packageName: string;
+  onServerStartModuleName?: string;
 }) {
   let logLevel = process.env["PREVIEWJS_LOG_LEVEL"]?.toLowerCase();
   if (!validLogLevels.has(logLevel)) {
@@ -26,10 +26,10 @@ export async function load({
     destination: process.stdout,
   });
   const globalLogger = createLogger({ level: logLevel }, prettyLoggerStream);
-  const { core, vfs, setupEnvironment, frameworkPlugins } = await loadModules({
+  const { core, vfs, onServerStart, frameworkPlugins } = await loadModules({
     logger: globalLogger,
     installDir,
-    packageName,
+    onServerStartModuleName,
   });
   const memoryReader = vfs.createMemoryReader();
   const fsReader = vfs.createFileSystemReader({
@@ -99,8 +99,8 @@ export async function load({
           rootDir,
           reader,
           frameworkPlugin,
-          setupEnvironment: (options) =>
-            setupEnvironment({
+          onServerStart: (options) =>
+            onServerStart({
               versionCode,
               ...options,
             }),

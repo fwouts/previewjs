@@ -29,9 +29,6 @@ fun api(baseUrl: String): PreviewJsApi {
 }
 
 interface PreviewJsApi {
-    @GET("/previewjs/info")
-    suspend fun info(): InfoResponse
-
     @POST("/workspaces/get")
     suspend fun getWorkspace(@Body req: GetWorkspaceRequest): GetWorkspaceResponse
 

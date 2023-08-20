@@ -1,10 +1,8 @@
-export type InfoRequest = Record<never, never>;
+export type HealthyRequest = Record<never, never>;
 
-export interface InfoResponse {
-  loaderInstallDir: string;
-  packageName: string;
-  versionCode: string;
-}
+export type HealthyResponse = {
+  healthy: boolean;
+};
 
 export type KillRequest = Record<never, never>;
 

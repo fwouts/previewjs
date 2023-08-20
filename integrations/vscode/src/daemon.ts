@@ -5,8 +5,8 @@ const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
 );
 
-const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
-if (!packageName) {
+const onServerStartModuleName = process.env.PREVIEWJS_PACKAGE_NAME;
+if (!onServerStartModuleName) {
   throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
 }
 
@@ -17,7 +17,7 @@ if (!port) {
 
 startDaemon({
   loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
-  packageName,
+  onServerStartModuleName,
   versionCode: `vscode-${version}`,
   port,
 }).catch((e) => {

@@ -11,7 +11,7 @@ import type { Logger } from "pino";
 import { crawlFiles } from "./crawl-files";
 import { getFreePort } from "./get-free-port";
 import type { FrameworkPlugin } from "./plugins/framework";
-import type { SetupPreviewEnvironment } from "./preview-env";
+import type { OnServerStart } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
@@ -20,7 +20,7 @@ export type {
   FrameworkPluginFactory,
 } from "./plugins/framework";
 export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
-export type { SetupPreviewEnvironment } from "./preview-env";
+export type { OnServerStart } from "./preview-env";
 
 const require = createRequire(import.meta.url);
 
@@ -38,13 +38,13 @@ export async function createWorkspace({
   reader,
   frameworkPlugin,
   logger,
-  setupEnvironment = () => Promise.resolve({}),
+  onServerStart = () => Promise.resolve({}),
 }: {
   rootDir: string;
   frameworkPlugin: FrameworkPlugin;
   logger: Logger;
   reader: Reader;
-  setupEnvironment?: SetupPreviewEnvironment;
+  onServerStart?: OnServerStart;
 }): Promise<Workspace> {
   logger.debug(
     `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDir}`
@@ -142,13 +142,15 @@ export async function createWorkspace({
           }
         },
       ];
-      if (setupEnvironment) {
-        const environment = await setupEnvironment({
-          registerRPC: (endpoint, handler) =>
-            router.registerRPC(endpoint, handler),
-          workspace,
-        });
-        middlewares.push(...(environment.middlewares || []));
+      if (onServerStart) {
+        const { middlewares: additionalMiddlewares = [] } = await onServerStart(
+          {
+            registerRPC: (endpoint, handler) =>
+              router.registerRPC(endpoint, handler),
+            workspace,
+          }
+        );
+        middlewares.push(...additionalMiddlewares);
       }
       const previewer = new Previewer({
         reader,

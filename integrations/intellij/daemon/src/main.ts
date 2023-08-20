@@ -6,8 +6,8 @@ if (!port) {
   throw new Error(`No port specified`);
 }
 
-const packageName = process.env.PREVIEWJS_PACKAGE_NAME;
-if (!packageName) {
+const onServerStartModuleName = process.env.PREVIEWJS_PACKAGE_NAME;
+if (!onServerStartModuleName) {
   throw new Error(`Missing environment variable: PREVIEWJS_PACKAGE_NAME`);
 }
 
@@ -19,7 +19,7 @@ if (!version) {
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 startDaemon({
   loaderInstallDir: __dirname,
-  packageName,
+  onServerStartModuleName,
   versionCode: `intellij-${version}`,
   port,
 }).catch((e) => {

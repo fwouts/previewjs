@@ -19,8 +19,9 @@ import type {
   DisposeWorkspaceResponse,
   GetWorkspaceRequest,
   GetWorkspaceResponse,
-  InfoRequest,
-  InfoResponse,
+  HealthyRequest,
+  HealthyResponse,
+  KillRequest,
   KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
@@ -107,20 +108,20 @@ if (logFilePath) {
 
 export interface DaemonStartOptions {
   loaderInstallDir: string;
-  packageName: string;
+  onServerStartModuleName: string;
   versionCode: string;
   port: number;
 }
 
 export async function startDaemon({
   loaderInstallDir,
-  packageName,
+  onServerStartModuleName,
   versionCode,
   port,
 }: DaemonStartOptions) {
   const previewjs = await load({
     installDir: loaderInstallDir,
-    packageName,
+    onServerStartModuleName,
   });
   const logger = previewjs.logger;
 
@@ -243,13 +244,11 @@ export async function startDaemon({
 
   class NotFoundError extends Error {}
 
-  endpoint<InfoRequest, InfoResponse>("/previewjs/info", async () => ({
-    loaderInstallDir,
-    packageName,
-    versionCode,
+  endpoint<HealthyRequest, HealthyResponse>("/previewjs/healthy", async () => ({
+    healthy: true,
   }));
 
-  endpoint<InfoRequest, KillResponse>("/previewjs/kill", async () => {
+  endpoint<KillRequest, KillResponse>("/previewjs/kill", async () => {
     setTimeout(() => {
       logger.info("Seppuku was requested. Bye bye.");
       process.exit(0);
