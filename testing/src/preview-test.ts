@@ -2,13 +2,9 @@
 
 import type { Page } from "@playwright/test";
 import { test } from "@playwright/test";
-import {
-  createChromelessWorkspace,
-  getPreviewIframe,
-} from "@previewjs/chromeless";
+import { createChromelessWorkspace } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
-import type playwright from "playwright";
 import type { LoggedMessagesMatcher } from "./events";
 import { expectLoggedMessages } from "./events";
 import type { FileManager } from "./file-manager";
@@ -48,7 +44,7 @@ export const previewTest = (
           if (!showingComponent) {
             return;
           }
-          await runInIframe(page, async () => {
+          await page.$eval("body", async () => {
             return window.__expectFutureRefresh__();
           });
         },
@@ -56,7 +52,7 @@ export const previewTest = (
           if (!showingComponent) {
             return;
           }
-          await runInIframe(page, async () => {
+          await page.$eval("body", async () => {
             const INIT_WAIT_SECONDS = 5;
 
             // It's possible that __waitForExpectedRefresh__ isn't ready yet.
@@ -118,27 +114,3 @@ export const previewTest = (
   };
   return testFn;
 };
-
-async function runInIframe(
-  page: playwright.Page,
-  fn: () => void | Promise<void>
-) {
-  const frame = await getPreviewIframe(page);
-  try {
-    await frame.$eval("body", fn);
-  } catch (e: any) {
-    if (
-      e.message.includes(
-        "Execution context was destroyed, most likely because of a navigation"
-      ) ||
-      e.message.includes(
-        "Unable to adopt element handle from a different document"
-      ) ||
-      e.message.includes("Cannot find context with specified id")
-    ) {
-      await runInIframe(page, fn);
-    } else {
-      throw e;
-    }
-  }
-}

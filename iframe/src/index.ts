@@ -1,5 +1,6 @@
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import type { PreviewToAppMessage } from "./messages";
+export type { PreviewToAppMessage } from "./messages";
 
 declare global {
   interface Window {
@@ -10,6 +11,7 @@ declare global {
 }
 
 export interface RenderOptions {
+  // TODO: Remove this.
   previewableId: string;
   autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
@@ -193,6 +195,7 @@ function generateMessageFromViteError(err: ErrorPayload["err"]) {
   return `${title}${rest ? `\n\n${rest}` : ""}`;
 }
 
+// TODO: Remove? At least no duplicates.
 export type PreviewEvent =
   | PreviewBootstrapped
   | BeforeViteUpdate

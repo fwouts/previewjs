@@ -3,12 +3,10 @@ import { createWorkspace, setupFrameworkPlugin } from "@previewjs/core";
 import type { Reader } from "@previewjs/vfs";
 import { createFileSystemReader } from "@previewjs/vfs";
 import express from "express";
-import path from "path";
 import type { Logger } from "pino";
 import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import type { Page } from "playwright";
-import url from "url";
 import { startPreview } from "./preview";
 
 export async function createChromelessWorkspace({
@@ -47,15 +45,22 @@ export async function createChromelessWorkspace({
       `No compatible framework plugin found for directory: ${rootDir}`
     );
   }
-  const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-  const clientDirPath = path.join(__dirname, "..", "client", "dist");
   const workspace = await createWorkspace({
     rootDir,
     frameworkPlugin,
     logger,
     reader,
     onServerStart: async () => ({
-      middlewares: [express.static(clientDirPath)],
+      middlewares: [
+        ((req, res, next) => {
+          if (req.path === "/") {
+            res.write("Go to /preview/[id]");
+            res.end();
+          } else {
+            next();
+          }
+        }) satisfies express.RequestHandler,
+      ],
     }),
   });
   if (!workspace) {
