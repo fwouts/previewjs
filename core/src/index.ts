@@ -161,11 +161,13 @@ export async function createWorkspace({
         frameworkPlugin,
         logger,
         middlewares,
+        port,
         onFileChanged: (absoluteFilePath) => {
           const filePath = path.relative(rootDir, absoluteFilePath);
           frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
         },
       });
+      await previewer.start();
       return {
         url: () => `http://localhost:${port}`,
         stop: async () => {
