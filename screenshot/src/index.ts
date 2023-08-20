@@ -90,7 +90,7 @@ export async function generateScreenshots({
     frameworkPlugins,
     rootDir: cwd,
   });
-  const preview = await workspace.preview.start(page);
+  const preview = await workspace.startPreview(page);
   const filePaths = await globby(filePathPattern, {
     gitignore: true,
     ignore: ["**/node_modules/**"],

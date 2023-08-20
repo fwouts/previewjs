@@ -45,7 +45,7 @@ program
     }
 
     const port = parseInt(options.port);
-    await workspace!.preview.start(async () => port);
+    await workspace.startServer({ port });
   });
 
 program.parseAsync(process.argv).catch((e) => {

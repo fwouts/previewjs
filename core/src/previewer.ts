@@ -68,6 +68,7 @@ export class Previewer {
       logger: Logger;
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
+      port: number;
       onFileChanged?(absoluteFilePath: string): void;
     }
   ) {
@@ -90,15 +91,10 @@ export class Previewer {
     ]);
   }
 
-  async start(
-    allocatePort: () => Promise<number>,
-    options: { restarting?: boolean } = {}
-  ) {
-    let port: number;
+  async start(options: { restarting?: boolean } = {}) {
     const statusBeforeStart = this.status;
     switch (statusBeforeStart.kind) {
       case "starting":
-        port = statusBeforeStart.port;
         try {
           await statusBeforeStart.promise;
         } catch (e) {
@@ -106,14 +102,12 @@ export class Previewer {
           this.status = {
             kind: "stopped",
           };
-          await this.startFromStopped(port);
+          await this.startFromStopped();
         }
         break;
       case "started":
-        port = statusBeforeStart.port;
         break;
       case "stopping":
-        port = statusBeforeStart.port;
         try {
           await statusBeforeStart.promise;
         } catch (e) {
@@ -122,25 +116,21 @@ export class Previewer {
             kind: "stopped",
           };
         }
-        await this.start(async () => port, options);
+        await this.start(options);
         break;
       case "stopped":
-        port = await allocatePort();
-        await this.startFromStopped(port, options);
+        await this.startFromStopped(options);
         break;
       default:
         throw assertNever(statusBeforeStart);
     }
-    return port;
   }
 
-  private async startFromStopped(
-    port: number,
-    { restarting }: { restarting?: boolean } = {}
-  ) {
+  private async startFromStopped({
+    restarting,
+  }: { restarting?: boolean } = {}) {
     this.status = {
       kind: "starting",
-      port,
       promise: (async () => {
         // PostCSS requires the current directory to change because it relies
         // on the `import-cwd` package to resolve plugins.
@@ -255,16 +245,15 @@ export class Previewer {
           frameworkPlugin: this.options.frameworkPlugin,
         });
         this.options.logger.debug(`Starting server`);
-        const server = await this.appServer.start(port);
+        const server = await this.appServer.start(this.options.port);
         this.options.logger.debug(`Starting Vite manager`);
-        this.viteManager.start(server, port).catch((e) => {
+        this.viteManager.start(server, this.options.port).catch((e) => {
           this.options.logger.error(`Vite manager failed to start: ${e}`);
           this.stop();
         });
         this.options.logger.debug(`Previewer ready`);
         this.status = {
           kind: "started",
-          port,
         };
       })(),
     };
@@ -273,7 +262,7 @@ export class Previewer {
     // doesn't accept connections right away.
     for (let i = 0; ; i++) {
       try {
-        await axios.get(`http://localhost:${port}`);
+        await axios.get(`http://localhost:${this.options.port}`);
         break;
       } catch (e) {
         if (i === 10) {
@@ -304,7 +293,6 @@ export class Previewer {
     }
     this.status = {
       kind: "stopping",
-      port: this.status.port,
       promise: (async () => {
         if (!restarting) {
           this.transformingReader.listeners.remove(this.onFileChangeListener);
@@ -341,7 +329,6 @@ export class Previewer {
         FILES_REQUIRING_RESTART.has(path.basename(absoluteFilePath))
       ) {
         if (this.status.kind === "starting" || this.status.kind === "started") {
-          const port = this.status.port;
           // Packages were updated. Restart.
           this.options.logger.info(
             "New dependencies were detected. Restarting..."
@@ -350,7 +337,7 @@ export class Previewer {
             restarting: true,
           })
             .then(async () => {
-              await this.start(async () => port, { restarting: true });
+              await this.start({ restarting: true });
             })
             .catch(this.options.logger.error);
         }
@@ -369,16 +356,13 @@ export class Previewer {
 type PreviewerStatus =
   | {
       kind: "starting";
-      port: number;
       promise: Promise<void>;
     }
   | {
       kind: "started";
-      port: number;
     }
   | {
       kind: "stopping";
-      port: number;
       promise: Promise<void>;
     }
   | {
