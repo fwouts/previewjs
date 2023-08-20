@@ -28,15 +28,12 @@ export async function createChromelessWorkspace({
   frameworkPlugins: FrameworkPluginFactory[];
   logger?: Logger;
   reader?: Reader;
-  port?: number;
 }): Promise<
-  Omit<Workspace, "preview"> & {
-    preview: {
-      start: (
-        page: Page,
-        options?: { port?: number }
-      ) => ReturnType<typeof startPreview>;
-    };
+  Omit<Workspace, "startPreviewServer"> & {
+    startPreview: (
+      page: Page,
+      options?: { port?: number }
+    ) => ReturnType<typeof startPreview>;
   }
 > {
   const frameworkPlugin = await setupFrameworkPlugin({
@@ -66,9 +63,7 @@ export async function createChromelessWorkspace({
   }
   return {
     ...workspace,
-    preview: {
-      start: (page: Page, options: { port?: number } = {}) =>
-        startPreview({ workspace, page, ...options }),
-    },
+    startPreview: (page: Page, options: { port?: number } = {}) =>
+      startPreview({ workspace, page, ...options }),
   };
 }

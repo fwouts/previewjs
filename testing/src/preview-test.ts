@@ -19,7 +19,7 @@ let port: number;
 
 type TestPreview = Awaited<
   ReturnType<
-    Awaited<ReturnType<typeof createChromelessWorkspace>>["preview"]["start"]
+    Awaited<ReturnType<typeof createChromelessWorkspace>>["startPreview"]
   >
 > & {
   page: Page;
@@ -82,7 +82,7 @@ export const previewTest = (
         rootDir,
         reader,
       });
-      const preview = await workspace.preview.start(page, {
+      const preview = await workspace.startPreview(page, {
         port,
       });
       const previewShow = preview.show.bind(preview);

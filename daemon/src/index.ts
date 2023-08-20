@@ -1,4 +1,4 @@
-import type { Preview, Workspace } from "@previewjs/core";
+import type { PreviewServer, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
 import exitHook from "exit-hook";
@@ -126,7 +126,7 @@ export async function startDaemon({
 
   const clients = new Set<string>();
   const workspaces: Record<string, Workspace> = {};
-  const previews: Record<string, Preview> = {};
+  const previewServers: Record<string, PreviewServer> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
   let wslRoot: string | null = null;
 
@@ -354,23 +354,24 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const preview =
-        previews[req.workspaceId] || (await workspace.preview.start());
-      previews[req.workspaceId] = preview;
+      const previewServer =
+        previewServers[req.workspaceId] ||
+        (await workspace.startPreviewServer());
+      previewServers[req.workspaceId] = previewServer;
       return {
-        url: preview.url(),
+        url: previewServer.url(),
       };
     }
   );
   endpoint<StopPreviewRequest, StopPreviewResponse>(
     "/previews/stop",
     async (req) => {
-      const preview = previews[req.workspaceId];
-      if (!preview) {
+      const previewServer = previewServers[req.workspaceId];
+      if (!previewServer) {
         throw new NotFoundError();
       }
-      await preview.stop();
-      delete previews[req.workspaceId];
+      await previewServer.stop();
+      delete previewServers[req.workspaceId];
       return {};
     }
   );

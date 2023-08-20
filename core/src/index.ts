@@ -38,7 +38,7 @@ export async function createWorkspace({
   reader,
   frameworkPlugin,
   logger,
-  setupEnvironment,
+  setupEnvironment = () => Promise.resolve({}),
 }: {
   rootDir: string;
   frameworkPlugin: FrameworkPlugin;
@@ -62,114 +62,116 @@ export async function createWorkspace({
       `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
     );
   }
-  const router = new ApiRouter(logger);
-  router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
-    logger.debug(`Analyzing: ${previewableIds.join(", ")}`);
-    const detected = await frameworkPlugin.crawlFiles([
-      ...new Set(
-        previewableIds.map((c) =>
-          path.join(rootDir, decodePreviewableId(c).filePath)
-        )
-      ),
-    ]);
-    logger.debug(
-      `Detected ${detected.components.length} components and ${detected.stories.length} stories`
-    );
-    const idToDetectedComponent = Object.fromEntries(
-      detected.components.map((c) => [c.id, c])
-    );
-    const idToDetectedStory = Object.fromEntries(
-      detected.stories.map((c) => [c.id, c])
-    );
-    const propsPerComponentId: {
-      [componentId: string]: ValueType;
-    } = {};
-    const argsPerStoryId: {
-      [storyId: string]: RPCs.StoryArgs | null;
-    } = {};
-    let types: CollectedTypes = {};
-    for (const id of previewableIds) {
-      const component = idToDetectedComponent[id];
-      const story = idToDetectedStory[id];
-      let props: ValueType;
-      let componentTypes: CollectedTypes;
-      if (component) {
-        logger.debug(`Analyzing component: ${id}`);
-        ({ props, types: componentTypes } = await component.analyze());
-        propsPerComponentId[id] = props;
-        logger.debug(`Done analyzing: ${id}`);
-      } else if (story) {
-        if (story.associatedComponent) {
-          logger.debug(`Analyzing story: ${id}`);
-          ({ props, types: componentTypes } =
-            await story.associatedComponent.analyze());
-          logger.debug(`Done analyzing: ${id}`);
-        } else {
-          logger.debug(`No associated component for story: ${id}`);
-          props = UNKNOWN_TYPE;
-          componentTypes = {};
-        }
-        argsPerStoryId[id] = (await story.analyze()).args;
-      } else {
-        const { filePath, name } = decodePreviewableId(id);
-        throw new Error(`Component ${name} not detected in ${filePath}.`);
-      }
-      propsPerComponentId[id] = props;
-      types = { ...types, ...componentTypes };
-    }
-    return {
-      props: propsPerComponentId,
-      args: argsPerStoryId,
-      types,
-    };
-  });
-  router.registerRPC(RPCs.CrawlFiles, (options) =>
-    crawlFiles(logger, workspace, frameworkPlugin, options)
-  );
-  const middlewares: express.Handler[] = [
-    express.json(),
-    async (req, res, next) => {
-      if (req.path.startsWith("/api/")) {
-        res.json(await router.handle(req.path.substr(5), req.body));
-      } else {
-        next();
-      }
-    },
-  ];
-  const previewer = new Previewer({
-    reader,
-    rootDir,
-    // TODO: Use a cleaner approach.
-    previewDirPath: path.join(
-      path.dirname(path.dirname(require.resolve("@previewjs/iframe"))),
-      "preview"
-    ),
-    frameworkPlugin,
-    logger,
-    middlewares,
-    onFileChanged: (absoluteFilePath) => {
-      const filePath = path.relative(rootDir, absoluteFilePath);
-      frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
-    },
-  });
-
   const workspace: Workspace = {
     ...frameworkPlugin,
     rootDir,
     reader,
-    preview: {
-      start: async (allocatePort) => {
-        const port = await previewer.start(async () => {
-          const port = allocatePort ? await allocatePort() : 0;
-          return port || (await getFreePort(3140));
-        });
+    startPreviewServer: async ({ port } = {}) => {
+      port ||= await getFreePort(3140);
+      const router = new ApiRouter(logger);
+      router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
+        logger.debug(`Analyzing: ${previewableIds.join(", ")}`);
+        const detected = await frameworkPlugin.crawlFiles([
+          ...new Set(
+            previewableIds.map((c) =>
+              path.join(rootDir, decodePreviewableId(c).filePath)
+            )
+          ),
+        ]);
+        logger.debug(
+          `Detected ${detected.components.length} components and ${detected.stories.length} stories`
+        );
+        const idToDetectedComponent = Object.fromEntries(
+          detected.components.map((c) => [c.id, c])
+        );
+        const idToDetectedStory = Object.fromEntries(
+          detected.stories.map((c) => [c.id, c])
+        );
+        const propsPerComponentId: {
+          [componentId: string]: ValueType;
+        } = {};
+        const argsPerStoryId: {
+          [storyId: string]: RPCs.StoryArgs | null;
+        } = {};
+        let types: CollectedTypes = {};
+        for (const id of previewableIds) {
+          const component = idToDetectedComponent[id];
+          const story = idToDetectedStory[id];
+          let props: ValueType;
+          let componentTypes: CollectedTypes;
+          if (component) {
+            logger.debug(`Analyzing component: ${id}`);
+            ({ props, types: componentTypes } = await component.analyze());
+            propsPerComponentId[id] = props;
+            logger.debug(`Done analyzing: ${id}`);
+          } else if (story) {
+            if (story.associatedComponent) {
+              logger.debug(`Analyzing story: ${id}`);
+              ({ props, types: componentTypes } =
+                await story.associatedComponent.analyze());
+              logger.debug(`Done analyzing: ${id}`);
+            } else {
+              logger.debug(`No associated component for story: ${id}`);
+              props = UNKNOWN_TYPE;
+              componentTypes = {};
+            }
+            argsPerStoryId[id] = (await story.analyze()).args;
+          } else {
+            const { filePath, name } = decodePreviewableId(id);
+            throw new Error(`Component ${name} not detected in ${filePath}.`);
+          }
+          propsPerComponentId[id] = props;
+          types = { ...types, ...componentTypes };
+        }
         return {
-          url: () => `http://localhost:${port}`,
-          stop: async () => {
-            await previewer.stop();
-          },
+          props: propsPerComponentId,
+          args: argsPerStoryId,
+          types,
         };
-      },
+      });
+      router.registerRPC(RPCs.CrawlFiles, (options) =>
+        crawlFiles(logger, workspace, frameworkPlugin, options)
+      );
+      const middlewares: express.Handler[] = [
+        express.json(),
+        async (req, res, next) => {
+          if (req.path.startsWith("/api/")) {
+            res.json(await router.handle(req.path.substr(5), req.body));
+          } else {
+            next();
+          }
+        },
+      ];
+      if (setupEnvironment) {
+        const environment = await setupEnvironment({
+          registerRPC: (endpoint, handler) =>
+            router.registerRPC(endpoint, handler),
+          workspace,
+        });
+        middlewares.push(...(environment.middlewares || []));
+      }
+      const previewer = new Previewer({
+        reader,
+        rootDir,
+        // TODO: Use a cleaner approach.
+        previewDirPath: path.join(
+          path.dirname(path.dirname(require.resolve("@previewjs/iframe"))),
+          "preview"
+        ),
+        frameworkPlugin,
+        logger,
+        middlewares,
+        onFileChanged: (absoluteFilePath) => {
+          const filePath = path.relative(rootDir, absoluteFilePath);
+          frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
+        },
+      });
+      return {
+        url: () => `http://localhost:${port}`,
+        stop: async () => {
+          await previewer.stop();
+        },
+      };
     },
     dispose: async () => {
       // Note: We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
@@ -177,15 +179,6 @@ export async function createWorkspace({
       frameworkPlugin.dispose();
     },
   };
-  if (setupEnvironment) {
-    const environment = await setupEnvironment({
-      registerRPC: (endpoint, handler) => router.registerRPC(endpoint, handler),
-      workspace,
-    });
-    if (environment.middlewares) {
-      middlewares.push(...environment.middlewares);
-    }
-  }
   return workspace;
 }
 
@@ -206,13 +199,11 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace extends Omit<FrameworkPlugin, "dispose"> {
   rootDir: string;
   reader: Reader;
-  preview: {
-    start(allocatePort?: () => Promise<number>): Promise<Preview>;
-  };
+  startPreviewServer: (options?: { port?: number }) => Promise<PreviewServer>;
   dispose(): Promise<void>;
 }
 
-export interface Preview {
+export interface PreviewServer {
   url(): string;
   stop(): Promise<void>;
 }
