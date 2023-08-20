@@ -355,8 +355,7 @@ export async function startDaemon({
         throw new NotFoundError();
       }
       const previewServer =
-        previewServers[req.workspaceId] ||
-        (await workspace.startPreviewServer());
+        previewServers[req.workspaceId] || (await workspace.startServer());
       previewServers[req.workspaceId] = previewServer;
       return {
         url: previewServer.url(),

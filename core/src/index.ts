@@ -66,7 +66,7 @@ export async function createWorkspace({
     ...frameworkPlugin,
     rootDir,
     reader,
-    startPreviewServer: async ({ port } = {}) => {
+    startServer: async ({ port } = {}) => {
       port ||= await getFreePort(3140);
       const router = new ApiRouter(logger);
       router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
@@ -201,7 +201,7 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
 export interface Workspace extends Omit<FrameworkPlugin, "dispose"> {
   rootDir: string;
   reader: Reader;
-  startPreviewServer: (options?: { port?: number }) => Promise<PreviewServer>;
+  startServer: (options?: { port?: number }) => Promise<PreviewServer>;
   dispose(): Promise<void>;
 }
 

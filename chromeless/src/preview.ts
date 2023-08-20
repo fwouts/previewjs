@@ -20,7 +20,7 @@ export async function startPreview({
   page: playwright.Page;
   port?: number;
 }) {
-  const preview = await workspace.startPreviewServer({ port });
+  const preview = await workspace.startServer({ port });
   await page.goto(preview.url());
 
   // This callback will be invoked each time a previewable is done rendering.

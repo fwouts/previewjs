@@ -29,7 +29,7 @@ export async function createChromelessWorkspace({
   logger?: Logger;
   reader?: Reader;
 }): Promise<
-  Omit<Workspace, "startPreviewServer"> & {
+  Omit<Workspace, "startServer"> & {
     startPreview: (
       page: Page,
       options?: { port?: number }
