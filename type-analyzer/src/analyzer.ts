@@ -1,4 +1,6 @@
-import type { Reader } from "@previewjs/vfs";
+import type { Reader, ReaderListener } from "@previewjs/vfs";
+import fs from "fs";
+import { globbySync } from "globby";
 import path from "path";
 import ts from "typescript";
 import type {
@@ -59,10 +61,11 @@ class TypeAnalyzer {
   private service: ts.LanguageService | null = null;
   private entryPointFilePaths: string[] = [];
   private printedWarnings = new Set<string>();
+  private declarationFilePaths = new Set<string>();
 
   constructor(
     private readonly rootDir: string,
-    reader: Reader,
+    private readonly reader: Reader,
     private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
     tsCompilerOptions: Partial<ts.CompilerOptions>,
@@ -72,12 +75,40 @@ class TypeAnalyzer {
       typescriptServiceHost({
         rootDir,
         reader,
-        getScriptFileNames: () => this.entryPointFilePaths,
+        getScriptFileNames: () => [
+          ...this.entryPointFilePaths,
+          ...this.declarationFilePaths,
+        ],
         tsCompilerOptions,
       }),
       ts.createDocumentRegistry()
     );
+    for (const declarationFilePath of globbySync("**/*.d.ts", {
+      gitignore: true,
+      ignore: ["**/node_modules/**"],
+      cwd: rootDir,
+      absolute: true,
+      followSymbolicLinks: false,
+      suppressErrors: true,
+      deep: 3,
+    })) {
+      this.declarationFilePaths.add(declarationFilePath);
+    }
+    reader.listeners.add(this.readerListener);
   }
+
+  private readonly readerListener: ReaderListener = {
+    onChange: (absoluteFilePath) => {
+      if (!absoluteFilePath.endsWith(".d.ts")) {
+        return;
+      }
+      if (fs.existsSync(absoluteFilePath)) {
+        this.declarationFilePaths.add(absoluteFilePath);
+      } else {
+        this.declarationFilePaths.delete(absoluteFilePath);
+      }
+    },
+  };
 
   invalidateCachedTypesForFile(filePath: string) {
     for (const name of Object.keys(this.collected)) {
@@ -132,6 +163,7 @@ class TypeAnalyzer {
   }
 
   dispose() {
+    this.reader.listeners.remove(this.readerListener);
     this.service?.dispose();
     this.service = null;
   }
