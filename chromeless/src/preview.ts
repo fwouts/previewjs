@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../client/src/index.ts" />
+
 import type { Workspace } from "@previewjs/core";
 import {
   generateCallbackProps,
@@ -6,6 +9,7 @@ import {
 import type playwright from "playwright";
 import ts from "typescript";
 import { setupPreviewEventListener } from "./event-listener";
+import { getPreviewIframe } from "./iframe";
 
 export async function startPreview({
   workspace,
@@ -17,6 +21,7 @@ export async function startPreview({
   port?: number;
 }) {
   const preview = await workspace.startServer({ port });
+  await page.goto(preview.url());
 
   // This callback will be invoked each time a previewable is done rendering.
   let onRenderingDone = () => {
@@ -68,11 +73,13 @@ export async function startPreview({
           state?: "attached" | "detached" | "visible" | "hidden";
         } = {}
       ) {
-        const element = await page.waitForSelector(selector, options);
+        const iframe = await getPreviewIframe(page);
+        const element = await iframe.waitForSelector(selector, options);
         return element!;
       },
       async takeScreenshot(destinationPath: string) {
-        page.addStyleTag({
+        const preview = await getPreviewIframe(page);
+        preview.addStyleTag({
           content: `
 *,
 *::after,
@@ -89,7 +96,7 @@ export async function startPreview({
         });
         // Ensure all images are loaded.
         // Source: https://stackoverflow.com/a/49233383
-        await page.evaluate(async () => {
+        await preview.evaluate(async () => {
           const selectors = Array.from(document.querySelectorAll("img"));
           await Promise.all(
             selectors.map((img) => {
@@ -151,26 +158,26 @@ export async function startPreview({
         onRenderingDone = resolve;
         onRenderingError = reject;
       });
-      await page.goto(`${preview.url()}/preview/${previewableId}/`);
-      // await waitUntilNetworkIdle(page);
+      await waitUntilNetworkIdle(page);
       renderSucceeded = false;
       await page.evaluate(
         async (options) => {
           // It's possible that window.__PREVIEWJS__ isn't ready yet.
-          const waitStart = Date.now();
+          let waitStart = Date.now();
           const timeoutSeconds = 10;
+          const iframe = document.getElementById("iframe") as HTMLIFrameElement;
           while (
-            !window.__PREVIEWJS__ &&
+            !iframe.contentWindow?.__PREVIEWJS__ &&
             Date.now() - waitStart < timeoutSeconds * 1000
           ) {
             await new Promise((resolve) => setTimeout(resolve, 100));
           }
-          if (!window.__PREVIEWJS__) {
+          if (!iframe.contentWindow?.__PREVIEWJS__) {
             throw new Error(
-              `window.__PREVIEWJS__() isn't available after waiting ${timeoutSeconds} seconds`
+              `window.loadIframePreview() isn't available after waiting ${timeoutSeconds} seconds`
             );
           }
-          await window.__PREVIEWJS__.render(options);
+          iframe.contentWindow.__PREVIEWJS__.render(options);
         },
         {
           previewableId,
@@ -179,7 +186,7 @@ export async function startPreview({
         }
       );
       await donePromise;
-      // await waitUntilNetworkIdle(page);
+      await waitUntilNetworkIdle(page);
     },
     async stop() {
       await preview.stop();
@@ -205,4 +212,10 @@ function transpile(source: string) {
 
 async function waitUntilNetworkIdle(page: playwright.Page) {
   await page.waitForLoadState("networkidle");
+  try {
+    await (await getPreviewIframe(page)).waitForLoadState("networkidle");
+  } catch (e) {
+    // It's OK for the iframe to be replaced by another one, in which case wait again.
+    await (await getPreviewIframe(page)).waitForLoadState("networkidle");
+  }
 }
