@@ -12,7 +12,7 @@ export async function findFiles(
   const gitRootPath = await findGitRoot(rootDir);
   const relativePath = path.relative(gitRootPath, rootDir);
   const relativePrefix = relativePath ? relativePath + path.sep : "";
-  const files: string[] = await globby(relativePrefix + pattern, {
+  const files = await globby(relativePrefix + pattern, {
     gitignore: true,
     ignore: ["**/node_modules/**"],
     cwd: gitRootPath,
