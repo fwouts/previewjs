@@ -47,7 +47,7 @@ async function onUrlChanged() {
     props,
     analyzeResponse.types
   );
-  iframeController.load({
+  iframeController.render({
     previewableId,
     propsAssignmentSource: transpile(
       await generatePropsAssignmentSource(

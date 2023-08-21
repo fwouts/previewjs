@@ -1,4 +1,4 @@
-import type { AppToPreviewMessage, RenderMessage } from "../../src/messages";
+import type { RenderOptions } from "../../src";
 import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
@@ -30,10 +30,10 @@ export function initPreview({
 }) {
   let renderId = 0;
 
-  async function load({
+  async function render({
     autogenCallbackPropsSource,
     propsAssignmentSource,
-  }: RenderMessage) {
+  }: RenderOptions) {
     try {
       renderId += 1;
       setState({
@@ -63,20 +63,13 @@ export function initPreview({
     throw new Error(`Unable to find #root!`);
   }
 
-  let lastRenderMessage: RenderMessage | null = null;
-  window.addEventListener(
-    "message",
-    (event: MessageEvent<AppToPreviewMessage>) => {
-      const data = event.data;
-      switch (data.kind) {
-        case "render":
-          lastRenderMessage = data;
-          // eslint-disable-next-line no-console
-          load(data).catch(console.error);
-          break;
-      }
-    }
-  );
+  let lastRenderOptions: RenderOptions | null = null;
+  window.__PREVIEWJS__ = {
+    render: async (data) => {
+      lastRenderOptions = data;
+      await render(data);
+    },
+  };
 
   sendMessageFromPreview({
     kind: "bootstrapped",
@@ -85,9 +78,9 @@ export function initPreview({
   return (updatedPreviewableModule: any, updatedWrapperModule: any) => {
     previewableModule = updatedPreviewableModule;
     wrapperModule = updatedWrapperModule;
-    if (lastRenderMessage) {
+    if (lastRenderOptions) {
       // eslint-disable-next-line no-console
-      load(lastRenderMessage).catch(console.error);
+      render(lastRenderOptions).catch(console.error);
     }
   };
 }
