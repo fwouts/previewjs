@@ -1,9 +1,8 @@
 import type { PreviewToAppMessage } from "../../src/messages";
 
 export function sendMessageFromPreview(message: PreviewToAppMessage) {
-  sendParentMessage(message);
-}
-
-export function sendParentMessage(message: any) {
-  window.parent.postMessage(message, "*");
+  (
+    window.__PREVIEWJS__.onPreviewMessage ||
+    window.parent.__PREVIEWJS__.onPreviewMessage
+  )?.(message);
 }

@@ -18,7 +18,6 @@ const controller = createController({
 });
 
 window.onload = () => {
-  controller.start();
   window.loadIframePreview = (options: RenderOptions) => {
     controller.render(options);
   };

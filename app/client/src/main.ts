@@ -29,7 +29,6 @@ window.addEventListener("message", (event: MessageEvent) => {
 window.addEventListener("popstate", () => {
   onUrlChanged().catch(console.error);
 });
-iframeController.start();
 onUrlChanged().catch(console.error);
 
 async function onUrlChanged() {
