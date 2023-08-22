@@ -2,7 +2,7 @@ import type { PreviewToAppMessage } from "../../src/messages";
 
 export function sendMessageFromPreview(message: PreviewToAppMessage) {
   (
-    window.__PREVIEWJS__.onPreviewMessage ||
-    window.parent.__PREVIEWJS__.onPreviewMessage
+    window.__PREVIEWJS_CONTROLLER__.onPreviewMessage ||
+    window.parent.__PREVIEWJS_CONTROLLER__.onPreviewMessage
   )?.(message);
 }
