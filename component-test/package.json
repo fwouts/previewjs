@@ -1,0 +1,40 @@
+{
+  "name": "@previewjs/component-test",
+  "version": "0.0.0",
+  "license": "AGPL-3.0",
+  "author": {
+    "name": "François Wouts",
+    "email": "f@zenc.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fwouts/previewjs"
+  },
+  "bugs": {
+    "url": "https://github.com/fwouts/previewjs/issues"
+  },
+  "homepage": "https://previewjs.com",
+  "type": "module",
+  "scripts": {
+    "e2e-test": "NODE_OPTIONS=--loader=esm-loader-typescript playwright test"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  },
+  "dependencies": {
+    "@previewjs/analyzer-api": "^0.0.1",
+    "@previewjs/core": "workspace:^",
+    "@previewjs/plugin-react": "^12.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.37.1",
+    "@previewjs/iframe": "workspace:^",
+    "@previewjs/vfs": "workspace:^",
+    "@types/node": "^20.5.2",
+    "esm-loader-typescript": "^1.0.5",
+    "pino": "^8.15.0",
+    "pino-pretty": "^10.2.0",
+    "typescript": "^5.1.6",
+    "unbuild": "^1.2.1"
+  }
+}
