@@ -64,7 +64,7 @@ export function initPreview({
   }
 
   let lastRenderOptions: RenderOptions | null = null;
-  window.__PREVIEWJS__ = {
+  window.__PREVIEWJS_IFRAME__ = {
     render: async (data) => {
       lastRenderOptions = data;
       await render(data);

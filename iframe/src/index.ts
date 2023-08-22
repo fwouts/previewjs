@@ -3,8 +3,13 @@ import type { PreviewToAppMessage } from "./messages";
 
 declare global {
   interface Window {
-    __PREVIEWJS__: {
+    // Exposed on the iframe.
+    __PREVIEWJS_IFRAME__: {
       render(options: RenderOptions): Promise<void>;
+    };
+    // Typically exposed on the iframe's parent to track its state.
+    __PREVIEWJS_CONTROLLER__: {
+      onPreviewMessage(message: PreviewToAppMessage): void;
     };
   }
 }
@@ -19,12 +24,12 @@ export function createController(options: {
   getIframe: () => HTMLIFrameElement | null;
   listener(event: PreviewEvent): void;
 }): PreviewIframeController {
-  return new PreviewIframeControllerImpl(options);
+  const controller = new PreviewIframeControllerImpl(options);
+  window.__PREVIEWJS_CONTROLLER__ = controller;
+  return controller;
 }
 
 export interface PreviewIframeController {
-  start(): void;
-  stop(): void;
   render(options: RenderOptions): void;
   resetIframe(id: string): void;
 }
@@ -42,14 +47,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     }
   ) {}
 
-  start() {
-    window.addEventListener("message", this.onWindowMessage);
-  }
-
-  stop() {
-    window.removeEventListener("message", this.onWindowMessage);
-  }
-
   async render(options: RenderOptions) {
     this.lastRenderOptions = options;
     if (
@@ -63,7 +60,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     if (!iframeWindow) {
       return;
     }
-    const renderPromise = iframeWindow.__PREVIEWJS__.render(options);
+    const renderPromise = iframeWindow.__PREVIEWJS_IFRAME__.render(options);
     this.clearExpectRenderTimeout();
     this.expectRenderTimeout = setTimeout(() => {
       // eslint-disable-next-line no-console
@@ -85,10 +82,9 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     iframe.src = `/preview/${id}/?t=${Date.now()}`;
   }
 
-  private onWindowMessage = (event: MessageEvent<PreviewToAppMessage>) => {
-    const data = event.data;
+  onPreviewMessage(message: PreviewToAppMessage) {
     const { listener } = this.options;
-    switch (data.kind) {
+    switch (message.kind) {
       case "bootstrapped":
         this.onBootstrapped();
         break;
@@ -96,7 +92,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "action":
       case "log-message":
       case "file-changed":
-        listener(data);
+        listener(message);
         break;
       case "rendering-setup":
         listener({
@@ -116,7 +112,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           kind: "log-message",
           level: "error",
           timestamp: Date.now(),
-          message: data.message,
+          message: message.message,
         });
         listener({
           kind: "rendering-done",
@@ -128,17 +124,17 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           kind: "log-message",
           level: "error",
           timestamp: Date.now(),
-          message: generateMessageFromViteError(data.payload.err),
+          message: generateMessageFromViteError(message.payload.err),
         });
         break;
       case "vite-before-update":
         listener({
           kind: "before-vite-update",
-          payload: data.payload,
+          payload: message.payload,
         });
         break;
     }
-  };
+  }
 
   private onBootstrapped() {
     this.idBootstrapped = this.pendingPreviewableIdBootstrap;
