@@ -71,7 +71,7 @@ test.describe("navigation", () => {
     // console.error(url);
     // await new Promise(() => {});
     const propsAssignmentSource = transpile(`
-    const { Foo } = await import("./Foo.tsx");
+    const { Foo } = await import("./Foo");
     
     properties = {
       title: <Foo />
