@@ -61,15 +61,16 @@ test.describe("navigation", () => {
   test("foo", async ({ page }) => {
     // TODO: Use detected previewable ID.
     const previewableId = "src/App.tsx:App";
-    const url = `${previewServer.url()}/preview/${previewableId}/`;
+    const url = `${previewServer.url()}/${previewableId}`;
     await page.exposeFunction("onPreviewMessage", (message) => {
       console.error(message);
     });
     await page.goto(url);
     await page.waitForLoadState("networkidle");
+    // await new Promise(() => {});
     await page.evaluate(
       async ([previewableId, propsAssignmentSource]) => {
-        const { Foo } = await import("/src/Foo");
+        const { Foo } = await import("./Foo");
 
         await window.__PREVIEWJS_IFRAME__.render({
           previewableId,
@@ -81,9 +82,8 @@ test.describe("navigation", () => {
       },
       [previewableId]
     );
-    await new Promise(() => {});
     await page.screenshot({
-      path: "result.png",
+      path: "src/example.spec.output.png",
     });
   });
 });
