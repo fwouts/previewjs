@@ -37,6 +37,7 @@ export function initPreview({
     try {
       renderId += 1;
       setState({
+        previewableId: id,
         autogenCallbackPropsSource,
         propsAssignmentSource,
       });

@@ -7,7 +7,6 @@ import { createFileSystemReader } from "@previewjs/vfs";
 import path from "path";
 import createLogger from "pino";
 import prettyLogger from "pino-pretty";
-import ts from "typescript";
 import url from "url";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -68,44 +67,23 @@ test.describe("navigation", () => {
     });
     await page.goto(url);
     await page.waitForLoadState("networkidle");
-    // console.error(url);
-    // await new Promise(() => {});
-    const propsAssignmentSource = transpile(`
-    const { Foo } = await import("./Foo");
-    
-    properties = {
-      title: <Foo />
-    };`);
     await page.evaluate(
       async ([previewableId, propsAssignmentSource]) => {
-        // TODO: Pass actual values instead of code, since this is local?
+        const { Foo } = await import("/src/Foo");
+
         await window.__PREVIEWJS_IFRAME__.render({
           previewableId,
           autogenCallbackPropsSource: "",
-          propsAssignmentSource,
+          propsAssignmentSource: () => ({
+            title: <Foo />,
+          }),
         });
       },
-      [previewableId, propsAssignmentSource]
+      [previewableId]
     );
-    // await new Promise(() => {});
+    await new Promise(() => {});
     await page.screenshot({
       path: "result.png",
     });
   });
 });
-
-// TODO: Abstract this away (also in chromeless?).
-function transpile(source: string) {
-  // Transform JSX if required.
-  try {
-    return ts.transpileModule(source, {
-      compilerOptions: {
-        target: ts.ScriptTarget.ES2022,
-        jsx: ts.JsxEmit.React,
-        jsxFactory: "__jsxFactory__",
-      },
-    }).outputText;
-  } catch (e) {
-    throw new Error(`Error transforming source:\n${source}\n\n${e}`);
-  }
-}

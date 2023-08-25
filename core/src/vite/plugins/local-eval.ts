@@ -22,9 +22,13 @@ export const PreviewJsEvaluateLocally = async (autogenCallbackPropsSource, props
   let autogenCallbackProps = {};
   eval(autogenCallbackPropsSource);
   let properties = {};
-  await eval(\`(async () => {
-    \${propsAssignmentSource}
-  })()\`);
+  if (typeof(propsAssignmentSource) === "string") {
+    await eval(propsAssignmentSource);
+  } else {
+    window._jsx = __jsxFactory__;
+    // window._jsx = console.log;
+    properties = await propsAssignmentSource();
+  }
   return { autogenCallbackProps, properties };
 }
 `

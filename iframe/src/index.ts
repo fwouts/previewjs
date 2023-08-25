@@ -17,7 +17,7 @@ declare global {
 export interface RenderOptions {
   previewableId: string;
   autogenCallbackPropsSource: string;
-  propsAssignmentSource: string;
+  propsAssignmentSource: string | (() => Record<string, unknown>);
 }
 
 export function createController(options: {
