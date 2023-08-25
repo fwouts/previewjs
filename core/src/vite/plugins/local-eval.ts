@@ -22,7 +22,9 @@ export const PreviewJsEvaluateLocally = async (autogenCallbackPropsSource, props
   let autogenCallbackProps = {};
   eval(autogenCallbackPropsSource);
   let properties = {};
-  eval(propsAssignmentSource);
+  await eval(\`(async () => {
+    \${propsAssignmentSource}
+  })()\`);
   return { autogenCallbackProps, properties };
 }
 `
