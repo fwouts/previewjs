@@ -61,7 +61,7 @@ test.describe("navigation", () => {
   // TODO: Check if the page may reload itself if a new dependency is discovered by Vite.
 
   test("foo", async ({ page }) => {
-    await page.goto(`${previewServer.url()}/src/`);
+    await page.goto(getUrl(workspace, __dirname));
     await page.evaluate(async () => {
       const { default: App } = await import("./App");
       const { Foo } = await import("./Foo");
@@ -72,4 +72,11 @@ test.describe("navigation", () => {
       path: "src/example.spec.output.png",
     });
   });
+
+  function getUrl(workspace: Workspace, currentDir: string) {
+    const currentPath = path
+      .relative(workspace.rootDir, currentDir)
+      .replaceAll(path.delimiter, "/");
+    return `${previewServer.url()}/${currentPath}/`;
+  }
 });
