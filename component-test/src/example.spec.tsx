@@ -59,25 +59,17 @@ test.describe("navigation", () => {
   });
 
   test("foo", async ({ page }) => {
-    // TODO: Use detected previewable ID.
-    const previewableId = "src/App.tsx:App";
     const url = `${previewServer.url()}/src/`;
-    await page.exposeFunction("onPreviewMessage", (message) => {
-      console.error(message);
-    });
     await page.goto(url);
     await page.waitForLoadState("networkidle");
     // TODO: Check if the page may reload itself if a new dependency is discovered by Vite.
-    await page.evaluate(
-      async ([previewableId, propsAssignmentSource]) => {
-        const { default: App } = await import("./App");
-        const { Foo } = await import("./Foo");
+    await page.evaluate(async () => {
+      const { default: App } = await import("./App");
+      const { Foo } = await import("./Foo");
 
-        window.__PREVIEWJS_IFRAME__.mount(<App title={<Foo />} />);
-      },
-      [previewableId]
-    );
-    await new Promise(() => {});
+      window.__PREVIEWJS_IFRAME__.mount(<App title={<Foo />} />);
+    });
+    // await new Promise(() => {});
     await page.screenshot({
       path: "src/example.spec.output.png",
     });

@@ -1,4 +1,8 @@
-import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
+import type {
+  GetPropsFn,
+  JsxElementMounter,
+  RendererLoader,
+} from "@previewjs/iframe";
 import React from "react";
 import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 // @ts-ignore
@@ -84,3 +88,7 @@ export const loadRenderer: RendererLoader = async ({
     jsxFactory: React.createElement,
   };
 };
+
+export const jsxFactory = React.createElement;
+
+export const mount: JsxElementMounter = render;

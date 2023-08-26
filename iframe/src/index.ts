@@ -5,7 +5,7 @@ declare global {
   interface Window {
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
-      mount(element: JSX.Element): Promise<void>;
+      mount: JsxElementMounter;
       render(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
@@ -250,6 +250,8 @@ export type RendererLoader = (options: {
   // This will be null if JSX isn't supported.
   jsxFactory: ((type: any, props: any, ...children: any[]) => any) | null;
 }>;
+
+export type JsxElementMounter = (element: JSX.Element) => Promise<void>;
 
 export type GetPropsFn = (options: {
   presetGlobalProps: any;
