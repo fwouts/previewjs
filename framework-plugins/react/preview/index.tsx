@@ -57,11 +57,12 @@ export const loadRenderer: RendererLoader = async ({
         return;
       }
       await render(
-        Renderer,
-        getProps({
-          presetGlobalProps: previewableModule.default?.args || {},
-          presetProps: Previewable.args || {},
-        })
+        <Renderer
+          {...getProps({
+            presetGlobalProps: previewableModule.default?.args || {},
+            presetProps: Previewable.args || {},
+          })}
+        />
       );
       if (shouldAbortRender()) {
         return;
