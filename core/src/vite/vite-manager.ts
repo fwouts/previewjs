@@ -67,14 +67,19 @@ export class ViteManager {
         : null;
     return await viteServer.transformIndexHtml(
       url,
-      template.replace(/%([^%]+)%/gi, (matched) => {
-        switch (matched) {
-          case "%INIT_PREVIEW_BLOCK%":
-            return `
+      template.replace(
+        "%MODULE_SCRIPT%",
+        `
+    import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
+
+    initListeners();
+
+    import.meta.hot.accept();
+
     let latestPreviewableModule;
     let latestWrapperModule;
     let refresh;
-    
+
     import.meta.hot.accept(["/${componentPath}"], ([previewableModule]) => {
       if (previewableModule && refresh) {
         latestPreviewableModule = previewableModule;
@@ -120,11 +125,8 @@ export class ViteManager {
         });
       });
     });
-  `;
-          default:
-            throw new Error(`Unknown template key: ${matched}`);
-        }
-      })
+  `
+      )
     );
   }
 

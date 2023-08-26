@@ -7,13 +7,7 @@
       window.module = undefined;
     </script>
     <script type="module">
-      import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
-
-      initListeners();
-
-      import.meta.hot.accept();
-
-      %INIT_PREVIEW_BLOCK%
+      %MODULE_SCRIPT%
     </script>
     <style>
       body {
