@@ -78,7 +78,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     if (!iframe) {
       return;
     }
-    iframe.src = `/preview/${id}/?t=${Date.now()}`;
+    iframe.src = `/${id}/?t=${Date.now()}`;
   }
 
   onPreviewMessage(message: PreviewToAppMessage) {

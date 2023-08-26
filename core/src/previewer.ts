@@ -161,12 +161,12 @@ export class Previewer {
               await this.viteManager!.loadIndexHtml(req.originalUrl)
             );
         });
-        router.get(/^\/.*:[^/]+$/, async (req, res, next) => {
-          if ("html-proxy" in req.query) {
+        router.get(/^\/.*:[^/]+\/$/, async (req, res, next) => {
+          if (req.url.includes("?html-proxy")) {
             next();
             return;
           }
-          const previewableId = req.path.substring(1);
+          const previewableId = req.path.substring(1, req.path.length - 1);
           if (req.header("Accept") === "text/x-vite-ping") {
             // This is triggered as part of HMR. Exit early.
             res.writeHead(204).end();
