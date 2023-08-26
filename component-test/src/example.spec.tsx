@@ -58,18 +58,16 @@ test.describe("navigation", () => {
     await workspace.dispose();
   });
 
+  // TODO: Check if the page may reload itself if a new dependency is discovered by Vite.
+
   test("foo", async ({ page }) => {
-    const url = `${previewServer.url()}/src/`;
-    await page.goto(url);
-    await page.waitForLoadState("networkidle");
-    // TODO: Check if the page may reload itself if a new dependency is discovered by Vite.
+    await page.goto(`${previewServer.url()}/src/`);
     await page.evaluate(async () => {
       const { default: App } = await import("./App");
       const { Foo } = await import("./Foo");
 
       window.__PREVIEWJS_IFRAME__.mount(<App title={<Foo />} />);
     });
-    // await new Promise(() => {});
     await page.screenshot({
       path: "src/example.spec.output.png",
     });
