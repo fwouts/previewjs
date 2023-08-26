@@ -58,7 +58,16 @@ export class ViteManager {
     );
     const viteServer = await this.awaitViteServerReady();
     if (!id) {
-      return await viteServer.transformIndexHtml(url, template);
+      return await viteServer.transformIndexHtml(
+        url,
+        template.replace(
+          "<!-- %OPTIONAL_HEAD_CONTENT% -->",
+          `
+    <script type="module">
+    import "/__previewjs_internal__/index.ts";
+    </script>`
+        )
+      );
     }
     const { filePath, name: previewableName } = decodePreviewableId(id);
     const componentPath = filePath.replace(/\\/g, "/");
