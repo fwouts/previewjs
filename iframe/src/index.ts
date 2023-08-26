@@ -15,7 +15,6 @@ declare global {
 }
 
 export interface RenderOptions {
-  previewableId: string;
   autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
 }
@@ -30,14 +29,14 @@ export function createController(options: {
 }
 
 export interface PreviewIframeController {
-  render(options: RenderOptions): void;
-  resetIframe(id: string): void;
+  render(previewableId: string, options: RenderOptions): void;
 }
 
 class PreviewIframeControllerImpl implements PreviewIframeController {
-  private idBootstrapped: string | null = null;
-  private pendingPreviewableIdBootstrap: string | null = null;
-  private lastRenderOptions: RenderOptions | null = null;
+  private lastRender: {
+    previewableId: string;
+    options: RenderOptions;
+  } | null = null;
   private expectRenderTimeout?: any;
 
   constructor(
@@ -47,13 +46,11 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     }
   ) {}
 
-  async render(options: RenderOptions) {
-    this.lastRenderOptions = options;
-    if (
-      this.idBootstrapped !== options.previewableId &&
-      this.pendingPreviewableIdBootstrap !== options.previewableId
-    ) {
-      this.resetIframe(options.previewableId);
+  async render(previewableId: string, options: RenderOptions) {
+    const previousRender = this.lastRender;
+    this.lastRender = { previewableId, options };
+    if (previousRender?.previewableId !== previewableId) {
+      this.resetIframe(previewableId);
       return;
     }
     const iframeWindow = this.options.getIframe()?.contentWindow;
@@ -67,18 +64,16 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       console.warn(
         "Expected render did not occur after 5 seconds. Reloading iframe..."
       );
-      this.resetIframe(options.previewableId);
+      this.resetIframe(previewableId);
     }, 5000);
     await renderPromise;
   }
 
   resetIframe(id: string) {
     const iframe = this.options.getIframe();
-    this.idBootstrapped = null;
     if (!iframe) {
       return;
     }
-    this.pendingPreviewableIdBootstrap = id;
     iframe.src = `/preview/${id}/?t=${Date.now()}`;
   }
 
@@ -137,11 +132,11 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   }
 
   private onBootstrapped() {
-    this.idBootstrapped = this.pendingPreviewableIdBootstrap;
-    this.pendingPreviewableIdBootstrap = null;
-    if (this.lastRenderOptions) {
-      // eslint-disable-next-line no-console
-      this.render(this.lastRenderOptions).catch(console.error);
+    if (this.lastRender) {
+      this.render(this.lastRender.previewableId, this.lastRender.options).catch(
+        // eslint-disable-next-line no-console
+        console.error
+      );
     }
     this.options.listener({
       kind: "bootstrapped",
