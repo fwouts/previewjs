@@ -8,14 +8,13 @@ let currentElement: any = null;
 
 type Component = any;
 
-export const load: RendererLoader = async ({
+export const loadRenderer: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   previewableModule,
-  id,
+  previewableName,
   shouldAbortRender,
 }) => {
-  const previewableName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!previewableModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;

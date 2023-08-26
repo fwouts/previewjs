@@ -245,7 +245,7 @@ export type RendererLoader = (options: {
   wrapperModule: any;
   wrapperName?: string;
   previewableModule: any;
-  id: string;
+  previewableName: string;
   renderId: number;
   shouldAbortRender: () => boolean;
 }) => Promise<{

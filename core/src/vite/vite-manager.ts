@@ -57,6 +57,7 @@ export class ViteManager {
       "utf-8"
     );
     const viteServer = await this.awaitViteServerReady();
+<<<<<<< HEAD
     if (!id) {
       return await viteServer.transformIndexHtml(
         url,
@@ -68,6 +69,10 @@ export class ViteManager {
     const componentPath = id
       ? decodePreviewableId(id).filePath.replace(/\\/g, "/")
       : null;
+=======
+    const { filePath, name: previewableName } = decodePreviewableId(id);
+    const componentPath = filePath.replace(/\\/g, "/");
+>>>>>>> main
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
       wrapper &&
@@ -140,7 +145,7 @@ export class ViteManager {
         latestPreviewableModule = previewableModule;
         refresh = initPreview({
           previewableModule,
-          id: ${JSON.stringify(id)},
+          previewableName: ${JSON.stringify(previewableName)},
           wrapperModule,
           wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
         });

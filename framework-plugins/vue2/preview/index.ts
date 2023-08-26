@@ -4,21 +4,25 @@ import Vue from "vue";
 const root = document.getElementById("root")!;
 let app: Vue | null = null;
 
-export const load: RendererLoader = async ({
+export const loadRenderer: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   previewableModule,
-  id,
+  previewableName,
   shouldAbortRender,
 }) => {
-  const previewableName = id.substring(id.indexOf(":") + 1);
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "default"]) || null;
   let Previewable: any;
-  if (id.includes(".vue:")) {
+  if (
+    (
+      previewableModule.default?.__file ||
+      previewableModule.default?.options?.__file
+    )?.endsWith(".vue")
+  ) {
     Previewable = previewableModule.default;
     if (!Previewable) {
-      throw new Error(`No default component could be found for ${id}`);
+      throw new Error(`No default component could be found`);
     }
   } else {
     Previewable = previewableModule[`__previewjs__${previewableName}`];
