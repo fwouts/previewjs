@@ -4,15 +4,14 @@ import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 
 const container = document.getElementById("root")!;
 
-export const load: RendererLoader = async ({
+export const loadRenderer: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   previewableModule,
-  id,
+  previewableName,
   renderId,
   shouldAbortRender,
 }) => {
-  const previewableName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!previewableModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) || Fragment;

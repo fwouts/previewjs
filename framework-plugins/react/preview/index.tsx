@@ -5,15 +5,14 @@ import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 import { render } from "__PREVIEWJS_PLUGIN_REACT_IMPORT_PATH__";
 import { rootContainer } from "./root";
 
-export const load: RendererLoader = async ({
+export const loadRenderer: RendererLoader = async ({
   wrapperModule,
   wrapperName,
   previewableModule,
-  id,
+  previewableName,
   renderId,
   shouldAbortRender,
 }) => {
-  const previewableName = id.substring(id.indexOf(":") + 1);
   const isStoryModule = !!previewableModule.default?.component;
   const Wrapper =
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||

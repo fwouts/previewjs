@@ -57,7 +57,7 @@ export class ViteManager {
       "utf-8"
     );
     const viteServer = await this.awaitViteServerReady();
-    const { filePath } = decodePreviewableId(id);
+    const { filePath, name: previewableName } = decodePreviewableId(id);
     const componentPath = filePath.replace(/\\/g, "/");
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
@@ -114,7 +114,7 @@ export class ViteManager {
         latestPreviewableModule = previewableModule;
         refresh = initPreview({
           previewableModule,
-          id: ${JSON.stringify(id)},
+          previewableName: ${JSON.stringify(previewableName)},
           wrapperModule,
           wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
         });

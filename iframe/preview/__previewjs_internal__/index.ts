@@ -3,7 +3,7 @@ import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
 import { sendMessageFromPreview } from "./messages";
-import { load as loadRenderer } from "./renderer";
+import { loadRenderer } from "./renderer";
 import { setState } from "./state";
 import { updateComponent } from "./update-component";
 import { setupViteHmrListener } from "./vite-hmr-listener";
@@ -19,12 +19,12 @@ export function initListeners() {
 
 export function initPreview({
   previewableModule,
-  id,
+  previewableName,
   wrapperModule,
   wrapperName,
 }: {
   previewableModule: any;
-  id: string;
+  previewableName: string;
   wrapperModule: any;
   wrapperName: string;
 }) {
@@ -45,10 +45,10 @@ export function initPreview({
         wrapperModule,
         wrapperName,
         previewableModule,
-        id,
+        previewableName,
         renderId,
         shouldAbortRender: () => renderId !== thisRenderId,
-        load: loadRenderer,
+        loadRenderer,
       });
     } catch (error: any) {
       sendMessageFromPreview({

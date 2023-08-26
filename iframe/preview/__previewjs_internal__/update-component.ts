@@ -6,18 +6,18 @@ export async function updateComponent({
   wrapperModule,
   wrapperName,
   previewableModule,
-  id,
+  previewableName,
   renderId,
   shouldAbortRender,
-  load,
+  loadRenderer,
 }: {
   wrapperModule: any;
   wrapperName: string;
   previewableModule: any;
-  id: string;
+  previewableName: string;
   renderId: number;
   shouldAbortRender: () => boolean;
-  load: RendererLoader;
+  loadRenderer: RendererLoader;
 }) {
   const currentState = getState();
   if (!currentState || shouldAbortRender()) {
@@ -27,11 +27,11 @@ export async function updateComponent({
     sendMessageFromPreview({
       kind: "before-render",
     });
-    const { render, jsxFactory } = await load({
+    const { render, jsxFactory } = await loadRenderer({
       wrapperModule,
       wrapperName,
       previewableModule,
-      id,
+      previewableName,
       renderId,
       shouldAbortRender,
     });
@@ -46,7 +46,6 @@ export async function updateComponent({
       );
     sendMessageFromPreview({
       kind: "rendering-setup",
-      id,
     });
     await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),
