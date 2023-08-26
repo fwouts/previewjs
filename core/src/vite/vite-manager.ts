@@ -51,14 +51,23 @@ export class ViteManager {
     this.middleware = router;
   }
 
-  async loadIndexHtml(url: string, id: string) {
+  async loadIndexHtml(url: string, id?: string) {
     const template = await fs.readFile(
       this.options.shadowHtmlFilePath,
       "utf-8"
     );
     const viteServer = await this.awaitViteServerReady();
-    const { filePath } = decodePreviewableId(id);
-    const componentPath = filePath.replace(/\\/g, "/");
+    if (!id) {
+      return await viteServer.transformIndexHtml(
+        url,
+        // TODO: Use switch statement below.
+        template.replace(/%([^%]+)%/gi, "")
+      );
+    }
+    // TODO: SIMPLIFY BELOW, id and componentPath ALWAYS EXIST.
+    const componentPath = id
+      ? decodePreviewableId(id).filePath.replace(/\\/g, "/")
+      : null;
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
       wrapper &&
@@ -71,16 +80,28 @@ export class ViteManager {
         switch (matched) {
           case "%INIT_PREVIEW_BLOCK%":
             return `
+    import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
+
+    initListeners();
+
+    import.meta.hot.accept();
+
     let latestPreviewableModule;
     let latestWrapperModule;
     let refresh;
     
+    ${
+      componentPath
+        ? `
     import.meta.hot.accept(["/${componentPath}"], ([previewableModule]) => {
       if (previewableModule && refresh) {
         latestPreviewableModule = previewableModule;
         refresh(latestPreviewableModule, latestWrapperModule);
       }
     });
+    `
+        : ``
+    }
 
     ${
       wrapperPath
@@ -110,7 +131,12 @@ export class ViteManager {
     // modules imported by the component module.
     wrapperModulePromise.then(wrapperModule => {
       latestWrapperModule = wrapperModule;
-      import(/* @vite-ignore */ "/${componentPath}").then(previewableModule => {
+      const previewableModulePromise = ${
+        componentPath
+          ? `import(/* @vite-ignore */ "/${componentPath}")`
+          : `Promise.resolve(null)`
+      };
+      previewableModulePromise.then(previewableModule => {
         latestPreviewableModule = previewableModule;
         refresh = initPreview({
           previewableModule,
@@ -118,6 +144,9 @@ export class ViteManager {
           wrapperModule,
           wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
         });
+
+        // TODO: Remove / update API.
+        window.setPreviewModule = refresh;
       });
     });
   `;

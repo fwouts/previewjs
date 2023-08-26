@@ -62,9 +62,6 @@ export function virtualPlugin(options: {
         absoluteId = path.join(path.dirname(importer), id);
       }
       const resolved = await resolveAbsoluteModuleId(absoluteId);
-      if (!resolved) {
-        console.error("_", id, absoluteId, resolved);
-      }
       if (resolved) {
         const [absoluteFilePath] = resolved;
         if ((await fs.pathExists(absoluteFilePath)) && !virtualImporter) {

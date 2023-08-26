@@ -61,7 +61,7 @@ test.describe("navigation", () => {
   test("foo", async ({ page }) => {
     // TODO: Use detected previewable ID.
     const previewableId = "src/App.tsx:App";
-    const url = `${previewServer.url()}/${previewableId}`;
+    const url = `${previewServer.url()}/preview`;
     await page.exposeFunction("onPreviewMessage", (message) => {
       console.error(message);
     });
@@ -70,8 +70,10 @@ test.describe("navigation", () => {
     // await new Promise(() => {});
     await page.evaluate(
       async ([previewableId, propsAssignmentSource]) => {
-        const { Foo } = await import("./Foo");
+        const AppModule = await import("./src/App");
+        const { Foo } = await import("./src/Foo");
 
+        window.setPreviewModule(AppModule);
         await window.__PREVIEWJS_IFRAME__.render({
           previewableId,
           autogenCallbackPropsSource: "",

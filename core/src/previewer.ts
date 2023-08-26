@@ -152,6 +152,15 @@ export class Previewer {
           }
         );
         const router = express.Router();
+        router.get("/preview", async (req, res) => {
+          res
+            .status(200)
+            .set({ "Content-Type": "text/html" })
+            .end(
+              // TODO: Remove ! and handle errors.
+              await this.viteManager!.loadIndexHtml(req.originalUrl)
+            );
+        });
         router.get(/^\/.*:[^/]+$/, async (req, res, next) => {
           if ("html-proxy" in req.query) {
             next();

@@ -24,7 +24,7 @@ export function initPreview({
   wrapperName,
 }: {
   previewableModule: any;
-  id: string;
+  id: string | undefined;
   wrapperModule: any;
   wrapperName: string;
 }) {
