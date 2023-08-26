@@ -44,6 +44,9 @@ export async function updateComponent({
         currentState.propsAssignmentSource,
         jsxFactory
       );
+    if (shouldAbortRender()) {
+      return;
+    }
     sendMessageFromPreview({
       kind: "rendering-setup",
     });
