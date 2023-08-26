@@ -4,7 +4,7 @@ import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
 import { sendMessageFromPreview } from "./messages";
 // @ts-ignore TODO REMOVE
-import { jsxFactory, loadRenderer, mount } from "./renderer";
+import { jsxFactory, loadRenderer, mount as mountComponent } from "./renderer";
 import { setState } from "./state";
 import { updateComponent } from "./update-component";
 import { setupViteHmrListener } from "./vite-hmr-listener";
@@ -20,8 +20,8 @@ export function initListeners() {
 
 // @ts-ignore TODO fix
 window._jsx = jsxFactory;
+window.mount = mountComponent;
 window.__PREVIEWJS_IFRAME__ = {
-  mount,
   render: () => {
     throw new Error(`Please call initPreview()`);
   },
@@ -75,7 +75,6 @@ export function initPreview({
 
   let lastRenderOptions: RenderOptions | null = null;
   window.__PREVIEWJS_IFRAME__ = {
-    mount,
     render: async (data) => {
       lastRenderOptions = data;
       await render(data);

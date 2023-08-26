@@ -66,7 +66,7 @@ test.describe("navigation", () => {
       const { default: App } = await import("./App");
       const { Foo } = await import("./Foo");
 
-      await window.__PREVIEWJS_IFRAME__.mount(<App title={<Foo />} />);
+      await mount(<App title={<Foo />} />);
     });
     await page.screenshot({
       path: "src/example.spec.output.png",

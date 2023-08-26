@@ -2,10 +2,13 @@ import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import type { PreviewToAppMessage } from "./messages";
 
 declare global {
+  const mount: JsxElementMounter;
+
   interface Window {
+    mount: JsxElementMounter;
+
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
-      mount: JsxElementMounter;
       render(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
