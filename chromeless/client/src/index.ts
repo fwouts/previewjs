@@ -3,7 +3,7 @@ import { createController } from "@previewjs/iframe";
 
 declare global {
   interface Window {
-    loadIframePreview(options: RenderOptions): void;
+    loadIframePreview(previewableId: string, options: RenderOptions): void;
     onIframeEvent?(event: PreviewEvent): void;
   }
 }
@@ -18,7 +18,10 @@ const controller = createController({
 });
 
 window.onload = () => {
-  window.loadIframePreview = (options: RenderOptions) => {
-    controller.render(options);
+  window.loadIframePreview = (
+    previewableId: string,
+    options: RenderOptions
+  ) => {
+    controller.render(previewableId, options);
   };
 };

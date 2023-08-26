@@ -37,7 +37,6 @@ async function onUrlChanged() {
   if (!previewableId.includes(":")) {
     return;
   }
-  iframeController.resetIframe(previewableId);
   const analyzeResponse = await rpcApi.request(RPCs.Analyze, {
     previewableIds: [previewableId],
   });
@@ -46,8 +45,7 @@ async function onUrlChanged() {
     props,
     analyzeResponse.types
   );
-  iframeController.render({
-    previewableId,
+  iframeController.render(previewableId, {
     propsAssignmentSource: transpile(
       await generatePropsAssignmentSource(
         props,

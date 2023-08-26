@@ -161,7 +161,7 @@ export async function startPreview({
       await waitUntilNetworkIdle(page);
       renderSucceeded = false;
       await page.evaluate(
-        async (options) => {
+        async ([previewableId, options]) => {
           // It's possible that window.loadIframePreview isn't ready yet.
           let waitStart = Date.now();
           const timeoutSeconds = 10;
@@ -176,13 +176,15 @@ export async function startPreview({
               `window.loadIframePreview() isn't available after waiting ${timeoutSeconds} seconds`
             );
           }
-          window.loadIframePreview(options);
+          window.loadIframePreview(previewableId, options);
         },
-        {
+        [
           previewableId,
-          autogenCallbackPropsSource,
-          propsAssignmentSource: transpile(propsAssignmentSource!),
-        }
+          {
+            autogenCallbackPropsSource,
+            propsAssignmentSource: transpile(propsAssignmentSource!),
+          },
+        ] as const
       );
       await donePromise;
       await waitUntilNetworkIdle(page);
