@@ -61,29 +61,31 @@ test.describe("navigation", () => {
   test("foo", async ({ page }) => {
     // TODO: Use detected previewable ID.
     const previewableId = "src/App.tsx:App";
-    const url = `${previewServer.url()}/preview`;
+    const url = `${previewServer.url()}/src/`;
     await page.exposeFunction("onPreviewMessage", (message) => {
       console.error(message);
     });
     await page.goto(url);
     await page.waitForLoadState("networkidle");
-    // await new Promise(() => {});
     await page.evaluate(
       async ([previewableId, propsAssignmentSource]) => {
-        const AppModule = await import("./src/App");
-        const { Foo } = await import("./src/Foo");
+        const AppModule = await import("./App");
+        const { Foo } = await import("./Foo");
 
-        window.setPreviewModule(AppModule);
-        await window.__PREVIEWJS_IFRAME__.render({
-          previewableId,
-          autogenCallbackPropsSource: "",
-          propsAssignmentSource: () => ({
-            title: <Foo />,
-          }),
-        });
+        console.log(AppModule);
+
+        // window.setPreviewModule(AppModule);
+        // await window.__PREVIEWJS_IFRAME__.render({
+        //   previewableId,
+        //   autogenCallbackPropsSource: "",
+        //   propsAssignmentSource: () => ({
+        //     title: <Foo />,
+        //   }),
+        // });
       },
       [previewableId]
     );
+    await new Promise(() => {});
     await page.screenshot({
       path: "src/example.spec.output.png",
     });

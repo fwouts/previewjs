@@ -152,7 +152,11 @@ export class Previewer {
           }
         );
         const router = express.Router();
-        router.get("/preview", async (req, res) => {
+        router.get(/^[^:]*$/, async (req, res, next) => {
+          if (!req.header("Accept")?.includes("text/html")) {
+            next();
+            return;
+          }
           res
             .status(200)
             .set({ "Content-Type": "text/html" })
