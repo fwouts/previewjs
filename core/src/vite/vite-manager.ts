@@ -57,22 +57,21 @@ export class ViteManager {
       "utf-8"
     );
     const viteServer = await this.awaitViteServerReady();
-<<<<<<< HEAD
     if (!id) {
       return await viteServer.transformIndexHtml(
         url,
-        // TODO: Use switch statement below.
-        template.replace(/%([^%]+)%/gi, "")
+        template.replace(
+          "%MODULE_SCRIPT%",
+          `
+    import { initPreview } from "/__previewjs_internal__/index.ts";
+
+    window.initPreview = initPreview;
+    `
+        )
       );
     }
-    // TODO: SIMPLIFY BELOW, id and componentPath ALWAYS EXIST.
-    const componentPath = id
-      ? decodePreviewableId(id).filePath.replace(/\\/g, "/")
-      : null;
-=======
     const { filePath, name: previewableName } = decodePreviewableId(id);
     const componentPath = filePath.replace(/\\/g, "/");
->>>>>>> main
     const wrapper = this.options.config.wrapper;
     const wrapperPath =
       wrapper &&
@@ -81,10 +80,9 @@ export class ViteManager {
         : null;
     return await viteServer.transformIndexHtml(
       url,
-      template.replace(/%([^%]+)%/gi, (matched) => {
-        switch (matched) {
-          case "%INIT_PREVIEW_BLOCK%":
-            return `
+      template.replace(
+        "%MODULE_SCRIPT%",
+        `
     import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
 
     initListeners();
@@ -94,19 +92,13 @@ export class ViteManager {
     let latestPreviewableModule;
     let latestWrapperModule;
     let refresh;
-    
-    ${
-      componentPath
-        ? `
+
     import.meta.hot.accept(["/${componentPath}"], ([previewableModule]) => {
       if (previewableModule && refresh) {
         latestPreviewableModule = previewableModule;
         refresh(latestPreviewableModule, latestWrapperModule);
       }
     });
-    `
-        : ``
-    }
 
     ${
       wrapperPath
@@ -136,12 +128,7 @@ export class ViteManager {
     // modules imported by the component module.
     wrapperModulePromise.then(wrapperModule => {
       latestWrapperModule = wrapperModule;
-      const previewableModulePromise = ${
-        componentPath
-          ? `import(/* @vite-ignore */ "/${componentPath}")`
-          : `Promise.resolve(null)`
-      };
-      previewableModulePromise.then(previewableModule => {
+      import(/* @vite-ignore */ "/${componentPath}").then(previewableModule => {
         latestPreviewableModule = previewableModule;
         refresh = initPreview({
           previewableModule,
@@ -149,16 +136,10 @@ export class ViteManager {
           wrapperModule,
           wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
         });
-
-        // TODO: Remove / update API.
-        window.setPreviewModule = refresh;
       });
     });
-  `;
-          default:
-            throw new Error(`Unknown template key: ${matched}`);
-        }
-      })
+  `
+      )
     );
   }
 
