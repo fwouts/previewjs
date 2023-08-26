@@ -68,8 +68,9 @@ export class ViteManager {
     return await viteServer.transformIndexHtml(
       url,
       template.replace(
-        "%MODULE_SCRIPT%",
+        "<!-- %OPTIONAL_HEAD_CONTENT% -->",
         `
+    <script type="module">
     import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
 
     initListeners();
@@ -125,7 +126,7 @@ export class ViteManager {
         });
       });
     });
-  `
+    </script>`
       )
     );
   }
