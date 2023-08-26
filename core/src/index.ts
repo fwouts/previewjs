@@ -1,6 +1,10 @@
-import { decodePreviewableId } from "@previewjs/analyzer-api";
+import { decodePreviewableId, type Analyzer } from "@previewjs/analyzer-api";
 import { RPCs } from "@previewjs/api";
-import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type {
+  CollectedTypes,
+  TypeAnalyzer,
+  ValueType,
+} from "@previewjs/type-analyzer";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import type { Reader } from "@previewjs/vfs";
 import express from "express";
@@ -10,7 +14,8 @@ import path from "path";
 import type { Logger } from "pino";
 import { crawlFiles } from "./crawl-files";
 import { getFreePort } from "./get-free-port";
-import type { FrameworkPlugin } from "./plugins/framework";
+import type { FrameworkPluginFactory } from "./plugins/framework";
+import { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 import type { OnServerStart } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
@@ -19,7 +24,6 @@ export type {
   FrameworkPlugin,
   FrameworkPluginFactory,
 } from "./plugins/framework";
-export { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 export type { OnServerStart } from "./preview-env";
 
 const require = createRequire(import.meta.url);
@@ -36,16 +40,28 @@ process.on("unhandledRejection", (e) => {
 export async function createWorkspace({
   rootDir,
   reader,
-  frameworkPlugin,
+  frameworkPlugins,
   logger,
   onServerStart = () => Promise.resolve({}),
 }: {
   rootDir: string;
-  frameworkPlugin: FrameworkPlugin;
+  frameworkPlugins: FrameworkPluginFactory[];
   logger: Logger;
   reader: Reader;
   onServerStart?: OnServerStart;
-}): Promise<Workspace> {
+}): Promise<Workspace | null> {
+  const frameworkPlugin = await setupFrameworkPlugin({
+    rootDir,
+    frameworkPlugins,
+    reader,
+    logger,
+  });
+  if (!frameworkPlugin) {
+    logger.debug(
+      `No compatible plugin found for workspace with root: ${rootDir}`
+    );
+    return null;
+  }
   logger.debug(
     `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDir}`
   );
@@ -63,7 +79,9 @@ export async function createWorkspace({
     );
   }
   const workspace: Workspace = {
-    ...frameworkPlugin,
+    frameworkPluginName: frameworkPlugin.name,
+    crawlFiles: frameworkPlugin.crawlFiles,
+    typeAnalyzer: frameworkPlugin.typeAnalyzer,
     rootDir,
     reader,
     startServer: async ({ port } = {}) => {
@@ -200,9 +218,12 @@ export function findWorkspaceRoot(absoluteFilePath: string): string | null {
   return null;
 }
 
-export interface Workspace extends Omit<FrameworkPlugin, "dispose"> {
+export interface Workspace {
   rootDir: string;
   reader: Reader;
+  frameworkPluginName: string;
+  typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
+  crawlFiles: Analyzer["crawlFiles"];
   startServer: (options?: { port?: number }) => Promise<PreviewServer>;
   dispose(): Promise<void>;
 }
