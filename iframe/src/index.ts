@@ -22,7 +22,7 @@ declare global {
 
 export interface RenderOptions {
   autogenCallbackPropsSource: string;
-  propsAssignmentSource: string | (() => Record<string, unknown>);
+  propsAssignmentSource: string;
 }
 
 export function createController(options: {
