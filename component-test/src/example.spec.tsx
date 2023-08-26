@@ -1,6 +1,6 @@
 import { test } from "@playwright/test";
 import type { PreviewServer, Workspace } from "@previewjs/core";
-import { createWorkspace, setupFrameworkPlugin } from "@previewjs/core";
+import { createWorkspace } from "@previewjs/core";
 import "@previewjs/iframe";
 import frameworkPluginFactory from "@previewjs/plugin-react";
 import { createFileSystemReader } from "@previewjs/vfs";
@@ -23,18 +23,9 @@ test.describe("navigation", () => {
       prettyLogger({ colorize: true })
     );
     const reader = createFileSystemReader();
-    const frameworkPlugin = await setupFrameworkPlugin({
+    workspace = (await createWorkspace({
       rootDir,
       frameworkPlugins: [frameworkPluginFactory],
-      logger,
-      reader,
-    });
-    if (!frameworkPlugin) {
-      throw new Error(`Unable to initialize framework plugin`);
-    }
-    workspace = await createWorkspace({
-      rootDir,
-      frameworkPlugin,
       logger,
       reader,
       onServerStart: () =>
@@ -49,7 +40,7 @@ test.describe("navigation", () => {
             },
           ],
         }),
-    });
+    }))!;
     previewServer = await workspace.startServer();
   });
 
