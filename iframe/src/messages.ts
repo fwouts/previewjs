@@ -23,7 +23,6 @@ export interface BeforeRender {
 
 export interface RenderingSetup {
   kind: "rendering-setup";
-  id: string;
 }
 
 export interface RenderingSuccess {
