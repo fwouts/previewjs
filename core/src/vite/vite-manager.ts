@@ -58,17 +58,7 @@ export class ViteManager {
     );
     const viteServer = await this.awaitViteServerReady();
     if (!id) {
-      return await viteServer.transformIndexHtml(
-        url,
-        template.replace(
-          "%MODULE_SCRIPT%",
-          `
-    import { initPreview } from "/__previewjs_internal__/index.ts";
-
-    window.initPreview = initPreview;
-    `
-        )
-      );
+      return await viteServer.transformIndexHtml(url, template);
     }
     const { filePath, name: previewableName } = decodePreviewableId(id);
     const componentPath = filePath.replace(/\\/g, "/");
@@ -81,8 +71,9 @@ export class ViteManager {
     return await viteServer.transformIndexHtml(
       url,
       template.replace(
-        "%MODULE_SCRIPT%",
+        "<!-- %OPTIONAL_HEAD_CONTENT% -->",
         `
+    <script type="module">
     import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
 
     initListeners();
@@ -138,7 +129,7 @@ export class ViteManager {
         });
       });
     });
-  `
+    </script>`
       )
     );
   }

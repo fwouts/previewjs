@@ -152,14 +152,11 @@ export class Previewer {
           }
         );
         const router = express.Router();
-        router.get(/^.*\/$/, async (req, res) => {
+        router.get(/^[^:]*\/$/, async (req, res) => {
           res
             .status(200)
             .set({ "Content-Type": "text/html" })
-            .end(
-              // TODO: Remove ! and handle errors.
-              await this.viteManager!.loadIndexHtml(req.originalUrl)
-            );
+            .end(await this.viteManager!.loadIndexHtml(req.originalUrl));
         });
         router.get(/^\/.*:[^/]+\/$/, async (req, res, next) => {
           if (req.url.includes("?html-proxy")) {
