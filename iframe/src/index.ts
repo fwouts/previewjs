@@ -5,6 +5,7 @@ declare global {
   interface Window {
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
+      mount(element: JSX.Element): Promise<void>;
       render(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.

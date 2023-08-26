@@ -3018,6 +3018,9 @@ importers:
 
   iframe:
     devDependencies:
+      '@types/react':
+        specifier: ^18.2.21
+        version: 18.2.21
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -6498,7 +6501,9 @@ packages:
     dependencies:
       '@babel/core': 7.21.4
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.4)
+      '@babel/helper-replace-supers': 7.22.5
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-transform-object-super@7.18.6(@babel/core@7.21.8):
@@ -6521,7 +6526,9 @@ packages:
     dependencies:
       '@babel/core': 7.22.10
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.22.10)
+      '@babel/helper-replace-supers': 7.22.5
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-transform-parameters@7.20.7(@babel/core@7.21.4):
     resolution: {integrity: sha512-WiWBIkeHKVOSYPO0pWkxGPfKeWrCJyD3NJ53+Lrp/QMSZbsVPovrVl2aWZ19D/LTVnaDv5Ap7GJ/B2CTOZdrfA==}

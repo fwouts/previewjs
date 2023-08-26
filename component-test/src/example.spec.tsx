@@ -67,21 +67,13 @@ test.describe("navigation", () => {
     });
     await page.goto(url);
     await page.waitForLoadState("networkidle");
+    // TODO: Check if the page may reload itself if a new dependency is discovered by Vite.
     await page.evaluate(
       async ([previewableId, propsAssignmentSource]) => {
-        const AppModule = await import("./App");
+        const { default: App } = await import("./App");
         const { Foo } = await import("./Foo");
 
-        console.log(AppModule);
-
-        // window.setPreviewModule(AppModule);
-        // await window.__PREVIEWJS_IFRAME__.render({
-        //   previewableId,
-        //   autogenCallbackPropsSource: "",
-        //   propsAssignmentSource: () => ({
-        //     title: <Foo />,
-        //   }),
-        // });
+        window.__PREVIEWJS_IFRAME__.mount(<App title={<Foo />} />);
       },
       [previewableId]
     );
