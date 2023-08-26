@@ -21,11 +21,6 @@ export function initListeners() {
 // @ts-ignore TODO fix
 window._jsx = jsxFactory;
 window.mount = mountComponent;
-window.__PREVIEWJS_IFRAME__ = {
-  render: () => {
-    throw new Error(`Please call initPreview()`);
-  },
-};
 
 export function initPreview({
   previewableModule,
