@@ -51,12 +51,10 @@ export function virtualPlugin(options: {
         absoluteId = id;
       } else {
         if (!importer) {
-          // console.error("no importer", id);
           return null;
         }
         if (extension && !jsExtensions.has(extension) && extension !== ".svg") {
           // Virtual files mess with CSS processors like postcss.
-          // console.error("messy", id);
           return path.join(path.dirname(importer), id);
         }
         absoluteId = path.join(path.dirname(importer), id);
