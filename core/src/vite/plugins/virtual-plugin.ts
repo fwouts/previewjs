@@ -6,8 +6,23 @@ import type * as vite from "vite";
 import { transformWithEsbuild } from "vite";
 
 const VIRTUAL_PREFIX = `/@previewjs-virtual:`;
+const VIRTUAL_PREFIX2 = `/@id/__x00__`;
 
 const jsExtensions = new Set([".js", ".jsx", ".ts", ".tsx"]);
+
+function maybeVirtual(originalId: string) {
+  let id = originalId;
+  if (id.startsWith(VIRTUAL_PREFIX)) {
+    id = id.slice(VIRTUAL_PREFIX.length);
+  }
+  if (id.startsWith("\0")) {
+    id = id.slice(1);
+  }
+  if (id.startsWith(VIRTUAL_PREFIX2)) {
+    id = id.slice(VIRTUAL_PREFIX2.length);
+  }
+  return [id, id !== originalId] as const;
+}
 
 export function virtualPlugin(options: {
   logger: Logger;
@@ -20,14 +35,14 @@ export function virtualPlugin(options: {
   const { reader, rootDir } = options;
   return {
     name: "previewjs:virtual-fs",
-    resolveId: async function (id, importer) {
-      const virtualImporter = importer?.startsWith(VIRTUAL_PREFIX) || false;
-      if (id.indexOf(`/node_modules/`) !== -1) {
+    resolveId: async function (originalId, originalImporter) {
+      const [importer, virtualImporter] = originalImporter
+        ? maybeVirtual(originalImporter)
+        : ([null, false] as const);
+      if (originalId.indexOf(`/node_modules/`) !== -1) {
         return null;
       }
-      if (id.startsWith(VIRTUAL_PREFIX)) {
-        id = id.slice(VIRTUAL_PREFIX.length);
-      }
+      let [id] = maybeVirtual(originalId);
       // Remove query params.
       id = id.split("?", 2)[0]!;
       const extension = path.extname(id);
@@ -37,9 +52,6 @@ export function virtualPlugin(options: {
       } else {
         if (!importer) {
           return null;
-        }
-        if (virtualImporter) {
-          importer = importer.slice(VIRTUAL_PREFIX.length);
         }
         if (extension && !jsExtensions.has(extension) && extension !== ".svg") {
           // Virtual files mess with CSS processors like postcss.
@@ -69,6 +81,12 @@ export function virtualPlugin(options: {
       }
       if (id.startsWith(VIRTUAL_PREFIX)) {
         id = id.slice(VIRTUAL_PREFIX.length);
+      }
+      if (id.startsWith("\0")) {
+        id = id.slice(1);
+      }
+      if (id.startsWith(VIRTUAL_PREFIX2)) {
+        id = id.slice(VIRTUAL_PREFIX2.length);
       }
       const resolved = await resolveAbsoluteModuleId(id);
       if (!resolved) {

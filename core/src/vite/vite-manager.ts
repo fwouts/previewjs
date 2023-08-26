@@ -288,7 +288,6 @@ export class ViteManager {
       ...this.options.config.vite,
       configFile: false,
       root: this.options.rootDir,
-      base: "/preview/",
       optimizeDeps: {
         entries: [],
         esbuildOptions: {
