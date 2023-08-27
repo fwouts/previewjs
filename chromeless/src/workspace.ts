@@ -1,12 +1,9 @@
 import type { FrameworkPluginFactory, Workspace } from "@previewjs/core";
 import { createWorkspace } from "@previewjs/core";
 import type { Reader } from "@previewjs/vfs";
-import { createFileSystemReader } from "@previewjs/vfs";
 import express from "express";
 import path from "path";
 import type { Logger } from "pino";
-import createLogger from "pino";
-import prettyLogger from "pino-pretty";
 import type { Page } from "playwright";
 import url from "url";
 import { startPreview } from "./preview";
@@ -14,15 +11,8 @@ import { startPreview } from "./preview";
 export async function createChromelessWorkspace({
   rootDir,
   frameworkPlugins,
-  reader = createFileSystemReader(),
-  logger = createLogger(
-    {
-      ...(process.env["PREVIEWJS_LOG_LEVEL"]
-        ? { level: process.env["PREVIEWJS_LOG_LEVEL"].toLowerCase() }
-        : {}),
-    },
-    prettyLogger({ colorize: true, destination: process.stdout })
-  ),
+  reader,
+  logger,
 }: {
   rootDir: string;
   frameworkPlugins: FrameworkPluginFactory[];

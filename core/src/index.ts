@@ -6,12 +6,14 @@ import type {
   ValueType,
 } from "@previewjs/type-analyzer";
 import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
-import type { Reader } from "@previewjs/vfs";
+import { createFileSystemReader, type Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
+import createLogger from "pino";
+import prettyLogger from "pino-pretty";
 import { crawlFiles } from "./crawl-files";
 import { getFreePort } from "./get-free-port";
 import type { FrameworkPluginFactory } from "./plugins/framework";
@@ -39,15 +41,18 @@ process.on("unhandledRejection", (e) => {
 
 export async function createWorkspace({
   rootDir,
-  reader,
   frameworkPlugins,
-  logger,
+  logger = createLogger(
+    { level: process.env["PREVIEWJS_LOG_LEVEL"]?.toLowerCase() || "warn" },
+    prettyLogger({ colorize: true })
+  ),
+  reader = createFileSystemReader(),
   onServerStart = () => Promise.resolve({}),
 }: {
   rootDir: string;
   frameworkPlugins: FrameworkPluginFactory[];
-  logger: Logger;
-  reader: Reader;
+  logger?: Logger;
+  reader?: Reader;
   onServerStart?: OnServerStart;
 }): Promise<Workspace | null> {
   const frameworkPlugin = await setupFrameworkPlugin({
