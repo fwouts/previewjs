@@ -1,4 +1,3 @@
-import type React from "react";
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import type { PreviewToAppMessage } from "./messages";
 
@@ -6,7 +5,7 @@ declare global {
   const mount: JsxElementMounter;
 
   interface Window {
-    _jsx: typeof React.createElement;
+    _jsx: any;
     mount: JsxElementMounter;
 
     // Exposed on the iframe.
@@ -256,7 +255,7 @@ export type RendererLoader = (options: {
   jsxFactory: ((type: any, props: any, ...children: any[]) => any) | null;
 }>;
 
-export type JsxElementMounter = (element: JSX.Element) => Promise<void>;
+export type JsxElementMounter = (jsxElement: any) => Promise<void>;
 
 export type GetPropsFn = (options: {
   presetGlobalProps: any;
