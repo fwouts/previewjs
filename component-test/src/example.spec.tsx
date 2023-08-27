@@ -3,10 +3,7 @@ import type { PreviewServer, Workspace } from "@previewjs/core";
 import { createWorkspace } from "@previewjs/core";
 import "@previewjs/iframe";
 import frameworkPluginFactory from "@previewjs/plugin-react";
-import { createFileSystemReader } from "@previewjs/vfs";
 import path from "path";
-import createLogger from "pino";
-import prettyLogger from "pino-pretty";
 import url from "url";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -18,16 +15,9 @@ test.describe("navigation", () => {
   test.beforeAll(async () => {
     // TODO: Simplify syntax drastically.
     const rootDir = path.join(__dirname, "..");
-    const logger = createLogger(
-      { level: "debug" },
-      prettyLogger({ colorize: true })
-    );
-    const reader = createFileSystemReader();
     workspace = (await createWorkspace({
       rootDir,
       frameworkPlugins: [frameworkPluginFactory],
-      logger,
-      reader,
     }))!;
     previewServer = await workspace.startServer();
   });
