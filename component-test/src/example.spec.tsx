@@ -28,18 +28,6 @@ test.describe("navigation", () => {
       frameworkPlugins: [frameworkPluginFactory],
       logger,
       reader,
-      onServerStart: () =>
-        Promise.resolve({
-          middlewares: [
-            (req, res, next) => {
-              if (req.path === "/") {
-                res.end();
-              } else {
-                next();
-              }
-            },
-          ],
-        }),
     }))!;
     previewServer = await workspace.startServer();
   });
