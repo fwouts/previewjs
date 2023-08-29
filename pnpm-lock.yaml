@@ -2307,8 +2307,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       '@sveltejs/kit':
-        specifier: ^1.23.0
-        version: 1.23.0(svelte@4.2.0)(vite@4.4.9)
+        specifier: ^1.23.1
+        version: 1.23.1(svelte@4.2.0)(vite@4.4.9)
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -4418,9 +4418,11 @@ packages:
       '@babel/core': ^7.12.0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.21.4)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-class-static-block@7.21.0(@babel/core@7.21.8):
@@ -4443,9 +4445,11 @@ packages:
       '@babel/core': ^7.12.0
     dependencies:
       '@babel/core': 7.22.10
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.10)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.10)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.22.10)
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.21.4):
     resolution: {integrity: sha512-h8hlezQ4dl6ixodgXkH8lUfcD7x+WAuIqPUjwGoItynrXOAv4a4Tci1zA/qjzQjjcl0v3QpLdc2LM6ZACQuY7A==}
@@ -4457,7 +4461,7 @@ packages:
       '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.4)
     transitivePeerDependencies:
       - supports-color
@@ -4473,7 +4477,7 @@ packages:
       '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.8)
     transitivePeerDependencies:
       - supports-color
@@ -4503,7 +4507,7 @@ packages:
       '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.9)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.22.9)
     transitivePeerDependencies:
       - supports-color
@@ -5831,11 +5835,9 @@ packages:
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-optimise-call-expression': 7.22.5
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.4)
       '@babel/helper-split-export-declaration': 7.22.6
       globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /@babel/plugin-transform-classes@7.21.0(@babel/core@7.21.8):
@@ -5870,11 +5872,9 @@ packages:
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-optimise-call-expression': 7.22.5
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.22.10)
       '@babel/helper-split-export-declaration': 7.22.6
       globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
 
   /@babel/plugin-transform-classes@7.21.0(@babel/core@7.22.9):
     resolution: {integrity: sha512-RZhbYTCEUAe6ntPehC4hlslPWosNHDox+vAs4On/mCLRLfoDVHf6hVEd7kuxr1RnHwJmxFfUM3cZiZRmPxJPXQ==}
@@ -5889,11 +5889,9 @@ packages:
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-optimise-call-expression': 7.22.5
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.22.10)
       '@babel/helper-split-export-declaration': 7.22.6
       globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /@babel/plugin-transform-computed-properties@7.20.7(@babel/core@7.21.4):
@@ -6413,9 +6411,7 @@ packages:
     dependencies:
       '@babel/core': 7.21.4
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
-    transitivePeerDependencies:
-      - supports-color
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.4)
     dev: true
 
   /@babel/plugin-transform-object-super@7.18.6(@babel/core@7.21.8):
@@ -6438,9 +6434,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.10
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
-    transitivePeerDependencies:
-      - supports-color
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.22.10)
 
   /@babel/plugin-transform-parameters@7.20.7(@babel/core@7.21.4):
     resolution: {integrity: sha512-WiWBIkeHKVOSYPO0pWkxGPfKeWrCJyD3NJ53+Lrp/QMSZbsVPovrVl2aWZ19D/LTVnaDv5Ap7GJ/B2CTOZdrfA==}
@@ -7306,7 +7300,7 @@ packages:
       '@babel/compat-data': 7.21.9
       '@babel/core': 7.22.10
       '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.22.10)
-      '@babel/helper-plugin-utils': 7.21.5
+      '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-validator-option': 7.21.0
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.22.10)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.22.10)
@@ -7374,12 +7368,12 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.21.5
+      '@babel/types': 7.22.10
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
       core-js-compat: 3.29.0
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
 
@@ -7392,7 +7386,7 @@ packages:
       '@babel/compat-data': 7.21.9
       '@babel/core': 7.22.9
       '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.22.10)
-      '@babel/helper-plugin-utils': 7.21.5
+      '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-validator-option': 7.21.0
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.22.10)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.22.10)
@@ -7460,12 +7454,12 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.21.5
+      '@babel/types': 7.22.10
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
       core-js-compat: 3.29.0
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11712,7 +11706,7 @@ packages:
       get-port-please: 3.0.1
       h3: 1.6.6
       knitwork: 1.0.0
-      magic-string: 0.30.2
+      magic-string: 0.30.3
       mlly: 1.4.0
       ohash: 1.1.2
       pathe: 1.1.1
@@ -12858,7 +12852,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.27.2)
+      '@rollup/pluginutils': 5.0.3(rollup@3.27.2)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
@@ -16962,8 +16956,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit@1.23.0(svelte@4.2.0)(vite@4.4.9):
-    resolution: {integrity: sha512-MuDM6afpSMnPFMtEsE1O+Qn6NVPNHDqsDYYZE/8/+Z3IvGmE+GKHC+za6fEmCfwXLqNlxFZiV8s8kKOeNVJP+g==}
+  /@sveltejs/kit@1.23.1(svelte@4.2.0)(vite@4.4.9):
+    resolution: {integrity: sha512-CfmhcmCiYmiQAiLZHY1KzA1YhaSfoWk2sgPEUAmqRrEw5ERL8b9zOPXxJ2VLRfZ1udQCp7CAmEvxwBT/RR25LA==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -16977,12 +16971,13 @@ packages:
       devalue: 4.3.2
       esm-env: 1.0.0
       kleur: 4.1.5
-      magic-string: 0.30.2
+      magic-string: 0.30.3
       mime: 3.0.0
       sade: 1.8.1
       set-cookie-parser: 2.6.0
       sirv: 2.0.2
       svelte: 4.2.0
+      tiny-glob: 0.2.9
       undici: 5.23.0
       vite: 4.4.9(@types/node@20.5.7)
     transitivePeerDependencies:
@@ -17138,7 +17133,7 @@ packages:
       debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
-      magic-string: 0.30.2
+      magic-string: 0.30.3
       svelte: 3.59.1
       svelte-hmr: 0.15.3(svelte@3.59.1)
       vite: 4.3.8(@types/node@20.5.7)
@@ -17158,7 +17153,7 @@ packages:
       debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
-      magic-string: 0.30.2
+      magic-string: 0.30.3
       svelte: 3.59.2
       svelte-hmr: 0.15.3(svelte@3.59.2)
       vite: 4.3.8(@types/node@20.5.7)
@@ -17178,7 +17173,7 @@ packages:
       debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
-      magic-string: 0.30.2
+      magic-string: 0.30.3
       svelte: 4.2.0
       svelte-hmr: 0.15.3(svelte@4.2.0)
       vite: 4.4.9(@types/node@20.5.7)
@@ -19181,7 +19176,7 @@ packages:
   /@vitest/snapshot@0.34.3:
     resolution: {integrity: sha512-QyPaE15DQwbnIBp/yNJ8lbvXTZxS00kRly0kfFgAD5EYmCbYcA+1EEyRalc93M0gosL/xHeg3lKAClIXYpmUiQ==}
     dependencies:
-      magic-string: 0.30.2
+      magic-string: 0.30.3
       pathe: 1.1.1
       pretty-format: 29.5.0
     dev: true
@@ -19303,7 +19298,7 @@ packages:
         optional: true
     dependencies:
       '@babel/types': 7.22.10
-      '@rollup/pluginutils': 5.0.2(rollup@3.27.2)
+      '@rollup/pluginutils': 5.0.3(rollup@3.27.2)
       '@vue/compiler-sfc': 3.3.4
       local-pkg: 0.4.3
       magic-string-ast: 0.1.2
@@ -21917,8 +21912,6 @@ packages:
       '@babel/plugin-transform-spread': 7.20.7(@babel/core@7.22.10)
       '@babel/plugin-transform-template-literals': 7.18.9(@babel/core@7.22.10)
       babel-plugin-syntax-trailing-function-commas: 7.0.0-beta.0
-    transitivePeerDependencies:
-      - supports-color
     dev: false
 
   /babel-preset-jest@27.5.1(@babel/core@7.21.8):
@@ -31846,7 +31839,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
-    dev: true
 
   /make-dir@1.3.0:
     resolution: {integrity: sha512-2w31R7SJtieJJnQtGc7RVL2StM2vGYVfqUOvUDxH6bC6aJTxPxTF0GnIgCyu7tjockiUWAYQRbxa7vKn34s5sQ==}
@@ -42581,7 +42573,7 @@ packages:
     dependencies:
       acorn: 8.10.0
       estree-walker: 3.0.3
-      magic-string: 0.30.2
+      magic-string: 0.30.3
       unplugin: 1.3.1
     dev: true
 
