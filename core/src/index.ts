@@ -83,6 +83,7 @@ export async function createWorkspace({
       `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
     );
   }
+  const activePreviewers = new Set<Previewer>();
   const workspace: Workspace = {
     frameworkPluginName: frameworkPlugin.name,
     crawlFiles: frameworkPlugin.crawlFiles,
@@ -193,14 +194,20 @@ export async function createWorkspace({
         },
       });
       await previewer.start();
+      activePreviewers.add(previewer);
       return {
         url: () => `http://localhost:${port}`,
         stop: async () => {
+          activePreviewers.delete(previewer);
           await previewer.stop();
         },
       };
     },
     dispose: async () => {
+      await Promise.all(
+        [...activePreviewers].map((previewer) => previewer.stop())
+      );
+      activePreviewers.clear();
       // Note: We may also want to reuse FrameworkPlugin for multiple workspaces, in which case
       // dispose() should not be called here?
       frameworkPlugin.dispose();
