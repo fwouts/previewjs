@@ -13,7 +13,6 @@ test.describe("navigation", () => {
   let previewServer: PreviewServer;
 
   test.beforeAll(async () => {
-    // TODO: Simplify syntax drastically.
     const rootDir = path.join(__dirname, "..");
     workspace = (await createWorkspace({
       rootDir,
