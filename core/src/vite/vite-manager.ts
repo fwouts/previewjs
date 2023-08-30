@@ -64,7 +64,7 @@ export class ViteManager {
           "<!-- %OPTIONAL_HEAD_CONTENT% -->",
           `
     <script type="module">
-    import "/__previewjs_internal__/index.ts";
+    import "/__previewjs_internal__/init-window-jsx-factory.ts";
     </script>`
         )
       );

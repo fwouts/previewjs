@@ -3,7 +3,7 @@ import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
 import { sendMessageFromPreview } from "./messages";
-import { jsxFactory, loadRenderer, mount as mountComponent } from "./renderer";
+import { loadRenderer } from "./renderer";
 import { setState } from "./state";
 import { updateComponent } from "./update-component";
 import { setupViteHmrListener } from "./vite-hmr-listener";
@@ -16,9 +16,6 @@ export function initListeners() {
   setUpLinkInterception();
   overrideCopyCutPaste();
 }
-
-window._jsx = jsxFactory;
-window.mount = mountComponent;
 
 export function initPreview({
   previewableModule,
