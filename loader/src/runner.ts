@@ -79,27 +79,29 @@ export async function load({
         return existingWorkspace;
       }
       const created = await locking(async () => {
-        const workspace = await core.createWorkspace({
-          logger,
-          rootDir,
-          reader,
-          frameworkPlugins,
-          onServerStart: (options) =>
-            onServerStart({
-              versionCode,
-              ...options,
-            }),
-        });
-        if (workspace) {
+        try {
+          const workspace = await core.createWorkspace({
+            logger,
+            rootDir,
+            reader,
+            frameworkPlugins,
+            onServerStart: (options) =>
+              onServerStart({
+                versionCode,
+                ...options,
+              }),
+          });
           logger.info(
             `Created Preview.js workspace (plugin: ${workspace.frameworkPluginName}) at ${rootDir}`
           );
           return workspace;
-        } else {
-          logger.warn(
-            `No compatible Preview.js plugin for workspace: ${rootDir}`
-          );
-          return null;
+        } catch (e) {
+          if (e instanceof core.NoCompatiblePluginError) {
+            logger.warn(e.message);
+            return null;
+          } else {
+            throw e;
+          }
         }
       });
       // Note: This caches the incompatibility of a workspace (i.e. caching null), which
