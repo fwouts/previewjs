@@ -14,10 +14,10 @@ test.describe("navigation", () => {
 
   test.beforeAll(async () => {
     const rootDir = path.join(__dirname, "..");
-    workspace = (await createWorkspace({
+    workspace = await createWorkspace({
       rootDir,
       frameworkPlugins: [frameworkPluginFactory],
-    }))!;
+    });
     previewServer = await workspace.startServer();
   });
 
