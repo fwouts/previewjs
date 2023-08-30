@@ -22,7 +22,6 @@ test.describe("navigation", () => {
   });
 
   test.afterAll(async () => {
-    await previewServer.stop();
     await workspace.dispose();
   });
 
