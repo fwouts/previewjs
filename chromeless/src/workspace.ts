@@ -37,9 +37,6 @@ export async function createChromelessWorkspace({
       middlewares: [express.static(clientDirPath)],
     }),
   });
-  if (!workspace) {
-    throw new Error(`No workspace could be created for directory: ${rootDir}`);
-  }
   return {
     ...workspace,
     startPreview: (page: Page, options: { port?: number } = {}) =>

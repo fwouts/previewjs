@@ -39,6 +39,12 @@ process.on("unhandledRejection", (e) => {
   console.error("Encountered an unhandled promise", e);
 });
 
+export class NoCompatiblePluginError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
+
 export async function createWorkspace({
   rootDir,
   frameworkPlugins,
@@ -54,7 +60,7 @@ export async function createWorkspace({
   logger?: Logger;
   reader?: Reader;
   onServerStart?: OnServerStart;
-}): Promise<Workspace | null> {
+}): Promise<Workspace> {
   const frameworkPlugin = await setupFrameworkPlugin({
     rootDir,
     frameworkPlugins,
@@ -62,10 +68,9 @@ export async function createWorkspace({
     logger,
   });
   if (!frameworkPlugin) {
-    logger.debug(
+    throw new NoCompatiblePluginError(
       `No compatible plugin found for workspace with root: ${rootDir}`
     );
-    return null;
   }
   logger.debug(
     `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDir}`
