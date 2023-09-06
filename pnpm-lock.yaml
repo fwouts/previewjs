@@ -3093,8 +3093,8 @@ importers:
         specifier: ^10.2.0
         version: 10.2.0
       pnpm:
-        specifier: ^8.7.1
-        version: 8.7.1
+        specifier: ^8.7.4
+        version: 8.7.4
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -7288,7 +7288,7 @@ packages:
       '@babel/compat-data': 7.21.9
       '@babel/core': 7.22.10
       '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.22.10)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
       '@babel/helper-validator-option': 7.21.0
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.22.10)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.22.10)
@@ -7356,12 +7356,12 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.22.10
+      '@babel/types': 7.21.5
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
       core-js-compat: 3.29.0
-      semver: 6.3.1
+      semver: 6.3.0
     transitivePeerDependencies:
       - supports-color
 
@@ -7374,7 +7374,7 @@ packages:
       '@babel/compat-data': 7.21.9
       '@babel/core': 7.22.9
       '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.22.10)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.21.5
       '@babel/helper-validator-option': 7.21.0
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.22.10)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.22.10)
@@ -7442,12 +7442,12 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.22.10
+      '@babel/types': 7.21.5
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
       core-js-compat: 3.29.0
-      semver: 6.3.1
+      semver: 6.3.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -34900,8 +34900,8 @@ packages:
       - typescript
     dev: true
 
-  /pnpm@8.7.1:
-    resolution: {integrity: sha512-Qbt3EhYUaXFS2k4FLQA7r2/eYz/JoDeG680/3UXG0Ga03LPuY4GgdvCLe+zO3M7ZnWG4VI4bAwk7QpJyfr5eqA==}
+  /pnpm@8.7.4:
+    resolution: {integrity: sha512-/bQ5bXp8l7krhm2QXQVGuPjzNC/Z/p0fK4kw8aIrqG0YthTS9akRKGHiWyaHX623lntCriHBZZPqhbXczqSNVg==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
