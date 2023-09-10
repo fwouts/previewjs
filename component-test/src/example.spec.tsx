@@ -26,15 +26,19 @@ test.describe("navigation", () => {
   });
 
   // TODO: Check if the page may reload itself if a new dependency is discovered by Vite.
+  //
+  // ANSWER: YES IT DOES!
 
   test("foo", async ({ page }) => {
     await page.goto(getUrl(workspace, __dirname));
+    // TODO: Somehow detect if page reloaded, then re-run the same code, until it's stable?
     await page.evaluate(async () => {
       const { default: App } = await import("./App");
       const { Foo } = await import("./Foo");
 
       await mount(<App title={<Foo />} />);
     });
+    await new Promise(() => {});
     await page.screenshot({
       path: "src/example.spec.output.png",
     });
