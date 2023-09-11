@@ -3093,8 +3093,8 @@ importers:
         specifier: ^10.2.0
         version: 10.2.0
       pnpm:
-        specifier: ^8.7.4
-        version: 8.7.4
+        specifier: ^8.7.5
+        version: 8.7.5
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -12104,7 +12104,7 @@ packages:
       '@previewjs/iframe': 9.0.8
       '@previewjs/serializable-values': 6.0.10
       '@previewjs/type-analyzer': 7.3.8
-      '@previewjs/vfs': 2.0.16
+      '@previewjs/vfs': 2.0.17
       acorn: 8.10.0
       acorn-jsx: 5.3.2(acorn@8.10.0)
       assert-never: 1.2.1
@@ -12145,7 +12145,7 @@ packages:
       '@previewjs/iframe': 11.0.1
       '@previewjs/serializable-values': 7.0.3
       '@previewjs/type-analyzer': 8.0.2
-      '@previewjs/vfs': 2.0.16
+      '@previewjs/vfs': 2.0.17
       acorn: 8.10.0
       acorn-jsx: 5.3.2(acorn@8.10.0)
       assert-never: 1.2.1
@@ -12226,7 +12226,7 @@ packages:
     resolution: {integrity: sha512-X4bXAqBlnfhgTLo2NAoyt+S+b8mMXXFTNUJEJizENzSSt6vfNWeOqcoXoEbOVfqxOzriAZ89M+m7MHOzEGLXLA==}
     dependencies:
       '@faker-js/faker': 8.0.2
-      '@previewjs/type-analyzer': 9.0.0
+      '@previewjs/type-analyzer': 9.0.1
       assert-never: 1.2.1
       prettier: 2.8.8
       typescript: 5.2.2
@@ -12257,7 +12257,7 @@ packages:
   /@previewjs/type-analyzer@7.3.8:
     resolution: {integrity: sha512-uEMsCnbh1VeTm8y/NBR16yLdfBUpC2ywGtlcX1xQGNrzcXII/OeQyXWC87IIv7bK9kChU4hqe65c1O+phhi8xA==}
     dependencies:
-      '@previewjs/vfs': 2.0.16
+      '@previewjs/vfs': 2.0.17
       assert-never: 1.2.1
       prettier: 2.8.8
       typescript: 5.2.2
@@ -12266,23 +12266,24 @@ packages:
   /@previewjs/type-analyzer@8.0.2:
     resolution: {integrity: sha512-UBkIqA/UJMWyiSMPAcGoeUTarsQhMgOg7Dnb3KpIaHw2zZvmg34rc00ILZB24dCK8UM4Z2NKMPYVI2NlKZaigg==}
     dependencies:
-      '@previewjs/vfs': 2.0.16
+      '@previewjs/vfs': 2.0.17
       assert-never: 1.2.1
       prettier: 2.8.8
       typescript: 5.2.2
     dev: false
 
-  /@previewjs/type-analyzer@9.0.0:
-    resolution: {integrity: sha512-N42rAriRG5pfspsedhfowmiXFFdEFMEvbzBSDn9fyUUs3GFywxlvW7MK7Zm8uJ6qcsGAgS2VaCuAstkGkBroIA==}
+  /@previewjs/type-analyzer@9.0.1:
+    resolution: {integrity: sha512-HfIuzYrjOCZ9UIdyExwv5RZQmtq1JMclDsK+8IVjozxtTNmA4MAv2vnpXJGW3yGTKJi5Kz2vJQICOcPcyfiYZw==}
     dependencies:
-      '@previewjs/vfs': 2.0.16
+      '@previewjs/vfs': 2.0.17
       assert-never: 1.2.1
-      prettier: 2.8.8
+      globby: 13.2.2
+      prettier: 3.0.3
       typescript: 5.2.2
     dev: false
 
-  /@previewjs/vfs@2.0.16:
-    resolution: {integrity: sha512-VFp8YjXE3Nr9paFckaV7y/6ankOemQCDOkVrtInZYPl1tEj5FihpkjPboQUa93Y9Z+bRm5QHSW1pbRT9syk3nA==}
+  /@previewjs/vfs@2.0.17:
+    resolution: {integrity: sha512-cfFwdMCBEkE9X/oWFnM8vX8PW20mJ/acQ9pkSsDV+foPvBmcVGMb2TOJNXGuZQkWwhRJDSUN0igk2dyz6o0qMQ==}
     dependencies:
       assert-never: 1.2.1
       chokidar: 3.5.3
@@ -12642,7 +12643,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -34629,8 +34630,8 @@ packages:
       - typescript
     dev: true
 
-  /pnpm@8.7.4:
-    resolution: {integrity: sha512-/bQ5bXp8l7krhm2QXQVGuPjzNC/Z/p0fK4kw8aIrqG0YthTS9akRKGHiWyaHX623lntCriHBZZPqhbXczqSNVg==}
+  /pnpm@8.7.5:
+    resolution: {integrity: sha512-WI8WZb89Uiq5x2jdz4PcQMG9ovTnXcDCEpoEckPYIT2zD8/+dEhVozPlT7bu3WkBgE0uTARtgyIKAFt+IpW2cQ==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
