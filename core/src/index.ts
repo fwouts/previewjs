@@ -131,7 +131,6 @@ export async function createWorkspace({
           if (component) {
             logger.debug(`Analyzing component: ${id}`);
             ({ props, types: componentTypes } = await component.analyze());
-            propsPerComponentId[id] = props;
             logger.debug(`Done analyzing: ${id}`);
           } else if (story) {
             if (story.associatedComponent) {
