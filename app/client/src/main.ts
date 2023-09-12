@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { decodePreviewableId } from "@previewjs/analyzer-api";
 import { createAxiosApi, RPCs } from "@previewjs/api";
 import { createController } from "@previewjs/iframe";
 import {
@@ -34,9 +35,12 @@ onUrlChanged().catch(console.error);
 async function onUrlChanged() {
   const urlParams = new URLSearchParams(document.location.search);
   const previewableId = urlParams.get("p") || "";
-  if (!previewableId.includes(":")) {
+  if (!previewableId) {
     return;
   }
+  // Note: The call to decodePreviewableId() is important here. It acts as a test that compiling the @previewjs/analyzer-api
+  // module with Vite does not cause a crash.
+  console.log(`URL changed, rendering:`, decodePreviewableId(previewableId));
   const analyzeResponse = await rpcApi.request(RPCs.Analyze, {
     previewableIds: [previewableId],
   });

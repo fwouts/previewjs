@@ -21,7 +21,7 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api.js";
-import { waitForTruePromise } from "./wait-for-successful-promise";
+import { waitForTruePromise } from "./wait-for-successful-promise.js";
 export * from "./api.js";
 
 export function createClient(baseUrl: string): Client {

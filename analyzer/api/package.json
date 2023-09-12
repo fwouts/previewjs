@@ -16,7 +16,16 @@
   "homepage": "https://previewjs.com",
   "type": "module",
   "main": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    },
+    "./factory": {
+      "import": "./dist/factory.mjs",
+      "types": "./dist/factory.d.mts"
+    }
+  },
   "scripts": {
     "build": "tsc && unbuild"
   },
