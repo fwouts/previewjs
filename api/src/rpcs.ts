@@ -12,13 +12,19 @@ export const Analyze: RPC<
 };
 
 export type AnalyzeResponse = {
-  props: {
-    [componentId: string]: ValueType;
-  };
-  args: {
-    [storyId: string]: StoryArgs | null;
-  };
+  previewables: Array<AnalyzedComponent | AnalyzedStory>;
   types: CollectedTypes;
+};
+
+export type AnalyzedComponent = Component & {
+  kind: "component";
+  props: ValueType;
+};
+
+export type AnalyzedStory = Story & {
+  kind: "story";
+  props: ValueType;
+  args: StoryArgs | null;
 };
 
 export const CrawlFiles: RPC<

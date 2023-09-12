@@ -40,7 +40,9 @@ async function onUrlChanged() {
   const analyzeResponse = await rpcApi.request(RPCs.Analyze, {
     previewableIds: [previewableId],
   });
-  const props = analyzeResponse.props[previewableId]!;
+  const props = analyzeResponse.previewables.find(
+    (p) => p.id === previewableId
+  )!.props;
   const autogenCallbackProps = await generateCallbackProps(
     props,
     analyzeResponse.types
