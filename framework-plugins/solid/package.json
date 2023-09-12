@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-solid",
-  "version": "10.0.0",
+  "version": "10.0.1",
   "description": "SolidJS plugin for Preview.js enabling instant preview of SolidJS components and stories",
   "info": "A framework plugin for Preview.js that enables instant preview and update-as-you-type of SolidJS components and stories with auto-generated properties, so you can iterate on any component without ever leaving your IDE",
   "license": "MIT",
@@ -26,11 +26,11 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/analyzer-api": "^0.1.0",
-    "@previewjs/api": "^15.0.0",
-    "@previewjs/serializable-values": "^8.0.0",
-    "@previewjs/storybook-helpers": "^5.0.0",
-    "@previewjs/type-analyzer": "^9.0.1",
+    "@previewjs/analyzer-api": "^0.1.1",
+    "@previewjs/api": "^15.0.1",
+    "@previewjs/serializable-values": "^9.0.0",
+    "@previewjs/storybook-helpers": "^5.0.1",
+    "@previewjs/type-analyzer": "^10.0.0",
     "@previewjs/vfs": "^2.0.17",
     "typescript": "^5.2.2",
     "vite-plugin-solid": "^2.7.0"
