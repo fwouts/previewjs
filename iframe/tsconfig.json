@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "moduleResolution": "Node10",
     "lib": ["DOM"],
     "jsx": "react-jsx",
     "rootDir": ".",
