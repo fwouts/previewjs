@@ -24,9 +24,9 @@ import { describe, expect, test } from "vitest";
 import { generatePropsAssignmentSource } from "./generate-props-assignment-source";
 
 describe("generatePropsAssignmentSource", () => {
-  test("simple props with object type", async () => {
+  test("simple props with object type", () => {
     expect(
-      await generatePropsAssignmentSource(
+      generatePropsAssignmentSource(
         objectType({
           foo: STRING_TYPE,
         }),
@@ -40,9 +40,9 @@ describe("generatePropsAssignmentSource", () => {
     `);
   });
 
-  test("simple props with named type", async () => {
+  test("simple props with named type", () => {
     expect(
-      await generatePropsAssignmentSource(
+      generatePropsAssignmentSource(
         namedType("/foo.tsx:MyComponentProps"),
         [],
         {
@@ -61,9 +61,9 @@ describe("generatePropsAssignmentSource", () => {
     `);
   });
 
-  test("recursive type", async () => {
+  test("recursive type", () => {
     expect(
-      await generatePropsAssignmentSource(
+      generatePropsAssignmentSource(
         namedType("/foo.tsx:MyComponentProps"),
         [],
         {
@@ -87,9 +87,9 @@ describe("generatePropsAssignmentSource", () => {
     `);
   });
 
-  test("all types", async () => {
+  test("all types", () => {
     expect(
-      await generatePropsAssignmentSource(namedType("/foo.tsx:Foo"), [], {
+      generatePropsAssignmentSource(namedType("/foo.tsx:Foo"), [], {
         "/foo.tsx:Foo": {
           type: objectType({
             anyType: ANY_TYPE,
@@ -171,9 +171,9 @@ describe("generatePropsAssignmentSource", () => {
     `);
   });
 
-  test("ignores provided keys", async () => {
+  test("ignores provided keys", () => {
     expect(
-      await generatePropsAssignmentSource(
+      generatePropsAssignmentSource(
         namedType("/foo.tsx:MyComponentProps"),
         ["foo"],
         {
