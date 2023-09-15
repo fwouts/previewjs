@@ -2282,8 +2282,8 @@ importers:
         specifier: ^2.0.17
         version: link:../../vfs
       '@sveltejs/vite-plugin-svelte':
-        specifier: ^2.4.5
-        version: 2.4.5(svelte@4.2.0)(vite@4.4.9)
+        specifier: ^2.4.6
+        version: 2.4.6(svelte@4.2.0)(vite@4.4.9)
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
@@ -4397,8 +4397,10 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.8
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.8)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.22.5
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.22.10):
     resolution: {integrity: sha512-cumfXOF0+nzZrrN8Rf0t7M+tF6sZc7vhQwYQck9q1/5w2OExlD+b4v4RpMJFaV1Z7WcDRgO6FqvxqxGlwo+RHQ==}
@@ -4407,8 +4409,10 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.10
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.10)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.10)
       '@babel/helper-plugin-utils': 7.22.5
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.22.9):
     resolution: {integrity: sha512-cumfXOF0+nzZrrN8Rf0t7M+tF6sZc7vhQwYQck9q1/5w2OExlD+b4v4RpMJFaV1Z7WcDRgO6FqvxqxGlwo+RHQ==}
@@ -4417,8 +4421,10 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.9
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.10)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.10)
       '@babel/helper-plugin-utils': 7.22.5
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-class-static-block@7.21.0(@babel/core@7.21.4):
@@ -7368,12 +7374,12 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.21.5
+      '@babel/types': 7.22.10
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
       core-js-compat: 3.29.0
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
 
@@ -7454,12 +7460,12 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.21.5
+      '@babel/types': 7.22.10
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
       core-js-compat: 3.29.0
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -12943,7 +12949,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
@@ -16663,7 +16669,7 @@ packages:
       '@storybook/builder-vite': 7.0.17(typescript@5.0.4)(vite@4.3.8)
       '@storybook/node-logger': 7.0.17
       '@storybook/svelte': 7.0.17(svelte@3.59.2)
-      '@sveltejs/vite-plugin-svelte': 2.4.5(svelte@3.59.2)(vite@4.3.8)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@3.59.2)(vite@4.3.8)
       magic-string: 0.27.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -16689,7 +16695,7 @@ packages:
       '@storybook/builder-vite': 7.0.17(@preact/preset-vite@2.5.0)(typescript@5.2.2)(vite@4.3.8)
       '@storybook/node-logger': 7.0.17
       '@storybook/svelte': 7.0.17(svelte@3.59.2)
-      '@sveltejs/vite-plugin-svelte': 2.4.5(svelte@3.59.2)(vite@4.3.8)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@3.59.2)(vite@4.3.8)
       magic-string: 0.27.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -16999,7 +17005,7 @@ packages:
       svelte: ^3.54.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.4.5(svelte@3.59.1)(vite@4.3.8)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@3.59.1)(vite@4.3.8)
       '@types/cookie': 0.5.1
       cookie: 0.5.0
       devalue: 4.3.2
@@ -17027,7 +17033,7 @@ packages:
       svelte: ^3.54.0 || ^4.0.0-next.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.4.5(svelte@4.2.0)(vite@4.4.9)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@4.2.0)(vite@4.4.9)
       '@types/cookie': 0.5.1
       cookie: 0.5.0
       devalue: 4.3.2
@@ -17078,15 +17084,15 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte-inspector@1.0.3(@sveltejs/vite-plugin-svelte@2.4.5)(svelte@3.59.1)(vite@4.3.8):
-    resolution: {integrity: sha512-Khdl5jmmPN6SUsVuqSXatKpQTMIifoQPDanaxC84m9JxIibWvSABJyHpyys0Z+1yYrxY5TTEQm+6elh0XCMaOA==}
+  /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@3.59.1)(vite@4.3.8):
+    resolution: {integrity: sha512-zjiuZ3yydBtwpF3bj0kQNV0YXe+iKE545QGZVTaylW3eAzFr+pJ/cwK8lZEaRp4JtaJXhD5DyWAV4AxLh6DgaQ==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       '@sveltejs/vite-plugin-svelte': ^2.2.0
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.4.5(svelte@3.59.1)(vite@4.3.8)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@3.59.1)(vite@4.3.8)
       debug: 4.3.4(supports-color@5.5.0)
       svelte: 3.59.1
       vite: 4.3.8(@types/node@20.6.1)
@@ -17094,15 +17100,15 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte-inspector@1.0.3(@sveltejs/vite-plugin-svelte@2.4.5)(svelte@3.59.2)(vite@4.3.8):
-    resolution: {integrity: sha512-Khdl5jmmPN6SUsVuqSXatKpQTMIifoQPDanaxC84m9JxIibWvSABJyHpyys0Z+1yYrxY5TTEQm+6elh0XCMaOA==}
+  /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@3.59.2)(vite@4.3.8):
+    resolution: {integrity: sha512-zjiuZ3yydBtwpF3bj0kQNV0YXe+iKE545QGZVTaylW3eAzFr+pJ/cwK8lZEaRp4JtaJXhD5DyWAV4AxLh6DgaQ==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       '@sveltejs/vite-plugin-svelte': ^2.2.0
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.4.5(svelte@3.59.2)(vite@4.3.8)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@3.59.2)(vite@4.3.8)
       debug: 4.3.4(supports-color@5.5.0)
       svelte: 3.59.2
       vite: 4.3.8(@types/node@20.6.1)
@@ -17110,15 +17116,15 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte-inspector@1.0.3(@sveltejs/vite-plugin-svelte@2.4.5)(svelte@4.2.0)(vite@4.4.9):
-    resolution: {integrity: sha512-Khdl5jmmPN6SUsVuqSXatKpQTMIifoQPDanaxC84m9JxIibWvSABJyHpyys0Z+1yYrxY5TTEQm+6elh0XCMaOA==}
+  /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@4.2.0)(vite@4.4.9):
+    resolution: {integrity: sha512-zjiuZ3yydBtwpF3bj0kQNV0YXe+iKE545QGZVTaylW3eAzFr+pJ/cwK8lZEaRp4JtaJXhD5DyWAV4AxLh6DgaQ==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       '@sveltejs/vite-plugin-svelte': ^2.2.0
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.4.5(svelte@4.2.0)(vite@4.4.9)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@4.2.0)(vite@4.4.9)
       debug: 4.3.4(supports-color@5.5.0)
       svelte: 4.2.0
       vite: 4.4.9(@types/node@20.6.1)
@@ -17184,14 +17190,14 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte@2.4.5(svelte@3.59.1)(vite@4.3.8):
-    resolution: {integrity: sha512-UJKsFNwhzCVuiZd06jM/psscyNJNDwjQC+qIeb7GBJK9iWeQCcIyfcPWDvbCudfcJggY9jtxJeeaZH7uny93FQ==}
+  /@sveltejs/vite-plugin-svelte@2.4.6(svelte@3.59.1)(vite@4.3.8):
+    resolution: {integrity: sha512-zO79p0+DZnXPnF0ltIigWDx/ux7Ni+HRaFOw720Qeivc1azFUrJxTl0OryXVibYNx1hCboGia1NRV3x8RNv4cA==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 1.0.3(@sveltejs/vite-plugin-svelte@2.4.5)(svelte@3.59.1)(vite@4.3.8)
+      '@sveltejs/vite-plugin-svelte-inspector': 1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@3.59.1)(vite@4.3.8)
       debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
@@ -17204,14 +17210,14 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte@2.4.5(svelte@3.59.2)(vite@4.3.8):
-    resolution: {integrity: sha512-UJKsFNwhzCVuiZd06jM/psscyNJNDwjQC+qIeb7GBJK9iWeQCcIyfcPWDvbCudfcJggY9jtxJeeaZH7uny93FQ==}
+  /@sveltejs/vite-plugin-svelte@2.4.6(svelte@3.59.2)(vite@4.3.8):
+    resolution: {integrity: sha512-zO79p0+DZnXPnF0ltIigWDx/ux7Ni+HRaFOw720Qeivc1azFUrJxTl0OryXVibYNx1hCboGia1NRV3x8RNv4cA==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 1.0.3(@sveltejs/vite-plugin-svelte@2.4.5)(svelte@3.59.2)(vite@4.3.8)
+      '@sveltejs/vite-plugin-svelte-inspector': 1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@3.59.2)(vite@4.3.8)
       debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
@@ -17224,14 +17230,14 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte@2.4.5(svelte@4.2.0)(vite@4.4.9):
-    resolution: {integrity: sha512-UJKsFNwhzCVuiZd06jM/psscyNJNDwjQC+qIeb7GBJK9iWeQCcIyfcPWDvbCudfcJggY9jtxJeeaZH7uny93FQ==}
+  /@sveltejs/vite-plugin-svelte@2.4.6(svelte@4.2.0)(vite@4.4.9):
+    resolution: {integrity: sha512-zO79p0+DZnXPnF0ltIigWDx/ux7Ni+HRaFOw720Qeivc1azFUrJxTl0OryXVibYNx1hCboGia1NRV3x8RNv4cA==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 1.0.3(@sveltejs/vite-plugin-svelte@2.4.5)(svelte@4.2.0)(vite@4.4.9)
+      '@sveltejs/vite-plugin-svelte-inspector': 1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@4.2.0)(vite@4.4.9)
       debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
@@ -21813,6 +21819,8 @@ packages:
       '@babel/plugin-transform-spread': 7.20.7(@babel/core@7.22.10)
       '@babel/plugin-transform-template-literals': 7.18.9(@babel/core@7.22.10)
       babel-plugin-syntax-trailing-function-commas: 7.0.0-beta.0
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /babel-preset-jest@27.5.1(@babel/core@7.21.8):
@@ -44001,7 +44009,7 @@ packages:
     resolution: {integrity: sha512-BXXgWp80f03JMgNM9cCxmjdFc28SkjK3Kx4TA0LBkQXPBzcj4OQSp2GWKTz8fAB2Nefh7EXa2iGdCaDRiTFdeA==}
     dependencies:
       '@babel/parser': 7.22.7
-      '@babel/types': 7.22.5
+      '@babel/types': 7.22.10
       '@vue/compiler-dom': 3.3.4
       '@vue/compiler-sfc': 3.3.4
       ast-types: 0.16.1
