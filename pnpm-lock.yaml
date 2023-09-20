@@ -246,8 +246,8 @@ importers:
         specifier: ^8.15.1
         version: 8.15.1
       playwright:
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -495,8 +495,8 @@ importers:
         version: 5.2.2
     devDependencies:
       '@playwright/test':
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -677,8 +677,8 @@ importers:
         version: 4.0.4(vite@4.4.9)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       '@previewjs/api':
         specifier: workspace:*
         version: link:../../api
@@ -2152,8 +2152,8 @@ importers:
         version: 2.7.0(solid-js@1.7.12)(vite@4.4.9)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2298,8 +2298,8 @@ importers:
         version: 4.4.9(@types/node@20.6.3)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2605,8 +2605,8 @@ importers:
         version: 2.7.14
     devDependencies:
       '@playwright/test':
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2772,8 +2772,8 @@ importers:
         version: 3.3.4
     devDependencies:
       '@playwright/test':
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -3148,8 +3148,8 @@ importers:
         specifier: ^13.2.2
         version: 13.2.2
       playwright:
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
     devDependencies:
       '@types/node':
         specifier: ^20.6.3
@@ -3186,8 +3186,8 @@ importers:
         specifier: ^4.0.4
         version: 4.0.4(vite@4.4.9)
       playwright:
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -3263,8 +3263,8 @@ importers:
   testing:
     dependencies:
       '@playwright/test':
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
       '@previewjs/api':
         specifier: ^16.0.1
         version: link:../api
@@ -3290,8 +3290,8 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0
       playwright:
-        specifier: ^1.37.1
-        version: 1.37.1
+        specifier: ^1.38.0
+        version: 1.38.0
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.2
@@ -7354,7 +7354,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.21.5
+      '@babel/types': 7.22.10
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
@@ -7440,7 +7440,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.10)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.10)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.10)
-      '@babel/types': 7.21.5
+      '@babel/types': 7.22.10
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.10)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.10)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.10)
@@ -12074,15 +12074,12 @@ packages:
     dev: true
     optional: true
 
-  /@playwright/test@1.37.1:
-    resolution: {integrity: sha512-bq9zTli3vWJo8S3LwB91U0qDNQDpEXnw7knhxLM0nwDvexQAwx9tO8iKDZSqqneVq+URd/WIoz+BALMqUTgdSg==}
+  /@playwright/test@1.38.0:
+    resolution: {integrity: sha512-xis/RXXsLxwThKnlIXouxmIvvT3zvQj1JE39GsNieMUrMpb3/GySHDh2j8itCG22qKVD4MYLBp7xB73cUW/UUw==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      '@types/node': 18.16.14
-      playwright-core: 1.37.1
-    optionalDependencies:
-      fsevents: 2.3.2
+      playwright: 1.38.0
 
   /@pmmmwh/react-refresh-webpack-plugin@0.5.10(react-refresh@0.11.0)(webpack-dev-server@4.11.1)(webpack@5.83.1):
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
@@ -12822,7 +12819,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -12929,7 +12926,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
@@ -34748,18 +34745,19 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core@1.37.1:
-    resolution: {integrity: sha512-17EuQxlSIYCmEMwzMqusJ2ztDgJePjrbttaefgdsiqeLWidjYz9BxXaTaZWxH1J95SHGk6tjE+dwgWILJoUZfA==}
+  /playwright-core@1.38.0:
+    resolution: {integrity: sha512-f8z1y8J9zvmHoEhKgspmCvOExF2XdcxMW8jNRuX4vkQFrzV4MlZ55iwb5QeyiFQgOFCUolXiRHgpjSEnqvO48g==}
     engines: {node: '>=16'}
     hasBin: true
 
-  /playwright@1.37.1:
-    resolution: {integrity: sha512-bgUXRrQKhT48zHdxDYQTpf//0xDfDd5hLeEhjuSw8rXEGoT9YeElpfvs/izonTNY21IQZ7d3s22jLxYaAnubbQ==}
+  /playwright@1.38.0:
+    resolution: {integrity: sha512-fJGw+HO0YY+fU/F1N57DMO+TmXHTrmr905J05zwAQE9xkuwP/QLDk63rVhmyxh03dYnEhnRbsdbH9B0UVVRB3A==}
     engines: {node: '>=16'}
     hasBin: true
-    requiresBuild: true
     dependencies:
-      playwright-core: 1.37.1
+      playwright-core: 1.38.0
+    optionalDependencies:
+      fsevents: 2.3.2
 
   /please-upgrade-node@3.2.0:
     resolution: {integrity: sha512-gQR3WpIgNIKwBMVLkpMUeR3e1/E1y42bqDQZfql+kDeXd8COYfM8PQA4X6y7a8u9Ua9FHmsrrmirW2vHs45hWg==}
