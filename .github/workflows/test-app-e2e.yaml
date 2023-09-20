@@ -56,6 +56,7 @@ jobs:
       - uses: pnpm/action-setup@v2.4.0
         with:
           run_install: true
+      - run: cd testing && pnpm exec playwright install
       - run: pnpm turbo build
       - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2
         env:

@@ -45,5 +45,6 @@ jobs:
       - uses: pnpm/action-setup@v2.4.0
         with:
           run_install: true
+      - run: cd testing && pnpm exec playwright install
       - run: pnpm vite-ecosystem-ci:build
       - run: pnpm vite-ecosystem-ci:test
