@@ -86,7 +86,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "before-render":
       case "action":
       case "log-message":
-      case "file-changed":
         listener(message);
         break;
       case "rendering-setup":
@@ -191,8 +190,7 @@ export type PreviewEvent =
   | RenderingSetup
   | RenderingDone
   | Action
-  | LogMessage
-  | FileChanged;
+  | LogMessage;
 
 export type PreviewBootstrapped = {
   kind: "bootstrapped";
@@ -230,11 +228,6 @@ export interface LogMessage {
 }
 
 export type LogLevel = "log" | "info" | "warn" | "error";
-
-export interface FileChanged {
-  kind: "file-changed";
-  path: string;
-}
 
 export type RendererLoader = (options: {
   wrapperModule: any;
