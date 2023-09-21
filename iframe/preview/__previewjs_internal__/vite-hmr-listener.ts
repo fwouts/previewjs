@@ -63,10 +63,4 @@ export function setupViteHmrListener() {
     });
     triggerOnUpdateSoon();
   });
-  hmr.on("previewjs-file-changed", ({ path }: { path: string }) => {
-    sendMessageFromPreview({
-      kind: "file-changed",
-      path,
-    });
-  });
 }
