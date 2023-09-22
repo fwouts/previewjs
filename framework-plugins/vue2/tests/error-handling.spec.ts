@@ -89,6 +89,8 @@ test.describe.parallel("vue2/error handling", () => {
     });
     await preview.expectLoggedMessages.toMatch([
       "App.vue:3:3: Unknown word",
+      "App.vue:3:3: Unknown word",
+      "Failed to reload /src/App.vue.",
       "Failed to reload /src/App.vue?vue&type=style&index=0&lang.css",
     ]);
     await preview.fileManager.update("src/App.vue", {

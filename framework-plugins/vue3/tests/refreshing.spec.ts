@@ -71,7 +71,8 @@ test.describe.parallel("vue3/refreshing", () => {
           inMemoryOnly,
         }
       );
-      expect((await helloWorld?.boundingBox())?.width).toEqual(200);
+      const helloWorldUpdated = await preview.iframe.waitForSelector(".hello");
+      expect((await helloWorldUpdated?.boundingBox())?.width).toEqual(200);
     });
   }
 });
