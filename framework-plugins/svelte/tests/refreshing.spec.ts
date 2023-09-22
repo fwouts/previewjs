@@ -73,7 +73,10 @@ test.describe.parallel("svelte/refreshing", () => {
           inMemoryOnly,
         }
       );
-      expect((await readTheDocs?.boundingBox())?.width).toEqual(200);
+      const readTheDocsUpdated = await preview.iframe.waitForSelector(
+        ".read-the-docs"
+      );
+      expect((await readTheDocsUpdated?.boundingBox())?.width).toEqual(200);
     });
   }
 });
