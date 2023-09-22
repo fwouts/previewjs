@@ -267,7 +267,7 @@ export class ViteManager {
         return {
           ...plugin,
           handleHotUpdate: async (ctx: vite.HmrContext) => {
-            return handleHotUpdate({
+            await handleHotUpdate({
               ...ctx,
               read: async () => {
                 const entry = await this.options.reader.read(ctx.file);
@@ -409,12 +409,34 @@ export class ViteManager {
   }
 
   triggerReload(absoluteFilePath: string) {
-    if (!this.viteServer) {
-      return;
-    }
-    for (const onChange of this.viteServer.watcher.listeners("change")) {
-      onChange(absoluteFilePath);
-    }
+    (async () => {
+      const viteServer = this.viteServer;
+      if (!viteServer) {
+        return;
+      }
+      const modules = await viteServer.moduleGraph.getModulesByFile(
+        absoluteFilePath
+      );
+      for (const module of modules || []) {
+        if (!module.id) {
+          continue;
+        }
+        try {
+          const loaded = await viteServer.pluginContainer.load(module.id);
+          if (!loaded) {
+            continue;
+          }
+          const source = typeof loaded === "object" ? loaded.code : loaded;
+          await viteServer.pluginContainer.transform(source, module.id);
+        } catch (e) {
+          // We know it will fail.
+          return;
+        }
+      }
+      for (const onChange of viteServer.watcher.listeners("change")) {
+        onChange(absoluteFilePath);
+      }
+    })();
   }
 
   triggerFullReload() {
