@@ -385,15 +385,6 @@ export class ViteManager {
     delete this.viteStartupPromise;
     resolveViteStartupPromise();
     this.options.logger.debug(`Done starting Vite server`);
-    this.viteServer.watcher.addListener("change", (path) => {
-      this.viteServer?.ws.send({
-        type: "custom",
-        event: "previewjs-file-changed",
-        data: {
-          path,
-        },
-      });
-    });
   }
 
   async stop() {
