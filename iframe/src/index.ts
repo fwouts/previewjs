@@ -182,7 +182,6 @@ export type PreviewEvent =
   | PreviewBootstrapped
   | BeforeViteUpdate
   | BeforeRender
-  | RenderingSetup
   | RenderingDone
   | Action
   | LogMessage;
