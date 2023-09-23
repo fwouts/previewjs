@@ -37,6 +37,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     previewableId: string;
     options: RenderOptions;
   } | null = null;
+  private iframeBootstrapped = false;
   private expectRenderTimeout?: any;
 
   constructor(
@@ -75,6 +76,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       return;
     }
     iframe.src = `/${id}/?t=${Date.now()}`;
+    this.iframeBootstrapped = false;
   }
 
   onPreviewMessage(message: PreviewToAppMessage) {
@@ -114,6 +116,12 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         });
         break;
       case "vite-error":
+        if (!this.iframeBootstrapped) {
+          listener({
+            kind: "rendering-done",
+            success: false,
+          });
+        }
         listener({
           kind: "log-message",
           level: "error",
@@ -131,6 +139,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   }
 
   private onBootstrapped() {
+    this.iframeBootstrapped = true;
     if (this.lastRender) {
       this.render(this.lastRender.previewableId, this.lastRender.options).catch(
         // eslint-disable-next-line no-console
