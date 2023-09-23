@@ -24,9 +24,6 @@ export async function updateComponent({
     return;
   }
   try {
-    sendMessageFromPreview({
-      kind: "before-render",
-    });
     const { render, jsxFactory } = await loadRenderer({
       wrapperModule,
       wrapperName,

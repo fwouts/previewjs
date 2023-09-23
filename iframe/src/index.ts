@@ -83,7 +83,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "bootstrapped":
         this.onBootstrapped();
         break;
-      case "before-render":
       case "action":
       case "log-message":
         listener(message);
@@ -181,7 +180,6 @@ function generateMessageFromViteError(err: ErrorPayload["err"]) {
 export type PreviewEvent =
   | PreviewBootstrapped
   | BeforeViteUpdate
-  | BeforeRender
   | RenderingDone
   | Action
   | LogMessage;
@@ -193,10 +191,6 @@ export type PreviewBootstrapped = {
 export type BeforeViteUpdate = {
   kind: "before-vite-update";
   payload: UpdatePayload;
-};
-
-export type BeforeRender = {
-  kind: "before-render";
 };
 
 export interface RenderingDone {
