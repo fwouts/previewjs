@@ -88,11 +88,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "log-message":
         listener(message);
         break;
-      case "rendering-setup":
-        listener({
-          kind: "rendering-setup",
-        });
-        break;
       case "rendering-success":
         this.clearExpectRenderTimeout();
         listener({
@@ -187,7 +182,6 @@ export type PreviewEvent =
   | PreviewBootstrapped
   | BeforeViteUpdate
   | BeforeRender
-  | RenderingSetup
   | RenderingDone
   | Action
   | LogMessage;
@@ -203,10 +197,6 @@ export type BeforeViteUpdate = {
 
 export type BeforeRender = {
   kind: "before-render";
-};
-
-export type RenderingSetup = {
-  kind: "rendering-setup";
 };
 
 export interface RenderingDone {

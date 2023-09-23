@@ -6,7 +6,6 @@ export type PreviewToAppMessage =
   | BeforeRender
   | Action
   | LogMessage
-  | RenderingSetup
   | RenderingSuccess
   | RenderingError
   | ViteErrorMessage
@@ -18,10 +17,6 @@ export interface Bootstrapped {
 
 export interface BeforeRender {
   kind: "before-render";
-}
-
-export interface RenderingSetup {
-  kind: "rendering-setup";
 }
 
 export interface RenderingSuccess {
