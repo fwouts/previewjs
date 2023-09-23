@@ -20,10 +20,6 @@ export interface BeforeRender {
   kind: "before-render";
 }
 
-export interface RenderingSetup {
-  kind: "rendering-setup";
-}
-
 export interface RenderingSuccess {
   kind: "rendering-success";
 }

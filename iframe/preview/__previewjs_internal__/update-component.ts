@@ -47,9 +47,6 @@ export async function updateComponent({
     if (shouldAbortRender()) {
       return;
     }
-    sendMessageFromPreview({
-      kind: "rendering-setup",
-    });
     await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),
       ...transformFunctions(presetGlobalProps, []),
