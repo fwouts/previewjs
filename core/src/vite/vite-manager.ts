@@ -214,73 +214,41 @@ export class ViteManager {
       existingViteConfig?.config.publicDir ||
       frameworkPluginViteConfig.publicDir ||
       this.options.config.publicDir;
-    const vitePlugins: Array<vite.PluginOption | vite.PluginOption[]> = [
-      viteTsconfigPaths({
-        root: this.options.rootDir,
-      }),
-      virtualPlugin({
-        logger: this.options.logger,
-        reader: this.options.reader,
-        rootDir: this.options.rootDir,
-        allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow ||
-          existingViteConfig?.config.server?.fs?.allow || [
-            searchForWorkspaceRoot(this.options.rootDir),
-          ],
-        moduleGraph: () => this.viteServer?.moduleGraph || null,
-        esbuildOptions: frameworkPluginViteConfig.esbuild || {},
-      }),
-      localEval(),
-      exportToplevelPlugin(),
-      fakeExportedTypesPlugin({
-        readFile: (absoluteFilePath) =>
-          this.options.reader.read(absoluteFilePath).then((entry) => {
-            if (entry?.kind !== "file") {
-              return null;
-            }
-            return entry.read();
-          }),
-      }),
-      cssModulesWithoutSuffixPlugin(),
-      publicAssetImportPluginPlugin({
-        rootDir: this.options.rootDir,
-        publicDir,
-      }),
-      frameworkPluginViteConfig.plugins,
-    ];
-
-    // We need to patch handleHotUpdate() in every plugin because, by
-    // default, HmrContext has a read() method that reads directly from
-    // the file system. We want it to read from our reader, which could
-    // be using an in-memory version instead.
-    const plugins = await Promise.all(
-      vitePlugins.flat().map(async (pluginOrPromise) => {
-        const plugin = await pluginOrPromise;
-        if (!plugin || Array.isArray(plugin) || !plugin.handleHotUpdate) {
-          return plugin;
-        }
-        // Note: this gets rid of the "pre" / "post" handler. It's probably fine.
-        // If not, it's easily fixed. PR welcome!
-        const handleHotUpdate =
-          typeof plugin.handleHotUpdate === "function"
-            ? plugin.handleHotUpdate
-            : plugin.handleHotUpdate.handler;
-        return {
-          ...plugin,
-          handleHotUpdate: async (ctx: vite.HmrContext) => {
-            await handleHotUpdate({
-              ...ctx,
-              read: async () => {
-                const entry = await this.options.reader.read(ctx.file);
-                if (entry?.kind !== "file") {
-                  // Fall back to default behaviour.
-                  return ctx.read();
-                }
-                return entry.read();
-              },
-            });
-          },
-        };
-      })
+    const plugins = replaceHandleHotUpdate(
+      this.options.reader,
+      await flattenPlugins([
+        viteTsconfigPaths({
+          root: this.options.rootDir,
+        }),
+        virtualPlugin({
+          logger: this.options.logger,
+          reader: this.options.reader,
+          rootDir: this.options.rootDir,
+          allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow ||
+            existingViteConfig?.config.server?.fs?.allow || [
+              searchForWorkspaceRoot(this.options.rootDir),
+            ],
+          moduleGraph: () => this.viteServer?.moduleGraph || null,
+          esbuildOptions: frameworkPluginViteConfig.esbuild || {},
+        }),
+        localEval(),
+        exportToplevelPlugin(),
+        fakeExportedTypesPlugin({
+          readFile: (absoluteFilePath) =>
+            this.options.reader.read(absoluteFilePath).then((entry) => {
+              if (entry?.kind !== "file") {
+                return null;
+              }
+              return entry.read();
+            }),
+        }),
+        cssModulesWithoutSuffixPlugin(),
+        publicAssetImportPluginPlugin({
+          rootDir: this.options.rootDir,
+          publicDir,
+        }),
+        frameworkPluginViteConfig.plugins,
+      ])
     );
     this.options.logger.debug(`Creating Vite server`);
     const viteServerPromise = vite.createServer({
@@ -489,4 +457,38 @@ function viteLogLevelFromPinoLogger(logger: Logger): vite.LogLevel {
       logger.warn(`Unknown log level: ${logger.level}`);
       return "info";
   }
+}
+
+function replaceHandleHotUpdate(reader: Reader, plugins: vite.Plugin[]) {
+  // We need to patch handleHotUpdate() in every plugin because, by
+  // default, HmrContext has a read() method that reads directly from
+  // the file system. We want it to read from our reader, which could
+  // be using an in-memory version instead.
+  return plugins.map(async (plugin) => {
+    if (!plugin.handleHotUpdate) {
+      return plugin;
+    }
+    // Note: this gets rid of the "pre" / "post" handler. It's probably fine.
+    // If not, it's easily fixed. PR welcome!
+    const handleHotUpdate =
+      typeof plugin.handleHotUpdate === "function"
+        ? plugin.handleHotUpdate
+        : plugin.handleHotUpdate.handler;
+    return {
+      ...plugin,
+      handleHotUpdate: async (ctx: vite.HmrContext) => {
+        await handleHotUpdate({
+          ...ctx,
+          read: async () => {
+            const entry = await reader.read(ctx.file);
+            if (entry?.kind !== "file") {
+              // Fall back to default behaviour.
+              return ctx.read();
+            }
+            return entry.read();
+          },
+        });
+      },
+    };
+  });
 }

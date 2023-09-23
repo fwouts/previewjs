@@ -349,7 +349,7 @@ export class Previewer {
       }
       if (info.virtual) {
         this.viteManager?.triggerReload(absoluteFilePath);
-        this.viteManager?.triggerReload(absoluteFilePath + ".ts");
+        // this.viteManager?.triggerReload(absoluteFilePath + ".ts");
       } else if (this.options.onFileChanged) {
         this.options.onFileChanged(absoluteFilePath);
       }
