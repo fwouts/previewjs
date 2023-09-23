@@ -24,9 +24,6 @@ export async function updateComponent({
     return;
   }
   try {
-    sendMessageFromPreview({
-      kind: "before-render",
-    });
     const { render, jsxFactory } = await loadRenderer({
       wrapperModule,
       wrapperName,
@@ -47,9 +44,6 @@ export async function updateComponent({
     if (shouldAbortRender()) {
       return;
     }
-    sendMessageFromPreview({
-      kind: "rendering-setup",
-    });
     await render(({ presetProps, presetGlobalProps }) => ({
       ...transformFunctions(autogenCallbackProps, []),
       ...transformFunctions(presetGlobalProps, []),

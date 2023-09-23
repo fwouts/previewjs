@@ -3,10 +3,8 @@ import type { Action, LogMessage } from "./index";
 
 export type PreviewToAppMessage =
   | Bootstrapped
-  | BeforeRender
   | Action
   | LogMessage
-  | RenderingSetup
   | RenderingSuccess
   | RenderingError
   | ViteErrorMessage
@@ -14,14 +12,6 @@ export type PreviewToAppMessage =
 
 export interface Bootstrapped {
   kind: "bootstrapped";
-}
-
-export interface BeforeRender {
-  kind: "before-render";
-}
-
-export interface RenderingSetup {
-  kind: "rendering-setup";
 }
 
 export interface RenderingSuccess {

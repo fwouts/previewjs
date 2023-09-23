@@ -13,7 +13,6 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
         switch (event.kind) {
           case "bootstrapped":
           case "before-vite-update":
-          case "before-render":
             logEvents = [];
             break;
           case "log-message":
