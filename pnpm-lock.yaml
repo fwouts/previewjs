@@ -228,10 +228,10 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/core':
-        specifier: ^27.0.0
+        specifier: ^27.0.1
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../iframe
       '@previewjs/properties':
         specifier: ^5.0.1
@@ -313,7 +313,7 @@ importers:
         specifier: ^5.1.1
         version: link:../config
       '@previewjs/iframe':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../iframe
       '@previewjs/serializable-values':
         specifier: ^9.0.1
@@ -3167,13 +3167,13 @@ importers:
         specifier: ^0.1.3
         version: link:../analyzer/api
       '@previewjs/chromeless':
-        specifier: ^9.0.3
+        specifier: ^9.0.4
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^27.0.0
+        specifier: ^27.0.1
         version: link:../core
       '@previewjs/plugin-react':
-        specifier: ^13.0.3
+        specifier: ^13.0.4
         version: link:../framework-plugins/react
       globby:
         specifier: ^13.2.2
@@ -3266,7 +3266,7 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/core':
-        specifier: ^27.0.0
+        specifier: ^27.0.1
         version: link:../core
       '@previewjs/serializable-values':
         specifier: ^9.0.1
@@ -3300,13 +3300,13 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/chromeless':
-        specifier: ^9.0.3
+        specifier: ^9.0.4
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^27.0.0
+        specifier: ^27.0.1
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^13.0.0
+        specifier: ^14.0.0
         version: link:../iframe
       '@previewjs/vfs':
         specifier: ^2.0.17
@@ -11892,8 +11892,8 @@ packages:
       webpack: 4.46.0
     dev: true
 
-  /@previewjs/analyzer-api@0.1.2:
-    resolution: {integrity: sha512-KfPrURgLyC5pTJts35GvsOGdpMmMfGvOr64QFKWnj7thZvS978E394xuAm4WlqXGOLRXNlJClqVbXOqcwkj27Q==}
+  /@previewjs/analyzer-api@0.1.3:
+    resolution: {integrity: sha512-OIOnVFBPrVUVU1N+fOEnKL6k3G7979TLOGsA8CKiOeNPEo4aOChbizG9okccwYu1tZ6wCryZ+YH8g8xALP37lQ==}
     dependencies:
       '@previewjs/serializable-values': 9.0.1
       '@previewjs/type-analyzer': 10.0.1
@@ -11912,18 +11912,62 @@ packages:
       - debug
     dev: false
 
-  /@previewjs/config@5.0.2:
-    resolution: {integrity: sha512-0LSZWZp2WTVT6Wi8gcVNo0HVCq18tlncQIurT7BW8bfGiPUodPzqI1NsGuQPHqGffjXs/hJjMa/KhV7GjB3b0A==}
+  /@previewjs/config@5.1.1:
+    resolution: {integrity: sha512-pittZN3LqAxG/pb8lj+N2p6ojYrn53DysG6Vwcmnct6UsZgbr7B+VCwP6J/tyeH4DZfs3R4q9La/PKdE2umKIA==}
     dev: false
 
   /@previewjs/core@26.0.1(@types/node@20.6.3)(esbuild@0.19.3):
     resolution: {integrity: sha512-lq9li9XohBNNPLPClcflH2QZSi75hvf9uAnZezrOrryGyx0RUkChu7nFlQK2TefYORmrNrK1t8KNKz5vZJvFqQ==}
     dependencies:
       '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.2.2)(vite@4.4.9)
-      '@previewjs/analyzer-api': 0.1.2
+      '@previewjs/analyzer-api': 0.1.3
       '@previewjs/api': 16.0.1
-      '@previewjs/config': 5.0.2
+      '@previewjs/config': 5.1.1
       '@previewjs/iframe': 12.0.1
+      '@previewjs/serializable-values': 9.0.1
+      '@previewjs/type-analyzer': 10.0.1
+      '@previewjs/vfs': 2.0.17
+      acorn: 8.10.0
+      acorn-jsx: 5.3.2(acorn@8.10.0)
+      assert-never: 1.2.1
+      axios: 1.5.0
+      esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.3)
+      exclusive-promises: 1.0.3
+      express: 4.18.2
+      fs-extra: 11.1.1
+      globby: 13.2.2
+      html-escaper: 3.0.3
+      http-terminator: 3.2.0
+      pino: 8.15.1
+      pino-pretty: 10.2.0
+      rollup-plugin-friendly-type-imports: 1.0.3
+      ts-node: 10.9.1(@types/node@20.6.3)(typescript@5.2.2)
+      tsconfig-paths: 4.2.0
+      typescript: 5.2.2
+      vite: 4.4.9(@types/node@20.6.3)
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - debug
+      - esbuild
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@previewjs/core@27.0.0(@types/node@20.6.3)(esbuild@0.19.3):
+    resolution: {integrity: sha512-cCgE8l9lCWU8ePKiTUHcotO50xnj06I4NhlxOJyTqRTIjytAuHuz4lUwHENokKEDtYv1MdIh0H8oqK1iWti6AQ==}
+    dependencies:
+      '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.2.2)(vite@4.4.9)
+      '@previewjs/analyzer-api': 0.1.3
+      '@previewjs/api': 16.0.1
+      '@previewjs/config': 5.1.1
+      '@previewjs/iframe': 13.0.0
       '@previewjs/serializable-values': 9.0.1
       '@previewjs/type-analyzer': 10.0.1
       '@previewjs/vfs': 2.0.17
@@ -11964,14 +12008,18 @@ packages:
     resolution: {integrity: sha512-nMSzV046/MNLcMwLekj/VKhxEPcd3qciHhmXxtUK0e16qg9XG5mRAmUZxKoXSoWD2OtPLyecy+J4pUOHNqEJAA==}
     dev: false
 
+  /@previewjs/iframe@13.0.0:
+    resolution: {integrity: sha512-yqB3+yoxnrAccIKwTRRi0uj8lSIKKnPPWjJkJeTE+ea7IUAVID3IhJ2LEYnBnKGB6FdCQ04K5+POvsdOoX09Bg==}
+    dev: false
+
   /@previewjs/pro@1.13.4(@types/node@20.6.3)(esbuild@0.19.3):
     resolution: {integrity: sha512-7q4J8bkV41jlFdlHqvUrsqJalYDjeD8C8HGeQPYZrXwol3MJ5OEIs8XNBY7w/Q3ellGC95l7Q9sRTNYX5QJQ8Q==}
     dependencies:
-      '@previewjs/analyzer-api': 0.1.2
+      '@previewjs/analyzer-api': 0.1.3
       '@previewjs/api': 16.0.1
       '@previewjs/core': 26.0.1(@types/node@20.6.3)(esbuild@0.19.3)
       '@previewjs/serializable-values': 9.0.1
-      '@previewjs/storybook-helpers': 5.0.3(@types/node@20.6.3)(esbuild@0.19.3)
+      '@previewjs/storybook-helpers': 5.0.4(@types/node@20.6.3)(esbuild@0.19.3)
       axios: 1.5.0
       env-paths: 3.0.0
       express: 4.18.2
@@ -12003,12 +12051,12 @@ packages:
       typescript: 5.2.2
     dev: false
 
-  /@previewjs/storybook-helpers@5.0.3(@types/node@20.6.3)(esbuild@0.19.3):
-    resolution: {integrity: sha512-LQr+cbCCcSblCZZSq+0n/6VGQx9YmPiupVBGS5tCz0PbKzAylQOjxb45tgIgGPy2lqV87UzJ8XCsb/jxeNzlLg==}
+  /@previewjs/storybook-helpers@5.0.4(@types/node@20.6.3)(esbuild@0.19.3):
+    resolution: {integrity: sha512-be+Oc7GyXObldaWkdW0Ah0hJOF2lnPVLsc8ear1rpFcR0mNCTriA+S0GnXTgrj77/V+7iVaUVEQAgXmRZ5CqOw==}
     dependencies:
-      '@previewjs/analyzer-api': 0.1.2
+      '@previewjs/analyzer-api': 0.1.3
       '@previewjs/api': 16.0.1
-      '@previewjs/core': 26.0.1(@types/node@20.6.3)(esbuild@0.19.3)
+      '@previewjs/core': 27.0.0(@types/node@20.6.3)(esbuild@0.19.3)
       '@previewjs/serializable-values': 9.0.1
       '@previewjs/type-analyzer': 10.0.1
       typescript: 5.2.2
