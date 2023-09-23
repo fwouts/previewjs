@@ -87,13 +87,13 @@ importers:
   analyzer/react:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../api
       '@previewjs/serializable-values':
         specifier: ^9.0.1
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.3
+        specifier: ^5.0.4
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
         specifier: ^10.0.1
@@ -228,10 +228,10 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/core':
-        specifier: ^26.0.1
+        specifier: ^27.0.0
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^12.0.1
+        specifier: ^13.0.0
         version: link:../iframe
       '@previewjs/properties':
         specifier: ^5.0.1
@@ -304,16 +304,16 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1(typescript@5.2.2)(vite@4.4.9)
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../analyzer/api
       '@previewjs/api':
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/config':
-        specifier: ^5.1.0
+        specifier: ^5.1.1
         version: link:../config
       '@previewjs/iframe':
-        specifier: ^12.0.1
+        specifier: ^13.0.0
         version: link:../iframe
       '@previewjs/serializable-values':
         specifier: ^9.0.1
@@ -473,7 +473,7 @@ importers:
   framework-plugins/preact:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../../analyzer/api
       '@previewjs/api':
         specifier: ^16.0.1
@@ -482,7 +482,7 @@ importers:
         specifier: ^9.0.1
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.3
+        specifier: ^5.0.4
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
         specifier: ^10.0.1
@@ -670,7 +670,7 @@ importers:
   framework-plugins/react:
     dependencies:
       '@previewjs/analyzer-react':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../../analyzer/react
       '@vitejs/plugin-react':
         specifier: ^4.0.4
@@ -2158,7 +2158,7 @@ importers:
   framework-plugins/solid:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../../analyzer/api
       '@previewjs/api':
         specifier: ^16.0.1
@@ -2167,7 +2167,7 @@ importers:
         specifier: ^9.0.1
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.3
+        specifier: ^5.0.4
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
         specifier: ^10.0.1
@@ -2295,7 +2295,7 @@ importers:
   framework-plugins/svelte:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../../analyzer/api
       '@previewjs/api':
         specifier: ^16.0.1
@@ -2304,7 +2304,7 @@ importers:
         specifier: ^9.0.1
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.3
+        specifier: ^5.0.4
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
         specifier: ^10.0.1
@@ -2599,7 +2599,7 @@ importers:
         specifier: ^2.17.1
         version: 2.17.1
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../../analyzer/api
       '@previewjs/api':
         specifier: ^16.0.1
@@ -2608,7 +2608,7 @@ importers:
         specifier: ^9.0.1
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.3
+        specifier: ^5.0.4
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
         specifier: ^10.0.1
@@ -2766,7 +2766,7 @@ importers:
   framework-plugins/vue3:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../../analyzer/api
       '@previewjs/api':
         specifier: ^16.0.1
@@ -2775,7 +2775,7 @@ importers:
         specifier: ^9.0.1
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.3
+        specifier: ^5.0.4
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
         specifier: ^10.0.1
@@ -3164,16 +3164,16 @@ importers:
   screenshot:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../analyzer/api
       '@previewjs/chromeless':
-        specifier: ^9.0.2
+        specifier: ^9.0.3
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^26.0.1
+        specifier: ^27.0.0
         version: link:../core
       '@previewjs/plugin-react':
-        specifier: ^13.0.2
+        specifier: ^13.0.3
         version: link:../framework-plugins/react
       globby:
         specifier: ^13.2.2
@@ -3260,13 +3260,13 @@ importers:
   storybook-helpers:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.2
+        specifier: ^0.1.3
         version: link:../analyzer/api
       '@previewjs/api':
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/core':
-        specifier: ^26.0.1
+        specifier: ^27.0.0
         version: link:../core
       '@previewjs/serializable-values':
         specifier: ^9.0.1
@@ -3300,13 +3300,13 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/chromeless':
-        specifier: ^9.0.2
+        specifier: ^9.0.3
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^26.0.1
+        specifier: ^27.0.0
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^12.0.1
+        specifier: ^13.0.0
         version: link:../iframe
       '@previewjs/vfs':
         specifier: ^2.0.17
@@ -3779,26 +3779,6 @@ packages:
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
-
-  /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.22.9):
-    resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/core': 7.22.9
-      '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-environment-visitor': 7.22.5
-      '@babel/helper-function-name': 7.22.5
-      '@babel/helper-member-expression-to-functions': 7.22.5
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /@babel/helper-create-regexp-features-plugin@7.21.0(@babel/core@7.21.4):
     resolution: {integrity: sha512-N+LaFW/auRSWdx7SHD/HiARwXQju1vXTW4fKr4u5SgBUTm51OKEjKgj+cs00ggW3kEvNqwErnlwuq7Y3xBe4eg==}
@@ -4429,6 +4409,7 @@ packages:
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.8)
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.22.10):
     resolution: {integrity: sha512-h8hlezQ4dl6ixodgXkH8lUfcD7x+WAuIqPUjwGoItynrXOAv4a4Tci1zA/qjzQjjcl0v3QpLdc2LM6ZACQuY7A==}
@@ -4444,22 +4425,6 @@ packages:
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.22.10)
     transitivePeerDependencies:
       - supports-color
-
-  /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.22.9):
-    resolution: {integrity: sha512-h8hlezQ4dl6ixodgXkH8lUfcD7x+WAuIqPUjwGoItynrXOAv4a4Tci1zA/qjzQjjcl0v3QpLdc2LM6ZACQuY7A==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.9
-      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.9)
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.5
-      '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.22.9)
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /@babel/plugin-proposal-dynamic-import@7.18.6(@babel/core@7.21.4):
     resolution: {integrity: sha512-1auuwmK+Rz13SJj36R+jqFPMJWyKEDd7lLSdOj4oJK0UTgGueSAtkrCvz9ewmgyU/P941Rv2fQwZJN8s6QruXw==}
@@ -5680,26 +5645,6 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-
-  /@babel/plugin-transform-classes@7.21.0(@babel/core@7.22.9):
-    resolution: {integrity: sha512-RZhbYTCEUAe6ntPehC4hlslPWosNHDox+vAs4On/mCLRLfoDVHf6hVEd7kuxr1RnHwJmxFfUM3cZiZRmPxJPXQ==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.9
-      '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-compilation-targets': 7.22.10
-      '@babel/helper-environment-visitor': 7.22.5
-      '@babel/helper-function-name': 7.22.5
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /@babel/plugin-transform-computed-properties@7.20.7(@babel/core@7.21.4):
     resolution: {integrity: sha512-Lz7MvBK6DTjElHAmfu6bfANzKcxpyNPeYBGEafyA6E5HtRpjpZwU+u7Qrgz/2OR0z+5TvKYbPdphfSaAcZBrYQ==}
@@ -11966,10 +11911,6 @@ packages:
     transitivePeerDependencies:
       - debug
     dev: false
-
-  /@previewjs/config@4.9.16:
-    resolution: {integrity: sha512-31C3JyfBYysfG+LE5E6bVaemqx2H+mXuKsbWXiRaVu6n8C+CnHh725t/U+WHOn1eVFuS041FauhtRaNHxoi2tg==}
-    dev: true
 
   /@previewjs/config@5.0.2:
     resolution: {integrity: sha512-0LSZWZp2WTVT6Wi8gcVNo0HVCq18tlncQIurT7BW8bfGiPUodPzqI1NsGuQPHqGffjXs/hJjMa/KhV7GjB3b0A==}
