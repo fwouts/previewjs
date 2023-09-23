@@ -6,7 +6,6 @@ export type PreviewToAppMessage =
   | BeforeRender
   | Action
   | LogMessage
-  | RenderingSetup
   | RenderingSuccess
   | RenderingError
   | ViteErrorMessage
