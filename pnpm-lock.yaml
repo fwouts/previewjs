@@ -464,8 +464,8 @@ importers:
         specifier: workspace:*
         version: link:../framework-plugins/vue3
       '@previewjs/pro':
-        specifier: ^1.12.5
-        version: 1.12.5(@types/node@20.6.3)
+        specifier: ^1.13.4
+        version: 1.13.4(@types/node@20.6.3)(esbuild@0.19.3)
       '@previewjs/vfs':
         specifier: workspace:*
         version: link:../vfs
@@ -4420,9 +4420,11 @@ packages:
       '@babel/core': ^7.12.0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.21.4)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-class-static-block@7.21.0(@babel/core@7.21.8):
@@ -4445,9 +4447,11 @@ packages:
       '@babel/core': ^7.12.0
     dependencies:
       '@babel/core': 7.22.10
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.10)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.10)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.22.10)
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.21.4):
     resolution: {integrity: sha512-h8hlezQ4dl6ixodgXkH8lUfcD7x+WAuIqPUjwGoItynrXOAv4a4Tci1zA/qjzQjjcl0v3QpLdc2LM6ZACQuY7A==}
@@ -9863,11 +9867,6 @@ packages:
       js-yaml: 4.1.0
     dev: false
 
-  /@faker-js/faker@7.6.0:
-    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
-    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
-    dev: false
-
   /@faker-js/faker@8.1.0:
     resolution: {integrity: sha512-38DT60rumHfBYynif3lmtxMqMqmsOQIxQgEuPZxCk2yUYN0eqWpTACgxi0VpidvsJB8CRxCpvP7B3anK85FjtQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
@@ -12248,21 +12247,21 @@ packages:
       webpack: 4.46.0
     dev: true
 
-  /@previewjs/api@11.0.3:
-    resolution: {integrity: sha512-eqqMhRFRIm/cjROo90fFQLb89MNiYIYv+z3JEGt73PeELJQGliM2zHRiX7OoAawIr/X4yq2U7rWrroanAH3GhQ==}
+  /@previewjs/analyzer-api@0.1.2:
+    resolution: {integrity: sha512-KfPrURgLyC5pTJts35GvsOGdpMmMfGvOr64QFKWnj7thZvS978E394xuAm4WlqXGOLRXNlJClqVbXOqcwkj27Q==}
     dependencies:
-      '@previewjs/serializable-values': 6.0.10
-      '@previewjs/type-analyzer': 7.3.8
-      axios: 1.5.0
-    transitivePeerDependencies:
-      - debug
+      '@previewjs/serializable-values': 9.0.1
+      '@previewjs/type-analyzer': 10.0.1
+      '@previewjs/vfs': 2.0.17
+      pino: 8.15.1
+      pino-pretty: 10.2.0
     dev: false
 
-  /@previewjs/api@12.0.1:
-    resolution: {integrity: sha512-3w+JroSdQDAwbVuzYSi9PC9QuO0tEUi4yH6ToygadcGXA1FbyCVqr8JNWr6BTxHvsQ3yg5crjRaHuKqHKhSDJg==}
+  /@previewjs/api@16.0.1:
+    resolution: {integrity: sha512-8j/PD6JEed1kZkaVjudLLaM6RlHO54PctZbpkEwINVZ139Bd6128bi3n8I7Qp59hEBMV829xtjQuKv6NFn2d5w==}
     dependencies:
-      '@previewjs/serializable-values': 7.0.3
-      '@previewjs/type-analyzer': 8.0.2
+      '@previewjs/serializable-values': 9.0.1
+      '@previewjs/type-analyzer': 10.0.1
       axios: 1.5.0
     transitivePeerDependencies:
       - debug
@@ -12270,73 +12269,36 @@ packages:
 
   /@previewjs/config@4.9.16:
     resolution: {integrity: sha512-31C3JyfBYysfG+LE5E6bVaemqx2H+mXuKsbWXiRaVu6n8C+CnHh725t/U+WHOn1eVFuS041FauhtRaNHxoi2tg==}
+    dev: true
 
   /@previewjs/config@5.0.2:
     resolution: {integrity: sha512-0LSZWZp2WTVT6Wi8gcVNo0HVCq18tlncQIurT7BW8bfGiPUodPzqI1NsGuQPHqGffjXs/hJjMa/KhV7GjB3b0A==}
     dev: false
 
-  /@previewjs/core@20.0.9(@types/node@20.6.3):
-    resolution: {integrity: sha512-uHikWUybzNlb5+J3a/jhyAzoDy+idBf31+0gRamV5QpV5sQdmFYaeUdVZ6H9L6lQQOl2qm5MVZUwv0vNMN/E/w==}
-    dependencies:
-      '@previewjs/api': 11.0.3
-      '@previewjs/config': 4.9.16
-      '@previewjs/iframe': 9.0.8
-      '@previewjs/serializable-values': 6.0.10
-      '@previewjs/type-analyzer': 7.3.8
-      '@previewjs/vfs': 2.0.17
-      acorn: 8.10.0
-      acorn-jsx: 5.3.2(acorn@8.10.0)
-      assert-never: 1.2.1
-      axios: 1.5.0
-      exclusive-promises: 1.0.3
-      express: 4.18.2
-      fs-extra: 11.1.1
-      get-port: 6.1.2
-      globby: 13.2.2
-      html-escaper: 3.0.3
-      http-terminator: 3.2.0
-      rollup-plugin-friendly-type-imports: 1.0.3
-      ts-node: 10.9.1(@types/node@20.6.3)(typescript@5.2.2)
-      tsconfig-paths: 4.2.0
-      typescript: 5.2.2
-      vite: 4.4.9(@types/node@20.6.3)
-      vite-tsconfig-paths: 4.2.0(typescript@5.2.2)(vite@4.4.9)
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - debug
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: false
-
-  /@previewjs/core@22.1.1(@types/node@20.6.3):
-    resolution: {integrity: sha512-sJHIAIZgR9uWqgtClUc5vaijR7blOYOt/w2eM++gLyokewKUGCXWErkI4wf/1s5Scpj8xkTlh5K5vpwuw/QcPA==}
+  /@previewjs/core@26.0.1(@types/node@20.6.3)(esbuild@0.19.3):
+    resolution: {integrity: sha512-lq9li9XohBNNPLPClcflH2QZSi75hvf9uAnZezrOrryGyx0RUkChu7nFlQK2TefYORmrNrK1t8KNKz5vZJvFqQ==}
     dependencies:
       '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.2.2)(vite@4.4.9)
-      '@previewjs/api': 12.0.1
-      '@previewjs/config': 4.9.16
-      '@previewjs/iframe': 11.0.1
-      '@previewjs/serializable-values': 7.0.3
-      '@previewjs/type-analyzer': 8.0.2
+      '@previewjs/analyzer-api': 0.1.2
+      '@previewjs/api': 16.0.1
+      '@previewjs/config': 5.0.2
+      '@previewjs/iframe': 12.0.1
+      '@previewjs/serializable-values': 9.0.1
+      '@previewjs/type-analyzer': 10.0.1
       '@previewjs/vfs': 2.0.17
       acorn: 8.10.0
       acorn-jsx: 5.3.2(acorn@8.10.0)
       assert-never: 1.2.1
       axios: 1.5.0
+      esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.3)
       exclusive-promises: 1.0.3
       express: 4.18.2
       fs-extra: 11.1.1
-      get-port: 7.0.0
       globby: 13.2.2
       html-escaper: 3.0.3
       http-terminator: 3.2.0
       pino: 8.15.1
+      pino-pretty: 10.2.0
       rollup-plugin-friendly-type-imports: 1.0.3
       ts-node: 10.9.1(@types/node@20.6.3)(typescript@5.2.2)
       tsconfig-paths: 4.2.0
@@ -12347,6 +12309,7 @@ packages:
       - '@swc/wasm'
       - '@types/node'
       - debug
+      - esbuild
       - less
       - lightningcss
       - sass
@@ -12356,21 +12319,18 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/iframe@11.0.1:
-    resolution: {integrity: sha512-VJrzAzQotZnH9uLRJsgdukwcYVJBBCyzg7V2ucLTGPJNyuPY0XI4AUcfVBpFI2kwgVZWh8bmumj+2NAIUK0Vsw==}
+  /@previewjs/iframe@12.0.1:
+    resolution: {integrity: sha512-nMSzV046/MNLcMwLekj/VKhxEPcd3qciHhmXxtUK0e16qg9XG5mRAmUZxKoXSoWD2OtPLyecy+J4pUOHNqEJAA==}
     dev: false
 
-  /@previewjs/iframe@9.0.8:
-    resolution: {integrity: sha512-NpDEezrMFqd9NkeApofAz+GIpnGikojxPVwYyYVZYCX4fiL1rb3Oozqc68g4A2PfWH86wr3ZuOJfQuqRZKeQ2g==}
-    dev: false
-
-  /@previewjs/pro@1.12.5(@types/node@20.6.3):
-    resolution: {integrity: sha512-qaj9r20k5Yfbb83B0YJbZHkNdfRw7+bsGb8aHtDtI3VBphA9FoJpDYX7/1Gw+EHzMmAk4P+EqGZXRXCyiPOozg==}
+  /@previewjs/pro@1.13.4(@types/node@20.6.3)(esbuild@0.19.3):
+    resolution: {integrity: sha512-7q4J8bkV41jlFdlHqvUrsqJalYDjeD8C8HGeQPYZrXwol3MJ5OEIs8XNBY7w/Q3ellGC95l7Q9sRTNYX5QJQ8Q==}
     dependencies:
-      '@previewjs/api': 11.0.3
-      '@previewjs/core': 20.0.9(@types/node@20.6.3)
-      '@previewjs/serializable-values': 6.0.10
-      '@previewjs/storybook-helpers': 2.0.10(@types/node@20.6.3)
+      '@previewjs/analyzer-api': 0.1.2
+      '@previewjs/api': 16.0.1
+      '@previewjs/core': 26.0.1(@types/node@20.6.3)(esbuild@0.19.3)
+      '@previewjs/serializable-values': 9.0.1
+      '@previewjs/storybook-helpers': 5.0.3(@types/node@20.6.3)(esbuild@0.19.3)
       axios: 1.5.0
       env-paths: 3.0.0
       express: 4.18.2
@@ -12382,6 +12342,7 @@ packages:
       - '@swc/wasm'
       - '@types/node'
       - debug
+      - esbuild
       - less
       - lightningcss
       - sass
@@ -12391,39 +12352,31 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/serializable-values@6.0.10:
-    resolution: {integrity: sha512-tz341t4/2W+720+UWcz9VKrtO5XepGukzzzKtftDrETHQskY68TNsrpInkMWsKEsdj5CVksRWIaS2jbCgN4djg==}
-    dependencies:
-      '@faker-js/faker': 7.6.0
-      '@previewjs/type-analyzer': 7.3.8
-      assert-never: 1.2.1
-      prettier: 2.8.8
-      typescript: 5.2.2
-    dev: false
-
-  /@previewjs/serializable-values@7.0.3:
-    resolution: {integrity: sha512-X4bXAqBlnfhgTLo2NAoyt+S+b8mMXXFTNUJEJizENzSSt6vfNWeOqcoXoEbOVfqxOzriAZ89M+m7MHOzEGLXLA==}
+  /@previewjs/serializable-values@9.0.1:
+    resolution: {integrity: sha512-Fk8XUalyPUuQt99Kzou248ExywDLagiw0XihdtgTrd0IPo/Sbx2l6kOCLAopJXCVaT+6SQk9Al4Yv/pMAMR6Wg==}
     dependencies:
       '@faker-js/faker': 8.1.0
-      '@previewjs/type-analyzer': 9.0.1
+      '@previewjs/type-analyzer': 10.0.1
       assert-never: 1.2.1
       prettier: 2.8.8
       typescript: 5.2.2
     dev: false
 
-  /@previewjs/storybook-helpers@2.0.10(@types/node@20.6.3):
-    resolution: {integrity: sha512-M6uUyapeQIdIO+GKTFyk9vraSk0JtaCo2aTzymvrNXDgWy4sarAHvb9Jfgf73OTWjgmBOD27mGnnFTlkTPGXtw==}
+  /@previewjs/storybook-helpers@5.0.3(@types/node@20.6.3)(esbuild@0.19.3):
+    resolution: {integrity: sha512-LQr+cbCCcSblCZZSq+0n/6VGQx9YmPiupVBGS5tCz0PbKzAylQOjxb45tgIgGPy2lqV87UzJ8XCsb/jxeNzlLg==}
     dependencies:
-      '@previewjs/api': 12.0.1
-      '@previewjs/core': 22.1.1(@types/node@20.6.3)
-      '@previewjs/serializable-values': 7.0.3
-      '@previewjs/type-analyzer': 8.0.2
+      '@previewjs/analyzer-api': 0.1.2
+      '@previewjs/api': 16.0.1
+      '@previewjs/core': 26.0.1(@types/node@20.6.3)(esbuild@0.19.3)
+      '@previewjs/serializable-values': 9.0.1
+      '@previewjs/type-analyzer': 10.0.1
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
       - '@types/node'
       - debug
+      - esbuild
       - less
       - lightningcss
       - sass
@@ -12433,31 +12386,13 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/type-analyzer@7.3.8:
-    resolution: {integrity: sha512-uEMsCnbh1VeTm8y/NBR16yLdfBUpC2ywGtlcX1xQGNrzcXII/OeQyXWC87IIv7bK9kChU4hqe65c1O+phhi8xA==}
-    dependencies:
-      '@previewjs/vfs': 2.0.17
-      assert-never: 1.2.1
-      prettier: 2.8.8
-      typescript: 5.2.2
-    dev: false
-
-  /@previewjs/type-analyzer@8.0.2:
-    resolution: {integrity: sha512-UBkIqA/UJMWyiSMPAcGoeUTarsQhMgOg7Dnb3KpIaHw2zZvmg34rc00ILZB24dCK8UM4Z2NKMPYVI2NlKZaigg==}
-    dependencies:
-      '@previewjs/vfs': 2.0.17
-      assert-never: 1.2.1
-      prettier: 2.8.8
-      typescript: 5.2.2
-    dev: false
-
-  /@previewjs/type-analyzer@9.0.1:
-    resolution: {integrity: sha512-HfIuzYrjOCZ9UIdyExwv5RZQmtq1JMclDsK+8IVjozxtTNmA4MAv2vnpXJGW3yGTKJi5Kz2vJQICOcPcyfiYZw==}
+  /@previewjs/type-analyzer@10.0.1:
+    resolution: {integrity: sha512-8ElN17Cl6+sodVxNOZjTSlM3xJlwnqkkwFRs5pJoGztbXZvngyxaUdUZx/LhpWkFnLUnZFLyr4hsNm/Yg/+6cA==}
     dependencies:
       '@previewjs/vfs': 2.0.17
       assert-never: 1.2.1
       globby: 13.2.2
-      prettier: 3.0.3
+      prettier: 2.8.8
       typescript: 5.2.2
     dev: false
 
@@ -37161,12 +37096,6 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  /prettier@3.0.3:
-    resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dev: false
-
   /pretty-bytes@4.0.2:
     resolution: {integrity: sha512-yJAF+AjbHKlxQ8eezMd/34Mnj/YTQ3i6kLzvVsH4l/BfIFtp444n0wVbnsn66JimZ9uBofv815aRp1zCppxlWw==}
     engines: {node: '>=4'}
@@ -43469,23 +43398,6 @@ packages:
       - rollup
       - supports-color
     dev: true
-
-  /vite-tsconfig-paths@4.2.0(typescript@5.2.2)(vite@4.4.9):
-    resolution: {integrity: sha512-jGpus0eUy5qbbMVGiTxCL1iB9ZGN6Bd37VGLJU39kTDD6ZfULTTb1bcc5IeTWqWJKiWV5YihCaibeASPiGi8kw==}
-    peerDependencies:
-      vite: '*'
-    peerDependenciesMeta:
-      vite:
-        optional: true
-    dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
-      globrex: 0.1.2
-      tsconfck: 2.1.1(typescript@5.2.2)
-      vite: 4.4.9(@types/node@20.6.3)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-    dev: false
 
   /vite@3.2.6(@types/node@18.16.14):
     resolution: {integrity: sha512-nTXTxYVvaQNLoW5BQ8PNNQ3lPia57gzsQU/Khv+JvzKPku8kNZL6NMUR/qwXhMG6E+g1idqEPanomJ+VZgixEg==}
