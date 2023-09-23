@@ -50,7 +50,10 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   async render(previewableId: string, options: RenderOptions) {
     const previousRender = this.lastRender;
     this.lastRender = { previewableId, options };
-    if (previousRender?.previewableId !== previewableId) {
+    if (
+      previousRender?.previewableId !== previewableId ||
+      this.bootstrapStatus === "failure"
+    ) {
       this.resetIframe(previewableId);
       return;
     }
