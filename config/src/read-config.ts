@@ -43,7 +43,7 @@ async function loadModule(configPath: string, asModule: boolean) {
     const module = await import(
       `${url.pathToFileURL(configPath).href}?ts=${Date.now()}`
     );
-    return module.default;
+    return module.default || module;
   } else {
     // Delete any existing cache so we reload the config fresh.
     delete require.cache[require.resolve(configPath)];
