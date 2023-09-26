@@ -1,15 +1,15 @@
-import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
-import type { PreviewToAppMessage } from "./messages";
+import type { UpdatePayload } from "vite/types/hmrPayload";
 
 declare global {
   interface Window {
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
+      reportEvent(event: PreviewEvent): void;
       render(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
     __PREVIEWJS_CONTROLLER__: {
-      onPreviewMessage(message: PreviewToAppMessage): void;
+      onPreviewEvent(event: PreviewEvent): void;
     };
   }
 }
@@ -37,7 +37,8 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     previewableId: string;
     options: RenderOptions;
   } | null = null;
-  private bootstrapStatus: "pending" | "success" | "failure" = "pending";
+  private bootstrapStatus: "not-started" | "pending" | "success" | "failure" =
+    "pending";
   private expectRenderTimeout?: any;
 
   constructor(
@@ -79,74 +80,53 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       return;
     }
     iframe.src = `/${id}/?t=${Date.now()}`;
-    this.bootstrapStatus = "pending";
+    this.bootstrapStatus = "not-started";
   }
 
-  onPreviewMessage(message: PreviewToAppMessage) {
+  onPreviewEvent(event: PreviewEvent) {
     const { listener } = this.options;
-    switch (message.kind) {
+
+    if (this.bootstrapStatus === "not-started") {
+      if (event.kind === "bootstrapping") {
+        this.bootstrapStatus = "pending";
+        listener(event);
+      }
+      // The only event we care about is bootstrapping.
+      // Otherwise, it's a rogue event from a previous iframe.
+      return;
+    }
+
+    switch (event.kind) {
       case "bootstrapped":
-        this.onBootstrapped();
+        this.bootstrapStatus = "success";
+        if (this.lastRender) {
+          this.render(
+            this.lastRender.previewableId,
+            this.lastRender.options
+          ).catch(
+            // eslint-disable-next-line no-console
+            console.error
+          );
+        }
         break;
-      case "action":
-      case "log-message":
-        listener(message);
+      case "vite-before-reload":
+        if (this.lastRender) {
+          this.resetIframe(this.lastRender.previewableId);
+        } else {
+          // TODO: Can this ever happen?
+        }
         break;
-      case "rendering-success":
+      case "rendered":
         this.clearExpectRenderTimeout();
-        listener({
-          kind: "rendering-done",
-          success: true,
-        });
         break;
-      case "rendering-error":
+      case "error":
         this.clearExpectRenderTimeout();
-        listener({
-          kind: "log-message",
-          level: "error",
-          timestamp: Date.now(),
-          message: message.message,
-        });
-        listener({
-          kind: "rendering-done",
-          success: false,
-        });
-        break;
-      case "vite-error":
         if (this.bootstrapStatus === "pending") {
           this.bootstrapStatus = "failure";
-          listener({
-            kind: "rendering-done",
-            success: false,
-          });
         }
-        listener({
-          kind: "log-message",
-          level: "error",
-          timestamp: Date.now(),
-          message: generateMessageFromViteError(message.payload.err),
-        });
-        break;
-      case "vite-before-update":
-        listener({
-          kind: "before-vite-update",
-          payload: message.payload,
-        });
         break;
     }
-  }
-
-  private onBootstrapped() {
-    this.bootstrapStatus = "success";
-    if (this.lastRender) {
-      this.render(this.lastRender.previewableId, this.lastRender.options).catch(
-        // eslint-disable-next-line no-console
-        console.error
-      );
-    }
-    this.options.listener({
-      kind: "bootstrapped",
-    });
+    listener(event);
   }
 
   private clearExpectRenderTimeout() {
@@ -157,58 +137,35 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   }
 }
 
-function generateMessageFromViteError(err: ErrorPayload["err"]) {
-  let message = err.message + (err.stack ? `\n${err.stack}` : "");
-  // Remove any redundant line breaks (but not spaces,
-  // which could be useful indentation).
-  message = message.replace(/^\n+/g, "\n").trim();
-  const stripPrefix = "Internal server error: ";
-  if (message.startsWith(stripPrefix)) {
-    message = message.substr(stripPrefix.length);
-  }
-  if (/^Transform failed with \d+ errors?:?\n.*/.test(message)) {
-    const lineBreakPosition = message.indexOf("\n");
-    message = message.substring(lineBreakPosition + 1);
-  }
-  const lineBreakPosition = message.indexOf("\n");
-  let title: string;
-  let rest: string;
-  if (lineBreakPosition > -1) {
-    title = message.substr(0, lineBreakPosition).trim();
-    rest = message.substr(lineBreakPosition + 1);
-  } else {
-    title = message;
-    rest = "";
-  }
-  if (title.endsWith(":") || title.endsWith(".")) {
-    title = title.substr(0, title.length - 1).trim();
-  }
-  // Note: this isn't relevant to all browsers.
-  if (rest.startsWith(`Error: ${title}\n`)) {
-    rest = rest.substr(rest.indexOf("\n") + 1);
-  }
-  return `${title}${rest ? `\n\n${rest}` : ""}`;
-}
-
 export type PreviewEvent =
-  | PreviewBootstrapped
-  | BeforeViteUpdate
-  | RenderingDone
+  | Bootstrapping
+  | Bootstrapped
+  | ViteBeforeUpdate
+  | ViteBeforeReload
+  | RenderingSuccess
   | Action
-  | LogMessage;
+  | LogMessage
+  | PreviewError;
 
-export type PreviewBootstrapped = {
+export type Bootstrapping = {
+  kind: "bootstrapping";
+};
+
+export type Bootstrapped = {
   kind: "bootstrapped";
 };
 
-export type BeforeViteUpdate = {
-  kind: "before-vite-update";
+export type ViteBeforeUpdate = {
+  kind: "vite-before-update";
   payload: UpdatePayload;
 };
 
-export interface RenderingDone {
-  kind: "rendering-done";
-  success: boolean;
+export type ViteBeforeReload = {
+  kind: "vite-before-reload";
+};
+
+export interface RenderingSuccess {
+  kind: "rendered";
 }
 
 export interface Action {
@@ -219,8 +176,13 @@ export interface Action {
 
 export interface LogMessage {
   kind: "log-message";
-  timestamp: number;
   level: LogLevel;
+  message: string;
+}
+
+export interface PreviewError {
+  kind: "error";
+  source: "vite" | "renderer";
   message: string;
 }
 

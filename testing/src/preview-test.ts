@@ -9,8 +9,8 @@ import {
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import getPort from "get-port";
 import type playwright from "playwright";
-import type { LoggedMessagesMatcher } from "./events";
-import { expectLoggedMessages } from "./events";
+import type { ErrorsMatcher, LoggedMessagesMatcher } from "./events";
+import { expectErrors, expectLoggedMessages } from "./events";
 import type { FileManager } from "./file-manager";
 import { prepareFileManager } from "./file-manager";
 
@@ -24,6 +24,7 @@ type TestPreview = Awaited<
 > & {
   page: Page;
   fileManager: FileManager;
+  expectErrors: ErrorsMatcher;
   expectLoggedMessages: LoggedMessagesMatcher;
 };
 
@@ -94,6 +95,9 @@ export const previewTest = (
         await testFunction({
           page,
           fileManager,
+          get expectErrors() {
+            return expectErrors(this.events.get());
+          },
           get expectLoggedMessages() {
             return expectLoggedMessages(this.events.get());
           },

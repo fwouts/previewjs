@@ -18,7 +18,8 @@ test.describe.parallel("svelte/error handling", () => {
       replace: /<img .*\/>/g,
       with: "<img",
     });
-    await preview.expectLoggedMessages.toMatch([`Expected >`]);
+    await preview.expectErrors.toMatch([`Expected >`]);
+    await preview.expectLoggedMessages.toMatch([]);
     // The component should still be shown.
     await preview.iframe.waitForSelector(".logo");
   });
@@ -31,9 +32,10 @@ test.describe.parallel("svelte/error handling", () => {
     await preview.show("src/App.svelte:App").catch(() => {
       /* expected error */
     });
-    await preview.expectLoggedMessages.toMatch([
+    await preview.expectErrors.toMatch([
       "Failed to load url /src/lib/Broken.svelte",
     ]);
+    await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.svelte", {
       replace: "lib/Broken.svelte",
       with: "lib/Counter.svelte",
@@ -48,10 +50,11 @@ test.describe.parallel("svelte/error handling", () => {
       replace: "lib/Counter.svelte",
       with: "lib/Broken.svelte",
     });
-    await preview.expectLoggedMessages.toMatch([
+    await preview.expectErrors.toMatch([
       "Failed to load url /src/lib/Broken.svelte",
       "Failed to reload /src/App.svelte. This could be due to syntax errors or importing non-existent modules.",
     ]);
+    await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.svelte", {
       replace: "lib/Broken.svelte",
       with: "lib/Counter.svelte",
@@ -69,9 +72,10 @@ test.describe.parallel("svelte/error handling", () => {
     await preview.show("src/App.svelte:App").catch(() => {
       /* expected error */
     });
-    await preview.expectLoggedMessages.toMatch([
+    await preview.expectErrors.toMatch([
       ["Identifier is expected", "App.svelte:3:5: Unknown word"],
     ]);
+    await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.svelte", {
       replace: " BROKEN",
       with: ".logo {",
@@ -86,9 +90,10 @@ test.describe.parallel("svelte/error handling", () => {
       replace: ".logo {",
       with: " BROKEN",
     });
-    await preview.expectLoggedMessages.toMatch([
+    await preview.expectErrors.toMatch([
       ["Identifier is expected", "App.svelte:3:5: Unknown word"],
     ]);
+    await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.svelte", {
       replace: " BROKEN",
       with: ".logo {",
@@ -103,9 +108,10 @@ test.describe.parallel("svelte/error handling", () => {
       "src/App.svelte",
       "src/App-renamed.svelte"
     );
-    await preview.expectLoggedMessages.toMatch([
+    await preview.expectErrors.toMatch([
       "Failed to reload /src/App.svelte",
       "Failed to reload /src/App.svelte",
     ]);
+    await preview.expectLoggedMessages.toMatch([]);
   });
 });

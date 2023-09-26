@@ -2,7 +2,6 @@ import type { RenderOptions } from "../../src";
 import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
-import { sendMessageFromPreview } from "./messages";
 import { loadRenderer } from "./renderer";
 import { setState } from "./state";
 import { updateComponent } from "./update-component";
@@ -51,8 +50,9 @@ export function initPreview({
         loadRenderer,
       });
     } catch (error: any) {
-      sendMessageFromPreview({
-        kind: "rendering-error",
+      window.__PREVIEWJS_IFRAME__.reportEvent({
+        kind: "error",
+        source: "renderer",
         message: error.stack || error.message,
       });
     }
@@ -64,14 +64,12 @@ export function initPreview({
   }
 
   let lastRenderOptions: RenderOptions | null = null;
-  window.__PREVIEWJS_IFRAME__ = {
-    render: async (data) => {
-      lastRenderOptions = data;
-      await render(data);
-    },
+  window.__PREVIEWJS_IFRAME__.render = async (data) => {
+    lastRenderOptions = data;
+    await render(data);
   };
 
-  sendMessageFromPreview({
+  window.__PREVIEWJS_IFRAME__.reportEvent({
     kind: "bootstrapped",
   });
 

@@ -22,10 +22,11 @@ test.describe.parallel("react/error handling", () => {
           replace: /<p>/g,
           with: "<p",
         });
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           "App.tsx: Unexpected token (24:15)",
           "Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         // The component should still be shown.
         await preview.iframe.waitForSelector(".App");
       });
@@ -42,9 +43,10 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App").catch(() => {
           /* expected error */
         });
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "./logo.svg";
@@ -67,10 +69,11 @@ test.describe.parallel("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to reload /src/App.tsx.",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "./logo.svg";
@@ -94,9 +97,10 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App").catch(() => {
           /* expected error */
         });
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "./logo.svg";
@@ -119,10 +123,11 @@ test.describe.parallel("react/error handling", () => {
             return <div>{logo}</div>;
           }`
         );
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
           "Failed to reload /src/App.tsx.",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
           `import logo from "./logo.svg";
@@ -142,9 +147,10 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App").catch(() => {
           /* expected error */
         });
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           "Failed to load url /src/App-missing.css",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update("src/App.tsx", {
           replace: "App-missing.css",
           with: "App.css",
@@ -159,10 +165,11 @@ test.describe.parallel("react/error handling", () => {
           replace: "App.css",
           with: "App-missing.css",
         });
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           "Failed to load url /src/App-missing.css",
           "Failed to reload /src/App.tsx.",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update("src/App.tsx", {
           replace: "App-missing.css",
           with: "App.css",
@@ -179,10 +186,11 @@ test.describe.parallel("react/error handling", () => {
             return <divBroken</div>;
           }`
         );
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           "App.tsx: Unexpected token (2:29)",
           "Failed to reload /src/App.tsx.",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
           `export function App() {
@@ -203,10 +211,11 @@ test.describe.parallel("react/error handling", () => {
             </ul>
           }`
         );
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           `App.tsx: Unexpected token, expected "jsxTagEnd"`,
           "Failed to reload /src/App.tsx.",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
           `export function App() {
@@ -228,11 +237,11 @@ test.describe.parallel("react/error handling", () => {
             return <div>Broken</div>;
           }`
         );
+        await preview.expectErrors.toMatch(["Expected error"]);
         await preview.expectLoggedMessages.toMatch([
-          "Error: Expected error",
-          "Error: Expected error",
+          "Expected error",
           "React will try to recreate this component tree from scratch using the error boundary you provided",
-          ...(reactVersion === 18 ? ["Error: Expected error"] : []),
+          ...(reactVersion === 18 ? ["Expected error"] : []),
         ]);
         await preview.fileManager.update(
           "src/App.tsx",
@@ -254,10 +263,11 @@ test.describe.parallel("react/error handling", () => {
             return <div>Hello, World!</div>;
           }`
         );
-        await preview.expectLoggedMessages.toMatch([
+        await preview.expectErrors.toMatch([
           "Expected error",
           "Failed to reload /src/App.tsx.",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/Dependency.tsx",
           `export const Dependency = () => {
@@ -271,9 +281,8 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.rename("src/App.tsx", "src/App-renamed.tsx");
-        await preview.expectLoggedMessages.toMatch([
-          "Failed to reload /src/App.tsx.",
-        ]);
+        await preview.expectErrors.toMatch(["Failed to reload /src/App.tsx."]);
+        await preview.expectLoggedMessages.toMatch([]);
       });
 
       test("fails correctly when component is missing after update", async (preview) => {
@@ -285,9 +294,10 @@ test.describe.parallel("react/error handling", () => {
 
           export const App2 = () => <div>Hello, World!</div>;`
         );
-        await preview.expectLoggedMessages.toMatch([
-          "Error: No component or story named 'App'",
+        await preview.expectErrors.toMatch([
+          "No component or story named 'App'",
         ]);
+        await preview.expectLoggedMessages.toMatch([]);
       });
 
       test("fails correctly when encountering broken CSS", async (preview) => {
@@ -298,6 +308,7 @@ test.describe.parallel("react/error handling", () => {
           with: " BROKEN",
         });
         // We don't expect to see any errors for pure CSS.
+        await preview.expectErrors.toMatch([]);
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update("src/App.css", {
           replace: " BROKEN",
@@ -311,9 +322,8 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App").catch(() => {
           /* expected error */
         });
-        await preview.expectLoggedMessages.toMatch([
-          "Failed to load url /src/App.css",
-        ]);
+        await preview.expectErrors.toMatch(["Failed to load url /src/App.css"]);
+        await preview.expectLoggedMessages.toMatch([]);
       });
     });
   }
@@ -327,10 +337,11 @@ test.describe.parallel("react/error handling", () => {
         replace: " {",
         with: " BROKEN",
       });
-      await preview.expectLoggedMessages.toMatch([
+      await preview.expectErrors.toMatch([
         "App.scss 4:21  root stylesheet",
         "Failed to reload /src/App.scss.",
       ]);
+      await preview.expectLoggedMessages.toMatch([]);
       await preview.fileManager.update("src/App.scss", {
         replace: " BROKEN",
         with: " {",
