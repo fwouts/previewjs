@@ -142,7 +142,7 @@ export type PreviewEvent =
   | Bootstrapped
   | ViteBeforeUpdate
   | ViteBeforeReload
-  | RenderingSuccess
+  | Rendered
   | Action
   | LogMessage
   | PreviewError;
@@ -164,7 +164,7 @@ export type ViteBeforeReload = {
   kind: "vite-before-reload";
 };
 
-export interface RenderingSuccess {
+export interface Rendered {
   kind: "rendered";
 }
 
