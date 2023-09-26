@@ -30,34 +30,12 @@ export async function startPreview({
   let onRenderingError = (_e: any) => {
     // No-op by default.
   };
-  let renderSucceeded = false;
-  let lastErrorLog: string | null = null;
-  let delay: NodeJS.Timeout;
-
-  function errorUnlessSoonSuccessful(message: string) {
-    delay = setTimeout(() => {
-      onRenderingError(new Error(message));
-    }, 5000);
-  }
 
   const events = await setupPreviewEventListener(page, (event) => {
-    if (event.kind === "rendering-done") {
-      if (event.success) {
-        renderSucceeded = true;
-        clearTimeout(delay);
-        onRenderingDone();
-      } else {
-        if (lastErrorLog) {
-          errorUnlessSoonSuccessful(lastErrorLog);
-        } else {
-          // The error log should be coming straight after.
-        }
-      }
-    } else if (event.kind === "log-message" && event.level === "error") {
-      lastErrorLog = event.message;
-      if (!renderSucceeded) {
-        errorUnlessSoonSuccessful(event.message);
-      }
+    if (event.kind === "rendered") {
+      onRenderingDone();
+    } else if (event.kind === "error") {
+      onRenderingError(new Error(event.message));
     }
   });
 
@@ -159,7 +137,6 @@ export async function startPreview({
         onRenderingError = reject;
       });
       await waitUntilNetworkIdle(page);
-      renderSucceeded = false;
       await page.evaluate(
         async ([previewableId, options]) => {
           // It's possible that window.loadIframePreview isn't ready yet.

@@ -39,7 +39,6 @@ for (const reactVersion of reactVersions()) {
           {
             kind: "log-message",
             level: "log",
-            timestamp: expect.anything(),
             message: "onClick invoked",
           },
         ]);
@@ -76,7 +75,6 @@ for (const reactVersion of reactVersions()) {
           {
             kind: "log-message",
             level: "log",
-            timestamp: expect.anything(),
             message: "onClick callback invoked!",
           },
         ]);

@@ -36,7 +36,6 @@ test.describe.parallel("solid/action logs", () => {
       {
         kind: "log-message",
         level: "log",
-        timestamp: expect.anything(),
         message: "onClick invoked",
       },
     ]);
@@ -75,7 +74,6 @@ test.describe.parallel("solid/action logs", () => {
       {
         kind: "log-message",
         level: "log",
-        timestamp: expect.anything(),
         message: "onClick callback invoked!",
       },
     ]);

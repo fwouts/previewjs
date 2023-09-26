@@ -1,5 +1,3 @@
-import { sendMessageFromPreview } from "./messages";
-
 export function setUpLinkInterception() {
   document.addEventListener(
     "click",
@@ -14,7 +12,7 @@ export function setUpLinkInterception() {
           // Handle click here by posting data back to VS Code
           // for your extension to handle
           if (url) {
-            sendMessageFromPreview({
+            window.__PREVIEWJS_IFRAME__.reportEvent({
               kind: "action",
               type: "url",
               path: url,

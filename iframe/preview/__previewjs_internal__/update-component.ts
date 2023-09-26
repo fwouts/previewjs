@@ -1,5 +1,5 @@
 import type { RendererLoader } from "../../src";
-import { sendMessageFromPreview } from "./messages";
+import { generateMessageFromError } from "./error-message";
 import { getState } from "./state";
 
 export async function updateComponent({
@@ -52,13 +52,14 @@ export async function updateComponent({
     if (shouldAbortRender()) {
       return;
     }
-    sendMessageFromPreview({
-      kind: "rendering-success",
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "rendered",
     });
   } catch (error: any) {
-    sendMessageFromPreview({
-      kind: "rendering-error",
-      message: error.stack || error.message || "Unknown error",
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "error",
+      source: "renderer",
+      message: generateMessageFromError(error.message, error.stack),
     });
   }
 }
@@ -92,7 +93,7 @@ function transformFunctions(value: any, path: string[]): any {
           k,
           typeof v === "function"
             ? (...args: unknown[]) => {
-                sendMessageFromPreview({
+                window.__PREVIEWJS_IFRAME__.reportEvent({
                   kind: "action",
                   type: "fn",
                   path: [...path, k].join("."),

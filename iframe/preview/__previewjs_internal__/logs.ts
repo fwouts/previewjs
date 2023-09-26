@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import type { LogLevel } from "../../src";
-import { sendMessageFromPreview } from "./messages";
+import { generateMessageFromError } from "./error-message";
 // @ts-ignore
 import inspect from "./object-inspect";
 
@@ -19,17 +19,13 @@ export function setUpLogInterception() {
           (firstArg.includes("[hmr]") || firstArg.startsWith("[vite]"))
         ) {
           if (firstArg.startsWith("[hmr] Failed to reload")) {
-            sendMessageFromPreview({
-              kind: "vite-error",
-              payload: {
-                type: "error",
-                err: {
-                  message: firstArg
-                    .slice(6)
-                    .replace(" (see errors above)", "."), // remove [hmr] and confusing message
-                  stack: "",
-                },
-              },
+            window.__PREVIEWJS_IFRAME__.reportEvent({
+              kind: "error",
+              source: "vite",
+              message: generateMessageFromError(
+                // remove [hmr] and confusing message
+                firstArg.slice(6).replace(" (see errors above)", ".")
+              ),
             });
           }
           // Silence.
@@ -52,22 +48,15 @@ export function setUpLogInterception() {
           // that throws an error in its root body.
           //
           // Note: this isn't quite a Vite error. This works though.
-          sendMessageFromPreview({
-            kind: "vite-error",
-            payload: {
-              type: "error",
-              err: {
-                message: firstArg.message,
-                stack: firstArg.stack || "",
-              },
-            },
+          window.__PREVIEWJS_IFRAME__.reportEvent({
+            kind: "error",
+            source: "vite",
+            message: generateMessageFromError(firstArg.message, firstArg.stack),
           });
           return;
         }
-        const timestamp = Date.now();
-        sendMessageFromPreview({
+        window.__PREVIEWJS_IFRAME__.reportEvent({
           kind: "log-message",
-          timestamp,
           level,
           message: formatLogMessage(...args),
         });
