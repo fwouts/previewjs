@@ -127,8 +127,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       shx:
         specifier: ^0.3.4
         version: 0.3.4
@@ -256,8 +256,8 @@ importers:
         specifier: ^4.17.18
         version: 4.17.18
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.2.2)
@@ -425,8 +425,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.7.0)(typescript@5.2.2)
@@ -516,8 +516,8 @@ importers:
         specifier: ^10.17.1
         version: 10.17.1
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.2.2)
@@ -2657,8 +2657,8 @@ importers:
         specifier: ^10.2.0
         version: 10.2.0
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       shx:
         specifier: ^0.3.4
         version: 0.3.4
@@ -2839,8 +2839,8 @@ importers:
         specifier: ^10.2.0
         version: 10.2.0
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       shx:
         specifier: ^0.3.4
         version: 0.3.4
@@ -3031,8 +3031,8 @@ importers:
         specifier: ^9.1.0
         version: 9.1.0
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.7.0)(typescript@5.2.2)
@@ -3052,8 +3052,8 @@ importers:
         specifier: ^0.19.3
         version: 0.19.3
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -3085,8 +3085,8 @@ importers:
         specifier: ^0.8.3
         version: 0.8.3
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       strip-ansi:
         specifier: ^7.1.0
         version: 7.1.0
@@ -3133,8 +3133,8 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -3328,8 +3328,8 @@ importers:
         specifier: ^11.0.2
         version: 11.0.2
       rimraf:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5.0.5
+        version: 5.0.5
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -3761,7 +3761,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.10
       '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-environment-visitor': 7.22.5
+      '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-member-expression-to-functions': 7.22.5
       '@babel/helper-optimise-call-expression': 7.22.5
@@ -6042,15 +6042,6 @@ packages:
       '@babel/core': 7.22.10
       '@babel/helper-plugin-utils': 7.22.5
 
-  /@babel/plugin-syntax-typescript@7.20.0(@babel/core@7.22.20):
-    resolution: {integrity: sha512-rd9TkG+u1CExzS4SM1BlMEhMXwFLKVjOAFFCDx9PbX5ycJWDoWMcwdJH9RhkPu1dOgn5TrxLot/Gx6lWFuAUNQ==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.20
-      '@babel/helper-plugin-utils': 7.22.5
-
   /@babel/plugin-syntax-typescript@7.22.5(@babel/core@7.21.8):
     resolution: {integrity: sha512-1mS2o03i7t1c6VzH6fdQ3OA8tcEIxwG18zIPRp+UY1Ihv6W+XZzBCVxExF9upussPXJ0xE9XRHwMoNs1ep/nRQ==}
     engines: {node: '>=6.9.0'}
@@ -7709,19 +7700,7 @@ packages:
       '@babel/plugin-syntax-typescript': 7.20.0(@babel/core@7.22.10)
     transitivePeerDependencies:
       - supports-color
-
-  /@babel/plugin-transform-typescript@7.21.0(@babel/core@7.22.20):
-    resolution: {integrity: sha512-xo///XTPp3mDzTtrqXoBlK9eiAYW3wv9JXglcn/u1bi60RW11dEUxIgA8cbnDhutS1zacjMRmAwxE0gMklLnZg==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.20
-      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.20)
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/plugin-syntax-typescript': 7.20.0(@babel/core@7.22.20)
-    transitivePeerDependencies:
-      - supports-color
+    dev: false
 
   /@babel/plugin-transform-typescript@7.22.10(@babel/core@7.21.8):
     resolution: {integrity: sha512-7++c8I/ymsDo4QQBAgbraXLzIM6jmfao11KgIBEYZRReWzNWH9NtNgJcyrZiXsOPh523FQm6LfpLyy/U5fn46A==}
@@ -7759,7 +7738,6 @@ packages:
       '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.20)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.22.20)
-    dev: false
 
   /@babel/plugin-transform-unicode-escapes@7.18.10(@babel/core@7.21.4):
     resolution: {integrity: sha512-kKAdAI+YzPgGY/ftStBFXTI1LZFju38rYThnfMykS+IXy8BVx+res7s2fxf1l8I35DV2T97ezo6+SGrXz6B3iQ==}
@@ -8322,9 +8300,7 @@ packages:
       '@babel/core': 7.22.10
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-validator-option': 7.22.5
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.10)
-    transitivePeerDependencies:
-      - supports-color
+      '@babel/plugin-transform-typescript': 7.22.10(@babel/core@7.22.10)
 
   /@babel/preset-typescript@7.21.0(@babel/core@7.22.20):
     resolution: {integrity: sha512-myc9mpoVA5m1rF8K8DgLEatOYFDpwC+RkMkjZ0Du6uI62YvDe8uxIEYVs/VCdSJ097nlALiU/yBC7//3nI+hNg==}
@@ -8335,9 +8311,7 @@ packages:
       '@babel/core': 7.22.20
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-validator-option': 7.22.5
-      '@babel/plugin-transform-typescript': 7.21.0(@babel/core@7.22.20)
-    transitivePeerDependencies:
-      - supports-color
+      '@babel/plugin-transform-typescript': 7.22.10(@babel/core@7.22.20)
 
   /@babel/register@7.21.0(@babel/core@7.22.10):
     resolution: {integrity: sha512-9nKsPmYDi5DidAqJaQooxIhsLJiNMkGr8ypQ8Uic7cIox7UCDsM7HuUGxdGT7mSDTYbqzIdsOWzfBton/YJrMw==}
@@ -13559,7 +13533,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -13666,7 +13640,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
@@ -39869,8 +39843,8 @@ packages:
     dependencies:
       glob: 7.2.3
 
-  /rimraf@5.0.4:
-    resolution: {integrity: sha512-rizQI/o/YAMM1us0Zyax0uRfIK39XR52EAjjOi0fzMolpGp0onj6CWzBAXuOx6+6Xi9Rgi0d9tUZojhJerLUmQ==}
+  /rimraf@5.0.5:
+    resolution: {integrity: sha512-CqDakW+hMe/Bz202FPEymy68P+G50RfMQK+Qo5YUqc9SPipvbGjCGKd0RSKEelbsfQuw3g5NZDSrlZZAJurH1A==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
@@ -42085,7 +42059,7 @@ packages:
       glob: 10.3.7
       mkdirp: 3.0.1
       path-scurry: 1.10.1
-      rimraf: 5.0.4
+      rimraf: 5.0.5
     dev: true
 
   /synchronous-promise@2.0.17:
@@ -42863,7 +42837,7 @@ packages:
       foreground-child: 3.1.1
       mkdirp: 3.0.1
       resolve-import: 1.4.1
-      rimraf: 5.0.4
+      rimraf: 5.0.5
       sync-content: 1.0.2
       typescript: 5.2.2
       walk-up-path: 3.0.1
