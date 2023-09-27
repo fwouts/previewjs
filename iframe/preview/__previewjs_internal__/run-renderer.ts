@@ -1,8 +1,7 @@
 import type { RendererLoader } from "../../src";
-import { generateMessageFromError } from "./error-message";
 import { getState } from "./state";
 
-export async function updateComponent({
+export async function runRenderer({
   wrapperModule,
   wrapperName,
   previewableModule,
@@ -23,45 +22,37 @@ export async function updateComponent({
   if (!currentState || shouldAbortRender()) {
     return;
   }
-  try {
-    const { render, jsxFactory } = await loadRenderer({
-      wrapperModule,
-      wrapperName,
-      previewableModule,
-      previewableName,
-      renderId,
-      shouldAbortRender,
-    });
-    if (shouldAbortRender()) {
-      return;
-    }
-    const { autogenCallbackProps, properties } =
-      await previewableModule.PreviewJsEvaluateLocally(
-        currentState.autogenCallbackPropsSource,
-        currentState.propsAssignmentSource,
-        jsxFactory
-      );
-    if (shouldAbortRender()) {
-      return;
-    }
-    await render(({ presetProps, presetGlobalProps }) => ({
-      ...transformFunctions(autogenCallbackProps, []),
-      ...transformFunctions(presetGlobalProps, []),
-      ...transformFunctions(properties || presetProps, []),
-    }));
-    if (shouldAbortRender()) {
-      return;
-    }
-    window.__PREVIEWJS_IFRAME__.reportEvent({
-      kind: "rendered",
-    });
-  } catch (error: any) {
-    window.__PREVIEWJS_IFRAME__.reportEvent({
-      kind: "error",
-      source: "renderer",
-      message: generateMessageFromError(error.message, error.stack),
-    });
+  const { render, jsxFactory } = await loadRenderer({
+    wrapperModule,
+    wrapperName,
+    previewableModule,
+    previewableName,
+    renderId,
+    shouldAbortRender,
+  });
+  if (shouldAbortRender()) {
+    return;
   }
+  const { autogenCallbackProps, properties } =
+    await previewableModule.PreviewJsEvaluateLocally(
+      currentState.autogenCallbackPropsSource,
+      currentState.propsAssignmentSource,
+      jsxFactory
+    );
+  if (shouldAbortRender()) {
+    return;
+  }
+  await render(({ presetProps, presetGlobalProps }) => ({
+    ...transformFunctions(autogenCallbackProps, []),
+    ...transformFunctions(presetGlobalProps, []),
+    ...transformFunctions(properties || presetProps, []),
+  }));
+  if (shouldAbortRender()) {
+    return;
+  }
+  window.__PREVIEWJS_IFRAME__.reportEvent({
+    kind: "rendered",
+  });
 }
 
 /**
