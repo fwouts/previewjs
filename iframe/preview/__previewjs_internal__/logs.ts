@@ -4,7 +4,17 @@ import { generateMessageFromError } from "./error-message";
 // @ts-ignore
 import inspect from "./object-inspect";
 
+// Note: this must be kept in sync with
+// https://github.com/vitejs/vite/blob/2de425d0288bfae345c5ced5c84cf67ffccaef48/packages/vite/src/client/client.ts#L117
+const HMR_FAILED_UPDATE_REGEX =
+  /^\[hmr\] Failed to reload (.+)\. This could be due to syntax errors or importing non-existent modules\. \(see errors above\)$/;
+
 export function setUpLogInterception() {
+  // This is a hack to intercept errors logged here: https://github.com/vitejs/vite/blob/2de425d0288bfae345c5ced5c84cf67ffccaef48/packages/vite/src/client/client.ts#L115
+  //
+  // An example where this will occur is when importing a module
+  // that throws an error in its root body.
+  let consoleErrorPrecedingHmrError: string | null = null;
   const makeLogger =
     (level: LogLevel, defaultFn: typeof console.log) =>
     (...args: any[]) => {
@@ -14,45 +24,45 @@ export function setUpLogInterception() {
       defaultFn(...args);
       try {
         const firstArg = args[0];
-        if (
-          typeof firstArg === "string" &&
-          (firstArg.includes("[hmr]") || firstArg.startsWith("[vite]"))
-        ) {
-          if (firstArg.startsWith("[hmr] Failed to reload")) {
-            window.__PREVIEWJS_IFRAME__.reportEvent({
-              kind: "error",
-              source: "vite",
-              message: generateMessageFromError(
-                // remove [hmr] and confusing message
-                firstArg.slice(6).replace(" (see errors above)", ".")
-              ),
-            });
+        if (typeof firstArg === "string") {
+          if (firstArg.startsWith("[vite]")) {
+            // Silence.
+            return;
           }
-          // Silence.
-          return;
+          const hmrMatch = firstArg.match(HMR_FAILED_UPDATE_REGEX);
+          if (hmrMatch) {
+            const modulePath = hmrMatch[1]!;
+            const errorMessage = `Failed to reload ${modulePath}`;
+            if (consoleErrorPrecedingHmrError) {
+              window.__PREVIEWJS_IFRAME__.reportEvent({
+                kind: "error",
+                source: "hmr",
+                message: generateMessageFromError(
+                  errorMessage,
+                  consoleErrorPrecedingHmrError
+                ),
+              });
+            } else {
+              window.__PREVIEWJS_IFRAME__.reportEvent({
+                kind: "error",
+                source: "hmr",
+                message: errorMessage,
+              });
+            }
+            return;
+          }
         }
-        // This is a hack to intercept errors thrown in a module fetched by HMR.
-        // It specifically aims to intercept errors logged at the following line:
-        //
-        // https://github.com/vitejs/vite/blob/50a876537cc7b934ec5c1d11171b5ce02e3891a8/packages/vite/src/client/client.ts#L31
-        //
-        // This can easily break with new releases of Vite.js.
-        // Yes, there are tests to make sure that doesn't happen :)
+        consoleErrorPrecedingHmrError = null;
         if (
           level === "error" &&
           args.length === 1 &&
           firstArg instanceof Error &&
           new Error().stack?.includes("warnFailedFetch")
         ) {
-          // An example where this will occur is when importing a module
-          // that throws an error in its root body.
-          //
-          // Note: this isn't quite a Vite error. This works though.
-          window.__PREVIEWJS_IFRAME__.reportEvent({
-            kind: "error",
-            source: "vite",
-            message: generateMessageFromError(firstArg.message, firstArg.stack),
-          });
+          consoleErrorPrecedingHmrError = generateMessageFromError(
+            firstArg.message,
+            firstArg.stack
+          );
           return;
         }
         window.__PREVIEWJS_IFRAME__.reportEvent({

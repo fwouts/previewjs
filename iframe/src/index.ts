@@ -182,7 +182,7 @@ export interface LogMessage {
 
 export interface PreviewError {
   kind: "error";
-  source: "vite" | "renderer";
+  source: "hmr" | "vite" | "renderer";
   message: string;
 }
 

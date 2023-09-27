@@ -20,7 +20,7 @@ test.describe.parallel("vue3/error handling", () => {
     });
     await preview.expectErrors.toMatch([
       "Attribute name cannot contain U+0022",
-      "Failed to reload /src/App.vue.",
+      "Failed to reload /src/App.vue",
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     // The component should still be shown.
@@ -55,7 +55,7 @@ test.describe.parallel("vue3/error handling", () => {
     });
     await preview.expectErrors.toMatch([
       "Failed to load url /src/components/Broken.vue",
-      "Failed to reload /src/App.vue. This could be due to syntax errors or importing non-existent modules.",
+      "Failed to reload /src/App.vue",
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.vue", {
@@ -92,8 +92,8 @@ test.describe.parallel("vue3/error handling", () => {
     await preview.expectErrors.toMatch([
       "App.vue:3:3: Unknown word",
       "App.vue:3:3: Unknown word",
-      "Failed to reload /src/App.vue.",
       "Failed to reload /src/App.vue?vue&type=style&index=0&lang.css",
+      "Failed to reload /src/App.vue",
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.vue", {

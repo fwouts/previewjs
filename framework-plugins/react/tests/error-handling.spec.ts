@@ -24,7 +24,7 @@ test.describe.parallel("react/error handling", () => {
         });
         await preview.expectErrors.toMatch([
           "App.tsx: Unexpected token (24:15)",
-          "Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules.",
+          "Failed to reload /src/App.tsx",
         ]);
         await preview.expectLoggedMessages.toMatch([]);
         // The component should still be shown.
@@ -71,7 +71,7 @@ test.describe.parallel("react/error handling", () => {
         );
         await preview.expectErrors.toMatch([
           `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
-          "Failed to reload /src/App.tsx.",
+          "Failed to reload /src/App.tsx",
         ]);
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
@@ -125,7 +125,7 @@ test.describe.parallel("react/error handling", () => {
         );
         await preview.expectErrors.toMatch([
           `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
-          "Failed to reload /src/App.tsx.",
+          "Failed to reload /src/App.tsx",
         ]);
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
@@ -167,7 +167,7 @@ test.describe.parallel("react/error handling", () => {
         });
         await preview.expectErrors.toMatch([
           "Failed to load url /src/App-missing.css",
-          "Failed to reload /src/App.tsx.",
+          "Failed to reload /src/App.tsx",
         ]);
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update("src/App.tsx", {
@@ -188,7 +188,7 @@ test.describe.parallel("react/error handling", () => {
         );
         await preview.expectErrors.toMatch([
           "App.tsx: Unexpected token (2:29)",
-          "Failed to reload /src/App.tsx.",
+          "Failed to reload /src/App.tsx",
         ]);
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
@@ -213,7 +213,7 @@ test.describe.parallel("react/error handling", () => {
         );
         await preview.expectErrors.toMatch([
           `App.tsx: Unexpected token, expected "jsxTagEnd"`,
-          "Failed to reload /src/App.tsx.",
+          "Failed to reload /src/App.tsx",
         ]);
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
@@ -264,8 +264,7 @@ test.describe.parallel("react/error handling", () => {
           }`
         );
         await preview.expectErrors.toMatch([
-          "Expected error",
-          "Failed to reload /src/App.tsx.",
+          "Failed to reload /src/App.tsx\n\nExpected error",
         ]);
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
@@ -281,7 +280,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.rename("src/App.tsx", "src/App-renamed.tsx");
-        await preview.expectErrors.toMatch(["Failed to reload /src/App.tsx."]);
+        await preview.expectErrors.toMatch(["Failed to reload /src/App.tsx"]);
         await preview.expectLoggedMessages.toMatch([]);
       });
 
@@ -339,7 +338,7 @@ test.describe.parallel("react/error handling", () => {
       });
       await preview.expectErrors.toMatch([
         "App.scss 4:21  root stylesheet",
-        "Failed to reload /src/App.scss.",
+        "Failed to reload /src/App.scss",
       ]);
       await preview.expectLoggedMessages.toMatch([]);
       await preview.fileManager.update("src/App.scss", {
