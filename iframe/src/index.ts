@@ -5,7 +5,7 @@ declare global {
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
       reportEvent(event: PreviewEvent): void;
-      render(options: RenderOptions): Promise<void>;
+      render?(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
     __PREVIEWJS_CONTROLLER__: {
@@ -59,7 +59,16 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       return;
     }
     const iframeWindow = this.options.getIframe()?.contentWindow;
-    if (!iframeWindow) {
+    if (!iframeWindow || this.bootstrapStatus !== "success") {
+      return;
+    }
+    if (!iframeWindow.__PREVIEWJS_IFRAME__.render) {
+      iframeWindow.__PREVIEWJS_IFRAME__.reportEvent({
+        kind: "error",
+        source: "renderer",
+        message:
+          "Iframe was bootstrapped but not fully initialised.\n\nPlease report this at https://github.com/fwouts/previewjs.",
+      });
       return;
     }
     const renderPromise = iframeWindow.__PREVIEWJS_IFRAME__.render(options);
