@@ -343,7 +343,7 @@ export class Previewer {
             .then(async () => {
               await this.start({ restarting: true });
             })
-            .catch(this.options.logger.error);
+            .catch(this.options.logger.error.bind(this.options.logger));
         }
         return;
       }
