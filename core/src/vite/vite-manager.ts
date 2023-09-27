@@ -1,6 +1,6 @@
 import viteTsconfigPaths from "@fwouts/vite-tsconfig-paths";
 import { decodePreviewableId } from "@previewjs/analyzer-api";
-import type { PreviewConfig } from "@previewjs/config";
+import { readConfig, type PreviewConfig } from "@previewjs/config";
 import type { Reader } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
 import { polyfillNode } from "esbuild-plugin-polyfill-node";
@@ -14,6 +14,12 @@ import type { Tsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
+import { findFiles } from "../find-files";
+import {
+  GLOBAL_CSS_EXTS,
+  GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT,
+} from "../global-css";
+import { generateHtmlError } from "../html-error";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
 import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
@@ -21,10 +27,36 @@ import { localEval } from "./plugins/local-eval";
 import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
 
+type ViteState =
+  | {
+      kind: "starting";
+      // Note: This promise is guaranteed not to ever throw.
+      promise: Promise<ViteEndState>;
+    }
+  | {
+      kind: "running";
+      viteServer: vite.ViteDevServer;
+      config: PreviewConfig & { detectedGlobalCssFilePaths: string[] };
+    }
+  | {
+      kind: "error";
+      error: string;
+    };
+
+type ViteEndState = Exclude<ViteState, { kind: "starting" }>;
+
+async function endState(state: ViteState | null) {
+  if (state?.kind === "starting") {
+    return state.promise;
+  } else {
+    return state;
+  }
+}
+
 export class ViteManager {
   readonly middleware: express.RequestHandler;
-  private viteStartupPromise: Promise<void> | undefined;
-  private viteServer?: vite.ViteDevServer;
+
+  private state: ViteState | null = null;
 
   constructor(
     private readonly options: {
@@ -32,34 +64,44 @@ export class ViteManager {
       reader: Reader;
       rootDir: string;
       shadowHtmlFilePath: string;
-      detectedGlobalCssFilePaths: string[];
       cacheDir: string;
-      config: PreviewConfig;
       frameworkPlugin: FrameworkPlugin;
+      server: Server;
+      port: number;
     }
   ) {
     const router = express.Router();
     router.use(async (req, res, next) => {
+      const state = await endState(this.state);
+      if (!state || state.kind === "error") {
+        return next();
+      }
       try {
-        const viteServer = await this.awaitViteServerReady();
-        viteServer.middlewares(req, res, next);
+        state.viteServer.middlewares(req, res, next);
       } catch (e) {
-        this.options.logger.error(`Routing error: ${e}`);
-        res.status(500).end(`Error: ${e}`);
+        this.options.logger.error(`Vite middleware error: ${e}`);
+        res.status(500).end(`Vite middleware error: ${e}`);
       }
     });
     this.middleware = router;
   }
 
   async loadIndexHtml(url: string, id: string) {
+    const state = await endState(this.state);
+    if (!state) {
+      throw new Error(`Vite server is not running`);
+    }
+    if (state.kind === "error") {
+      return generateHtmlError(state.error);
+    }
     const template = await fs.readFile(
       this.options.shadowHtmlFilePath,
       "utf-8"
     );
-    const viteServer = await this.awaitViteServerReady();
+    const { config, viteServer } = state;
     const { filePath, name: previewableName } = decodePreviewableId(id);
     const componentPath = filePath.replace(/\\/g, "/");
-    const wrapper = this.options.config.wrapper;
+    const wrapper = config.wrapper;
     const wrapperPath =
       wrapper &&
       (await fs.pathExists(path.join(this.options.rootDir, wrapper.path)))
@@ -100,7 +142,7 @@ export class ViteManager {
     });
     `
         : `
-    const wrapperModulePromise = Promise.all([${this.options.detectedGlobalCssFilePaths
+    const wrapperModulePromise = Promise.all([${config.detectedGlobalCssFilePaths
       .map(
         (cssFilePath) =>
           `import(/* @vite-ignore */ "/${cssFilePath.replace(
@@ -131,248 +173,282 @@ export class ViteManager {
     );
   }
 
-  private async awaitViteServerReady() {
-    await this.viteStartupPromise;
-    if (!this.viteServer) {
-      throw new Error(`Vite server is not running.`);
-    }
-    return this.viteServer;
-  }
-
-  async start(server: Server, port: number) {
-    let resolveViteStartupPromise!: () => void;
-    this.viteStartupPromise = new Promise<void>((resolve) => {
-      resolveViteStartupPromise = resolve;
-    });
-    const tsInferredAlias: Alias[] = [];
-    // If there is a top-level tsconfig.json, use it to infer aliases.
-    // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-    let tsConfig: Tsconfig | null = null;
-    for (const potentialTsConfigFileName of [
-      "tsconfig.json",
-      "jsconfig.json",
-    ]) {
-      const potentialTsConfigFilePath = path.join(
+  // Note: this is guaranteed not to throw.
+  async start() {
+    let setEndState!: (running: ViteEndState) => void;
+    this.state = {
+      kind: "starting",
+      promise: new Promise<ViteEndState>((resolve) => {
+        setEndState = (state: ViteEndState) => {
+          this.state = state;
+          resolve(state);
+        };
+      }),
+    };
+    try {
+      // PostCSS requires the current directory to change because it relies
+      // on the `import-cwd` package to resolve plugins.
+      process.chdir(this.options.rootDir);
+      const configFromProject = await readConfig(this.options.rootDir);
+      const globalCssAbsoluteFilePaths = await findFiles(
         this.options.rootDir,
-        potentialTsConfigFileName
+        `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
+          "|"
+        )}).@(${GLOBAL_CSS_EXTS.join("|")})`,
+        {
+          maxDepth: 3,
+        }
       );
-      if (await fs.pathExists(potentialTsConfigFilePath)) {
-        tsConfig = loadTsconfig(potentialTsConfigFilePath) || null;
-        if (tsConfig) {
-          break;
+      const config = {
+        ...configFromProject,
+        wrapper: configFromProject.wrapper || {
+          path: this.options.frameworkPlugin.defaultWrapperPath,
+        },
+        detectedGlobalCssFilePaths: globalCssAbsoluteFilePaths.map(
+          (absoluteFilePath) =>
+            path.relative(this.options.rootDir, absoluteFilePath)
+        ),
+      };
+      const tsInferredAlias: Alias[] = [];
+      // If there is a top-level tsconfig.json, use it to infer aliases.
+      // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
+      let tsConfig: Tsconfig | null = null;
+      for (const potentialTsConfigFileName of [
+        "tsconfig.json",
+        "jsconfig.json",
+      ]) {
+        const potentialTsConfigFilePath = path.join(
+          this.options.rootDir,
+          potentialTsConfigFileName
+        );
+        if (await fs.pathExists(potentialTsConfigFilePath)) {
+          tsConfig = loadTsconfig(potentialTsConfigFilePath) || null;
+          if (tsConfig) {
+            break;
+          }
         }
       }
-    }
-    this.options.logger.debug(
-      `Loaded ts/jsconfig: ${JSON.stringify(tsConfig || null, null, 2)}`
-    );
-    const baseUrl = tsConfig?.compilerOptions?.baseUrl || "";
-    const tsConfigPaths = tsConfig?.compilerOptions?.paths || {};
-    let baseAlias = baseUrl.startsWith("./") ? baseUrl.substring(1) : baseUrl;
-    if (baseAlias && !baseAlias.endsWith("/")) {
-      baseAlias += "/";
-    }
-    for (const [match, mapping] of Object.entries(tsConfigPaths)) {
-      const firstMapping = mapping[0];
-      if (!firstMapping) {
-        continue;
+      this.options.logger.debug(
+        `Loaded ts/jsconfig: ${JSON.stringify(tsConfig || null, null, 2)}`
+      );
+      const baseUrl = tsConfig?.compilerOptions?.baseUrl || "";
+      const tsConfigPaths = tsConfig?.compilerOptions?.paths || {};
+      let baseAlias = baseUrl.startsWith("./") ? baseUrl.substring(1) : baseUrl;
+      if (baseAlias && !baseAlias.endsWith("/")) {
+        baseAlias += "/";
       }
-      const matchNoWildcard = match.endsWith("/*")
-        ? match.slice(0, match.length - 2)
-        : match;
-      const firstMappingNoWildcard = firstMapping.endsWith("/*")
-        ? firstMapping.slice(0, firstMapping.length - 2)
-        : firstMapping;
-      tsInferredAlias.push({
-        find: matchNoWildcard,
-        replacement: path.join(
-          this.options.rootDir,
-          baseUrl,
-          firstMappingNoWildcard
-        ),
+      for (const [match, mapping] of Object.entries(tsConfigPaths)) {
+        const firstMapping = mapping[0];
+        if (!firstMapping) {
+          continue;
+        }
+        const matchNoWildcard = match.endsWith("/*")
+          ? match.slice(0, match.length - 2)
+          : match;
+        const firstMappingNoWildcard = firstMapping.endsWith("/*")
+          ? firstMapping.slice(0, firstMapping.length - 2)
+          : firstMapping;
+        tsInferredAlias.push({
+          find: matchNoWildcard,
+          replacement: path.join(
+            this.options.rootDir,
+            baseUrl,
+            firstMappingNoWildcard
+          ),
+        });
+      }
+      const existingViteConfig = await vite.loadConfigFromFile(
+        {
+          command: "serve",
+          mode: "development",
+        },
+        undefined,
+        this.options.rootDir
+      );
+      const defaultLogger = vite.createLogger(
+        viteLogLevelFromPinoLogger(this.options.logger)
+      );
+      const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig(
+        await flattenPlugins([
+          ...(existingViteConfig?.config.plugins || []),
+          ...(config.vite?.plugins || []),
+        ])
+      );
+      const publicDir =
+        config.vite?.publicDir ||
+        existingViteConfig?.config.publicDir ||
+        frameworkPluginViteConfig.publicDir ||
+        config.publicDir;
+      const plugins = replaceHandleHotUpdate(
+        this.options.reader,
+        await flattenPlugins([
+          viteTsconfigPaths({
+            root: this.options.rootDir,
+          }),
+          virtualPlugin({
+            logger: this.options.logger,
+            reader: this.options.reader,
+            rootDir: this.options.rootDir,
+            allowedAbsolutePaths: config.vite?.server?.fs?.allow ||
+              existingViteConfig?.config.server?.fs?.allow || [
+                searchForWorkspaceRoot(this.options.rootDir),
+              ],
+            moduleGraph: () => {
+              if (this.state?.kind === "running") {
+                return this.state.viteServer.moduleGraph;
+              }
+              return null;
+            },
+            esbuildOptions: frameworkPluginViteConfig.esbuild || {},
+          }),
+          localEval(),
+          exportToplevelPlugin(),
+          fakeExportedTypesPlugin({
+            readFile: (absoluteFilePath) =>
+              this.options.reader.read(absoluteFilePath).then((entry) => {
+                if (entry?.kind !== "file") {
+                  return null;
+                }
+                return entry.read();
+              }),
+          }),
+          cssModulesWithoutSuffixPlugin(),
+          publicAssetImportPluginPlugin({
+            rootDir: this.options.rootDir,
+            publicDir,
+          }),
+          frameworkPluginViteConfig.plugins,
+        ])
+      );
+      this.options.logger.debug(`Creating Vite server`);
+      const viteServerPromise = vite.createServer({
+        ...frameworkPluginViteConfig,
+        ...existingViteConfig?.config,
+        ...config.vite,
+        configFile: false,
+        root: this.options.rootDir,
+        optimizeDeps: {
+          entries: [],
+          esbuildOptions: {
+            // @ts-expect-error incompatible esbuild versions?
+            plugins: [polyfillNode()],
+          },
+        },
+        server: {
+          middlewareMode: true,
+          hmr: {
+            overlay: false,
+            server: this.options.server,
+            clientPort: this.options.port,
+            ...(typeof config.vite?.server?.hmr === "object"
+              ? config.vite?.server?.hmr
+              : {}),
+          },
+          fs: {
+            strict: false,
+            ...(config.vite?.server?.fs || {}),
+          },
+          ...config.vite?.server,
+        },
+        customLogger: {
+          info: defaultLogger.info,
+          warn: defaultLogger.warn,
+          error: (msg, options) => {
+            if (!msg.startsWith("\x1B[31mInternal server error")) {
+              // Note: we only send errors through WebSocket when they're not already sent by Vite automatically.
+              if (this.state?.kind === "running") {
+                this.state.viteServer.ws.send({
+                  type: "error",
+                  err: {
+                    message: msg,
+                    stack: "",
+                  },
+                });
+              }
+            }
+            defaultLogger.error(msg, options);
+          },
+          warnOnce: defaultLogger.warnOnce,
+          clearScreen: () => {
+            // Do nothing.
+          },
+          hasWarned: defaultLogger.hasWarned,
+          hasErrorLogged: defaultLogger.hasErrorLogged,
+        },
+        clearScreen: false,
+        cacheDir:
+          config.vite?.cacheDir ||
+          existingViteConfig?.config.cacheDir ||
+          this.options.cacheDir,
+        publicDir,
+        plugins,
+        define: {
+          __filename: undefined,
+          __dirname: undefined,
+          ...frameworkPluginViteConfig.define,
+          ...existingViteConfig?.config.define,
+          ...config.vite?.define,
+        },
+        resolve: {
+          ...existingViteConfig?.config.resolve,
+          ...config.vite?.resolve,
+          alias: [
+            // First defined rules are applied first, therefore highest priority should come first.
+            ...viteAliasToRollupAliasEntries(config.vite?.resolve?.alias),
+            ...viteAliasToRollupAliasEntries(config.alias),
+            ...viteAliasToRollupAliasEntries(
+              existingViteConfig?.config.resolve?.alias
+            ),
+            ...tsInferredAlias,
+            {
+              find: /^~(.*)/,
+              replacement: baseAlias + "$1",
+            },
+            {
+              find: "@",
+              replacement: baseAlias,
+            },
+            ...viteAliasToRollupAliasEntries(
+              frameworkPluginViteConfig.resolve?.alias
+            ),
+          ],
+        },
+      });
+      const viteServer = await viteServerPromise;
+      setEndState({
+        kind: "running",
+        config,
+        viteServer,
+      });
+      this.options.logger.debug(`Done starting Vite server`);
+    } catch (e: any) {
+      this.options.logger.error(`Vite startup error: ${e}`);
+      setEndState({
+        kind: "error",
+        error: e.stack || e.message,
       });
     }
-    const existingViteConfig = await vite.loadConfigFromFile(
-      {
-        command: "serve",
-        mode: "development",
-      },
-      undefined,
-      this.options.rootDir
-    );
-    const defaultLogger = vite.createLogger(
-      viteLogLevelFromPinoLogger(this.options.logger)
-    );
-    const frameworkPluginViteConfig = this.options.frameworkPlugin.viteConfig(
-      await flattenPlugins([
-        ...(existingViteConfig?.config.plugins || []),
-        ...(this.options.config.vite?.plugins || []),
-      ])
-    );
-    const publicDir =
-      this.options.config.vite?.publicDir ||
-      existingViteConfig?.config.publicDir ||
-      frameworkPluginViteConfig.publicDir ||
-      this.options.config.publicDir;
-    const plugins = replaceHandleHotUpdate(
-      this.options.reader,
-      await flattenPlugins([
-        viteTsconfigPaths({
-          root: this.options.rootDir,
-        }),
-        virtualPlugin({
-          logger: this.options.logger,
-          reader: this.options.reader,
-          rootDir: this.options.rootDir,
-          allowedAbsolutePaths: this.options.config.vite?.server?.fs?.allow ||
-            existingViteConfig?.config.server?.fs?.allow || [
-              searchForWorkspaceRoot(this.options.rootDir),
-            ],
-          moduleGraph: () => this.viteServer?.moduleGraph || null,
-          esbuildOptions: frameworkPluginViteConfig.esbuild || {},
-        }),
-        localEval(),
-        exportToplevelPlugin(),
-        fakeExportedTypesPlugin({
-          readFile: (absoluteFilePath) =>
-            this.options.reader.read(absoluteFilePath).then((entry) => {
-              if (entry?.kind !== "file") {
-                return null;
-              }
-              return entry.read();
-            }),
-        }),
-        cssModulesWithoutSuffixPlugin(),
-        publicAssetImportPluginPlugin({
-          rootDir: this.options.rootDir,
-          publicDir,
-        }),
-        frameworkPluginViteConfig.plugins,
-      ])
-    );
-    this.options.logger.debug(`Creating Vite server`);
-    const viteServerPromise = vite.createServer({
-      ...frameworkPluginViteConfig,
-      ...existingViteConfig?.config,
-      ...this.options.config.vite,
-      configFile: false,
-      root: this.options.rootDir,
-      optimizeDeps: {
-        entries: [],
-        esbuildOptions: {
-          // @ts-expect-error incompatible esbuild versions?
-          plugins: [polyfillNode()],
-        },
-      },
-      server: {
-        middlewareMode: true,
-        hmr: {
-          overlay: false,
-          server,
-          clientPort: port,
-          ...(typeof this.options.config.vite?.server?.hmr === "object"
-            ? this.options.config.vite?.server?.hmr
-            : {}),
-        },
-        fs: {
-          strict: false,
-          ...(this.options.config.vite?.server?.fs || {}),
-        },
-        ...this.options.config.vite?.server,
-      },
-      customLogger: {
-        info: defaultLogger.info,
-        warn: defaultLogger.warn,
-        error: (msg, options) => {
-          if (!msg.startsWith("\x1B[31mInternal server error")) {
-            // Note: we only send errors through WebSocket when they're not already sent by Vite automatically.
-            this.viteServer?.ws.send({
-              type: "error",
-              err: {
-                message: msg,
-                stack: "",
-              },
-            });
-          }
-          defaultLogger.error(msg, options);
-        },
-        warnOnce: defaultLogger.warnOnce,
-        clearScreen: () => {
-          // Do nothing.
-        },
-        hasWarned: defaultLogger.hasWarned,
-        hasErrorLogged: defaultLogger.hasErrorLogged,
-      },
-      clearScreen: false,
-      cacheDir:
-        this.options.config.vite?.cacheDir ||
-        existingViteConfig?.config.cacheDir ||
-        this.options.cacheDir,
-      publicDir,
-      plugins,
-      define: {
-        __filename: undefined,
-        __dirname: undefined,
-        ...frameworkPluginViteConfig.define,
-        ...existingViteConfig?.config.define,
-        ...this.options.config.vite?.define,
-      },
-      resolve: {
-        ...existingViteConfig?.config.resolve,
-        ...this.options.config.vite?.resolve,
-        alias: [
-          // First defined rules are applied first, therefore highest priority should come first.
-          ...viteAliasToRollupAliasEntries(
-            this.options.config.vite?.resolve?.alias
-          ),
-          ...viteAliasToRollupAliasEntries(this.options.config.alias),
-          ...viteAliasToRollupAliasEntries(
-            existingViteConfig?.config.resolve?.alias
-          ),
-          ...tsInferredAlias,
-          {
-            find: /^~(.*)/,
-            replacement: baseAlias + "$1",
-          },
-          {
-            find: "@",
-            replacement: baseAlias,
-          },
-          ...viteAliasToRollupAliasEntries(
-            frameworkPluginViteConfig.resolve?.alias
-          ),
-        ],
-      },
-    });
-    viteServerPromise.catch((e) => {
-      this.options.logger.error(`Vite startup error: ${e}`);
-      resolveViteStartupPromise();
-      delete this.viteStartupPromise;
-    });
-    this.viteServer = await viteServerPromise;
-    delete this.viteStartupPromise;
-    resolveViteStartupPromise();
-    this.options.logger.debug(`Done starting Vite server`);
+    return this.state.promise;
   }
 
-  async stop() {
-    await this.viteStartupPromise;
-    if (this.viteServer) {
-      await this.viteServer.close();
-      delete this.viteServer;
+  async stop({ restart }: { restart: boolean } = { restart: false }) {
+    const state = await endState(this.state);
+    if (state?.kind === "running") {
+      await state.viteServer.close();
     }
-  }
-
-  getConfig() {
-    return this.options.config;
+    if (restart) {
+      return this.start();
+    } else {
+      return (this.state = null);
+    }
   }
 
   triggerReload(absoluteFilePath: string) {
     (async () => {
-      const viteServer = this.viteServer;
-      if (!viteServer) {
+      if (this.state?.kind !== "running") {
         return;
       }
+      const { viteServer } = this.state;
       const modules = await viteServer.moduleGraph.getModulesByFile(
         absoluteFilePath
       );
@@ -396,13 +472,6 @@ export class ViteManager {
         onChange(absoluteFilePath);
       }
     })();
-  }
-
-  triggerFullReload() {
-    this.viteServer?.moduleGraph.invalidateAll();
-    this.viteServer?.ws.send({
-      type: "full-reload",
-    });
   }
 }
 
