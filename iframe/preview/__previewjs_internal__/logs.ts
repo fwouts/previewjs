@@ -37,6 +37,7 @@ export function setUpLogInterception() {
               window.__PREVIEWJS_IFRAME__.reportEvent({
                 kind: "error",
                 source: "hmr",
+                modulePath,
                 message: generateMessageFromError(
                   errorMessage,
                   consoleErrorPrecedingHmrError
@@ -46,6 +47,7 @@ export function setUpLogInterception() {
               window.__PREVIEWJS_IFRAME__.reportEvent({
                 kind: "error",
                 source: "hmr",
+                modulePath,
                 message: errorMessage,
               });
             }

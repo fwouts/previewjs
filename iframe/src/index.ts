@@ -180,11 +180,23 @@ export interface LogMessage {
   message: string;
 }
 
-export interface PreviewError {
-  kind: "error";
-  source: "hmr" | "vite" | "renderer";
-  message: string;
-}
+export type PreviewError =
+  | {
+      kind: "error";
+      source: "hmr";
+      modulePath: string;
+      message: string;
+    }
+  | {
+      kind: "error";
+      source: "vite";
+      message: string;
+    }
+  | {
+      kind: "error";
+      source: "renderer";
+      message: string;
+    };
 
 export type LogLevel = "log" | "info" | "warn" | "error";
 
