@@ -1,7 +1,11 @@
 import viteTsconfigPaths from "@fwouts/vite-tsconfig-paths";
 import { decodePreviewableId } from "@previewjs/analyzer-api";
-import { readConfig, type PreviewConfig } from "@previewjs/config";
-import type { Reader } from "@previewjs/vfs";
+import {
+  PREVIEW_CONFIG_NAME,
+  readConfig,
+  type PreviewConfig,
+} from "@previewjs/config";
+import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
 import { polyfillNode } from "esbuild-plugin-polyfill-node";
 import express from "express";
@@ -14,11 +18,8 @@ import type { Tsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
+import { FILES_REQUIRING_REDETECTION } from "../crawl-files";
 import { findFiles } from "../find-files";
-import {
-  GLOBAL_CSS_EXTS,
-  GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT,
-} from "../global-css";
 import { generateHtmlError } from "../html-error";
 import type { FrameworkPlugin } from "../plugins/framework";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
@@ -26,6 +27,45 @@ import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
 import { localEval } from "./plugins/local-eval";
 import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin";
 import { virtualPlugin } from "./plugins/virtual-plugin";
+
+const POSTCSS_CONFIG_FILE = [
+  ".postcssrc",
+  ".postcssrc.json",
+  ".postcssrc.yml",
+  ".postcssrc.js",
+  ".postcssrc.mjs",
+  ".postcssrc.cjs",
+  ".postcssrc.ts",
+  "postcss.config.js",
+  "postcss.config.mjs",
+  "postcss.config.cjs",
+  "postcss.config.ts",
+];
+
+const GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT = [
+  "index",
+  "global",
+  "globals",
+  "style",
+  "styles",
+  "app",
+];
+const GLOBAL_CSS_EXTS = ["css", "sass", "scss", "less", "styl", "stylus"];
+
+const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
+  GLOBAL_CSS_EXTS.map((ext) => `${fileName}.${ext}`)
+);
+
+const FILES_REQUIRING_VITE_RESTART = new Set([
+  PREVIEW_CONFIG_NAME,
+  ...FILES_REQUIRING_REDETECTION,
+  ...POSTCSS_CONFIG_FILE,
+  ...GLOBAL_CSS_FILE,
+  "vite.config.js",
+  "vite.config.ts",
+  // TODO: Make plugins contribute files requiring restart to make core agnostic of Svelte config files.
+  "svelte.config.js",
+]);
 
 type ViteState =
   | {
@@ -55,8 +95,11 @@ async function endState(state: ViteState | null) {
 
 export class ViteManager {
   readonly middleware: express.RequestHandler;
+  get state() {
+    return this.#state;
+  }
 
-  private state: ViteState | null = null;
+  #state: ViteState | null = null;
 
   constructor(
     private readonly options: {
@@ -72,7 +115,7 @@ export class ViteManager {
   ) {
     const router = express.Router();
     router.use(async (req, res, next) => {
-      const state = await endState(this.state);
+      const state = await endState(this.#state);
       if (!state || state.kind === "error") {
         return next();
       }
@@ -87,7 +130,7 @@ export class ViteManager {
   }
 
   async loadIndexHtml(url: string, id: string) {
-    const state = await endState(this.state);
+    const state = await endState(this.#state);
     if (!state) {
       throw new Error(`Vite server is not running`);
     }
@@ -176,11 +219,11 @@ export class ViteManager {
   // Note: this is guaranteed not to throw.
   async start() {
     let setEndState!: (running: ViteEndState) => void;
-    this.state = {
+    this.#state = {
       kind: "starting",
       promise: new Promise<ViteEndState>((resolve) => {
         setEndState = (state: ViteEndState) => {
-          this.state = state;
+          this.#state = state;
           resolve(state);
         };
       }),
@@ -294,8 +337,8 @@ export class ViteManager {
                 searchForWorkspaceRoot(this.options.rootDir),
               ],
             moduleGraph: () => {
-              if (this.state?.kind === "running") {
-                return this.state.viteServer.moduleGraph;
+              if (this.#state?.kind === "running") {
+                return this.#state.viteServer.moduleGraph;
               }
               return null;
             },
@@ -356,8 +399,8 @@ export class ViteManager {
           error: (msg, options) => {
             if (!msg.startsWith("\x1B[31mInternal server error")) {
               // Note: we only send errors through WebSocket when they're not already sent by Vite automatically.
-              if (this.state?.kind === "running") {
-                this.state.viteServer.ws.send({
+              if (this.#state?.kind === "running") {
+                this.#state.viteServer.ws.send({
                   type: "error",
                   err: {
                     message: msg,
@@ -428,27 +471,51 @@ export class ViteManager {
         error: e.stack || e.message,
       });
     }
-    return this.state.promise;
+    return this.#state.promise;
   }
 
   async stop({ restart }: { restart: boolean } = { restart: false }) {
-    const state = await endState(this.state);
+    const state = await endState(this.#state);
     if (state?.kind === "running") {
       await state.viteServer.close();
     }
     if (restart) {
       return this.start();
     } else {
-      return (this.state = null);
+      return (this.#state = null);
     }
   }
 
-  triggerReload(absoluteFilePath: string) {
+  async onFileChanged(absoluteFilePath: string, info: ReaderListenerInfo) {
+    const state = await endState(this.state);
+    if (!state || info.virtual) {
+      return;
+    }
+    if (
+      state.kind === "running" &&
+      state.config.wrapper &&
+      absoluteFilePath ===
+        path.resolve(this.options.rootDir, state.config.wrapper.path)
+    ) {
+      state.viteServer.moduleGraph.invalidateAll();
+      state.viteServer.ws.send({
+        type: "full-reload",
+      });
+      return;
+    }
+    if (FILES_REQUIRING_VITE_RESTART.has(path.basename(absoluteFilePath))) {
+      // Packages were updated. Restart.
+      this.options.logger.info("New dependencies were detected. Restarting...");
+      await this.stop({ restart: true });
+    }
+  }
+
+  private triggerReload(absoluteFilePath: string) {
     (async () => {
-      if (this.state?.kind !== "running") {
+      if (this.#state?.kind !== "running") {
         return;
       }
-      const { viteServer } = this.state;
+      const { viteServer } = this.#state;
       const modules = await viteServer.moduleGraph.getModulesByFile(
         absoluteFilePath
       );
