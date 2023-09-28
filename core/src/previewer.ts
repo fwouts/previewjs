@@ -1,4 +1,4 @@
-import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
+import type { Reader } from "@previewjs/vfs";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import axios from "axios";
@@ -26,7 +26,6 @@ export class Previewer {
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
       port: number;
-      onFileChanged?(absoluteFilePath: string): void;
     }
   ) {
     this.transformingReader = createStackedReader([
@@ -135,7 +134,6 @@ export class Previewer {
             this.options.rootDir
           );
         }
-        this.transformingReader.listeners.add(this.onFileChangeListener);
         this.options.logger.debug(`Starting server`);
         const server = await this.appServer.start(this.options.port);
         this.options.logger.debug(`Starting Vite manager`);
@@ -192,11 +190,8 @@ export class Previewer {
     this.status = {
       kind: "stopping",
       promise: (async () => {
-        this.transformingReader.listeners.remove(this.onFileChangeListener);
-        if (this.disposeObserver) {
-          await this.disposeObserver();
-          this.disposeObserver = null;
-        }
+        await this.disposeObserver?.();
+        this.disposeObserver = null;
         await this.viteManager?.stop();
         this.viteManager = null;
         await this.appServer?.stop();
@@ -208,18 +203,6 @@ export class Previewer {
     };
     await this.status.promise;
   }
-
-  private readonly onFileChangeListener = {
-    onChange: (absoluteFilePath: string, info: ReaderListenerInfo) => {
-      absoluteFilePath = path.resolve(absoluteFilePath);
-      this.viteManager
-        ?.onFileChanged(absoluteFilePath, info)
-        .catch(this.options.logger.error.bind(this.options.logger));
-      if (!info.virtual && this.options.onFileChanged) {
-        this.options.onFileChanged(absoluteFilePath);
-      }
-    },
-  };
 }
 
 type PreviewerStatus =

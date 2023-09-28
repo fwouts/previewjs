@@ -5,9 +5,14 @@ import {
   readConfig,
   type PreviewConfig,
 } from "@previewjs/config";
-import type { Reader, ReaderListenerInfo } from "@previewjs/vfs";
+import type {
+  Reader,
+  ReaderListener,
+  ReaderListenerInfo,
+} from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
 import { polyfillNode } from "esbuild-plugin-polyfill-node";
+import { exclusivePromiseRunner } from "exclusive-promises";
 import express from "express";
 import fs from "fs-extra";
 import type { Server } from "http";
@@ -95,11 +100,19 @@ async function endState(state: ViteState | null) {
 
 export class ViteManager {
   readonly middleware: express.RequestHandler;
+  #state: ViteState | null = null;
+  #exclusively: <T>(f: () => Promise<T>) => Promise<T>;
+  #readerListener: ReaderListener = {
+    onChange: (absoluteFilePath, info) => {
+      this.onFileChanged(absoluteFilePath, info).catch((e) =>
+        this.options.logger.error(e)
+      );
+    },
+  };
+
   get state() {
     return this.#state;
   }
-
-  #state: ViteState | null = null;
 
   constructor(
     private readonly options: {
@@ -127,6 +140,7 @@ export class ViteManager {
       }
     });
     this.middleware = router;
+    this.#exclusively = exclusivePromiseRunner();
   }
 
   async loadIndexHtml(url: string, id: string) {
@@ -228,6 +242,7 @@ export class ViteManager {
         };
       }),
     };
+    this.options.reader.listeners.add(this.#readerListener);
     try {
       // PostCSS requires the current directory to change because it relies
       // on the `import-cwd` package to resolve plugins.
@@ -475,47 +490,47 @@ export class ViteManager {
   }
 
   async stop({ restart }: { restart: boolean } = { restart: false }) {
-    const state = await endState(this.#state);
-    if (state?.kind === "running") {
-      await state.viteServer.close();
-    }
-    if (restart) {
-      return this.start();
-    } else {
-      return (this.#state = null);
-    }
+    await this.#exclusively(async () => {
+      this.options.reader.listeners.remove(this.#readerListener);
+      const state = await endState(this.#state);
+      if (state?.kind === "running") {
+        await state.viteServer.close();
+      }
+      if (restart) {
+        return this.start();
+      } else {
+        return (this.#state = null);
+      }
+    });
   }
 
-  async onFileChanged(absoluteFilePath: string, info: ReaderListenerInfo) {
+  private async onFileChanged(
+    absoluteFilePath: string,
+    info: ReaderListenerInfo
+  ) {
     const state = await endState(this.state);
-    if (!state || info.virtual) {
+    if (!state) {
       return;
     }
-    if (
-      state.kind === "running" &&
-      state.config.wrapper &&
-      absoluteFilePath ===
-        path.resolve(this.options.rootDir, state.config.wrapper.path)
-    ) {
-      state.viteServer.moduleGraph.invalidateAll();
-      state.viteServer.ws.send({
-        type: "full-reload",
-      });
-      return;
-    }
-    if (FILES_REQUIRING_VITE_RESTART.has(path.basename(absoluteFilePath))) {
-      // Packages were updated. Restart.
-      this.options.logger.info("New dependencies were detected. Restarting...");
-      await this.stop({ restart: true });
-    }
-  }
-
-  private triggerReload(absoluteFilePath: string) {
-    (async () => {
-      if (this.#state?.kind !== "running") {
+    if (!info.virtual) {
+      // Note: this doesn't strictly fit well in ViteManager. It may be better refactored out.
+      this.options.frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(
+        path.relative(this.options.rootDir, absoluteFilePath)
+      );
+      if (FILES_REQUIRING_VITE_RESTART.has(path.basename(absoluteFilePath))) {
+        // Packages were updated. Restart.
+        this.options.logger.info(
+          "New dependencies were detected. Restarting..."
+        );
+        await this.stop({ restart: true });
         return;
       }
-      const { viteServer } = this.#state;
+    }
+    if (state.kind !== "running") {
+      return;
+    }
+    const { viteServer, config } = state;
+    if (info.virtual) {
       const modules = await viteServer.moduleGraph.getModulesByFile(
         absoluteFilePath
       );
@@ -538,7 +553,16 @@ export class ViteManager {
       for (const onChange of viteServer.watcher.listeners("change")) {
         onChange(absoluteFilePath);
       }
-    })();
+    } else if (
+      config.wrapper &&
+      absoluteFilePath ===
+        path.resolve(this.options.rootDir, config.wrapper.path)
+    ) {
+      viteServer.moduleGraph.invalidateAll();
+      viteServer.ws.send({
+        type: "full-reload",
+      });
+    }
   }
 }
 

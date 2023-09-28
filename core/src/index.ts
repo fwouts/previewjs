@@ -201,10 +201,6 @@ export async function createWorkspace({
         logger,
         middlewares,
         port,
-        onFileChanged: (absoluteFilePath) => {
-          const filePath = path.relative(rootDir, absoluteFilePath);
-          frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
-        },
       });
       await previewer.start();
       activePreviewers.add(previewer);
