@@ -7,7 +7,7 @@ import fs from "fs-extra";
 import path from "path";
 import { duplicateProjectForTesting } from "./test-dir";
 
-export function prepareFileManager({
+export async function prepareFileManager({
   testProjectDirPath,
   onBeforeFileUpdated = async () => {
     /* no-op by default */
@@ -21,6 +21,9 @@ export function prepareFileManager({
   onAfterFileUpdated?: () => void;
 }) {
   const rootDir = duplicateProjectForTesting(testProjectDirPath);
+  // Introduce an artificial wait to prevent chokidar from mistakenly detecting
+  // newly created files as "just changed" and emitting events by mistake.
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const memoryReader = createMemoryReader();
   const fsReader = createFileSystemReader({
     watch: true,
