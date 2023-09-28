@@ -143,32 +143,35 @@ export class ViteManager {
     this.#exclusively = exclusivePromiseRunner();
   }
 
-  async loadIndexHtml(url: string, id: string) {
-    const state = await endState(this.#state);
-    if (!state) {
-      throw new Error(`Vite server is not running`);
-    }
-    if (state.kind === "error") {
-      return generateHtmlError(state.error);
-    }
-    const template = await fs.readFile(
-      this.options.shadowHtmlFilePath,
-      "utf-8"
-    );
-    const { config, viteServer } = state;
-    const { filePath, name: previewableName } = decodePreviewableId(id);
-    const componentPath = filePath.replace(/\\/g, "/");
-    const wrapper = config.wrapper;
-    const wrapperPath =
-      wrapper &&
-      (await fs.pathExists(path.join(this.options.rootDir, wrapper.path)))
-        ? wrapper.path.replace(/\\/g, "/")
-        : null;
-    return await viteServer.transformIndexHtml(
-      url,
-      template.replace(
-        "<!-- %OPTIONAL_HEAD_CONTENT% -->",
-        `
+  async loadIndexHtml(url: string, id: string): Promise<string> {
+    // Note: this must run exclusively from stop() or viteServer.transformIndexHtml()
+    // could fail with "The server is being restarted or closed. Request is outdated".
+    return this.#exclusively(async () => {
+      const state = await endState(this.#state);
+      if (!state) {
+        throw new Error(`Vite server is not running`);
+      }
+      if (state.kind === "error") {
+        return generateHtmlError(state.error);
+      }
+      const template = await fs.readFile(
+        this.options.shadowHtmlFilePath,
+        "utf-8"
+      );
+      const { config, viteServer } = state;
+      const { filePath, name: previewableName } = decodePreviewableId(id);
+      const componentPath = filePath.replace(/\\/g, "/");
+      const wrapper = config.wrapper;
+      const wrapperPath =
+        wrapper &&
+        (await fs.pathExists(path.join(this.options.rootDir, wrapper.path)))
+          ? wrapper.path.replace(/\\/g, "/")
+          : null;
+      return await viteServer.transformIndexHtml(
+        url,
+        template.replace(
+          "<!-- %OPTIONAL_HEAD_CONTENT% -->",
+          `
     <script type="module">
     import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
 
@@ -226,8 +229,9 @@ export class ViteManager {
       });
     });
     </script>`
-      )
-    );
+        )
+      );
+    });
   }
 
   // Note: this is guaranteed not to throw.
