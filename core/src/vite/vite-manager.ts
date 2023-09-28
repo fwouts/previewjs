@@ -149,7 +149,7 @@ export class ViteManager {
     return this.#exclusively(async () => {
       const state = await endState(this.#state);
       if (!state) {
-        throw new Error(`Vite server is not running`);
+        return generateHtmlError(`Vite server is not running`);
       }
       if (state.kind === "error") {
         return generateHtmlError(state.error);
