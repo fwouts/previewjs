@@ -67,7 +67,6 @@ export const previewTest = (
       const preview = await workspace.startPreview(page, {
         port,
       });
-      let timeout: NodeJS.Timeout;
       await page.exposeFunction(
         "__ON_PREVIEWJS_EVENT__",
         (event: PreviewEvent) => {
@@ -76,15 +75,10 @@ export const previewTest = (
             event.kind === "rendered" ||
             event.kind === "error"
           ) {
-            const delay = event.kind === "rendered" ? 0 : 300;
-            clearTimeout(timeout);
-            // Leave some time for potential errors to occur.
-            timeout = setTimeout(() => {
-              for (const resolve of resolvePromises) {
-                resolve();
-              }
-              resolvePromises = [];
-            }, delay);
+            for (const resolve of resolvePromises) {
+              resolve();
+            }
+            resolvePromises = [];
           }
         }
       );
@@ -108,10 +102,10 @@ export const previewTest = (
           page,
           fileManager,
           get expectErrors() {
-            return expectErrors(this.events.get());
+            return expectErrors(() => this.events.get());
           },
           get expectLoggedMessages() {
-            return expectLoggedMessages(this.events.get());
+            return expectLoggedMessages(() => this.events.get());
           },
           ...preview,
         });
