@@ -6,14 +6,17 @@ import type {
 } from "@previewjs/iframe";
 import { inspect } from "util";
 
-export function expectErrors(events: PreviewEvent[]) {
+const RETRY_AFTER_MILLIS = 100;
+const MAX_RETRIES = 50;
+
+export function expectErrors(events: () => PreviewEvent[]) {
   return {
     toMatch: async (
       messages: Array<string | string[]>,
-      retrying = false
+      retries = 0
     ): Promise<void> => {
       let errorEvents: PreviewError[] = [];
-      for (const event of events) {
+      for (const event of events()) {
         switch (event.kind) {
           case "bootstrapped":
           case "vite-before-update":
@@ -38,19 +41,17 @@ export function expectErrors(events: PreviewEvent[]) {
           }
         }
         if (!found) {
-          if (retrying) {
+          if (retries > MAX_RETRIES) {
             throw new Error(
               `Unable to find error: "${message}".\nReceived: ${inspect(
                 errorEvents
               )}`
             );
           } else {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `Unable to find error immediately: "${message}".\n\nRetrying in five seconds...`
+            await new Promise((resolve) =>
+              setTimeout(resolve, RETRY_AFTER_MILLIS)
             );
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-            return expectErrors(events).toMatch(messages, true);
+            return expectErrors(events).toMatch(messages, retries + 1);
           }
         }
       }
@@ -65,15 +66,15 @@ export function expectErrors(events: PreviewEvent[]) {
   };
 }
 
-export function expectLoggedMessages(events: PreviewEvent[]) {
+export function expectLoggedMessages(events: () => PreviewEvent[]) {
   return {
     toMatch: async (
       messages: Array<string | string[]>,
       level = "error",
-      retrying = false
+      retries = 0
     ): Promise<void> => {
       let logEvents: LogMessage[] = [];
-      for (const event of events) {
+      for (const event of events()) {
         switch (event.kind) {
           case "bootstrapped":
           case "vite-before-update":
@@ -100,19 +101,21 @@ export function expectLoggedMessages(events: PreviewEvent[]) {
           }
         }
         if (!found) {
-          if (retrying) {
+          if (retries > MAX_RETRIES) {
             throw new Error(
               `Unable to find logged message: "${message}".\nReceived: ${inspect(
                 logEvents
               )}`
             );
           } else {
-            // eslint-disable-next-line no-console
-            console.warn(
-              `Unable to find logged message immediately: "${message}".\n\nRetrying in five seconds...`
+            await new Promise((resolve) =>
+              setTimeout(resolve, RETRY_AFTER_MILLIS)
             );
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-            return expectLoggedMessages(events).toMatch(messages, level, true);
+            return expectLoggedMessages(events).toMatch(
+              messages,
+              level,
+              retries + 1
+            );
           }
         }
       }

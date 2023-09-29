@@ -71,8 +71,16 @@ test.describe.parallel("vue3/refreshing", () => {
           inMemoryOnly,
         }
       );
-      const helloWorldUpdated = await preview.iframe.waitForSelector(".hello");
-      expect((await helloWorldUpdated?.boundingBox())?.width).toEqual(200);
+      await expect
+        .poll(
+          async () =>
+            (
+              await (
+                await preview.iframe.waitForSelector(".hello")
+              )?.boundingBox()
+            )?.width
+        )
+        .toEqual(200);
     });
   }
 });
