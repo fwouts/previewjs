@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { Page, test } from "@playwright/test";
 import type { PreviewServer, Workspace } from "@previewjs/core";
 import { createWorkspace } from "@previewjs/core";
 import "@previewjs/iframe";
@@ -26,28 +26,43 @@ test.describe("navigation", () => {
   });
 
   test("foo", async ({ page }) => {
+    await runInPage(workspace, page, __dirname, async () => {
+      const { default: App } = await import("./App");
+      const { Foo } = await import("./Foo");
+
+      await mount(<App title={<Foo />} />);
+    });
+
+    await page.screenshot({
+      path: "src/example.spec.output.png",
+    });
+  });
+
+  async function runInPage(
+    workspace: Workspace,
+    page: Page,
+    currentDir: string,
+    pageFunction: () => Promise<void>
+  ) {
     let resolvePromise!: () => void;
     const onRenderDone = new Promise<void>((resolve) => {
       resolvePromise = resolve;
     });
     await page.exposeFunction("__ON_PREVIEWJS_MOUNTED__", resolvePromise);
     await page.exposeFunction("__PREVIEWJS_BOOSTRAP_HOOK__", async () => {
-      await page.evaluate(async () => {
-        const { default: App } = await import("./App");
-        const { Foo } = await import("./Foo");
-
-        await mount(<App title={<Foo />} />);
-        // @ts-expect-error
-        window.__ON_PREVIEWJS_MOUNTED__();
-      });
+      await page.evaluate(
+        async ([pageFunctionStr]) => {
+          const pageFunction = eval(pageFunctionStr);
+          await pageFunction();
+          // @ts-expect-error
+          window.__ON_PREVIEWJS_MOUNTED__();
+        },
+        [pageFunction.toString()]
+      );
     });
-
-    await page.goto(getUrl(workspace, __dirname));
+    await page.goto(getUrl(workspace, currentDir));
     await onRenderDone;
-    await page.screenshot({
-      path: "src/example.spec.output.png",
-    });
-  });
+  }
 
   function getUrl(workspace: Workspace, currentDir: string) {
     const currentPath = path
