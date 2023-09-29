@@ -82,7 +82,9 @@ test.describe.parallel("solid/refreshing", () => {
           inMemoryOnly,
         }
       );
-      expect((await dependencyComponent?.boundingBox())?.width).toEqual(400);
+      await expect
+        .poll(async () => (await dependencyComponent?.boundingBox())?.width)
+        .toEqual(400);
     });
   }
 });
