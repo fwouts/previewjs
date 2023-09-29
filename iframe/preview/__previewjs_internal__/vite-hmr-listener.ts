@@ -3,33 +3,6 @@ import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import { generateMessageFromError } from "./error-message";
 
 export function setupViteHmrListener() {
-  const maxWaitBeforeUpdatesDeclaredOverMillis = 300;
-  let expectedUpdatePromise: Promise<void> = Promise.resolve();
-  let onUpdate = () => {
-    // Do nothing.
-  };
-  let callOnUpdateTimeout: any;
-  window.__expectFutureRefresh__ = function () {
-    expectedUpdatePromise = new Promise((resolve) => {
-      onUpdate = resolve;
-    });
-  };
-  window.__waitForExpectedRefresh__ = async function () {
-    await expectedUpdatePromise;
-  };
-
-  function triggerOnUpdateSoon() {
-    if (callOnUpdateTimeout) {
-      clearTimeout(callOnUpdateTimeout);
-    }
-    callOnUpdateTimeout = setTimeout(() => {
-      onUpdate();
-      onUpdate = () => {
-        // Do nothing.
-      };
-    }, maxWaitBeforeUpdatesDeclaredOverMillis);
-  }
-
   const hmr = import.meta.hot!;
   let error: ErrorPayload | null = null;
   let isFirstUpdate = true;
@@ -39,7 +12,6 @@ export function setupViteHmrListener() {
     });
   });
   hmr.on("vite:error", (payload: ErrorPayload) => {
-    triggerOnUpdateSoon();
     error = payload;
     if (typeof payload.err?.message !== "string") {
       // This error doesn't match the expected payload.
@@ -67,6 +39,5 @@ export function setupViteHmrListener() {
       kind: "vite-before-update",
       payload,
     });
-    triggerOnUpdateSoon();
   });
 }
