@@ -464,8 +464,8 @@ importers:
         specifier: workspace:*
         version: link:../framework-plugins/vue3
       '@previewjs/pro':
-        specifier: ^1.13.4
-        version: 1.13.4(@types/node@20.7.1)(esbuild@0.19.4)
+        specifier: ^1.14.0
+        version: 1.14.0(@types/node@20.7.1)(esbuild@0.19.4)
       '@previewjs/vfs':
         specifier: workspace:*
         version: link:../vfs
@@ -13004,50 +13004,6 @@ packages:
     resolution: {integrity: sha512-pittZN3LqAxG/pb8lj+N2p6ojYrn53DysG6Vwcmnct6UsZgbr7B+VCwP6J/tyeH4DZfs3R4q9La/PKdE2umKIA==}
     dev: false
 
-  /@previewjs/core@26.0.1(@types/node@20.7.1)(esbuild@0.19.4):
-    resolution: {integrity: sha512-lq9li9XohBNNPLPClcflH2QZSi75hvf9uAnZezrOrryGyx0RUkChu7nFlQK2TefYORmrNrK1t8KNKz5vZJvFqQ==}
-    dependencies:
-      '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.2.2)(vite@4.4.9)
-      '@previewjs/analyzer-api': 0.1.3
-      '@previewjs/api': 16.0.1
-      '@previewjs/config': 5.1.1
-      '@previewjs/iframe': 12.0.1
-      '@previewjs/serializable-values': 9.0.1
-      '@previewjs/type-analyzer': 10.0.1
-      '@previewjs/vfs': 2.0.17
-      acorn: 8.10.0
-      acorn-jsx: 5.3.2(acorn@8.10.0)
-      assert-never: 1.2.1
-      axios: 1.5.1
-      esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.4)
-      exclusive-promises: 1.0.3
-      express: 4.18.2
-      fs-extra: 11.1.1
-      globby: 13.2.2
-      html-escaper: 3.0.3
-      http-terminator: 3.2.0
-      pino: 8.15.1
-      pino-pretty: 10.2.0
-      rollup-plugin-friendly-type-imports: 1.0.3
-      ts-node: 10.9.1(@types/node@20.7.1)(typescript@5.2.2)
-      tsconfig-paths: 4.2.0
-      typescript: 5.2.2
-      vite: 4.4.9(@types/node@20.7.1)
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - debug
-      - esbuild
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: false
-
   /@previewjs/core@27.1.0(@types/node@20.7.1)(esbuild@0.19.4):
     resolution: {integrity: sha512-To06ahxT5AamAXODkM3tB+kz8mX40UdBHRt3mHfh84OnHs9set5jQZhiirVnkcurX7IWos6zUqFF7xUEPOITog==}
     dependencies:
@@ -13092,20 +13048,16 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/iframe@12.0.1:
-    resolution: {integrity: sha512-nMSzV046/MNLcMwLekj/VKhxEPcd3qciHhmXxtUK0e16qg9XG5mRAmUZxKoXSoWD2OtPLyecy+J4pUOHNqEJAA==}
-    dev: false
-
   /@previewjs/iframe@15.3.0:
     resolution: {integrity: sha512-96heo5btBKTuph7WzVpjZPKSusW8RgR1/YsUWEPCSkkt4aS1uwce/wAnpQim2H9s+VnpkddL+rKub6K6RVSEYA==}
     dev: false
 
-  /@previewjs/pro@1.13.4(@types/node@20.7.1)(esbuild@0.19.4):
-    resolution: {integrity: sha512-7q4J8bkV41jlFdlHqvUrsqJalYDjeD8C8HGeQPYZrXwol3MJ5OEIs8XNBY7w/Q3ellGC95l7Q9sRTNYX5QJQ8Q==}
+  /@previewjs/pro@1.14.0(@types/node@20.7.1)(esbuild@0.19.4):
+    resolution: {integrity: sha512-teZVb2IltpwQaI3TFVi6nExVhIbhBfOTwS/EtyHUc//Jarrnwue5OWWItC0f7ehGqZvI0rYRhFZ7lhBZufQsQw==}
     dependencies:
       '@previewjs/analyzer-api': 0.1.3
       '@previewjs/api': 16.0.1
-      '@previewjs/core': 26.0.1(@types/node@20.7.1)(esbuild@0.19.4)
+      '@previewjs/core': 27.1.0(@types/node@20.7.1)(esbuild@0.19.4)
       '@previewjs/serializable-values': 9.0.1
       '@previewjs/storybook-helpers': 5.0.4(@types/node@20.7.1)(esbuild@0.19.4)
       axios: 1.5.1
