@@ -3,6 +3,7 @@ import { escape } from "html-escaper";
 export function generateHtmlError(message: string) {
   return `<html>
   <head>
+    <meta http-equiv="refresh" content="1">
     <style>
       body {
         background: #FCA5A5
