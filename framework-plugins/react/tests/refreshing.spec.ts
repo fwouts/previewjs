@@ -89,9 +89,9 @@ for (const reactVersion of reactVersions()) {
               inMemoryOnly,
             }
           );
-          expect((await dependencyComponent?.boundingBox())?.width).toEqual(
-            400
-          );
+          await expect
+            .poll(async () => (await dependencyComponent?.boundingBox())?.width)
+            .toEqual(400);
         });
       }
     });
