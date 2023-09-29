@@ -1,11 +1,9 @@
-import type { RenderOptions } from "../../src";
 import { overrideCopyCutPaste } from "./copy-cut-paste";
 import { setUpLinkInterception } from "./links";
 import { setUpLogInterception } from "./logs";
-import { sendMessageFromPreview } from "./messages";
 import { loadRenderer } from "./renderer";
+import { runRenderer } from "./run-renderer";
 import { setState } from "./state";
-import { updateComponent } from "./update-component";
 import { setupViteHmrListener } from "./vite-hmr-listener";
 
 // Important: initListeners() must be invoked before we try to load any modules
@@ -28,20 +26,19 @@ export function initPreview({
   wrapperModule: any;
   wrapperName: string;
 }) {
+  const root = document.getElementById("root")!;
+  if (!root) {
+    throw new Error(`Unable to find #root!`);
+  }
+
   let renderId = 0;
 
-  async function render({
-    autogenCallbackPropsSource,
-    propsAssignmentSource,
-  }: RenderOptions) {
+  async function runNewRender() {
+    const rootHtml = root.innerHTML;
     try {
       renderId += 1;
-      setState({
-        autogenCallbackPropsSource,
-        propsAssignmentSource,
-      });
       const thisRenderId = renderId;
-      await updateComponent({
+      await runRenderer({
         wrapperModule,
         wrapperName,
         previewableModule,
@@ -51,36 +48,31 @@ export function initPreview({
         loadRenderer,
       });
     } catch (error: any) {
-      sendMessageFromPreview({
-        kind: "rendering-error",
+      if (root.innerHTML !== rootHtml) {
+        // Restore the previous content so we don't end up with an empty page instead.
+        root.innerHTML = rootHtml;
+      }
+      window.__PREVIEWJS_IFRAME__.reportEvent({
+        kind: "error",
+        source: "renderer",
         message: error.stack || error.message,
       });
     }
   }
 
-  const root = document.getElementById("root");
-  if (!root) {
-    throw new Error(`Unable to find #root!`);
-  }
-
-  let lastRenderOptions: RenderOptions | null = null;
-  window.__PREVIEWJS_IFRAME__ = {
-    render: async (data) => {
-      lastRenderOptions = data;
-      await render(data);
-    },
+  window.__PREVIEWJS_IFRAME__.render = async (data) => {
+    setState(data);
+    await runNewRender();
   };
 
-  sendMessageFromPreview({
+  window.__PREVIEWJS_IFRAME__.reportEvent({
     kind: "bootstrapped",
   });
 
   return (updatedPreviewableModule: any, updatedWrapperModule: any) => {
     previewableModule = updatedPreviewableModule;
     wrapperModule = updatedWrapperModule;
-    if (lastRenderOptions) {
-      // eslint-disable-next-line no-console
-      render(lastRenderOptions).catch(console.error);
-    }
+    // eslint-disable-next-line no-console
+    runNewRender().catch(console.error);
   };
 }

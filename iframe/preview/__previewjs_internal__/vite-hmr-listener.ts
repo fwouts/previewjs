@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
-import { sendMessageFromPreview } from "./messages";
+import { generateMessageFromError } from "./error-message";
 
 export function setupViteHmrListener() {
   const maxWaitBeforeUpdatesDeclaredOverMillis = 300;
@@ -33,6 +33,11 @@ export function setupViteHmrListener() {
   const hmr = import.meta.hot!;
   let error: ErrorPayload | null = null;
   let isFirstUpdate = true;
+  hmr.on("vite:beforeFullReload", () => {
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "vite-before-reload",
+    });
+  });
   hmr.on("vite:error", (payload: ErrorPayload) => {
     triggerOnUpdateSoon();
     error = payload;
@@ -43,9 +48,10 @@ export function setupViteHmrListener() {
       // Block this to prevent crashes down the track.
       return;
     }
-    sendMessageFromPreview({
-      kind: "vite-error",
-      payload,
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "error",
+      source: "vite",
+      message: generateMessageFromError(payload.err.message, payload.err.stack),
     });
   });
   hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
@@ -57,16 +63,10 @@ export function setupViteHmrListener() {
       error = null;
       isFirstUpdate = false;
     }
-    sendMessageFromPreview({
+    window.__PREVIEWJS_IFRAME__.reportEvent({
       kind: "vite-before-update",
       payload,
     });
     triggerOnUpdateSoon();
-  });
-  hmr.on("previewjs-file-changed", ({ path }: { path: string }) => {
-    sendMessageFromPreview({
-      kind: "file-changed",
-      path,
-    });
   });
 }

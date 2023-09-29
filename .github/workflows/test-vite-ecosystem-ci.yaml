@@ -5,6 +5,8 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  schedule:
+    - cron: "0 0 * * *"
   push:
     branches:
       - main
@@ -30,7 +32,7 @@ jobs:
         node-version: [18.x]
         os: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -45,5 +47,7 @@ jobs:
       - uses: pnpm/action-setup@v2.4.0
         with:
           run_install: true
+      - run: pnpm update -r vite@beta
+      - run: cd testing && pnpm exec playwright install
       - run: pnpm vite-ecosystem-ci:build
       - run: pnpm vite-ecosystem-ci:test

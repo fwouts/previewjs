@@ -1,8 +1,7 @@
 import type { RendererLoader } from "../../src";
-import { sendMessageFromPreview } from "./messages";
 import { getState } from "./state";
 
-export async function updateComponent({
+export async function runRenderer({
   wrapperModule,
   wrapperName,
   previewableModule,
@@ -23,50 +22,37 @@ export async function updateComponent({
   if (!currentState || shouldAbortRender()) {
     return;
   }
-  try {
-    sendMessageFromPreview({
-      kind: "before-render",
-    });
-    const { render, jsxFactory } = await loadRenderer({
-      wrapperModule,
-      wrapperName,
-      previewableModule,
-      previewableName,
-      renderId,
-      shouldAbortRender,
-    });
-    if (shouldAbortRender()) {
-      return;
-    }
-    const { autogenCallbackProps, properties } =
-      await previewableModule.PreviewJsEvaluateLocally(
-        currentState.autogenCallbackPropsSource,
-        currentState.propsAssignmentSource,
-        jsxFactory
-      );
-    if (shouldAbortRender()) {
-      return;
-    }
-    sendMessageFromPreview({
-      kind: "rendering-setup",
-    });
-    await render(({ presetProps, presetGlobalProps }) => ({
-      ...transformFunctions(autogenCallbackProps, []),
-      ...transformFunctions(presetGlobalProps, []),
-      ...transformFunctions(properties || presetProps, []),
-    }));
-    if (shouldAbortRender()) {
-      return;
-    }
-    sendMessageFromPreview({
-      kind: "rendering-success",
-    });
-  } catch (error: any) {
-    sendMessageFromPreview({
-      kind: "rendering-error",
-      message: error.stack || error.message || "Unknown error",
-    });
+  const { render, jsxFactory } = await loadRenderer({
+    wrapperModule,
+    wrapperName,
+    previewableModule,
+    previewableName,
+    renderId,
+    shouldAbortRender,
+  });
+  if (shouldAbortRender()) {
+    return;
   }
+  const { autogenCallbackProps, properties } =
+    await previewableModule.PreviewJsEvaluateLocally(
+      currentState.autogenCallbackPropsSource,
+      currentState.propsAssignmentSource,
+      jsxFactory
+    );
+  if (shouldAbortRender()) {
+    return;
+  }
+  await render(({ presetProps, presetGlobalProps }) => ({
+    ...transformFunctions(autogenCallbackProps, []),
+    ...transformFunctions(presetGlobalProps, []),
+    ...transformFunctions(properties || presetProps, []),
+  }));
+  if (shouldAbortRender()) {
+    return;
+  }
+  window.__PREVIEWJS_IFRAME__.reportEvent({
+    kind: "rendered",
+  });
 }
 
 /**
@@ -98,7 +84,7 @@ function transformFunctions(value: any, path: string[]): any {
           k,
           typeof v === "function"
             ? (...args: unknown[]) => {
-                sendMessageFromPreview({
+                window.__PREVIEWJS_IFRAME__.reportEvent({
                   kind: "action",
                   type: "fn",
                   path: [...path, k].join("."),

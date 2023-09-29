@@ -45,7 +45,10 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
       typeAnalyzer,
-      crawlFiles: async (absoluteFilePaths) => {
+      crawlFiles: async (filePaths) => {
+        const absoluteFilePaths = filePaths.map((f) =>
+          path.isAbsolute(f) ? f : path.join(rootDir, f)
+        );
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".vue") ? p + ".ts" : p))
         );

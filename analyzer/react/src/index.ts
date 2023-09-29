@@ -1,8 +1,9 @@
-import {
-  factoryWithDefaultOptions,
-  type Component,
-  type Story,
+import type {
+  AnalyzerFactory,
+  Component,
+  Story,
 } from "@previewjs/analyzer-api";
+import { factoryWithDefaultOptions } from "@previewjs/analyzer-api/factory";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import path from "path";
@@ -11,7 +12,7 @@ import url from "url";
 import { crawlFile } from "./crawl-file.js";
 import { REACT_SPECIAL_TYPES } from "./special-types.js";
 
-export const createAnalyzer = factoryWithDefaultOptions(
+export const createAnalyzer: AnalyzerFactory = factoryWithDefaultOptions(
   ({ rootDir, reader, logger }) => {
     const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
     const typesDirPath = path.join(__dirname, "..", "types");

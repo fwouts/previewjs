@@ -60,6 +60,7 @@ test.describe.parallel("smoke tests", () => {
       "vite-without-svgr": ["src/App.tsx:App"],
       "wrapper-custom": ["src/App.tsx:App"],
       "wrapper-custom-esm": ["src/App.tsx:App"],
+      "wrapper-custom-esm-named-exports-config": ["src/App.tsx:App"],
       "wrapper-default": ["src/App.tsx:App"],
     },
   });

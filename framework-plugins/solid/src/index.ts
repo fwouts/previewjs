@@ -35,7 +35,10 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,
-      crawlFiles: async (absoluteFilePaths) => {
+      crawlFiles: async (filePaths) => {
+        const absoluteFilePaths = filePaths.map((f) =>
+          path.isAbsolute(f) ? f : path.join(rootDir, f)
+        );
         const resolver = typeAnalyzer.analyze(absoluteFilePaths);
         const components: Component[] = [];
         const stories: Story[] = [];

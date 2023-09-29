@@ -5,6 +5,16 @@
     <script>
       window.global = globalThis;
       window.module = undefined;
+      window.__PREVIEWJS_IFRAME__ = {
+        reportEvent: (event) => {
+          (
+            window.__PREVIEWJS_CONTROLLER__ || window.parent.__PREVIEWJS_CONTROLLER__
+          ).onPreviewEvent(event);
+        },
+      };
+      window.__PREVIEWJS_IFRAME__.reportEvent({
+        kind: "bootstrapping",
+      });
     </script>
     <!-- %OPTIONAL_HEAD_CONTENT% -->
     <style>

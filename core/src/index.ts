@@ -110,30 +110,33 @@ export async function createWorkspace({
         logger.debug(
           `Detected ${detected.components.length} components and ${detected.stories.length} stories`
         );
+        const previewables: Array<RPCs.AnalyzedComponent | RPCs.AnalyzedStory> =
+          [];
         const idToDetectedComponent = Object.fromEntries(
           detected.components.map((c) => [c.id, c])
         );
         const idToDetectedStory = Object.fromEntries(
           detected.stories.map((c) => [c.id, c])
         );
-        const propsPerComponentId: {
-          [componentId: string]: ValueType;
-        } = {};
-        const argsPerStoryId: {
-          [storyId: string]: RPCs.StoryArgs | null;
-        } = {};
         let types: CollectedTypes = {};
         for (const id of previewableIds) {
           const component = idToDetectedComponent[id];
           const story = idToDetectedStory[id];
-          let props: ValueType;
           let componentTypes: CollectedTypes;
           if (component) {
             logger.debug(`Analyzing component: ${id}`);
+            let props: ValueType;
             ({ props, types: componentTypes } = await component.analyze());
-            propsPerComponentId[id] = props;
             logger.debug(`Done analyzing: ${id}`);
+            previewables.push({
+              kind: "component",
+              id,
+              exported: component.exported,
+              sourcePosition: component.sourcePosition,
+              props,
+            });
           } else if (story) {
+            let props: ValueType;
             if (story.associatedComponent) {
               logger.debug(`Analyzing story: ${id}`);
               ({ props, types: componentTypes } =
@@ -144,17 +147,22 @@ export async function createWorkspace({
               props = UNKNOWN_TYPE;
               componentTypes = {};
             }
-            argsPerStoryId[id] = (await story.analyze()).args;
+            previewables.push({
+              kind: "story",
+              id,
+              sourcePosition: story.sourcePosition,
+              associatedComponentId: story.associatedComponent?.id || null,
+              props,
+              args: (await story.analyze()).args,
+            });
           } else {
             const { filePath, name } = decodePreviewableId(id);
             throw new Error(`Component ${name} not detected in ${filePath}.`);
           }
-          propsPerComponentId[id] = props;
           types = { ...types, ...componentTypes };
         }
         return {
-          props: propsPerComponentId,
-          args: argsPerStoryId,
+          previewables,
           types,
         };
       });
@@ -193,10 +201,6 @@ export async function createWorkspace({
         logger,
         middlewares,
         port,
-        onFileChanged: (absoluteFilePath) => {
-          const filePath = path.relative(rootDir, absoluteFilePath);
-          frameworkPlugin.typeAnalyzer.invalidateCachedTypesForFile(filePath);
-        },
       });
       await previewer.start();
       activePreviewers.add(previewer);

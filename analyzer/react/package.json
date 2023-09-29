@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/analyzer-react",
-  "version": "0.0.1",
+  "version": "0.1.3",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -24,24 +24,24 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@previewjs/analyzer-api": "^0.0.1",
-    "@previewjs/serializable-values": "^7.0.3",
-    "@previewjs/storybook-helpers": "^4.0.0",
-    "@previewjs/type-analyzer": "^9.0.0",
-    "@previewjs/vfs": "^2.0.16",
-    "@vitejs/plugin-react": "^4.0.4",
+    "@previewjs/analyzer-api": "^0.1.3",
+    "@previewjs/serializable-values": "^9.0.1",
+    "@previewjs/storybook-helpers": "^5.0.4",
+    "@previewjs/type-analyzer": "^10.0.1",
+    "@previewjs/vfs": "^2.0.17",
+    "@vitejs/plugin-react": "^4.1.0",
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "@types/prop-types": "^15.7.5",
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
-    "pino": "^8.15.0",
+    "@types/prop-types": "^15.7.7",
+    "@types/react": "^18.2.23",
+    "@types/react-dom": "^18.2.8",
+    "pino": "^8.15.1",
     "pino-pretty": "^10.2.0",
     "react": "^18.2.0",
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.5",
     "shx": "^0.3.4",
     "unbuild": "^2.0.0",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.5"
   }
 }

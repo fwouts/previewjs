@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/type-analyzer",
-  "version": "9.0.0",
+  "version": "10.0.1",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -22,17 +22,18 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@previewjs/vfs": "^2.0.16",
+    "@previewjs/vfs": "^2.0.17",
     "assert-never": "^1.2.1",
     "globby": "^13.2.2",
-    "prettier": "^3.0.3",
+    "prettier": "^2.8.8",
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.197",
+    "@types/lodash": "^4.14.199",
+    "@types/prettier": "^2.7.3",
     "lodash": "^4.17.21",
     "unbuild": "^2.0.0",
     "vite": "^4.4.9",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.5"
   }
 }

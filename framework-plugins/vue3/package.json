@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/plugin-vue3",
-  "version": "11.0.0",
+  "version": "12.0.6",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -25,12 +25,12 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
-    "@previewjs/api": "^14.0.0",
-    "@previewjs/analyzer-api": "^0.0.1",
-    "@previewjs/serializable-values": "^7.0.3",
-    "@previewjs/storybook-helpers": "^4.0.0",
-    "@previewjs/type-analyzer": "^9.0.0",
-    "@previewjs/vfs": "^2.0.16",
+    "@previewjs/analyzer-api": "^0.1.3",
+    "@previewjs/api": "^16.0.1",
+    "@previewjs/serializable-values": "^9.0.1",
+    "@previewjs/storybook-helpers": "^5.0.4",
+    "@previewjs/type-analyzer": "^10.0.1",
+    "@previewjs/vfs": "^2.0.17",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "@vue/compiler-sfc": "^3.3.4",
@@ -39,22 +39,22 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@playwright/test": "^1.37.1",
+    "@playwright/test": "^1.38.1",
     "@previewjs/core": "workspace:*",
     "@previewjs/iframe": "workspace:*",
     "@previewjs/testing": "workspace:*",
-    "@types/fs-extra": "^11.0.1",
+    "@types/fs-extra": "^11.0.2",
     "@vue/compiler-core": "^3.3.4",
     "@vue/reactivity": "^3.3.4",
     "@vue/runtime-core": "^3.3.4",
     "@vue/runtime-dom": "^3.3.4",
     "@vue/shared": "^3.3.4",
-    "pino": "^8.15.0",
+    "pino": "^8.15.1",
     "pino-pretty": "^10.2.0",
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.5",
     "shx": "^0.3.4",
     "unbuild": "^2.0.0",
     "vite": "^4.4.9",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.5"
   }
 }

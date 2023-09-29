@@ -41,15 +41,15 @@ import { serializableValueToJavaScript } from "./serializable-value-to-js";
 /**
  * Generates a valid value for the given type.
  */
-export async function generateSerializableValue(
+export function generateSerializableValue(
   type: ValueType,
   collected: CollectedTypes,
   options: {
     fieldName?: string;
     random?: boolean;
   } = {}
-): Promise<SerializableValue> {
-  return await _generateSerializableValue(
+): SerializableValue {
+  return _generateSerializableValue(
     type,
     collected,
     options.fieldName || "",
@@ -59,14 +59,14 @@ export async function generateSerializableValue(
   );
 }
 
-async function _generateSerializableValue(
+function _generateSerializableValue(
   type: ValueType,
   collected: CollectedTypes,
   fieldName: string,
   rejectTypeNames: string[],
   random: boolean,
   isFunctionReturnValue: boolean
-): Promise<SerializableValue> {
+): SerializableValue {
   let encounteredAliases: string[];
   [type, encounteredAliases] = dereferenceType(
     type,
@@ -91,7 +91,7 @@ async function _generateSerializableValue(
           : stringFromFieldName(fieldName)
       );
     case "node":
-      return await _generateSerializableValue(
+      return _generateSerializableValue(
         STRING_TYPE,
         collected,
         fieldName,
@@ -132,7 +132,7 @@ async function _generateSerializableValue(
       );
     case "set":
       return set(
-        await generateArrayValue(
+        generateArrayValue(
           arrayType(type.items),
           collected,
           fieldName,
@@ -143,16 +143,14 @@ async function _generateSerializableValue(
       );
     case "tuple":
       return array(
-        await Promise.all(
-          type.items.map((item) =>
-            _generateSerializableValue(
-              item,
-              collected,
-              fieldName,
-              rejectTypeNames,
-              random,
-              isFunctionReturnValue
-            )
+        type.items.map((item) =>
+          _generateSerializableValue(
+            item,
+            collected,
+            fieldName,
+            rejectTypeNames,
+            random,
+            isFunctionReturnValue
           )
         )
       );
@@ -164,7 +162,7 @@ async function _generateSerializableValue(
         if (propType.kind === "optional" && (!random || Math.random() < 0.5)) {
           continue;
         }
-        const propValue = await _generateSerializableValue(
+        const propValue = _generateSerializableValue(
           nonOptionalPropType,
           collected,
           propName,
@@ -188,7 +186,7 @@ async function _generateSerializableValue(
     }
     case "map":
       return map(
-        await generateRecordValue(
+        generateRecordValue(
           {
             ...type,
             kind: "record",
@@ -224,7 +222,7 @@ async function _generateSerializableValue(
           return FALSE;
         }
       }
-      return await _generateSerializableValue(
+      return _generateSerializableValue(
         type.types[random ? generateRandomInteger(0, type.types.length) : 0]!,
         collected,
         fieldName,
@@ -234,7 +232,7 @@ async function _generateSerializableValue(
       );
     case "intersection":
       // Generate a value for the first type and hope for the best.
-      return await _generateSerializableValue(
+      return _generateSerializableValue(
         type.types[0]!,
         collected,
         fieldName,
@@ -247,8 +245,8 @@ async function _generateSerializableValue(
         // Do not generate complex functions within functions.
         return fn(`() => {}`);
       }
-      const returnValue = await serializableValueToJavaScript(
-        await _generateSerializableValue(
+      const returnValue = serializableValueToJavaScript(
+        _generateSerializableValue(
           type.returnType,
           collected,
           fieldName,
@@ -258,7 +256,7 @@ async function _generateSerializableValue(
         )
       );
       return fn(
-        await formatExpression(
+        formatExpression(
           `() => {
             console.log(${JSON.stringify(fieldName + " invoked")});
             ${returnValue === "undefined" ? "" : `return ${returnValue};`}
@@ -275,7 +273,7 @@ async function _generateSerializableValue(
     case "name":
       // This recursion is safe specifically because rejectTypeNames
       // is updated before.
-      return await _generateSerializableValue(
+      return _generateSerializableValue(
         type,
         collected,
         fieldName,
@@ -297,14 +295,14 @@ function stringFromFieldName(fieldName: string) {
   return fieldName.substring(columnPosition + 1).trim();
 }
 
-async function generateArrayValue(
+function generateArrayValue(
   type: ArrayType,
   collected: CollectedTypes,
   fieldName: string,
   rejectTypeNames: string[],
   random: boolean,
   isFunctionReturnValue: boolean
-): Promise<SerializableArrayValue> {
+): SerializableArrayValue {
   if (isFunctionReturnValue) {
     // Avoid unnecessarily verbose generated props when they're
     // unlikely to even be used at all.
@@ -313,7 +311,7 @@ async function generateArrayValue(
   const itemValues: SerializableValue[] = [];
   const length = random ? generateRandomInteger(0, 3) : 1;
   for (let i = 0; i < length; i++) {
-    const itemValue = await _generateSerializableValue(
+    const itemValue = _generateSerializableValue(
       type.items,
       collected,
       fieldName,
@@ -336,18 +334,18 @@ async function generateArrayValue(
   return array(itemValues);
 }
 
-async function generateRecordValue(
+function generateRecordValue(
   type: RecordType,
   collected: CollectedTypes,
   fieldName: string,
   rejectTypeNames: string[],
   random: boolean,
   isFunctionReturnValue: boolean
-): Promise<SerializableObjectValue> {
+): SerializableObjectValue {
   if (!random) {
     return EMPTY_OBJECT;
   }
-  const { items: values } = await generateArrayValue(
+  const values = generateArrayValue(
     {
       kind: "array",
       items: type.values,
@@ -357,10 +355,10 @@ async function generateRecordValue(
     rejectTypeNames,
     random,
     isFunctionReturnValue
-  );
+  ).items;
   const entries: SerializableObjectValueEntry[] = [];
   for (const value of values) {
-    const key = await _generateSerializableValue(
+    const key = _generateSerializableValue(
       type.keys,
       collected,
       fieldName,

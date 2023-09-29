@@ -43,7 +43,10 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
       typeAnalyzer,
-      crawlFiles: async (absoluteFilePaths) => {
+      crawlFiles: async (filePaths) => {
+        const absoluteFilePaths = filePaths.map((f) =>
+          path.isAbsolute(f) ? f : path.join(rootDir, f)
+        );
         const resolver = typeAnalyzer.analyze(
           absoluteFilePaths.map((p) => (p.endsWith(".svelte") ? `${p}.ts` : p))
         );

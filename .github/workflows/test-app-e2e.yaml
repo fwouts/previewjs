@@ -41,7 +41,7 @@ jobs:
             os: ubuntu-22.04
             group: 3
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -56,6 +56,7 @@ jobs:
       - uses: pnpm/action-setup@v2.4.0
         with:
           run_install: true
+      - run: cd testing && pnpm exec playwright install
       - run: pnpm turbo build
       - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2
         env:
