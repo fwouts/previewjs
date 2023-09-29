@@ -25,20 +25,25 @@ test.describe("navigation", () => {
     await workspace.dispose();
   });
 
-  // TODO: Check if the page may reload itself if a new dependency is discovered by Vite.
-  //
-  // ANSWER: YES IT DOES!
-
   test("foo", async ({ page }) => {
-    await page.goto(getUrl(workspace, __dirname));
-    // TODO: Somehow detect if page reloaded, then re-run the same code, until it's stable?
-    await page.evaluate(async () => {
-      const { default: App } = await import("./App");
-      const { Foo } = await import("./Foo");
-
-      await mount(<App title={<Foo />} />);
+    let resolvePromise!: () => void;
+    const onRenderDone = new Promise<void>((resolve) => {
+      resolvePromise = resolve;
     });
-    await new Promise(() => {});
+    await page.exposeFunction("__ON_PREVIEWJS_MOUNTED__", resolvePromise);
+    await page.exposeFunction("__PREVIEWJS_BOOSTRAP_HOOK__", async () => {
+      await page.evaluate(async () => {
+        const { default: App } = await import("./App");
+        const { Foo } = await import("./Foo");
+
+        await mount(<App title={<Foo />} />);
+        // @ts-expect-error
+        window.__ON_PREVIEWJS_MOUNTED__();
+      });
+    });
+
+    await page.goto(getUrl(workspace, __dirname));
+    await onRenderDone;
     await page.screenshot({
       path: "src/example.spec.output.png",
     });

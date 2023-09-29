@@ -16,6 +16,8 @@ declare global {
     __PREVIEWJS_CONTROLLER__: {
       onPreviewEvent(event: PreviewEvent): void;
     };
+    // Exposed for testing purposes.
+    __PREVIEWJS_BOOSTRAP_HOOK__?: () => Promise<void>;
   }
 }
 
