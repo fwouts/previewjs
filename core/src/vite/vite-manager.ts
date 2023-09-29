@@ -392,7 +392,8 @@ export class ViteManager {
         optimizeDeps: {
           entries: [],
           esbuildOptions: {
-            // @ts-expect-error incompatible esbuild versions?
+            // TODO: Remove this annotation once upgraded to Vite 5.
+            // @ts-ignore incompatible esbuild versions with Vite 4
             plugins: [polyfillNode()],
           },
         },
