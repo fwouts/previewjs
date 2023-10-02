@@ -8,12 +8,8 @@ import path from "path";
 export function previewjsTest(rootDir: string) {
   return base.extend<
     {
-      runInPage(
-        currentDir: string,
-        pageFunction: () => Promise<void>
-      ): Promise<void>;
+      runInPage(pageFunction: () => Promise<void>): Promise<void>;
       runInPage<Arg>(
-        currentDir: string,
         pageFunction: (arg: Arg) => Promise<void>,
         arg: Arg
       ): Promise<void>;
@@ -40,9 +36,12 @@ export function previewjsTest(rootDir: string) {
       },
       { scope: "worker" },
     ],
-    runInPage: async ({ previewWorkspace, previewServer, page }, use) => {
+    runInPage: async (
+      { previewWorkspace, previewServer, page },
+      use,
+      testInfo
+    ) => {
       use(async function runInPage<Arg = never>(
-        currentDir: string,
         pageFunction: (arg: Arg) => Promise<void>,
         arg?: Arg
       ): Promise<void> {
@@ -62,16 +61,12 @@ export function previewjsTest(rootDir: string) {
             [pageFunction.toString(), arg] as const
           );
         });
-        await page.goto(getUrl(previewWorkspace, currentDir));
+        const currentPath = path
+          .relative(previewWorkspace.rootDir, path.dirname(testInfo.file))
+          .replaceAll(path.delimiter, "/");
+        await page.goto(`${previewServer.url()}/${currentPath}/`);
         await onRenderDone;
       });
-
-      function getUrl(workspace: Workspace, currentDir: string) {
-        const currentPath = path
-          .relative(workspace.rootDir, currentDir)
-          .replaceAll(path.delimiter, "/");
-        return `${previewServer.url()}/${currentPath}/`;
-      }
     },
   });
 }
