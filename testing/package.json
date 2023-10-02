@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/testing",
-  "version": "9.0.1",
+  "version": "10.0.0",
   "license": "AGPL-3.0",
   "author": {
     "name": "François Wouts",
@@ -23,14 +23,13 @@
   "dependencies": {
     "@playwright/test": "^1.38.1",
     "@previewjs/api": "^16.0.1",
-    "@previewjs/chromeless": "^10.0.0",
-    "@previewjs/core": "^27.1.0",
-    "@previewjs/iframe": "^15.3.0",
+    "@previewjs/chromeless": "^10.0.1",
+    "@previewjs/core": "^27.1.2",
+    "@previewjs/iframe": "^15.3.1",
     "@previewjs/vfs": "^2.0.17",
     "assert-never": "^1.2.1",
     "fs-extra": "^11.1.1",
-    "get-port": "^7.0.0",
-    "playwright": "^1.38.1"
+    "get-port": "^7.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.2",
