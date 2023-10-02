@@ -1,6 +1,6 @@
 import { test } from "./lib";
 
-test.describe("navigation", () => {
+test.describe("example", () => {
   test("foo", async ({ page, runInPage }) => {
     await runInPage(async (message) => {
       const { default: App } = await import("./App");
