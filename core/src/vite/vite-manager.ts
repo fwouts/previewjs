@@ -104,7 +104,7 @@ export class ViteManager {
   #exclusively: <T>(f: () => Promise<T>) => Promise<T>;
   #readerListener: ReaderListener = {
     onChange: (absoluteFilePath, info) => {
-      this.onFileChanged(absoluteFilePath, info).catch((e) =>
+      this.onFileChanged(path.resolve(absoluteFilePath), info).catch((e) =>
         this.options.logger.error(e)
       );
     },
