@@ -143,7 +143,7 @@ export class ViteManager {
     this.#exclusively = exclusivePromiseRunner();
   }
 
-  async loadIndexHtml(url: string, id: string): Promise<string> {
+  async loadIndexHtml(url: string, id?: string): Promise<string> {
     // Note: this must run exclusively from stop() or viteServer.transformIndexHtml()
     // could fail with "The server is being restarted or closed. Request is outdated".
     return this.#exclusively(async () => {
@@ -154,11 +154,24 @@ export class ViteManager {
       if (state.kind === "error") {
         return generateHtmlError(state.error);
       }
+
       const template = await fs.readFile(
         this.options.shadowHtmlFilePath,
         "utf-8"
       );
       const { config, viteServer } = state;
+      if (!id) {
+        return await viteServer.transformIndexHtml(
+          url,
+          template.replace(
+            "<!-- %OPTIONAL_HEAD_CONTENT% -->",
+            `
+      <script type="module">
+      import "/__previewjs_internal__/init-window-jsx-factory.ts";
+      </script>`
+          )
+        );
+      }
       const { filePath, name: previewableName } = decodePreviewableId(id);
       const componentPath = filePath.replace(/\\/g, "/");
       const wrapper = config.wrapper;

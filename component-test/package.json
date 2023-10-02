@@ -1,0 +1,32 @@
+{
+  "name": "@previewjs/component-test",
+  "version": "0.0.0",
+  "license": "AGPL-3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "e2e-test": "playwright test"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.197",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.38.1",
+    "@previewjs/core": "workspace:*",
+    "@previewjs/iframe": "workspace:*",
+    "@previewjs/plugin-react": "workspace:*",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^18.16.14",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.4",
+    "fs-extra": "^11.1.1",
+    "playwright": "^1.38.1",
+    "typescript": "^5.2.2",
+    "unbuild": "^2.0.0",
+    "vite": "^4.4.9"
+  }
+}

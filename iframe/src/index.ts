@@ -1,7 +1,12 @@
 import type { UpdatePayload } from "vite/types/hmrPayload";
 
 declare global {
+  const mount: JsxElementMounter;
+
   interface Window {
+    _jsx: any;
+    mount: JsxElementMounter;
+
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
       reportEvent(event: PreviewEvent): void;
@@ -11,6 +16,8 @@ declare global {
     __PREVIEWJS_CONTROLLER__: {
       onPreviewEvent(event: PreviewEvent): void;
     };
+    // Exposed for testing purposes.
+    __PREVIEWJS_BOOSTRAP_HOOK__?: () => Promise<void>;
   }
 }
 
@@ -222,6 +229,8 @@ export type RendererLoader = (options: {
   // This will be null if JSX isn't supported.
   jsxFactory: ((type: any, props: any, ...children: any[]) => any) | null;
 }>;
+
+export type JsxElementMounter = (jsxElement: any) => Promise<void>;
 
 export type GetPropsFn = (options: {
   presetGlobalProps: any;
