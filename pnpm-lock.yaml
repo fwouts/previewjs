@@ -3320,9 +3320,6 @@ importers:
       get-port:
         specifier: ^7.0.0
         version: 7.0.0
-      playwright:
-        specifier: ^1.38.1
-        version: 1.38.1
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.2
@@ -3929,7 +3926,7 @@ packages:
       '@babel/core': ^7.4.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-compilation-targets': 7.22.10
+      '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
@@ -3960,7 +3957,7 @@ packages:
       '@babel/core': ^7.4.0-0
     dependencies:
       '@babel/core': 7.22.10
-      '@babel/helper-compilation-targets': 7.22.10
+      '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
@@ -3975,7 +3972,7 @@ packages:
       '@babel/core': ^7.4.0-0
     dependencies:
       '@babel/core': 7.22.20
-      '@babel/helper-compilation-targets': 7.22.10
+      '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
@@ -4307,7 +4304,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.22.5
-    dev: false
 
   /@babel/helper-split-export-declaration@7.22.6:
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
@@ -4662,11 +4658,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.4)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.4)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.21.8):
@@ -4676,11 +4674,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.8
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.8)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.8)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.8)
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.22.10):
@@ -4690,11 +4690,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.10
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.10)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.10)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.22.10)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.22.10)
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.22.20):
     resolution: {integrity: sha512-h8hlezQ4dl6ixodgXkH8lUfcD7x+WAuIqPUjwGoItynrXOAv4a4Tci1zA/qjzQjjcl0v3QpLdc2LM6ZACQuY7A==}
@@ -13004,8 +13006,8 @@ packages:
     resolution: {integrity: sha512-pittZN3LqAxG/pb8lj+N2p6ojYrn53DysG6Vwcmnct6UsZgbr7B+VCwP6J/tyeH4DZfs3R4q9La/PKdE2umKIA==}
     dev: false
 
-  /@previewjs/core@27.1.0(@types/node@20.7.1)(esbuild@0.19.4):
-    resolution: {integrity: sha512-To06ahxT5AamAXODkM3tB+kz8mX40UdBHRt3mHfh84OnHs9set5jQZhiirVnkcurX7IWos6zUqFF7xUEPOITog==}
+  /@previewjs/core@27.1.1(@types/node@20.7.1)(esbuild@0.19.4):
+    resolution: {integrity: sha512-cWXIiiDGZd+y/Q2du1a0zKyv6RSPTKFjIbEhlNW+plRtBWgwasg3r54sURGIt1q2xcl8RriRCmEQft7roxqFpg==}
     dependencies:
       '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.2.2)(vite@4.4.9)
       '@previewjs/analyzer-api': 0.1.3
@@ -13057,7 +13059,7 @@ packages:
     dependencies:
       '@previewjs/analyzer-api': 0.1.3
       '@previewjs/api': 16.0.1
-      '@previewjs/core': 27.1.0(@types/node@20.7.1)(esbuild@0.19.4)
+      '@previewjs/core': 27.1.1(@types/node@20.7.1)(esbuild@0.19.4)
       '@previewjs/serializable-values': 9.0.1
       '@previewjs/storybook-helpers': 5.0.4(@types/node@20.7.1)(esbuild@0.19.4)
       axios: 1.5.1
@@ -13096,7 +13098,7 @@ packages:
     dependencies:
       '@previewjs/analyzer-api': 0.1.3
       '@previewjs/api': 16.0.1
-      '@previewjs/core': 27.1.0(@types/node@20.7.1)(esbuild@0.19.4)
+      '@previewjs/core': 27.1.1(@types/node@20.7.1)(esbuild@0.19.4)
       '@previewjs/serializable-values': 9.0.1
       '@previewjs/type-analyzer': 10.0.1
       typescript: 5.2.2
