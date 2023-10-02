@@ -1,9 +1,9 @@
 import path from "path";
 import url from "url";
-import { previewjsFixture } from "./lib";
+import { previewjsTest } from "./lib";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-const test = previewjsFixture(path.join(__dirname, ".."));
+const test = previewjsTest(path.join(__dirname, ".."));
 
 test.describe("navigation", () => {
   test("foo", async ({ page, runInPage }) => {

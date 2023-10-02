@@ -5,7 +5,7 @@ import "@previewjs/iframe";
 import frameworkPluginFactory from "@previewjs/plugin-react";
 import path from "path";
 
-export function previewjsFixture(rootDir: string) {
+export function previewjsTest(rootDir: string) {
   return base.extend<
     {
       runInPage(
