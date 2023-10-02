@@ -4,11 +4,11 @@ test.describe("navigation", () => {
   test("foo", async ({ page, runInPage }) => {
     await runInPage(async (message) => {
       const { default: App } = await import("./App");
-      const { Foo } = await import("./Foo");
 
       await mount(<App title={message} />);
     }, "hello world");
 
+    await page.waitForSelector("text=hello world");
     await page.screenshot({
       path: "src/example.spec.output.png",
     });
