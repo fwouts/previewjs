@@ -26,7 +26,6 @@ test.describe("navigation", () => {
   });
 
   test("foo", async ({ page }) => {
-    page.evaluate;
     await runInPage(
       workspace,
       page,
