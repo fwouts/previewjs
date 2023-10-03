@@ -1,4 +1,7 @@
-import { test } from "./lib";
+import react from "@previewjs/plugin-react";
+import { setupTest } from "./lib";
+
+const test = setupTest(react);
 
 test.describe("example", () => {
   test("foo", async ({ page, runInPage }) => {
