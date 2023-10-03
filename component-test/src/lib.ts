@@ -1,6 +1,6 @@
 import { test as base } from "@playwright/test";
 import type { PreviewServer, Workspace } from "@previewjs/core";
-import { createWorkspace, findWorkspaceRoot } from "@previewjs/core";
+import { createWorkspace } from "@previewjs/core";
 import "@previewjs/iframe";
 import frameworkPluginFactory from "@previewjs/plugin-react";
 import path from "path";
@@ -17,14 +17,9 @@ export const test = base.extend<
 >({
   previewWorkspace: [
     // eslint-disable-next-line no-empty-pattern
-    async ({}, use) => {
-      const cwd = process.cwd();
-      const rootDir = await findWorkspaceRoot(cwd);
-      if (!rootDir) {
-        throw new Error(`No workspace root could be detected from ${cwd}`);
-      }
+    async ({}, use, { config }) => {
       const workspace = await createWorkspace({
-        rootDir,
+        rootDir: config.rootDir,
         frameworkPlugins: [frameworkPluginFactory],
       });
       await use(workspace);
