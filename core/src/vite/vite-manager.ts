@@ -19,10 +19,10 @@ import type { Server } from "http";
 import path from "path";
 import type { Logger } from "pino";
 import fakeExportedTypesPlugin from "rollup-plugin-friendly-type-imports";
-import type { Tsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
+import { z } from "zod";
 import { FILES_REQUIRING_REDETECTION } from "../crawl-files";
 import { findFiles } from "../find-files";
 import { generateHtmlError } from "../html-error";
@@ -274,7 +274,7 @@ export class ViteManager {
       const tsInferredAlias: Alias[] = [];
       // If there is a top-level tsconfig.json, use it to infer aliases.
       // While this is also done by vite-tsconfig-paths, it doesn't apply to CSS Modules and so on.
-      let tsConfig: Tsconfig | null = null;
+      let tsConfig: z.infer<typeof validTsConfig> | null = null;
       for (const potentialTsConfigFileName of [
         "tsconfig.json",
         "jsconfig.json",
@@ -283,11 +283,24 @@ export class ViteManager {
           this.options.rootDir,
           potentialTsConfigFileName
         );
-        if (await fs.pathExists(potentialTsConfigFilePath)) {
-          tsConfig = loadTsconfig(potentialTsConfigFilePath) || null;
-          if (tsConfig) {
-            break;
+        try {
+          if (await fs.pathExists(potentialTsConfigFilePath)) {
+            // It's possible to get an invalid tsconfig despite loadTsconfig() succeeding
+            // because it doesn't fully check the schema. For example, if the "paths"
+            // record contains strings instead of arrays of strings, we'll get a crash
+            // later on.
+            const unsafeTsConfig =
+              loadTsconfig(potentialTsConfigFilePath) || null;
+            if (unsafeTsConfig) {
+              tsConfig = validTsConfig.parse(unsafeTsConfig);
+              break;
+            }
           }
+        } catch (e) {
+          // Silently fail.
+          this.options.logger.warn(
+            `Unable to load tsconfig from ${potentialTsConfigFilePath}: ${e}`
+          );
         }
       }
       this.options.logger.debug(
@@ -657,3 +670,12 @@ function replaceHandleHotUpdate(reader: Reader, plugins: vite.Plugin[]) {
     };
   });
 }
+
+const validTsConfig = z.object({
+  compilerOptions: z
+    .object({
+      baseUrl: z.string().optional(),
+      paths: z.record(z.array(z.string())).optional(),
+    })
+    .optional(),
+});
