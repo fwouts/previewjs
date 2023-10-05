@@ -356,7 +356,8 @@ export class ViteManager {
         config.vite?.publicDir ||
         existingViteConfig?.config.publicDir ||
         frameworkPluginViteConfig.publicDir ||
-        config.publicDir;
+        config.publicDir ||
+        "public";
       const plugins = replaceHandleHotUpdate(
         this.options.reader,
         await flattenPlugins([

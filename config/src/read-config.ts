@@ -47,9 +47,5 @@ export async function readConfig(
       }
     }
   }
-  return {
-    alias: {},
-    publicDir: "public",
-    ...config,
-  };
+  return config;
 }
