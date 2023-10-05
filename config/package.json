@@ -21,10 +21,12 @@
   "scripts": {
     "build": "tsc && unbuild"
   },
+  "dependencies": {
+    "vite": "^4.4.11"
+  },
   "devDependencies": {
     "@types/node": "^20.8.2",
     "typescript": "^5.2.2",
-    "unbuild": "^2.0.0",
-    "vite": "^4.4.11"
+    "unbuild": "^2.0.0"
   }
 }

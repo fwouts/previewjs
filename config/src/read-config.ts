@@ -1,33 +1,49 @@
 import fs from "fs";
-import { createRequire } from "module";
 import path from "path";
-import url from "url";
+import { loadConfigFromFile, type LogLevel } from "vite";
 import type { PreviewConfig } from "./config";
 
-const require = createRequire(import.meta.url);
+export const PREVIEW_CONFIG_NAMES = [
+  "preview.config.js",
+  "preview.config.mjs",
+  "preview.config.ts",
+  "preview.config.cjs",
+  "preview.config.mts",
+  "preview.config.cts",
+];
 
-export const PREVIEW_CONFIG_NAME = "preview.config.js";
-
-export async function readConfig(rootDir: string): Promise<PreviewConfig> {
-  const configPath = path.join(rootDir, PREVIEW_CONFIG_NAME);
+export async function readConfig(
+  rootDir: string,
+  logLevel: LogLevel
+): Promise<PreviewConfig> {
   let config: Partial<PreviewConfig> = {};
-  const configFileExists = fs.existsSync(configPath);
-  if (configFileExists) {
-    let isModule = false;
-    const packageJsonPath = path.join(rootDir, "package.json");
-    if (fs.existsSync(packageJsonPath)) {
-      const { type } = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-      isModule = type === "module";
-    }
-    try {
-      return await loadModule(configPath, isModule);
-    } catch (e) {
-      // Try again but with the other type of module.
+  for (const configName of PREVIEW_CONFIG_NAMES) {
+    const configPath = path.join(rootDir, configName);
+    const configFileExists = fs.existsSync(configPath);
+    if (configFileExists) {
       try {
-        return await loadModule(configPath, !isModule);
-      } catch {
-        // Throw the original error if not working.
-        throw new Error(`Unable to read preview.config.js:\n${e}`);
+        const loaded = await loadConfigFromFile(
+          {
+            command: "serve",
+            mode: "development",
+          },
+          configName,
+          rootDir,
+          logLevel
+        );
+        if (loaded) {
+          config = loaded.config as Partial<PreviewConfig>;
+          break;
+        }
+      } catch (e: any) {
+        if (
+          typeof e.message === "string" &&
+          e.message.includes("config must export or return an object")
+        ) {
+          throw new Error(`Please use a default export in preview.config.js`);
+        } else {
+          throw e;
+        }
       }
     }
   }
@@ -36,18 +52,4 @@ export async function readConfig(rootDir: string): Promise<PreviewConfig> {
     publicDir: "public",
     ...config,
   };
-}
-
-async function loadModule(configPath: string, asModule: boolean) {
-  if (asModule) {
-    const module = await import(
-      `${url.pathToFileURL(configPath).href}?ts=${Date.now()}`
-    );
-    return module.default || module;
-  } else {
-    // Delete any existing cache so we reload the config fresh.
-    delete require.cache[require.resolve(configPath)];
-    const required = require(configPath);
-    return required.module || required;
-  }
 }
