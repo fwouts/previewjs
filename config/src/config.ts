@@ -1,7 +1,11 @@
 import type { UserConfig } from "vite";
 
 export function defineConfig(config: PreviewConfig) {
-  return config;
+  return {
+    // Note: this can be removed after Feb 2024.
+    publicDir: "public",
+    ...config,
+  };
 }
 
 export interface PreviewConfig {
