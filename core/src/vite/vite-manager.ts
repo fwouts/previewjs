@@ -1,7 +1,7 @@
 import viteTsconfigPaths from "@fwouts/vite-tsconfig-paths";
 import { decodePreviewableId } from "@previewjs/analyzer-api";
 import {
-  PREVIEW_CONFIG_NAME,
+  PREVIEW_CONFIG_NAMES,
   readConfig,
   type PreviewConfig,
 } from "@previewjs/config";
@@ -62,7 +62,7 @@ const GLOBAL_CSS_FILE = GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.flatMap((fileName) =>
 );
 
 const FILES_REQUIRING_VITE_RESTART = new Set([
-  PREVIEW_CONFIG_NAME,
+  ...PREVIEW_CONFIG_NAMES,
   ...FILES_REQUIRING_REDETECTION,
   ...POSTCSS_CONFIG_FILE,
   ...GLOBAL_CSS_FILE,
@@ -251,7 +251,10 @@ export class ViteManager {
       // PostCSS requires the current directory to change because it relies
       // on the `import-cwd` package to resolve plugins.
       process.chdir(this.options.rootDir);
-      const configFromProject = await readConfig(this.options.rootDir);
+      const configFromProject = await readConfig(
+        this.options.rootDir,
+        viteLogLevelFromPinoLogger(this.options.logger)
+      );
       const globalCssAbsoluteFilePaths = await findFiles(
         this.options.rootDir,
         `**/@(${GLOBAL_CSS_FILE_NAMES_WITHOUT_EXT.join(
@@ -353,7 +356,8 @@ export class ViteManager {
         config.vite?.publicDir ||
         existingViteConfig?.config.publicDir ||
         frameworkPluginViteConfig.publicDir ||
-        config.publicDir;
+        config.publicDir ||
+        "public";
       const plugins = replaceHandleHotUpdate(
         this.options.reader,
         await flattenPlugins([
