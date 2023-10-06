@@ -228,7 +228,7 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/core':
-        specifier: ^27.1.2
+        specifier: ^27.1.3
         version: link:../core
       '@previewjs/iframe':
         specifier: ^15.3.1
@@ -311,7 +311,7 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/config':
-        specifier: ^5.1.1
+        specifier: ^5.2.0
         version: link:../config
       '@previewjs/iframe':
         specifier: ^15.3.1
@@ -3174,7 +3174,7 @@ importers:
         specifier: ^10.0.1
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^27.1.2
+        specifier: ^27.1.3
         version: link:../core
       '@previewjs/plugin-react':
         specifier: ^13.0.5
@@ -3270,7 +3270,7 @@ importers:
         specifier: ^16.0.1
         version: link:../api
       '@previewjs/core':
-        specifier: ^27.1.2
+        specifier: ^27.1.3
         version: link:../core
       '@previewjs/serializable-values':
         specifier: ^9.0.1
@@ -3307,7 +3307,7 @@ importers:
         specifier: ^10.0.1
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^27.1.2
+        specifier: ^27.1.3
         version: link:../core
       '@previewjs/iframe':
         specifier: ^15.3.1
@@ -4474,11 +4474,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.4)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.4)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.21.8):
@@ -4488,11 +4490,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.8
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.8)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.8)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.8)
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.22.20):
@@ -7139,7 +7143,7 @@ packages:
     dependencies:
       '@babel/core': 7.21.8
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.22.15
+      '@babel/helper-validator-option': 7.22.5
       '@babel/plugin-transform-flow-strip-types': 7.21.0(@babel/core@7.21.8)
     dev: true
 
