@@ -3,4 +3,7 @@ export default {
   externals: ["vite"],
   declaration: true,
   clean: true,
+  rollup: {
+    emitCJS: true,
+  },
 };
