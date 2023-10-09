@@ -71,8 +71,8 @@ importers:
         specifier: ^2.0.17
         version: link:../../vfs
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -118,8 +118,8 @@ importers:
         specifier: ^18.2.12
         version: 18.2.12
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -243,8 +243,8 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       playwright:
         specifier: ^1.38.1
         version: 1.38.1
@@ -359,8 +359,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -511,8 +511,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -702,8 +702,8 @@ importers:
         specifier: ^18.2.12
         version: 18.2.12
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -2199,8 +2199,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -2351,8 +2351,8 @@ importers:
         specifier: ^11.0.2
         version: 11.0.2
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -2655,8 +2655,8 @@ importers:
         specifier: ^11.0.2
         version: 11.0.2
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -2837,8 +2837,8 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -3125,8 +3125,8 @@ importers:
         specifier: ^11.1.1
         version: 11.1.1
       pino:
-        specifier: ^8.15.7
-        version: 8.15.7
+        specifier: ^8.16.0
+        version: 8.16.0
       pino-pretty:
         specifier: ^10.2.3
         version: 10.2.3
@@ -4845,8 +4845,10 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-private-methods@7.18.6(@babel/core@7.21.8):
@@ -4868,8 +4870,10 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.20
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.20)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.20)
       '@babel/helper-plugin-utils': 7.22.5
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-proposal-private-property-in-object@7.21.0(@babel/core@7.21.4):
     resolution: {integrity: sha512-ha4zfehbJjc5MmXBlHec1igel5TJXXLDDRbuJ4+XT2TJcyD9/V1919BA8gMvsdHcNMBy4WBUBiRb3nw/EQUtBw==}
@@ -4879,9 +4883,11 @@ packages:
     dependencies:
       '@babel/core': 7.21.4
       '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.21.4)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-private-property-in-object@7.21.0(@babel/core@7.21.8):
@@ -4906,9 +4912,11 @@ packages:
     dependencies:
       '@babel/core': 7.22.20
       '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.20)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.20)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.22.20)
+    transitivePeerDependencies:
+      - supports-color
 
   /@babel/plugin-proposal-unicode-property-regex@7.18.6(@babel/core@7.21.4):
     resolution: {integrity: sha512-2BShG/d5yoZyXZfVePH91urL5wTG6ASZU9M4o03lKK8u8UW1y08OMttBSOADTcJrnPMpvDXRG3G8fyLh4ovs8w==}
@@ -6499,7 +6507,7 @@ packages:
       '@babel/helper-module-imports': 7.22.5
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.21.8)
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.19
 
   /@babel/plugin-transform-react-jsx@7.21.0(@babel/core@7.22.20):
     resolution: {integrity: sha512-6OAWljMvQrZjR2DaNhVfRz6dkCAVV+ymcLUmaf8bccGOHn2v5rHJK3tTpij0BuhdYWP4LLaqj5lwcdlpAAPuvg==}
@@ -6512,7 +6520,7 @@ packages:
       '@babel/helper-module-imports': 7.22.5
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.22.20)
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.19
 
   /@babel/plugin-transform-react-pure-annotations@7.18.6(@babel/core@7.21.8):
     resolution: {integrity: sha512-I8VfEPg9r2TRDdvnHgPepTKvuRomzA8+u+nhY7qSI1fR2hRNebasZEETLyM5mAUr0Ku56OkXJ0I7NHJnO6cJiQ==}
@@ -11917,7 +11925,7 @@ packages:
       '@previewjs/serializable-values': 9.0.1
       '@previewjs/type-analyzer': 10.0.1
       '@previewjs/vfs': 2.0.17
-      pino: 8.15.7
+      pino: 8.16.0
       pino-pretty: 10.2.3
     dev: false
 
@@ -11967,7 +11975,7 @@ packages:
       globby: 13.2.2
       html-escaper: 3.0.3
       http-terminator: 3.2.0
-      pino: 8.15.7
+      pino: 8.16.0
       pino-pretty: 10.2.3
       rollup-plugin-friendly-type-imports: 1.0.3
       ts-node: 10.9.1(@types/node@20.8.4)(typescript@5.2.2)
@@ -34144,8 +34152,8 @@ packages:
   /pino-std-serializers@6.2.1:
     resolution: {integrity: sha512-wHuWB+CvSVb2XqXM0W/WOYUkVSPbiJb9S5fNB7TBhd8s892Xq910bRxwHtC4l71hgztObTjXL6ZheZXFjhDrDQ==}
 
-  /pino@8.15.7:
-    resolution: {integrity: sha512-B0GTwUzUCXmGILPqL5MzeLWfq2KhdRArFNrtSKIIeZoES1zPDD72EGOgGvtdLSYyyEQZqE7fThRRNjNGx8nVZg==}
+  /pino@8.16.0:
+    resolution: {integrity: sha512-UUmvQ/7KTZt/vHjhRrnyS7h+J7qPBQnpG80V56xmIC+o9IqYmQOw/UIny9S9zYDfRBR0ClouCr464EkBMIT7Fw==}
     hasBin: true
     dependencies:
       atomic-sleep: 1.0.0
@@ -34157,7 +34165,7 @@ packages:
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.4.2
-      sonic-boom: 3.3.0
+      sonic-boom: 3.7.0
       thread-stream: 2.3.0
 
   /pirates@4.0.5:
@@ -39537,6 +39545,11 @@ packages:
 
   /sonic-boom@3.3.0:
     resolution: {integrity: sha512-LYxp34KlZ1a2Jb8ZQgFCK3niIHzibdwtwNUWKg0qQRzsDoJ3Gfgkf8KdBTFU3SkejDEIlWwnSnpVdOZIhFMl/g==}
+    dependencies:
+      atomic-sleep: 1.0.0
+
+  /sonic-boom@3.7.0:
+    resolution: {integrity: sha512-IudtNvSqA/ObjN97tfgNmOKyDOs4dNcg4cUUsHDebqsgb8wGBBwb31LIgShNO8fye0dFI52X1+tFoKKI6Rq1Gg==}
     dependencies:
       atomic-sleep: 1.0.0
 
