@@ -38,6 +38,7 @@ import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
 import com.previewjs.intellij.plugin.statusbar.OpenMenuStatusBarWidget
+import com.previewjs.intellij.plugin.statusbar.OpenMenuStatusBarWidgetFactory
 import org.apache.commons.lang.StringUtils
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
@@ -60,6 +61,7 @@ class ProjectService(private val project: Project) : Disposable {
     private val service = app.getService(PreviewJsSharedService::class.java)
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
+    private var previewBaseUrl: String? = null
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var previewToolWindowActive = false
@@ -174,6 +176,8 @@ class ProjectService(private val project: Project) : Disposable {
         })
     }
 
+    fun getPreviewBaseUrl(): String? = this.previewBaseUrl
+
     fun printToConsole(text: String) {
         app.invokeLater {
             if (project.isDisposed) {
@@ -234,7 +238,7 @@ class ProjectService(private val project: Project) : Disposable {
         // Since it's not an exact match, trigger recomputing in the background.
         recrawlFile(psiFile.virtualFile, currentText)
 
-        // Keep going to see if we can show something useful in the meantime to avoid unnecessary flickering.
+        // Keep going to see if we can  show something useful in the meantime to avoid unnecessary flickering.
         // If a chunk of text was either added or removed, then we can still show our old results by shifting
         // them a little.
         val exactCharacterDifferenceIndex = StringUtils.indexOfDifference(currentText, computedText)
@@ -315,11 +319,7 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
-            OpenMenuStatusBarWidget(
-                url = previewBaseUrl,
-                onStop = { closePreview() },
-                onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
-            ).install(statusBar)
+            this@ProjectService.previewBaseUrl = previewBaseUrl
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(previewableId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser

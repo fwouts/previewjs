@@ -21,6 +21,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <notificationGroup id="Preview.js" displayType="BALLOON" />
         <codeInsight.inlayProviderFactory implementation="com.previewjs.intellij.plugin.inlays.InlayProviderFactory" />
+        <statusBarWidgetFactory implementation="com.previewjs.intellij.plugin.statusbar.OpenMenuStatusBarWidgetFactory" />
     </extensions>
     <actions>
         <action id="com.previewjs.intellij.plugin.actions.OpenPreviewAction"
