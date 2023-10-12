@@ -47,7 +47,7 @@ export class Previewer {
     ]);
   }
 
-  async start(options: { restarting?: boolean } = {}) {
+  async start() {
     const statusBeforeStart = this.status;
     switch (statusBeforeStart.kind) {
       case "starting":
@@ -72,7 +72,7 @@ export class Previewer {
             kind: "stopped",
           };
         }
-        await this.start(options);
+        await this.start();
         break;
       case "stopped":
         await this.startFromStopped();
