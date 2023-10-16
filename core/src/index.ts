@@ -16,8 +16,11 @@ import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import { crawlFiles } from "./crawl-files";
 import { getFreePort } from "./get-free-port";
-import type { FrameworkPluginFactory } from "./plugins/framework";
-import { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
+import { extractPackageDependencies } from "./plugins/dependencies";
+import type {
+  FrameworkPlugin,
+  FrameworkPluginFactory,
+} from "./plugins/framework";
 import type { OnServerStart } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
@@ -61,12 +64,18 @@ export async function createWorkspace({
   reader?: Reader;
   onServerStart?: OnServerStart;
 }): Promise<Workspace> {
-  const frameworkPlugin = await setupFrameworkPlugin({
-    rootDir,
-    frameworkPlugins,
-    reader,
-    logger,
-  });
+  const dependencies = await extractPackageDependencies(logger, rootDir);
+  let frameworkPlugin!: FrameworkPlugin;
+  for (const candidate of frameworkPlugins) {
+    if (await candidate.isCompatible(dependencies)) {
+      frameworkPlugin = await candidate.create({
+        rootDir,
+        reader,
+        logger,
+        dependencies,
+      });
+    }
+  }
   if (!frameworkPlugin) {
     throw new NoCompatiblePluginError(
       `No compatible plugin found for workspace with root: ${rootDir}`
