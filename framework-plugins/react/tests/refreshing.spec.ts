@@ -13,7 +13,7 @@ const testApp = (suffix: string | number) =>
 for (const reactVersion of reactVersions()) {
   test.describe.parallel(`v${reactVersion}`, () => {
     test.describe.parallel("react/refreshing", () => {
-      const test = previewTest([pluginFactory], testApp(reactVersion));
+      const test = previewTest(pluginFactory, testApp(reactVersion));
 
       test("renders top-level component", async (preview) => {
         await preview.show("src/App.tsx:App");

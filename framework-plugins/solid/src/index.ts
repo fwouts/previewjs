@@ -10,6 +10,10 @@ import { optimizeSolidDepsPlugin } from "./optimize-deps-plugin.js";
 import { SOLID_SPECIAL_TYPES } from "./special-types.js";
 
 const solidFrameworkPlugin: FrameworkPluginFactory = {
+  info: {
+    apiVersion: 5,
+    name: "@previewjs/plugin-solid",
+  },
   isCompatible: async (dependencies) => {
     const version = await dependencies["solid-js"]?.readInstalledVersion();
     if (!version) {
@@ -30,8 +34,6 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 4,
-      name: "@previewjs/plugin-solid",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,

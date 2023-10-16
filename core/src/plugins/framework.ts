@@ -5,6 +5,8 @@ import type vite from "vite";
 import type { PackageDependencies } from "./dependencies";
 
 export interface FrameworkPluginFactory {
+  /** This will always be set in current plugin versions. */
+  info?: FrameworkPluginInfo;
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
   create(options: {
     rootDir: string;
@@ -15,10 +17,13 @@ export interface FrameworkPluginFactory {
 }
 
 export interface FrameworkPlugin extends Analyzer {
-  readonly pluginApiVersion?: number;
-  readonly name: string;
-  readonly defaultWrapperPath: string;
-  readonly previewDirPath: string;
-  readonly viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
+  defaultWrapperPath: string;
+  previewDirPath: string;
+  viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
   dispose(): void;
 }
+
+type FrameworkPluginInfo = {
+  name: string;
+  apiVersion: number;
+};

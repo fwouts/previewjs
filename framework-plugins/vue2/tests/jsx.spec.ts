@@ -8,7 +8,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "vue2");
 
 test.describe.parallel("vue2/jsx", () => {
-  const test = previewTest([pluginFactory], testApp);
+  const test = previewTest(pluginFactory, testApp);
 
   test("renders JSX component", async (preview) => {
     await preview.fileManager.update(

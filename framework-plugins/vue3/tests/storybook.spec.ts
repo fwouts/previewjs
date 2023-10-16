@@ -31,7 +31,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "vue3");
 
 test.describe.parallel("vue3/storybook", () => {
-  const test = previewTest([pluginFactory], testApp);
+  const test = previewTest(pluginFactory, testApp);
 
   test("renders basic CSF2 story", async (preview) => {
     await preview.fileManager.update("src/Button.vue", buttonVueSource);

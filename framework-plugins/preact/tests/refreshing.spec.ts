@@ -10,7 +10,7 @@ test.describe.configure({ mode: "parallel" });
 
 test.describe("preact/refreshing", () => {
   const _test = previewTest(
-    [pluginFactory],
+    pluginFactory,
     path.join(__dirname, "apps", "preact-app")
   );
 

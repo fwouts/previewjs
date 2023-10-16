@@ -13,7 +13,7 @@ const testApp = (suffix: string | number) =>
 test.describe.parallel("react/error handling", () => {
   for (const reactVersion of reactVersions()) {
     test.describe.parallel(`v${reactVersion}`, () => {
-      const test = previewTest([pluginFactory], testApp(reactVersion));
+      const test = previewTest(pluginFactory, testApp(reactVersion));
 
       test("handles syntax errors gracefully", async (preview) => {
         await preview.show("src/App.tsx:App");
@@ -327,7 +327,7 @@ test.describe.parallel("react/error handling", () => {
     });
   }
 
-  previewTest([pluginFactory], testApp("-sass"))(
+  previewTest(pluginFactory, testApp("-sass"))(
     "fails correctly when encountering broken SASS",
     async (preview) => {
       await preview.show("src/App.tsx:App");

@@ -8,7 +8,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "vue2");
 
 test.describe.parallel("vue2/console", () => {
-  const test = previewTest([pluginFactory], testApp);
+  const test = previewTest(pluginFactory, testApp);
 
   test("intercepts logs", async (preview) => {
     await preview.show("src/App.vue:App");

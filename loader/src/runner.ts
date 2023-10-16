@@ -78,31 +78,36 @@ export async function load({
       if (existingWorkspace !== undefined) {
         return existingWorkspace;
       }
+      const frameworkPluginName = await core.findCompatiblePlugin(
+        logger,
+        rootDir,
+        frameworkPlugins
+      );
+      const frameworkPlugin = frameworkPlugins.find(
+        (p) => p.info?.name === frameworkPluginName
+      );
+      if (!frameworkPlugin) {
+        logger.warn(
+          `No compatible plugin found for workspace with root: ${rootDir}`
+        );
+        return;
+      }
       const created = await locking(async () => {
-        try {
-          const workspace = await core.createWorkspace({
-            logger,
-            rootDir,
-            reader,
-            frameworkPlugins,
-            onServerStart: (options) =>
-              onServerStart({
-                versionCode,
-                ...options,
-              }),
-          });
-          logger.info(
-            `Created Preview.js workspace (plugin: ${workspace.frameworkPluginName}) at ${rootDir}`
-          );
-          return workspace;
-        } catch (e) {
-          if (e instanceof core.NoCompatiblePluginError) {
-            logger.warn(e.message);
-            return null;
-          } else {
-            throw e;
-          }
-        }
+        const workspace = await core.createWorkspace({
+          logger,
+          rootDir,
+          reader,
+          frameworkPlugin,
+          onServerStart: (options) =>
+            onServerStart({
+              versionCode,
+              ...options,
+            }),
+        });
+        logger.info(
+          `Created Preview.js workspace (plugin: ${workspace.frameworkPluginName}) at ${rootDir}`
+        );
+        return workspace;
       });
       // Note: This caches the incompatibility of a workspace (i.e. caching null), which
       // would be problematic especially when package.json is updated to a compatible

@@ -8,7 +8,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "solid");
 
 test.describe.parallel("solid/refreshing", () => {
-  const test = previewTest([pluginFactory], testApp);
+  const test = previewTest(pluginFactory, testApp);
 
   test("renders top-level component", async (preview) => {
     await preview.show("src/App.tsx:App");

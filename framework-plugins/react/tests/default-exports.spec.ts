@@ -13,7 +13,7 @@ const testApp = (suffix: string | number) =>
 for (const reactVersion of reactVersions()) {
   test.describe.parallel(`v${reactVersion}`, () => {
     test.describe.parallel("react/default exports", () => {
-      const test = previewTest([pluginFactory], testApp(reactVersion));
+      const test = previewTest(pluginFactory, testApp(reactVersion));
 
       test("renders default export component (arrow function)", async (preview) => {
         await preview.fileManager.update(

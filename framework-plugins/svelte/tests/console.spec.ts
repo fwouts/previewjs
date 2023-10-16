@@ -8,7 +8,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "svelte");
 
 test.describe.parallel("svelte/console", () => {
-  const test = previewTest([pluginFactory], testApp);
+  const test = previewTest(pluginFactory, testApp);
 
   test("intercepts logs", async (preview) => {
     await preview.show("src/App.svelte:App");

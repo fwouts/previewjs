@@ -6,6 +6,10 @@ import url from "url";
 import { reactImportsPlugin } from "./react-js-imports-plugin.js";
 
 const reactFrameworkPlugin: FrameworkPluginFactory = {
+  info: {
+    apiVersion: 5,
+    name: "@previewjs/plugin-react",
+  },
   isCompatible: async (dependencies) => {
     const version = await dependencies["react"]?.readInstalledVersion();
     if (!version) {
@@ -13,7 +17,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     }
     const [major, minor] = version.split(".").map((n) => parseInt(n)) as [
       number,
-      number,
+      number
     ];
     if (isNaN(major) || isNaN(minor)) {
       return false;
@@ -29,8 +33,6 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
     });
     const previewDirPath = path.join(__dirname, "..", "preview");
     return {
-      pluginApiVersion: 4,
-      name: "@previewjs/plugin-react",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       ...analyzerPlugin,

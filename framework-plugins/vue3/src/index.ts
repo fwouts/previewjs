@@ -8,6 +8,10 @@ import { crawlFile } from "./crawl-file.js";
 import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const vue3FrameworkPlugin: FrameworkPluginFactory = {
+  info: {
+    apiVersion: 5,
+    name: "@previewjs/plugin-vue3",
+  },
   isCompatible: async (dependencies) => {
     const version =
       (await dependencies["vue"]?.readInstalledVersion()) ||
@@ -40,8 +44,6 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 4,
-      name: "@previewjs/plugin-vue3",
       defaultWrapperPath: "__previewjs__/Wrapper.vue",
       previewDirPath,
       typeAnalyzer,

@@ -10,6 +10,10 @@ import { crawlFile } from "./crawl-file.js";
 import { createSvelteTypeScriptReader } from "./svelte-reader.js";
 
 const svelteFrameworkPlugin: FrameworkPluginFactory = {
+  info: {
+    apiVersion: 5,
+    name: "@previewjs/plugin-svelte",
+  },
   isCompatible: async (dependencies) => {
     const version = await dependencies["svelte"]?.readInstalledVersion();
     if (!version) {
@@ -38,8 +42,6 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
       reader: createSvelteTypeScriptReader(reader),
     });
     return {
-      pluginApiVersion: 4,
-      name: "@previewjs/plugin-svelte",
       defaultWrapperPath: "__previewjs__/Wrapper.svelte",
       previewDirPath,
       typeAnalyzer,
