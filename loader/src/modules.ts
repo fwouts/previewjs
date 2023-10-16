@@ -29,7 +29,8 @@ export async function loadModules({
     );
     pnpmProcess.stdout?.on("data", (chunk) => process.stdout.write(chunk));
     pnpmProcess.stderr?.on("data", (chunk) => process.stderr.write(chunk));
-    if ((await pnpmProcess).failed) {
+    const pnpmResult = await pnpmProcess;
+    if (pnpmResult.failed || pnpmResult.exitCode !== 0) {
       throw new Error(`Unable to install dependencies`);
     }
     // Note: The bracketed tag is required for VS Code and IntelliJ to detect end of installation.
