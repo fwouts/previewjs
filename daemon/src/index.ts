@@ -1,5 +1,5 @@
-import type { PreviewServer, Workspace } from "@previewjs/core";
-import { load } from "@previewjs/loader/runner";
+import type { PreviewServer } from "@previewjs/core";
+import { load, type WorkspaceWorker } from "@previewjs/loader/runner";
 import crypto from "crypto";
 import exitHook from "exit-hook";
 import {
@@ -121,12 +121,13 @@ export async function startDaemon({
 }: DaemonStartOptions) {
   const previewjs = await load({
     installDir: loaderInstallDir,
+    workerFilePath: path.join(__dirname, "worker.js"),
     onServerStartModuleName,
   });
   const logger = previewjs.logger;
 
   const clients = new Set<string>();
-  const workspaces: Record<string, Workspace> = {};
+  const workspaces: Record<string, WorkspaceWorker> = {};
   const previewServers: Record<string, PreviewServer> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
   let wslRoot: string | null = null;
@@ -285,10 +286,14 @@ export async function startDaemon({
   endpoint<GetWorkspaceRequest, GetWorkspaceResponse>(
     "/workspaces/get",
     async (req) => {
+      // eslint-disable-next-line
+      console.error("STARTING");
       const workspace = await previewjs.getWorkspace({
         versionCode,
         absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
+      // eslint-disable-next-line
+      console.error(workspace?.rootDir);
       if (!workspace) {
         return {
           workspaceId: null,
@@ -328,7 +333,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      const { components, stories } = await workspace.crawlFiles([
+      return workspace.crawlFiles([
         path
           .relative(
             workspace.rootDir,
@@ -336,13 +341,6 @@ export async function startDaemon({
           )
           .replace(/\\/g, "/"),
       ]);
-      return {
-        previewables: [...components, ...stories].map((c) => ({
-          id: c.id,
-          start: c.sourcePosition.start,
-          end: c.sourcePosition.end,
-        })),
-      };
     }
   );
 

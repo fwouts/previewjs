@@ -133,6 +133,9 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
     });
   }
   daemonProcess.unref();
+  daemonProcess.on("error", (error) => {
+    outputChannel.append(`${error}`);
+  });
   return { daemonProcess };
 }
 

@@ -6,11 +6,11 @@ import url from "url";
 try {
   const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   await build({
-    entryPoints: ["./src/main.ts"],
+    entryPoints: ["./src/main.ts", "./src/worker.ts"],
     minify: false,
     bundle: true,
     format: "esm",
-    outfile: "./dist/main.js",
+    outdir: "./dist",
     platform: "node",
     target: "es2020",
     banner: {

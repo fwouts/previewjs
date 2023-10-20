@@ -1,0 +1,1 @@
+import "@previewjs/loader/worker";
