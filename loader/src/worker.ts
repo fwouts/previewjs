@@ -23,6 +23,7 @@ async function runWorker({
   frameworkPluginName,
   onServerStartModuleName,
 }: WorkerData) {
+  process.chdir(rootDir);
   const prettyLoggerStream = prettyLogger({
     colorize: true,
     destination: process.stdout,
