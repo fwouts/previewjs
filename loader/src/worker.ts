@@ -23,6 +23,7 @@ async function runWorker({
   frameworkPluginName,
   onServerStartModuleName,
 }: WorkerData) {
+  // Note: this is required for PostCSS, and must be set before the PostCSS module is loaded.
   process.chdir(rootDir);
   const prettyLoggerStream = prettyLogger({
     colorize: true,
