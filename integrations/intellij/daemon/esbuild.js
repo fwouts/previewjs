@@ -24,7 +24,7 @@ try {
     minify: false,
     bundle: true,
     format: "esm",
-    outfile: "./dist/main.js",
+    outfile: "./dist",
     platform: "node",
     target: "es2020",
     define: {
