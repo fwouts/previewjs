@@ -1,1 +1,1 @@
-import "@previewjs/daemon/worker";
+import "@previewjs/loader/worker";

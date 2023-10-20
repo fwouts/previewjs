@@ -1,5 +1,5 @@
 export default {
-  entries: ["./src/client", "./src/worker", "./src/index"],
+  entries: ["./src/client", "./src/index"],
   rollup: {
     inlineDependencies: true,
     resolve: {

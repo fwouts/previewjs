@@ -20,7 +20,7 @@ try {
   }
 
   await build({
-    entryPoints: ["./src/main.ts"],
+    entryPoints: ["./src/main.ts", "./src/worker.ts"],
     minify: false,
     bundle: true,
     format: "esm",

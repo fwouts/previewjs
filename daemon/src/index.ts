@@ -108,6 +108,7 @@ if (logFilePath) {
 
 export interface DaemonStartOptions {
   loaderInstallDir: string;
+  loaderWorkerPath: string;
   onServerStartModuleName: string;
   versionCode: string;
   port: number;
@@ -115,13 +116,14 @@ export interface DaemonStartOptions {
 
 export async function startDaemon({
   loaderInstallDir,
+  loaderWorkerPath,
   onServerStartModuleName,
   versionCode,
   port,
 }: DaemonStartOptions) {
   const previewjs = await load({
     installDir: loaderInstallDir,
-    workerFilePath: path.join(__dirname, "worker.js"),
+    workerFilePath: loaderWorkerPath,
     onServerStartModuleName,
   });
   const logger = previewjs.logger;
