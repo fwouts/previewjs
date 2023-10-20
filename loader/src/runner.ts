@@ -152,7 +152,13 @@ export async function load({
     rootDir: string,
     frameworkPluginName: string
   ) {
-    const worker = fork(workerFilePath);
+    const worker = fork(workerFilePath, {
+      stdio: "pipe",
+    });
+    worker.stdout!.pipe(prettyLoggerStream);
+    worker.stderr!.pipe(prettyLoggerStream);
+    // TODO: Handle worker.on('error') and worker.on('exit')
+    // TODO: Don't keep workers hanging around unnecessarily!
     const send = (message: ToWorkerMessage) => {
       worker.send(message);
     };
