@@ -13,6 +13,10 @@ export type WorkerData = {
 
 export type ToWorkerMessage =
   | {
+      kind: "init";
+      data: WorkerData;
+    }
+  | {
       kind: "in-memory-file-update";
       absoluteFilePath: string;
       text: string | null;

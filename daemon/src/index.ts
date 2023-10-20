@@ -286,14 +286,10 @@ export async function startDaemon({
   endpoint<GetWorkspaceRequest, GetWorkspaceResponse>(
     "/workspaces/get",
     async (req) => {
-      // eslint-disable-next-line
-      console.error("STARTING");
       const workspace = await previewjs.getWorkspace({
         versionCode,
         absoluteFilePath: transformAbsoluteFilePath(req.absoluteFilePath),
       });
-      // eslint-disable-next-line
-      console.error(workspace?.rootDir);
       if (!workspace) {
         return {
           workspaceId: null,

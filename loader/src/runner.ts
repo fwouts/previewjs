@@ -1,6 +1,6 @@
 import assertNever from "assert-never";
 import fs from "fs-extra";
-import { Worker } from "node:worker_threads";
+import { fork } from "node:child_process";
 import path from "path";
 import createLogger, { type Logger } from "pino";
 import prettyLogger from "pino-pretty";
@@ -12,7 +12,6 @@ import {
   type StartServerRequest,
   type StopServerRequest,
   type ToWorkerMessage,
-  type WorkerData,
   type WorkerRequest,
   type WorkerResponse,
   type WorkerResponseType,
@@ -153,10 +152,13 @@ export async function load({
     rootDir: string,
     frameworkPluginName: string
   ) {
-    // eslint-disable-next-line
-    console.error("WORKER PATH", workerFilePath);
-    const worker = new Worker(workerFilePath, {
-      workerData: {
+    const worker = fork(workerFilePath);
+    const send = (message: ToWorkerMessage) => {
+      worker.send(message);
+    };
+    send({
+      kind: "init",
+      data: {
         logLevel,
         versionCode,
         installDir,
@@ -164,7 +166,7 @@ export async function load({
         inMemorySnapshot: memoryReader.snapshot(),
         frameworkPluginName,
         onServerStartModuleName,
-      } satisfies WorkerData,
+      },
     });
     const pendingResponses: Record<
       number /* request ID */,
@@ -190,7 +192,7 @@ export async function load({
           logger.error(message.message);
           delete workers[rootDir];
           rejectWorkerReady?.(new Error(message.message));
-          worker.terminate().catch((e) => logger.error(e));
+          worker.kill();
           break;
         case "response": {
           const pending = pendingResponses[message.requestId];
@@ -211,9 +213,6 @@ export async function load({
           throw assertNever(message);
       }
     });
-    const send = (message: ToWorkerMessage) => {
-      worker.postMessage(message);
-    };
     const request = async <Request extends WorkerRequest>(request: Request) => {
       const requestId = nextRequestId++;
       const promise = new Promise<WorkerResponseType<typeof request>>(
@@ -265,7 +264,7 @@ export async function load({
       },
       dispose: async () => {
         delete workers[rootDir];
-        await worker.terminate();
+        worker.kill();
       },
     };
     // @ts-ignore

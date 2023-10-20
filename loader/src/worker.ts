@@ -1,6 +1,5 @@
 import type { PreviewServer } from "@previewjs/core";
 import assertNever from "assert-never";
-import { parentPort, workerData } from "node:worker_threads";
 import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import { loadModules } from "./modules";
@@ -24,10 +23,6 @@ async function runWorker({
   frameworkPluginName,
   onServerStartModuleName,
 }: WorkerData) {
-  if (!parentPort) {
-    throw new Error(`Worker does not have parent port`);
-  }
-
   const prettyLoggerStream = prettyLogger({
     colorize: true,
     destination: process.stdout,
@@ -52,19 +47,6 @@ async function runWorker({
       `Could not find framework plugin named "${frameworkPluginName}"`
     );
   }
-  parentPort.on("message", (message: ToWorkerMessage) => {
-    switch (message.kind) {
-      case "in-memory-file-update":
-        memoryReader.updateFile(message.absoluteFilePath, message.text);
-        break;
-      case "request":
-        handleRequest(message.request, message.requestId);
-        break;
-      default:
-        throw assertNever(message);
-    }
-  });
-
   async function handleRequest(request: WorkerRequest, requestId: number) {
     try {
       const response = await (() => {
@@ -152,18 +134,39 @@ async function runWorker({
     `Created Preview.js workspace (plugin: ${workspace.frameworkPluginName}) at ${rootDir}`
   );
 
+  process.on("message", (message: ToWorkerMessage) => {
+    switch (message.kind) {
+      case "init":
+        throw new Error(`Unexpected double init received in worker`);
+      case "in-memory-file-update":
+        memoryReader.updateFile(message.absoluteFilePath, message.text);
+        break;
+      case "request":
+        handleRequest(message.request, message.requestId);
+        break;
+      default:
+        throw assertNever(message);
+    }
+  });
+
   sendMessageFromWorker({
     kind: "ready",
   });
 }
 
 async function sendMessageFromWorker(message: FromWorkerMessage) {
-  parentPort!.postMessage(message);
+  process.send!(message);
 }
 
-runWorker(workerData).catch((e) => {
-  sendMessageFromWorker({
-    kind: "crash",
-    message: e.message || `${e}`,
-  });
-});
+const waitForInit = (message: ToWorkerMessage) => {
+  if (message.kind === "init") {
+    runWorker(message.data).catch((e) => {
+      sendMessageFromWorker({
+        kind: "crash",
+        message: e.message || `${e}`,
+      });
+    });
+    process.off("message", waitForInit);
+  }
+};
+process.on("message", waitForInit);
