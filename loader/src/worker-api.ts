@@ -17,22 +17,27 @@ export type ToWorkerMessage =
       data: WorkerData;
     }
   | {
-      kind: "in-memory-file-update";
-      absoluteFilePath: string;
-      text: string | null;
-    }
-  | {
       kind: "request";
       requestId: number;
       request: WorkerRequest;
     };
 
 export type WorkerRequest =
+  | UpdateInMemoryFileRequest
   | CrawlFileRequest
   | StartServerRequest
   | StopServerRequest;
 
 export type WorkerResponse = WorkerResponseType<WorkerRequest>;
+
+export type UpdateInMemoryFileRequest = WorkerRequestType<
+  "update-in-memory-file",
+  {
+    absoluteFilePath: string;
+    text: string | null;
+  },
+  Record<string, never>
+>;
 
 export type CrawlFileRequest = WorkerRequestType<
   "crawl-files",

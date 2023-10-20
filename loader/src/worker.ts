@@ -9,6 +9,7 @@ import type {
   StartServerRequest,
   StopServerRequest,
   ToWorkerMessage,
+  UpdateInMemoryFileRequest,
   WorkerData,
   WorkerRequest,
   WorkerResponseType,
@@ -53,6 +54,8 @@ async function runWorker({
     try {
       const response = await (() => {
         switch (request.kind) {
+          case "update-in-memory-file":
+            return handleUpdateInMemoryFileRequest(request.body);
           case "crawl-files":
             return handleCrawlFilesRequest(request.body);
           case "start-server":
@@ -81,6 +84,13 @@ async function runWorker({
         },
       });
     }
+  }
+
+  async function handleUpdateInMemoryFileRequest(
+    request: UpdateInMemoryFileRequest["body"]
+  ): Promise<WorkerResponseType<UpdateInMemoryFileRequest>> {
+    memoryReader.updateFile(request.absoluteFilePath, request.text);
+    return {};
   }
 
   async function handleCrawlFilesRequest(
@@ -140,9 +150,6 @@ async function runWorker({
     switch (message.kind) {
       case "init":
         throw new Error(`Unexpected double init received in worker`);
-      case "in-memory-file-update":
-        memoryReader.updateFile(message.absoluteFilePath, message.text);
-        break;
       case "request":
         handleRequest(message.request, message.requestId);
         break;

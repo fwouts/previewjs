@@ -12,6 +12,7 @@ import {
   type StartServerRequest,
   type StopServerRequest,
   type ToWorkerMessage,
+  type UpdateInMemoryFileRequest,
   type WorkerRequest,
   type WorkerResponse,
   type WorkerResponseType,
@@ -21,7 +22,7 @@ const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 
 export type WorkspaceWorker = {
   rootDir: string;
-  updateFile(absoluteFilePath: string, text: string | null): void;
+  updateFile(absoluteFilePath: string, text: string | null): Promise<void>;
   crawlFiles(
     absoluteFilePaths: string[]
   ): Promise<WorkerResponseType<CrawlFileRequest>>;
@@ -71,10 +72,10 @@ export async function load({
   return {
     core,
     logger: globalLogger,
-    updateFileInMemory(absoluteFilePath: string, text: string | null) {
+    async updateFileInMemory(absoluteFilePath: string, text: string | null) {
       memoryReader.updateFile(absoluteFilePath, text);
       for (const worker of Object.values(workers)) {
-        worker?.promised.updateFile(absoluteFilePath, text);
+        await worker?.promised.updateFile(absoluteFilePath, text);
       }
     },
     async getWorkspace({
@@ -122,6 +123,12 @@ export async function load({
       if (existingWorker !== undefined) {
         return existingWorker;
       }
+      // IDEA:
+      // - only workers with a live server can be kept alive
+      // - one other worker can be
+      //
+      // BUT FIRST need to refactor this to return a wrapper around the worker that will silently kill
+      // it when it's no longer used, and revive it when it needs to come back.
       return initializeWorker(
         logger,
         logLevel,
@@ -155,9 +162,21 @@ export async function load({
     const worker = fork(workerFilePath, {
       stdio: "pipe",
     });
-    worker.stdout!.pipe(prettyLoggerStream);
-    worker.stderr!.pipe(prettyLoggerStream);
-    // TODO: Handle worker.on('error') and worker.on('exit')
+    worker.stdout?.pipe(prettyLoggerStream);
+    worker.stderr?.pipe(prettyLoggerStream);
+    const disposeWorker = () => {
+      delete workers[rootDir];
+      worker.kill();
+    };
+    worker.on("error", (error) => {
+      logger.error(error);
+      disposeWorker();
+    });
+    worker.on("exit", () => {
+      // Note: we should double check that there isn't a race condition if we
+      // re-create the worker.
+      delete workers[rootDir];
+    });
     // TODO: Don't keep workers hanging around unnecessarily!
     const send = (message: ToWorkerMessage) => {
       worker.send(message);
@@ -238,11 +257,13 @@ export async function load({
     };
     const workspaceWorker: WorkspaceWorker = {
       rootDir,
-      updateFile: (absoluteFilePath, text) => {
-        send({
-          kind: "in-memory-file-update",
-          absoluteFilePath,
-          text,
+      updateFile: async (absoluteFilePath, text) => {
+        await request<UpdateInMemoryFileRequest>({
+          kind: "update-in-memory-file",
+          body: {
+            absoluteFilePath,
+            text,
+          },
         });
       },
       crawlFiles: (absoluteFilePaths) => {
@@ -268,10 +289,7 @@ export async function load({
           },
         };
       },
-      dispose: async () => {
-        delete workers[rootDir];
-        worker.kill();
-      },
+      dispose: async () => disposeWorker(),
     };
     // @ts-ignore
     const workspaceWorkerPromise: Promise<WorkspaceWorker> & {
