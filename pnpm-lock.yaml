@@ -2318,13 +2318,13 @@ importers:
         version: link:../../vfs
       '@sveltejs/vite-plugin-svelte':
         specifier: ^2.4.6
-        version: 2.4.6(svelte@4.2.1)(vite@4.4.11)
+        version: 2.4.6(svelte@4.2.2)(vite@4.4.11)
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
       svelte:
-        specifier: ^4.2.1
-        version: 4.2.1
+        specifier: ^4.2.2
+        version: 4.2.2
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -2346,7 +2346,7 @@ importers:
         version: link:../../testing
       '@sveltejs/kit':
         specifier: ^1.25.2
-        version: 1.25.2(svelte@4.2.1)(vite@4.4.11)
+        version: 1.25.2(svelte@4.2.2)(vite@4.4.11)
       '@types/fs-extra':
         specifier: ^11.0.3
         version: 11.0.3
@@ -3821,7 +3821,6 @@ packages:
       '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
       semver: 6.3.1
-    dev: false
 
   /@babel/helper-create-class-features-plugin@7.22.15(@babel/core@7.22.20):
     resolution: {integrity: sha512-jKkwA59IXcvSaiK2UN45kKwSC9o+KuoXsBDvHvU/7BecYIp8GQ2UwrVvFgJASUT+hBnwJx6MhvMCuMzwZZ7jlg==}
@@ -3857,46 +3856,6 @@ packages:
       '@babel/helper-split-export-declaration': 7.22.6
       semver: 6.3.1
 
-  /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.21.4):
-    resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/core': 7.21.4
-      '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-environment-visitor': 7.22.5
-      '@babel/helper-function-name': 7.22.5
-      '@babel/helper-member-expression-to-functions': 7.22.5
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.21.8):
-    resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/core': 7.21.8
-      '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-environment-visitor': 7.22.5
-      '@babel/helper-function-name': 7.22.5
-      '@babel/helper-member-expression-to-functions': 7.22.5
-      '@babel/helper-optimise-call-expression': 7.22.5
-      '@babel/helper-replace-supers': 7.22.5
-      '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.22.20):
     resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
     engines: {node: '>=6.9.0'}
@@ -3915,6 +3874,7 @@ packages:
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.23.0):
     resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
@@ -4643,7 +4603,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.8
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.21.8)
+      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.22.5
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.22.20):
@@ -4653,7 +4613,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.20
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.23.0)
+      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.23.0)
       '@babel/helper-plugin-utils': 7.22.5
 
   /@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.23.0):
@@ -4663,7 +4623,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.0
-      '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.23.0)
+      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.23.0)
       '@babel/helper-plugin-utils': 7.22.5
 
   /@babel/plugin-proposal-class-static-block@7.21.0(@babel/core@7.21.4):
@@ -4718,7 +4678,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-replace-supers': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.5
@@ -4734,7 +4694,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.8
-      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.8)
+      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-replace-supers': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.5
@@ -4750,7 +4710,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.20
-      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.20)
+      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.22.20)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/helper-replace-supers': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.5
@@ -17787,7 +17747,7 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit@1.25.2(svelte@4.2.1)(vite@4.4.11):
+  /@sveltejs/kit@1.25.2(svelte@4.2.2)(vite@4.4.11):
     resolution: {integrity: sha512-USuuSpdAPFDiLi58N2Pwd/TG9bcUSPAlzE5iaAXaLyCTWa3l36HDKH6nV5NqBybwfeux1ZwgtIeITLZJDJ6HDg==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
@@ -17796,7 +17756,7 @@ packages:
       svelte: ^3.54.0 || ^4.0.0-next.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@4.2.1)(vite@4.4.11)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@4.2.2)(vite@4.4.11)
       '@types/cookie': 0.5.1
       cookie: 0.5.0
       devalue: 4.3.2
@@ -17807,7 +17767,7 @@ packages:
       sade: 1.8.1
       set-cookie-parser: 2.6.0
       sirv: 2.0.2
-      svelte: 4.2.1
+      svelte: 4.2.2
       tiny-glob: 0.2.9
       undici: 5.25.3
       vite: 4.4.11(@types/node@20.8.7)
@@ -17879,7 +17839,7 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@4.2.1)(vite@4.4.11):
+  /@sveltejs/vite-plugin-svelte-inspector@1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@4.2.2)(vite@4.4.11):
     resolution: {integrity: sha512-zjiuZ3yydBtwpF3bj0kQNV0YXe+iKE545QGZVTaylW3eAzFr+pJ/cwK8lZEaRp4JtaJXhD5DyWAV4AxLh6DgaQ==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
@@ -17887,9 +17847,9 @@ packages:
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@4.2.1)(vite@4.4.11)
+      '@sveltejs/vite-plugin-svelte': 2.4.6(svelte@4.2.2)(vite@4.4.11)
       debug: 4.3.4(supports-color@5.5.0)
-      svelte: 4.2.1
+      svelte: 4.2.2
       vite: 4.4.11(@types/node@20.8.7)
     transitivePeerDependencies:
       - supports-color
@@ -17993,20 +17953,20 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte@2.4.6(svelte@4.2.1)(vite@4.4.11):
+  /@sveltejs/vite-plugin-svelte@2.4.6(svelte@4.2.2)(vite@4.4.11):
     resolution: {integrity: sha512-zO79p0+DZnXPnF0ltIigWDx/ux7Ni+HRaFOw720Qeivc1azFUrJxTl0OryXVibYNx1hCboGia1NRV3x8RNv4cA==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0
       vite: ^4.0.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@4.2.1)(vite@4.4.11)
+      '@sveltejs/vite-plugin-svelte-inspector': 1.0.4(@sveltejs/vite-plugin-svelte@2.4.6)(svelte@4.2.2)(vite@4.4.11)
       debug: 4.3.4(supports-color@5.5.0)
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.3
-      svelte: 4.2.1
-      svelte-hmr: 0.15.3(svelte@4.2.1)
+      svelte: 4.2.2
+      svelte-hmr: 0.15.3(svelte@4.2.2)
       vite: 4.4.11(@types/node@20.8.7)
       vitefu: 0.2.4(vite@4.4.11)
     transitivePeerDependencies:
@@ -20213,11 +20173,11 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.0
-      '@babel/helper-module-imports': 7.22.15
+      '@babel/helper-module-imports': 7.22.5
       '@babel/plugin-syntax-jsx': 7.22.5(@babel/core@7.23.0)
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.0
-      '@babel/types': 7.23.0
+      '@babel/traverse': 7.22.20
+      '@babel/types': 7.22.19
       '@vue/babel-helper-vue-transform-on': 1.1.5
       camelcase: 6.3.0
       html-tags: 3.3.1
@@ -26984,7 +26944,7 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 5.61.0(eslint@8.51.0)(typescript@4.9.5)
+      '@typescript-eslint/parser': 5.61.0(eslint@8.51.0)(typescript@5.2.2)
       debug: 3.2.7(supports-color@5.5.0)
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.7
@@ -27015,7 +26975,7 @@ packages:
       '@typescript-eslint/parser':
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 5.61.0(eslint@8.51.0)(typescript@4.9.5)
+      '@typescript-eslint/parser': 5.61.0(eslint@8.51.0)(typescript@5.2.2)
       array-includes: 3.1.6
       array.prototype.flat: 1.3.1
       array.prototype.flatmap: 1.3.1
@@ -32472,6 +32432,12 @@ packages:
 
   /magic-string@0.30.3:
     resolution: {integrity: sha512-B7xGbll2fG/VjP+SWg4sX3JynwIU0mjoTc6MPpKNuIvftk6u6vqhDnk1R80b8C2GBR6ywqy+1DcKBrevBg+bmw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+
+  /magic-string@0.30.5:
+    resolution: {integrity: sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==}
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
@@ -41482,13 +41448,13 @@ packages:
       svelte: 4.0.5
     dev: true
 
-  /svelte-hmr@0.15.3(svelte@4.2.1):
+  /svelte-hmr@0.15.3(svelte@4.2.2):
     resolution: {integrity: sha512-41snaPswvSf8TJUhlkoJBekRrABDXDMdpNpT2tfHIv4JuhgvHqLMhEPGtaQn0BmbNSTkuz2Ed20DF2eHw0SmBQ==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
     peerDependencies:
       svelte: ^3.19.0 || ^4.0.0
     dependencies:
-      svelte: 4.2.1
+      svelte: 4.2.2
 
   /svelte-preprocess@4.10.7(@babel/core@7.23.0)(svelte@3.59.1)(typescript@5.2.2):
     resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}
@@ -41669,8 +41635,8 @@ packages:
       periscopic: 3.1.0
     dev: true
 
-  /svelte@4.2.1:
-    resolution: {integrity: sha512-LpLqY2Jr7cRxkrTc796/AaaoMLF/1ax7cto8Ot76wrvKQhrPmZ0JgajiWPmg9mTSDqO16SSLiD17r9MsvAPTmw==}
+  /svelte@4.2.2:
+    resolution: {integrity: sha512-My2tytF2e2NnHSpn2M7/3VdXT4JdTglYVUuSuK/mXL2XtulPYbeBfl8Dm1QiaKRn0zoULRnL+EtfZHHP0k4H3A==}
     engines: {node: '>=16'}
     dependencies:
       '@ampproject/remapping': 2.2.1
@@ -41684,7 +41650,7 @@ packages:
       estree-walker: 3.0.3
       is-reference: 3.0.1
       locate-character: 3.0.0
-      magic-string: 0.30.3
+      magic-string: 0.30.5
       periscopic: 3.1.0
 
   /sveltedoc-parser@4.2.1:
