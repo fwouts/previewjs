@@ -9,10 +9,7 @@ import { installDependenciesIfRequired, loadModules } from "./modules.js";
 import {
   type CrawlFileRequest,
   type FromWorkerMessage,
-  type StartServerRequest,
-  type StopServerRequest,
   type ToWorkerMessage,
-  type UpdateInMemoryFileRequest,
   type WorkerRequest,
   type WorkerResponse,
   type WorkerResponseType,
@@ -20,7 +17,7 @@ import {
 
 const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 
-export type WorkspaceWorker = {
+export type WorkspaceWrapper = {
   rootDir: string;
   updateFile(absoluteFilePath: string, text: string | null): Promise<void>;
   crawlFiles(
@@ -32,6 +29,16 @@ export type WorkspaceWorker = {
   }>;
   dispose(): Promise<void>;
 };
+
+export type WorkspaceWorker = {
+  request: <Request extends WorkerRequest>(
+    request: Request
+  ) => Promise<WorkerResponseType<Request>>;
+  kill: () => void;
+};
+
+const CLEANUP_INTERVAL_MILLIS = 1000;
+const KILL_WORKER_AFTER_IDLE_MILLIS = 30_000;
 
 export async function load({
   installDir,
@@ -65,18 +72,42 @@ export async function load({
   // TODO: Clear memory reader when file saved.
   const workers: {
     [rootDir: string]:
-      | (Promise<WorkspaceWorker> & { promised: WorkspaceWorker })
+      | (Promise<WorkspaceWorker> & {
+          lastAccess: number;
+          ready: boolean;
+          promised: WorkspaceWorker;
+        })
       | null;
   } = {};
+  const wrappers: {
+    [rootDir: string]: WorkspaceWrapper | null;
+  } = {};
+  const activeServerWorkerRootDirs = new Set<string>();
+
+  setInterval(() => {
+    for (const [rootDir, worker] of Object.entries(workers)) {
+      if (
+        !worker?.ready ||
+        worker.lastAccess > Date.now() - KILL_WORKER_AFTER_IDLE_MILLIS
+      ) {
+        continue;
+      }
+      if (!activeServerWorkerRootDirs.has(rootDir)) {
+        worker.promised.kill();
+      }
+    }
+  }, CLEANUP_INTERVAL_MILLIS);
 
   return {
     core,
     logger: globalLogger,
     async updateFileInMemory(absoluteFilePath: string, text: string | null) {
       memoryReader.updateFile(absoluteFilePath, text);
-      for (const worker of Object.values(workers)) {
-        await worker?.promised.updateFile(absoluteFilePath, text);
-      }
+      await Promise.all(
+        Object.values(wrappers).map((wrapper) =>
+          wrapper?.updateFile(absoluteFilePath, text)
+        )
+      );
     },
     async getWorkspace({
       versionCode,
@@ -84,7 +115,7 @@ export async function load({
     }: {
       versionCode: string;
       absoluteFilePath: string;
-    }) {
+    }): Promise<WorkspaceWrapper | null> {
       const rootDir = core.findWorkspaceRoot(absoluteFilePath);
       if (!rootDir) {
         globalLogger.info(
@@ -101,9 +132,9 @@ export async function load({
         logLevel = "debug";
         logger = createLogger({ level: logLevel }, prettyLoggerStream);
       }
-      let existingWorker = workers[rootDir];
-      if (existingWorker !== undefined) {
-        return existingWorker;
+      let existingWrapper = wrappers[rootDir];
+      if (existingWrapper !== undefined) {
+        return existingWrapper;
       }
       const frameworkPluginName = await core.findCompatiblePlugin(
         logger,
@@ -115,43 +146,92 @@ export async function load({
         // would be problematic especially when package.json is updated to a compatible
         // package version.
         // TODO: Find a smarter approach, perhaps checking last-modified time of package.json and node_modules.
-        workers[rootDir] = null;
+        wrappers[rootDir] = null;
         return null;
       }
       // Note: we check again here because of race conditions while awaiting above.
-      existingWorker = workers[rootDir];
-      if (existingWorker !== undefined) {
-        return existingWorker;
+      existingWrapper = wrappers[rootDir];
+      if (existingWrapper !== undefined) {
+        return existingWrapper;
       }
+
+      const getOrStartWorker = () =>
+        ensureWorkerRunning(
+          logger,
+          logLevel,
+          versionCode,
+          workerFilePath,
+          rootDir,
+          frameworkPluginName
+        );
+
       // IDEA:
       // - only workers with a live server can be kept alive
       // - one other worker can be
       //
       // BUT FIRST need to refactor this to return a wrapper around the worker that will silently kill
       // it when it's no longer used, and revive it when it needs to come back.
-      return initializeWorker(
-        logger,
-        logLevel,
-        versionCode,
-        workerFilePath,
+      return (wrappers[rootDir] = {
         rootDir,
-        frameworkPluginName
-      );
+        updateFile: async (absoluteFilePath, text) => {
+          const worker = await workers[rootDir];
+          await worker?.request({
+            kind: "update-in-memory-file",
+            body: {
+              absoluteFilePath,
+              text,
+            },
+          });
+        },
+        crawlFiles: async (absoluteFilePaths) => {
+          const worker = await getOrStartWorker();
+          return await worker.request({
+            kind: "crawl-files",
+            body: {
+              absoluteFilePaths,
+            },
+          });
+        },
+        startServer: async (options = {}) => {
+          const worker = await getOrStartWorker();
+          activeServerWorkerRootDirs.add(rootDir);
+          const { url, serverId } = await worker.request({
+            kind: "start-server",
+            body: options,
+          });
+          return {
+            url: () => url,
+            stop: async () => {
+              await worker.request({
+                kind: "stop-server",
+                body: { serverId },
+              });
+              activeServerWorkerRootDirs.delete(rootDir);
+            },
+          };
+        },
+        dispose: async () => {
+          activeServerWorkerRootDirs.delete(rootDir);
+          const worker = await workers[rootDir];
+          worker?.kill();
+          delete wrappers[rootDir];
+        },
+      });
     },
     async dispose() {
       const promises: Array<Promise<void>> = [];
-      for (const worker of Object.values(workers)) {
-        if (!worker) {
+      for (const wrapper of Object.values(wrappers)) {
+        if (!wrapper) {
           continue;
         }
-        promises.push(worker.promised.dispose());
+        promises.push(wrapper.dispose());
       }
       await Promise.all(promises);
     },
   };
 
   // Note: this should remain a sync function to prevent any race conditions.
-  function initializeWorker(
+  function ensureWorkerRunning(
     logger: Logger,
     logLevel: LogLevel,
     versionCode: string,
@@ -159,28 +239,30 @@ export async function load({
     rootDir: string,
     frameworkPluginName: string
   ) {
+    const existingWorker = workers[rootDir];
+    if (existingWorker) {
+      existingWorker.lastAccess = Date.now();
+      return existingWorker;
+    }
     const worker = fork(workerFilePath, {
       stdio: "pipe",
     });
     worker.stdout?.pipe(prettyLoggerStream);
     worker.stderr?.pipe(prettyLoggerStream);
-    const disposeWorker = () => {
+    const killWorker = () => {
       delete workers[rootDir];
       worker.kill();
     };
     worker.on("error", (error) => {
       logger.error(error);
-      disposeWorker();
+      killWorker();
     });
     worker.on("exit", () => {
       // Note: we should double check that there isn't a race condition if we
       // re-create the worker.
       delete workers[rootDir];
     });
-    // TODO: Don't keep workers hanging around unnecessarily!
-    const send = (message: ToWorkerMessage) => {
-      worker.send(message);
-    };
+    const send = (message: ToWorkerMessage) => worker.send(message);
     send({
       kind: "init",
       data: {
@@ -256,45 +338,20 @@ export async function load({
       return promise;
     };
     const workspaceWorker: WorkspaceWorker = {
-      rootDir,
-      updateFile: async (absoluteFilePath, text) => {
-        await request<UpdateInMemoryFileRequest>({
-          kind: "update-in-memory-file",
-          body: {
-            absoluteFilePath,
-            text,
-          },
-        });
-      },
-      crawlFiles: (absoluteFilePaths) => {
-        return request<CrawlFileRequest>({
-          kind: "crawl-files",
-          body: {
-            absoluteFilePaths,
-          },
-        });
-      },
-      startServer: async (options = {}) => {
-        const { url, serverId } = await request<StartServerRequest>({
-          kind: "start-server",
-          body: options,
-        });
-        return {
-          url: () => url,
-          stop: async () => {
-            await request<StopServerRequest>({
-              kind: "stop-server",
-              body: { serverId },
-            });
-          },
-        };
-      },
-      dispose: async () => disposeWorker(),
+      request,
+      kill: killWorker,
     };
     // @ts-ignore
     const workspaceWorkerPromise: Promise<WorkspaceWorker> & {
+      lastAccess: number;
+      ready: boolean;
       promised: WorkspaceWorker;
-    } = workerReadyPromise.then(() => workspaceWorker);
+    } = workerReadyPromise.then(() => {
+      workspaceWorkerPromise.ready = true;
+      return workspaceWorker;
+    });
+    workspaceWorkerPromise.lastAccess = Date.now();
+    workspaceWorkerPromise.ready = false;
     workspaceWorkerPromise.promised = workspaceWorker;
     workers[rootDir] = workspaceWorkerPromise;
     return workspaceWorkerPromise;

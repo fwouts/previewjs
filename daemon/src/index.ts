@@ -1,5 +1,5 @@
 import type { PreviewServer } from "@previewjs/core";
-import { load, type WorkspaceWorker } from "@previewjs/loader/runner";
+import { load, type WorkspaceWrapper } from "@previewjs/loader/runner";
 import crypto from "crypto";
 import exitHook from "exit-hook";
 import {
@@ -129,7 +129,7 @@ export async function startDaemon({
   const logger = previewjs.logger;
 
   const clients = new Set<string>();
-  const workspaces: Record<string, WorkspaceWorker> = {};
+  const workspaces: Record<string, WorkspaceWrapper> = {};
   const previewServers: Record<string, PreviewServer> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
   let wslRoot: string | null = null;
