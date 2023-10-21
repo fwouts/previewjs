@@ -1,13 +1,9 @@
-import type { PreviewServer } from "@previewjs/core";
 import assertNever from "assert-never";
 import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import { loadModules } from "./modules";
 import type {
-  CrawlFileRequest,
   FromWorkerMessage,
-  StartServerRequest,
-  StopServerRequest,
   ToWorkerMessage,
   UpdateInMemoryFileRequest,
   WorkerData,
@@ -22,10 +18,9 @@ async function runWorker({
   rootDir,
   inMemorySnapshot,
   frameworkPluginName,
+  port,
   onServerStartModuleName,
 }: WorkerData) {
-  // Note: this is required for PostCSS, and must be set before the PostCSS module is loaded.
-  process.chdir(rootDir);
   const prettyLoggerStream = prettyLogger({
     colorize: true,
     destination: process.stdout,
@@ -56,14 +51,8 @@ async function runWorker({
         switch (request.kind) {
           case "update-in-memory-file":
             return handleUpdateInMemoryFileRequest(request.body);
-          case "crawl-files":
-            return handleCrawlFilesRequest(request.body);
-          case "start-server":
-            return handleStartServerRequest(request.body);
-          case "stop-server":
-            return handleStopServerRequest(request.body);
           default:
-            throw assertNever(request);
+            throw assertNever(request.kind);
         }
       })();
       sendMessageFromWorker({
@@ -90,44 +79,6 @@ async function runWorker({
     request: UpdateInMemoryFileRequest["body"]
   ): Promise<WorkerResponseType<UpdateInMemoryFileRequest>> {
     memoryReader.updateFile(request.absoluteFilePath, request.text);
-    return {};
-  }
-
-  async function handleCrawlFilesRequest(
-    request: CrawlFileRequest["body"]
-  ): Promise<WorkerResponseType<CrawlFileRequest>> {
-    const { components, stories } = await workspace.crawlFiles(
-      request.absoluteFilePaths
-    );
-    return {
-      previewables: [...components, ...stories].map((c) => ({
-        id: c.id,
-        start: c.sourcePosition.start,
-        end: c.sourcePosition.end,
-      })),
-    };
-  }
-
-  const previewServers: Record<number, PreviewServer> = {};
-  let nextPreviewServerId = 0;
-
-  async function handleStartServerRequest(
-    request: StartServerRequest["body"]
-  ): Promise<WorkerResponseType<StartServerRequest>> {
-    const server = (previewServers[nextPreviewServerId] =
-      await workspace.startServer(request));
-    return {
-      serverId: nextPreviewServerId++,
-      url: server.url(),
-    };
-  }
-
-  async function handleStopServerRequest(
-    request: StopServerRequest["body"]
-  ): Promise<WorkerResponseType<StopServerRequest>> {
-    const previewServer = previewServers[request.serverId];
-    await previewServer?.stop();
-    delete previewServers[request.serverId];
     return {};
   }
 
@@ -158,8 +109,13 @@ async function runWorker({
     }
   });
 
+  const server = await workspace.startServer({
+    port,
+  });
+
   sendMessageFromWorker({
     kind: "ready",
+    url: server.url(),
   });
 }
 

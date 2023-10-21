@@ -8,6 +8,7 @@ export type WorkerData = {
   rootDir: string;
   inMemorySnapshot: InMemoryFilesSnapshot;
   frameworkPluginName: string;
+  port?: number;
   onServerStartModuleName?: string;
 };
 
@@ -22,11 +23,7 @@ export type ToWorkerMessage =
       request: WorkerRequest;
     };
 
-export type WorkerRequest =
-  | UpdateInMemoryFileRequest
-  | CrawlFileRequest
-  | StartServerRequest
-  | StopServerRequest;
+export type WorkerRequest = UpdateInMemoryFileRequest;
 
 export type WorkerResponse = WorkerResponseType<WorkerRequest>;
 
@@ -35,39 +32,6 @@ export type UpdateInMemoryFileRequest = WorkerRequestType<
   {
     absoluteFilePath: string;
     text: string | null;
-  },
-  Record<string, never>
->;
-
-export type CrawlFileRequest = WorkerRequestType<
-  "crawl-files",
-  {
-    absoluteFilePaths: string[];
-  },
-  {
-    previewables: Array<{
-      start: number;
-      end: number;
-      id: string;
-    }>;
-  }
->;
-
-export type StartServerRequest = WorkerRequestType<
-  "start-server",
-  {
-    port?: number;
-  },
-  {
-    serverId: number;
-    url: string;
-  }
->;
-
-export type StopServerRequest = WorkerRequestType<
-  "stop-server",
-  {
-    serverId: number;
   },
   Record<string, never>
 >;
@@ -87,6 +51,7 @@ export type WorkerResponseType<Request> = Request extends {
 export type FromWorkerMessage =
   | {
       kind: "ready";
+      url: string;
     }
   | {
       kind: "crash";

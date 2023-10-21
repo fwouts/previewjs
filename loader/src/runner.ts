@@ -1,3 +1,4 @@
+import type { Workspace } from "@previewjs/core";
 import assertNever from "assert-never";
 import fs from "fs-extra";
 import { fork } from "node:child_process";
@@ -7,7 +8,6 @@ import prettyLogger from "pino-pretty";
 import type { LogLevel } from "./index.js";
 import { installDependenciesIfRequired, loadModules } from "./modules.js";
 import {
-  type CrawlFileRequest,
   type FromWorkerMessage,
   type ToWorkerMessage,
   type WorkerRequest,
@@ -17,28 +17,13 @@ import {
 
 const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 
-export type WorkspaceWrapper = {
-  rootDir: string;
-  updateFile(absoluteFilePath: string, text: string | null): Promise<void>;
-  crawlFiles(
-    absoluteFilePaths: string[]
-  ): Promise<WorkerResponseType<CrawlFileRequest>>;
-  startServer(options?: { port?: number }): Promise<{
-    url: () => string;
-    stop: () => Promise<void>;
-  }>;
-  dispose(): Promise<void>;
-};
-
-export type WorkspaceWorker = {
+export type ServerWorker = {
+  url: string;
   request: <Request extends WorkerRequest>(
     request: Request
   ) => Promise<WorkerResponseType<Request>>;
   kill: () => void;
 };
-
-const CLEANUP_INTERVAL_MILLIS = 1000;
-const KILL_WORKER_AFTER_IDLE_MILLIS = 60_000;
 
 export async function load({
   installDir,
@@ -69,41 +54,27 @@ export async function load({
     installDir,
   });
   const memoryReader = vfs.createMemoryReader();
-  // TODO: Clear memory reader when file saved.
-  const workers: {
-    [rootDir: string]:
-      | (Promise<WorkspaceWorker> & {
-          lastAccess: number;
-          ready: boolean;
-          promised: WorkspaceWorker;
-        })
-      | null;
-  } = {};
-  const wrappers: {
-    [rootDir: string]: WorkspaceWrapper | null;
-  } = {};
-  const activeServerWorkerRootDirs = new Set<string>();
-
-  setInterval(() => {
-    let lastAccess = Math.max(
-      ...Object.values(workers).map((w) => w?.lastAccess || 0)
-    );
-    for (const [rootDir, worker] of Object.entries(workers)) {
-      if (
-        // Keep workers that aren't ready yet around.
-        !worker?.ready ||
-        // Keep workers that have been accessed in the last minute.
-        worker.lastAccess > Date.now() - KILL_WORKER_AFTER_IDLE_MILLIS ||
-        // Keep workers that have an active server.
-        activeServerWorkerRootDirs.has(rootDir) ||
-        // Keep the last accessed worker around.
-        worker.lastAccess === lastAccess
-      ) {
-        continue;
+  const fsReader = vfs.createFileSystemReader({
+    watch: true,
+  });
+  fsReader.listeners.add({
+    onChange(absoluteFilePath, info) {
+      if (!info.virtual) {
+        memoryReader.updateFile(absoluteFilePath, null);
       }
-      worker.promised.kill();
-    }
-  }, CLEANUP_INTERVAL_MILLIS);
+    },
+  });
+  const reader = vfs.createStackedReader([memoryReader, fsReader]);
+
+  // Workspaces used for crawling files only.
+  // We use a separate worker process when it comes to spinning up a server, so we can
+  // cleanly reload node modules when a dependency is updated such as a Vite plugin.
+  const workspaces: {
+    [rootDir: string]: Promise<Workspace> | null;
+  } = {};
+  const serverWorkers: {
+    [rootDir: string]: Promise<ServerWorker>;
+  } = {};
 
   return {
     core,
@@ -111,8 +82,13 @@ export async function load({
     async updateFileInMemory(absoluteFilePath: string, text: string | null) {
       memoryReader.updateFile(absoluteFilePath, text);
       await Promise.all(
-        Object.values(wrappers).map((wrapper) =>
-          wrapper?.updateFile(absoluteFilePath, text)
+        Object.values(serverWorkers).map((worker) =>
+          worker?.then((worker) =>
+            worker.request({
+              kind: "update-in-memory-file",
+              body: { absoluteFilePath, text },
+            })
+          )
         )
       );
     },
@@ -122,7 +98,7 @@ export async function load({
     }: {
       versionCode: string;
       absoluteFilePath: string;
-    }): Promise<WorkspaceWrapper | null> {
+    }): Promise<Workspace | null> {
       const rootDir = core.findWorkspaceRoot(absoluteFilePath);
       if (!rootDir) {
         globalLogger.info(
@@ -139,93 +115,79 @@ export async function load({
         logLevel = "debug";
         logger = createLogger({ level: logLevel }, prettyLoggerStream);
       }
-      let existingWrapper = wrappers[rootDir];
-      if (existingWrapper !== undefined) {
-        return existingWrapper;
+      let existingWorkspace = workspaces[rootDir];
+      if (existingWorkspace !== undefined) {
+        return existingWorkspace;
       }
       const frameworkPluginName = await core.findCompatiblePlugin(
         logger,
         rootDir,
         frameworkPlugins
       );
-      if (!frameworkPluginName) {
+      const frameworkPlugin = frameworkPlugins.find(
+        (p) => p.info?.name === frameworkPluginName
+      );
+      if (!frameworkPluginName || !frameworkPlugin) {
         // Note: This caches the incompatibility of a workspace (i.e. caching null), which
         // would be problematic especially when package.json is updated to a compatible
         // package version.
         // TODO: Find a smarter approach, perhaps checking last-modified time of package.json and node_modules.
-        wrappers[rootDir] = null;
+        workspaces[rootDir] = null;
         return null;
       }
       // Note: we check again here because of race conditions while awaiting above.
-      existingWrapper = wrappers[rootDir];
-      if (existingWrapper !== undefined) {
-        return existingWrapper;
+      existingWorkspace = workspaces[rootDir];
+      if (existingWorkspace !== undefined) {
+        return existingWorkspace;
       }
 
-      const getOrStartWorker = () =>
-        ensureWorkerRunning(
+      return (workspaces[rootDir] = core
+        .createWorkspace({
           logger,
-          logLevel,
-          versionCode,
-          workerFilePath,
           rootDir,
-          frameworkPluginName
-        );
-
-      return (wrappers[rootDir] = {
-        rootDir,
-        updateFile: async (absoluteFilePath, text) => {
-          const worker = await workers[rootDir];
-          await worker?.request({
-            kind: "update-in-memory-file",
-            body: {
-              absoluteFilePath,
-              text,
+          reader,
+          frameworkPlugin,
+          onServerStart: () => {
+            throw new Error(
+              `Workspace running in loader process should not start server`
+            );
+          },
+        })
+        .then(
+          (workspace: Workspace): Workspace => ({
+            ...workspace,
+            startServer: async (options) => {
+              const worker = await ensureWorkerRunning(
+                logger,
+                logLevel,
+                versionCode,
+                workerFilePath,
+                rootDir,
+                frameworkPluginName,
+                options?.port
+              );
+              return {
+                url: () => worker.url,
+                stop: async () => worker.kill(),
+              };
             },
-          });
-        },
-        crawlFiles: async (absoluteFilePaths) => {
-          const worker = await getOrStartWorker();
-          return await worker.request({
-            kind: "crawl-files",
-            body: {
-              absoluteFilePaths,
+            dispose: async () => {
+              const serverWorker = serverWorkers[rootDir];
+              delete workspaces[rootDir];
+              delete serverWorkers[rootDir];
+              await workspace.dispose();
+              (await serverWorker)?.kill();
             },
-          });
-        },
-        startServer: async (options = {}) => {
-          const worker = await getOrStartWorker();
-          activeServerWorkerRootDirs.add(rootDir);
-          const { url, serverId } = await worker.request({
-            kind: "start-server",
-            body: options,
-          });
-          return {
-            url: () => url,
-            stop: async () => {
-              await worker.request({
-                kind: "stop-server",
-                body: { serverId },
-              });
-              activeServerWorkerRootDirs.delete(rootDir);
-            },
-          };
-        },
-        dispose: async () => {
-          activeServerWorkerRootDirs.delete(rootDir);
-          const worker = await workers[rootDir];
-          worker?.kill();
-          delete wrappers[rootDir];
-        },
-      });
+          })
+        ));
     },
     async dispose() {
       const promises: Array<Promise<void>> = [];
-      for (const wrapper of Object.values(wrappers)) {
-        if (!wrapper) {
+      for (const workspace of Object.values(workspaces)) {
+        if (!workspace) {
           continue;
         }
-        promises.push(wrapper.dispose());
+        promises.push(workspace.then((w) => w.dispose()));
       }
       await Promise.all(promises);
     },
@@ -238,20 +200,22 @@ export async function load({
     versionCode: string,
     workerFilePath: string,
     rootDir: string,
-    frameworkPluginName: string
+    frameworkPluginName: string,
+    port?: number
   ) {
-    const existingWorker = workers[rootDir];
+    const existingWorker = serverWorkers[rootDir];
     if (existingWorker) {
-      existingWorker.lastAccess = Date.now();
       return existingWorker;
     }
     const worker = fork(workerFilePath, {
+      // Note: this is required for PostCSS.
+      cwd: rootDir,
       stdio: "pipe",
     });
     worker.stdout?.pipe(prettyLoggerStream);
     worker.stderr?.pipe(prettyLoggerStream);
     const killWorker = () => {
-      delete workers[rootDir];
+      delete serverWorkers[rootDir];
       worker.kill();
     };
     worker.on("error", (error) => {
@@ -261,7 +225,7 @@ export async function load({
     worker.on("exit", () => {
       // Note: we should double check that there isn't a race condition if we
       // re-create the worker.
-      delete workers[rootDir];
+      delete serverWorkers[rootDir];
     });
     const send = (message: ToWorkerMessage) => worker.send(message);
     send({
@@ -273,6 +237,7 @@ export async function load({
         rootDir,
         inMemorySnapshot: memoryReader.snapshot(),
         frameworkPluginName,
+        port,
         onServerStartModuleName,
       },
     });
@@ -284,21 +249,23 @@ export async function load({
       }
     > = {};
     let nextRequestId = 0;
-    let resolveWorkerReady: () => void;
+    let resolveWorkerReady: (state: { url: string }) => void;
     let rejectWorkerReady: ((error: any) => void) | null;
-    const workerReadyPromise = new Promise<void>((resolve, reject) => {
-      resolveWorkerReady = resolve;
-      rejectWorkerReady = reject;
-    });
+    const workerReadyPromise = new Promise<{ url: string }>(
+      (resolve, reject) => {
+        resolveWorkerReady = resolve;
+        rejectWorkerReady = reject;
+      }
+    );
     worker.on("message", (message: FromWorkerMessage) => {
       switch (message.kind) {
         case "ready":
-          resolveWorkerReady();
+          resolveWorkerReady(message);
           rejectWorkerReady = null;
           break;
         case "crash":
           logger.error(message.message);
-          delete workers[rootDir];
+          delete serverWorkers[rootDir];
           rejectWorkerReady?.(new Error(message.message));
           worker.kill();
           break;
@@ -338,23 +305,10 @@ export async function load({
       });
       return promise;
     };
-    const workspaceWorker: WorkspaceWorker = {
+    return (serverWorkers[rootDir] = workerReadyPromise.then(({ url }) => ({
+      url,
       request,
       kill: killWorker,
-    };
-    // @ts-ignore
-    const workspaceWorkerPromise: Promise<WorkspaceWorker> & {
-      lastAccess: number;
-      ready: boolean;
-      promised: WorkspaceWorker;
-    } = workerReadyPromise.then(() => {
-      workspaceWorkerPromise.ready = true;
-      return workspaceWorker;
-    });
-    workspaceWorkerPromise.lastAccess = Date.now();
-    workspaceWorkerPromise.ready = false;
-    workspaceWorkerPromise.promised = workspaceWorker;
-    workers[rootDir] = workspaceWorkerPromise;
-    return workspaceWorkerPromise;
+    })));
   }
 }

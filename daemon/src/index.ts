@@ -1,5 +1,5 @@
-import type { PreviewServer } from "@previewjs/core";
-import { load, type WorkspaceWrapper } from "@previewjs/loader/runner";
+import type { PreviewServer, Workspace } from "@previewjs/core";
+import { load } from "@previewjs/loader/runner";
 import crypto from "crypto";
 import exitHook from "exit-hook";
 import {
@@ -129,7 +129,7 @@ export async function startDaemon({
   const logger = previewjs.logger;
 
   const clients = new Set<string>();
-  const workspaces: Record<string, WorkspaceWrapper> = {};
+  const workspaces: Record<string, Workspace> = {};
   const previewServers: Record<string, PreviewServer> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
   let wslRoot: string | null = null;
@@ -331,7 +331,7 @@ export async function startDaemon({
       if (!workspace) {
         throw new NotFoundError();
       }
-      return workspace.crawlFiles([
+      const { components, stories } = await workspace.crawlFiles([
         path
           .relative(
             workspace.rootDir,
@@ -339,6 +339,13 @@ export async function startDaemon({
           )
           .replace(/\\/g, "/"),
       ]);
+      return {
+        previewables: [...components, ...stories].map((c) => ({
+          id: c.id,
+          start: c.sourcePosition.start,
+          end: c.sourcePosition.end,
+        })),
+      };
     }
   );
 
