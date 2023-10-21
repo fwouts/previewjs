@@ -3112,9 +3112,6 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.3
         version: 11.0.3
-      '@types/proper-lockfile':
-        specifier: ^4.1.3
-        version: 4.1.3
       exclusive-promises:
         specifier: ^1.0.3
         version: 1.0.3
@@ -3133,9 +3130,6 @@ importers:
       pnpm:
         specifier: ^8.9.2
         version: 8.9.2
-      proper-lockfile:
-        specifier: ^4.1.2
-        version: 4.1.2
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -18891,12 +18885,6 @@ packages:
   /@types/prop-types@15.7.9:
     resolution: {integrity: sha512-n1yyPsugYNSmHgxDFjicaI2+gCNjsBck8UX9kuofAKlc0h1bL+20oSF72KeNaW2DUlesbEVCFgyV2dPGTiY42g==}
 
-  /@types/proper-lockfile@4.1.3:
-    resolution: {integrity: sha512-10msVdc5q6kkZpJFjyz6T245uB6vN9EcbJx6j2hBD6bls0Z8xEpOvLMOyEVpsT1r4uRhfM0+U1Gvs5eC+k7Zuw==}
-    dependencies:
-      '@types/retry': 0.12.2
-    dev: true
-
   /@types/pug@2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}
     dev: true
@@ -19052,10 +19040,6 @@ packages:
 
   /@types/retry@0.12.0:
     resolution: {integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==}
-
-  /@types/retry@0.12.2:
-    resolution: {integrity: sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==}
-    dev: true
 
   /@types/sass@1.45.0:
     resolution: {integrity: sha512-jn7qwGFmJHwUSphV8zZneO3GmtlgLsmhs/LQyVvQbIIa+fzGMUiHI4HXJZL3FT8MJmgXWbLGiVVY7ElvHq6vDA==}
@@ -37840,6 +37824,7 @@ packages:
       graceful-fs: 4.2.10
       retry: 0.12.0
       signal-exit: 3.0.7
+    dev: false
 
   /property-information@5.6.0:
     resolution: {integrity: sha512-YUHSPk+A30YPv+0Qf8i9Mbfe/C0hdPXk1s1jPVToV8pk8BQtpw10ct89Eo7OWkutrwqvT0eicAxlOg3dOAu8JA==}
@@ -39577,6 +39562,7 @@ packages:
   /retry@0.12.0:
     resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
     engines: {node: '>= 4'}
+    dev: false
 
   /retry@0.13.1:
     resolution: {integrity: sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg==}
