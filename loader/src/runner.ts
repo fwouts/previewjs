@@ -38,7 +38,7 @@ export type WorkspaceWorker = {
 };
 
 const CLEANUP_INTERVAL_MILLIS = 1000;
-const KILL_WORKER_AFTER_IDLE_MILLIS = 30_000;
+const KILL_WORKER_AFTER_IDLE_MILLIS = 60_000;
 
 export async function load({
   installDir,
@@ -85,16 +85,23 @@ export async function load({
   const activeServerWorkerRootDirs = new Set<string>();
 
   setInterval(() => {
+    let lastAccess = Math.max(
+      ...Object.values(workers).map((w) => w?.lastAccess || 0)
+    );
     for (const [rootDir, worker] of Object.entries(workers)) {
       if (
+        // Keep workers that aren't ready yet around.
         !worker?.ready ||
-        worker.lastAccess > Date.now() - KILL_WORKER_AFTER_IDLE_MILLIS
+        // Keep workers that have been accessed in the last minute.
+        worker.lastAccess > Date.now() - KILL_WORKER_AFTER_IDLE_MILLIS ||
+        // Keep workers that have an active server.
+        activeServerWorkerRootDirs.has(rootDir) ||
+        // Keep the last accessed worker around.
+        worker.lastAccess === lastAccess
       ) {
         continue;
       }
-      if (!activeServerWorkerRootDirs.has(rootDir)) {
-        worker.promised.kill();
-      }
+      worker.promised.kill();
     }
   }, CLEANUP_INTERVAL_MILLIS);
 
