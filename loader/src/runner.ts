@@ -165,12 +165,6 @@ export async function load({
           frameworkPluginName
         );
 
-      // IDEA:
-      // - only workers with a live server can be kept alive
-      // - one other worker can be
-      //
-      // BUT FIRST need to refactor this to return a wrapper around the worker that will silently kill
-      // it when it's no longer used, and revive it when it needs to come back.
       return (wrappers[rootDir] = {
         rootDir,
         updateFile: async (absoluteFilePath, text) => {
