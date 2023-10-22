@@ -189,12 +189,12 @@ export async function load({
             },
           };
           const stopObserving = await fsReader.observe?.(
-            path.join(rootDir, "node_modules", "**"),
+            path.join(rootDir, "node_modules"),
             {
               // Note: important to ensure node_modules isn't ignored by default.
-              ignoredPathPatterns: [
-                path.join(rootDir, "node_modules", ".previewjs", "**"),
-              ],
+              ignored: [path.join(rootDir, "node_modules", ".previewjs", "**")],
+              // Don't look too deep, we only want to know if a node module changes.
+              depth: 2,
             }
           );
           fsReader.listeners.add(nodeModulesChangeListener);

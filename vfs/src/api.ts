@@ -12,7 +12,8 @@ export interface Reader {
 }
 
 export type ObserveOptions = {
-  ignoredPathPatterns?: string[];
+  depth?: number;
+  ignored?: string[];
 };
 
 export interface Writer {

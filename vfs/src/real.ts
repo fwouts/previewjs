@@ -29,10 +29,8 @@ export class FsReader implements Reader {
         options?: ObserveOptions
       ): Promise<() => Promise<void>> => {
         const watcher = chokidar.watch([path], {
-          ignored: options?.ignoredPathPatterns || [
-            "**/node_modules/**",
-            "**/.git/**",
-          ],
+          depth: options?.depth,
+          ignored: options?.ignored || ["**/node_modules/**", "**/.git/**"],
           ignoreInitial: true,
           ignorePermissionErrors: true,
         });
