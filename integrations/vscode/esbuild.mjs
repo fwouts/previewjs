@@ -7,7 +7,7 @@ import url from "url";
 try {
   const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   await build({
-    entryPoints: ["./src/index.ts", "./src/daemon.ts"],
+    entryPoints: ["./src/index.ts", "./src/daemon.ts", "./src/worker.ts"],
     minify: false,
     bundle: true,
     format: "cjs", // VS Code does not support ESM extensions

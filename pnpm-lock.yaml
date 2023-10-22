@@ -3110,8 +3110,14 @@ importers:
         specifier: workspace:*
         version: link:../vfs
       '@types/fs-extra':
-        specifier: ^11.0.3
+        specifier: ^11.0.2
         version: 11.0.3
+      '@types/proper-lockfile':
+        specifier: ^4.1.2
+        version: 4.1.3
+      assert-never:
+        specifier: ^1.2.1
+        version: 1.2.1
       exclusive-promises:
         specifier: ^1.0.3
         version: 1.0.3
@@ -18231,7 +18237,7 @@ packages:
   /@types/clean-css@4.2.6:
     resolution: {integrity: sha512-Ze1tf+LnGPmG6hBFMi0B4TEB0mhF7EiMM5oyjLDNPE9hxrPU0W+5+bHvO+eFPA+bt0iC1zkQMoU/iGdRVjcRbw==}
     dependencies:
-      '@types/node': 18.16.14
+      '@types/node': 20.8.7
       source-map: 0.6.1
     dev: true
 
@@ -18250,7 +18256,7 @@ packages:
   /@types/connect@3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.16.14
+      '@types/node': 20.8.7
 
   /@types/cookie@0.5.1:
     resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
@@ -18292,7 +18298,7 @@ packages:
   /@types/etag@1.8.1:
     resolution: {integrity: sha512-bsKkeSqN7HYyYntFRAmzcwx/dKW4Wa+KVMTInANlI72PWLQmOpZu96j0OqHZGArW4VQwCmJPteQlXaUDeOB0WQ==}
     dependencies:
-      '@types/node': 18.16.14
+      '@types/node': 20.8.7
     dev: true
 
   /@types/express-serve-static-core@4.17.33:
@@ -18536,6 +18542,12 @@ packages:
 
   /@types/prop-types@15.7.9:
     resolution: {integrity: sha512-n1yyPsugYNSmHgxDFjicaI2+gCNjsBck8UX9kuofAKlc0h1bL+20oSF72KeNaW2DUlesbEVCFgyV2dPGTiY42g==}
+
+  /@types/proper-lockfile@4.1.3:
+    resolution: {integrity: sha512-10msVdc5q6kkZpJFjyz6T245uB6vN9EcbJx6j2hBD6bls0Z8xEpOvLMOyEVpsT1r4uRhfM0+U1Gvs5eC+k7Zuw==}
+    dependencies:
+      '@types/retry': 0.12.0
+    dev: true
 
   /@types/pug@2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}

@@ -1,5 +1,12 @@
 import type { ReaderListener } from ".";
-import type { Directory, DirectorySync, Entry, EntrySync, Reader } from "./api";
+import type {
+  Directory,
+  DirectorySync,
+  Entry,
+  EntrySync,
+  ObserveOptions,
+  Reader,
+} from "./api";
 import { ReaderListeners } from "./listeners";
 
 export class StackedReader implements Reader {
@@ -16,11 +23,11 @@ export class StackedReader implements Reader {
     }
   }
 
-  async observe(path: string) {
+  async observe(path: string, options?: ObserveOptions) {
     const disposeFns: Array<() => Promise<void>> = [];
     for (const reader of this.readers) {
       if (reader.observe) {
-        disposeFns.push(await reader.observe(path));
+        disposeFns.push(await reader.observe(path, options));
       }
     }
     return async () => {

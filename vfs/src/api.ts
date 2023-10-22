@@ -3,10 +3,18 @@ export interface Reader {
     add(listener: ReaderListener): void;
     remove(listener: ReaderListener): void;
   };
-  observe?(path: string): Promise<() => Promise<void>>;
+  observe?(
+    path: string,
+    options?: ObserveOptions
+  ): Promise<() => Promise<void>>;
   read(absoluteFilePath: string): Promise<Entry | null>;
   readSync(absoluteFilePath: string): EntrySync | null;
 }
+
+export type ObserveOptions = {
+  depth?: number;
+  ignored?: string[];
+};
 
 export interface Writer {
   /**

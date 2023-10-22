@@ -21,7 +21,7 @@ export async function startPreview({
   port?: number;
 }) {
   const preview = await workspace.startServer({ port });
-  await page.goto(preview.url());
+  await page.goto(`http://localhost:${preview.port}`);
 
   // This callback will be invoked each time a previewable is done rendering.
   let onRenderingDone = () => {

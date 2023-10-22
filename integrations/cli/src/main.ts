@@ -4,6 +4,7 @@ import { load } from "@previewjs/loader";
 import chalk from "chalk";
 import { program } from "commander";
 import { readFileSync } from "fs";
+import path from "path";
 import url from "url";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -30,6 +31,7 @@ program
     const onServerStartModuleName = process.env.PREVIEWJS_PACKAGE_NAME;
     const previewjs = await load({
       installDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
+      workerFilePath: path.join(__dirname, "worker.js"),
       onServerStartModuleName,
     });
     const workspace = await previewjs.getWorkspace({
