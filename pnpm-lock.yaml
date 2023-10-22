@@ -2274,8 +2274,8 @@ importers:
         specifier: ^0.2.26
         version: 0.2.26(@solidjs/meta@0.28.5)(@solidjs/router@0.6.0)(solid-js@1.7.5)(solid-start-node@0.2.26)(vite@3.2.6)
       undici:
-        specifier: ^5.22.1
-        version: 5.22.1
+        specifier: ^5.26.2
+        version: 5.26.4
     devDependencies:
       '@types/node':
         specifier: ^18.16.14
@@ -2288,7 +2288,7 @@ importers:
         version: 8.4.31
       solid-start-node:
         specifier: ^0.2.26
-        version: 0.2.26(solid-start@0.2.26)(undici@5.22.1)(vite@3.2.6)
+        version: 0.2.26(solid-start@0.2.26)(undici@5.26.4)(vite@3.2.6)
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -3469,6 +3469,7 @@ packages:
     dependencies:
       '@babel/highlight': 7.22.20
       chalk: 2.4.2
+    dev: false
 
   /@babel/code-frame@7.22.13:
     resolution: {integrity: sha512-XktuhWlJ5g+3TJXc5upd9Ks1HutSArik6jf2eAjYFyIOf4ej3RN+184cZbzDvbPnuTJIUhPKKJE3cIsYTiAT3w==}
@@ -3634,6 +3635,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.2
       '@jridgewell/trace-mapping': 0.3.19
       jsesc: 2.5.2
+    dev: false
 
   /@babel/generator@7.22.15:
     resolution: {integrity: sha512-Zu9oWARBqeVOW0dZOjXc3JObrzuqothQ3y/n1kUtrjCoCPLkXUwMvOo/F/TCfoHMbWIFlWwpZtkZVb9ga4U2pA==}
@@ -3887,7 +3889,7 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
-      resolve: 1.22.2
+      resolve: 1.22.8
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -3903,7 +3905,7 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
-      resolve: 1.22.2
+      resolve: 1.22.8
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -3918,7 +3920,7 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
-      resolve: 1.22.2
+      resolve: 1.22.8
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -3933,7 +3935,7 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
-      resolve: 1.22.2
+      resolve: 1.22.8
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -8212,6 +8214,24 @@ packages:
       '@babel/parser': 7.23.0
       '@babel/types': 7.23.0
 
+  /@babel/traverse@7.21.5:
+    resolution: {integrity: sha512-AhQoI3YjWi6u/y/ntv7k48mcrCXmus0t79J9qPNlk/lAsFlCiJ047RmbfMOawySTHtywXhbXgpx/8nXMYd+oFw==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/code-frame': 7.22.13
+      '@babel/generator': 7.23.0
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-hoist-variables': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/parser': 7.23.0
+      '@babel/types': 7.23.0
+      debug: 4.3.4(supports-color@5.5.0)
+      globals: 11.12.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@babel/traverse@7.21.5(supports-color@5.5.0):
     resolution: {integrity: sha512-AhQoI3YjWi6u/y/ntv7k48mcrCXmus0t79J9qPNlk/lAsFlCiJ047RmbfMOawySTHtywXhbXgpx/8nXMYd+oFw==}
     engines: {node: '>=6.9.0'}
@@ -8228,6 +8248,7 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@babel/traverse@7.22.20:
     resolution: {integrity: sha512-eU260mPZbU7mZ0N+X10pxXhQFMGTeLb9eFS0mxehS8HZp9o1uSnFeWQuG1UPrlxgA7QoUzFhOnilHDp0AXCyHw==}
@@ -10419,7 +10440,6 @@ packages:
   /@fastify/busboy@2.0.0:
     resolution: {integrity: sha512-JUFJad5lv7jxj926GPgymrWQxxjPYuJNiNjNMzqT+HiuP6Vl3dk5xzG+8sTX96np0ZAluvaMzPsjhHZ5rNuNQQ==}
     engines: {node: '>=14'}
-    dev: true
 
   /@fontsource/fira-mono@4.5.10:
     resolution: {integrity: sha512-bxUnRP8xptGRo8YXeY073DSpfK74XpSb0ZyRNpHV9WvLnJ7TwPOjZll8hTMin7zLC6iOp59pDZ8EQDj1gzgAQQ==}
@@ -13442,12 +13462,12 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
       is-module: 1.0.0
-      resolve: 1.22.8
+      resolve: 1.22.2
       rollup: 3.28.1
     dev: true
 
@@ -16100,7 +16120,7 @@ packages:
     dependencies:
       '@babel/generator': 7.21.9
       '@babel/parser': 7.21.9
-      '@babel/traverse': 7.21.5(supports-color@5.5.0)
+      '@babel/traverse': 7.21.5
       '@babel/types': 7.21.5
       '@storybook/csf': 0.1.0
       '@storybook/types': 7.0.17
@@ -22033,7 +22053,7 @@ packages:
       glob: 7.2.3
       pkg-up: 3.1.0
       reselect: 4.1.7
-      resolve: 1.22.2
+      resolve: 1.22.8
     dev: false
 
   /babel-plugin-named-asset-import@0.3.8(@babel/core@7.21.8):
@@ -34598,7 +34618,7 @@ packages:
       fast-glob: 3.3.0
       js-yaml: 4.1.0
       supports-color: 9.3.1
-      undici: 5.25.3
+      undici: 5.26.4
       yargs-parser: 21.1.1
     dev: true
 
@@ -35937,7 +35957,7 @@ packages:
       postcss: 8.4.31
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
-      resolve: 1.22.2
+      resolve: 1.22.8
     dev: true
 
   /postcss-import@15.1.0(postcss@8.4.31):
@@ -38860,7 +38880,7 @@ packages:
     resolution: {integrity: sha512-HFM8rkZ+i3zrV+4LQjwQ0W+ez98pApMGM3HUrN04j3CqzPOzl9nmP15Y8YXNm8QHGv/eacOVEjqhmWpkRV0NAw==}
     engines: {node: '>= 0.10'}
     dependencies:
-      resolve: 1.22.2
+      resolve: 1.22.8
     dev: true
 
   /recursive-readdir@2.2.3:
@@ -40230,7 +40250,7 @@ packages:
       solid-js: 1.8.3
     dev: false
 
-  /solid-start-node@0.2.26(solid-start@0.2.26)(undici@5.22.1)(vite@3.2.6):
+  /solid-start-node@0.2.26(solid-start@0.2.26)(undici@5.26.4)(vite@3.2.6):
     resolution: {integrity: sha512-8vciTGoQV+lIlCUSVHJPazlaoKDRfBowDkPeBr/EZdmtbcMOKoJYf/APPQWFspylF+nhzunMf0+zJP90VtMEYg==}
     peerDependencies:
       solid-start: '*'
@@ -40246,7 +40266,7 @@ packages:
       sirv: 2.0.2
       solid-start: 0.2.26(@solidjs/meta@0.28.5)(@solidjs/router@0.6.0)(solid-js@1.7.5)(solid-start-node@0.2.26)(vite@3.2.6)
       terser: 5.16.5
-      undici: 5.22.1
+      undici: 5.26.4
       vite: 3.2.6(@types/node@18.16.14)
     transitivePeerDependencies:
       - supports-color
@@ -40314,9 +40334,9 @@ packages:
       set-cookie-parser: 2.6.0
       sirv: 2.0.2
       solid-js: 1.7.5
-      solid-start-node: 0.2.26(solid-start@0.2.26)(undici@5.22.1)(vite@3.2.6)
+      solid-start-node: 0.2.26(solid-start@0.2.26)(undici@5.26.4)(vite@3.2.6)
       terser: 5.16.5
-      undici: 5.22.1
+      undici: 5.26.4
       vite: 3.2.6(@types/node@18.16.14)
       vite-plugin-inspect: 0.7.15(rollup@3.21.0)(vite@3.2.6)
       vite-plugin-solid: 2.7.2(solid-js@1.7.5)(vite@3.2.6)
@@ -42749,12 +42769,6 @@ packages:
     engines: {node: '>=14.0'}
     dependencies:
       busboy: 1.6.0
-
-  /undici@5.25.3:
-    resolution: {integrity: sha512-7lmhlz3K1+IKB6IUjkdzV2l0jKY8/0KguEMdEpzzXCug5pEGIp3DxUg0DEN65DrVoxHiRKpPORC/qzX+UglSkQ==}
-    engines: {node: '>=14.0'}
-    dependencies:
-      '@fastify/busboy': 2.0.0
     dev: true
 
   /undici@5.26.4:
@@ -42762,7 +42776,6 @@ packages:
     engines: {node: '>=14.0'}
     dependencies:
       '@fastify/busboy': 2.0.0
-    dev: true
 
   /unenv@1.2.2:
     resolution: {integrity: sha512-SYqIFLFC4wYtLyxD6RyAfoK/dkgvW85BfNdiYvroyfrL4cyLkoigSldSBBiUTgtxwb4pcE0zexw502DghVWeuA==}
