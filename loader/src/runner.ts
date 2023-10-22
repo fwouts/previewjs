@@ -1,4 +1,5 @@
 import type { Workspace } from "@previewjs/core";
+import type { ReaderListener } from "@previewjs/vfs";
 import assertNever from "assert-never";
 import fs from "fs-extra";
 import { fork } from "node:child_process";
@@ -7,6 +8,10 @@ import createLogger, { type Logger } from "pino";
 import prettyLogger from "pino-pretty";
 import type { LogLevel } from "./index.js";
 import { installDependenciesIfRequired, loadModules } from "./modules.js";
+import {
+  resolvablePromise,
+  type ResolvablePromise,
+} from "./resolvable-promise.js";
 import {
   type FromWorkerMessage,
   type ToWorkerMessage,
@@ -18,11 +23,13 @@ import {
 const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 
 export type ServerWorker = {
-  url: string;
+  port: number;
   request: <Request extends WorkerRequest>(
     request: Request
   ) => Promise<WorkerResponseType<Request>>;
-  kill: () => void;
+  kill: () => Promise<void>;
+  exiting?: boolean;
+  waitUntilExited: Promise<void>;
 };
 
 export async function load({
@@ -73,7 +80,7 @@ export async function load({
     [rootDir: string]: Promise<Workspace> | null;
   } = {};
   const serverWorkers: {
-    [rootDir: string]: Promise<ServerWorker>;
+    [rootDir: string]: ResolvablePromise<ServerWorker>;
   } = {};
 
   return {
@@ -153,33 +160,70 @@ export async function load({
             );
           },
         })
-        .then(
-          (workspace: Workspace): Workspace => ({
-            ...workspace,
-            startServer: async (options) => {
-              const worker = await ensureWorkerRunning(
+        .then(async (workspace: Workspace): Promise<Workspace> => {
+          const nodeModulesChangeListener: ReaderListener = {
+            onChange: () => {
+              const workerPromise = serverWorkers[rootDir];
+              const worker = workerPromise?.resolved;
+              if (!worker) {
+                // If worker isn't currently running, ignore.
+                return;
+              }
+              // Note: we don't await here because ensureWorkerRunning() will take care of that.
+              worker.kill().catch((e) => logger.error(e));
+              ensureWorkerRunning({
                 logger,
                 logLevel,
                 versionCode,
                 workerFilePath,
                 rootDir,
                 frameworkPluginName,
-                options?.port
-              );
+                port: worker.port,
+              });
+            },
+          };
+          const stopObserving = await fsReader.observe?.(
+            path.join(rootDir, "node_modules", "**"),
+            {
+              // Note: important to ensure node_modules isn't ignored by default.
+              ignoredPathPatterns: [
+                path.join(rootDir, "node_modules", ".previewjs", "**"),
+              ],
+            }
+          );
+          fsReader.listeners.add(nodeModulesChangeListener);
+          const workerDelegatingWorkspace: Workspace = {
+            ...workspace,
+            startServer: async ({ port } = {}) => {
+              const worker = await ensureWorkerRunning({
+                logger,
+                logLevel,
+                versionCode,
+                workerFilePath,
+                rootDir,
+                frameworkPluginName,
+                port,
+              });
               return {
-                url: () => worker.url,
-                stop: async () => worker.kill(),
+                port: worker.port,
+                stop: async () => {
+                  const worker = await serverWorkers[rootDir];
+                  await worker?.kill();
+                },
               };
             },
             dispose: async () => {
               const serverWorker = serverWorkers[rootDir];
               delete workspaces[rootDir];
               delete serverWorkers[rootDir];
+              fsReader.listeners.remove(nodeModulesChangeListener);
+              await stopObserving?.();
               await workspace.dispose();
-              (await serverWorker)?.kill();
+              await (await serverWorker)?.kill();
             },
-          })
-        ));
+          };
+          return workerDelegatingWorkspace;
+        }));
     },
     async dispose() {
       const promises: Array<Promise<void>> = [];
@@ -194,40 +238,66 @@ export async function load({
   };
 
   // Note: this should remain a sync function to prevent any race conditions.
-  function ensureWorkerRunning(
-    logger: Logger,
-    logLevel: LogLevel,
-    versionCode: string,
-    workerFilePath: string,
-    rootDir: string,
-    frameworkPluginName: string,
-    port?: number
-  ) {
+  function ensureWorkerRunning(options: {
+    logger: Logger;
+    logLevel: LogLevel;
+    versionCode: string;
+    workerFilePath: string;
+    rootDir: string;
+    frameworkPluginName: string;
+    port?: number;
+  }): ResolvablePromise<ServerWorker> {
+    const {
+      logger,
+      logLevel,
+      versionCode,
+      workerFilePath,
+      rootDir,
+      frameworkPluginName,
+      port,
+    } = options;
     const existingWorker = serverWorkers[rootDir];
     if (existingWorker) {
-      return existingWorker;
+      if (existingWorker.resolved?.exiting) {
+        return resolvablePromise(
+          existingWorker.resolved.waitUntilExited.then(() =>
+            ensureWorkerRunning(options)
+          )
+        );
+      } else {
+        return existingWorker;
+      }
     }
-    const worker = fork(workerFilePath, {
+    const workerProcess = fork(workerFilePath, {
       // Note: this is required for PostCSS.
       cwd: rootDir,
       stdio: "pipe",
     });
-    worker.stdout?.pipe(prettyLoggerStream);
-    worker.stderr?.pipe(prettyLoggerStream);
-    const killWorker = () => {
+    workerProcess.stdout?.pipe(prettyLoggerStream);
+    workerProcess.stderr?.pipe(prettyLoggerStream);
+    const killWorker = async () => {
+      if (workerPromise?.resolved) {
+        workerPromise.resolved.exiting = true;
+      }
+      workerProcess.kill();
+      await workerExitedPromise;
       delete serverWorkers[rootDir];
-      worker.kill();
     };
-    worker.on("error", (error) => {
+    let onWorkerExited = () => {};
+    const workerExitedPromise = new Promise<void>((resolve) => {
+      onWorkerExited = resolve;
+    });
+    workerProcess.on("error", (error) => {
       logger.error(error);
       killWorker();
     });
-    worker.on("exit", () => {
-      // Note: we should double check that there isn't a race condition if we
-      // re-create the worker.
-      delete serverWorkers[rootDir];
+    workerProcess.on("exit", () => {
+      if (serverWorkers[rootDir] === workerPromise) {
+        delete serverWorkers[rootDir];
+      }
+      onWorkerExited();
     });
-    const send = (message: ToWorkerMessage) => worker.send(message);
+    const send = (message: ToWorkerMessage) => workerProcess.send(message);
     send({
       kind: "init",
       data: {
@@ -249,15 +319,15 @@ export async function load({
       }
     > = {};
     let nextRequestId = 0;
-    let resolveWorkerReady: (state: { url: string }) => void;
+    let resolveWorkerReady: (state: { port: number }) => void;
     let rejectWorkerReady: ((error: any) => void) | null;
-    const workerReadyPromise = new Promise<{ url: string }>(
+    const workerReadyPromise = new Promise<{ port: number }>(
       (resolve, reject) => {
         resolveWorkerReady = resolve;
         rejectWorkerReady = reject;
       }
     );
-    worker.on("message", (message: FromWorkerMessage) => {
+    workerProcess.on("message", (message: FromWorkerMessage) => {
       switch (message.kind) {
         case "ready":
           resolveWorkerReady(message);
@@ -265,9 +335,8 @@ export async function load({
           break;
         case "crash":
           logger.error(message.message);
-          delete serverWorkers[rootDir];
           rejectWorkerReady?.(new Error(message.message));
-          worker.kill();
+          killWorker();
           break;
         case "response": {
           const pending = pendingResponses[message.requestId];
@@ -305,10 +374,16 @@ export async function load({
       });
       return promise;
     };
-    return (serverWorkers[rootDir] = workerReadyPromise.then(({ url }) => ({
-      url,
-      request,
-      kill: killWorker,
-    })));
+    const workerPromise = (serverWorkers[rootDir] = resolvablePromise(
+      workerReadyPromise.then(
+        ({ port }): ServerWorker => ({
+          port,
+          request,
+          kill: killWorker,
+          waitUntilExited: workerExitedPromise,
+        })
+      )
+    ));
+    return workerPromise;
   }
 }

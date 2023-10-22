@@ -115,7 +115,7 @@ async function runWorker({
 
   sendMessageFromWorker({
     kind: "ready",
-    url: server.url(),
+    port: server.port,
   });
 }
 

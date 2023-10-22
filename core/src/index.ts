@@ -200,7 +200,7 @@ export async function createWorkspace({
       await previewer.start();
       activePreviewers.add(previewer);
       return {
-        url: () => `http://localhost:${port}`,
+        port,
         stop: async () => {
           activePreviewers.delete(previewer);
           await previewer.stop();
@@ -245,6 +245,6 @@ export interface Workspace {
 }
 
 export interface PreviewServer {
-  url(): string;
+  port: number;
   stop(): Promise<void>;
 }

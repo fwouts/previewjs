@@ -8,6 +8,7 @@ import type {
   EntrySync,
   File,
   FileSync,
+  ObserveOptions,
   Reader,
 } from "./api";
 import { ReaderListeners } from "./listeners";
@@ -23,9 +24,15 @@ export class FsReader implements Reader {
   ) {}
 
   observe = this.options.watch
-    ? async (path: string): Promise<() => Promise<void>> => {
+    ? async (
+        path: string,
+        options?: ObserveOptions
+      ): Promise<() => Promise<void>> => {
         const watcher = chokidar.watch([path], {
-          ignored: ["**/node_modules/**", "**/.git/**"],
+          ignored: options?.ignoredPathPatterns || [
+            "**/node_modules/**",
+            "**/.git/**",
+          ],
           ignoreInitial: true,
           ignorePermissionErrors: true,
         });

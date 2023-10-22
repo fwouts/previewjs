@@ -360,7 +360,7 @@ export async function startDaemon({
         previewServers[req.workspaceId] || (await workspace.startServer());
       previewServers[req.workspaceId] = previewServer;
       return {
-        url: previewServer.url(),
+        url: `http://localhost:${previewServer.port}`,
       };
     }
   );

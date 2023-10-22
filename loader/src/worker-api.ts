@@ -51,7 +51,7 @@ export type WorkerResponseType<Request> = Request extends {
 export type FromWorkerMessage =
   | {
       kind: "ready";
-      url: string;
+      port: number;
     }
   | {
       kind: "crash";
