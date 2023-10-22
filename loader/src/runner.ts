@@ -165,10 +165,16 @@ export async function load({
             onChange: () => {
               const workerPromise = serverWorkers[rootDir];
               const worker = workerPromise?.resolved;
-              if (!worker) {
+              if (!worker || worker.exiting) {
+                logger.debug(
+                  `Detected node_modules change for ${rootDir} but no running worker found`
+                );
                 // If worker isn't currently running, ignore.
                 return;
               }
+              logger.debug(
+                `Restarting server worker for ${rootDir} because of detected node_modules change`
+              );
               // Note: we don't await here because ensureWorkerRunning() will take care of that.
               worker.kill().catch((e) => logger.error(e));
               ensureWorkerRunning({
@@ -213,6 +219,7 @@ export async function load({
               };
             },
             dispose: async () => {
+              logger.debug(`Disposing of workspace for ${rootDir}`);
               const serverWorker = serverWorkers[rootDir];
               delete workspaces[rootDir];
               delete serverWorkers[rootDir];
