@@ -10,6 +10,9 @@
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}/integrations/vscode"
       ],
+      "env": {
+        "PREVIEWJS_LOG_LEVEL": "debug"
+      },
       "preLaunchTask": "build"
     },
     {
@@ -21,6 +24,9 @@
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}/integrations/vscode"
       ],
+      "env": {
+        "PREVIEWJS_LOG_LEVEL": "debug"
+      },
       "preLaunchTask": "build:pro"
     }
   ]
