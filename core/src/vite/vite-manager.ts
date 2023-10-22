@@ -248,6 +248,9 @@ export class ViteManager {
     };
     this.options.reader.listeners.add(this.#readerListener);
     try {
+      // PostCSS requires the current directory to change because it relies
+      // on the `import-cwd` package to resolve plugins.
+      process.chdir(this.options.rootDir);
       const configFromProject = await readConfig(
         this.options.rootDir,
         viteLogLevelFromPinoLogger(this.options.logger)
