@@ -54,6 +54,10 @@ export type FromWorkerMessage =
       port: number;
     }
   | {
+      kind: "log";
+      message: string;
+    }
+  | {
       kind: "crash";
       message: string;
     }

@@ -1,6 +1,5 @@
 import assertNever from "assert-never";
 import createLogger from "pino";
-import prettyLogger from "pino-pretty";
 import { loadModules } from "./modules";
 import type {
   FromWorkerMessage,
@@ -21,11 +20,17 @@ async function runWorker({
   port,
   onServerStartModuleName,
 }: WorkerData) {
-  const prettyLoggerStream = prettyLogger({
-    colorize: true,
-    destination: process.stdout,
-  });
-  const logger = createLogger({ level: logLevel }, prettyLoggerStream);
+  const logger = createLogger(
+    { level: logLevel },
+    {
+      write(message) {
+        sendMessageFromWorker({
+          kind: "log",
+          message,
+        });
+      },
+    }
+  );
   const { core, vfs, frameworkPlugins, onServerStart } = await loadModules({
     logger,
     installDir,

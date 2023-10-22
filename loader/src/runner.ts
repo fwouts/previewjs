@@ -278,10 +278,8 @@ export async function load({
     const workerProcess = fork(workerFilePath, {
       // Note: this is required for PostCSS.
       cwd: rootDir,
-      stdio: "pipe",
+      stdio: "inherit",
     });
-    workerProcess.stdout?.pipe(prettyLoggerStream);
-    workerProcess.stderr?.pipe(prettyLoggerStream);
     const killWorker = async () => {
       if (workerPromise?.resolved) {
         workerPromise.resolved.exiting = true;
@@ -339,6 +337,9 @@ export async function load({
         case "ready":
           resolveWorkerReady(message);
           rejectWorkerReady = null;
+          break;
+        case "log":
+          prettyLoggerStream.write(message.message);
           break;
         case "crash":
           logger.error(message.message);
