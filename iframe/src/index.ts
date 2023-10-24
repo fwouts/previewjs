@@ -192,6 +192,11 @@ export interface LogMessage {
 export type PreviewError =
   | {
       kind: "error";
+      source: "load";
+      message: string;
+    }
+  | {
+      kind: "error";
       source: "hmr";
       modulePath: string;
       message: string;
