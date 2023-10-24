@@ -168,7 +168,6 @@ export async function startPreview({
     },
     async stop() {
       await preview.stop();
-      await workspace.dispose();
     },
   };
 }

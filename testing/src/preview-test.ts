@@ -112,6 +112,7 @@ export const previewTest = (
       } finally {
         await preview.stop();
       }
+      await workspace.dispose();
     });
   };
   testFn.only = (
