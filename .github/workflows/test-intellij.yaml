@@ -46,7 +46,6 @@ jobs:
         with:
           run_install: |
             - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
-      - run: pnpm turbo run build --scope=@previewjs/intellij-daemon --include-dependencies
       - run: cd integrations/intellij && ./gradlew ktlintCheck
       - run: cd integrations/intellij && ./gradlew runPluginVerifier
       - run: cd integrations/intellij && ./gradlew buildPlugin
