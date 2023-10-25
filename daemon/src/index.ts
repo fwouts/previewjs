@@ -61,7 +61,7 @@ if (lockFilePath) {
     exitHook((signal) => {
       // Note: The bracketed tag is required for VS Code and IntelliJ to detect exit.
       process.stdout.write(
-        `[exit] Preview.js daemon shutting down with signal: ${signal}`
+        `[exit] Preview.js daemon shutting down with signal: ${signal}\n`
       );
       try {
         unlinkSync(lockFilePath);
