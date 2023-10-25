@@ -76,11 +76,17 @@ tasks {
         jvmTarget = "17"
     }
 
-    withType<org.jetbrains.intellij.tasks.PrepareSandboxTask> {
+    prepareSandbox {
+        val daemonDir = layout.projectDirectory.dir("daemon")
         project.delete(
-            files(buildDir)
+            files(layout.buildDirectory)
         )
-        from(layout.projectDirectory.dir("daemon")) {
+        exec {
+            // Prevent turbo caching to ensure env variables used to build intellij-daemon
+            // do not influence cache.
+            commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --force --scope=@previewjs/intellij-daemon")
+        }
+        from(daemonDir) {
             into("${properties("pluginName")}/daemon")
             include("dist/**")
         }

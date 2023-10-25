@@ -19,7 +19,7 @@ if (!version) {
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 startDaemon({
-  loaderInstallDir: __dirname,
+  loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
   loaderWorkerPath: path.join(__dirname, "worker.js"),
   onServerStartModuleName,
   versionCode: `intellij-${version}`,
