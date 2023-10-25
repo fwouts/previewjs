@@ -30,6 +30,7 @@ export type ServerWorker = {
   kill: () => Promise<void>;
   exiting?: boolean;
   waitUntilExited: Promise<void>;
+  onStop: Array<() => void>;
 };
 
 export async function load({
@@ -200,7 +201,7 @@ export async function load({
           fsReader.listeners.add(nodeModulesChangeListener);
           const workerDelegatingWorkspace: Workspace = {
             ...workspace,
-            startServer: async ({ port } = {}) => {
+            startServer: async ({ port, onStop } = {}) => {
               const worker = await ensureWorkerRunning({
                 logger,
                 logLevel,
@@ -210,6 +211,9 @@ export async function load({
                 frameworkPluginName,
                 port,
               });
+              if (onStop) {
+                worker.onStop.push(onStop);
+              }
               return {
                 port: worker.port,
                 stop: async () => {
@@ -296,9 +300,17 @@ export async function load({
       logger.error(error);
       killWorker();
     });
+    const onStopListeners: Array<() => void> = [];
     workerProcess.on("exit", () => {
       if (serverWorkers[rootDir] === workerPromise) {
         delete serverWorkers[rootDir];
+        for (const onStop of onStopListeners) {
+          try {
+            onStop();
+          } catch (e) {
+            logger.error(e);
+          }
+        }
       }
       onWorkerExited();
     });
@@ -389,6 +401,7 @@ export async function load({
           request,
           kill: killWorker,
           waitUntilExited: workerExitedPromise,
+          onStop: onStopListeners,
         })
       )
     ));

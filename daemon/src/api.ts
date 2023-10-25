@@ -57,6 +57,14 @@ export interface StartPreviewResponse {
   url: string;
 }
 
+export interface CheckPreviewStatusRequest {
+  workspaceId: string;
+}
+
+export interface CheckPreviewStatusResponse {
+  running: boolean;
+}
+
 export interface StopPreviewRequest {
   workspaceId: string;
 }

@@ -13,6 +13,8 @@ import http from "http";
 import isWsl from "is-wsl";
 import path from "path";
 import type {
+  CheckPreviewStatusRequest,
+  CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
   DisposeWorkspaceRequest,
@@ -357,13 +359,34 @@ export async function startDaemon({
         throw new NotFoundError();
       }
       const previewServer =
-        previewServers[req.workspaceId] || (await workspace.startServer());
+        previewServers[req.workspaceId] ||
+        (await workspace.startServer({
+          onStop: () => {
+            delete previewServers[req.workspaceId];
+          },
+        }));
       previewServers[req.workspaceId] = previewServer;
       return {
         url: `http://localhost:${previewServer.port}`,
       };
     }
   );
+
+  endpoint<CheckPreviewStatusRequest, CheckPreviewStatusResponse>(
+    "/previews/status",
+    async (req) => {
+      const workspace = workspaces[req.workspaceId];
+      if (!workspace) {
+        return {
+          running: false,
+        };
+      }
+      return {
+        running: Boolean(previewServers[req.workspaceId]),
+      };
+    }
+  );
+
   endpoint<StopPreviewRequest, StopPreviewResponse>(
     "/previews/stop",
     async (req) => {
@@ -372,7 +395,6 @@ export async function startDaemon({
         throw new NotFoundError();
       }
       await previewServer.stop();
-      delete previewServers[req.workspaceId];
       return {};
     }
   );
