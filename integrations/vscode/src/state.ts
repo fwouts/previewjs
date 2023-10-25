@@ -2,6 +2,7 @@ import type { Client } from "@previewjs/daemon/client";
 import vscode from "vscode";
 import type { FileAnalyzer } from "./file-analyzer";
 import { createFileAnalyzer } from "./file-analyzer";
+import { closePreviewPanel } from "./preview-panel";
 import { ensureDaemonRunning } from "./start-daemon";
 import type { Workspaces } from "./workspaces";
 import { createWorkspaceGetter } from "./workspaces";
@@ -10,9 +11,11 @@ const PING_INTERVAL_MILLIS = 1000;
 
 export async function createState({
   outputChannel,
+  runningServerStatusBarItem,
   onDispose,
 }: {
   outputChannel: vscode.OutputChannel;
+  runningServerStatusBarItem: vscode.StatusBarItem;
   onDispose: () => void;
 }): Promise<PreviewJsState | null> {
   const daemon = await ensureDaemonRunning(outputChannel)
@@ -39,6 +42,17 @@ export async function createState({
         `Preview.js daemon is no longer running (exit code ${daemon.daemonProcess.exitCode}). Was it killed?`
       );
       state.dispose();
+      return;
+    }
+    if (state.currentPreview) {
+      const status = await state.client.checkPreviewStatus({
+        workspaceId: state.currentPreview.workspaceId,
+      });
+      if (!status.running) {
+        state.currentPreview = null;
+        runningServerStatusBarItem.hide();
+        closePreviewPanel(state);
+      }
     }
   }, PING_INTERVAL_MILLIS);
 

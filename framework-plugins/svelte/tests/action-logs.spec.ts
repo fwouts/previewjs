@@ -8,7 +8,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "svelte");
 
 test.describe.parallel("svelte/action logs", () => {
-  const test = previewTest([pluginFactory], testApp);
+  const test = previewTest(pluginFactory, testApp);
 
   test("shows action logs on link click", async (preview) => {
     await preview.fileManager.update(

@@ -6,7 +6,7 @@ import type playwright from "playwright";
 
 export async function generateScreenshots({
   page,
-  frameworkPlugins,
+  frameworkPlugin,
   filePathPattern,
   cwd = process.cwd(),
   generateScreenshotPath,
@@ -30,10 +30,10 @@ export async function generateScreenshots({
    *
    * Example:
    * ```js
-   * [(await import("@previewjs/plugin-react")).default]
+   * frameworkPlugin: (await import("@previewjs/plugin-react")).default
    * ```
    */
-  frameworkPlugins: FrameworkPluginFactory[];
+  frameworkPlugin: FrameworkPluginFactory;
 
   /**
    * A file path pattern used to select files from which to render components and stories.
@@ -87,7 +87,7 @@ export async function generateScreenshots({
   }) => void;
 }) {
   const workspace = await createChromelessWorkspace({
-    frameworkPlugins,
+    frameworkPlugin,
     rootDir: cwd,
   });
   const preview = await workspace.startPreview(page);

@@ -13,7 +13,7 @@ const testApp = (suffix: string | number) =>
 for (const reactVersion of reactVersions()) {
   test.describe.parallel(`v${reactVersion}`, () => {
     test.describe.parallel("react/storybook", () => {
-      const test = previewTest([pluginFactory], testApp(reactVersion));
+      const test = previewTest(pluginFactory, testApp(reactVersion));
 
       test("renders CSF2 story with no args", async (preview) => {
         await preview.fileManager.update(

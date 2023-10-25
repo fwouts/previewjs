@@ -15,7 +15,7 @@ export function smokeTests({
     const appDir = path.join(projectsDir, projectName);
     for (const id of previewableIds) {
       const [filePath, previewableName] = id.split(":") as [string, string];
-      previewTest([pluginFactory], appDir)(
+      previewTest(pluginFactory, appDir)(
         `${projectName}/${id}`,
         async (preview) => {
           await preview.show(id);

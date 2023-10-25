@@ -1,5 +1,6 @@
 import { startDaemon } from "@previewjs/daemon";
 import { readFileSync } from "fs";
+import { join } from "path";
 
 const { version } = JSON.parse(
   readFileSync(`${__dirname}/../package.json`, "utf8")
@@ -17,6 +18,7 @@ if (!port) {
 
 startDaemon({
   loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
+  loaderWorkerPath: join(__dirname, "worker.js"),
   onServerStartModuleName,
   versionCode: `vscode-${version}`,
   port,

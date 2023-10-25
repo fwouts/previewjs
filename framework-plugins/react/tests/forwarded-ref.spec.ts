@@ -13,7 +13,7 @@ const testApp = (suffix: string | number) =>
 for (const reactVersion of reactVersions()) {
   test.describe.parallel(`v${reactVersion}`, () => {
     test.describe.parallel("react/forwarded ref", () => {
-      const test = previewTest([pluginFactory], testApp(reactVersion));
+      const test = previewTest(pluginFactory, testApp(reactVersion));
 
       test("renders forwarded ref component", async (preview) => {
         await preview.fileManager.update(

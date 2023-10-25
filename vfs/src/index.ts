@@ -1,12 +1,21 @@
 export * from "./api";
 export { ReaderListeners } from "./listeners";
+export type { InMemoryFilesSnapshot } from "./memory";
 import type { Reader, Writer } from "./api";
+import type { InMemoryFilesSnapshot } from "./memory";
 import { MemoryReader } from "./memory";
 import { FsReader } from "./real";
 import { StackedReader } from "./stacked";
 
-export function createMemoryReader(): Reader & Writer {
+export function createMemoryReader(): Reader &
+  Writer & { snapshot(): InMemoryFilesSnapshot } {
   return new MemoryReader();
+}
+
+export function createMemoryReaderFromSnapshot(
+  snapshot: InMemoryFilesSnapshot
+): Reader & Writer & { snapshot(): InMemoryFilesSnapshot } {
+  return new MemoryReader(snapshot);
 }
 
 export function createFileSystemReader(

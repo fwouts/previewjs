@@ -13,6 +13,8 @@ import http from "http";
 import isWsl from "is-wsl";
 import path from "path";
 import type {
+  CheckPreviewStatusRequest,
+  CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
   DisposeWorkspaceRequest,
@@ -61,7 +63,7 @@ if (lockFilePath) {
     exitHook((signal) => {
       // Note: The bracketed tag is required for VS Code and IntelliJ to detect exit.
       process.stdout.write(
-        `[exit] Preview.js daemon shutting down with signal: ${signal}`
+        `[exit] Preview.js daemon shutting down with signal: ${signal}\n`
       );
       try {
         unlinkSync(lockFilePath);
@@ -108,6 +110,7 @@ if (logFilePath) {
 
 export interface DaemonStartOptions {
   loaderInstallDir: string;
+  loaderWorkerPath: string;
   onServerStartModuleName: string;
   versionCode: string;
   port: number;
@@ -115,12 +118,14 @@ export interface DaemonStartOptions {
 
 export async function startDaemon({
   loaderInstallDir,
+  loaderWorkerPath,
   onServerStartModuleName,
   versionCode,
   port,
 }: DaemonStartOptions) {
   const previewjs = await load({
     installDir: loaderInstallDir,
+    workerFilePath: loaderWorkerPath,
     onServerStartModuleName,
   });
   const logger = previewjs.logger;
@@ -354,13 +359,34 @@ export async function startDaemon({
         throw new NotFoundError();
       }
       const previewServer =
-        previewServers[req.workspaceId] || (await workspace.startServer());
+        previewServers[req.workspaceId] ||
+        (await workspace.startServer({
+          onStop: () => {
+            delete previewServers[req.workspaceId];
+          },
+        }));
       previewServers[req.workspaceId] = previewServer;
       return {
-        url: previewServer.url(),
+        url: `http://localhost:${previewServer.port}`,
       };
     }
   );
+
+  endpoint<CheckPreviewStatusRequest, CheckPreviewStatusResponse>(
+    "/previews/status",
+    async (req) => {
+      const workspace = workspaces[req.workspaceId];
+      if (!workspace) {
+        return {
+          running: false,
+        };
+      }
+      return {
+        running: Boolean(previewServers[req.workspaceId]),
+      };
+    }
+  );
+
   endpoint<StopPreviewRequest, StopPreviewResponse>(
     "/previews/stop",
     async (req) => {
@@ -369,7 +395,6 @@ export async function startDaemon({
         throw new NotFoundError();
       }
       await previewServer.stop();
-      delete previewServers[req.workspaceId];
       return {};
     }
   );

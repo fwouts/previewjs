@@ -6,7 +6,7 @@ const browser = await playwright.chromium.launch();
 const page = await browser.newPage();
 await generateScreenshots({
   page,
-  frameworkPlugins: [reactPlugin],
+  frameworkPlugin: reactPlugin,
   filePathPattern: "**/*.{jsx,tsx}",
   generateScreenshotPath({ filePath, name }) {
     return `${filePath}-${name}.png`;

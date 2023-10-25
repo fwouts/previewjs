@@ -6,15 +6,7 @@ import path from "path";
 import type { Logger } from "pino";
 import url from "url";
 
-export async function loadModules({
-  logger,
-  installDir,
-  onServerStartModuleName,
-}: {
-  logger: Logger;
-  installDir: string;
-  onServerStartModuleName?: string;
-}) {
+export async function installDependenciesIfRequired(installDir: string) {
   if (
     fs.existsSync(path.join(installDir, "pnpm")) &&
     !fs.existsSync(path.join(installDir, "node_modules"))
@@ -29,10 +21,24 @@ export async function loadModules({
     );
     pnpmProcess.stdout?.on("data", (chunk) => process.stdout.write(chunk));
     pnpmProcess.stderr?.on("data", (chunk) => process.stderr.write(chunk));
-    await pnpmProcess;
+    const pnpmResult = await pnpmProcess;
+    if (pnpmResult.failed || pnpmResult.exitCode !== 0) {
+      throw new Error(`Unable to install dependencies`);
+    }
     // Note: The bracketed tag is required for VS Code and IntelliJ to detect end of installation.
     process.stdout.write("[install:end] Done.\n");
   }
+}
+
+export async function loadModules({
+  logger,
+  installDir,
+  onServerStartModuleName,
+}: {
+  logger: Logger;
+  installDir: string;
+  onServerStartModuleName?: string;
+}) {
   const coreModule: typeof core = await importModule("@previewjs/core");
   const vfsModule: typeof vfs = await importModule("@previewjs/vfs");
   const frameworkPlugins: core.FrameworkPluginFactory[] = [

@@ -8,6 +8,10 @@ import { crawlFile } from "./crawl-file.js";
 import { PREACT_SPECIAL_TYPES } from "./special-types.js";
 
 const preactFrameworkPlugin: FrameworkPluginFactory = {
+  info: {
+    apiVersion: 5,
+    name: "@previewjs/plugin-preact",
+  },
   isCompatible: async (dependencies) => {
     const version = await dependencies["preact"]?.readInstalledVersion();
     if (!version) {
@@ -30,8 +34,6 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       },
     });
     return {
-      pluginApiVersion: 4,
-      name: "@previewjs/plugin-preact",
       defaultWrapperPath: "__previewjs__/Wrapper.tsx",
       previewDirPath,
       typeAnalyzer,

@@ -13,10 +13,19 @@ import type {
 import { ReaderListeners } from "./listeners";
 
 const utf8Encoder = new TextEncoder();
+
+export type InMemoryFilesSnapshot = {
+  [absoluteFilePath: string]: MemoryFile;
+};
+
 export class MemoryReader implements Reader, Writer {
   readonly listeners = new ReaderListeners();
 
-  private files: { [absoluteFilePath: string]: MemoryFile } = {};
+  private files: { [absoluteFilePath: string]: MemoryFile };
+
+  constructor(snapshot: InMemoryFilesSnapshot = {}) {
+    this.files = { ...snapshot };
+  }
 
   updateFile(absoluteFilePath: string, sourceText: string | null): boolean {
     // Note: backslash handling is Windows-specific.
@@ -43,6 +52,12 @@ export class MemoryReader implements Reader, Writer {
       });
     }
     return changed;
+  }
+
+  snapshot(): InMemoryFilesSnapshot {
+    return {
+      ...this.files,
+    };
   }
 
   async read(absoluteFilePath: string): Promise<Entry | null> {

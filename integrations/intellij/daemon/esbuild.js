@@ -20,18 +20,32 @@ try {
   }
 
   await build({
-    entryPoints: ["./src/main.ts"],
+    entryPoints: ["./src/main.ts", "./src/worker.ts"],
     minify: false,
     bundle: true,
     format: "esm",
-    outfile: "./dist/main.js",
+    outdir: "./dist",
     platform: "node",
     target: "es2020",
+    banner: {
+      // https://github.com/evanw/esbuild/issues/1921
+      js: `
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+var __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+`.trim(),
+    },
     define: {
       "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify(
         process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/pro"
       ),
       "process.env.PREVIEWJS_INTELLIJ_VERSION": JSON.stringify(pluginVersion),
+      ...(process.env.PREVIEWJS_MODULES_DIR && {
+        "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
+          path.join(__dirname, process.env.PREVIEWJS_MODULES_DIR)
+        ),
+      }),
     },
   });
   await copyLoader(path.join(__dirname, "dist"), "esm");

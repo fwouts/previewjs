@@ -64,7 +64,11 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
 
   const outputChannel = vscode.window.createOutputChannel("Preview.js");
   subscriptions.push(outputChannel);
-  let currentState = createState({ outputChannel, onDispose });
+  let currentState = createState({
+    outputChannel,
+    runningServerStatusBarItem,
+    onDispose,
+  });
 
   const config = vscode.workspace.getConfiguration();
 
@@ -100,6 +104,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         alive: false,
       });
       await closePreviewPanel(state);
+      currentState = Promise.resolve(null);
     }
   };
 
@@ -189,7 +194,11 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
           });
         }
       }
-      currentState = createState({ outputChannel, onDispose });
+      currentState = createState({
+        outputChannel,
+        runningServerStatusBarItem,
+        onDispose,
+      });
     })
   );
 

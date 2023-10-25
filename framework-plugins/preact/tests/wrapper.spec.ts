@@ -13,7 +13,7 @@ export const Wrapper = ({ children }: { children: ComponentChildren }) => {
 test.describe.parallel("preact/wrapper", () => {
   const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
   const test = previewTest(
-    [pluginFactory],
+    pluginFactory,
     path.join(__dirname, "apps", "preact-app")
   );
 

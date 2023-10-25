@@ -16,12 +16,13 @@ import createLogger from "pino";
 import prettyLogger from "pino-pretty";
 import { crawlFiles } from "./crawl-files";
 import { getFreePort } from "./get-free-port";
+import { extractPackageDependencies } from "./plugins/dependencies";
 import type { FrameworkPluginFactory } from "./plugins/framework";
-import { setupFrameworkPlugin } from "./plugins/setup-framework-plugin";
 import type { OnServerStart } from "./preview-env";
 import { Previewer } from "./previewer";
 import { ApiRouter } from "./router";
 export type { PackageDependencies } from "./plugins/dependencies";
+export { findCompatiblePlugin } from "./plugins/find-compatible-plugin";
 export type {
   FrameworkPlugin,
   FrameworkPluginFactory,
@@ -39,15 +40,9 @@ process.on("unhandledRejection", (e) => {
   console.error("Encountered an unhandled promise", e);
 });
 
-export class NoCompatiblePluginError extends Error {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
 export async function createWorkspace({
   rootDir,
-  frameworkPlugins,
+  frameworkPlugin: frameworkPluginFactory,
   logger = createLogger(
     { level: process.env["PREVIEWJS_LOG_LEVEL"]?.toLowerCase() || "warn" },
     prettyLogger({ colorize: true })
@@ -56,46 +51,46 @@ export async function createWorkspace({
   onServerStart = () => Promise.resolve({}),
 }: {
   rootDir: string;
-  frameworkPlugins: FrameworkPluginFactory[];
+  frameworkPlugin: FrameworkPluginFactory;
   logger?: Logger;
   reader?: Reader;
   onServerStart?: OnServerStart;
 }): Promise<Workspace> {
-  const frameworkPlugin = await setupFrameworkPlugin({
-    rootDir,
-    frameworkPlugins,
-    reader,
-    logger,
-  });
-  if (!frameworkPlugin) {
-    throw new NoCompatiblePluginError(
-      `No compatible plugin found for workspace with root: ${rootDir}`
+  const expectedPluginApiVersion = 5;
+  if (!frameworkPluginFactory.info) {
+    throw new Error(
+      `Provided framework plugin is incompatible with this version of Preview.js. Please upgrade it.`
+    );
+  } else if (
+    frameworkPluginFactory.info.apiVersion > expectedPluginApiVersion
+  ) {
+    throw new Error(
+      `Preview.js framework plugin ${frameworkPluginFactory.info.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPluginFactory.info.name}.`
+    );
+  }
+  const dependencies = await extractPackageDependencies(logger, rootDir);
+  if (!(await frameworkPluginFactory.isCompatible(dependencies))) {
+    throw new Error(
+      `Preview.js framework plugin ${frameworkPluginFactory.info.name} is not compatible with workspace dependencies.`
     );
   }
   logger.debug(
-    `Creating workspace with framework plugin ${frameworkPlugin.name} from root: ${rootDir}`
+    `Creating workspace with framework plugin ${frameworkPluginFactory.info.name} from root: ${rootDir}`
   );
-  const expectedPluginApiVersion = 4;
-  if (
-    !frameworkPlugin.pluginApiVersion ||
-    frameworkPlugin.pluginApiVersion < expectedPluginApiVersion
-  ) {
-    throw new Error(
-      `Preview.js framework plugin ${frameworkPlugin.name} is incompatible with this version of Preview.js. Please upgrade it.`
-    );
-  } else if (frameworkPlugin.pluginApiVersion > expectedPluginApiVersion) {
-    throw new Error(
-      `Preview.js framework plugin ${frameworkPlugin.name} is too recent. Please upgrade Preview.js or use an older version of ${frameworkPlugin.name}.`
-    );
-  }
+  const frameworkPlugin = await frameworkPluginFactory.create({
+    rootDir,
+    reader,
+    logger,
+    dependencies,
+  });
   const activePreviewers = new Set<Previewer>();
   const workspace: Workspace = {
-    frameworkPluginName: frameworkPlugin.name,
+    frameworkPluginName: frameworkPluginFactory.info.name,
     crawlFiles: frameworkPlugin.crawlFiles,
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
     rootDir,
     reader,
-    startServer: async ({ port } = {}) => {
+    startServer: async ({ port, onStop } = {}) => {
       port ||= await getFreePort(3140);
       const router = new ApiRouter(logger);
       router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
@@ -205,10 +200,11 @@ export async function createWorkspace({
       await previewer.start();
       activePreviewers.add(previewer);
       return {
-        url: () => `http://localhost:${port}`,
+        port,
         stop: async () => {
           activePreviewers.delete(previewer);
           await previewer.stop();
+          await onStop?.();
         },
       };
     },
@@ -245,11 +241,14 @@ export interface Workspace {
   frameworkPluginName: string;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
   crawlFiles: Analyzer["crawlFiles"];
-  startServer: (options?: { port?: number }) => Promise<PreviewServer>;
+  startServer: (options?: {
+    port?: number;
+    onStop?: () => void;
+  }) => Promise<PreviewServer>;
   dispose(): Promise<void>;
 }
 
 export interface PreviewServer {
-  url(): string;
+  port: number;
   stop(): Promise<void>;
 }

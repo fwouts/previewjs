@@ -10,12 +10,12 @@ import { startPreview } from "./preview";
 
 export async function createChromelessWorkspace({
   rootDir,
-  frameworkPlugins,
+  frameworkPlugin,
   reader,
   logger,
 }: {
   rootDir: string;
-  frameworkPlugins: FrameworkPluginFactory[];
+  frameworkPlugin: FrameworkPluginFactory;
   logger?: Logger;
   reader?: Reader;
 }): Promise<
@@ -30,7 +30,7 @@ export async function createChromelessWorkspace({
   const clientDirPath = path.join(__dirname, "..", "client", "dist");
   const workspace = await createWorkspace({
     rootDir,
-    frameworkPlugins,
+    frameworkPlugin,
     logger,
     reader,
     onServerStart: async () => ({

@@ -1,4 +1,5 @@
 import { startDaemon } from "@previewjs/daemon";
+import path from "path";
 import url from "url";
 
 const port = parseInt(process.argv[2] || "0", 10);
@@ -18,7 +19,8 @@ if (!version) {
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 startDaemon({
-  loaderInstallDir: __dirname,
+  loaderInstallDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
+  loaderWorkerPath: path.join(__dirname, "worker.js"),
   onServerStartModuleName,
   versionCode: `intellij-${version}`,
   port,

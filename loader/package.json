@@ -24,6 +24,9 @@
     "./runner": {
       "default": "./dist/runner.js"
     },
+    "./worker": {
+      "default": "./dist/worker.js"
+    },
     "./setup": {
       "default": "./dist/setup.js"
     }
@@ -32,6 +35,9 @@
     "*": {
       "runner": [
         "./dist/runner.d.ts"
+      ],
+      "worker": [
+        "./dist/worker.d.ts"
       ],
       "setup": [
         "./dist/setup.d.ts"
@@ -44,15 +50,14 @@
   "devDependencies": {
     "@previewjs/core": "workspace:*",
     "@previewjs/vfs": "workspace:*",
-    "@types/fs-extra": "^11.0.2",
-    "@types/proper-lockfile": "^4.1.2",
+    "@types/fs-extra": "^11.0.3",
+    "assert-never": "^1.2.1",
     "exclusive-promises": "^1.0.3",
     "execa": "^8.0.1",
     "fs-extra": "^11.1.1",
-    "pino": "^8.16.0",
+    "pino": "^8.16.1",
     "pino-pretty": "^10.2.3",
-    "pnpm": "^8.9.0",
-    "proper-lockfile": "^4.1.2",
+    "pnpm": "^8.9.2",
     "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   }

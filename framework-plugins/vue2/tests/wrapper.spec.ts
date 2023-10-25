@@ -15,7 +15,7 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const testApp = path.join(__dirname, "apps", "vue2");
 
 test.describe.parallel("vue2/wrapper", () => {
-  const test = previewTest([pluginFactory], testApp);
+  const test = previewTest(pluginFactory, testApp);
 
   test("refreshes when wrapper is added", async (preview) => {
     await preview.show("src/App.vue:App");

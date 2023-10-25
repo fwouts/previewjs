@@ -4,6 +4,10 @@ export function generateHtmlError(message: string) {
   if (message.startsWith("Error: Build failed with 1 error:\n")) {
     message = message.substring(message.indexOf("\n") + 1);
   }
+  if (message.startsWith("Error:")) {
+    message = message.substring(message.indexOf(":") + 1);
+  }
+  message = message.trim();
   return `<html>
   <head>
     <meta http-equiv="refresh" content="3">
@@ -19,7 +23,21 @@ export function generateHtmlError(message: string) {
         line-height: 1.5em;
       }
     </style>
+    <script>
+      // Note: this should be kept in sync with iframe/preview/index.html.
+      const sendPreviewEvent = event => (
+        window.__PREVIEWJS_CONTROLLER__ || window.parent.__PREVIEWJS_CONTROLLER__
+      ).onPreviewEvent(event);
+      sendPreviewEvent({
+        kind: "bootstrapping",
+      });
+      sendPreviewEvent({
+        kind: "error",
+        source: "load",
+        message: ${JSON.stringify(message)}
+      });
+    </script>
   </head>
-  <body>${escape(message.trim())}</body>
+  <body>${escape(message)}</body>
 </html>`;
 }
