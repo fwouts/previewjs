@@ -22,11 +22,12 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
+import com.intellij.openapi.wm.StatusBarWidgetFactory
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
-import com.intellij.openapi.wm.WindowManager
 import com.intellij.openapi.wm.ex.ToolWindowManagerListener
+import com.intellij.openapi.wm.impl.status.widget.StatusBarWidgetsManager
 import com.intellij.psi.PsiFile
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefBrowser
@@ -37,7 +38,7 @@ import com.previewjs.intellij.plugin.api.Previewable
 import com.previewjs.intellij.plugin.api.StartPreviewRequest
 import com.previewjs.intellij.plugin.api.StopPreviewRequest
 import com.previewjs.intellij.plugin.api.UpdatePendingFileRequest
-import com.previewjs.intellij.plugin.statusbar.OpenMenuStatusBarWidget
+import com.previewjs.intellij.plugin.statusbar.OpenMenuStatusBarWidgetFactory
 import org.apache.commons.lang.StringUtils
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
@@ -55,11 +56,11 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     private val app = ApplicationManager.getApplication()
-    private val statusBar = WindowManager.getInstance().getStatusBar(project)
     private val smallLogo = IconLoader.getIcon("/logo.svg", javaClass)
     private val service = app.getService(PreviewJsSharedService::class.java)
     private var consoleView: ConsoleView? = null
     private var consoleToolWindow: ToolWindow? = null
+    private var previewBaseUrl: String? = null
     private var previewBrowser: JBCefBrowser? = null
     private var previewToolWindow: ToolWindow? = null
     private var previewToolWindowActive = false
@@ -173,6 +174,8 @@ class ProjectService(private val project: Project) : Disposable {
             "Warning: unable to update pending file $path"
         })
     }
+
+    fun getPreviewBaseUrl(): String? = this.previewBaseUrl
 
     fun printToConsole(text: String) {
         app.invokeLater {
@@ -315,11 +318,7 @@ class ProjectService(private val project: Project) : Disposable {
             currentPreviewWorkspaceId = workspaceId
             val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
             val previewBaseUrl = startPreviewResponse.url
-            OpenMenuStatusBarWidget(
-                url = previewBaseUrl,
-                onStop = { closePreview() },
-                onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
-            ).install(statusBar)
+            this@ProjectService.previewBaseUrl = previewBaseUrl
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(previewableId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
@@ -378,6 +377,7 @@ class ProjectService(private val project: Project) : Disposable {
                     browser.loadURL("$previewUrl#panel")
                 }
                 previewToolWindow?.show()
+                updateStatusBarWidget()
             }
         }, {
             "Warning: unable to open preview for $previewableId"
@@ -385,8 +385,6 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     fun closePreview(processKilled: Boolean = false) {
-        @Suppress("UnstableApiUsage")
-        statusBar.removeWidget(OpenMenuStatusBarWidget.ID)
         previewToolWindow?.remove()
         previewToolWindow = null
         previewBrowser?.let {
@@ -404,6 +402,14 @@ class ProjectService(private val project: Project) : Disposable {
             })
         }
         currentPreviewWorkspaceId = null
+        previewBaseUrl = null
+        updateStatusBarWidget()
+    }
+
+    private fun updateStatusBarWidget() {
+        StatusBarWidgetFactory.EP_NAME.findExtension(OpenMenuStatusBarWidgetFactory::class.java)?.let {
+            project.getService(StatusBarWidgetsManager::class.java).updateWidget(it)
+        }
     }
 
     override fun dispose() {
