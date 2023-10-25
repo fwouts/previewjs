@@ -3112,9 +3112,6 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.2
         version: 11.0.3
-      '@types/proper-lockfile':
-        specifier: ^4.1.2
-        version: 4.1.3
       assert-never:
         specifier: ^1.2.1
         version: 1.2.1
@@ -12028,7 +12025,7 @@ packages:
       globby: 13.2.2
       hash-sum: 2.0.0
       ignore: 5.2.4
-      jiti: 1.19.3
+      jiti: 1.20.0
       knitwork: 1.0.0
       lodash.template: 4.5.0
       mlly: 1.4.0
@@ -12118,13 +12115,13 @@ packages:
       create-require: 1.1.1
       defu: 6.1.2
       hookable: 5.5.3
-      jiti: 1.19.3
+      jiti: 1.20.0
       pathe: 1.1.1
       pkg-types: 1.0.3
       postcss-import-resolver: 2.0.0
       scule: 1.0.0
-      std-env: 3.3.3
-      ufo: 1.1.2
+      std-env: 3.4.3
+      ufo: 1.3.1
       unimport: 1.3.0(rollup@3.28.1)
       untyped: 1.4.0
     transitivePeerDependencies:
@@ -12368,7 +12365,7 @@ packages:
       postcss-url: 10.1.3(postcss@8.4.31)
       rollup: 3.28.1
       rollup-plugin-visualizer: 5.9.0(rollup@3.28.1)
-      ufo: 1.1.2
+      ufo: 1.3.1
       unplugin: 1.3.1
       vite: 4.0.4(@types/node@20.8.8)
       vite-node: 0.25.8(@types/node@20.8.8)
@@ -18537,12 +18534,6 @@ packages:
 
   /@types/prop-types@15.7.9:
     resolution: {integrity: sha512-n1yyPsugYNSmHgxDFjicaI2+gCNjsBck8UX9kuofAKlc0h1bL+20oSF72KeNaW2DUlesbEVCFgyV2dPGTiY42g==}
-
-  /@types/proper-lockfile@4.1.3:
-    resolution: {integrity: sha512-10msVdc5q6kkZpJFjyz6T245uB6vN9EcbJx6j2hBD6bls0Z8xEpOvLMOyEVpsT1r4uRhfM0+U1Gvs5eC+k7Zuw==}
-    dependencies:
-      '@types/retry': 0.12.0
-    dev: true
 
   /@types/pug@2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}
@@ -31355,7 +31346,6 @@ packages:
   /jiti@1.20.0:
     resolution: {integrity: sha512-3TV69ZbrvV6U5DfQimop50jE9Dl6J8O1ja1dvBbMba/sZ3YBEQqJ2VZRoQPVnhlzjNtU1vaXRZVrVjU4qtm8yA==}
     hasBin: true
-    dev: false
 
   /joi@17.8.3:
     resolution: {integrity: sha512-q5Fn6Tj/jR8PfrLrx4fpGH4v9qM6o+vDUfD4/3vxxyg34OmKcNqYZ1qn2mpLza96S8tL0p0rIw2gOZX+/cTg9w==}
@@ -33719,7 +33709,7 @@ packages:
       hookable: 5.5.3
       http-proxy: 1.18.1(debug@4.3.4)
       is-primitive: 3.0.1
-      jiti: 1.19.3
+      jiti: 1.20.0
       klona: 2.0.6
       knitwork: 1.0.0
       listhen: 1.0.4
@@ -33741,8 +33731,8 @@ packages:
       serve-placeholder: 2.0.1
       serve-static: 1.15.0
       source-map-support: 0.5.21
-      std-env: 3.3.3
-      ufo: 1.1.2
+      std-env: 3.4.3
+      ufo: 1.3.1
       unenv: 1.5.0
       unimport: 1.3.0(rollup@3.28.1)
       unstorage: 1.6.0
@@ -40678,7 +40668,6 @@ packages:
 
   /std-env@3.4.3:
     resolution: {integrity: sha512-f9aPhy8fYBuMN+sNfakZV18U39PbalgjXG3lLB9WkaYTxijru61wb57V9wxxNthXM5Sd88ETBWi29qLAsHO52Q==}
-    dev: false
 
   /stealthy-require@1.1.1:
     resolution: {integrity: sha512-ZnWpYnYugiOVEY5GkcuJK1io5V8QmNYChG62gSit9pQVGErXtrKuPC55ITaVSukmMta5qpMU7vqLt2Lnni4f/g==}
@@ -42694,7 +42683,6 @@ packages:
 
   /ufo@1.3.1:
     resolution: {integrity: sha512-uY/99gMLIOlJPwATcMVYfqDSxUR9//AUcgZMzwfSTJPDKzA1S8mX4VLqa+fiAtveraQUBCz4FFcwVZBGbwBXIw==}
-    dev: false
 
   /uglify-es@3.3.9:
     resolution: {integrity: sha512-r+MU0rfv4L/0eeW3xZrd16t4NZfK8Ld4SWVglYBb7ez5uXFWHuVRs6xCTrf1yirs9a4j4Y27nn7SRfO6v67XsQ==}
