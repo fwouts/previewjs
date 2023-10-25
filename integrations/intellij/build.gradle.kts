@@ -82,9 +82,7 @@ tasks {
             files(layout.buildDirectory)
         )
         exec {
-            // Prevent turbo caching to ensure env variables used to build intellij-daemon
-            // do not influence cache.
-            commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --force --scope=@previewjs/intellij-daemon")
+            commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --scope=@previewjs/intellij-daemon")
         }
         from(daemonDir) {
             into("${properties("pluginName")}/daemon")

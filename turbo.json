@@ -2,7 +2,13 @@
   "baseBranch": "origin/main",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": [
+        "PREVIEWJS_INTELLIJ_VERSION",
+        "PREVIEWJS_MODULES_DIR",
+        "PREVIEWJS_PACKAGE_NAME",
+        "PREVIEWJS_PORT"
+      ]
     },
     "test": {
       "dependsOn": ["build"],
