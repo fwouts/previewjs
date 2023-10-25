@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
 import url from "url";
@@ -14,6 +14,35 @@ test.describe.parallel("react/error handling", () => {
   for (const reactVersion of reactVersions()) {
     test.describe.parallel(`v${reactVersion}`, () => {
       const test = previewTest(pluginFactory, testApp(reactVersion));
+
+      test("handles HTML error", async (preview) => {
+        await preview.fileManager.update(
+          "preview.config.js",
+          `
+        export default {
+          wrapper: {
+            path: "__previewjs__/Wrapper.tsx",
+            get componentName() {
+              throw new Error("Expected error");
+            }
+          }
+        };
+        `
+        );
+        await preview.show("src/App.tsx:App").catch(() => {
+          /* expected error */
+        });
+        expect(await preview.events.get()).toEqual([
+          {
+            kind: "bootstrapping",
+          },
+          {
+            kind: "error",
+            source: "load",
+            message: "Expected error",
+          },
+        ]);
+      });
 
       test("handles syntax errors gracefully", async (preview) => {
         await preview.show("src/App.tsx:App");

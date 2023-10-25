@@ -7,6 +7,7 @@
       window.module = undefined;
       window.__PREVIEWJS_IFRAME__ = {
         reportEvent: (event) => {
+          // Note: this should be kept in sync with html-error.ts.
           (
             window.__PREVIEWJS_CONTROLLER__ || window.parent.__PREVIEWJS_CONTROLLER__
           ).onPreviewEvent(event);
