@@ -10,8 +10,6 @@ import type {
   DisposeWorkspaceResponse,
   GetWorkspaceRequest,
   GetWorkspaceResponse,
-  HealthyRequest,
-  HealthyResponse,
   KillRequest,
   KillResponse,
   StartPreviewRequest,
@@ -23,7 +21,6 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api.js";
-import { waitForTruePromise } from "./wait-for-successful-promise.js";
 export * from "./api.js";
 
 export function createClient(baseUrl: string): Client {
@@ -80,14 +77,6 @@ export function createClient(baseUrl: string): Client {
   }
 
   const client: Client = {
-    waitForReady: async () => {
-      await waitForTruePromise(() =>
-        makeRequest<HealthyRequest, HealthyResponse>(
-          "/previewjs/healthy",
-          {}
-        ).then(({ healthy }) => healthy)
-      );
-    },
     kill: () => makeRPC<KillRequest, KillResponse>("/previewjs/kill")({}),
     updateClientStatus: makeRPC("/previewjs/clients/status"),
     getWorkspace: makeRPC("/workspaces/get"),
@@ -114,7 +103,6 @@ export function destroyDaemon(lockFilePath: string) {
 }
 
 export interface Client {
-  waitForReady(): Promise<void>;
   kill(): Promise<KillResponse>;
   updateClientStatus(
     request: UpdateClientStatusRequest

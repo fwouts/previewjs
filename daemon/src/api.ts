@@ -1,9 +1,3 @@
-export type HealthyRequest = Record<never, never>;
-
-export type HealthyResponse = {
-  healthy: boolean;
-};
-
 export type KillRequest = Record<never, never>;
 
 export type KillResponse = {

@@ -21,8 +21,6 @@ import type {
   DisposeWorkspaceResponse,
   GetWorkspaceRequest,
   GetWorkspaceResponse,
-  HealthyRequest,
-  HealthyResponse,
   KillRequest,
   KillResponse,
   StartPreviewRequest,
@@ -248,10 +246,6 @@ export async function startDaemon({
   }
 
   class NotFoundError extends Error {}
-
-  endpoint<HealthyRequest, HealthyResponse>("/previewjs/healthy", async () => ({
-    healthy: true,
-  }));
 
   endpoint<KillRequest, KillResponse>("/previewjs/kill", async () => {
     setTimeout(() => {
