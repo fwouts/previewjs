@@ -237,7 +237,7 @@ class ProjectService(private val project: Project) : Disposable {
         // Since it's not an exact match, trigger recomputing in the background.
         recrawlFile(psiFile.virtualFile, currentText)
 
-        // Keep going to see if we can  show something useful in the meantime to avoid unnecessary flickering.
+        // Keep going to see if we can show something useful in the meantime to avoid unnecessary flickering.
         // If a chunk of text was either added or removed, then we can still show our old results by shifting
         // them a little.
         val exactCharacterDifferenceIndex = StringUtils.indexOfDifference(currentText, computedText)
