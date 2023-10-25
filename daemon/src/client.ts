@@ -2,6 +2,8 @@ import { exclusivePromiseRunner } from "exclusive-promises";
 import { existsSync, readFileSync, unlinkSync } from "fs";
 import http from "http";
 import type {
+  CheckPreviewStatusRequest,
+  CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
   DisposeWorkspaceRequest,
@@ -92,6 +94,7 @@ export function createClient(baseUrl: string): Client {
     disposeWorkspace: makeRPC("/workspaces/dispose"),
     crawlFile: makeRPC("/crawl-file"),
     startPreview: makeRPC("/previews/start"),
+    checkPreviewStatus: makeRPC("/previews/status"),
     stopPreview: makeRPC("/previews/stop"),
     updatePendingFile: makeRPC("/pending-files/update"),
   };
@@ -122,6 +125,9 @@ export interface Client {
   ): Promise<DisposeWorkspaceResponse>;
   crawlFile(request: CrawlFileRequest): Promise<CrawlFileResponse>;
   startPreview(request: StartPreviewRequest): Promise<StartPreviewResponse>;
+  checkPreviewStatus(
+    request: CheckPreviewStatusRequest
+  ): Promise<CheckPreviewStatusResponse>;
   stopPreview(request: StopPreviewRequest): Promise<StopPreviewResponse>;
   updatePendingFile(
     request: UpdatePendingFileRequest

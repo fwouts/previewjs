@@ -90,7 +90,7 @@ export async function createWorkspace({
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
     rootDir,
     reader,
-    startServer: async ({ port } = {}) => {
+    startServer: async ({ port, onStop } = {}) => {
       port ||= await getFreePort(3140);
       const router = new ApiRouter(logger);
       router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
@@ -204,6 +204,7 @@ export async function createWorkspace({
         stop: async () => {
           activePreviewers.delete(previewer);
           await previewer.stop();
+          await onStop?.();
         },
       };
     },
@@ -240,7 +241,10 @@ export interface Workspace {
   frameworkPluginName: string;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
   crawlFiles: Analyzer["crawlFiles"];
-  startServer: (options?: { port?: number }) => Promise<PreviewServer>;
+  startServer: (options?: {
+    port?: number;
+    onStop?: () => void;
+  }) => Promise<PreviewServer>;
   dispose(): Promise<void>;
 }
 
