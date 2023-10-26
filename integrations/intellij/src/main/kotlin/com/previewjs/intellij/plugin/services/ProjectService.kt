@@ -66,7 +66,7 @@ class ProjectService(private val project: Project) : Disposable {
     private var previewToolWindowActive = false
 
     @Volatile
-    private var currentPreviewWorkspaceId: String? = null
+    private var currentPreviewRootDir: String? = null
     private var componentMap = mutableMapOf<String, Pair<String, List<Previewable>>>()
     private var pendingFileChanges = mutableMapOf<String, String>()
 
@@ -284,8 +284,6 @@ class ProjectService(private val project: Project) : Disposable {
             return callback(emptyList())
         }
         service.enqueueAction(project, { api ->
-            val workspaceId =
-                service.ensureWorkspaceReady(project, file.path) ?: return@enqueueAction callback(emptyList())
             val pendingText = pendingFileChanges.remove(file.path)
             if (pendingText != null) {
                 api.updatePendingFile(
@@ -297,7 +295,6 @@ class ProjectService(private val project: Project) : Disposable {
             }
             val analysisResponse = api.crawlFile(
                 CrawlFileRequest(
-                    workspaceId,
                     absoluteFilePath = file.path
                 )
             )
@@ -309,14 +306,17 @@ class ProjectService(private val project: Project) : Disposable {
 
     fun openPreview(absoluteFilePath: String, previewableId: String) {
         service.enqueueAction(project, { api ->
-            val workspaceId = service.ensureWorkspaceReady(project, absoluteFilePath) ?: return@enqueueAction
-            currentPreviewWorkspaceId?.let {
-                if (workspaceId != it) {
-                    api.stopPreview(StopPreviewRequest(workspaceId = it))
-                }
+            val analysisResponse = api.crawlFile(
+                CrawlFileRequest(
+                    absoluteFilePath = absoluteFilePath
+                )
+            )
+            val rootDir = analysisResponse.rootDir ?: return@enqueueAction
+            currentPreviewRootDir?.let {
+                api.stopPreview(StopPreviewRequest(rootDir = it))
             }
-            currentPreviewWorkspaceId = workspaceId
-            val startPreviewResponse = api.startPreview(StartPreviewRequest(workspaceId))
+            currentPreviewRootDir = rootDir
+            val startPreviewResponse = api.startPreview(StartPreviewRequest(rootDir))
             val previewBaseUrl = startPreviewResponse.url
             this@ProjectService.previewBaseUrl = previewBaseUrl
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(previewableId, "utf-8")}"
@@ -391,17 +391,17 @@ class ProjectService(private val project: Project) : Disposable {
             Disposer.dispose(it)
         }
         previewBrowser = null
-        currentPreviewWorkspaceId?.let { workspaceId ->
+        currentPreviewRootDir?.let { rootDir ->
             if (processKilled) {
                 return
             }
             service.enqueueAction(project, { api ->
-                api.stopPreview(StopPreviewRequest(workspaceId = workspaceId))
+                api.stopPreview(StopPreviewRequest(rootDir = rootDir))
             }, {
                 "Warning: unable to close preview"
             })
         }
-        currentPreviewWorkspaceId = null
+        currentPreviewRootDir = null
         previewBaseUrl = null
         updateStatusBarWidget()
     }
@@ -416,10 +416,5 @@ class ProjectService(private val project: Project) : Disposable {
         closePreview()
         consoleView = null
         consoleToolWindow = null
-        service.enqueueAction(project, {
-            service.disposeWorkspaces(project)
-        }, {
-            "Warning: unable to dispose of workspaces"
-        })
     }
 }

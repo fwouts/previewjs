@@ -78,11 +78,33 @@ export async function load({
   // We use a separate worker process when it comes to spinning up a server, so we can
   // cleanly reload node modules when a dependency is updated such as a Vite plugin.
   const workspaces: {
-    [rootDir: string]: Promise<Workspace> | null;
+    [rootDir: string]: {
+      lastAccessed: number;
+      promise: Promise<Workspace> | null;
+    };
   } = {};
   const serverWorkers: {
     [rootDir: string]: ResolvablePromise<ServerWorker>;
   } = {};
+
+  const WORKSPACE_DISPOSE_CHECK_INTERVAL_MILLIS = 1_000;
+  const DISPOSE_UNUSED_WORKSPACE_AFTER_MILLIS = 60_000;
+  setInterval(() => {
+    for (const [rootDir, workspace] of Object.entries(workspaces)) {
+      if (
+        !workspace ||
+        serverWorkers[rootDir] ||
+        workspace.lastAccessed >
+          Date.now() - DISPOSE_UNUSED_WORKSPACE_AFTER_MILLIS
+      ) {
+        continue;
+      }
+      workspace.promise
+        ?.then((workspace) => workspace.dispose())
+        .catch((e) => globalLogger.error(e));
+      delete workspaces[rootDir];
+    }
+  }, WORKSPACE_DISPOSE_CHECK_INTERVAL_MILLIS);
 
   return {
     core,
@@ -100,56 +122,104 @@ export async function load({
         )
       );
     },
-    async getWorkspace({
+    /**
+     * Runs the specified code block in a workspace.
+     *
+     * NOTE: The workspace may be disposed of after `run()` is done running.
+     * It is not safe to hold onto the workspace reference outside of this.
+     */
+    async inWorkspace<T>({
       versionCode,
       absoluteFilePath,
+      run,
     }: {
       versionCode: string;
       absoluteFilePath: string;
-    }): Promise<Workspace | null> {
-      const rootDir = core.findWorkspaceRoot(absoluteFilePath);
-      if (!rootDir) {
-        globalLogger.info(
-          `No workspace root detected from ${absoluteFilePath}`
-        );
-        return null;
+      run: (workspace: Workspace | null) => Promise<T>;
+    }): Promise<T> {
+      const workspace = await getWorkspace(versionCode, absoluteFilePath);
+      if (workspace.promise) {
+        workspace.lastAccessed = Date.now();
+        // Ensure the workspace will not be disposed of while run() is running.
+        const keepAliveInterval = setInterval(() => {
+          workspace.lastAccessed = Date.now();
+        }, WORKSPACE_DISPOSE_CHECK_INTERVAL_MILLIS);
+        try {
+          return await run(await workspace.promise);
+        } finally {
+          clearInterval(keepAliveInterval);
+        }
+      } else {
+        return run(null);
       }
-      // TODO: Load a proper configuration file containing the desired log level.
-      // Pending https://twitter.com/fwouts/status/1658288168238735361
-      let logLevel = globalLogLevel;
-      let logger = globalLogger;
-      if (await fs.pathExists(path.join(rootDir, "previewjs-debug"))) {
-        // Show debug logs for this workspace.
-        logLevel = "debug";
-        logger = createLogger({ level: logLevel }, prettyLoggerStream);
+    },
+    async dispose() {
+      const promises: Array<Promise<void>> = [];
+      for (const workspace of Object.values(workspaces)) {
+        if (!workspace.promise) {
+          continue;
+        }
+        promises.push(workspace.promise.then((w) => w.dispose()));
       }
-      let existingWorkspace = workspaces[rootDir];
-      if (existingWorkspace !== undefined) {
-        return existingWorkspace;
-      }
-      const frameworkPluginName = await core.findCompatiblePlugin(
-        logger,
-        rootDir,
-        frameworkPlugins
-      );
-      const frameworkPlugin = frameworkPlugins.find(
-        (p) => p.info?.name === frameworkPluginName
-      );
-      if (!frameworkPluginName || !frameworkPlugin) {
-        // Note: This caches the incompatibility of a workspace (i.e. caching null), which
-        // would be problematic especially when package.json is updated to a compatible
-        // package version.
-        // TODO: Find a smarter approach, perhaps checking last-modified time of package.json and node_modules.
-        workspaces[rootDir] = null;
-        return null;
-      }
-      // Note: we check again here because of race conditions while awaiting above.
-      existingWorkspace = workspaces[rootDir];
-      if (existingWorkspace !== undefined) {
-        return existingWorkspace;
-      }
+      await Promise.all(promises);
+    },
+  };
 
-      return (workspaces[rootDir] = core
+  async function getWorkspace(
+    versionCode: string,
+    absoluteFilePath: string
+  ): Promise<{
+    lastAccessed: number;
+    promise: Promise<Workspace> | null;
+  }> {
+    const rootDir = core.findWorkspaceRoot(absoluteFilePath);
+    if (!rootDir) {
+      globalLogger.info(`No workspace root detected from ${absoluteFilePath}`);
+      return {
+        lastAccessed: Date.now(),
+        promise: null,
+      };
+    }
+    // TODO: Load a proper configuration file containing the desired log level.
+    // Pending https://twitter.com/fwouts/status/1658288168238735361
+    let logLevel = globalLogLevel;
+    let logger = globalLogger;
+    if (await fs.pathExists(path.join(rootDir, "previewjs-debug"))) {
+      // Show debug logs for this workspace.
+      logLevel = "debug";
+      logger = createLogger({ level: logLevel }, prettyLoggerStream);
+    }
+    let existingWorkspace = workspaces[rootDir];
+    if (existingWorkspace !== undefined) {
+      return existingWorkspace;
+    }
+    const frameworkPluginName = await core.findCompatiblePlugin(
+      logger,
+      rootDir,
+      frameworkPlugins
+    );
+    const frameworkPlugin = frameworkPlugins.find(
+      (p) => p.info?.name === frameworkPluginName
+    );
+    if (!frameworkPluginName || !frameworkPlugin) {
+      // Note: This caches the incompatibility of a workspace (i.e. caching null), which
+      // would be problematic especially when package.json is updated to a compatible
+      // package version.
+      // TODO: Find a smarter approach, perhaps checking last-modified time of package.json and node_modules.
+      return (workspaces[rootDir] = {
+        lastAccessed: Date.now(),
+        promise: null,
+      });
+    }
+    // Note: we check again here because of race conditions while awaiting above.
+    existingWorkspace = workspaces[rootDir];
+    if (existingWorkspace !== undefined) {
+      return existingWorkspace;
+    }
+
+    return (workspaces[rootDir] = {
+      lastAccessed: Date.now(),
+      promise: core
         .createWorkspace({
           logger,
           rootDir,
@@ -234,19 +304,9 @@ export async function load({
             },
           };
           return workerDelegatingWorkspace;
-        }));
-    },
-    async dispose() {
-      const promises: Array<Promise<void>> = [];
-      for (const workspace of Object.values(workspaces)) {
-        if (!workspace) {
-          continue;
-        }
-        promises.push(workspace.then((w) => w.dispose()));
-      }
-      await Promise.all(promises);
-    },
-  };
+        }),
+    });
+  }
 
   // Note: this should remain a sync function to prevent any race conditions.
   function ensureWorkerRunning(options: {
