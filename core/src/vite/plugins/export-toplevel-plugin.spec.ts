@@ -10,8 +10,8 @@ describe("exportToplevelPlugin", () => {
         `
         // Note: the following exports define entities that are not defined in the current file.
         // They should *not* appear in the output!
-        export * as e1 from "./foo";
-        export { default as e2, e3 } from "./bar";
+        export * as e1 from "./foo.js";
+        export { default as e2, e3 } from "./bar.js";
         
         const Foo = 1, Fooo = 2;
         let Foooo = 3;

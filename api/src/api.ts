@@ -1,4 +1,4 @@
-import type { RequestOf, ResponseOf, RPC } from "./rpc";
+import type { RequestOf, ResponseOf, RPC } from "./rpc.js";
 
 export interface Api {
   request<E extends RPC<unknown, unknown>>(

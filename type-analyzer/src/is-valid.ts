@@ -1,5 +1,5 @@
-import type { CollectedTypes, ValueType } from "./definitions";
-import { evaluateType } from "./type-parameters";
+import type { CollectedTypes, ValueType } from "./definitions.js";
+import { evaluateType } from "./type-parameters.js";
 
 export function isValid(
   type: ValueType,

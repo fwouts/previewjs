@@ -1,6 +1,6 @@
 import { assertNever } from "assert-never";
-import type { CollectedTypes, ValueType } from "./definitions";
-import { safeTypeName } from "./type-names";
+import type { CollectedTypes, ValueType } from "./definitions.js";
+import { safeTypeName } from "./type-names.js";
 
 export function generateType(
   type: ValueType,

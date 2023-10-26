@@ -1,8 +1,8 @@
 import prettier from "prettier";
 import parserTypescript from "prettier/parser-typescript.js";
-import type { CollectedTypes } from "./definitions";
-import { generateTypeInternal } from "./generate-type";
-import { safeTypeName } from "./type-names";
+import type { CollectedTypes } from "./definitions.js";
+import { generateTypeInternal } from "./generate-type.js";
+import { safeTypeName } from "./type-names.js";
 
 export function generateTypeDeclarations(
   names: string[],

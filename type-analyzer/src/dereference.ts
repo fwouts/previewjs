@@ -1,9 +1,9 @@
 import { assertNever } from "assert-never";
-import type { CollectedTypes, ValueType } from "./definitions";
-import { EMPTY_OBJECT_TYPE, UNKNOWN_TYPE } from "./definitions";
-import { computeIntersection } from "./intersection";
-import { evaluateType } from "./type-parameters";
-import { computeUnion } from "./union";
+import type { CollectedTypes, ValueType } from "./definitions.js";
+import { EMPTY_OBJECT_TYPE, UNKNOWN_TYPE } from "./definitions.js";
+import { computeIntersection } from "./intersection.js";
+import { evaluateType } from "./type-parameters.js";
+import { computeUnion } from "./union.js";
 
 /**
  * Returns the resolved type along with a list of aliases that were resolved.

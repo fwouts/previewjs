@@ -1,5 +1,5 @@
 import type { InMemoryFilesSnapshot } from "@previewjs/vfs";
-import type { LogLevel } from ".";
+import type { LogLevel } from "./index.js";
 
 export type WorkerData = {
   logLevel: LogLevel;

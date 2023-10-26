@@ -1,5 +1,5 @@
 import vscode from "vscode";
-import type { PreviewJsState } from "./state";
+import type { PreviewJsState } from "./state.js";
 
 export function updatePreviewPanel(
   state: PreviewJsState,
@@ -74,8 +74,8 @@ export function updatePreviewPanel(
         window.addEventListener("load", () => {
           iframe = document.getElementById('preview-iframe');
           iframe.src = "${previewBaseUrl}?p=${encodeURIComponent(
-            previewableId
-          )}#panel";
+      previewableId
+    )}#panel";
         });
         window.addEventListener("message", (event) => {
           const data = event.data;

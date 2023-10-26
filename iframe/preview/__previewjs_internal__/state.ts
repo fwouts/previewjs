@@ -1,4 +1,4 @@
-import type { RenderOptions } from "../../src";
+import type { RenderOptions } from "../../src/index.js";
 
 let state: RenderOptions | null = null;
 

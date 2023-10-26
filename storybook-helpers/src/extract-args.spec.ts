@@ -20,7 +20,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { extractArgs } from "./extract-args";
+import { extractArgs } from "./extract-args.js";
 
 describe("extractArgs", () => {
   let memoryReader: Reader & Writer;

@@ -16,7 +16,7 @@ import path from "path";
 import { pino as createLogger } from "pino";
 import { PinoPretty as prettyLogger } from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import vue3FrameworkPlugin from ".";
+import vue3FrameworkPlugin from "./index.js";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");

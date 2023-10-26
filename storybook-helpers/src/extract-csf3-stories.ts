@@ -7,8 +7,8 @@ import { parseSerializableValue } from "@previewjs/serializable-values";
 import type { TypeResolver } from "@previewjs/type-analyzer";
 import path from "path";
 import ts from "typescript";
-import { extractStoriesInfo } from "./extract-stories-info";
-import { resolvePreviewableId } from "./resolve-component";
+import { extractStoriesInfo } from "./extract-stories-info.js";
+import { resolvePreviewableId } from "./resolve-component.js";
 
 export async function extractCsf3Stories(
   rootDir: string,

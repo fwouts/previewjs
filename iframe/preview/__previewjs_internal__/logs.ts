@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import type { LogLevel } from "../../src";
-import { generateMessageFromError } from "./error-message";
+import type { LogLevel } from "../../src/index.js";
+import { generateMessageFromError } from "./error-message.js";
 // @ts-ignore
-import inspect from "./object-inspect";
+import inspect from "./object-inspect.js";
 
 // Note: this must be kept in sync with
 // https://github.com/vitejs/vite/blob/2de425d0288bfae345c5ced5c84cf67ffccaef48/packages/vite/src/client/client.ts#L117

@@ -4,10 +4,10 @@ import { createChromelessWorkspace } from "@previewjs/chromeless";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import type { PreviewEvent } from "@previewjs/iframe";
 import getPort from "get-port";
-import type { ErrorsMatcher, LoggedMessagesMatcher } from "./events";
-import { expectErrors, expectLoggedMessages } from "./events";
-import type { FileManager } from "./file-manager";
-import { prepareFileManager } from "./file-manager";
+import type { ErrorsMatcher, LoggedMessagesMatcher } from "./events.js";
+import { expectErrors, expectLoggedMessages } from "./events.js";
+import type { FileManager } from "./file-manager.js";
+import { prepareFileManager } from "./file-manager.js";
 
 // Port allocated for the duration of the process.
 let port: number;

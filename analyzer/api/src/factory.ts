@@ -1,7 +1,7 @@
 import { createFileSystemReader } from "@previewjs/vfs";
 import { pino as createLogger } from "pino";
 import { PinoPretty as prettyLogger } from "pino-pretty";
-import type { Analyzer, AnalyzerFactory } from "./api";
+import type { Analyzer, AnalyzerFactory } from "./api.js";
 
 type AnalyzerFactoryOptions = Parameters<AnalyzerFactory>[0];
 

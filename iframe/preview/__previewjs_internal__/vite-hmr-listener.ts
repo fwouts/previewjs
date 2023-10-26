@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
-import { generateMessageFromError } from "./error-message";
+import { generateMessageFromError } from "./error-message.js";
 
 export function setupViteHmrListener() {
   const hmr = import.meta.hot!;

@@ -1,10 +1,10 @@
-import { overrideCopyCutPaste } from "./copy-cut-paste";
-import { setUpLinkInterception } from "./links";
-import { setUpLogInterception } from "./logs";
-import { loadRenderer } from "./renderer";
-import { runRenderer } from "./run-renderer";
-import { setState } from "./state";
-import { setupViteHmrListener } from "./vite-hmr-listener";
+import { overrideCopyCutPaste } from "./copy-cut-paste.js";
+import { setUpLinkInterception } from "./links.js";
+import { setUpLogInterception } from "./logs.js";
+import { loadRenderer } from "./renderer/index.js";
+import { runRenderer } from "./run-renderer.js";
+import { setState } from "./state.js";
+import { setupViteHmrListener } from "./vite-hmr-listener.js";
 
 // Important: initListeners() must be invoked before we try to load any modules
 // that might fail to load, such as a component, so we can intercept Vite errors.

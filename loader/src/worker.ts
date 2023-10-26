@@ -8,7 +8,7 @@ import type {
   WorkerData,
   WorkerRequest,
   WorkerResponseType,
-} from "./worker-api";
+} from "./worker-api.js";
 
 async function runWorker({
   logLevel,

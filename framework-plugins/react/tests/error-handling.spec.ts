@@ -78,7 +78,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
-          `import logo from "./logo.svg";
+          `import logo from "./logo.svg.js";
 
           export function App() {
             return <div id="recovered">{logo}</div>;
@@ -105,7 +105,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
-          `import logo from "./logo.svg";
+          `import logo from "./logo.svg.js";
 
           export function App() {
             return <div id="recovered">{logo}</div>;
@@ -117,7 +117,7 @@ test.describe.parallel("react/error handling", () => {
       test("fails correctly when encountering broken local imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",
-          `import logo from "./missing.svg";
+          `import logo from "./missing.svg.js";
 
           export function App() {
             return <div>{logo}</div>;
@@ -132,7 +132,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
-          `import logo from "./logo.svg";
+          `import logo from "./logo.svg.js";
 
           export function App() {
             return <div id="recovered">{logo}</div>;
@@ -146,7 +146,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.update(
           "src/App.tsx",
-          `import logo from "./missing.svg";
+          `import logo from "./missing.svg.js";
 
           export function App() {
             return <div>{logo}</div>;
@@ -159,7 +159,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.expectLoggedMessages.toMatch([]);
         await preview.fileManager.update(
           "src/App.tsx",
-          `import logo from "./logo.svg";
+          `import logo from "./logo.svg.js";
 
           export function App() {
             return <div id="recovered">{logo}</div>;

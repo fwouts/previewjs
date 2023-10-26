@@ -1,5 +1,5 @@
-import type { RendererLoader } from "../../src";
-import { getState } from "./state";
+import type { RendererLoader } from "../../src/index.js";
+import { getState } from "./state.js";
 
 export async function runRenderer({
   wrapperModule,

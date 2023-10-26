@@ -1,10 +1,10 @@
 import { assertNever } from "assert-never";
 import ts from "typescript";
-import { formatExpression } from "./format-expression";
+import { formatExpression } from "./format-expression.js";
 import type {
   SerializableObjectValueEntry,
   SerializableValue,
-} from "./serializable-value";
+} from "./serializable-value.js";
 import {
   EMPTY_MAP,
   EMPTY_OBJECT,
@@ -24,7 +24,7 @@ import {
   set,
   string,
   unknown,
-} from "./serializable-value";
+} from "./serializable-value.js";
 
 export function parseSerializableValue(
   expression: ts.Expression

@@ -12,8 +12,8 @@ import path from "path";
 import { pino as createLogger } from "pino";
 import { PinoPretty as prettyLogger } from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import solidFrameworkPlugin from ".";
 import { crawlFile } from "./crawl-file.js";
+import solidFrameworkPlugin from "./index.js";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");
@@ -126,7 +126,7 @@ const ConstantFunction = () => <div>Hello, World!</div>;
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   component: Button
@@ -168,7 +168,7 @@ export const NotStory = (props) => <Button {...props} />;
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   title: "Stories"
@@ -202,7 +202,7 @@ export const NotStory = (props) => <Button {...props} />;
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   component: Button
@@ -261,7 +261,7 @@ Primary.args = {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   title: "Stories"
@@ -312,7 +312,7 @@ Primary.args = {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   component: Button
@@ -371,7 +371,7 @@ export function NotStory() {}
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   title: "Stories"

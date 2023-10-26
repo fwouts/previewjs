@@ -12,14 +12,15 @@ import {
   isValid,
 } from "@previewjs/type-analyzer";
 import { assertNever } from "assert-never";
-import { formatExpression } from "./format-expression";
-import { isValidPropName } from "./prop-name";
+import { formatExpression } from "./format-expression.js";
+import { isValidPropName } from "./prop-name.js";
+import { serializableValueToJavaScript } from "./serializable-value-to-js.js";
 import type {
   SerializableArrayValue,
   SerializableObjectValue,
   SerializableObjectValueEntry,
   SerializableValue,
-} from "./serializable-value";
+} from "./serializable-value.js";
 import {
   EMPTY_ARRAY,
   EMPTY_OBJECT,
@@ -35,8 +36,7 @@ import {
   promise,
   set,
   string,
-} from "./serializable-value";
-import { serializableValueToJavaScript } from "./serializable-value-to-js";
+} from "./serializable-value.js";
 
 /**
  * Generates a valid value for the given type.

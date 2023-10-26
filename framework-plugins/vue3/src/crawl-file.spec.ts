@@ -12,9 +12,9 @@ import path from "path";
 import { pino as createLogger } from "pino";
 import { PinoPretty as prettyLogger } from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import vue3FrameworkPlugin from ".";
 import { crawlFile } from "./crawl-file.js";
-import { createVueTypeScriptReader } from "./vue-reader";
+import vue3FrameworkPlugin from "./index.js";
+import { createVueTypeScriptReader } from "./vue-reader.js";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");
@@ -190,7 +190,7 @@ export default function(){
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue";
+import Button from "./MyComponent.vue.js";
 
 export default {
   component: Button
@@ -229,7 +229,7 @@ export const Primary = () => ({
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue";
+import Button from "./MyComponent.vue.js";
 
 export default {
   title: "Stories"
@@ -260,7 +260,7 @@ export const Primary = () => ({
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue";
+import Button from "./MyComponent.vue.js";
 
 export default {
   component: Button
@@ -322,7 +322,7 @@ Primary.args = {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue";
+import Button from "./MyComponent.vue.js";
 
 export default {
   title: "Stories"

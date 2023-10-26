@@ -4,7 +4,7 @@ import path from "path";
 import { pino as createLogger } from "pino";
 import { PinoPretty as prettyLogger } from "pino-pretty";
 import { beforeEach, describe, expect, it } from "vitest";
-import { createVueTypeScriptReader } from "./vue-reader";
+import { createVueTypeScriptReader } from "./vue-reader.js";
 
 describe("createVueTypeScriptReader", () => {
   let memoryReader: Reader & Writer;

@@ -1,6 +1,6 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import { Fragment, createElement, render } from "preact";
-import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
+import { ErrorBoundary, expectErrorBoundary } from "./error-boundary.js";
 
 const container = document.getElementById("root")!;
 

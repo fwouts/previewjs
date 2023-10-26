@@ -1,6 +1,6 @@
 import type { Client, CrawlFileResponse } from "@previewjs/daemon/client";
 import type vscode from "vscode";
-import type { WorkspaceGetter } from "./workspaces";
+import type { WorkspaceGetter } from "./workspaces.js";
 
 export function createFileAnalyzer(
   client: Client,

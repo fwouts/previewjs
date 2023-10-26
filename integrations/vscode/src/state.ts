@@ -1,11 +1,11 @@
 import type { Client } from "@previewjs/daemon/client";
 import vscode from "vscode";
-import type { FileAnalyzer } from "./file-analyzer";
-import { createFileAnalyzer } from "./file-analyzer";
-import { closePreviewPanel } from "./preview-panel";
-import { ensureDaemonRunning } from "./start-daemon";
-import type { Workspaces } from "./workspaces";
-import { createWorkspaceGetter } from "./workspaces";
+import type { FileAnalyzer } from "./file-analyzer.js";
+import { createFileAnalyzer } from "./file-analyzer.js";
+import { closePreviewPanel } from "./preview-panel.js";
+import { ensureDaemonRunning } from "./start-daemon.js";
+import type { Workspaces } from "./workspaces.js";
+import { createWorkspaceGetter } from "./workspaces.js";
 
 const PING_INTERVAL_MILLIS = 1000;
 

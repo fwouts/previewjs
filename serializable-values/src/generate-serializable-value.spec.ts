@@ -23,7 +23,7 @@ import {
   VOID_TYPE,
 } from "@previewjs/type-analyzer";
 import { describe, expect, test } from "vitest";
-import { generateSerializableValue } from "./generate-serializable-value";
+import { generateSerializableValue } from "./generate-serializable-value.js";
 
 describe("generateSerializableValue", () => {
   test("simple props with object type", () => {

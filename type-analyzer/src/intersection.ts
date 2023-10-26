@@ -1,12 +1,12 @@
-import isEqual from "lodash/isEqual";
-import type { OptionalType, ValueType } from "./definitions";
+import isEqual from "lodash/isEqual.js";
+import type { OptionalType, ValueType } from "./definitions.js";
 import {
+  VOID_TYPE,
   functionType,
   intersectionType,
   maybeOptionalType,
   unionType,
-  VOID_TYPE,
-} from "./definitions";
+} from "./definitions.js";
 
 export function computeIntersection(types: ValueType[]): ValueType {
   types = types.filter((type, i) => {

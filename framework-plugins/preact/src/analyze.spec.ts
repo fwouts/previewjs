@@ -21,7 +21,7 @@ import { pino as createLogger } from "pino";
 import { PinoPretty as prettyLogger } from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import preactFrameworkPlugin from ".";
+import preactFrameworkPlugin from "./index.js";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");

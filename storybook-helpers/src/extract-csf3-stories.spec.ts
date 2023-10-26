@@ -9,7 +9,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { extractCsf3Stories } from "./extract-csf3-stories";
+import { extractCsf3Stories } from "./extract-csf3-stories.js";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");
@@ -41,7 +41,7 @@ describe("extractCsf3Stories", () => {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   component: Button
@@ -94,7 +94,7 @@ export function NotStory() {}
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   component: Button
@@ -136,7 +136,7 @@ export const Example = {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./App";
+import { Button } from "./App.js";
 
 export default {
   component: Button
@@ -190,7 +190,7 @@ export function NotStory() {}
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import Button from "./App";
+import Button from "./App.js";
 
 export default {
   component: Button
@@ -243,12 +243,12 @@ export function NotStory() {}
     memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
-      `export * from "./App";`
+      `export * from "./App.js";`
     );
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./reexport";
+import { Button } from "./reexport.js";
 
 export default {
   component: Button
@@ -301,12 +301,12 @@ export function NotStory() {}
     memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
-      `export { Button as ReexportedButton } from "./App";`
+      `export { Button as ReexportedButton } from "./App.js";`
     );
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { ReexportedButton } from "./reexport";
+import { ReexportedButton } from "./reexport.js";
 
 export default {
   component: ReexportedButton
