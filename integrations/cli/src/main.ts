@@ -31,7 +31,10 @@ program
     const onServerStartModuleName = process.env.PREVIEWJS_PACKAGE_NAME;
     const previewjs = await load({
       installDir: process.env.PREVIEWJS_MODULES_DIR || __dirname,
-      workerFilePath: path.join(__dirname, "worker.js"),
+      workerFilePath: path.join(
+        __dirname,
+        process.env.WORKER_FILE_NAME || "worker.js"
+      ),
       onServerStartModuleName,
     });
     const workspace = await previewjs.getWorkspace({

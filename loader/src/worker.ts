@@ -1,6 +1,6 @@
 import assertNever from "assert-never";
 import createLogger from "pino";
-import { loadModules } from "./modules";
+import { loadModules } from "./modules.js";
 import type {
   FromWorkerMessage,
   ToWorkerMessage,
