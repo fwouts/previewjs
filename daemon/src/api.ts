@@ -24,7 +24,6 @@ export type StartPreviewRequest = {
 };
 
 export type StartPreviewResponse = {
-  rootDir: string;
   url: string;
 };
 

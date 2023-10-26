@@ -28,17 +28,14 @@ fun api(baseUrl: String): PreviewJsApi {
 }
 
 interface PreviewJsApi {
-    @POST("/workspaces/get")
-    suspend fun getWorkspace(@Body req: GetWorkspaceRequest): GetWorkspaceResponse
-
-    @POST("/workspaces/dispose")
-    suspend fun disposeWorkspace(@Body req: DisposeWorkspaceRequest): DisposeWorkspaceResponse
-
     @POST("/crawl-file")
     suspend fun crawlFile(@Body req: CrawlFileRequest): CrawlFileResponse
 
     @POST("/previews/start")
     suspend fun startPreview(@Body req: StartPreviewRequest): StartPreviewResponse
+
+    @POST("/previews/status")
+    suspend fun checkPreviewStatus(@Body req: CheckPreviewStatusRequest): CheckPreviewStatusResponse
 
     @POST("/previews/stop")
     suspend fun stopPreview(@Body req: StopPreviewRequest): StopPreviewResponse
@@ -47,32 +44,12 @@ interface PreviewJsApi {
     suspend fun updatePendingFile(@Body req: UpdatePendingFileRequest): UpdatePendingFileResponse
 }
 
-data class InfoResponse(
-    val loaderInstallDir: String,
-    val packageName: String,
-    val versionCode: String
-)
-
-data class GetWorkspaceRequest(
-    val absoluteFilePath: String
-)
-
-data class GetWorkspaceResponse(
-    val workspaceId: String?
-)
-
-data class DisposeWorkspaceRequest(
-    val workspaceId: String
-)
-
-class DisposeWorkspaceResponse
-
 data class CrawlFileRequest(
-    val workspaceId: String,
     val absoluteFilePath: String
 )
 
 data class CrawlFileResponse(
+    val rootDir: String?,
     val previewables: List<Previewable>
 )
 
@@ -83,15 +60,23 @@ data class Previewable(
 )
 
 data class StartPreviewRequest(
-    val workspaceId: String
+    val rootDir: String
 )
 
 data class StartPreviewResponse(
     val url: String
 )
 
+data class CheckPreviewStatusRequest(
+    val rootDir: String
+)
+
+data class CheckPreviewStatusResponse(
+    val running: Boolean
+)
+
 data class StopPreviewRequest(
-    val workspaceId: String
+    val rootDir: String
 )
 
 class StopPreviewResponse

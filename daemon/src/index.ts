@@ -300,7 +300,6 @@ export async function startDaemon({
           );
         }
         return {
-          rootDir,
           url: `http://localhost:${previewServer.port}`,
         };
       })
