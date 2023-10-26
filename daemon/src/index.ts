@@ -1,4 +1,4 @@
-import type { PreviewServer } from "@previewjs/core";
+import type { PreviewServer, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
 import exitHook from "exit-hook";
 import {
@@ -246,58 +246,64 @@ export async function startDaemon({
     };
   });
 
-  const getWorkspace = (absoluteFilePath: string) =>
-    previewjs.getWorkspace({
+  const inWorkspace = <T>(
+    absoluteFilePath: string,
+    run: (workspace: Workspace | null) => Promise<T>
+  ) =>
+    previewjs.inWorkspace({
       versionCode,
       absoluteFilePath: transformAbsoluteFilePath(absoluteFilePath),
+      run,
     });
 
   endpoint<CrawlFileRequest, CrawlFileResponse>(
     "/crawl-file",
-    async ({ absoluteFilePath }) => {
-      const workspace = await getWorkspace(absoluteFilePath);
-      if (!workspace) {
-        return { rootDir: null, previewables: [] };
-      }
-      const { components, stories } = await workspace.crawlFiles([
-        path
-          .relative(
-            workspace.rootDir,
-            transformAbsoluteFilePath(absoluteFilePath)
-          )
-          .replace(/\\/g, "/"),
-      ]);
-      return {
-        rootDir: workspace.rootDir,
-        previewables: [...components, ...stories].map((c) => ({
-          id: c.id,
-          start: c.sourcePosition.start,
-          end: c.sourcePosition.end,
-        })),
-      };
-    }
+    async ({ absoluteFilePath }) =>
+      inWorkspace<CrawlFileResponse>(absoluteFilePath, async (workspace) => {
+        if (!workspace) {
+          return { rootDir: null, previewables: [] };
+        }
+        const { components, stories } = await workspace.crawlFiles([
+          path
+            .relative(
+              workspace.rootDir,
+              transformAbsoluteFilePath(absoluteFilePath)
+            )
+            .replace(/\\/g, "/"),
+        ]);
+        return {
+          rootDir: workspace.rootDir,
+          previewables: [...components, ...stories].map((c) => ({
+            id: c.id,
+            start: c.sourcePosition.start,
+            end: c.sourcePosition.end,
+          })),
+        };
+      })
   );
 
   endpoint<StartPreviewRequest, StartPreviewResponse>(
     "/previews/start",
-    async ({ rootDir }) => {
-      const workspace = await getWorkspace(rootDir);
-      if (workspace?.rootDir !== rootDir) {
-        throw new NotFoundError();
-      }
-      let previewServer = previewServers[rootDir];
-      if (!previewServer) {
-        previewServer = previewServers[rootDir] = await workspace.startServer({
-          onStop: () => {
-            delete previewServers[rootDir];
-          },
-        });
-      }
-      return {
-        rootDir,
-        url: `http://localhost:${previewServer.port}`,
-      };
-    }
+    async ({ rootDir }) =>
+      inWorkspace<StartPreviewResponse>(rootDir, async (workspace) => {
+        if (workspace?.rootDir !== rootDir) {
+          throw new NotFoundError();
+        }
+        let previewServer = previewServers[rootDir];
+        if (!previewServer) {
+          previewServer = previewServers[rootDir] = await workspace.startServer(
+            {
+              onStop: () => {
+                delete previewServers[rootDir];
+              },
+            }
+          );
+        }
+        return {
+          rootDir,
+          url: `http://localhost:${previewServer.port}`,
+        };
+      })
   );
 
   endpoint<CheckPreviewStatusRequest, CheckPreviewStatusResponse>(
