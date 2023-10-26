@@ -1,4 +1,4 @@
-import type { ReaderListener, ReaderListenerInfo } from "./api";
+import type { ReaderListener, ReaderListenerInfo } from "./api.js";
 
 export class ReaderListeners {
   readonly listeners = new Set<ReaderListener>();

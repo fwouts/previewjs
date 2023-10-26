@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import os from "os";
 import path from "path";
 import { describe, expect, test } from "vitest";
-import { findFiles } from "./find-files";
+import { findFiles } from "./find-files.js";
 
 describe("find files", () => {
   test("ignores git-ignored files", async () => {

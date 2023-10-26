@@ -11,7 +11,7 @@ import {
   dereferenceType,
   isValid,
 } from "@previewjs/type-analyzer";
-import assertNever from "assert-never";
+import { assertNever } from "assert-never";
 import { formatExpression } from "./format-expression";
 import { isValidPropName } from "./prop-name";
 import type {

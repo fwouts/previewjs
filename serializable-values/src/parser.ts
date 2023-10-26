@@ -1,4 +1,4 @@
-import assertNever from "assert-never";
+import { assertNever } from "assert-never";
 import ts from "typescript";
 import { formatExpression } from "./format-expression";
 import type {

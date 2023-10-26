@@ -4,9 +4,9 @@ import { exclusivePromiseRunner } from "exclusive-promises";
 import fs from "fs-extra";
 import path from "path";
 import type { Logger } from "pino";
-import type { FrameworkPlugin, Workspace } from ".";
-import { getCacheDir } from "./caching";
-import { findFiles } from "./find-files";
+import { getCacheDir } from "./caching.js";
+import { findFiles } from "./find-files.js";
+import type { FrameworkPlugin, Workspace } from "./index.js";
 
 export const FILES_REQUIRING_REDETECTION = new Set([
   "jsconfig.json",

@@ -1,11 +1,11 @@
 import type { Workspace } from "@previewjs/core";
 import type { ReaderListener } from "@previewjs/vfs";
-import assertNever from "assert-never";
+import { assertNever } from "assert-never";
 import fs from "fs-extra";
 import { fork } from "node:child_process";
 import path from "path";
 import createLogger, { type Logger } from "pino";
-import prettyLogger from "pino-pretty";
+import { PinoPretty as prettyLogger } from "pino-pretty";
 import type { LogLevel } from "./index.js";
 import { installDependenciesIfRequired, loadModules } from "./modules.js";
 import {

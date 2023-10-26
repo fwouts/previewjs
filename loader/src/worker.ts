@@ -1,5 +1,5 @@
-import assertNever from "assert-never";
-import createLogger from "pino";
+import { assertNever } from "assert-never";
+import { pino as createLogger } from "pino";
 import { loadModules } from "./modules.js";
 import type {
   FromWorkerMessage,

@@ -10,8 +10,8 @@ import type {
   FileSync,
   ObserveOptions,
   Reader,
-} from "./api";
-import { ReaderListeners } from "./listeners";
+} from "./api.js";
+import { ReaderListeners } from "./listeners.js";
 
 export class FsReader implements Reader {
   readonly listeners = new ReaderListeners();

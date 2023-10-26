@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { findTopLevelEntityNames } from "./export-toplevel-plugin";
+import { findTopLevelEntityNames } from "./export-toplevel-plugin.js";
 
 describe("exportToplevelPlugin", () => {
   test("findTopLevelEntityNames", () => {

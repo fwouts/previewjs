@@ -1,4 +1,3 @@
-import type { ReaderListener } from ".";
 import type {
   Directory,
   DirectorySync,
@@ -6,8 +5,9 @@ import type {
   EntrySync,
   ObserveOptions,
   Reader,
-} from "./api";
-import { ReaderListeners } from "./listeners";
+} from "./api.js";
+import type { ReaderListener } from "./index.js";
+import { ReaderListeners } from "./listeners.js";
 
 export class StackedReader implements Reader {
   readonly listeners = new ReaderListeners();

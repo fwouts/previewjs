@@ -1,4 +1,4 @@
-import assertNever from "assert-never";
+import { assertNever } from "assert-never";
 import type { CollectedTypes, ValueType } from "./definitions";
 import { EMPTY_OBJECT_TYPE, UNKNOWN_TYPE } from "./definitions";
 import { computeIntersection } from "./intersection";

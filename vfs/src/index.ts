@@ -1,11 +1,11 @@
-export * from "./api";
-export { ReaderListeners } from "./listeners";
-export type { InMemoryFilesSnapshot } from "./memory";
-import type { Reader, Writer } from "./api";
-import type { InMemoryFilesSnapshot } from "./memory";
-import { MemoryReader } from "./memory";
-import { FsReader } from "./real";
-import { StackedReader } from "./stacked";
+export * from "./api.js";
+export { ReaderListeners } from "./listeners.js";
+export type { InMemoryFilesSnapshot } from "./memory.js";
+import type { Reader, Writer } from "./api.js";
+import type { InMemoryFilesSnapshot } from "./memory.js";
+import { MemoryReader } from "./memory.js";
+import { FsReader } from "./real.js";
+import { StackedReader } from "./stacked.js";
 
 export function createMemoryReader(): Reader &
   Writer & { snapshot(): InMemoryFilesSnapshot } {

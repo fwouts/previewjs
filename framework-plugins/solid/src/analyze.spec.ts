@@ -16,8 +16,8 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
-import createLogger from "pino";
-import prettyLogger from "pino-pretty";
+import { pino as createLogger } from "pino";
+import { PinoPretty as prettyLogger } from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import solidFrameworkPlugin from ".";
 

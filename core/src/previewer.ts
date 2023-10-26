@@ -1,14 +1,14 @@
 import type { Reader } from "@previewjs/vfs";
 import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
-import assertNever from "assert-never";
+import { assertNever } from "assert-never";
 import axios from "axios";
 import express from "express";
 import path from "path";
 import type { Logger } from "pino";
-import { getCacheDir } from "./caching";
-import type { FrameworkPlugin } from "./plugins/framework";
-import { Server } from "./server";
-import { ViteManager } from "./vite/vite-manager";
+import { getCacheDir } from "./caching.js";
+import type { FrameworkPlugin } from "./plugins/framework.js";
+import { Server } from "./server.js";
+import { ViteManager } from "./vite/vite-manager.js";
 
 export class Previewer {
   private readonly transformingReader: Reader;

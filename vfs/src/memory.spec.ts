@@ -1,6 +1,6 @@
 import path from "path";
 import { describe, expect, it } from "vitest";
-import { MemoryReader } from "./memory";
+import { MemoryReader } from "./memory.js";
 
 describe("MemoryReader", () => {
   it("reads null when empty", async () => {

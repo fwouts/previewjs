@@ -1,8 +1,8 @@
 import type { Reader, Writer } from "@previewjs/vfs";
 import { createMemoryReader } from "@previewjs/vfs";
 import path from "path";
-import createLogger from "pino";
-import prettyLogger from "pino-pretty";
+import { pino as createLogger } from "pino";
+import { PinoPretty as prettyLogger } from "pino-pretty";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader";
 

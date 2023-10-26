@@ -1,6 +1,7 @@
-import assertNever from "assert-never";
-import type { ParameterizableType, ValueType } from "./definitions";
+import { assertNever } from "assert-never";
+import type { ParameterizableType, ValueType } from "./definitions.js";
 import {
+  UNKNOWN_TYPE,
   arrayType,
   functionType,
   mapType,
@@ -10,10 +11,9 @@ import {
   recordType,
   setType,
   tupleType,
-  UNKNOWN_TYPE,
-} from "./definitions";
-import { computeIntersection } from "./intersection";
-import { computeUnion } from "./union";
+} from "./definitions.js";
+import { computeIntersection } from "./intersection.js";
+import { computeUnion } from "./union.js";
 
 export function evaluateType(
   type: ParameterizableType,
