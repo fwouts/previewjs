@@ -8,7 +8,6 @@ import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import vscode from "vscode";
-import { clientId } from "./client-id";
 
 const port = process.env.PREVIEWJS_PORT || "9315";
 const logsPath = path.join(__dirname, "daemon.log");
@@ -32,10 +31,6 @@ export async function ensureDaemonRunning(
   // fine and working by design.
   const ready = streamDaemonLogs(outputChannel);
   const watcher = await ready;
-  await client.updateClientStatus({
-    clientId,
-    alive: true,
-  });
   return {
     client,
     watcher,

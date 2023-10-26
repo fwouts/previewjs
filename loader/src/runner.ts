@@ -84,6 +84,20 @@ export async function load({
     [rootDir: string]: ResolvablePromise<ServerWorker>;
   } = {};
 
+  const WORKSPACE_DISPOSE_CHECK_INTERVAL_MILLIS = 1_000;
+  const DISPOSE_UNUSED_WORKSPACE_AFTER_MILLIS = 60_000;
+  setInterval(() => {
+    for (const [rootDir, workspace] of Object.entries(workspaces)) {
+      if (!workspace) {
+        continue;
+      }
+      if (serverWorkers[rootDir]) {
+        continue;
+      }
+      // TODO
+    }
+  }, WORKSPACE_DISPOSE_CHECK_INTERVAL_MILLIS);
+
   return {
     core,
     logger: globalLogger,

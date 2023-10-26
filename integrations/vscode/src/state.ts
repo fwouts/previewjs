@@ -4,8 +4,6 @@ import type { FileAnalyzer } from "./file-analyzer";
 import { createFileAnalyzer } from "./file-analyzer";
 import { closePreviewPanel } from "./preview-panel";
 import { ensureDaemonRunning } from "./start-daemon";
-import type { Workspaces } from "./workspaces";
-import { createWorkspaceGetter } from "./workspaces";
 
 const PING_INTERVAL_MILLIS = 1000;
 
@@ -46,7 +44,7 @@ export async function createState({
     }
     if (state.currentPreview) {
       const status = await state.client.checkPreviewStatus({
-        workspaceId: state.currentPreview.workspaceId,
+        rootDir: state.currentPreview.rootDir,
       });
       if (!status.running) {
         state.currentPreview = null;
@@ -56,18 +54,8 @@ export async function createState({
     }
   }, PING_INTERVAL_MILLIS);
 
-  const workspaces: Workspaces = {};
-  const getWorkspaceId = createWorkspaceGetter(
-    daemon.client,
-    outputChannel,
-    workspaces
-  );
   const pendingFileChanges = new Map<string, string>();
-  const crawlFile = createFileAnalyzer(
-    daemon.client,
-    getWorkspaceId,
-    pendingFileChanges
-  );
+  const crawlFile = createFileAnalyzer(daemon.client, pendingFileChanges);
   const state: PreviewJsState = {
     client: daemon.client,
     dispose: () => {
@@ -79,10 +67,8 @@ export async function createState({
         state.previewPanel = null;
       }
     },
-    workspaces,
     pendingFileChanges,
     crawlFile,
-    getWorkspaceId,
     previewPanel: null,
     currentPreview: null,
   };
@@ -92,13 +78,11 @@ export async function createState({
 export type PreviewJsState = {
   client: Client;
   dispose: () => void;
-  workspaces: Workspaces;
   pendingFileChanges: Map<string, string>;
   previewPanel: vscode.WebviewPanel | null;
   currentPreview: {
-    workspaceId: string;
+    rootDir: string;
     url: string;
   } | null;
   crawlFile: FileAnalyzer;
-  getWorkspaceId: (document: vscode.TextDocument) => Promise<string | null>;
 };
