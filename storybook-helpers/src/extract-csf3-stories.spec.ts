@@ -243,12 +243,12 @@ export function NotStory() {}
     memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
-      `export * from "./App.js";`
+      `export * from "./App";`
     );
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./reexport.js";
+import { Button } from "./reexport";
 
 export default {
   component: Button
@@ -301,12 +301,12 @@ export function NotStory() {}
     memoryReader.updateFile(APP_TSX, "export const Button = 123;");
     memoryReader.updateFile(
       path.join(ROOT_DIR, "reexport.ts"),
-      `export { Button as ReexportedButton } from "./App.js";`
+      `export { Button as ReexportedButton } from "./App";`
     );
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { ReexportedButton } from "./reexport.js";
+import { ReexportedButton } from "./reexport";
 
 export default {
   component: ReexportedButton
