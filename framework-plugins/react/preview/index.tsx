@@ -1,9 +1,9 @@
 import type { GetPropsFn, RendererLoader } from "@previewjs/iframe";
 import React from "react";
-import { ErrorBoundary, expectErrorBoundary } from "./error-boundary.js";
+import { ErrorBoundary, expectErrorBoundary } from "./error-boundary";
 // @ts-ignore
 import { render } from "__PREVIEWJS_PLUGIN_REACT_IMPORT_PATH__";
-import { rootContainer } from "./root.js";
+import { rootContainer } from "./root";
 
 export const loadRenderer: RendererLoader = async ({
   wrapperModule,
