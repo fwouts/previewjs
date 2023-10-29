@@ -1,12 +1,4 @@
 {
   "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": ".",
-    "noEmit": true
-  },
-  "include": [
-    "src",
-    "client/src",
-    "../framework-plugins/react/src/example.spec.ts"
-  ]
+  "include": ["src", "client/src"]
 }

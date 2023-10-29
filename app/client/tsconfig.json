@@ -2,9 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable"],
-    "moduleResolution": "node",
-    "jsx": "react-jsx",
-    "noEmit": true
+    "module": "ES2022",
+    "moduleResolution": "Node10",
+    "jsx": "react-jsx"
   },
   "include": ["src"]
 }
