@@ -190,7 +190,7 @@ export function NotStory() {}
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import Button from "./App.js";
+import Button from "./App";
 
 export default {
   component: Button

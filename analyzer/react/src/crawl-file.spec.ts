@@ -269,7 +269,7 @@ export default () => {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./App.js";
+import Button from "./App";
 
 export default {
   component: Button
@@ -311,7 +311,7 @@ export const NotStory = (props) => <Button {...props} />;
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./App.js";
+import Button from "./App";
 
 export default {
   title: "Stories"
@@ -345,7 +345,7 @@ export const NotStory = (props) => <Button {...props} />;
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./App.js";
+import Button from "./App";
 
 export default {
   component: Button
@@ -404,7 +404,7 @@ Primary.args = {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./App.js";
+import Button from "./App";
 
 export default {
   title: "Stories"
@@ -455,7 +455,7 @@ Primary.args = {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./App.js";
+import Button from "./App";
 
 export default {
   component: Button
@@ -517,7 +517,7 @@ export function NotStory() {}
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./App.js";
+import Button from "./App";
 
 export default {
   title: "Stories"
