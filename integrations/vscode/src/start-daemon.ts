@@ -8,7 +8,7 @@ import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import vscode from "vscode";
-
+x;
 const port = process.env.PREVIEWJS_PORT || "9315";
 const logsPath = path.join(__dirname, "daemon.log");
 
