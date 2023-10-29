@@ -198,7 +198,7 @@ export default function(){
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue.js";
+import Button from "./MyComponent.vue";
 
 export default {
   component: Button
@@ -237,7 +237,7 @@ export const Primary = () => ({
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue.js";
+import Button from "./MyComponent.vue";
 
 export default {
   title: "Stories"
@@ -268,7 +268,7 @@ export const Primary = () => ({
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue.js";
+import Button from "./MyComponent.vue";
 
 export default {
   component: Button
@@ -327,7 +327,7 @@ Primary.args = {
     memoryReader.updateFile(
       APP_STORIES_TSX,
       `
-import Button from "./MyComponent.vue.js";
+import Button from "./MyComponent.vue";
 
 export default {
   title: "Stories"
