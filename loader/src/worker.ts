@@ -1,5 +1,5 @@
 import { assertNever } from "assert-never";
-import * as pino from "pino";
+import pino from "pino";
 import { loadModules } from "./modules.js";
 import type {
   FromWorkerMessage,

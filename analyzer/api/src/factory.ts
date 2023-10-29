@@ -1,5 +1,5 @@
 import { createFileSystemReader } from "@previewjs/vfs";
-import * as pino from "pino";
+import pino from "pino";
 import PinoPretty from "pino-pretty";
 import type { Analyzer, AnalyzerFactory } from "./api.js";
 const { pino: createLogger } = pino;

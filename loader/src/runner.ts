@@ -5,7 +5,7 @@ import fs from "fs-extra";
 import { fork } from "node:child_process";
 import path from "path";
 import type { Logger } from "pino";
-import * as pino from "pino";
+import pino from "pino";
 import PinoPretty from "pino-pretty";
 import type { LogLevel } from "./index.js";
 import { installDependenciesIfRequired, loadModules } from "./modules.js";

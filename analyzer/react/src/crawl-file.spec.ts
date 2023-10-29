@@ -8,7 +8,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
-import * as pino from "pino";
+import pino from "pino";
 import PinoPretty from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";

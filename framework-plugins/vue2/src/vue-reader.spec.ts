@@ -1,7 +1,7 @@
 import type { Reader, Writer } from "@previewjs/vfs";
 import { createMemoryReader } from "@previewjs/vfs";
 import path from "path";
-import * as pino from "pino";
+import pino from "pino";
 import PinoPretty from "pino-pretty";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVueTypeScriptReader } from "./vue-reader.js";

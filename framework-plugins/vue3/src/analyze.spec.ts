@@ -13,7 +13,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
-import * as pino from "pino";
+import pino from "pino";
 import PinoPretty from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import vue3FrameworkPlugin from "./index.js";

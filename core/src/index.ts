@@ -12,7 +12,7 @@ import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
-import * as pino from "pino";
+import pino from "pino";
 import PinoPretty from "pino-pretty";
 import { crawlFiles } from "./crawl-files.js";
 import { getFreePort } from "./get-free-port.js";

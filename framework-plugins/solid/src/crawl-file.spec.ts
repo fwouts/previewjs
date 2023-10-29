@@ -9,7 +9,7 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
-import * as pino from "pino";
+import pino from "pino";
 import PinoPretty from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { crawlFile } from "./crawl-file.js";
