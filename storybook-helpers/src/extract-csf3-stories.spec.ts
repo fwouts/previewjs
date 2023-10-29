@@ -41,7 +41,7 @@ describe("extractCsf3Stories", () => {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./App.js";
+import { Button } from "./App";
 
 export default {
   component: Button
@@ -94,7 +94,7 @@ export function NotStory() {}
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./App.js";
+import { Button } from "./App";
 
 export default {
   component: Button
@@ -136,7 +136,7 @@ export const Example = {
     memoryReader.updateFile(
       APP_STORIES_JSX,
       `
-import { Button } from "./App.js";
+import { Button } from "./App";
 
 export default {
   component: Button
