@@ -4,20 +4,20 @@ import type { PreviewJsState } from "./state.js";
 const locking = exclusivePromiseRunner();
 export async function ensurePreviewServerStarted(
   state: PreviewJsState,
-  workspaceId: string
+  rootDir: string
 ) {
   return locking(async () => {
-    if (state.currentPreview?.workspaceId !== workspaceId) {
+    if (state.currentPreview?.rootDir !== rootDir) {
       if (state.currentPreview) {
         await state.client.stopPreview({
-          workspaceId: state.currentPreview.workspaceId,
+          rootDir: state.currentPreview.rootDir,
         });
       }
       const { url } = await state.client.startPreview({
-        workspaceId,
+        rootDir,
       });
       state.currentPreview = {
-        workspaceId,
+        rootDir,
         url,
       };
     }
@@ -31,7 +31,7 @@ export async function ensurePreviewServerStopped(state: PreviewJsState) {
       return;
     }
     await state.client.stopPreview({
-      workspaceId: state.currentPreview.workspaceId,
+      rootDir: state.currentPreview.rootDir,
     });
     state.currentPreview = null;
   });

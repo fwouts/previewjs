@@ -37,17 +37,18 @@ program
       ),
       onServerStartModuleName,
     });
-    const workspace = await previewjs.getWorkspace({
+    await previewjs.inWorkspace({
       versionCode: `cli-${version}`,
       absoluteFilePath: dirPath || process.cwd(),
+      run: async (workspace) => {
+        if (!workspace) {
+          previewjs.logger.error(chalk.red(`No workspace detected.`));
+          process.exit(1);
+        }
+        const port = parseInt(options.port);
+        await workspace.startServer({ port });
+      },
     });
-    if (!workspace) {
-      previewjs.logger.error(chalk.red(`No workspace detected.`));
-      process.exit(1);
-    }
-
-    const port = parseInt(options.port);
-    await workspace.startServer({ port });
   });
 
 program.parseAsync(process.argv).catch((e) => {

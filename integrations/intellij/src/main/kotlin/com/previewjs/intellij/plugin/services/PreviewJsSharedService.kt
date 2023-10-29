@@ -10,8 +10,6 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
-import com.previewjs.intellij.plugin.api.DisposeWorkspaceRequest
-import com.previewjs.intellij.plugin.api.GetWorkspaceRequest
 import com.previewjs.intellij.plugin.api.PreviewJsApi
 import com.previewjs.intellij.plugin.api.api
 import kotlinx.coroutines.CompletableDeferred
@@ -289,34 +287,6 @@ ${e.stackTraceToString()}""",
             val builder = ProcessBuilder(shell, "-lic", command)
             builder.environment()["TERM"] = "xterm" // needed for fish
             return builder
-        }
-    }
-
-    suspend fun ensureWorkspaceReady(project: Project, absoluteFilePath: String): String? {
-        val api = this.api ?: return null
-        val workspaceId = api.getWorkspace(
-            GetWorkspaceRequest(
-                absoluteFilePath = absoluteFilePath
-            )
-        ).workspaceId ?: return null
-        var ids = workspaceIds[project]
-        if (ids == null) {
-            ids = Collections.synchronizedSet(mutableSetOf())
-            workspaceIds[project] = ids
-            project.service<ProjectService>().printToConsole("Preview.js initialised for project ${project.name}\n")
-        }
-        ids!!.add(workspaceId)
-        return workspaceId
-    }
-
-    suspend fun disposeWorkspaces(project: Project) {
-        val workspaceIdsToDisposeOf = workspaceIds[project].orEmpty().toMutableSet()
-        workspaceIds.remove(project)
-        for (otherProjectWorkspaceIds in workspaceIds.values) {
-            workspaceIdsToDisposeOf.removeAll(otherProjectWorkspaceIds)
-        }
-        for (workspaceId in workspaceIdsToDisposeOf) {
-            api?.disposeWorkspace(DisposeWorkspaceRequest(workspaceId))
         }
     }
 

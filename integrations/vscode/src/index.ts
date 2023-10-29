@@ -1,8 +1,6 @@
 import { destroyDaemon } from "@previewjs/daemon/client";
-import fs from "fs";
 import path from "path";
 import vscode from "vscode";
-import { clientId } from "./client-id.js";
 import { closePreviewPanel, updatePreviewPanel } from "./preview-panel.js";
 import {
   ensurePreviewServerStarted,
@@ -99,10 +97,11 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
   dispose = async () => {
     const state = await currentState;
     if (state) {
-      await state.client.updateClientStatus({
-        clientId,
-        alive: false,
-      });
+      if (state.currentPreview) {
+        await state.client.stopPreview({
+          rootDir: state.currentPreview.rootDir,
+        });
+      }
       await closePreviewPanel(state);
       currentState = Promise.resolve(null);
     }
@@ -113,11 +112,11 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
     if (!state) {
       return;
     }
-    const previewables = await state.crawlFile(e?.document);
+    const crawlFileResponse = await state.crawlFile(e?.document);
     vscode.commands.executeCommand(
       "setContext",
       "previewjs.previewablesDetected",
-      previewables.length > 0
+      crawlFileResponse.previewables.length > 0
     );
   });
 
@@ -128,8 +127,8 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         if (!state) {
           return;
         }
-        const previewables = await state.crawlFile(document);
-        return previewables.map((c) => {
+        const crawlFileResponse = await state.crawlFile(document);
+        return crawlFileResponse.previewables.map((c) => {
           const start = document.positionAt(c.start + 2);
           const lens = new vscode.CodeLens(new vscode.Range(start, start));
           const previewableName = c.id.substring(c.id.indexOf(":") + 1);
@@ -186,14 +185,6 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
       }
       currentState = Promise.resolve(null);
       destroyDaemon(daemonLockFilePath);
-      if (state) {
-        for (const rootDir of Object.values(state.workspaces)) {
-          fs.rmSync(path.join(rootDir, "node_modules", ".previewjs"), {
-            recursive: true,
-            force: true,
-          });
-        }
-      }
       currentState = createState({
         outputChannel,
         runningServerStatusBarItem,
@@ -225,8 +216,8 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
           return;
         }
       }
-      const workspaceId = await state.getWorkspaceId(document);
-      if (!workspaceId) {
+      const crawlFileResponse = await state.crawlFile(document);
+      if (!crawlFileResponse.rootDir) {
         vscode.window.showErrorMessage(
           `No compatible workspace detected from ${document.fileName}`
         );
@@ -236,10 +227,10 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         const offset = editor?.selection.active
           ? document.offsetAt(editor.selection.active)
           : 0;
-        const previewables = await state.crawlFile(document);
         const previewable =
-          previewables.find((c) => offset >= c.start && offset <= c.end) ||
-          previewables[0];
+          crawlFileResponse.previewables.find(
+            (c) => offset >= c.start && offset <= c.end
+          ) || crawlFileResponse.previewables[0];
         if (!previewable) {
           vscode.window.showErrorMessage(
             `No component or story was found at offset ${offset}`
@@ -248,7 +239,10 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         }
         id = previewable.id;
       }
-      const preview = await ensurePreviewServerStarted(state, workspaceId);
+      const preview = await ensurePreviewServerStarted(
+        state,
+        crawlFileResponse.rootDir
+      );
       runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
       runningServerStatusBarItem.show();
       updatePreviewPanel(state, preview.url, id, onError);

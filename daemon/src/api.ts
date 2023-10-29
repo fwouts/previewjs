@@ -4,70 +4,46 @@ export type KillResponse = {
   pid: number;
 };
 
-export interface UpdateClientStatusRequest {
-  clientId: string;
-  alive: boolean;
-}
-
-export type UpdateClientStatusResponse = Record<never, never>;
-
-export interface GetWorkspaceRequest {
+export type CrawlFileRequest = {
   absoluteFilePath: string;
-}
+};
 
-export type GetWorkspaceResponse =
+export type CrawlFileResponse =
+  | { rootDir: null; previewables: never[] }
   | {
-      workspaceId: null;
-    }
-  | {
-      workspaceId: string;
       rootDir: string;
+      previewables: Array<{
+        start: number;
+        end: number;
+        id: string;
+      }>;
     };
 
-export interface DisposeWorkspaceRequest {
-  workspaceId: string;
-}
+export type StartPreviewRequest = {
+  rootDir: string;
+};
 
-export type DisposeWorkspaceResponse = Record<string, never>;
-
-export interface CrawlFileRequest {
-  workspaceId: string;
-  absoluteFilePath: string;
-}
-
-export interface CrawlFileResponse {
-  previewables: Array<{
-    start: number;
-    end: number;
-    id: string;
-  }>;
-}
-
-export interface StartPreviewRequest {
-  workspaceId: string;
-}
-
-export interface StartPreviewResponse {
+export type StartPreviewResponse = {
   url: string;
-}
+};
 
-export interface CheckPreviewStatusRequest {
-  workspaceId: string;
-}
+export type CheckPreviewStatusRequest = {
+  rootDir: string;
+};
 
-export interface CheckPreviewStatusResponse {
+export type CheckPreviewStatusResponse = {
   running: boolean;
-}
+};
 
-export interface StopPreviewRequest {
-  workspaceId: string;
-}
+export type StopPreviewRequest = {
+  rootDir: string;
+};
 
-export type StopPreviewResponse = Record<string, never>;
+export type StopPreviewResponse = Record<never, never>;
 
-export interface UpdatePendingFileRequest {
+export type UpdatePendingFileRequest = {
   absoluteFilePath: string;
   utf8Content: string | null;
-}
+};
 
-export type UpdatePendingFileResponse = Record<string, never>;
+export type UpdatePendingFileResponse = Record<never, never>;

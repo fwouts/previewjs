@@ -6,18 +6,12 @@ import type {
   CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
-  DisposeWorkspaceRequest,
-  DisposeWorkspaceResponse,
-  GetWorkspaceRequest,
-  GetWorkspaceResponse,
   KillRequest,
   KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
   StopPreviewRequest,
   StopPreviewResponse,
-  UpdateClientStatusRequest,
-  UpdateClientStatusResponse,
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api.js";
@@ -78,9 +72,6 @@ export function createClient(baseUrl: string): Client {
 
   const client: Client = {
     kill: () => makeRPC<KillRequest, KillResponse>("/previewjs/kill")({}),
-    updateClientStatus: makeRPC("/previewjs/clients/status"),
-    getWorkspace: makeRPC("/workspaces/get"),
-    disposeWorkspace: makeRPC("/workspaces/dispose"),
     crawlFile: makeRPC("/crawl-file"),
     startPreview: makeRPC("/previews/start"),
     checkPreviewStatus: makeRPC("/previews/status"),
@@ -104,13 +95,6 @@ export function destroyDaemon(lockFilePath: string) {
 
 export interface Client {
   kill(): Promise<KillResponse>;
-  updateClientStatus(
-    request: UpdateClientStatusRequest
-  ): Promise<UpdateClientStatusResponse>;
-  getWorkspace(request: GetWorkspaceRequest): Promise<GetWorkspaceResponse>;
-  disposeWorkspace(
-    request: DisposeWorkspaceRequest
-  ): Promise<DisposeWorkspaceResponse>;
   crawlFile(request: CrawlFileRequest): Promise<CrawlFileResponse>;
   startPreview(request: StartPreviewRequest): Promise<StartPreviewResponse>;
   checkPreviewStatus(
