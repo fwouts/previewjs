@@ -8,7 +8,7 @@ import type {
   OptionalType,
   ParameterizableType,
   ValueType,
-} from "./definitions";
+} from "./definitions.js";
 import {
   ANY_TYPE,
   BOOLEAN_TYPE,
@@ -32,11 +32,11 @@ import {
   setType,
   tupleType,
   unionType,
-} from "./definitions";
-import { computeIntersection } from "./intersection";
-import { stripUnusedTypes } from "./strip-unused-types";
-import { typescriptServiceHost } from "./ts-service-host";
-import { computeUnion } from "./union";
+} from "./definitions.js";
+import { computeIntersection } from "./intersection.js";
+import { stripUnusedTypes } from "./strip-unused-types.js";
+import { typescriptServiceHost } from "./ts-service-host.js";
+import { computeUnion } from "./union.js";
 export type { TypeAnalyzer, TypeResolver };
 
 export function createTypeAnalyzer(options: {

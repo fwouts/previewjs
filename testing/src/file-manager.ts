@@ -5,7 +5,7 @@ import {
 } from "@previewjs/vfs";
 import fs from "fs-extra";
 import path from "path";
-import { duplicateProjectForTesting } from "./test-dir";
+import { duplicateProjectForTesting } from "./test-dir.js";
 
 export async function prepareFileManager({
   testProjectDirPath,

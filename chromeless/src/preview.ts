@@ -8,8 +8,8 @@ import {
 } from "@previewjs/properties";
 import type playwright from "playwright";
 import ts from "typescript";
-import { setupPreviewEventListener } from "./event-listener";
-import { getPreviewIframe } from "./iframe";
+import { setupPreviewEventListener } from "./event-listener.js";
+import { getPreviewIframe } from "./iframe.js";
 
 export async function startPreview({
   workspace,

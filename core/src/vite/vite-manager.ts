@@ -23,15 +23,15 @@ import { loadTsconfig } from "tsconfig-paths/lib/tsconfig-loader.js";
 import * as vite from "vite";
 import { searchForWorkspaceRoot } from "vite";
 import { z } from "zod";
-import { FILES_REQUIRING_REDETECTION } from "../crawl-files";
-import { findFiles } from "../find-files";
-import { generateHtmlError } from "../html-error";
-import type { FrameworkPlugin } from "../plugins/framework";
-import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin";
-import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin";
-import { localEval } from "./plugins/local-eval";
-import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin";
-import { virtualPlugin } from "./plugins/virtual-plugin";
+import { FILES_REQUIRING_REDETECTION } from "../crawl-files.js";
+import { findFiles } from "../find-files.js";
+import { generateHtmlError } from "../html-error.js";
+import type { FrameworkPlugin } from "../plugins/framework.js";
+import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin.js";
+import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin.js";
+import { localEval } from "./plugins/local-eval.js";
+import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin.js";
+import { virtualPlugin } from "./plugins/virtual-plugin.js";
 
 const POSTCSS_CONFIG_FILE = [
   ".postcssrc",

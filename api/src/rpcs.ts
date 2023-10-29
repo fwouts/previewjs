@@ -1,6 +1,6 @@
 import type { SerializableValue } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
-import type { RPC } from "./rpc";
+import type { RPC } from "./rpc.js";
 
 export const Analyze: RPC<
   {

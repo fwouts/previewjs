@@ -1,6 +1,6 @@
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import path from "path";
-import { previewTest } from "./preview-test";
+import { previewTest } from "./preview-test.js";
 
 export function smokeTests({
   projectsDir,

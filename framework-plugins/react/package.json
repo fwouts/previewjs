@@ -19,7 +19,7 @@
   "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && unbuild",
+    "build": "tsc && tsc -p preview/tsconfig.json && unbuild",
     "e2e-test": "playwright test"
   },
   "dependencies": {

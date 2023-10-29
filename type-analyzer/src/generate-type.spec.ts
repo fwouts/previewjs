@@ -21,8 +21,8 @@ import {
   setType,
   tupleType,
   unionType,
-} from "./definitions";
-import { generateType } from "./generate-type";
+} from "./definitions.js";
+import { generateType } from "./generate-type.js";
 
 describe("generateType", () => {
   test("any", () => {

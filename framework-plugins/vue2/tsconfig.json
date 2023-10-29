@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "noEmit": true
-  },
-  "include": ["preview", "src", "tests"],
-  "exclude": ["node_modules", "preview/modules", "tests/apps"]
+  "include": ["src", "tests"],
+  "exclude": ["node_modules", "tests/apps"]
 }

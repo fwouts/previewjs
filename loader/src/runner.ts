@@ -1,11 +1,12 @@
 import type { Workspace } from "@previewjs/core";
 import type { ReaderListener } from "@previewjs/vfs";
-import assertNever from "assert-never";
+import { assertNever } from "assert-never";
 import fs from "fs-extra";
 import { fork } from "node:child_process";
 import path from "path";
-import createLogger, { type Logger } from "pino";
-import prettyLogger from "pino-pretty";
+import type { Logger } from "pino";
+import pino from "pino";
+import PinoPretty from "pino-pretty";
 import type { LogLevel } from "./index.js";
 import { installDependenciesIfRequired, loadModules } from "./modules.js";
 import {
@@ -19,6 +20,8 @@ import {
   type WorkerResponse,
   type WorkerResponseType,
 } from "./worker-api.js";
+const { pino: createLogger } = pino;
+const { default: prettyLogger } = PinoPretty;
 
 const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 

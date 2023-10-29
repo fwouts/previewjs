@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { serializableValueToJavaScript } from "./serializable-value-to-js.js";
 import {
   EMPTY_MAP,
   EMPTY_OBJECT,
@@ -18,8 +19,7 @@ import {
   set,
   string,
   unknown,
-} from "./serializable-value";
-import { serializableValueToJavaScript } from "./serializable-value-to-js";
+} from "./serializable-value.js";
 
 describe("serializableValueToJavaScript", () => {
   test("array", () => {

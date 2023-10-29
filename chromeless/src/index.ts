@@ -1,2 +1,2 @@
-export { getPreviewIframe } from "./iframe";
-export { createChromelessWorkspace } from "./workspace";
+export { getPreviewIframe } from "./iframe.js";
+export { createChromelessWorkspace } from "./workspace.js";

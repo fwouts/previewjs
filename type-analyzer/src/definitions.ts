@@ -1,5 +1,5 @@
-import { computeIntersection } from "./intersection";
-import { computeUnion } from "./union";
+import { computeIntersection } from "./intersection.js";
+import { computeUnion } from "./union.js";
 
 export type ValueType =
   | AnyType

@@ -1,8 +1,8 @@
 import type { Analyzer } from "@previewjs/analyzer-api";
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
-import type vite from "vite";
-import type { PackageDependencies } from "./dependencies";
+import type * as vite from "vite";
+import type { PackageDependencies } from "./dependencies.js";
 
 export interface FrameworkPluginFactory {
   /** This will always be set in current plugin versions. */

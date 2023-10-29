@@ -16,11 +16,13 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
-import createLogger from "pino";
-import prettyLogger from "pino-pretty";
+import pino from "pino";
+import PinoPretty from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import vue2FrameworkPlugin from ".";
+import vue2FrameworkPlugin from "./index.js";
 import { inferComponentNameFromVuePath } from "./infer-component-name.js";
+const { pino: createLogger } = pino;
+const { default: prettyLogger } = PinoPretty;
 
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");
 const MAIN_FILE = path.join(ROOT_DIR_PATH, "App.vue");

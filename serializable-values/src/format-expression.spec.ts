@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { formatExpression } from "./format-expression";
+import { formatExpression } from "./format-expression.js";
 
 describe("formatExpression", () => {
   test("foo", () => {

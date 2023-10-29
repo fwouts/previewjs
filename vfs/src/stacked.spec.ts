@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { MemoryReader } from "./memory";
-import { StackedReader } from "./stacked";
+import { MemoryReader } from "./memory.js";
+import { StackedReader } from "./stacked.js";
 
 describe("StackedReader", () => {
   it("merges directories recursively (async)", async () => {

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { loadConfigFromFile, type LogLevel } from "vite";
-import type { PreviewConfig } from "./config";
+import type { PreviewConfig } from "./config.js";
 
 export const PREVIEW_CONFIG_NAMES = [
   "preview.config.js",

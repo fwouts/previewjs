@@ -1,5 +1,5 @@
 import { exclusivePromiseRunner } from "exclusive-promises";
-import type { PreviewJsState } from "./state";
+import type { PreviewJsState } from "./state.js";
 
 const locking = exclusivePromiseRunner();
 export async function ensurePreviewServerStarted(

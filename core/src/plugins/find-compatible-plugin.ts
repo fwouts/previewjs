@@ -1,6 +1,6 @@
 import type { Logger } from "pino";
-import { extractPackageDependencies } from "./dependencies";
-import type { FrameworkPluginFactory } from "./framework";
+import { extractPackageDependencies } from "./dependencies.js";
+import type { FrameworkPluginFactory } from "./framework.js";
 
 export async function findCompatiblePlugin(
   logger: Logger,

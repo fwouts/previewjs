@@ -2,7 +2,7 @@ import type { Reader, Writer } from "@previewjs/vfs";
 import { createMemoryReader } from "@previewjs/vfs";
 import path from "path";
 import { beforeEach, describe, expect, it } from "vitest";
-import { createVueTypeScriptReader } from "./vue-reader";
+import { createVueTypeScriptReader } from "./vue-reader.js";
 
 describe("createVueTypeScriptReader", () => {
   let memoryReader: Reader & Writer;

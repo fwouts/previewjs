@@ -1,4 +1,4 @@
-import test, { expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
 import url from "url";

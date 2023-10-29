@@ -12,22 +12,24 @@ import fs from "fs-extra";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
-import createLogger from "pino";
-import prettyLogger from "pino-pretty";
-import { crawlFiles } from "./crawl-files";
-import { getFreePort } from "./get-free-port";
-import { extractPackageDependencies } from "./plugins/dependencies";
-import type { FrameworkPluginFactory } from "./plugins/framework";
-import type { OnServerStart } from "./preview-env";
-import { Previewer } from "./previewer";
-import { ApiRouter } from "./router";
-export type { PackageDependencies } from "./plugins/dependencies";
-export { findCompatiblePlugin } from "./plugins/find-compatible-plugin";
+import pino from "pino";
+import PinoPretty from "pino-pretty";
+import { crawlFiles } from "./crawl-files.js";
+import { getFreePort } from "./get-free-port.js";
+import { extractPackageDependencies } from "./plugins/dependencies.js";
+import type { FrameworkPluginFactory } from "./plugins/framework.js";
+import type { OnServerStart } from "./preview-env.js";
+import { Previewer } from "./previewer.js";
+import { ApiRouter } from "./router.js";
+const { pino: createLogger } = pino;
+const { default: prettyLogger } = PinoPretty;
+export type { PackageDependencies } from "./plugins/dependencies.js";
+export { findCompatiblePlugin } from "./plugins/find-compatible-plugin.js";
 export type {
   FrameworkPlugin,
   FrameworkPluginFactory,
-} from "./plugins/framework";
-export type { OnServerStart } from "./preview-env";
+} from "./plugins/framework.js";
+export type { OnServerStart } from "./preview-env.js";
 
 const require = createRequire(import.meta.url);
 

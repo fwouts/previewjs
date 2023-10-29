@@ -1,13 +1,13 @@
 import { destroyDaemon } from "@previewjs/daemon/client";
 import path from "path";
 import vscode from "vscode";
-import { closePreviewPanel, updatePreviewPanel } from "./preview-panel";
+import { closePreviewPanel, updatePreviewPanel } from "./preview-panel.js";
 import {
   ensurePreviewServerStarted,
   ensurePreviewServerStopped,
-} from "./preview-server";
-import { daemonLockFilePath } from "./start-daemon";
-import { createState } from "./state";
+} from "./preview-server.js";
+import { daemonLockFilePath } from "./start-daemon.js";
+import { createState } from "./state.js";
 
 // Note: all commands in package.json must appear here. The reverse is not true.
 enum Command {

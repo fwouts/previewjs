@@ -1,2 +1,2 @@
-export * from "./api";
-export * from "./previewable-id";
+export * from "./api.js";
+export * from "./previewable-id.js";

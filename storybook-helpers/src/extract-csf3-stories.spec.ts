@@ -9,7 +9,7 @@ import {
 } from "@previewjs/vfs";
 import path from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { extractCsf3Stories } from "./extract-csf3-stories";
+import { extractCsf3Stories } from "./extract-csf3-stories.js";
 
 const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");

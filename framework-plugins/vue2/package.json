@@ -20,7 +20,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "prepare": "rimraf preview/modules && shx mkdir preview/modules && shx cp -rL node_modules/vue preview/modules/vue && shx rm -rf preview/modules/vue/packages/compiler-sfc/test",
-    "build": "tsc && unbuild",
+    "build": "tsc && tsc -p preview/tsconfig.json && unbuild",
     "test": "vitest",
     "e2e-test": "playwright test"
   },

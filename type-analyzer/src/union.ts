@@ -1,7 +1,7 @@
-import isEqual from "lodash/isEqual";
-import { BOOLEAN_TYPE } from ".";
-import type { ValueType } from "./definitions";
-import { functionType, unionType, VOID_TYPE } from "./definitions";
+import isEqual from "lodash/isEqual.js";
+import type { ValueType } from "./definitions.js";
+import { functionType, unionType, VOID_TYPE } from "./definitions.js";
+import { BOOLEAN_TYPE } from "./index.js";
 
 export function computeUnion(types: ValueType[]): ValueType {
   const evolvingType = types[0];

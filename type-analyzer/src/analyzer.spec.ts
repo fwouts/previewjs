@@ -7,7 +7,7 @@ import {
 import path from "path";
 import ts from "typescript";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import type { TypeAnalyzer } from ".";
+import type { TypeAnalyzer } from "./index.js";
 import {
   ANY_TYPE,
   BOOLEAN_TYPE,
@@ -32,7 +32,7 @@ import {
   setType,
   tupleType,
   unionType,
-} from ".";
+} from "./index.js";
 
 describe("TypeAnalyzer", () => {
   let memoryReader: Reader & Writer;

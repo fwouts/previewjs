@@ -1,8 +1,9 @@
 import { AssertionError } from "assert";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
-import { parseSerializableValue } from "./parser";
-import type { SerializableValue } from "./serializable-value";
+import { parseSerializableValue } from "./parser.js";
+import { serializableValueToJavaScript } from "./serializable-value-to-js.js";
+import type { SerializableValue } from "./serializable-value.js";
 import {
   EMPTY_ARRAY,
   EMPTY_MAP,
@@ -23,8 +24,7 @@ import {
   set,
   string,
   unknown,
-} from "./serializable-value";
-import { serializableValueToJavaScript } from "./serializable-value-to-js";
+} from "./serializable-value.js";
 
 describe("parseSerializableValue", () => {
   it("parses null", () => {

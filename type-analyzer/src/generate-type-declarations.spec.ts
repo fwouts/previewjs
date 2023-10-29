@@ -22,8 +22,8 @@ import {
   setType,
   tupleType,
   unionType,
-} from "./definitions";
-import { generateTypeDeclarations } from "./generate-type-declarations";
+} from "./definitions.js";
+import { generateTypeDeclarations } from "./generate-type-declarations.js";
 
 describe("generateTypeDeclarations", () => {
   test("no types", () => {

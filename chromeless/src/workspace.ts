@@ -6,7 +6,7 @@ import path from "path";
 import type { Logger } from "pino";
 import type { Page } from "playwright";
 import url from "url";
-import { startPreview } from "./preview";
+import { startPreview } from "./preview.js";
 
 export async function createChromelessWorkspace({
   rootDir,

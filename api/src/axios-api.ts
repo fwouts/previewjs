@@ -1,6 +1,6 @@
 import axios from "axios";
-import type { Api } from "./api";
-import type { RequestOf, ResponseOf, RPC, WrappedResponse } from "./rpc";
+import type { Api } from "./api.js";
+import type { RequestOf, ResponseOf, RPC, WrappedResponse } from "./rpc.js";
 
 export function createAxiosApi(url: string): Api {
   return new AxiosApi(url);
