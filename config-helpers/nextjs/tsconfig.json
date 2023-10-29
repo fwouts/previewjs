@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "Node10",
     "rootDir": "src",
     "esModuleInterop": true,
     "jsx": "react"

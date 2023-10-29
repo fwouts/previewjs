@@ -1,5 +1,5 @@
-import NextImage from "next/image.js";
-import NextRouter from "next/router.js";
+import * as NextImage from "next/image";
+import * as NextRouter from "next/router";
 import React from "react";
 
 const OriginalNextImage = NextImage.default;
