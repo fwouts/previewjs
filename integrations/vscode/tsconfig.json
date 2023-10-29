@@ -1,8 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
     "rootDir": "src",
-    "noEmit": true,
     "baseUrl": ".",
     "paths": {
       "@previewjs/core": ["../../core"],

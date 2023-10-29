@@ -9,11 +9,13 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
-import { pino as createLogger } from "pino";
-import { PinoPretty as prettyLogger } from "pino-pretty";
+import * as pino from "pino";
+import PinoPretty from "pino-pretty";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { crawlFile } from "./crawl-file.js";
 import solidFrameworkPlugin from "./index.js";
+const { pino: createLogger } = pino;
+const { default: prettyLogger } = PinoPretty;
 
 const ROOT_DIR = path.join(__dirname, "virtual");
 const APP_TSX = path.join(ROOT_DIR, "App.tsx");

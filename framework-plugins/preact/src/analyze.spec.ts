@@ -17,11 +17,13 @@ import {
   createStackedReader,
 } from "@previewjs/vfs";
 import path from "path";
-import { pino as createLogger } from "pino";
-import { PinoPretty as prettyLogger } from "pino-pretty";
+import * as pino from "pino";
+import PinoPretty from "pino-pretty";
 import url from "url";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import preactFrameworkPlugin from "./index.js";
+const { pino: createLogger } = pino;
+const { default: prettyLogger } = PinoPretty;
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const ROOT_DIR_PATH = path.join(__dirname, "virtual");

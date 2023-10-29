@@ -1,5 +1,5 @@
 import { assertNever } from "assert-never";
-import { pino as createLogger } from "pino";
+import * as pino from "pino";
 import { loadModules } from "./modules.js";
 import type {
   FromWorkerMessage,
@@ -9,6 +9,7 @@ import type {
   WorkerRequest,
   WorkerResponseType,
 } from "./worker-api.js";
+const { pino: createLogger } = pino;
 
 async function runWorker({
   logLevel,

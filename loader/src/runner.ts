@@ -5,8 +5,8 @@ import fs from "fs-extra";
 import { fork } from "node:child_process";
 import path from "path";
 import type { Logger } from "pino";
-import { pino as createLogger } from "pino";
-import { PinoPretty as prettyLogger } from "pino-pretty";
+import * as pino from "pino";
+import PinoPretty from "pino-pretty";
 import type { LogLevel } from "./index.js";
 import { installDependenciesIfRequired, loadModules } from "./modules.js";
 import {
@@ -20,6 +20,8 @@ import {
   type WorkerResponse,
   type WorkerResponseType,
 } from "./worker-api.js";
+const { pino: createLogger } = pino;
+const { default: prettyLogger } = PinoPretty;
 
 const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 

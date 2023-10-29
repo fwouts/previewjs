@@ -1,4 +1,4 @@
-import type { RendererLoader } from "../../../src/index.js";
+import type { RendererLoader } from "../../../src";
 
 export const loadRenderer: RendererLoader = () => {
   // This is a dummy function that is replaced by

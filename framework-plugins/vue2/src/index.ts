@@ -87,10 +87,10 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
             ...configuredPlugins,
             configuredPlugins.find((plugin) => plugin.name.includes("vue2"))
               ? null
-              : vue2Plugin(),
+              : vue2Plugin.default(),
             configuredPlugins.find((plugin) => plugin.name.includes("jsx"))
               ? null
-              : vue2JsxPlugin(),
+              : vue2JsxPlugin.default(),
             {
               name: "previewjs:import-vue-without-extension",
               configResolved(config) {
