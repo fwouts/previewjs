@@ -468,8 +468,8 @@ importers:
         specifier: workspace:*
         version: link:../framework-plugins/vue3
       '@previewjs/pro':
-        specifier: ^1.15.0
-        version: 1.15.0(@types/node@20.8.10)(esbuild@0.19.5)
+        specifier: ^1.15.1
+        version: 1.15.1(@types/node@20.8.10)(esbuild@0.19.5)
       '@previewjs/vfs':
         specifier: workspace:*
         version: link:../vfs
@@ -12960,8 +12960,8 @@ packages:
     resolution: {integrity: sha512-+Y+r4tsoQYQozKK6uZZ7S5uU9+DphkIRwcpNeLII9C2hcwMf9F+bl+JgOIJfMt1qafHJztOHP7uTZuzTPoFHsQ==}
     dev: false
 
-  /@previewjs/pro@1.15.0(@types/node@20.8.10)(esbuild@0.19.5):
-    resolution: {integrity: sha512-ZGHXbdMGnt/r1zZTuRI7XCDb5XLGJ7LtmlikQuFplsC247UfmuITaxMnhdoL7d9mFIJmWeTfjQ1c/CtFSuiqHw==}
+  /@previewjs/pro@1.15.1(@types/node@20.8.10)(esbuild@0.19.5):
+    resolution: {integrity: sha512-rdTYk0ULOG74M/TZy3yctku/hZVCOg0Um+41NW9wBrEgGer9ox8bDszprBth2HVbZzBdthmFIfMKX+Y7G5t5qQ==}
     dependencies:
       '@previewjs/analyzer-api': 0.1.4
       '@previewjs/api': 16.0.2
@@ -13407,7 +13407,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
