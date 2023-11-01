@@ -87,20 +87,6 @@ const vue3FrameworkPlugin: FrameworkPluginFactory = {
               ? null
               : vueJsxPlugin(),
             {
-              name: "previewjs:disable-vue-hmr",
-              async transform(code, id) {
-                if (!id.endsWith(".vue")) {
-                  return null;
-                }
-                // HMR code prevents component loader from receiving
-                // updated preview props, so we disable it.
-                // If you find a better or more reliable way, please
-                // feel free to send a PR :)
-                const matchHmr = /import\.meta\.hot\.accept\((.|\n)*\}\);?/m;
-                return code.replace(matchHmr, "");
-              },
-            },
-            {
               name: "previewjs:optimize-deps",
               config: () => ({
                 optimizeDeps: {

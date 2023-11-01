@@ -34,10 +34,15 @@ export async function runRenderer({
     return;
   }
   const { autogenCallbackProps, properties } =
-    await previewableModule.PreviewJsEvaluateLocally(
-      currentState.autogenCallbackPropsSource,
-      currentState.propsAssignmentSource,
-      jsxFactory
+    await previewableModule.PreviewJsEval(
+      `
+      let ${currentState.autogenCallbackPropsSource};
+      let ${currentState.propsAssignmentSource};
+      return { autogenCallbackProps, properties };
+      `,
+      {
+        __jsxFactory__: jsxFactory,
+      }
     );
   if (shouldAbortRender()) {
     return;

@@ -126,15 +126,6 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
                 },
               }
             : null,
-          {
-            name: "previewjs:disable-svelte-hmr",
-            async transform(code, id) {
-              if (!id.endsWith(".svelte")) {
-                return null;
-              }
-              return code.replace(/import\.meta\.hot/g, "false");
-            },
-          },
         ],
       }),
       dispose: () => {

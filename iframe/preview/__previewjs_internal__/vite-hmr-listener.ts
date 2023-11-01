@@ -40,4 +40,7 @@ export function setupViteHmrListener() {
       payload,
     });
   });
+  hmr.on("vite:invalidate", () => {
+    window.location.reload();
+  });
 }

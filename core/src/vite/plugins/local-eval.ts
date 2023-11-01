@@ -18,12 +18,11 @@ export function localEval(): vite.Plugin {
         // This needed to prevent breaking React Refresh, which expects all exports to
         // be React components.
         `
-export const PreviewJsEvaluateLocally = async (autogenCallbackPropsSource, propsAssignmentSource, __jsxFactory__) => {
-  let autogenCallbackProps = {};
-  eval(autogenCallbackPropsSource);
-  let properties = {};
-  eval(propsAssignmentSource);
-  return { autogenCallbackProps, properties };
+export const PreviewJsEval = (code, args = {}) => {
+  for (const key of Object.keys(args)) {
+    eval(\`var \${key} = args.\${key}\`);
+  }
+  return eval(\`(() => { \${code} })()\`);
 }
 `
       );

@@ -28,7 +28,6 @@ import { findFiles } from "../find-files.js";
 import { generateHtmlError } from "../html-error.js";
 import type { FrameworkPlugin } from "../plugins/framework.js";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin.js";
-import { exportToplevelPlugin } from "./plugins/export-toplevel-plugin.js";
 import { localEval } from "./plugins/local-eval.js";
 import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin.js";
 import { virtualPlugin } from "./plugins/virtual-plugin.js";
@@ -385,7 +384,6 @@ export class ViteManager {
             esbuildOptions: frameworkPluginViteConfig.esbuild || {},
           }),
           localEval(),
-          exportToplevelPlugin(),
           fakeExportedTypesPlugin({
             readFile: (absoluteFilePath) =>
               this.options.reader.read(absoluteFilePath).then((entry) => {
