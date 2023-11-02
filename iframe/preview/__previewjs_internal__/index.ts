@@ -15,26 +15,6 @@ export function initListeners() {
   overrideCopyCutPaste();
 }
 
-function getRoot() {
-  const root = document.getElementById("root")!;
-  if (!root) {
-    throw new Error(`Unable to find #root!`);
-  }
-  return root;
-}
-
-let lastGoodSnapshot = "";
-export function revertToEarlierSnapshot() {
-  const root = getRoot();
-  if (root.innerHTML !== lastGoodSnapshot) {
-    root.innerHTML = lastGoodSnapshot;
-  }
-}
-
-function saveGoodSnapshot() {
-  lastGoodSnapshot = getRoot().innerHTML;
-}
-
 export function initPreview({
   previewableModule,
   previewableName,
@@ -46,12 +26,16 @@ export function initPreview({
   wrapperModule: any;
   wrapperName: string;
 }): typeof window.__PREVIEWJS_IFRAME__.refresh {
+  const root = document.getElementById("root")!;
+  if (!root) {
+    throw new Error(`Unable to find #root!`);
+  }
   let renderId = 0;
 
   async function runNewRender({
     keepErrors = false,
   }: { keepErrors?: boolean } = {}) {
-    saveGoodSnapshot();
+    const rootHtml = root.innerHTML;
     try {
       renderId += 1;
       const thisRenderId = renderId;
@@ -65,9 +49,11 @@ export function initPreview({
         shouldAbortRender: () => renderId !== thisRenderId,
         loadRenderer,
       });
-      saveGoodSnapshot();
     } catch (error: any) {
-      revertToEarlierSnapshot();
+      if (root.innerHTML !== rootHtml) {
+        // Restore the previous content so we don't end up with an empty page instead.
+        root.innerHTML = rootHtml;
+      }
       window.__PREVIEWJS_IFRAME__.reportEvent({
         kind: "error",
         source: "renderer",
