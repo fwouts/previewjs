@@ -15,6 +15,9 @@ export async function setupPreviewEventListener(
     },
   };
   await page.exposeFunction("onIframeEvent", (event: PreviewEvent) => {
+    if (event.kind === "bootstrapping") {
+      recorded.length = 0;
+    }
     recorded.push(event);
     listener(event);
   });

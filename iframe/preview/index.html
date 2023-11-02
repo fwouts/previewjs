@@ -5,13 +5,31 @@
     <script>
       window.global = globalThis;
       window.module = undefined;
+      let currentLoopEvents = [];
       window.__PREVIEWJS_IFRAME__ = {
+        lastRenderFailed: false,
         reportEvent: (event) => {
-          // Note: this should be kept in sync with html-error.ts.
+          if (event.kind === "rendered" ) {
+            window.__PREVIEWJS_IFRAME__.lastRenderFailed = false;
+          } else if (event.kind === "error" && event.source === "renderer") {
+            window.__PREVIEWJS_IFRAME__.lastRenderFailed = true;
+          }
+          for (const currentLoopEvent of currentLoopEvents) {
+            if (JSON.stringify(currentLoopEvent) === JSON.stringify(event)) {
+              // Skip duplicate event.
+              return;
+            }
+          }
           (
+            // Note: this should be kept in sync with html-error.ts.
             window.__PREVIEWJS_CONTROLLER__ || window.parent.__PREVIEWJS_CONTROLLER__
           ).onPreviewEvent(event);
+          currentLoopEvents.push(event);
+          setTimeout(() => {
+            currentLoopEvents.length = 0;
+          }, 0);
         },
+        refresh: () => {}
       };
       window.__PREVIEWJS_IFRAME__.reportEvent({
         kind: "bootstrapping",

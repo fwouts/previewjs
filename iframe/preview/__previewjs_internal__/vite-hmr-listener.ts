@@ -35,12 +35,21 @@ export function setupViteHmrListener() {
       error = null;
       isFirstUpdate = false;
     }
+    if (window.__PREVIEWJS_IFRAME__.lastRenderFailed) {
+      window.location.reload();
+    }
     window.__PREVIEWJS_IFRAME__.reportEvent({
       kind: "vite-before-update",
       payload,
     });
   });
   hmr.on("vite:invalidate", () => {
-    window.location.reload();
+    window.__PREVIEWJS_IFRAME__.refresh({
+      keepErrors: true,
+    });
   });
+  // hmr.on("previewjs:file-changed", (data) => {
+  //   console.error(data);
+  //   window.location.reload();
+  // });
 }

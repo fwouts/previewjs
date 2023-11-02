@@ -19,8 +19,12 @@ export function expectErrors(events: () => PreviewEvent[]) {
       for (const event of events()) {
         switch (event.kind) {
           case "bootstrapped":
-          case "vite-before-update":
             errorEvents = [];
+            break;
+          case "rendered":
+            if (!event.keepErrors) {
+              errorEvents = [];
+            }
             break;
           case "error":
             errorEvents.push(event);

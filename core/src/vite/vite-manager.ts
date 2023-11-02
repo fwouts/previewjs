@@ -179,14 +179,17 @@ export class ViteManager {
 
     import.meta.hot.accept();
 
-    let latestPreviewableModule;
-    let latestWrapperModule;
-    let refresh;
+    let refresh = () => {};
+
+    window.__PREVIEWJS_IFRAME__.refresh = (options) => {
+      refresh(options);
+    };
 
     import.meta.hot.accept(["/${componentPath}"], ([previewableModule]) => {
-      if (previewableModule && refresh) {
-        latestPreviewableModule = previewableModule;
-        refresh(latestPreviewableModule, latestWrapperModule);
+      if (previewableModule) {
+        refresh({
+          previewableModule,
+        });
       }
     });
 
@@ -195,9 +198,10 @@ export class ViteManager {
         ? `
     const wrapperModulePromise = import(/* @vite-ignore */ "/${wrapperPath}");
     import.meta.hot.accept(["/${wrapperPath}"], ([wrapperModule]) => {
-      if (wrapperModule && refresh) {
-        latestWrapperModule = wrapperModule;
-        refresh(latestPreviewableModule, latestWrapperModule);
+      if (wrapperModule) {
+        refresh({
+          wrapperModule,
+        });
       }
     });
     `
@@ -217,9 +221,7 @@ export class ViteManager {
     // Important: the wrapper must be loaded first as it may monkey-patch
     // modules imported by the component module.
     wrapperModulePromise.then(wrapperModule => {
-      latestWrapperModule = wrapperModule;
       import(/* @vite-ignore */ "/${componentPath}").then(previewableModule => {
-        latestPreviewableModule = previewableModule;
         refresh = initPreview({
           previewableModule,
           previewableName: ${JSON.stringify(previewableName)},
@@ -554,6 +556,14 @@ export class ViteManager {
       return;
     }
     const { viteServer, config } = state;
+    // await viteServer.ws.send({
+    //   type: "custom",
+    //   event: "previewjs:file-changed",
+    //   data: {
+    //     absoluteFilePath,
+    //     virtual: info.virtual,
+    //   },
+    // });
     if (info.virtual) {
       const modules = await viteServer.moduleGraph.getModulesByFile(
         absoluteFilePath

@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { revertToEarlierSnapshot } from ".";
 import type { LogLevel } from "../../src";
 import { generateMessageFromError } from "./error-message";
 // @ts-ignore
@@ -31,26 +32,27 @@ export function setUpLogInterception() {
           }
           const hmrMatch = firstArg.match(HMR_FAILED_UPDATE_REGEX);
           if (hmrMatch) {
-            const modulePath = hmrMatch[1]!;
-            const errorMessage = `Failed to reload ${modulePath}`;
-            if (consoleErrorPrecedingHmrError) {
-              window.__PREVIEWJS_IFRAME__.reportEvent({
-                kind: "error",
-                source: "hmr",
-                modulePath,
-                message: generateMessageFromError(
-                  errorMessage,
-                  consoleErrorPrecedingHmrError
-                ),
-              });
-            } else {
-              window.__PREVIEWJS_IFRAME__.reportEvent({
-                kind: "error",
-                source: "hmr",
-                modulePath,
-                message: errorMessage,
-              });
-            }
+            // const modulePath = hmrMatch[1]!;
+            // const errorMessage = `Failed to reload ${modulePath}`;
+            // if (consoleErrorPrecedingHmrError) {
+            //   window.__PREVIEWJS_IFRAME__.reportEvent({
+            //     kind: "error",
+            //     source: "hmr",
+            //     modulePath,
+            //     message: generateMessageFromError(
+            //       errorMessage,
+            //       consoleErrorPrecedingHmrError
+            //     ),
+            //   });
+            // } else {
+            //   window.__PREVIEWJS_IFRAME__.reportEvent({
+            //     kind: "error",
+            //     source: "hmr",
+            //     modulePath,
+            //     message: errorMessage,
+            //   });
+            // }
+            revertToEarlierSnapshot();
             return;
           }
         }
@@ -79,19 +81,42 @@ export function setUpLogInterception() {
   console.log = makeLogger("log", console.log);
   console.info = makeLogger("info", console.info);
   console.warn = makeLogger("warn", console.warn);
-  const errorLogger = makeLogger("error", console.error);
-  console.error = errorLogger;
+  console.error = makeLogger("error", console.error);
   window.onerror = (message, source, lineno, colno, error) => {
-    if (error && error.stack && error.message) {
-      message = error.stack;
-      if (!message.includes(error.message)) {
-        message = error.message + "\n" + message;
-      }
-    } else {
-      message = `${message}`;
-    }
-    errorLogger(message);
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "error",
+      source: "renderer",
+      message: formatError(error, message),
+    });
   };
+  window.onunhandledrejection = (event) => {
+    const message = formatError(event.reason);
+    if (
+      message.includes("Failed to fetch dynamically imported module") ||
+      message.includes("Failed to reload")
+    ) {
+      return;
+    }
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "error",
+      source: "renderer",
+      message,
+    });
+  };
+}
+
+function formatError(error?: any, message?: any): string {
+  if (error && error.stack && error.message) {
+    message = error.stack;
+    if (!message?.includes(error.message)) {
+      message = error.message + "\n" + message;
+    }
+    return message;
+  } else if (message) {
+    return `${message}`;
+  } else {
+    return `${error}`;
+  }
 }
 
 function formatLogMessage(...args: any[]) {

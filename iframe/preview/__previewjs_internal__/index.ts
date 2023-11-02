@@ -15,6 +15,26 @@ export function initListeners() {
   overrideCopyCutPaste();
 }
 
+function getRoot() {
+  const root = document.getElementById("root")!;
+  if (!root) {
+    throw new Error(`Unable to find #root!`);
+  }
+  return root;
+}
+
+let lastGoodSnapshot = "";
+export function revertToEarlierSnapshot() {
+  const root = getRoot();
+  if (root.innerHTML !== lastGoodSnapshot) {
+    root.innerHTML = lastGoodSnapshot;
+  }
+}
+
+function saveGoodSnapshot() {
+  lastGoodSnapshot = getRoot().innerHTML;
+}
+
 export function initPreview({
   previewableModule,
   previewableName,
@@ -25,16 +45,13 @@ export function initPreview({
   previewableName: string;
   wrapperModule: any;
   wrapperName: string;
-}) {
-  const root = document.getElementById("root")!;
-  if (!root) {
-    throw new Error(`Unable to find #root!`);
-  }
-
+}): typeof window.__PREVIEWJS_IFRAME__.refresh {
   let renderId = 0;
 
-  async function runNewRender() {
-    const rootHtml = root.innerHTML;
+  async function runNewRender({
+    keepErrors = false,
+  }: { keepErrors?: boolean } = {}) {
+    saveGoodSnapshot();
     try {
       renderId += 1;
       const thisRenderId = renderId;
@@ -44,14 +61,13 @@ export function initPreview({
         previewableModule,
         previewableName,
         renderId,
+        keepErrors,
         shouldAbortRender: () => renderId !== thisRenderId,
         loadRenderer,
       });
+      saveGoodSnapshot();
     } catch (error: any) {
-      if (root.innerHTML !== rootHtml) {
-        // Restore the previous content so we don't end up with an empty page instead.
-        root.innerHTML = rootHtml;
-      }
+      revertToEarlierSnapshot();
       window.__PREVIEWJS_IFRAME__.reportEvent({
         kind: "error",
         source: "renderer",
@@ -69,10 +85,14 @@ export function initPreview({
     kind: "bootstrapped",
   });
 
-  return (updatedPreviewableModule: any, updatedWrapperModule: any) => {
-    previewableModule = updatedPreviewableModule;
-    wrapperModule = updatedWrapperModule;
+  return (options) => {
+    if (options.previewableModule) {
+      previewableModule = options.previewableModule;
+    }
+    if (options.wrapperModule) {
+      wrapperModule = options.wrapperModule;
+    }
     // eslint-disable-next-line no-console
-    runNewRender().catch(console.error);
+    runNewRender(options).catch(console.error);
   };
 }

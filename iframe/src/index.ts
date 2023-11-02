@@ -4,7 +4,9 @@ declare global {
   interface Window {
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
+      lastRenderFailed: boolean;
       reportEvent(event: PreviewEvent): void;
+      refresh(options: RefreshOptions): void;
       render?(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
@@ -12,6 +14,12 @@ declare global {
       onPreviewEvent(event: PreviewEvent): void;
     };
   }
+}
+
+export interface RefreshOptions {
+  keepErrors?: boolean;
+  previewableModule?: any;
+  wrapperModule?: any;
 }
 
 export interface RenderOptions {
@@ -175,6 +183,7 @@ export type ViteBeforeReload = {
 
 export interface Rendered {
   kind: "rendered";
+  keepErrors: boolean;
 }
 
 export interface Action {

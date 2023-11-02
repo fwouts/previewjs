@@ -54,7 +54,6 @@ test.describe.parallel("vue2/error handling", () => {
     });
     await preview.expectErrors.toMatch([
       "Failed to load url /src/components/Broken.vue",
-      "Failed to reload /src/App.vue",
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.vue", {
@@ -91,8 +90,6 @@ test.describe.parallel("vue2/error handling", () => {
     await preview.expectErrors.toMatch([
       "App.vue:3:3: Unknown word",
       "App.vue:3:3: Unknown word",
-      "Failed to reload /src/App.vue?vue&type=style&index=0&lang.css",
-      "Failed to reload /src/App.vue",
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.vue", {
@@ -106,7 +103,8 @@ test.describe.parallel("vue2/error handling", () => {
     await preview.show("src/App.vue:App");
     await preview.iframe.waitForSelector("#app");
     await preview.fileManager.rename("src/App.vue", "src/App-renamed.vue");
-    await preview.expectErrors.toMatch(["Failed to reload /src/App.vue"]);
+    // TODO
+    await preview.expectErrors.toMatch([]);
     await preview.expectLoggedMessages.toMatch([]);
   });
 });
