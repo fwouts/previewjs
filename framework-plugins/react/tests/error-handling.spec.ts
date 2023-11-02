@@ -260,7 +260,10 @@ test.describe.parallel("react/error handling", () => {
             return <div>Broken</div>;
           }`
         );
-        await preview.expectErrors.toMatch(["Expected error"]);
+        await preview.expectErrors.toMatch([
+          "Error: Expected error",
+          ...(reactVersion === 18 ? ["Error: Expected error"] : []),
+        ]);
         await preview.expectLoggedMessages.toMatch([
           "React will try to recreate this component tree from scratch using the error boundary you provided",
         ]);
@@ -284,7 +287,8 @@ test.describe.parallel("react/error handling", () => {
           }`
         );
         await preview.expectErrors.toMatch([
-          ["Error: Expected error", "Dependency.tsx"],
+          "Error: Expected error",
+          ...(reactVersion === 18 ? ["Error: Expected error"] : []),
         ]);
         await preview.expectLoggedMessages.toMatch([
           "The above error occurred in the <Dependency> component",
