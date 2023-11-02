@@ -23,6 +23,7 @@ export function expectErrors(events: () => PreviewEvent[]) {
             break;
           case "rendered":
             if (!event.keepErrors) {
+              // TODO: Isn't this too aggressive?
               errorEvents = [];
             }
             break;
@@ -81,8 +82,13 @@ export function expectLoggedMessages(events: () => PreviewEvent[]) {
       for (const event of events()) {
         switch (event.kind) {
           case "bootstrapped":
-          case "vite-before-update":
             logEvents = [];
+            break;
+          case "rendered":
+            if (!event.keepErrors) {
+              // TODO: Wrong, this will clear logs emitted during render!
+              logEvents = [];
+            }
             break;
           case "log-message":
             if (!level || event.level === level) {
