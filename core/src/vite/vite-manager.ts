@@ -556,14 +556,6 @@ export class ViteManager {
       return;
     }
     const { viteServer, config } = state;
-    // await viteServer.ws.send({
-    //   type: "custom",
-    //   event: "previewjs:file-changed",
-    //   data: {
-    //     absoluteFilePath,
-    //     virtual: info.virtual,
-    //   },
-    // });
     if (info.virtual) {
       const modules = await viteServer.moduleGraph.getModulesByFile(
         absoluteFilePath

@@ -48,8 +48,4 @@ export function setupViteHmrListener() {
       keepErrors: true,
     });
   });
-  // hmr.on("previewjs:file-changed", (data) => {
-  //   console.error(data);
-  //   window.location.reload();
-  // });
 }
