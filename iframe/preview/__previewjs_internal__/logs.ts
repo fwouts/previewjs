@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
-import { revertToEarlierSnapshot } from ".";
 import type { LogLevel } from "../../src";
-import { generateMessageFromError } from "./error-message";
 // @ts-ignore
 import inspect from "./object-inspect";
 
@@ -11,11 +9,6 @@ const HMR_FAILED_UPDATE_REGEX =
   /^\[hmr\] Failed to reload (.+)\. This could be due to syntax errors or importing non-existent modules\. \(see errors above\)$/;
 
 export function setUpLogInterception() {
-  // This is a hack to intercept errors logged here: https://github.com/vitejs/vite/blob/2de425d0288bfae345c5ced5c84cf67ffccaef48/packages/vite/src/client/client.ts#L115
-  //
-  // An example where this will occur is when importing a module
-  // that throws an error in its root body.
-  let consoleErrorPrecedingHmrError: string | null = null;
   const makeLogger =
     (level: LogLevel, defaultFn: typeof console.log) =>
     (...args: any[]) => {
@@ -32,42 +25,8 @@ export function setUpLogInterception() {
           }
           const hmrMatch = firstArg.match(HMR_FAILED_UPDATE_REGEX);
           if (hmrMatch) {
-            // const modulePath = hmrMatch[1]!;
-            // const errorMessage = `Failed to reload ${modulePath}`;
-            // if (consoleErrorPrecedingHmrError) {
-            //   window.__PREVIEWJS_IFRAME__.reportEvent({
-            //     kind: "error",
-            //     source: "hmr",
-            //     modulePath,
-            //     message: generateMessageFromError(
-            //       errorMessage,
-            //       consoleErrorPrecedingHmrError
-            //     ),
-            //   });
-            // } else {
-            //   window.__PREVIEWJS_IFRAME__.reportEvent({
-            //     kind: "error",
-            //     source: "hmr",
-            //     modulePath,
-            //     message: errorMessage,
-            //   });
-            // }
-            revertToEarlierSnapshot();
             return;
           }
-        }
-        consoleErrorPrecedingHmrError = null;
-        if (
-          level === "error" &&
-          args.length === 1 &&
-          firstArg instanceof Error &&
-          new Error().stack?.includes("warnFailedFetch")
-        ) {
-          consoleErrorPrecedingHmrError = generateMessageFromError(
-            firstArg.message,
-            firstArg.stack
-          );
-          return;
         }
         window.__PREVIEWJS_IFRAME__.reportEvent({
           kind: "log-message",
