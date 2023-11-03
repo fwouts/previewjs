@@ -108,10 +108,7 @@ test.describe.parallel("svelte/error handling", () => {
       "src/App.svelte",
       "src/App-renamed.svelte"
     );
-    await preview.expectErrors.toMatch([
-      "Failed to reload /src/App.svelte",
-      "Failed to reload /src/App.svelte",
-    ]);
+    await preview.expectErrors.toMatch(["Failed to reload /src/App.svelte"]);
     await preview.expectLoggedMessages.toMatch([]);
   });
 });

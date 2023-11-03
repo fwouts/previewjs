@@ -12,8 +12,8 @@ const iframe = document.getElementById("root") as HTMLIFrameElement;
 const rpcApi = createAxiosApi("/api/");
 const iframeController = createController({
   getIframe: () => iframe,
-  listener: (event) => {
-    console.log(event);
+  onStateUpdate: (state) => {
+    console.log(state);
   },
 });
 

@@ -8,8 +8,8 @@ import {
 } from "@previewjs/properties";
 import type playwright from "playwright";
 import ts from "typescript";
-import { setupPreviewEventListener } from "./event-listener.js";
 import { getPreviewIframe } from "./iframe.js";
+import { setupPreviewStateListener } from "./state-listener.js";
 
 export async function startPreview({
   workspace,
@@ -31,16 +31,16 @@ export async function startPreview({
     // No-op by default.
   };
 
-  const events = await setupPreviewEventListener(page, (event) => {
-    if (event.kind === "rendered") {
+  const getState = await setupPreviewStateListener(page, (state) => {
+    if (state.rendered) {
       onRenderingDone();
-    } else if (event.kind === "error") {
-      onRenderingError(new Error(event.message));
+    } else if (state.errors.length > 0) {
+      onRenderingError(new Error(state.errors[0]!.message));
     }
   });
 
   return {
-    events,
+    getState,
     iframe: {
       async waitForIdle() {
         await waitUntilNetworkIdle(page);

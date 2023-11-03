@@ -32,7 +32,6 @@ test.describe.parallel("vue3/console", () => {
     );
     await preview.iframe.waitForSelector(".App-updated-1");
     await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
-    preview.events.clear();
     await preview.fileManager.update(
       "src/App.vue",
       `<template>
