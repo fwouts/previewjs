@@ -70,6 +70,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     actions: [],
   };
   private onViteBeforeUpdateLogsLength = 0;
+  private canSliceLogs = false;
 
   constructor(private readonly options: CreateControllerOptions) {}
 
@@ -162,6 +163,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         break;
       case "vite-before-update":
         this.onViteBeforeUpdateLogsLength = this.state.logs.length;
+        this.canSliceLogs = false;
         this.updateState((state) => {
           for (const update of event.payload.updates) {
             state.errors = state.errors.filter(
@@ -170,14 +172,24 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           }
         });
         break;
-      case "rendered": {
+      case "vite-invalidate":
         this.updateState((state) => {
-          const logsSliceStart = this.onViteBeforeUpdateLogsLength;
           this.onViteBeforeUpdateLogsLength = 0;
-          state.logs = state.logs.slice(logsSliceStart);
+          state.logs = [];
+        });
+        break;
+      case "vite-after-update":
+        // Do nothing.
+        break;
+      case "rendered": {
+        this.canSliceLogs = !event.keepErrors;
+        this.updateState((state) => {
           state.loading = false;
           state.rendered = true;
           if (!event.keepErrors) {
+            const logsSliceStart = this.onViteBeforeUpdateLogsLength;
+            this.onViteBeforeUpdateLogsLength = 0;
+            state.logs = state.logs.slice(logsSliceStart);
             // We keep HMR errors around, as we only want to clear them when we receive a successful
             // "vite-before-update" event for the module.
             state.errors = state.errors.filter((e) => e.source === "hmr");
@@ -230,6 +242,8 @@ export type PreviewEvent =
   | Bootstrapping
   | Bootstrapped
   | ViteBeforeUpdate
+  | ViteAfterUpdate
+  | ViteInvalidate
   | ViteBeforeReload
   | Rendered
   | Action
@@ -247,6 +261,15 @@ export type Bootstrapped = {
 export type ViteBeforeUpdate = {
   kind: "vite-before-update";
   payload: UpdatePayload;
+};
+
+export type ViteAfterUpdate = {
+  kind: "vite-after-update";
+  payload: UpdatePayload;
+};
+
+export type ViteInvalidate = {
+  kind: "vite-invalidate";
 };
 
 export type ViteBeforeReload = {

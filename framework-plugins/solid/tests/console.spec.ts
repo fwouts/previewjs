@@ -25,7 +25,7 @@ test.describe.parallel("solid/console", () => {
           }`
     );
     await preview.iframe.waitForSelector("#update-1");
-    await preview.expectLoggedMessages.toMatch(["Render 1", "Render 1"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
     await preview.fileManager.update(
       "src/App.tsx",
       `export function App() {
@@ -38,6 +38,6 @@ test.describe.parallel("solid/console", () => {
           }`
     );
     await preview.iframe.waitForSelector("#update-2");
-    await preview.expectLoggedMessages.toMatch(["Render 2", "Render 2"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 2"], "log");
   });
 });

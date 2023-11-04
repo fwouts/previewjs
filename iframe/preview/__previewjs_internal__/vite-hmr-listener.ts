@@ -44,7 +44,16 @@ export function setupViteHmrListener() {
       });
     }
   });
+  hmr.on("vite:afterUpdate", (payload: UpdatePayload) => {
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "vite-after-update",
+      payload,
+    });
+  });
   hmr.on("vite:invalidate", () => {
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "vite-invalidate",
+    });
     window.__PREVIEWJS_IFRAME__.refresh({
       keepErrors: true,
     });
