@@ -87,10 +87,7 @@ test.describe.parallel("vue2/error handling", () => {
       replace: "#app {",
       with: " BROKEN",
     });
-    await preview.expectErrors.toMatch([
-      "App.vue:3:3: Unknown word",
-      "App.vue:3:3: Unknown word",
-    ]);
+    await preview.expectErrors.toMatch(["App.vue:3:3: Unknown word"]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.vue", {
       replace: " BROKEN",

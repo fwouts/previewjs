@@ -1,19 +1,17 @@
-import type { PreviewEvent, RenderOptions } from "@previewjs/iframe";
+import type { PreviewIframeState, RenderOptions } from "@previewjs/iframe";
 import { createController } from "@previewjs/iframe";
 
 declare global {
   interface Window {
     loadIframePreview(previewableId: string, options: RenderOptions): void;
-    onIframeEvent?(event: PreviewEvent): void;
+    onIframeStateUpdate?(state: PreviewIframeState): void;
   }
 }
 
 const controller = createController({
   getIframe: () => document.getElementById("iframe") as HTMLIFrameElement,
-  listener: (event) => {
-    if (window.onIframeEvent) {
-      window.onIframeEvent(event);
-    }
+  onStateUpdate: (state) => {
+    window.onIframeStateUpdate?.(state);
   },
 });
 

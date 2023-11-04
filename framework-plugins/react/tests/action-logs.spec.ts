@@ -28,20 +28,23 @@ for (const reactVersion of reactVersions()) {
         );
         await preview.show("src/Button.tsx:Button");
         const button = await preview.iframe.waitForSelector("#button");
-        preview.events.clear();
         await button.click();
-        expect(preview.events.get()).toEqual([
-          {
-            kind: "action",
-            path: "onClick",
-            type: "fn",
-          },
-          {
-            kind: "log-message",
-            level: "log",
-            message: "onClick invoked",
-          },
-        ]);
+        expect(preview.getState()).toMatchObject({
+          logs: [
+            {
+              kind: "log-message",
+              level: "log",
+              message: "onClick invoked",
+            },
+          ],
+          actions: [
+            {
+              kind: "action",
+              path: "onClick",
+              type: "fn",
+            },
+          ],
+        });
       });
 
       test("emits action event for explicit callbacks", async (preview) => {
@@ -64,20 +67,23 @@ for (const reactVersion of reactVersions()) {
           }`
         );
         const button = await preview.iframe.waitForSelector("#button");
-        preview.events.clear();
         await button.click();
-        expect(preview.events.get()).toEqual([
-          {
-            kind: "action",
-            path: "onClick",
-            type: "fn",
-          },
-          {
-            kind: "log-message",
-            level: "log",
-            message: "onClick callback invoked!",
-          },
-        ]);
+        expect(preview.getState()).toMatchObject({
+          logs: [
+            {
+              kind: "log-message",
+              level: "log",
+              message: "onClick callback invoked!",
+            },
+          ],
+          actions: [
+            {
+              kind: "action",
+              path: "onClick",
+              type: "fn",
+            },
+          ],
+        });
       });
 
       test("shows action logs on link click", async (preview) => {
@@ -93,15 +99,16 @@ for (const reactVersion of reactVersions()) {
         );
         await preview.show("src/Link.tsx:Link");
         const link = await preview.iframe.waitForSelector("#link");
-        preview.events.clear();
         await link.click();
-        expect(preview.events.get()).toEqual([
-          {
-            kind: "action",
-            path: "https://www.google.com/",
-            type: "url",
-          },
-        ]);
+        expect(preview.getState()).toMatchObject({
+          actions: [
+            {
+              kind: "action",
+              path: "https://www.google.com/",
+              type: "url",
+            },
+          ],
+        });
       });
     });
   });

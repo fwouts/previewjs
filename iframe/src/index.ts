@@ -1,3 +1,5 @@
+import { assertNever } from "assert-never";
+import { produce } from "immer";
 import type { UpdatePayload } from "vite/types/hmrPayload";
 
 declare global {
@@ -16,21 +18,33 @@ declare global {
   }
 }
 
-export interface RefreshOptions {
+export type RefreshOptions = {
   keepErrors?: boolean;
   previewableModule?: any;
   wrapperModule?: any;
-}
+};
 
-export interface RenderOptions {
+export type PreviewIframeState = {
+  loading: boolean;
+  rendered: boolean;
+  errors: PreviewError[];
+  logs: LogMessage[];
+  actions: Action[];
+};
+
+export type CreateControllerOptions = {
+  getIframe: () => HTMLIFrameElement | null;
+  onStateUpdate?: (state: PreviewIframeState) => void;
+};
+
+export type RenderOptions = {
   autogenCallbackPropsSource: string;
   propsAssignmentSource: string;
-}
+};
 
-export function createController(options: {
-  getIframe: () => HTMLIFrameElement | null;
-  listener(event: PreviewEvent): void;
-}): PreviewIframeController {
+export function createController(
+  options: CreateControllerOptions
+): PreviewIframeController {
   const controller = new PreviewIframeControllerImpl(options);
   window.__PREVIEWJS_CONTROLLER__ = controller;
   return controller;
@@ -48,13 +62,16 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   private bootstrapStatus: "not-started" | "pending" | "success" | "failure" =
     "pending";
   private expectRenderTimeout?: any;
+  private state: PreviewIframeState = {
+    loading: false,
+    rendered: false,
+    errors: [],
+    logs: [],
+    actions: [],
+  };
+  private onViteBeforeUpdateLogsLength = 0;
 
-  constructor(
-    private readonly options: {
-      getIframe: () => HTMLIFrameElement | null;
-      listener(event: PreviewEvent): void;
-    }
-  ) {}
+  constructor(private readonly options: CreateControllerOptions) {}
 
   async render(previewableId: string, options: RenderOptions) {
     const previousRender = this.lastRender;
@@ -101,12 +118,15 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
   }
 
   onPreviewEvent(event: PreviewEvent) {
-    const { listener } = this.options;
-
     if (this.bootstrapStatus === "not-started") {
       if (event.kind === "bootstrapping") {
         this.bootstrapStatus = "pending";
-        listener(event);
+        this.updateState((state) => {
+          state.loading = true;
+          state.rendered = false;
+          state.errors = [];
+          state.logs = [];
+        });
       }
       // The only event we care about is bootstrapping.
       // Otherwise, it's a rogue event from a previous iframe.
@@ -114,6 +134,9 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     }
 
     switch (event.kind) {
+      case "bootstrapping":
+        // Already handled above.
+        break;
       case "bootstrapped":
         this.bootstrapStatus = "success";
         if (this.lastRender) {
@@ -127,23 +150,70 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         }
         break;
       case "vite-before-reload":
+        this.updateState((state) => {
+          state.logs = [];
+          state.errors = [];
+        });
         if (this.lastRender) {
           this.resetIframe(this.lastRender.previewableId);
         } else {
           // TODO: Can this ever happen?
         }
         break;
-      case "rendered":
+      case "vite-before-update":
+        this.onViteBeforeUpdateLogsLength = this.state.logs.length;
+        this.updateState((state) => {
+          for (const update of event.payload.updates) {
+            state.errors = state.errors.filter(
+              (e) => e.source !== "hmr" || e.modulePath !== update.acceptedPath
+            );
+          }
+        });
+        break;
+      case "rendered": {
+        const logsSliceStart = this.onViteBeforeUpdateLogsLength;
+        this.onViteBeforeUpdateLogsLength = 0;
+        this.updateState((state) => {
+          state.logs = state.logs.slice(logsSliceStart);
+          state.loading = false;
+          state.rendered = true;
+          // We keep HMR errors around, as we only want to clear them when we receive a successful
+          // "vite-before-update" event for the module.
+          state.errors = state.errors.filter((e) => e.source === "hmr");
+        });
         this.clearExpectRenderTimeout();
         break;
+      }
       case "error":
+        this.updateState((state) => {
+          state.loading = false;
+          // There can only be one error from each source at any time. Keep the last one.
+          state.errors = state.errors.filter((e) => e.source !== event.source);
+          state.errors.push(event);
+        });
         this.clearExpectRenderTimeout();
         if (this.bootstrapStatus === "pending") {
           this.bootstrapStatus = "failure";
         }
         break;
+      case "log-message":
+        this.updateState((state) => {
+          state.logs.push(event);
+        });
+        break;
+      case "action":
+        this.updateState((state) => {
+          state.actions.push(event);
+        });
+        break;
+      default:
+        throw assertNever(event);
     }
-    listener(event);
+  }
+
+  private updateState(stateModifier: (state: PreviewIframeState) => void) {
+    this.state = produce(this.state, stateModifier);
+    this.options.onStateUpdate?.(this.state);
   }
 
   private clearExpectRenderTimeout() {

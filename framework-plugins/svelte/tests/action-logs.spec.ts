@@ -19,14 +19,15 @@ test.describe.parallel("svelte/action logs", () => {
     );
     await preview.show("src/App.svelte:App");
     const link = await preview.iframe.waitForSelector("#link");
-    preview.events.clear();
     await link.click();
-    expect(preview.events.get()).toEqual([
-      {
-        kind: "action",
-        path: "https://www.google.com/",
-        type: "url",
-      },
-    ]);
+    expect(preview.getState()).toMatchObject({
+      actions: [
+        {
+          kind: "action",
+          path: "https://www.google.com/",
+          type: "url",
+        },
+      ],
+    });
   });
 });

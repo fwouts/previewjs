@@ -26,7 +26,6 @@ test.describe.parallel("solid/console", () => {
     );
     await preview.iframe.waitForSelector("#update-1");
     await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
-    preview.events.clear();
     await preview.fileManager.update(
       "src/App.tsx",
       `function App() {

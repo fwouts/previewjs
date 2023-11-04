@@ -102,10 +102,10 @@ export const previewTest = (
           page,
           fileManager,
           get expectErrors() {
-            return expectErrors(() => this.events.get());
+            return expectErrors(this.getState);
           },
           get expectLoggedMessages() {
-            return expectLoggedMessages(() => this.events.get());
+            return expectLoggedMessages(this.getState);
           },
           ...preview,
         });

@@ -1,37 +1,16 @@
-import type {
-  LogLevel,
-  LogMessage,
-  PreviewError,
-  PreviewEvent,
-} from "@previewjs/iframe";
+import type { LogLevel, PreviewIframeState } from "@previewjs/iframe";
 import { inspect } from "util";
 
 const RETRY_AFTER_MILLIS = 100;
 const MAX_RETRIES = 50;
 
-export function expectErrors(events: () => PreviewEvent[]) {
+export function expectErrors(getState: () => PreviewIframeState) {
   return {
     toMatch: async (
       messages: Array<string | string[]>,
       retries = 0
     ): Promise<void> => {
-      let errorEvents: PreviewError[] = [];
-      for (const event of events()) {
-        switch (event.kind) {
-          case "bootstrapped":
-            errorEvents = [];
-            break;
-          case "rendered":
-            if (!event.keepErrors) {
-              // TODO: Isn't this too aggressive?
-              errorEvents = [];
-            }
-            break;
-          case "error":
-            errorEvents.push(event);
-            break;
-        }
-      }
+      const errorEvents = getState().errors;
       const remainingErrorEvents = [...errorEvents];
       for (const message of messages) {
         const messageCandidates = Array.isArray(message) ? message : [message];
@@ -46,57 +25,45 @@ export function expectErrors(events: () => PreviewEvent[]) {
           }
         }
         if (!found) {
-          if (retries > MAX_RETRIES) {
-            throw new Error(
-              `Unable to find error: "${message}".\nReceived: ${inspect(
-                errorEvents
-              )}`
-            );
-          } else {
-            await new Promise((resolve) =>
-              setTimeout(resolve, RETRY_AFTER_MILLIS)
-            );
-            return expectErrors(events).toMatch(messages, retries + 1);
-          }
+          return retryOrThrow(
+            `Unable to find error: "${message}".\nReceived: ${inspect(
+              errorEvents
+            )}`
+          );
         }
       }
       if (remainingErrorEvents.length > 0) {
-        throw new Error(
+        return retryOrThrow(
           `Encountered unexpected errors.\nUnmatched: ${inspect(
             remainingErrorEvents
           )}\n\nFull list: ${inspect(errorEvents)}`
         );
       }
+
+      async function retryOrThrow(message: string) {
+        if (retries > MAX_RETRIES) {
+          throw new Error(message);
+        } else {
+          await new Promise((resolve) =>
+            setTimeout(resolve, RETRY_AFTER_MILLIS)
+          );
+          return expectErrors(getState).toMatch(messages, retries + 1);
+        }
+      }
     },
   };
 }
 
-export function expectLoggedMessages(events: () => PreviewEvent[]) {
+export function expectLoggedMessages(getState: () => PreviewIframeState) {
   return {
     toMatch: async (
       messages: Array<string | string[]>,
       level = "error",
       retries = 0
     ): Promise<void> => {
-      let logEvents: LogMessage[] = [];
-      for (const event of events()) {
-        switch (event.kind) {
-          case "bootstrapped":
-            logEvents = [];
-            break;
-          case "rendered":
-            if (!event.keepErrors) {
-              // TODO: Wrong, this will clear logs emitted during render!
-              logEvents = [];
-            }
-            break;
-          case "log-message":
-            if (!level || event.level === level) {
-              logEvents.push(event);
-            }
-            break;
-        }
-      }
+      const logEvents = getState().logs.filter(
+        (log) => !level || log.level === level
+      );
       const remainingLogEvents = [...logEvents];
       for (const message of messages) {
         const messageCandidates = Array.isArray(message) ? message : [message];
@@ -111,30 +78,34 @@ export function expectLoggedMessages(events: () => PreviewEvent[]) {
           }
         }
         if (!found) {
-          if (retries > MAX_RETRIES) {
-            throw new Error(
-              `Unable to find logged message: "${message}".\nReceived: ${inspect(
-                logEvents
-              )}`
-            );
-          } else {
-            await new Promise((resolve) =>
-              setTimeout(resolve, RETRY_AFTER_MILLIS)
-            );
-            return expectLoggedMessages(events).toMatch(
-              messages,
-              level,
-              retries + 1
-            );
-          }
+          return retryOrThrow(
+            `Unable to find logged message: "${message}".\nReceived: ${inspect(
+              logEvents
+            )}`
+          );
         }
       }
       if (remainingLogEvents.length > 0) {
-        throw new Error(
+        return retryOrThrow(
           `Encountered unexpected logged messages.\nUnmatched: ${inspect(
             remainingLogEvents
           )}\n\nFull list: ${inspect(logEvents)}`
         );
+      }
+
+      async function retryOrThrow(message: string) {
+        if (retries > MAX_RETRIES) {
+          throw new Error(message);
+        } else {
+          await new Promise((resolve) =>
+            setTimeout(resolve, RETRY_AFTER_MILLIS)
+          );
+          return expectLoggedMessages(getState).toMatch(
+            messages,
+            level,
+            retries + 1
+          );
+        }
       }
     },
   };

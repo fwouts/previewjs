@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { test } from "@playwright/test";
 import { previewTest } from "@previewjs/testing";
 import path from "path";
 import url from "url";
@@ -32,16 +32,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App").catch(() => {
           /* expected error */
         });
-        expect(await preview.events.get()).toEqual([
-          {
-            kind: "bootstrapping",
-          },
-          {
-            kind: "error",
-            source: "load",
-            message: "Expected error",
-          },
-        ]);
+        await preview.expectErrors.toMatch(["Expected error"]);
       });
 
       test("handles syntax errors gracefully", async (preview) => {
