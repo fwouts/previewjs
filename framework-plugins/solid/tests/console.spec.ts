@@ -15,7 +15,7 @@ test.describe.parallel("solid/console", () => {
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update(
       "src/App.tsx",
-      `function App() {
+      `export function App() {
             console.log("Render 1");
             return (
               <div id="update-1">
@@ -25,10 +25,10 @@ test.describe.parallel("solid/console", () => {
           }`
     );
     await preview.iframe.waitForSelector("#update-1");
-    await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 1", "Render 1"], "log");
     await preview.fileManager.update(
       "src/App.tsx",
-      `function App() {
+      `export function App() {
             console.log("Render 2");
             return (
               <div id="update-2">
@@ -38,6 +38,6 @@ test.describe.parallel("solid/console", () => {
           }`
     );
     await preview.iframe.waitForSelector("#update-2");
-    await preview.expectLoggedMessages.toMatch(["Render 2"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 2", "Render 2"], "log");
   });
 });
