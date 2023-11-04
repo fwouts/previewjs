@@ -19,10 +19,7 @@ export function localEval(): vite.Plugin {
         // be React components.
         `
 export const PreviewJsEval = (code, args = {}) => {
-  for (const [key, value] of Object.entries(args)) {
-    eval("var " + key + " = value;");
-  }
-  return eval("(() => { " + code + " })()");
+  return eval("(({ " + Object.keys(args).join(", ") +  "}) => { " + code + " })(args)");
 }
 `
       );
