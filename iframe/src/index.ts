@@ -70,7 +70,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     actions: [],
   };
   private onViteBeforeUpdateLogsLength = 0;
-  private canSliceLogs = false;
 
   constructor(private readonly options: CreateControllerOptions) {}
 
@@ -163,7 +162,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         break;
       case "vite-before-update":
         this.onViteBeforeUpdateLogsLength = this.state.logs.length;
-        this.canSliceLogs = false;
         this.updateState((state) => {
           for (const update of event.payload.updates) {
             state.errors = state.errors.filter(
@@ -182,7 +180,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         // Do nothing.
         break;
       case "rendered": {
-        this.canSliceLogs = !event.triggeredByViteInvalidate;
         this.updateState((state) => {
           state.loading = false;
           state.rendered = true;
