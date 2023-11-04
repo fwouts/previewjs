@@ -100,7 +100,7 @@ test.describe.parallel("vue3/error handling", () => {
     await preview.show("src/App.vue:App");
     await preview.iframe.waitForSelector(".logo");
     await preview.fileManager.rename("src/App.vue", "src/App-renamed.vue");
-    // TODO
+    // TODO: Find a way to prevent silent failures.
     await preview.expectErrors.toMatch([]);
     await preview.expectLoggedMessages.toMatch([]);
   });

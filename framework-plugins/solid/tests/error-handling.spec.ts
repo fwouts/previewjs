@@ -262,19 +262,19 @@ test.describe.parallel("solid/error handling", () => {
     await preview.show("src/App.tsx:App");
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.rename("src/App.tsx", "src/App-renamed.tsx");
-    // TODO: Expect some kind of error.
+    // TODO: Find a way to prevent silent failures.
     await preview.expectErrors.toMatch([]);
     await preview.expectLoggedMessages.toMatch([]);
   });
 
-  test("fails correctly when component is missing after update", async (preview) => {
+  test.only("fails correctly when component is missing after update", async (preview) => {
     await preview.show("src/App.tsx:App");
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update(
       "src/App.tsx",
       `export const App2 = () => <div>Hello, World!</div>;`
     );
-    // TODO
+    // TODO: Find a way to prevent silent failures.
     await preview.expectErrors.toMatch([]);
     await preview.expectLoggedMessages.toMatch([]);
   });

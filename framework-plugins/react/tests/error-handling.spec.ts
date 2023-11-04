@@ -291,7 +291,7 @@ test.describe.parallel("react/error handling", () => {
         await preview.show("src/App.tsx:App");
         await preview.iframe.waitForSelector(".App");
         await preview.fileManager.rename("src/App.tsx", "src/App-renamed.tsx");
-        // TODO
+        // TODO: Find a way to prevent silent failures.
         await preview.expectErrors.toMatch([]);
         await preview.expectLoggedMessages.toMatch([]);
       });
@@ -305,7 +305,7 @@ test.describe.parallel("react/error handling", () => {
 
           export const App2 = () => <div>Hello, World!</div>;`
         );
-        // TODO
+        // TODO: Find a way to prevent silent failures.
         await preview.expectErrors.toMatch([]);
         await preview.expectLoggedMessages.toMatch([]);
       });

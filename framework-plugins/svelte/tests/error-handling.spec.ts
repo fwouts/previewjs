@@ -107,7 +107,7 @@ test.describe.parallel("svelte/error handling", () => {
       "src/App.svelte",
       "src/App-renamed.svelte"
     );
-    // TODO
+    // TODO: Find a way to prevent silent failures.
     await preview.expectErrors.toMatch([]);
     await preview.expectLoggedMessages.toMatch([]);
   });
