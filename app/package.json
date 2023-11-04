@@ -17,8 +17,7 @@
   "type": "module",
   "main": "./dist/index.mjs",
   "scripts": {
-    "build": "tsc && unbuild && tsc -p client/tsconfig.json && vite build client",
-    "client:dev": "vite client"
+    "build": "tsc && unbuild && tsc -p client/tsconfig.json && vite build client"
   },
   "dependencies": {
     "express": "^4.18.2"
