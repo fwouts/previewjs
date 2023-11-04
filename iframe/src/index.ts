@@ -171,15 +171,17 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         });
         break;
       case "rendered": {
-        const logsSliceStart = this.onViteBeforeUpdateLogsLength;
-        this.onViteBeforeUpdateLogsLength = 0;
         this.updateState((state) => {
+          const logsSliceStart = this.onViteBeforeUpdateLogsLength;
+          this.onViteBeforeUpdateLogsLength = 0;
           state.logs = state.logs.slice(logsSliceStart);
           state.loading = false;
           state.rendered = true;
-          // We keep HMR errors around, as we only want to clear them when we receive a successful
-          // "vite-before-update" event for the module.
-          state.errors = state.errors.filter((e) => e.source === "hmr");
+          if (!event.keepErrors) {
+            // We keep HMR errors around, as we only want to clear them when we receive a successful
+            // "vite-before-update" event for the module.
+            state.errors = state.errors.filter((e) => e.source === "hmr");
+          }
         });
         this.clearExpectRenderTimeout();
         break;

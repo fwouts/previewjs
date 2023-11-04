@@ -37,11 +37,12 @@ export function setupViteHmrListener() {
     }
     if (window.__PREVIEWJS_IFRAME__.lastRenderFailed) {
       window.location.reload();
+    } else {
+      window.__PREVIEWJS_IFRAME__.reportEvent({
+        kind: "vite-before-update",
+        payload,
+      });
     }
-    window.__PREVIEWJS_IFRAME__.reportEvent({
-      kind: "vite-before-update",
-      payload,
-    });
   });
   hmr.on("vite:invalidate", () => {
     window.__PREVIEWJS_IFRAME__.refresh({
