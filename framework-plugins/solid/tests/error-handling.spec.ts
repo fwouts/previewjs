@@ -267,7 +267,7 @@ test.describe.parallel("solid/error handling", () => {
     await preview.expectLoggedMessages.toMatch([]);
   });
 
-  test.only("fails correctly when component is missing after update", async (preview) => {
+  test("fails correctly when component is missing after update", async (preview) => {
     await preview.show("src/App.tsx:App");
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update(
