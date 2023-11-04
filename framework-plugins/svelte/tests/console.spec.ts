@@ -25,7 +25,7 @@ test.describe.parallel("svelte/console", () => {
       </script>`
     );
     await preview.iframe.waitForSelector(".App-updated-1");
-    await preview.expectLoggedMessages.toMatch(["Render 1", "Render 1"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
     await preview.fileManager.update(
       "src/App.svelte",
       `<div class="App-updated-2">
@@ -38,6 +38,6 @@ test.describe.parallel("svelte/console", () => {
       </script>`
     );
     await preview.iframe.waitForSelector(".App-updated-2");
-    await preview.expectLoggedMessages.toMatch(["Render 2", "Render 2"], "log");
+    await preview.expectLoggedMessages.toMatch(["Render 2"], "log");
   });
 });
