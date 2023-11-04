@@ -112,16 +112,6 @@ const vue2FrameworkPlugin: FrameworkPluginFactory = {
               },
             },
             {
-              name: "previewjs:disable-vue-hmr",
-              async transform(code) {
-                // HMR causes issues such as https://github.com/underfin/vite-plugin-vue2/issues/149.
-                // It also prevents preview props from being refreshed.
-                // For now, we disable it entirely.
-                const matchHmr = /\/\* hot reload \*\/(.|\n)*\n}/m;
-                return code.replace(matchHmr, "");
-              },
-            },
-            {
               name: "previewjs:nuxt-style-resources",
               async config(config) {
                 try {

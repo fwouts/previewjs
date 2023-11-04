@@ -7,6 +7,7 @@ export async function runRenderer({
   previewableModule,
   previewableName,
   renderId,
+  triggeredByViteInvalidate,
   shouldAbortRender,
   loadRenderer,
 }: {
@@ -15,6 +16,7 @@ export async function runRenderer({
   previewableModule: any;
   previewableName: string;
   renderId: number;
+  triggeredByViteInvalidate: boolean;
   shouldAbortRender: () => boolean;
   loadRenderer: RendererLoader;
 }) {
@@ -34,10 +36,15 @@ export async function runRenderer({
     return;
   }
   const { autogenCallbackProps, properties } =
-    await previewableModule.PreviewJsEvaluateLocally(
-      currentState.autogenCallbackPropsSource,
-      currentState.propsAssignmentSource,
-      jsxFactory
+    await previewableModule.PreviewJsEval(
+      `
+      let ${currentState.autogenCallbackPropsSource};
+      let ${currentState.propsAssignmentSource};
+      return { autogenCallbackProps, properties };
+      `,
+      {
+        __jsxFactory__: jsxFactory,
+      }
     );
   if (shouldAbortRender()) {
     return;
@@ -52,6 +59,7 @@ export async function runRenderer({
   }
   window.__PREVIEWJS_IFRAME__.reportEvent({
     kind: "rendered",
+    triggeredByViteInvalidate,
   });
 }
 

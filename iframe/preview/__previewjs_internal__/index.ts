@@ -25,15 +25,16 @@ export function initPreview({
   previewableName: string;
   wrapperModule: any;
   wrapperName: string;
-}) {
+}): typeof window.__PREVIEWJS_IFRAME__.refresh {
   const root = document.getElementById("root")!;
   if (!root) {
     throw new Error(`Unable to find #root!`);
   }
-
   let renderId = 0;
 
-  async function runNewRender() {
+  async function runNewRender({
+    triggeredByViteInvalidate = false,
+  }: { triggeredByViteInvalidate?: boolean } = {}) {
     const rootHtml = root.innerHTML;
     try {
       renderId += 1;
@@ -44,6 +45,7 @@ export function initPreview({
         previewableModule,
         previewableName,
         renderId,
+        triggeredByViteInvalidate,
         shouldAbortRender: () => renderId !== thisRenderId,
         loadRenderer,
       });
@@ -69,10 +71,14 @@ export function initPreview({
     kind: "bootstrapped",
   });
 
-  return (updatedPreviewableModule: any, updatedWrapperModule: any) => {
-    previewableModule = updatedPreviewableModule;
-    wrapperModule = updatedWrapperModule;
+  return (options) => {
+    if (options.previewableModule) {
+      previewableModule = options.previewableModule;
+    }
+    if (options.wrapperModule) {
+      wrapperModule = options.wrapperModule;
+    }
     // eslint-disable-next-line no-console
-    runNewRender().catch(console.error);
+    runNewRender(options).catch(console.error);
   };
 }

@@ -27,7 +27,11 @@ export const loadRenderer: RendererLoader = async ({
       throw new Error(`No default component could be found`);
     }
   } else {
-    Previewable = previewableModule[`__previewjs__${previewableName}`];
+    Previewable =
+      previewableModule[previewableName] ||
+      previewableModule.PreviewJsEval(
+        `try { return ${previewableName}; } catch { return null; }`
+      );
     if (!Previewable) {
       throw new Error(`No component or story named '${previewableName}'`);
     }

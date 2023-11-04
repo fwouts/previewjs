@@ -20,11 +20,10 @@ export const loadRenderer: RendererLoader = async ({
     (wrapperModule && wrapperModule[wrapperName || "Wrapper"]) ||
     (({ children }: { children: JSX.Element }) => <>{children}</>);
   const Previewable =
-    previewableModule[
-      previewableName === "default"
-        ? "default"
-        : `__previewjs__${previewableName}`
-    ];
+    previewableModule[previewableName] ||
+    previewableModule.PreviewJsEval(
+      `try { return ${previewableName}; } catch { return null; }`
+    );
   if (!Previewable) {
     throw new Error(`No component or story named '${previewableName}'`);
   }

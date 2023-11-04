@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import type { LogLevel } from "../../src";
-import { generateMessageFromError } from "./error-message";
 // @ts-ignore
 import inspect from "./object-inspect";
 
@@ -10,11 +9,6 @@ const HMR_FAILED_UPDATE_REGEX =
   /^\[hmr\] Failed to reload (.+)\. This could be due to syntax errors or importing non-existent modules\. \(see errors above\)$/;
 
 export function setUpLogInterception() {
-  // This is a hack to intercept errors logged here: https://github.com/vitejs/vite/blob/2de425d0288bfae345c5ced5c84cf67ffccaef48/packages/vite/src/client/client.ts#L115
-  //
-  // An example where this will occur is when importing a module
-  // that throws an error in its root body.
-  let consoleErrorPrecedingHmrError: string | null = null;
   const makeLogger =
     (level: LogLevel, defaultFn: typeof console.log) =>
     (...args: any[]) => {
@@ -31,41 +25,8 @@ export function setUpLogInterception() {
           }
           const hmrMatch = firstArg.match(HMR_FAILED_UPDATE_REGEX);
           if (hmrMatch) {
-            const modulePath = hmrMatch[1]!;
-            const errorMessage = `Failed to reload ${modulePath}`;
-            if (consoleErrorPrecedingHmrError) {
-              window.__PREVIEWJS_IFRAME__.reportEvent({
-                kind: "error",
-                source: "hmr",
-                modulePath,
-                message: generateMessageFromError(
-                  errorMessage,
-                  consoleErrorPrecedingHmrError
-                ),
-              });
-            } else {
-              window.__PREVIEWJS_IFRAME__.reportEvent({
-                kind: "error",
-                source: "hmr",
-                modulePath,
-                message: errorMessage,
-              });
-            }
             return;
           }
-        }
-        consoleErrorPrecedingHmrError = null;
-        if (
-          level === "error" &&
-          args.length === 1 &&
-          firstArg instanceof Error &&
-          new Error().stack?.includes("warnFailedFetch")
-        ) {
-          consoleErrorPrecedingHmrError = generateMessageFromError(
-            firstArg.message,
-            firstArg.stack
-          );
-          return;
         }
         window.__PREVIEWJS_IFRAME__.reportEvent({
           kind: "log-message",
@@ -79,19 +40,42 @@ export function setUpLogInterception() {
   console.log = makeLogger("log", console.log);
   console.info = makeLogger("info", console.info);
   console.warn = makeLogger("warn", console.warn);
-  const errorLogger = makeLogger("error", console.error);
-  console.error = errorLogger;
+  console.error = makeLogger("error", console.error);
   window.onerror = (message, source, lineno, colno, error) => {
-    if (error && error.stack && error.message) {
-      message = error.stack;
-      if (!message.includes(error.message)) {
-        message = error.message + "\n" + message;
-      }
-    } else {
-      message = `${message}`;
-    }
-    errorLogger(message);
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "error",
+      source: "renderer",
+      message: formatError(error, message),
+    });
   };
+  window.onunhandledrejection = (event) => {
+    const message = formatError(event.reason);
+    if (
+      message.includes("Failed to fetch dynamically imported module") ||
+      message.includes("Failed to reload")
+    ) {
+      return;
+    }
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "error",
+      source: "renderer",
+      message,
+    });
+  };
+}
+
+function formatError(error?: any, message?: any): string {
+  if (error && error.stack && error.message) {
+    message = error.stack;
+    if (!message?.includes(error.message)) {
+      message = error.message + "\n" + message;
+    }
+    return message;
+  } else if (message) {
+    return `${message}`;
+  } else {
+    return `${error}`;
+  }
 }
 
 function formatLogMessage(...args: any[]) {

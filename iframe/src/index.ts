@@ -6,7 +6,9 @@ declare global {
   interface Window {
     // Exposed on the iframe.
     __PREVIEWJS_IFRAME__: {
+      lastRenderFailed: boolean;
       reportEvent(event: PreviewEvent): void;
+      refresh(options: RefreshOptions): void;
       render?(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
@@ -15,6 +17,12 @@ declare global {
     };
   }
 }
+
+export type RefreshOptions = {
+  triggeredByViteInvalidate?: boolean;
+  previewableModule?: any;
+  wrapperModule?: any;
+};
 
 export type PreviewIframeState = {
   loading: boolean;
@@ -162,16 +170,27 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           }
         });
         break;
-      case "rendered": {
-        const logsSliceStart = this.onViteBeforeUpdateLogsLength;
-        this.onViteBeforeUpdateLogsLength = 0;
+      case "vite-invalidate":
         this.updateState((state) => {
-          state.logs = state.logs.slice(logsSliceStart);
+          this.onViteBeforeUpdateLogsLength = 0;
+          state.logs = [];
+        });
+        break;
+      case "vite-after-update":
+        // Do nothing.
+        break;
+      case "rendered": {
+        this.updateState((state) => {
           state.loading = false;
           state.rendered = true;
-          // We keep HMR errors around, as we only want to clear them when we receive a successful
-          // "vite-before-update" event for the module.
-          state.errors = state.errors.filter((e) => e.source === "hmr");
+          if (!event.triggeredByViteInvalidate) {
+            const logsSliceStart = this.onViteBeforeUpdateLogsLength;
+            this.onViteBeforeUpdateLogsLength = 0;
+            state.logs = state.logs.slice(logsSliceStart);
+            // We keep HMR errors around, as we only want to clear them when we receive a successful
+            // "vite-before-update" event for the module.
+            state.errors = state.errors.filter((e) => e.source === "hmr");
+          }
         });
         this.clearExpectRenderTimeout();
         break;
@@ -220,6 +239,8 @@ export type PreviewEvent =
   | Bootstrapping
   | Bootstrapped
   | ViteBeforeUpdate
+  | ViteAfterUpdate
+  | ViteInvalidate
   | ViteBeforeReload
   | Rendered
   | Action
@@ -239,12 +260,22 @@ export type ViteBeforeUpdate = {
   payload: UpdatePayload;
 };
 
+export type ViteAfterUpdate = {
+  kind: "vite-after-update";
+  payload: UpdatePayload;
+};
+
+export type ViteInvalidate = {
+  kind: "vite-invalidate";
+};
+
 export type ViteBeforeReload = {
   kind: "vite-before-reload";
 };
 
 export interface Rendered {
   kind: "rendered";
+  triggeredByViteInvalidate: boolean;
 }
 
 export interface Action {

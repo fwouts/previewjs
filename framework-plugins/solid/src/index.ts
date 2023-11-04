@@ -76,17 +76,6 @@ const solidFrameworkPlugin: FrameworkPluginFactory = {
               ? null
               : vitePluginSolid(),
             optimizeSolidDepsPlugin(),
-            {
-              name: "previewjs:disable-solid-hmr",
-              async transform(code, id) {
-                if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
-                  return null;
-                }
-                // HMR prevents preview props from being refreshed.
-                // For now, we disable it entirely.
-                return code.replace(/import\.meta\.hot/g, "false");
-              },
-            },
           ],
         };
       },

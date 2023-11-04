@@ -35,9 +35,27 @@ export function setupViteHmrListener() {
       error = null;
       isFirstUpdate = false;
     }
+    if (window.__PREVIEWJS_IFRAME__.lastRenderFailed) {
+      window.location.reload();
+    } else {
+      window.__PREVIEWJS_IFRAME__.reportEvent({
+        kind: "vite-before-update",
+        payload,
+      });
+    }
+  });
+  hmr.on("vite:afterUpdate", (payload: UpdatePayload) => {
     window.__PREVIEWJS_IFRAME__.reportEvent({
-      kind: "vite-before-update",
+      kind: "vite-after-update",
       payload,
+    });
+  });
+  hmr.on("vite:invalidate", () => {
+    window.__PREVIEWJS_IFRAME__.reportEvent({
+      kind: "vite-invalidate",
+    });
+    window.__PREVIEWJS_IFRAME__.refresh({
+      triggeredByViteInvalidate: true,
     });
   });
 }

@@ -15,7 +15,7 @@ test.describe.parallel("solid/console", () => {
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update(
       "src/App.tsx",
-      `function App() {
+      `export function App() {
             console.log("Render 1");
             return (
               <div id="update-1">
@@ -28,7 +28,7 @@ test.describe.parallel("solid/console", () => {
     await preview.expectLoggedMessages.toMatch(["Render 1"], "log");
     await preview.fileManager.update(
       "src/App.tsx",
-      `function App() {
+      `export function App() {
             console.log("Render 2");
             return (
               <div id="update-2">

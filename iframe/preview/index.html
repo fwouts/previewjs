@@ -6,12 +6,19 @@
       window.global = globalThis;
       window.module = undefined;
       window.__PREVIEWJS_IFRAME__ = {
+        lastRenderFailed: false,
         reportEvent: (event) => {
-          // Note: this should be kept in sync with html-error.ts.
+          if (event.kind === "rendered" ) {
+            window.__PREVIEWJS_IFRAME__.lastRenderFailed = false;
+          } else if (event.kind === "error" && event.source === "renderer") {
+            window.__PREVIEWJS_IFRAME__.lastRenderFailed = true;
+          }
           (
+            // Note: this should be kept in sync with html-error.ts.
             window.__PREVIEWJS_CONTROLLER__ || window.parent.__PREVIEWJS_CONTROLLER__
           ).onPreviewEvent(event);
         },
+        refresh: () => {}
       };
       window.__PREVIEWJS_IFRAME__.reportEvent({
         kind: "bootstrapping",

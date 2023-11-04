@@ -70,17 +70,6 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
                 );
               },
             },
-            {
-              name: "previewjs:disable-react-hmr",
-              async transform(code: string, id: string) {
-                if (!id.endsWith(".jsx") && !id.endsWith(".tsx")) {
-                  return null;
-                }
-                // HMR prevents preview props from being refreshed.
-                // For now, we disable it entirely.
-                return code.replace(/import\.meta\.hot/g, "false");
-              },
-            },
           ],
         };
       },
