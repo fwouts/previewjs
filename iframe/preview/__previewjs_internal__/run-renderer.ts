@@ -7,7 +7,7 @@ export async function runRenderer({
   previewableModule,
   previewableName,
   renderId,
-  keepErrors,
+  triggeredByViteInvalidate,
   shouldAbortRender,
   loadRenderer,
 }: {
@@ -16,7 +16,7 @@ export async function runRenderer({
   previewableModule: any;
   previewableName: string;
   renderId: number;
-  keepErrors: boolean;
+  triggeredByViteInvalidate: boolean;
   shouldAbortRender: () => boolean;
   loadRenderer: RendererLoader;
 }) {
@@ -59,7 +59,7 @@ export async function runRenderer({
   }
   window.__PREVIEWJS_IFRAME__.reportEvent({
     kind: "rendered",
-    keepErrors,
+    triggeredByViteInvalidate,
   });
 }
 

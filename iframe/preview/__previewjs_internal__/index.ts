@@ -33,8 +33,8 @@ export function initPreview({
   let renderId = 0;
 
   async function runNewRender({
-    keepErrors = false,
-  }: { keepErrors?: boolean } = {}) {
+    triggeredByViteInvalidate = false,
+  }: { triggeredByViteInvalidate?: boolean } = {}) {
     const rootHtml = root.innerHTML;
     try {
       renderId += 1;
@@ -45,7 +45,7 @@ export function initPreview({
         previewableModule,
         previewableName,
         renderId,
-        keepErrors,
+        triggeredByViteInvalidate,
         shouldAbortRender: () => renderId !== thisRenderId,
         loadRenderer,
       });

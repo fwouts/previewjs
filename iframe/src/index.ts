@@ -19,7 +19,7 @@ declare global {
 }
 
 export type RefreshOptions = {
-  keepErrors?: boolean;
+  triggeredByViteInvalidate?: boolean;
   previewableModule?: any;
   wrapperModule?: any;
 };
@@ -182,11 +182,11 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
         // Do nothing.
         break;
       case "rendered": {
-        this.canSliceLogs = !event.keepErrors;
+        this.canSliceLogs = !event.triggeredByViteInvalidate;
         this.updateState((state) => {
           state.loading = false;
           state.rendered = true;
-          if (!event.keepErrors) {
+          if (!event.triggeredByViteInvalidate) {
             const logsSliceStart = this.onViteBeforeUpdateLogsLength;
             this.onViteBeforeUpdateLogsLength = 0;
             state.logs = state.logs.slice(logsSliceStart);
@@ -278,7 +278,7 @@ export type ViteBeforeReload = {
 
 export interface Rendered {
   kind: "rendered";
-  keepErrors: boolean;
+  triggeredByViteInvalidate: boolean;
 }
 
 export interface Action {

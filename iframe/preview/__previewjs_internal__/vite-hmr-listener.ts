@@ -55,7 +55,7 @@ export function setupViteHmrListener() {
       kind: "vite-invalidate",
     });
     window.__PREVIEWJS_IFRAME__.refresh({
-      keepErrors: true,
+      triggeredByViteInvalidate: true,
     });
   });
 }
