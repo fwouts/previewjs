@@ -231,7 +231,7 @@ importers:
         specifier: ^28.0.1
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^16.0.0
+        specifier: ^16.1.0
         version: link:../iframe
       '@previewjs/properties':
         specifier: ^5.0.2
@@ -314,7 +314,7 @@ importers:
         specifier: ^5.2.1
         version: link:../config
       '@previewjs/iframe':
-        specifier: ^16.0.0
+        specifier: ^16.1.0
         version: link:../iframe
       '@previewjs/serializable-values':
         specifier: ^9.0.2
@@ -3307,7 +3307,7 @@ importers:
         specifier: ^28.0.1
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^16.0.0
+        specifier: ^16.1.0
         version: link:../iframe
       '@previewjs/vfs':
         specifier: ^2.1.0
@@ -13217,19 +13217,17 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/core@28.0.0(@types/node@20.8.10)(esbuild@0.19.5):
-    resolution: {integrity: sha512-l6FWj+qtsI76C1NuFU2UX6xxQr27i1cELWiBTQh2QF/9fNRRb24U44NkCRV5YbDwxckxaglmMZdnEnPgs4ALFw==}
+  /@previewjs/core@28.0.1(@types/node@20.8.10)(esbuild@0.19.5):
+    resolution: {integrity: sha512-mL4D81EBe3w8n02kT/RfqaXNZMcOa/4FxKqtGoS1ZfLAzZ+KC41mWpCWFq6NhO1h+PtlDIDeNv3ah876tBFzhw==}
     dependencies:
       '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.2.2)(vite@4.5.0)
       '@previewjs/analyzer-api': 0.1.4
       '@previewjs/api': 16.0.2
       '@previewjs/config': 5.2.1(@types/node@20.8.10)
-      '@previewjs/iframe': 15.4.0
+      '@previewjs/iframe': 16.0.0
       '@previewjs/serializable-values': 9.0.2
       '@previewjs/type-analyzer': 10.0.2
       '@previewjs/vfs': 2.1.0
-      acorn: 8.10.0
-      acorn-jsx: 5.3.2(acorn@8.10.0)
       assert-never: 1.2.1
       axios: 1.6.0
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.5)
@@ -13262,8 +13260,8 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/iframe@15.4.0:
-    resolution: {integrity: sha512-+Y+r4tsoQYQozKK6uZZ7S5uU9+DphkIRwcpNeLII9C2hcwMf9F+bl+JgOIJfMt1qafHJztOHP7uTZuzTPoFHsQ==}
+  /@previewjs/iframe@16.0.0:
+    resolution: {integrity: sha512-abq4ipd10ss0pInBcVRxzH0Uel2+RQXO2lW259bd7bcX0APMzOOi/TB2lOw2fWLUHsjk3ZyhTVekv5oAcjMGYw==}
     dev: false
 
   /@previewjs/pro@1.15.1(@types/node@20.8.10)(esbuild@0.19.5):
@@ -13271,7 +13269,7 @@ packages:
     dependencies:
       '@previewjs/analyzer-api': 0.1.4
       '@previewjs/api': 16.0.2
-      '@previewjs/core': 28.0.0(@types/node@20.8.10)(esbuild@0.19.5)
+      '@previewjs/core': 28.0.1(@types/node@20.8.10)(esbuild@0.19.5)
       '@previewjs/serializable-values': 9.0.2
       '@previewjs/storybook-helpers': 5.0.5(@types/node@20.8.10)(esbuild@0.19.5)
       axios: 1.6.0
@@ -13310,7 +13308,7 @@ packages:
     dependencies:
       '@previewjs/analyzer-api': 0.1.4
       '@previewjs/api': 16.0.2
-      '@previewjs/core': 28.0.0(@types/node@20.8.10)(esbuild@0.19.5)
+      '@previewjs/core': 28.0.1(@types/node@20.8.10)(esbuild@0.19.5)
       '@previewjs/serializable-values': 9.0.2
       '@previewjs/type-analyzer': 10.0.2
       typescript: 5.2.2
