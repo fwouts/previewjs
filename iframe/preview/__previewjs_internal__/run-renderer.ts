@@ -22,6 +22,9 @@ export async function runRenderer({
   if (!currentState || shouldAbortRender()) {
     return;
   }
+  window.__PREVIEWJS_IFRAME__.reportEvent({
+    kind: "before-render",
+  });
   const { render, jsxFactory } = await loadRenderer({
     wrapperModule,
     wrapperName,

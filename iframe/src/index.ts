@@ -49,9 +49,9 @@ export function createController(
   return controller;
 }
 
-export interface PreviewIframeController {
+export type PreviewIframeController = {
   render(previewableId: string, options: RenderOptions): void;
-}
+};
 
 class PreviewIframeControllerImpl implements PreviewIframeController {
   private lastRender: {
@@ -177,6 +177,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           this.onViteBeforeUpdateLogsLength = 0;
           this.onViteBeforeUpdateErrorsLength = 0;
           state.logs = [];
+          // Note: we don't clear errors here.
         });
         break;
       case "vite-after-update":
@@ -187,6 +188,12 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           this.onViteBeforeUpdateErrorsLength = 0;
           state.logs = state.logs.slice(logsSliceStart);
           state.errors = state.errors.slice(errorsSliceStart);
+        });
+        break;
+      case "before-render":
+        this.updateState((state) => {
+          this.onViteBeforeUpdateLogsLength = 0;
+          state.logs = [];
         });
         break;
       case "rendered": {
@@ -244,6 +251,7 @@ export type PreviewEvent =
   | ViteAfterUpdate
   | ViteInvalidate
   | ViteBeforeReload
+  | BeforeRender
   | Rendered
   | Action
   | LogMessage
@@ -275,22 +283,26 @@ export type ViteBeforeReload = {
   kind: "vite-before-reload";
 };
 
-export interface Rendered {
-  kind: "rendered";
-}
+export type BeforeRender = {
+  kind: "before-render";
+};
 
-export interface Action {
+export type Rendered = {
+  kind: "rendered";
+};
+
+export type Action = {
   kind: "action";
   type: "fn" | "url";
   path: string;
-}
+};
 
-export interface LogMessage {
+export type LogMessage = {
   kind: "log-message";
   level: LogLevel;
   message: string;
   timestamp: number;
-}
+};
 
 export type PreviewError =
   | {
