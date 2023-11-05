@@ -89,7 +89,7 @@ export class Previewer {
         const router = express.Router();
         router.get(/^\/.*:[^/]+\/$/, async (req, res, next) => {
           const accept = req.header("Accept");
-          if (req.url.includes("?html-proxy") || req.url.includes("?import")) {
+          if (req.url.includes("?html-proxy")) {
             next();
             return;
           }

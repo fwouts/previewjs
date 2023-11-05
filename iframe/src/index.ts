@@ -129,6 +129,9 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     switch (event.kind) {
       case "bootstrapping":
         this.bootstrapStatus = "pending";
+        break;
+      case "bootstrapped":
+        this.bootstrapStatus = "success";
         this.onViteBeforeUpdateLogsLength = 0;
         this.onViteBeforeUpdateErrorsLength = 0;
         this.updateState((state) => {
@@ -137,9 +140,6 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
           state.errors = [];
           state.logs = [];
         });
-        break;
-      case "bootstrapped":
-        this.bootstrapStatus = "success";
         if (this.lastRender) {
           this.render(
             this.lastRender.previewableId,

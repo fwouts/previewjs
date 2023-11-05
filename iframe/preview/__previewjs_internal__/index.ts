@@ -6,9 +6,15 @@ import { runRenderer } from "./run-renderer";
 import { setState } from "./state";
 import { setupViteHmrListener } from "./vite-hmr-listener";
 
+let listenersInitialized = false;
+
 // Important: initListeners() must be invoked before we try to load any modules
 // that might fail to load, such as a component, so we can intercept Vite errors.
 export function initListeners() {
+  if (listenersInitialized) {
+    return;
+  }
+  listenersInitialized = true;
   setupViteHmrListener();
   setUpLogInterception();
   setUpLinkInterception();

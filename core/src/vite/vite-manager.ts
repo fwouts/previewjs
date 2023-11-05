@@ -29,6 +29,10 @@ import { generateHtmlError } from "../html-error.js";
 import type { FrameworkPlugin } from "../plugins/framework.js";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin.js";
 import { localEval } from "./plugins/local-eval.js";
+import {
+  previewScriptPlugin,
+  type PreviewScriptOptions,
+} from "./plugins/preview-script.js";
 import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin.js";
 import { virtualPlugin } from "./plugins/virtual-plugin.js";
 
@@ -160,7 +164,7 @@ export class ViteManager {
         );
         const { config, viteServer } = state;
         const { filePath, name: previewableName } = decodePreviewableId(id);
-        const componentPath = filePath.replace(/\\/g, "/");
+        const previewablePath = filePath.replace(/\\/g, "/");
         const wrapper = config.wrapper;
         const wrapperPath =
           wrapper &&
@@ -171,66 +175,16 @@ export class ViteManager {
           url,
           template.replace(
             "<!-- %OPTIONAL_HEAD_CONTENT% -->",
-            `
-    <script type="module">
-    import { initListeners, initPreview } from "/__previewjs_internal__/index.ts";
-
-    initListeners();
-
-    import.meta.hot.accept();
-
-    let refresh = () => {};
-
-    window.__PREVIEWJS_IFRAME__.refresh = (options) => {
-      refresh(options);
-    };
-
-    import.meta.hot.accept(["/${componentPath}"], ([previewableModule]) => {
-      if (previewableModule) {
-        refresh({
-          previewableModule,
-        });
-      }
-    });
-
-    ${
-      wrapperPath
-        ? `
-    const wrapperModulePromise = import(/* @vite-ignore */ "/${wrapperPath}");
-    import.meta.hot.accept(["/${wrapperPath}"], ([wrapperModule]) => {
-      if (wrapperModule) {
-        refresh({
-          wrapperModule,
-        });
-      }
-    });
-    `
-        : `
-    const wrapperModulePromise = Promise.all([${config.detectedGlobalCssFilePaths
-      .map(
-        (cssFilePath) =>
-          `import(/* @vite-ignore */ "/${cssFilePath.replace(
-            /\\/g,
-            "/"
-          )}").catch(() => null)`
-      )
-      .join(",")}]).then(() => null);
-    `
-    }
-
-    // Important: the wrapper must be loaded first as it may monkey-patch
-    // modules imported by the component module.
-    wrapperModulePromise.then(wrapperModule => {
-      import(/* @vite-ignore */ "/${componentPath}").then(previewableModule => {
-        refresh = initPreview({
-          previewableModule,
-          previewableName: ${JSON.stringify(previewableName)},
-          wrapperModule,
-          wrapperName: ${JSON.stringify(wrapper?.componentName || null)},
-        });
-      });
-    });
-    </script>`
+            `<script type="module" src="/__previewjs_internal__/preview.js?p=${Buffer.from(
+              JSON.stringify({
+                previewablePath,
+                previewableName,
+                wrapperPath,
+                wrapperName: wrapper?.componentName || null,
+                detectedGlobalCssFilePaths: config.detectedGlobalCssFilePaths,
+              } satisfies PreviewScriptOptions),
+              "utf8"
+            ).toString("base64url")}"></script>`
           )
         );
       } catch (e) {
@@ -369,6 +323,7 @@ export class ViteManager {
           viteTsconfigPaths({
             root: this.options.rootDir,
           }),
+          previewScriptPlugin(),
           virtualPlugin({
             logger: this.options.logger,
             reader: this.options.reader,
