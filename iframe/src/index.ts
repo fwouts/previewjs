@@ -8,7 +8,7 @@ declare global {
     __PREVIEWJS_IFRAME__: {
       lastRenderFailed: boolean;
       reportEvent(event: PreviewEvent): void;
-      refresh(options: RefreshOptions): void;
+      refresh(options?: RefreshOptions): void;
       render?(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
@@ -19,7 +19,6 @@ declare global {
 }
 
 export type RefreshOptions = {
-  triggeredByViteInvalidate?: boolean;
   previewableModule?: any;
   wrapperModule?: any;
 };
@@ -278,7 +277,6 @@ export type ViteBeforeReload = {
 
 export interface Rendered {
   kind: "rendered";
-  triggeredByViteInvalidate: boolean;
 }
 
 export interface Action {

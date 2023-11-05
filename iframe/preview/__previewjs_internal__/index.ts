@@ -32,9 +32,7 @@ export function initPreview({
   }
   let renderId = 0;
 
-  async function runNewRender({
-    triggeredByViteInvalidate = false,
-  }: { triggeredByViteInvalidate?: boolean } = {}) {
+  async function runNewRender() {
     const rootHtml = root.innerHTML;
     try {
       renderId += 1;
@@ -45,7 +43,6 @@ export function initPreview({
         previewableModule,
         previewableName,
         renderId,
-        triggeredByViteInvalidate,
         shouldAbortRender: () => renderId !== thisRenderId,
         loadRenderer,
       });
@@ -71,7 +68,7 @@ export function initPreview({
     kind: "bootstrapped",
   });
 
-  return (options) => {
+  return (options = {}) => {
     if (options.previewableModule) {
       previewableModule = options.previewableModule;
     }
@@ -79,6 +76,6 @@ export function initPreview({
       wrapperModule = options.wrapperModule;
     }
     // eslint-disable-next-line no-console
-    runNewRender(options).catch(console.error);
+    runNewRender().catch(console.error);
   };
 }
