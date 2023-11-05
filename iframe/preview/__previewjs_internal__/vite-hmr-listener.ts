@@ -2,6 +2,8 @@
 import type { ErrorPayload, UpdatePayload } from "vite/types/hmrPayload";
 import { generateMessageFromError } from "./error-message";
 
+const IGNORED_UPDATE_PATH = "/__previewjs_internal__/preview.js?";
+
 export function setupViteHmrListener() {
   const hmr = import.meta.hot!;
   let error: ErrorPayload | null = null;
@@ -27,6 +29,10 @@ export function setupViteHmrListener() {
     });
   });
   hmr.on("vite:beforeUpdate", (payload: UpdatePayload) => {
+    if (payload.updates.every((u) => u.path.startsWith(IGNORED_UPDATE_PATH))) {
+      // Ignore.
+      return;
+    }
     // This is a copy of Vite logic that is disabled when the error overlay is off:
     // https://github.com/vitejs/vite/blob/f3d15f106f378c3850b62fbebd69fc8f7c7f944b/packages/vite/src/client/client.ts#L61
     if (error && isFirstUpdate) {
@@ -45,6 +51,10 @@ export function setupViteHmrListener() {
     }
   });
   hmr.on("vite:afterUpdate", (payload: UpdatePayload) => {
+    if (payload.updates.every((u) => u.path.startsWith(IGNORED_UPDATE_PATH))) {
+      // Ignore.
+      return;
+    }
     window.__PREVIEWJS_IFRAME__.reportEvent({
       kind: "vite-after-update",
       payload,

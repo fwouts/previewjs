@@ -57,7 +57,7 @@ import.meta.hot.accept(["/${previewablePath}"], ([previewableModule]) => {
 ${
   wrapperPath
     ? `
-const wrapperModulePromise = import(/* @vite-ignore */ "/${wrapperPath}");
+const wrapperModulePromise = import(/* @vite-ignore */ "/${wrapperPath}?t=" + Date.now());
 import.meta.hot.accept(["/${wrapperPath}"], ([wrapperModule]) => {
   if (wrapperModule) {
     refresh({
@@ -82,7 +82,7 @@ const wrapperModulePromise = Promise.all([${detectedGlobalCssFilePaths
 // Important: the wrapper must be loaded first as it may monkey-patch
 // modules imported by the component module.
 wrapperModulePromise.then(wrapperModule => {
-  import(/* @vite-ignore */ "/${previewablePath}").then(previewableModule => {
+  import(/* @vite-ignore */ "/${previewablePath}?t=" + Date.now()).then(previewableModule => {
     refresh = initPreview({
       previewableModule,
       previewableName: ${JSON.stringify(previewableName)},
