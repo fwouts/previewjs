@@ -50,6 +50,39 @@ test.describe.parallel("react/error handling", () => {
         await preview.iframe.waitForSelector(".App");
       });
 
+      test("recovers well from errors", async (preview) => {
+        await preview.fileManager.update(
+          "src/App.tsx",
+          `export function Foo() {
+          return <p className="init">Foo</p>
+        }`
+        );
+        await preview.show("src/App.tsx:Foo");
+        await preview.iframe.waitForSelector(".init");
+
+        const append = 'return <p className="end">Bar</p>;';
+        for (let i = 0; i < append.length; i++) {
+          const partialAppend = append.slice(0, i);
+          await preview.fileManager.update(
+            "src/App.tsx",
+            `export function Foo() {
+              ${partialAppend}
+              return <p>Foo</p>
+            }`,
+
+            {
+              inMemoryOnly: false,
+            }
+          );
+          await preview.expectErrors.toMatch(
+            i === 0 || (i >= 6 && i <= 7) || i >= append.length - 1
+              ? []
+              : ["src/App.tsx"]
+          );
+        }
+        await preview.iframe.waitForSelector(".end");
+      });
+
       test("fails correctly when encountering broken module imports before update", async (preview) => {
         await preview.fileManager.update(
           "src/App.tsx",

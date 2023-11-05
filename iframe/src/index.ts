@@ -70,6 +70,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     actions: [],
   };
   private onViteBeforeUpdateLogsLength = 0;
+  private onViteBeforeUpdateErrorsLength = 0;
 
   constructor(private readonly options: CreateControllerOptions) {}
 
@@ -119,23 +120,24 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
   onPreviewEvent(event: PreviewEvent) {
     if (this.bootstrapStatus === "not-started") {
-      if (event.kind === "bootstrapping") {
+      if (event.kind !== "bootstrapping") {
+        // The only event we care about is bootstrapping.
+        // Otherwise, it's a rogue event from a previous iframe.
+        return;
+      }
+    }
+
+    switch (event.kind) {
+      case "bootstrapping":
         this.bootstrapStatus = "pending";
+        this.onViteBeforeUpdateLogsLength = 0;
+        this.onViteBeforeUpdateErrorsLength = 0;
         this.updateState((state) => {
           state.loading = true;
           state.rendered = false;
           state.errors = [];
           state.logs = [];
         });
-      }
-      // The only event we care about is bootstrapping.
-      // Otherwise, it's a rogue event from a previous iframe.
-      return;
-    }
-
-    switch (event.kind) {
-      case "bootstrapping":
-        // Already handled above.
         break;
       case "bootstrapped":
         this.bootstrapStatus = "success";
@@ -169,28 +171,29 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
             );
           }
         });
+        this.onViteBeforeUpdateErrorsLength = this.state.errors.length;
         break;
       case "vite-invalidate":
         this.updateState((state) => {
           this.onViteBeforeUpdateLogsLength = 0;
+          this.onViteBeforeUpdateErrorsLength = 0;
           state.logs = [];
         });
         break;
       case "vite-after-update":
-        // Do nothing.
+        this.updateState((state) => {
+          const logsSliceStart = this.onViteBeforeUpdateLogsLength;
+          const errorsSliceStart = this.onViteBeforeUpdateErrorsLength;
+          this.onViteBeforeUpdateLogsLength = 0;
+          this.onViteBeforeUpdateErrorsLength = 0;
+          state.logs = state.logs.slice(logsSliceStart);
+          state.errors = state.errors.slice(errorsSliceStart);
+        });
         break;
       case "rendered": {
         this.updateState((state) => {
           state.loading = false;
           state.rendered = true;
-          if (!event.triggeredByViteInvalidate) {
-            const logsSliceStart = this.onViteBeforeUpdateLogsLength;
-            this.onViteBeforeUpdateLogsLength = 0;
-            state.logs = state.logs.slice(logsSliceStart);
-            // We keep HMR errors around, as we only want to clear them when we receive a successful
-            // "vite-before-update" event for the module.
-            state.errors = state.errors.filter((e) => e.source === "hmr");
-          }
         });
         this.clearExpectRenderTimeout();
         break;
