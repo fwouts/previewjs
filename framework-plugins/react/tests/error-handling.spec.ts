@@ -74,11 +74,17 @@ test.describe.parallel("react/error handling", () => {
               inMemoryOnly: false,
             }
           );
-          await preview.expectErrors.toMatch(
-            i === 0 || (i >= 6 && i <= 7) || i >= append.length - 1
-              ? []
-              : ["src/App.tsx"]
-          );
+          try {
+            await preview.expectErrors.toMatch(
+              reactVersion < 18 && i >= 6 && i <= 8
+                ? ["Nothing was returned from render"]
+                : (i > 0 && i < 6) || (i > 8 && i < append.length - 1)
+                ? ["src/App.tsx"]
+                : []
+            );
+          } catch (e) {
+            throw new Error(`Failure at index ${i}: ${e}`);
+          }
         }
         await preview.iframe.waitForSelector(".end");
       });

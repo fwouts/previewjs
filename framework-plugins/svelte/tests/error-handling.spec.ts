@@ -33,7 +33,7 @@ test.describe.parallel("svelte/error handling", () => {
       /* expected error */
     });
     await preview.expectErrors.toMatch([
-      "Failed to load url /src/lib/Broken.svelte",
+      "Failed to fetch dynamically imported module",
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.svelte", {
@@ -51,7 +51,7 @@ test.describe.parallel("svelte/error handling", () => {
       with: "lib/Broken.svelte",
     });
     await preview.expectErrors.toMatch([
-      "Failed to load url /src/lib/Broken.svelte",
+      "Failed to fetch dynamically imported module",
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update("src/App.svelte", {

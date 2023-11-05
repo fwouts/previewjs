@@ -51,15 +51,13 @@ export function setUpLogInterception() {
   };
   window.onunhandledrejection = (event) => {
     const message = formatError(event.reason);
-    if (
-      message.includes("Failed to fetch dynamically imported module") ||
-      message.includes("Failed to reload")
-    ) {
-      return;
-    }
     window.__PREVIEWJS_IFRAME__.reportEvent({
       kind: "error",
-      source: "renderer",
+      source:
+        message.includes("Failed to fetch dynamically imported module") ||
+        message.includes("Failed to reload")
+          ? "vite"
+          : "renderer",
       message,
     });
   };
