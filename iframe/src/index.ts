@@ -288,6 +288,7 @@ export interface LogMessage {
   kind: "log-message";
   level: LogLevel;
   message: string;
+  timestamp: number;
 }
 
 export type PreviewError =

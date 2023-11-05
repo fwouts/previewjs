@@ -32,6 +32,7 @@ export function setUpLogInterception() {
           kind: "log-message",
           level,
           message: formatLogMessage(...args),
+          timestamp: Date.now(),
         });
       } finally {
         console[level] = self;
