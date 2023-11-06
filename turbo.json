@@ -16,7 +16,8 @@
     },
     "e2e-test": {
       "dependsOn": ["build"],
-      "outputs": []
+      "outputs": [],
+      "env": ["ONLY_REACT_VERSION"]
     },
     "dev": {
       "cache": false
