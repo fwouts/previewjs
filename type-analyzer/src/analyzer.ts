@@ -3,6 +3,7 @@ import fs from "fs";
 import { globbySync } from "globby";
 import path from "path";
 import ts from "typescript";
+import v8 from "v8";
 import type {
   CollectedTypes,
   OptionalType,
@@ -39,10 +40,11 @@ import { typescriptServiceHost } from "./ts-service-host.js";
 import { computeUnion } from "./union.js";
 export type { TypeAnalyzer, TypeResolver };
 
+const HEAP_SIZE_QUOTA_LIMIT_BEFORE_GC = 0.7;
+
 export function createTypeAnalyzer(options: {
   rootDir: string;
   reader: Reader;
-  collected?: CollectedTypes;
   tsCompilerOptions?: Partial<ts.CompilerOptions>;
   specialTypes?: Record<string, ValueType>;
   warn?: (message: string) => void;
@@ -50,7 +52,6 @@ export function createTypeAnalyzer(options: {
   return new TypeAnalyzer(
     options.rootDir,
     options.reader,
-    options.collected || {},
     options.specialTypes || {},
     options.tsCompilerOptions || {},
     options.warn
@@ -62,11 +63,11 @@ class TypeAnalyzer {
   private entryPointFilePaths: string[] = [];
   private printedWarnings = new Set<string>();
   private declarationFilePaths = new Set<string>();
+  private collected: CollectedTypes = {};
 
   constructor(
     private readonly rootDir: string,
     private readonly reader: Reader,
-    private readonly collected: CollectedTypes,
     private readonly specialTypes: Record<string, ValueType>,
     tsCompilerOptions: Partial<ts.CompilerOptions>,
     private readonly warn?: (message: string) => void
@@ -152,6 +153,10 @@ class TypeAnalyzer {
         this.warn(messageText);
         this.printedWarnings.add(messageText);
       }
+    }
+    const { used_heap_size, heap_size_limit } = v8.getHeapStatistics();
+    if (used_heap_size > HEAP_SIZE_QUOTA_LIMIT_BEFORE_GC * heap_size_limit) {
+      this.collected = {};
     }
     return new TypeResolver(
       this.rootDir,
