@@ -156,6 +156,9 @@ class TypeAnalyzer {
     }
     const { used_heap_size, heap_size_limit } = v8.getHeapStatistics();
     if (used_heap_size > HEAP_SIZE_QUOTA_LIMIT_BEFORE_GC * heap_size_limit) {
+      this.warn?.(
+        `High memory pressure (${used_heap_size}/${heap_size_limit}). Clearing collected types.`
+      );
       this.collected = {};
     }
     return new TypeResolver(
