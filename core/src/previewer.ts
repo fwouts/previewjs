@@ -88,16 +88,17 @@ export class Previewer {
       promise: (async () => {
         const router = express.Router();
         router.get(/^\/.*:[^/]+\/$/, async (req, res, next) => {
+          const accept = req.header("Accept");
           if (req.url.includes("?html-proxy")) {
             next();
             return;
           }
-          const previewableId = req.path.substring(1, req.path.length - 1);
-          if (req.header("Accept") === "text/x-vite-ping") {
+          if (accept === "text/x-vite-ping") {
             // This is triggered as part of HMR. Exit early.
             res.writeHead(204).end();
             return;
           }
+          const previewableId = req.path.substring(1, req.path.length - 1);
           if (!this.viteManager) {
             res.status(404).end(`Uh-Oh! Vite server is not running.`);
             return;

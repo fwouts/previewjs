@@ -43,10 +43,7 @@ for (const reactVersion of reactVersions()) {
           }`
         );
         await preview.iframe.waitForSelector("#update-2");
-        await preview.expectLoggedMessages.toMatch(
-          ["Render 1", "Render 2"],
-          "log"
-        );
+        await preview.expectLoggedMessages.toMatch(["Render 2"], "log");
       });
     });
   });

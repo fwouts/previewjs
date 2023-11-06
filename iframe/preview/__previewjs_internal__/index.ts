@@ -6,9 +6,15 @@ import { runRenderer } from "./run-renderer";
 import { setState } from "./state";
 import { setupViteHmrListener } from "./vite-hmr-listener";
 
+let listenersInitialized = false;
+
 // Important: initListeners() must be invoked before we try to load any modules
 // that might fail to load, such as a component, so we can intercept Vite errors.
 export function initListeners() {
+  if (listenersInitialized) {
+    return;
+  }
+  listenersInitialized = true;
   setupViteHmrListener();
   setUpLogInterception();
   setUpLinkInterception();
@@ -32,9 +38,7 @@ export function initPreview({
   }
   let renderId = 0;
 
-  async function runNewRender({
-    triggeredByViteInvalidate = false,
-  }: { triggeredByViteInvalidate?: boolean } = {}) {
+  async function runNewRender() {
     const rootHtml = root.innerHTML;
     try {
       renderId += 1;
@@ -45,7 +49,6 @@ export function initPreview({
         previewableModule,
         previewableName,
         renderId,
-        triggeredByViteInvalidate,
         shouldAbortRender: () => renderId !== thisRenderId,
         loadRenderer,
       });
@@ -71,7 +74,7 @@ export function initPreview({
     kind: "bootstrapped",
   });
 
-  return (options) => {
+  return (options = {}) => {
     if (options.previewableModule) {
       previewableModule = options.previewableModule;
     }
@@ -79,6 +82,6 @@ export function initPreview({
       wrapperModule = options.wrapperModule;
     }
     // eslint-disable-next-line no-console
-    runNewRender(options).catch(console.error);
+    runNewRender().catch(console.error);
   };
 }

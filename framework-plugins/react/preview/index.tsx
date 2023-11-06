@@ -40,7 +40,7 @@ export const loadRenderer: RendererLoader = async ({
     : Previewable;
   const Renderer = (props: any) => {
     return (
-      <ErrorBoundary key={renderId} renderId={renderId}>
+      <ErrorBoundary renderId={renderId}>
         <Wrapper>
           {decorators.reduce(
             (component, decorator) => () => decorator(component),

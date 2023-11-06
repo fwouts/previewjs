@@ -8,7 +8,7 @@ declare global {
     __PREVIEWJS_IFRAME__: {
       lastRenderFailed: boolean;
       reportEvent(event: PreviewEvent): void;
-      refresh(options: RefreshOptions): void;
+      refresh(options?: RefreshOptions): void;
       render?(options: RenderOptions): Promise<void>;
     };
     // Typically exposed on the iframe's parent to track its state.
@@ -19,7 +19,6 @@ declare global {
 }
 
 export type RefreshOptions = {
-  triggeredByViteInvalidate?: boolean;
   previewableModule?: any;
   wrapperModule?: any;
 };
@@ -50,9 +49,9 @@ export function createController(
   return controller;
 }
 
-export interface PreviewIframeController {
+export type PreviewIframeController = {
   render(previewableId: string, options: RenderOptions): void;
-}
+};
 
 class PreviewIframeControllerImpl implements PreviewIframeController {
   private lastRender: {
@@ -70,6 +69,7 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
     actions: [],
   };
   private onViteBeforeUpdateLogsLength = 0;
+  private onViteBeforeUpdateErrorsLength = 0;
 
   constructor(private readonly options: CreateControllerOptions) {}
 
@@ -119,26 +119,27 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
 
   onPreviewEvent(event: PreviewEvent) {
     if (this.bootstrapStatus === "not-started") {
-      if (event.kind === "bootstrapping") {
+      if (event.kind !== "bootstrapping") {
+        // The only event we care about is bootstrapping.
+        // Otherwise, it's a rogue event from a previous iframe.
+        return;
+      }
+    }
+
+    switch (event.kind) {
+      case "bootstrapping":
         this.bootstrapStatus = "pending";
+        break;
+      case "bootstrapped":
+        this.bootstrapStatus = "success";
+        this.onViteBeforeUpdateLogsLength = 0;
+        this.onViteBeforeUpdateErrorsLength = 0;
         this.updateState((state) => {
           state.loading = true;
           state.rendered = false;
           state.errors = [];
           state.logs = [];
         });
-      }
-      // The only event we care about is bootstrapping.
-      // Otherwise, it's a rogue event from a previous iframe.
-      return;
-    }
-
-    switch (event.kind) {
-      case "bootstrapping":
-        // Already handled above.
-        break;
-      case "bootstrapped":
-        this.bootstrapStatus = "success";
         if (this.lastRender) {
           this.render(
             this.lastRender.previewableId,
@@ -169,28 +170,36 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
             );
           }
         });
+        this.onViteBeforeUpdateErrorsLength = this.state.errors.length;
         break;
       case "vite-invalidate":
+        this.updateState((state) => {
+          this.onViteBeforeUpdateLogsLength = 0;
+          this.onViteBeforeUpdateErrorsLength = 0;
+          state.logs = [];
+          // Note: we don't clear errors here.
+        });
+        break;
+      case "vite-after-update":
+        this.updateState((state) => {
+          const logsSliceStart = this.onViteBeforeUpdateLogsLength;
+          const errorsSliceStart = this.onViteBeforeUpdateErrorsLength;
+          this.onViteBeforeUpdateLogsLength = 0;
+          this.onViteBeforeUpdateErrorsLength = 0;
+          state.logs = state.logs.slice(logsSliceStart);
+          state.errors = state.errors.slice(errorsSliceStart);
+        });
+        break;
+      case "before-render":
         this.updateState((state) => {
           this.onViteBeforeUpdateLogsLength = 0;
           state.logs = [];
         });
         break;
-      case "vite-after-update":
-        // Do nothing.
-        break;
       case "rendered": {
         this.updateState((state) => {
           state.loading = false;
           state.rendered = true;
-          if (!event.triggeredByViteInvalidate) {
-            const logsSliceStart = this.onViteBeforeUpdateLogsLength;
-            this.onViteBeforeUpdateLogsLength = 0;
-            state.logs = state.logs.slice(logsSliceStart);
-            // We keep HMR errors around, as we only want to clear them when we receive a successful
-            // "vite-before-update" event for the module.
-            state.errors = state.errors.filter((e) => e.source === "hmr");
-          }
         });
         this.clearExpectRenderTimeout();
         break;
@@ -198,6 +207,18 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "error":
         this.updateState((state) => {
           state.loading = false;
+          // When a module fails to load, we may get both "Failed to load url ..."
+          // and "Failed to fetch dynamically imported module". Get rid of the latter
+          // if another error is already available.
+          if (
+            event.source === "vite" &&
+            event.message.includes(
+              "Failed to fetch dynamically imported module"
+            ) &&
+            state.errors.find((e) => e.source === "vite")
+          ) {
+            return;
+          }
           // There can only be one error from each source at any time. Keep the last one.
           state.errors = state.errors.filter((e) => e.source !== event.source);
           state.errors.push(event);
@@ -242,6 +263,7 @@ export type PreviewEvent =
   | ViteAfterUpdate
   | ViteInvalidate
   | ViteBeforeReload
+  | BeforeRender
   | Rendered
   | Action
   | LogMessage
@@ -273,23 +295,26 @@ export type ViteBeforeReload = {
   kind: "vite-before-reload";
 };
 
-export interface Rendered {
-  kind: "rendered";
-  triggeredByViteInvalidate: boolean;
-}
+export type BeforeRender = {
+  kind: "before-render";
+};
 
-export interface Action {
+export type Rendered = {
+  kind: "rendered";
+};
+
+export type Action = {
   kind: "action";
   type: "fn" | "url";
   path: string;
-}
+};
 
-export interface LogMessage {
+export type LogMessage = {
   kind: "log-message";
   level: LogLevel;
   message: string;
   timestamp: number;
-}
+};
 
 export type PreviewError =
   | {
