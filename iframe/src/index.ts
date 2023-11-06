@@ -207,6 +207,18 @@ class PreviewIframeControllerImpl implements PreviewIframeController {
       case "error":
         this.updateState((state) => {
           state.loading = false;
+          // When a module fails to load, we may get both "Failed to load url ..."
+          // and "Failed to fetch dynamically imported module". Get rid of the latter
+          // if another error is already available.
+          if (
+            event.source === "vite" &&
+            event.message.includes(
+              "Failed to fetch dynamically imported module"
+            ) &&
+            state.errors.find((e) => e.source === "vite")
+          ) {
+            return;
+          }
           // There can only be one error from each source at any time. Keep the last one.
           state.errors = state.errors.filter((e) => e.source !== event.source);
           state.errors.push(event);
