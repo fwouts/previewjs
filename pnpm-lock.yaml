@@ -462,8 +462,8 @@ importers:
         specifier: workspace:*
         version: link:../framework-plugins/vue3
       '@previewjs/pro':
-        specifier: ^1.15.1
-        version: 1.15.1(@types/node@20.8.10)(esbuild@0.19.5)
+        specifier: ^1.15.2
+        version: 1.15.2(@types/node@20.8.10)(esbuild@0.19.5)
       '@previewjs/vfs':
         specifier: workspace:*
         version: link:../vfs
@@ -3472,7 +3472,6 @@ packages:
     dependencies:
       '@babel/highlight': 7.22.20
       chalk: 2.4.2
-    dev: false
 
   /@babel/code-frame@7.22.13:
     resolution: {integrity: sha512-XktuhWlJ5g+3TJXc5upd9Ks1HutSArik6jf2eAjYFyIOf4ej3RN+184cZbzDvbPnuTJIUhPKKJE3cIsYTiAT3w==}
@@ -3660,7 +3659,6 @@ packages:
       '@jridgewell/gen-mapping': 0.3.2
       '@jridgewell/trace-mapping': 0.3.19
       jsesc: 2.5.2
-    dev: false
 
   /@babel/generator@7.22.15:
     resolution: {integrity: sha512-Zu9oWARBqeVOW0dZOjXc3JObrzuqothQ3y/n1kUtrjCoCPLkXUwMvOo/F/TCfoHMbWIFlWwpZtkZVb9ga4U2pA==}
@@ -8601,24 +8599,6 @@ packages:
       '@babel/parser': 7.23.0
       '@babel/types': 7.23.0
 
-  /@babel/traverse@7.21.5:
-    resolution: {integrity: sha512-AhQoI3YjWi6u/y/ntv7k48mcrCXmus0t79J9qPNlk/lAsFlCiJ047RmbfMOawySTHtywXhbXgpx/8nXMYd+oFw==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/code-frame': 7.22.13
-      '@babel/generator': 7.23.0
-      '@babel/helper-environment-visitor': 7.22.5
-      '@babel/helper-function-name': 7.22.5
-      '@babel/helper-hoist-variables': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.23.0
-      '@babel/types': 7.23.0
-      debug: 4.3.4(supports-color@5.5.0)
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@babel/traverse@7.21.5(supports-color@5.5.0):
     resolution: {integrity: sha512-AhQoI3YjWi6u/y/ntv7k48mcrCXmus0t79J9qPNlk/lAsFlCiJ047RmbfMOawySTHtywXhbXgpx/8nXMYd+oFw==}
     engines: {node: '>=6.9.0'}
@@ -8635,7 +8615,6 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@babel/traverse@7.22.20:
     resolution: {integrity: sha512-eU260mPZbU7mZ0N+X10pxXhQFMGTeLb9eFS0mxehS8HZp9o1uSnFeWQuG1UPrlxgA7QoUzFhOnilHDp0AXCyHw==}
@@ -13208,7 +13187,7 @@ packages:
     resolution: {integrity: sha512-U2GcwR91FLBi42UBvJqj6VtlUHJLxewPyFS0xu1DToYAbvLbgw//GYlvPRwVsjstZbqeyPXo/7UzFU2+rIvVag==}
     dependencies:
       '@previewjs/serializable-values': 9.0.2
-      '@previewjs/type-analyzer': 10.1.0
+      '@previewjs/type-analyzer': 10.1.1
       '@previewjs/vfs': 2.1.0
       pino: 8.16.1
       pino-pretty: 10.2.3
@@ -13218,7 +13197,7 @@ packages:
     resolution: {integrity: sha512-eCHlTHMD9M5Z0ulFXyERaLlP5mkTLdYod10IGKqoHJimSBDKO1p7mgnlKQW2o7//S4sPb6NMKd07aRtuKhjfIw==}
     dependencies:
       '@previewjs/serializable-values': 9.0.2
-      '@previewjs/type-analyzer': 10.1.0
+      '@previewjs/type-analyzer': 10.1.1
       axios: 1.6.0
     transitivePeerDependencies:
       - debug
@@ -13247,7 +13226,7 @@ packages:
       '@previewjs/config': 5.2.2(@types/node@20.8.10)
       '@previewjs/iframe': 16.2.0
       '@previewjs/serializable-values': 9.0.2
-      '@previewjs/type-analyzer': 10.1.0
+      '@previewjs/type-analyzer': 10.1.1
       '@previewjs/vfs': 2.1.0
       assert-never: 1.2.1
       axios: 1.6.0
@@ -13285,8 +13264,8 @@ packages:
     resolution: {integrity: sha512-jaS1BjCVkaVk51er2izPKJ5w1k0leNEyCAqR5wECArNOU0a3BAxbrPpgpN4mKtSEyNEAGdMR4DCmCeb6pm6Tgg==}
     dev: false
 
-  /@previewjs/pro@1.15.1(@types/node@20.8.10)(esbuild@0.19.5):
-    resolution: {integrity: sha512-rdTYk0ULOG74M/TZy3yctku/hZVCOg0Um+41NW9wBrEgGer9ox8bDszprBth2HVbZzBdthmFIfMKX+Y7G5t5qQ==}
+  /@previewjs/pro@1.15.2(@types/node@20.8.10)(esbuild@0.19.5):
+    resolution: {integrity: sha512-1Bb3OHyUzJFDsi4CBbswywa8zCH/qKg/zLddLL7No9re4kxH8Mn7dpaeEXtTFQGqo1Wo9wAvfSWB0AR7iPUcTg==}
     dependencies:
       '@previewjs/analyzer-api': 0.1.4
       '@previewjs/api': 16.0.2
@@ -13318,7 +13297,7 @@ packages:
     resolution: {integrity: sha512-4QJprKSebASN7v6hUQaIXX3DYWxLw08JfuOKoyRX3jsbW6TzGcdrdZms0GuEmSKDamzGkC16fb2GSfBKiBH/Ng==}
     dependencies:
       '@faker-js/faker': 8.2.0
-      '@previewjs/type-analyzer': 10.1.0
+      '@previewjs/type-analyzer': 10.1.1
       assert-never: 1.2.1
       prettier: 2.8.8
       typescript: 5.2.2
@@ -13331,7 +13310,7 @@ packages:
       '@previewjs/api': 16.0.2
       '@previewjs/core': 28.0.2(@types/node@20.8.10)(esbuild@0.19.5)
       '@previewjs/serializable-values': 9.0.2
-      '@previewjs/type-analyzer': 10.1.0
+      '@previewjs/type-analyzer': 10.1.1
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@swc/core'
@@ -13348,8 +13327,8 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/type-analyzer@10.1.0:
-    resolution: {integrity: sha512-xYmoPN/6gCss3V0bYtzP8SlTjY23+nIX8KjBP70HRvqmWNx2SoqD4moLXMbj7kGgt72NiB85Ir3XrRnR1K5NFg==}
+  /@previewjs/type-analyzer@10.1.1:
+    resolution: {integrity: sha512-LbrXxWlx5uyO2Hc087O4byN7HNf6T5ItcxPhp/NvygQqjF4Jaz2uzlLTSnrtTzmSC15ZJYr5Ytw7ROxGSApGdg==}
     dependencies:
       '@previewjs/vfs': 2.1.0
       assert-never: 1.2.1
@@ -16497,7 +16476,7 @@ packages:
     dependencies:
       '@babel/generator': 7.21.9
       '@babel/parser': 7.21.9
-      '@babel/traverse': 7.21.5
+      '@babel/traverse': 7.21.5(supports-color@5.5.0)
       '@babel/types': 7.21.5
       '@storybook/csf': 0.1.0
       '@storybook/types': 7.0.17
