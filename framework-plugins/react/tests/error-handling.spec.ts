@@ -79,7 +79,7 @@ test.describe.parallel("react/error handling", () => {
               reactVersion < 18 && i >= 6 && i <= 8
                 ? ["Nothing was returned from render"]
                 : (i > 0 && i < 6) || (i > 8 && i < append.length - 1)
-                ? ["src/App.tsx"]
+                ? [`src${path.sep}App.tsx`]
                 : []
             );
           } catch (e) {
