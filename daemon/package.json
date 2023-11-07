@@ -34,7 +34,7 @@
     }
   },
   "scripts": {
-    "build": "tsc && unbuild && ts-node-esm patch-build.ts"
+    "build": "tsc && unbuild && node --loader ts-node/esm patch-build.ts"
   },
   "devDependencies": {
     "@previewjs/api": "workspace:*",
