@@ -141,3 +141,17 @@ const waitForInit = (message: ToWorkerMessage) => {
   }
 };
 process.on("message", waitForInit);
+
+const parentProcessId = parseInt(process.env["PREVIEWJS_PARENT_PROCESS_PID"] || "0");
+if (!parentProcessId) {
+  throw new Error("Missing environment variable: PREVIEWJS_PARENT_PROCESS_PID")
+}
+// Kill the worker if the parent process dies.
+setInterval(() => {
+  try {
+    process.kill(parentProcessId, 0);
+    // Parent process is still alive, see https://stackoverflow.com/a/21296291.
+  } catch(e) {
+    process.exit(0);
+  }
+}, 1000)

@@ -178,6 +178,8 @@ ${e.stackTraceToString()}""",
         }
         val builder = processBuilder("node --trace-warnings dist/main.js $port", useWsl).redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
+            // TODO: Set env variable PREVIEWJS_PARENT_PROCESS_ID here
+            // TODO: Check if it works with WSL...
         val process = builder.start()
         daemonProcess = process
         val daemonOutputReader = BufferedReader(InputStreamReader(process.inputStream))

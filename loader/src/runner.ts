@@ -1,8 +1,8 @@
 import type { Workspace } from "@previewjs/core";
 import type { ReaderListener } from "@previewjs/vfs";
 import { assertNever } from "assert-never";
+import { execaNode } from "execa";
 import fs from "fs-extra";
-import { fork } from "node:child_process";
 import path from "path";
 import type { Logger } from "pino";
 import pino from "pino";
@@ -342,11 +342,15 @@ export async function load({
         return existingWorker;
       }
     }
-    const workerProcess = fork(workerFilePath, {
+    const workerProcess = execaNode(workerFilePath, {
       // Note: this is required for PostCSS.
       cwd: rootDir,
-      stdio: "inherit",
+      // detached: true,
+      env: {
+        PREVIEWJS_PARENT_PROCESS_PID: process.pid.toString(10),
+      },
     });
+    let workerPromise: ResolvablePromise<ServerWorker> | null = null;
     const killWorker = async () => {
       if (workerPromise?.resolved) {
         workerPromise.resolved.exiting = true;
@@ -457,7 +461,7 @@ export async function load({
       });
       return promise;
     };
-    const workerPromise = (serverWorkers[rootDir] = resolvablePromise(
+    workerPromise = serverWorkers[rootDir] = resolvablePromise(
       workerReadyPromise.then(
         ({ port }): ServerWorker => ({
           port,
@@ -467,7 +471,7 @@ export async function load({
           onStop: onStopListeners,
         })
       )
-    ));
+    );
     return workerPromise;
   }
 }

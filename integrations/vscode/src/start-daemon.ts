@@ -8,21 +8,20 @@ import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import vscode from "vscode";
+import getPort from "get-port";
 
-const port = process.env.PREVIEWJS_PORT || "9315";
 const logsPath = path.join(__dirname, "daemon.log");
 
 export const daemonLockFilePath = path.join(__dirname, "process.lock");
 
-export async function ensureDaemonRunning(
-  outputChannel: OutputChannel
-): Promise<{
+export async function startDaemon(outputChannel: OutputChannel): Promise<{
   client: Client;
   watcher: FSWatcher;
   daemonProcess: ExecaChildProcess;
 } | null> {
+  const port = await getPort();
   const client = createClient(`http://localhost:${port}`);
-  const daemon = await startDaemon(outputChannel);
+  const daemon = await startDaemonProcess(port, outputChannel);
   if (!daemon) {
     return null;
   }
@@ -40,7 +39,10 @@ export async function ensureDaemonRunning(
 
 // Important: we wrap daemonProcess into a Promise so that awaiting startDaemon()
 // doesn't automatically await the process itself (which may not exit for a long time!).
-async function startDaemon(outputChannel: OutputChannel): Promise<{
+async function startDaemonProcess(
+  port: number,
+  outputChannel: OutputChannel
+): Promise<{
   daemonProcess: ExecaChildProcess<string>;
 } | null> {
   const isWindows = process.platform === "win32";
@@ -106,10 +108,13 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
     // If we use "inherit", we end up with a "write EPIPE" crash when the child process
     // tries to log after the parent process exited (even when detached properly).
     stdio: "ignore",
+    detached: true,
     env: {
       PREVIEWJS_LOCK_FILE: daemonLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
-      PREVIEWJS_PORT: port,
+      PREVIEWJS_PORT: port.toString(10),
+      // TODO: Check if it works with WSL.
+      PREVIEWJS_PARENT_PROCESS_PID: process.pid.toString(10),
     },
   };
   let daemonProcess: ExecaChildProcess<string>;
@@ -122,10 +127,7 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
   } else {
     const [command, commandArgs] =
       wrapCommandWithShellIfRequired(nodeDaemonCommand);
-    daemonProcess = execa(command, commandArgs, {
-      ...daemonOptions,
-      detached: true,
-    });
+    daemonProcess = execa(command, commandArgs, daemonOptions);
   }
   daemonProcess.unref();
   daemonProcess.on("error", (error) => {

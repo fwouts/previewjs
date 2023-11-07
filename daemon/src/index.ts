@@ -112,6 +112,26 @@ export async function startDaemon({
   versionCode,
   port,
 }: DaemonStartOptions) {
+  const parentProcessId = parseInt(
+    process.env["PREVIEWJS_PARENT_PROCESS_PID"] || "0"
+  );
+  if (!parentProcessId) {
+    throw new Error(
+      "Missing environment variable: PREVIEWJS_PARENT_PROCESS_PID"
+    );
+  }
+
+  // Kill the daemon if the parent process dies.
+  setInterval(() => {
+    try {
+      process.kill(parentProcessId, 0);
+      // Parent process is still alive, see https://stackoverflow.com/a/21296291.
+    } catch (e) {
+      logger.info(`Parent process with PID ${parentProcessId} exited. Daemon exiting.`)
+      process.exit(0);
+    }
+  }, 1000);
+
   const previewjs = await load({
     installDir: loaderInstallDir,
     workerFilePath: loaderWorkerPath,

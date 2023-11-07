@@ -3,7 +3,7 @@ import vscode from "vscode";
 import type { FileAnalyzer } from "./file-analyzer.js";
 import { createFileAnalyzer } from "./file-analyzer.js";
 import { closePreviewPanel } from "./preview-panel.js";
-import { ensureDaemonRunning } from "./start-daemon.js";
+import { startDaemon } from "./start-daemon.js";
 
 const PING_INTERVAL_MILLIS = 1000;
 
@@ -16,7 +16,7 @@ export async function createState({
   runningServerStatusBarItem: vscode.StatusBarItem;
   onDispose: () => void;
 }): Promise<PreviewJsState | null> {
-  const daemon = await ensureDaemonRunning(outputChannel)
+  const daemon = await startDaemon(outputChannel)
     .catch((e) => {
       outputChannel.appendLine(e.stack);
       return null;
