@@ -511,8 +511,8 @@ importers:
         specifier: ^10.2.3
         version: 10.2.3
       preact:
-        specifier: ^10.18.2
-        version: 10.18.2
+        specifier: ^10.19.0
+        version: 10.19.0
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -3727,6 +3727,45 @@ packages:
       lru-cache: 5.1.1
       semver: 6.3.1
 
+  /@babel/helper-compilation-targets@7.21.5(@babel/core@7.22.20):
+    resolution: {integrity: sha512-1RkbFGUKex4lvsB9yhIfWltJM5cZKUftB2eNajaDv3dCMEp49iBG0K14uH8NnX9IPux2+mK7JGEOB0jn48/J6w==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/compat-data': 7.22.9
+      '@babel/core': 7.22.20
+      '@babel/helper-validator-option': 7.22.15
+      browserslist: 4.21.10
+      lru-cache: 5.1.1
+      semver: 6.3.1
+
+  /@babel/helper-compilation-targets@7.21.5(@babel/core@7.23.0):
+    resolution: {integrity: sha512-1RkbFGUKex4lvsB9yhIfWltJM5cZKUftB2eNajaDv3dCMEp49iBG0K14uH8NnX9IPux2+mK7JGEOB0jn48/J6w==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/compat-data': 7.22.9
+      '@babel/core': 7.23.0
+      '@babel/helper-validator-option': 7.22.15
+      browserslist: 4.21.10
+      lru-cache: 5.1.1
+      semver: 6.3.1
+
+  /@babel/helper-compilation-targets@7.21.5(@babel/core@7.23.2):
+    resolution: {integrity: sha512-1RkbFGUKex4lvsB9yhIfWltJM5cZKUftB2eNajaDv3dCMEp49iBG0K14uH8NnX9IPux2+mK7JGEOB0jn48/J6w==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/compat-data': 7.22.9
+      '@babel/core': 7.23.2
+      '@babel/helper-validator-option': 7.22.15
+      browserslist: 4.21.10
+      lru-cache: 5.1.1
+      semver: 6.3.1
+
   /@babel/helper-compilation-targets@7.22.15:
     resolution: {integrity: sha512-y6EEzULok0Qvz8yyLkCvVX+02ic+By2UdOhylwUOvOn9dvYc9mKICJuuU1n1XBI02YWsNsnrY1kc6DVbjcXbtw==}
     engines: {node: '>=6.9.0'}
@@ -3753,7 +3792,6 @@ packages:
       '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
       semver: 6.3.1
-    dev: false
 
   /@babel/helper-create-class-features-plugin@7.22.15(@babel/core@7.21.4):
     resolution: {integrity: sha512-jKkwA59IXcvSaiK2UN45kKwSC9o+KuoXsBDvHvU/7BecYIp8GQ2UwrVvFgJASUT+hBnwJx6MhvMCuMzwZZ7jlg==}
@@ -8457,7 +8495,6 @@ packages:
       '@babel/helper-create-class-features-plugin': 7.22.10(@babel/core@7.22.20)
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.22.20)
-    dev: false
 
   /@babel/plugin-transform-typescript@7.22.15(@babel/core@7.21.4):
     resolution: {integrity: sha512-1uirS0TnijxvQLnlv5wQBwOX3E1wCFX7ITv+9pBV2wKEk4K+M5tqDaoNXnTH8tjEIYHLO98MwiTWO04Ggz4XuA==}
@@ -8796,11 +8833,11 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.22.9
+      '@babel/compat-data': 7.21.9
       '@babel/core': 7.22.20
-      '@babel/helper-compilation-targets': 7.22.15
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.22.15
+      '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.22.20)
+      '@babel/helper-plugin-utils': 7.21.5
+      '@babel/helper-validator-option': 7.21.0
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.22.20)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.22.20)
       '@babel/plugin-proposal-async-generator-functions': 7.20.7(@babel/core@7.22.20)
@@ -8867,7 +8904,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.22.20)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.22.20)
       '@babel/preset-modules': 0.1.5(@babel/core@7.22.20)
-      '@babel/types': 7.23.0
+      '@babel/types': 7.21.5
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.20)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.20)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.20)
@@ -8882,11 +8919,11 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.22.9
+      '@babel/compat-data': 7.21.9
       '@babel/core': 7.23.0
-      '@babel/helper-compilation-targets': 7.22.15
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.22.15
+      '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.23.0)
+      '@babel/helper-plugin-utils': 7.21.5
+      '@babel/helper-validator-option': 7.21.0
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.23.0)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.23.0)
       '@babel/plugin-proposal-async-generator-functions': 7.20.7(@babel/core@7.23.0)
@@ -8953,7 +8990,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.23.0)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.23.0)
       '@babel/preset-modules': 0.1.5(@babel/core@7.23.0)
-      '@babel/types': 7.23.0
+      '@babel/types': 7.21.5
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.23.0)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.23.0)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.23.0)
@@ -8968,11 +9005,11 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.22.9
+      '@babel/compat-data': 7.21.9
       '@babel/core': 7.23.2
-      '@babel/helper-compilation-targets': 7.22.15
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-validator-option': 7.22.15
+      '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.23.2)
+      '@babel/helper-plugin-utils': 7.21.5
+      '@babel/helper-validator-option': 7.21.0
       '@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression': 7.18.6(@babel/core@7.23.2)
       '@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining': 7.20.7(@babel/core@7.23.2)
       '@babel/plugin-proposal-async-generator-functions': 7.20.7(@babel/core@7.23.2)
@@ -9039,7 +9076,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.21.5(@babel/core@7.23.2)
       '@babel/plugin-transform-unicode-regex': 7.18.6(@babel/core@7.23.2)
       '@babel/preset-modules': 0.1.5(@babel/core@7.23.2)
-      '@babel/types': 7.23.0
+      '@babel/types': 7.21.5
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.23.2)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.23.2)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.23.2)
@@ -13861,7 +13898,7 @@ packages:
       preact: ^10.4.0
       vite: '>=2.0.0-beta.3'
     dependencies:
-      '@babel/core': 7.23.0
+      '@babel/core': 7.23.2
       '@prefresh/babel-plugin': 0.4.4
       '@prefresh/core': 1.4.1(preact@10.15.0)
       '@prefresh/utils': 1.1.3
@@ -20587,8 +20624,8 @@ packages:
   /@vanilla-extract/integration@6.1.1:
     resolution: {integrity: sha512-JGlynmtCju+NWU5ITgs81szCo8A4hFfW1E2oAsn++JHvgU7+wyg9N0TwByZOB1/nbrHVKISzRvl1M0BeB0mZXQ==}
     dependencies:
-      '@babel/core': 7.22.20
-      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.22.20)
+      '@babel/core': 7.23.2
+      '@babel/plugin-syntax-typescript': 7.22.5(@babel/core@7.23.2)
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.2
       '@vanilla-extract/css': 1.11.0
       esbuild: 0.16.17
@@ -20706,9 +20743,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.23.2
-      '@babel/plugin-transform-typescript': 7.22.15(@babel/core@7.23.2)
-      '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.23.2)
+      '@babel/core': 7.22.20
+      '@babel/plugin-transform-typescript': 7.22.10(@babel/core@7.22.20)
+      '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.22.20)
       vite: 4.0.4(@types/node@20.9.0)
       vue: 3.3.8(typescript@5.2.2)
     transitivePeerDependencies:
@@ -20722,9 +20759,9 @@ packages:
       vite: ^4.0.0
       vue: ^3.0.0
     dependencies:
-      '@babel/core': 7.23.2
-      '@babel/plugin-transform-typescript': 7.22.15(@babel/core@7.23.2)
-      '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.23.2)
+      '@babel/core': 7.22.20
+      '@babel/plugin-transform-typescript': 7.22.10(@babel/core@7.22.20)
+      '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.22.20)
       vite: 4.3.9(@types/node@20.9.0)
       vue: 3.3.8(typescript@5.2.2)
     transitivePeerDependencies:
@@ -21022,26 +21059,6 @@ packages:
       svg-tags: 1.0.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /@vue/babel-plugin-jsx@1.1.5(@babel/core@7.23.2):
-    resolution: {integrity: sha512-nKs1/Bg9U1n3qSWnsHhCVQtAzI6aQXqua8j/bZrau8ywT1ilXQbK4FwEJGmU8fV7tcpuFvWmmN7TMmV1OBma1g==}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.23.2
-      '@babel/helper-module-imports': 7.22.15
-      '@babel/plugin-syntax-jsx': 7.22.5(@babel/core@7.23.2)
-      '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.2
-      '@babel/types': 7.23.0
-      '@vue/babel-helper-vue-transform-on': 1.1.5
-      camelcase: 6.3.0
-      html-tags: 3.3.1
-      svg-tags: 1.0.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /@vue/babel-plugin-transform-vue-jsx@1.4.0(@babel/core@7.22.20):
     resolution: {integrity: sha512-Fmastxw4MMx0vlgLS4XBX0XiBbUFzoMGeVXuMV08wyOfXdikAFqBTuYPR0tlk+XskL19EzHc39SgjrPGY23JnA==}
@@ -38643,8 +38660,8 @@ packages:
   /preact@10.15.0:
     resolution: {integrity: sha512-nZSa8M2R2m1n7nJSBlzDpxRJaIsejrTO1vlFbdpFvyC8qM1iU+On2y0otfoUm6SRB5o0lF0CKDFxg6grEFU0iQ==}
 
-  /preact@10.18.2:
-    resolution: {integrity: sha512-X/K43vocUHDg0XhWVmTTMbec4LT/iBMh+csCEqJk+pJqegaXsvjdqN80ZZ3L+93azWCnWCZ+WGwYb8SplxeNjA==}
+  /preact@10.19.0:
+    resolution: {integrity: sha512-klJSys/ljj/Z97DrYogoUE2R2qQCtHQD9kJAEDzn/sTDx7dXAfGEbGKvLLVLs2Mhy3t5RDRGrDcWPNAky6KsUw==}
     dev: true
 
   /prebuild-install@7.1.1:
