@@ -345,7 +345,6 @@ export async function load({
     const workerProcess = execaNode(workerFilePath, {
       // Note: this is required for PostCSS.
       cwd: rootDir,
-      // detached: true,
       env: {
         PREVIEWJS_PARENT_PROCESS_PID: process.pid.toString(10),
       },
