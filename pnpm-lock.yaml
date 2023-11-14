@@ -3230,8 +3230,8 @@ importers:
   serializable-values:
     dependencies:
       '@faker-js/faker':
-        specifier: ^8.2.0
-        version: 8.2.0
+        specifier: ^8.3.1
+        version: 8.3.1
       '@previewjs/type-analyzer':
         specifier: ^10.1.1
         version: link:../type-analyzer
@@ -10776,8 +10776,8 @@ packages:
       js-yaml: 4.1.0
     dev: false
 
-  /@faker-js/faker@8.2.0:
-    resolution: {integrity: sha512-VacmzZqVxdWdf9y64lDOMZNDMM/FQdtM9IsaOPKOm2suYwEatb8VkdHqOzXcDnZbk7YDE2BmsJmy/2Hmkn563g==}
+  /@faker-js/faker@8.3.1:
+    resolution: {integrity: sha512-FdgpFxY6V6rLZE9mmIBb9hM0xpfvQOSNOLnzolzKwsE1DH+gC7lEKV1p1IbR0lAYyvYd5a4u3qWJzowUkw1bIw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: false
 
@@ -13288,7 +13288,7 @@ packages:
   /@previewjs/serializable-values@9.0.2:
     resolution: {integrity: sha512-4QJprKSebASN7v6hUQaIXX3DYWxLw08JfuOKoyRX3jsbW6TzGcdrdZms0GuEmSKDamzGkC16fb2GSfBKiBH/Ng==}
     dependencies:
-      '@faker-js/faker': 8.2.0
+      '@faker-js/faker': 8.3.1
       '@previewjs/type-analyzer': 10.1.1
       assert-never: 1.2.1
       prettier: 2.8.8
@@ -13703,7 +13703,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -13810,12 +13810,12 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
       is-module: 1.0.0
-      resolve: 1.22.8
+      resolve: 1.22.2
       rollup: 3.28.1
     dev: true
 
