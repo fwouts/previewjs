@@ -46,7 +46,6 @@ async function startDaemonProcess(
   daemonProcess: ExecaChildProcess<string>;
 } | null> {
   const isWindows = process.platform === "win32";
-  let useWsl = false;
   const nodeVersionCommand = "node --version";
   outputChannel.appendLine(`$ ${nodeVersionCommand}`);
   const [command, commandArgs] =
@@ -72,33 +71,12 @@ async function startDaemonProcess(
   if (checkNodeVersion.kind === "valid") {
     outputChannel.appendLine(`✅ Detected compatible NodeJS version`);
   }
-  invalidNode: if (checkNodeVersion.kind === "invalid") {
+  if (checkNodeVersion.kind === "invalid") {
     outputChannel.appendLine(checkNodeVersion.message);
-    if (!isWindows) {
-      return null;
-    }
-    // On Windows, try WSL as well.
-    outputChannel.appendLine(`Attempting again with WSL...`);
-    const wslArgs = wslCommandArgs("node --version");
-    outputChannel.appendLine(
-      `$ wsl ${wslArgs.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")}`
-    );
-    const nodeVersionWsl = await execa("wsl", wslArgs, {
-      cwd: __dirname,
-      reject: false,
-    });
-    const checkNodeVersionWsl = checkNodeVersionResult(nodeVersionWsl);
-    if (checkNodeVersionWsl.kind === "valid") {
-      outputChannel.appendLine(`✅ Detected compatible NodeJS version in WSL`);
-      // The right version of Node is available through WSL. No need to crash, perfect.
-      useWsl = true;
-      break invalidNode;
-    }
-    outputChannel.appendLine(checkNodeVersionWsl.message);
     return null;
   }
   outputChannel.appendLine(
-    `🚀 Starting Preview.js daemon${useWsl ? " from WSL" : ""}...`
+    `🚀 Starting Preview.js daemon...`
   );
   outputChannel.appendLine(`Streaming daemon logs to: ${logsPath}`);
   const nodeDaemonCommand = "node --trace-warnings daemon.js";
@@ -113,22 +91,12 @@ async function startDaemonProcess(
       PREVIEWJS_LOCK_FILE: daemonLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
       PREVIEWJS_PORT: port.toString(10),
-      // TODO: Check if it works with WSL.
       PREVIEWJS_PARENT_PROCESS_PID: process.pid.toString(10),
     },
   };
-  let daemonProcess: ExecaChildProcess<string>;
-  if (useWsl) {
-    daemonProcess = execa(
-      "wsl",
-      wslCommandArgs(nodeDaemonCommand, true),
-      daemonOptions
-    );
-  } else {
-    const [command, commandArgs] =
-      wrapCommandWithShellIfRequired(nodeDaemonCommand);
-    daemonProcess = execa(command, commandArgs, daemonOptions);
-  }
+  const [daemonCommand, daemonCommandArgs] =
+    wrapCommandWithShellIfRequired(nodeDaemonCommand);
+  const daemonProcess = execa(daemonCommand, daemonCommandArgs, daemonOptions);
   daemonProcess.unref();
   daemonProcess.on("error", (error) => {
     outputChannel.append(`${error}`);
@@ -271,8 +239,4 @@ function wrapCommandWithShellIfRequired(command: string) {
           `cd "${__dirname}" && ${command}`,
         ];
   return [segments[0]!, segments.slice(1)] as const;
-}
-
-function wslCommandArgs(command: string, longRunning = false) {
-  return ["bash", "-lic", longRunning ? `${command} &` : command];
 }

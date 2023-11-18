@@ -69,7 +69,7 @@ tasks {
     }
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
-        kotlinOptions.freeCompilerArgs = listOf("-Xjvm-default=enable", "-Xopt-in=kotlin.RequiresOptIn")
+        kotlinOptions.freeCompilerArgs = listOf("-Xjvm-default=all", "-Xopt-in=kotlin.RequiresOptIn")
     }
 
     withType<Detekt> {
@@ -82,7 +82,8 @@ tasks {
             files(layout.buildDirectory)
         )
         exec {
-            commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --scope=@previewjs/intellij-daemon")
+            // TODO: Cross-platform command.
+            commandLine("cmd.exe", "/c", "node " + System.getProperty("user.dir") + "\\..\\..\\node_modules\\turbo\\bin\\turbo run build --scope=@previewjs/intellij-daemon")
         }
         from(daemonDir) {
             into("${properties("pluginName")}/daemon")

@@ -9,7 +9,6 @@ import {
   writeFileSync,
 } from "fs";
 import http from "http";
-import isWsl from "is-wsl";
 import path from "path";
 import type {
   CheckPreviewStatusRequest,
@@ -133,7 +132,7 @@ export async function startDaemon({
   }, 1000);
 
   const previewjs = await load({
-    installDir: loaderInstallDir,
+    installDir: loaderInstallDir.replace(/\//g, path.sep),
     workerFilePath: loaderWorkerPath,
     onServerStartModuleName,
   });
@@ -141,50 +140,6 @@ export async function startDaemon({
 
   const previewServers: Record<string, PreviewServer> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
-  let wslRoot: string | null = null;
-
-  function transformAbsoluteFilePath(absoluteFilePath: string) {
-    if (!isWsl) {
-      return absoluteFilePath;
-    }
-    if (absoluteFilePath.match(/^[a-z]:.*$/i)) {
-      if (!wslRoot) {
-        wslRoot = detectWslRoot();
-      }
-      // This is a Windows path, which needs to be converted to Linux format inside WSL.
-      return `${wslRoot}/${absoluteFilePath
-        .substring(0, 1)
-        .toLowerCase()}/${absoluteFilePath.substring(3).replace(/\\/g, "/")}`;
-    }
-    // This is already a Linux path.
-    return absoluteFilePath;
-  }
-
-  function detectWslRoot() {
-    const wslConfPath = "/etc/wsl.conf";
-    const defaultRoot = "/mnt";
-    try {
-      if (!existsSync(wslConfPath)) {
-        return defaultRoot;
-      }
-      const configText = readFileSync(wslConfPath, "utf8");
-      const match = configText.match(/root\s*=\s*(.*)/);
-      if (!match) {
-        return defaultRoot;
-      }
-      const detectedRoot = match[1]!.trim();
-      if (detectedRoot.endsWith("/")) {
-        return detectedRoot.substring(0, detectedRoot.length - 1);
-      } else {
-        return detectedRoot;
-      }
-    } catch (e) {
-      logger.warn(
-        `Unable to read WSL config, assuming default root: ${defaultRoot}`
-      );
-      return defaultRoot;
-    }
-  }
 
   const app = http.createServer((req, res) => {
     if (req.headers["origin"]) {
@@ -272,7 +227,7 @@ export async function startDaemon({
   ) =>
     previewjs.inWorkspace({
       versionCode,
-      absoluteFilePath: transformAbsoluteFilePath(absoluteFilePath),
+      absoluteFilePath,
       run,
     });
 
@@ -287,7 +242,7 @@ export async function startDaemon({
           path
             .relative(
               workspace.rootDir,
-              transformAbsoluteFilePath(absoluteFilePath)
+              absoluteFilePath
             )
             .replace(/\\/g, "/"),
         ]);
@@ -347,7 +302,7 @@ export async function startDaemon({
     "/pending-files/update",
     async (req) => {
       await previewjs.updateFileInMemory(
-        transformAbsoluteFilePath(req.absoluteFilePath),
+        req.absoluteFilePath,
         req.utf8Content
       );
       return {};
