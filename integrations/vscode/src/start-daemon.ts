@@ -4,11 +4,11 @@ import type { ExecaChildProcess, ExecaReturnValue, Options } from "execa";
 import { execa } from "execa";
 import type { FSWatcher } from "fs";
 import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
+import getPort from "get-port";
 import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import vscode from "vscode";
-import getPort from "get-port";
 
 const logsPath = path.join(__dirname, "daemon.log");
 
@@ -75,18 +75,11 @@ async function startDaemonProcess(
     outputChannel.appendLine(checkNodeVersion.message);
     return null;
   }
-  outputChannel.appendLine(
-    `🚀 Starting Preview.js daemon...`
-  );
+  outputChannel.appendLine(`🚀 Starting Preview.js daemon...`);
   outputChannel.appendLine(`Streaming daemon logs to: ${logsPath}`);
   const nodeDaemonCommand = "node --trace-warnings daemon.js";
   const daemonOptions: Options = {
     cwd: __dirname,
-    // https://nodejs.org/api/child_process.html#child_process_options_detached
-    // If we use "inherit", we end up with a "write EPIPE" crash when the child process
-    // tries to log after the parent process exited (even when detached properly).
-    stdio: "ignore",
-    detached: true,
     env: {
       PREVIEWJS_LOCK_FILE: daemonLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
@@ -97,7 +90,6 @@ async function startDaemonProcess(
   const [daemonCommand, daemonCommandArgs] =
     wrapCommandWithShellIfRequired(nodeDaemonCommand);
   const daemonProcess = execa(daemonCommand, daemonCommandArgs, daemonOptions);
-  daemonProcess.unref();
   daemonProcess.on("error", (error) => {
     outputChannel.append(`${error}`);
   });
