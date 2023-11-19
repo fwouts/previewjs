@@ -82,8 +82,15 @@ tasks {
             files(layout.buildDirectory)
         )
         exec {
-            // TODO: Cross-platform command.
-            commandLine("cmd.exe", "/c", "node " + System.getProperty("user.dir") + "\\..\\..\\node_modules\\turbo\\bin\\turbo run build --scope=@previewjs/intellij-daemon")
+            if (System.getProperty("os.name").lowercase().contains("win")) {
+                commandLine(
+                    "cmd.exe",
+                    "/c",
+                    "node " + System.getProperty("user.dir") + "\\..\\..\\node_modules\\turbo\\bin\\turbo run build --scope=@previewjs/intellij-daemon"
+                )
+            } else {
+                commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --scope=@previewjs/intellij-daemon")
+            }
         }
         from(daemonDir) {
             into("${properties("pluginName")}/daemon")
