@@ -513,7 +513,8 @@ export class ViteManager {
     const { viteServer, config } = state;
     if (info.virtual) {
       const modules = await viteServer.moduleGraph.getModulesByFile(
-        absoluteFilePath
+        // Vite uses forward slash even on Windows.
+        absoluteFilePath.replace(/\\/g, "/")
       );
       for (const module of modules || []) {
         if (!module.id) {
