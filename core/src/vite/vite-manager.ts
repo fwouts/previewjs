@@ -513,8 +513,10 @@ export class ViteManager {
     const { viteServer, config } = state;
     if (info.virtual) {
       const modules = await viteServer.moduleGraph.getModulesByFile(
-        // Vite uses forward slash even on Windows.
-        absoluteFilePath.replace(/\\/g, "/")
+        toVitePath(absoluteFilePath)
+      );
+      this.options.logger.error(
+        `${modules?.size} modules for ${absoluteFilePath}`
       );
       for (const module of modules || []) {
         if (!module.id) {
@@ -529,11 +531,12 @@ export class ViteManager {
           await viteServer.pluginContainer.transform(source, module.id);
         } catch (e) {
           // We know it will fail.
+          this.options.logger.error("failed " + e);
           return;
         }
       }
       for (const onChange of viteServer.watcher.listeners("change")) {
-        onChange(absoluteFilePath);
+        onChange(toVitePath(absoluteFilePath));
       }
     } else if (
       config.wrapper &&
@@ -546,6 +549,16 @@ export class ViteManager {
       });
     }
   }
+}
+
+function toVitePath(absoluteFilePath: string) {
+  if (absoluteFilePath.match(/^[a-z]:/)) {
+    // Vite uses uppercase drive letters on Windows.
+    absoluteFilePath =
+      absoluteFilePath[0]?.toUpperCase() + absoluteFilePath.substring(1);
+  }
+  // Vite uses forward slash even on Windows.
+  return absoluteFilePath.replace(/\\/g, "/");
 }
 
 function viteAliasToRollupAliasEntries(alias?: vite.AliasOptions) {
