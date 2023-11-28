@@ -35,6 +35,7 @@ import {
 } from "./plugins/preview-script.js";
 import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin.js";
 import { virtualPlugin } from "./plugins/virtual-plugin.js";
+import { toVitePath } from "./vite-paths.js";
 
 const POSTCSS_CONFIG_FILE = [
   ".postcssrc",
@@ -536,7 +537,7 @@ export class ViteManager {
         }
       }
       for (const onChange of viteServer.watcher.listeners("change")) {
-        onChange(toVitePath(absoluteFilePath));
+        onChange(absoluteFilePath);
       }
     } else if (
       config.wrapper &&
@@ -549,16 +550,6 @@ export class ViteManager {
       });
     }
   }
-}
-
-function toVitePath(absoluteFilePath: string) {
-  if (absoluteFilePath.match(/^[a-z]:/)) {
-    // Vite uses uppercase drive letters on Windows.
-    absoluteFilePath =
-      absoluteFilePath[0]?.toUpperCase() + absoluteFilePath.substring(1);
-  }
-  // Vite uses forward slash even on Windows.
-  return absoluteFilePath.replace(/\\/g, "/");
 }
 
 function viteAliasToRollupAliasEntries(alias?: vite.AliasOptions) {
