@@ -19,11 +19,6 @@ try {
       "process.env.PREVIEWJS_PACKAGE_NAME": JSON.stringify(
         process.env.PREVIEWJS_PACKAGE_NAME || "@previewjs/pro"
       ),
-      ...(process.env.PREVIEWJS_PORT && {
-        "process.env.PREVIEWJS_PORT": JSON.stringify(
-          process.env.PREVIEWJS_PORT
-        ),
-      }),
       ...(process.env.PREVIEWJS_MODULES_DIR && {
         "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
           path.join(__dirname, process.env.PREVIEWJS_MODULES_DIR)

@@ -1,13 +1,10 @@
 import { exclusivePromiseRunner } from "exclusive-promises";
-import { existsSync, readFileSync, unlinkSync } from "fs";
 import http from "http";
 import type {
   CheckPreviewStatusRequest,
   CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
-  KillRequest,
-  KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
   StopPreviewRequest,
@@ -71,7 +68,6 @@ export function createClient(baseUrl: string): Client {
   }
 
   const client: Client = {
-    kill: () => makeRPC<KillRequest, KillResponse>("/previewjs/kill")({}),
     crawlFile: makeRPC("/crawl-file"),
     startPreview: makeRPC("/previews/start"),
     checkPreviewStatus: makeRPC("/previews/status"),
@@ -81,20 +77,7 @@ export function createClient(baseUrl: string): Client {
   return client;
 }
 
-export function destroyDaemon(lockFilePath: string) {
-  if (existsSync(lockFilePath)) {
-    const pid = parseInt(readFileSync(lockFilePath, "utf8"));
-    try {
-      process.kill(pid, "SIGKILL");
-    } catch {
-      // The daemon was already dead.
-    }
-    unlinkSync(lockFilePath);
-  }
-}
-
 export interface Client {
-  kill(): Promise<KillResponse>;
   crawlFile(request: CrawlFileRequest): Promise<CrawlFileResponse>;
   startPreview(request: StartPreviewRequest): Promise<StartPreviewResponse>;
   checkPreviewStatus(

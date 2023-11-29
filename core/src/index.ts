@@ -30,6 +30,7 @@ export type {
   FrameworkPluginFactory,
 } from "./plugins/framework.js";
 export type { OnServerStart } from "./preview-env.js";
+export { toVitePath } from "./vite/vite-paths.js";
 
 const require = createRequire(import.meta.url);
 

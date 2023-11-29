@@ -35,6 +35,7 @@ import {
 } from "./plugins/preview-script.js";
 import { publicAssetImportPluginPlugin } from "./plugins/public-asset-import-plugin.js";
 import { virtualPlugin } from "./plugins/virtual-plugin.js";
+import { toVitePath } from "./vite-paths.js";
 
 const POSTCSS_CONFIG_FILE = [
   ".postcssrc",
@@ -513,7 +514,7 @@ export class ViteManager {
     const { viteServer, config } = state;
     if (info.virtual) {
       const modules = await viteServer.moduleGraph.getModulesByFile(
-        absoluteFilePath
+        toVitePath(absoluteFilePath)
       );
       for (const module of modules || []) {
         if (!module.id) {

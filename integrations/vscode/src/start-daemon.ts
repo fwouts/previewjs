@@ -4,32 +4,34 @@ import type { ExecaChildProcess, ExecaReturnValue, Options } from "execa";
 import { execa } from "execa";
 import type { FSWatcher } from "fs";
 import { closeSync, openSync, readFileSync, utimesSync, watch } from "fs";
+import getPort from "get-port";
 import path from "path";
 import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import vscode from "vscode";
 
-const port = process.env.PREVIEWJS_PORT || "9315";
-const logsPath = path.join(__dirname, "daemon.log");
-
-export const daemonLockFilePath = path.join(__dirname, "process.lock");
-
-export async function ensureDaemonRunning(
-  outputChannel: OutputChannel
-): Promise<{
+export async function startDaemon(outputChannel: OutputChannel): Promise<{
   client: Client;
   watcher: FSWatcher;
   daemonProcess: ExecaChildProcess;
 } | null> {
+  const port = await getPort();
+  const now = new Date();
+  const logsPath = path.join(
+    __dirname,
+    `daemon-${now.getFullYear()}${
+      now.getMonth() + 1
+    }${now.getDate()}${now.getHours()}${now.getMinutes()}-${port}.log`
+  );
   const client = createClient(`http://localhost:${port}`);
-  const daemon = await startDaemon(outputChannel);
+  const daemon = await startDaemonProcess(port, logsPath, outputChannel);
   if (!daemon) {
     return null;
   }
   // Note: we expect startDaemon().process to exit 1 almost immediately when there is another
   // daemon running already (e.g. from another workspace) because of the lock file. This is
   // fine and working by design.
-  const ready = streamDaemonLogs(outputChannel);
+  const ready = streamDaemonLogs(logsPath, outputChannel);
   const watcher = await ready;
   return {
     client,
@@ -40,11 +42,13 @@ export async function ensureDaemonRunning(
 
 // Important: we wrap daemonProcess into a Promise so that awaiting startDaemon()
 // doesn't automatically await the process itself (which may not exit for a long time!).
-async function startDaemon(outputChannel: OutputChannel): Promise<{
+async function startDaemonProcess(
+  port: number,
+  logsPath: string,
+  outputChannel: OutputChannel
+): Promise<{
   daemonProcess: ExecaChildProcess<string>;
 } | null> {
-  const isWindows = process.platform === "win32";
-  let useWsl = false;
   const nodeVersionCommand = "node --version";
   outputChannel.appendLine(`$ ${nodeVersionCommand}`);
   const [command, commandArgs] =
@@ -70,71 +74,34 @@ async function startDaemon(outputChannel: OutputChannel): Promise<{
   if (checkNodeVersion.kind === "valid") {
     outputChannel.appendLine(`✅ Detected compatible NodeJS version`);
   }
-  invalidNode: if (checkNodeVersion.kind === "invalid") {
+  if (checkNodeVersion.kind === "invalid") {
     outputChannel.appendLine(checkNodeVersion.message);
-    if (!isWindows) {
-      return null;
-    }
-    // On Windows, try WSL as well.
-    outputChannel.appendLine(`Attempting again with WSL...`);
-    const wslArgs = wslCommandArgs("node --version");
-    outputChannel.appendLine(
-      `$ wsl ${wslArgs.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")}`
-    );
-    const nodeVersionWsl = await execa("wsl", wslArgs, {
-      cwd: __dirname,
-      reject: false,
-    });
-    const checkNodeVersionWsl = checkNodeVersionResult(nodeVersionWsl);
-    if (checkNodeVersionWsl.kind === "valid") {
-      outputChannel.appendLine(`✅ Detected compatible NodeJS version in WSL`);
-      // The right version of Node is available through WSL. No need to crash, perfect.
-      useWsl = true;
-      break invalidNode;
-    }
-    outputChannel.appendLine(checkNodeVersionWsl.message);
     return null;
   }
-  outputChannel.appendLine(
-    `🚀 Starting Preview.js daemon${useWsl ? " from WSL" : ""}...`
-  );
+  outputChannel.appendLine(`🚀 Starting Preview.js daemon...`);
   outputChannel.appendLine(`Streaming daemon logs to: ${logsPath}`);
   const nodeDaemonCommand = "node --trace-warnings daemon.js";
   const daemonOptions: Options = {
     cwd: __dirname,
-    // https://nodejs.org/api/child_process.html#child_process_options_detached
-    // If we use "inherit", we end up with a "write EPIPE" crash when the child process
-    // tries to log after the parent process exited (even when detached properly).
-    stdio: "ignore",
     env: {
-      PREVIEWJS_LOCK_FILE: daemonLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
-      PREVIEWJS_PORT: port,
+      PREVIEWJS_PORT: port.toString(10),
+      PREVIEWJS_PARENT_PROCESS_PID: process.pid.toString(10),
     },
   };
-  let daemonProcess: ExecaChildProcess<string>;
-  if (useWsl) {
-    daemonProcess = execa(
-      "wsl",
-      wslCommandArgs(nodeDaemonCommand, true),
-      daemonOptions
-    );
-  } else {
-    const [command, commandArgs] =
-      wrapCommandWithShellIfRequired(nodeDaemonCommand);
-    daemonProcess = execa(command, commandArgs, {
-      ...daemonOptions,
-      detached: true,
-    });
-  }
-  daemonProcess.unref();
+  const [daemonCommand, daemonCommandArgs] =
+    wrapCommandWithShellIfRequired(nodeDaemonCommand);
+  const daemonProcess = execa(daemonCommand, daemonCommandArgs, daemonOptions);
   daemonProcess.on("error", (error) => {
     outputChannel.append(`${error}`);
   });
   return { daemonProcess };
 }
 
-function streamDaemonLogs(outputChannel: OutputChannel): Promise<FSWatcher> {
+function streamDaemonLogs(
+  logsPath: string,
+  outputChannel: OutputChannel
+): Promise<FSWatcher> {
   const ready = new Promise<FSWatcher>((resolve) => {
     let lastKnownLogsLength = 0;
     let resolved = false;
@@ -269,8 +236,4 @@ function wrapCommandWithShellIfRequired(command: string) {
           `cd "${__dirname}" && ${command}`,
         ];
   return [segments[0]!, segments.slice(1)] as const;
-}
-
-function wslCommandArgs(command: string, longRunning = false) {
-  return ["bash", "-lic", longRunning ? `${command} &` : command];
 }

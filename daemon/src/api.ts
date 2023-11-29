@@ -1,9 +1,3 @@
-export type KillRequest = Record<never, never>;
-
-export type KillResponse = {
-  pid: number;
-};
-
 export type CrawlFileRequest = {
   absoluteFilePath: string;
 };

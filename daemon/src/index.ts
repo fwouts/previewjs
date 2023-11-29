@@ -1,23 +1,13 @@
 import type { PreviewServer, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
-import exitHook from "exit-hook";
-import {
-  appendFileSync,
-  existsSync,
-  readFileSync,
-  unlinkSync,
-  writeFileSync,
-} from "fs";
+import { appendFileSync, writeFileSync } from "fs";
 import http from "http";
-import isWsl from "is-wsl";
 import path from "path";
 import type {
   CheckPreviewStatusRequest,
   CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
-  KillRequest,
-  KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
   StopPreviewRequest,
@@ -25,51 +15,6 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api.js";
-import { createClient } from "./client.js";
-
-const lockFilePath = process.env.PREVIEWJS_LOCK_FILE;
-if (lockFilePath) {
-  if (existsSync(lockFilePath)) {
-    const pid = parseInt(readFileSync(lockFilePath, "utf8"));
-    try {
-      // Test if PID is still running. This will fail if not.
-      process.kill(pid, 0);
-    } catch {
-      // Previous process ended prematurely (e.g. hardware crash).
-      try {
-        unlinkSync(lockFilePath);
-      } catch {
-        // It's possible for several processes to try unlinking at the same time.
-        // For example, a running daemon that is exiting at the same time.
-        // Ignore.
-      }
-    }
-  }
-  try {
-    writeFileSync(lockFilePath, process.pid.toString(10), {
-      flag: "wx",
-    });
-    exitHook((signal) => {
-      // Note: The bracketed tag is required for VS Code and IntelliJ to detect exit.
-      process.stdout.write(
-        `[exit] Preview.js daemon shutting down with signal: ${signal}\n`
-      );
-      try {
-        unlinkSync(lockFilePath);
-      } catch {
-        // It's possible for several processes to try unlinking at the same time.
-        // For example, a new daemon that will replace this one.
-        // Ignore.
-      }
-    });
-  } catch {
-    // eslint-disable-next-line no-console
-    console.error(
-      `Unable to obtain lock: ${lockFilePath}\nYou can delete this file manually if you wish to override the lock.`
-    );
-    process.exit(1);
-  }
-}
 
 const logFilePath = process.env.PREVIEWJS_LOG_FILE;
 
@@ -112,8 +57,30 @@ export async function startDaemon({
   versionCode,
   port,
 }: DaemonStartOptions) {
+  const parentProcessId = parseInt(
+    process.env["PREVIEWJS_PARENT_PROCESS_PID"] || "0"
+  );
+  if (!parentProcessId) {
+    throw new Error(
+      "Missing environment variable: PREVIEWJS_PARENT_PROCESS_PID"
+    );
+  }
+
+  // Kill the daemon if the parent process dies.
+  setInterval(() => {
+    try {
+      process.kill(parentProcessId, 0);
+      // Parent process is still alive, see https://stackoverflow.com/a/21296291.
+    } catch (e) {
+      process.stdout.write(
+        `[exit] Parent process with PID ${parentProcessId} exited. Daemon exiting.\n`
+      );
+      process.exit(0);
+    }
+  }, 1000);
+
   const previewjs = await load({
-    installDir: loaderInstallDir,
+    installDir: loaderInstallDir.replace(/\//g, path.sep),
     workerFilePath: loaderWorkerPath,
     onServerStartModuleName,
   });
@@ -121,50 +88,6 @@ export async function startDaemon({
 
   const previewServers: Record<string, PreviewServer> = {};
   const endpoints: Record<string, (req: any) => Promise<any>> = {};
-  let wslRoot: string | null = null;
-
-  function transformAbsoluteFilePath(absoluteFilePath: string) {
-    if (!isWsl) {
-      return absoluteFilePath;
-    }
-    if (absoluteFilePath.match(/^[a-z]:.*$/i)) {
-      if (!wslRoot) {
-        wslRoot = detectWslRoot();
-      }
-      // This is a Windows path, which needs to be converted to Linux format inside WSL.
-      return `${wslRoot}/${absoluteFilePath
-        .substring(0, 1)
-        .toLowerCase()}/${absoluteFilePath.substring(3).replace(/\\/g, "/")}`;
-    }
-    // This is already a Linux path.
-    return absoluteFilePath;
-  }
-
-  function detectWslRoot() {
-    const wslConfPath = "/etc/wsl.conf";
-    const defaultRoot = "/mnt";
-    try {
-      if (!existsSync(wslConfPath)) {
-        return defaultRoot;
-      }
-      const configText = readFileSync(wslConfPath, "utf8");
-      const match = configText.match(/root\s*=\s*(.*)/);
-      if (!match) {
-        return defaultRoot;
-      }
-      const detectedRoot = match[1]!.trim();
-      if (detectedRoot.endsWith("/")) {
-        return detectedRoot.substring(0, detectedRoot.length - 1);
-      } else {
-        return detectedRoot;
-      }
-    } catch (e) {
-      logger.warn(
-        `Unable to read WSL config, assuming default root: ${defaultRoot}`
-      );
-      return defaultRoot;
-    }
-  }
 
   const app = http.createServer((req, res) => {
     if (req.headers["origin"]) {
@@ -236,23 +159,13 @@ export async function startDaemon({
 
   class NotFoundError extends Error {}
 
-  endpoint<KillRequest, KillResponse>("/previewjs/kill", async () => {
-    setTimeout(() => {
-      logger.info("Seppuku was requested. Bye bye.");
-      process.exit(0);
-    }, 1000);
-    return {
-      pid: process.pid,
-    };
-  });
-
   const inWorkspace = <T>(
     absoluteFilePath: string,
     run: (workspace: Workspace | null) => Promise<T>
   ) =>
     previewjs.inWorkspace({
       versionCode,
-      absoluteFilePath: transformAbsoluteFilePath(absoluteFilePath),
+      absoluteFilePath,
       run,
     });
 
@@ -265,10 +178,7 @@ export async function startDaemon({
         }
         const { components, stories } = await workspace.crawlFiles([
           path
-            .relative(
-              workspace.rootDir,
-              transformAbsoluteFilePath(absoluteFilePath)
-            )
+            .relative(workspace.rootDir, absoluteFilePath)
             .replace(/\\/g, "/"),
         ]);
         return {
@@ -326,47 +236,14 @@ export async function startDaemon({
   endpoint<UpdatePendingFileRequest, UpdatePendingFileResponse>(
     "/pending-files/update",
     async (req) => {
-      await previewjs.updateFileInMemory(
-        transformAbsoluteFilePath(req.absoluteFilePath),
-        req.utf8Content
-      );
+      await previewjs.updateFileInMemory(req.absoluteFilePath, req.utf8Content);
       return {};
     }
   );
 
   await new Promise<void>((resolve, reject) => {
     app.listen(port, resolve).on("error", async (e: any) => {
-      if (e.code !== "EADDRINUSE") {
-        return reject(e);
-      }
-      try {
-        // There's another daemon running already on the same port.
-        // Attempt to kill it and try again. This can happen for example
-        // when upgrading from one version to another of Preview.js.
-        const client = createClient(`http://localhost:${port}`);
-        const { pid } = await client.kill();
-        // Wait for daemon to be killed.
-        let oldDaemonDead = false;
-        for (let i = 0; !oldDaemonDead && i < 10; i++) {
-          try {
-            // Test if PID is still running. This will fail if not.
-            process.kill(pid, 0);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          } catch {
-            oldDaemonDead = true;
-            app.listen(port, resolve).on("error", reject);
-          }
-        }
-        if (!oldDaemonDead) {
-          reject(
-            new Error(
-              `Unable to kill old daemon server running on port ${port}`
-            )
-          );
-        }
-      } catch (e) {
-        reject(e);
-      }
+      reject(e);
     });
   });
 

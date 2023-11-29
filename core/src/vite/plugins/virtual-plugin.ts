@@ -4,6 +4,7 @@ import path from "path";
 import type { Logger } from "pino";
 import type * as vite from "vite";
 import { transformWithEsbuild } from "vite";
+import { toVitePath } from "../vite-paths.js";
 
 const VIRTUAL_PREFIX = `/@previewjs-virtual:`;
 const VIRTUAL_PREFIX2 = `/@id/__x00__`;
@@ -172,9 +173,7 @@ export function virtualPlugin(options: {
       if (!entry || entry.kind !== "file") {
         return;
       }
-      // Note: backslash handling is Windows-specific.
-      const virtualModuleId =
-        VIRTUAL_PREFIX + absoluteFilePath.replace(/\\/g, "/");
+      const virtualModuleId = VIRTUAL_PREFIX + toVitePath(absoluteFilePath);
       const node = moduleGraph.getModuleById(virtualModuleId);
       return node && [node];
     },

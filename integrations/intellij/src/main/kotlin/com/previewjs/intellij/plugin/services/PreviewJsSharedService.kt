@@ -154,39 +154,24 @@ ${e.stackTraceToString()}""",
             throw Error("No port is available to run Preview.js daemon")
         }
         val nodeVersionProcess =
-            processBuilder("node --version", useWsl = false).directory(nodeDirPath.toFile()).start()
-        var useWsl = false
-        try {
-            if (nodeVersionProcess.waitFor() != 0) {
-                throw Error("Preview.js was unable to run node.\\n\\nIs it installed? You may need to restart your IDE.")
-            }
-            checkNodeVersion(nodeVersionProcess)
-        } catch (e: Error) {
-            // Unable to start Node. Check WSL if we're on Windows.
-            if (!isWindows()) {
-                throw e
-            }
-            val nodeVersionProcessWsl =
-                processBuilder("node --version", useWsl = true).directory(nodeDirPath.toFile()).start()
-            if (nodeVersionProcessWsl.waitFor() == 0) {
-                checkNodeVersion(nodeVersionProcessWsl)
-                useWsl = true
-            } else {
-                // If WSL failed, just ignore it.
-                throw e
-            }
+            processBuilder("node --version").directory(nodeDirPath.toFile()).start()
+        if (nodeVersionProcess.waitFor() != 0) {
+            throw Error("Preview.js was unable to run node.\\n\\nIs it installed? You may need to restart your IDE.")
         }
-        val builder = processBuilder("node --trace-warnings dist/main.js $port", useWsl).redirectErrorStream(true)
+        checkNodeVersion(nodeVersionProcess)
+        val builder = processBuilder("node --trace-warnings dist/main.js $port").redirectErrorStream(true)
             .directory(nodeDirPath.toFile())
+        builder.environment()["PREVIEWJS_PARENT_PROCESS_PID"] = ProcessHandle.current().pid().toString()
         val process = builder.start()
         daemonProcess = process
         val daemonOutputReader = BufferedReader(InputStreamReader(process.inputStream))
         val ready = CompletableDeferred<Unit>()
         coroutineScope.launch {
+            var lines = mutableListOf<String>()
             while (!disposed) {
                 while (!daemonOutputReader.ready()) {
                     if (!process.isAlive) {
-                        throw Error("Daemon process died")
+                        ready.completeExceptionally(Error("Daemon process died:\n${lines.joinToString("\n")}"))
                     }
                     delay(100)
                 }
@@ -206,6 +191,7 @@ ${e.stackTraceToString()}""",
                 if (line.contains("[ready]")) {
                     ready.complete(Unit)
                 }
+                lines.add(line)
                 everyProject(project) {
                     printToConsole(cleanStdOut(line + "\n"))
                 }
@@ -263,22 +249,13 @@ ${e.stackTraceToString()}""",
         }
     }
 
-    private fun processBuilder(command: String, useWsl: Boolean): ProcessBuilder {
+    private fun processBuilder(command: String): ProcessBuilder {
         return if (isWindows()) {
-            if (useWsl) {
-                ProcessBuilder(
-                    "wsl",
-                    "bash",
-                    "-lic",
-                    command
-                )
-            } else {
-                ProcessBuilder(
-                    "cmd.exe",
-                    "/C",
-                    command
-                )
-            }
+            ProcessBuilder(
+                "cmd.exe",
+                "/C",
+                command
+            )
         } else {
             // Note: in production builds of IntelliJ / WebStorm, PATH is not initialised
             // from the shell. This means that /usr/local/bin or nvm paths may not be
