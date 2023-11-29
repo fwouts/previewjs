@@ -249,9 +249,6 @@ export async function startDaemon({
   endpoint<UpdatePendingFileRequest, UpdatePendingFileResponse>(
     "/pending-files/update",
     async (req) => {
-      req.absoluteFilePath =
-        req.absoluteFilePath[0]!.toUpperCase() +
-        req.absoluteFilePath.substring(1);
       await previewjs.updateFileInMemory(req.absoluteFilePath, req.utf8Content);
       return {};
     }

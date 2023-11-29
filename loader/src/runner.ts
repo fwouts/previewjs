@@ -113,6 +113,7 @@ export async function load({
     core,
     logger: globalLogger,
     async updateFileInMemory(absoluteFilePath: string, text: string | null) {
+      absoluteFilePath = core.toVitePath(absoluteFilePath);
       memoryReader.updateFile(absoluteFilePath, text);
       await Promise.all(
         Object.values(serverWorkers).map((worker) =>
