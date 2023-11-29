@@ -529,7 +529,6 @@ export class ViteManager {
           await viteServer.pluginContainer.transform(source, module.id);
         } catch (e) {
           // We know it will fail.
-          this.options.logger.error("failed " + e);
           return;
         }
       }
