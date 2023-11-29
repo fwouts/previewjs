@@ -416,9 +416,6 @@ importers:
       exclusive-promises:
         specifier: ^1.0.3
         version: 1.0.3
-      exit-hook:
-        specifier: ^3.2.0
-        version: 3.2.0
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -27694,11 +27691,6 @@ packages:
       onetime: 6.0.0
       signal-exit: 4.1.0
       strip-final-newline: 3.0.0
-    dev: true
-
-  /exit-hook@3.2.0:
-    resolution: {integrity: sha512-aIQN7Q04HGAV/I5BszisuHTZHXNoC23WtLkxdCLuYZMdWviRD0TMIt2bnUBi9MrHaF/hH8b3gwG9iaAUHKnJGA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
   /exit@0.1.2:

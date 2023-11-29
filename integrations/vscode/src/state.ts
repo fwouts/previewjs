@@ -66,6 +66,7 @@ export async function createState({
         state.previewPanel.dispose();
         state.previewPanel = null;
       }
+      daemon.daemonProcess.kill("SIGKILL");
     },
     pendingFileChanges,
     crawlFile,

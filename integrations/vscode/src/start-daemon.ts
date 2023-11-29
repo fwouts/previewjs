@@ -10,25 +10,28 @@ import stripAnsi from "strip-ansi";
 import type { OutputChannel } from "vscode";
 import vscode from "vscode";
 
-const logsPath = path.join(__dirname, "daemon.log");
-
-export const daemonLockFilePath = path.join(__dirname, "process.lock");
-
 export async function startDaemon(outputChannel: OutputChannel): Promise<{
   client: Client;
   watcher: FSWatcher;
   daemonProcess: ExecaChildProcess;
 } | null> {
   const port = await getPort();
+  const now = new Date();
+  const logsPath = path.join(
+    __dirname,
+    `daemon-${now.getFullYear()}${
+      now.getMonth() + 1
+    }${now.getDate()}-${now.getHours()}${now.getMinutes()}-${port}.log`
+  );
   const client = createClient(`http://localhost:${port}`);
-  const daemon = await startDaemonProcess(port, outputChannel);
+  const daemon = await startDaemonProcess(port, logsPath, outputChannel);
   if (!daemon) {
     return null;
   }
   // Note: we expect startDaemon().process to exit 1 almost immediately when there is another
   // daemon running already (e.g. from another workspace) because of the lock file. This is
   // fine and working by design.
-  const ready = streamDaemonLogs(outputChannel);
+  const ready = streamDaemonLogs(logsPath, outputChannel);
   const watcher = await ready;
   return {
     client,
@@ -41,6 +44,7 @@ export async function startDaemon(outputChannel: OutputChannel): Promise<{
 // doesn't automatically await the process itself (which may not exit for a long time!).
 async function startDaemonProcess(
   port: number,
+  logsPath: string,
   outputChannel: OutputChannel
 ): Promise<{
   daemonProcess: ExecaChildProcess<string>;
@@ -80,7 +84,6 @@ async function startDaemonProcess(
   const daemonOptions: Options = {
     cwd: __dirname,
     env: {
-      PREVIEWJS_LOCK_FILE: daemonLockFilePath,
       PREVIEWJS_LOG_FILE: logsPath,
       PREVIEWJS_PORT: port.toString(10),
       PREVIEWJS_PARENT_PROCESS_PID: process.pid.toString(10),
@@ -95,7 +98,10 @@ async function startDaemonProcess(
   return { daemonProcess };
 }
 
-function streamDaemonLogs(outputChannel: OutputChannel): Promise<FSWatcher> {
+function streamDaemonLogs(
+  logsPath: string,
+  outputChannel: OutputChannel
+): Promise<FSWatcher> {
   const ready = new Promise<FSWatcher>((resolve) => {
     let lastKnownLogsLength = 0;
     let resolved = false;

@@ -1,13 +1,6 @@
 import type { PreviewServer, Workspace } from "@previewjs/core";
 import { load } from "@previewjs/loader/runner";
-import exitHook from "exit-hook";
-import {
-  appendFileSync,
-  existsSync,
-  readFileSync,
-  unlinkSync,
-  writeFileSync,
-} from "fs";
+import { appendFileSync, writeFileSync } from "fs";
 import http from "http";
 import path from "path";
 import type {
@@ -25,50 +18,6 @@ import type {
   UpdatePendingFileResponse,
 } from "./api.js";
 import { createClient } from "./client.js";
-
-const lockFilePath = process.env.PREVIEWJS_LOCK_FILE;
-if (lockFilePath) {
-  if (existsSync(lockFilePath)) {
-    const pid = parseInt(readFileSync(lockFilePath, "utf8"));
-    try {
-      // Test if PID is still running. This will fail if not.
-      process.kill(pid, 0);
-    } catch {
-      // Previous process ended prematurely (e.g. hardware crash).
-      try {
-        unlinkSync(lockFilePath);
-      } catch {
-        // It's possible for several processes to try unlinking at the same time.
-        // For example, a running daemon that is exiting at the same time.
-        // Ignore.
-      }
-    }
-  }
-  try {
-    writeFileSync(lockFilePath, process.pid.toString(10), {
-      flag: "wx",
-    });
-    exitHook((signal) => {
-      // Note: The bracketed tag is required for VS Code and IntelliJ to detect exit.
-      process.stdout.write(
-        `[exit] Preview.js daemon shutting down with signal: ${signal}\n`
-      );
-      try {
-        unlinkSync(lockFilePath);
-      } catch {
-        // It's possible for several processes to try unlinking at the same time.
-        // For example, a new daemon that will replace this one.
-        // Ignore.
-      }
-    });
-  } catch {
-    // eslint-disable-next-line no-console
-    console.error(
-      `Unable to obtain lock: ${lockFilePath}\nYou can delete this file manually if you wish to override the lock.`
-    );
-    process.exit(1);
-  }
-}
 
 const logFilePath = process.env.PREVIEWJS_LOG_FILE;
 
@@ -126,7 +75,9 @@ export async function startDaemon({
       process.kill(parentProcessId, 0);
       // Parent process is still alive, see https://stackoverflow.com/a/21296291.
     } catch (e) {
-      logger.info(`Parent process with PID ${parentProcessId} exited. Daemon exiting.`)
+      logger.info(
+        `Parent process with PID ${parentProcessId} exited. Daemon exiting.`
+      );
       process.exit(0);
     }
   }, 1000);

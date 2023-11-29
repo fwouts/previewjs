@@ -1,5 +1,4 @@
 import { exclusivePromiseRunner } from "exclusive-promises";
-import { existsSync, readFileSync, unlinkSync } from "fs";
 import http from "http";
 import type {
   CheckPreviewStatusRequest,
@@ -79,18 +78,6 @@ export function createClient(baseUrl: string): Client {
     updatePendingFile: makeRPC("/pending-files/update"),
   };
   return client;
-}
-
-export function destroyDaemon(lockFilePath: string) {
-  if (existsSync(lockFilePath)) {
-    const pid = parseInt(readFileSync(lockFilePath, "utf8"));
-    try {
-      process.kill(pid, "SIGKILL");
-    } catch {
-      // The daemon was already dead.
-    }
-    unlinkSync(lockFilePath);
-  }
 }
 
 export interface Client {
