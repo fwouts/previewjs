@@ -516,9 +516,6 @@ export class ViteManager {
       const modules = await viteServer.moduleGraph.getModulesByFile(
         toVitePath(absoluteFilePath)
       );
-      this.options.logger.error(
-        `${modules?.size} modules for ${absoluteFilePath}`
-      );
       for (const module of modules || []) {
         if (!module.id) {
           continue;
