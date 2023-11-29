@@ -4,6 +4,7 @@ import { closePreviewPanel, updatePreviewPanel } from "./preview-panel.js";
 import {
   ensurePreviewServerStarted,
   ensurePreviewServerStopped,
+  isPreviewServerRunning,
 } from "./preview-server.js";
 import { createState } from "./state.js";
 
@@ -204,44 +205,64 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
         id = undefined;
       }
       const editor = vscode.window.activeTextEditor;
+      let textDocument: vscode.TextDocument;
       if (!document?.fileName) {
         if (editor?.document) {
-          document = editor.document;
+          textDocument = editor.document;
         } else {
           vscode.window.showErrorMessage("No document selected.");
           return;
         }
+      } else {
+        textDocument = document;
       }
-      const crawlFileResponse = await state.crawlFile(document);
+
+      const crawlFileResponse = await state.crawlFile(textDocument);
       if (!crawlFileResponse.rootDir) {
         vscode.window.showErrorMessage(
-          `No compatible workspace detected from ${document.fileName}`
+          `No compatible workspace detected from ${textDocument.fileName}`
         );
         return;
       }
-      if (id === undefined) {
-        const offset = editor?.selection.active
-          ? document.offsetAt(editor.selection.active)
-          : 0;
-        const previewable =
-          crawlFileResponse.previewables.find(
-            (c) => offset >= c.start && offset <= c.end
-          ) || crawlFileResponse.previewables[0];
-        if (!previewable) {
-          vscode.window.showErrorMessage(
-            `No component or story was found at offset ${offset}`
+
+      vscode.window.withProgress(
+        {
+          location: isPreviewServerRunning(state, crawlFileResponse.rootDir)
+            ? vscode.ProgressLocation.Window
+            : vscode.ProgressLocation.Notification,
+          cancellable: true,
+          title: "Spinning up Preview.js",
+        },
+        async (_progress, cancellationToken) => {
+          if (id === undefined) {
+            const offset = editor?.selection.active
+              ? textDocument.offsetAt(editor.selection.active)
+              : 0;
+            const previewable =
+              crawlFileResponse.previewables.find(
+                (c) => offset >= c.start && offset <= c.end
+              ) || crawlFileResponse.previewables[0];
+            if (!previewable) {
+              vscode.window.showErrorMessage(
+                `No component or story was found at offset ${offset}`
+              );
+              return;
+            }
+            id = previewable.id;
+          }
+          const preview = await ensurePreviewServerStarted(
+            state,
+            crawlFileResponse.rootDir
           );
-          return;
+          if (cancellationToken.isCancellationRequested) {
+            await ensurePreviewServerStopped(state);
+            return;
+          }
+          runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
+          runningServerStatusBarItem.show();
+          updatePreviewPanel(state, preview.url, id, onError);
         }
-        id = previewable.id;
-      }
-      const preview = await ensurePreviewServerStarted(
-        state,
-        crawlFileResponse.rootDir
       );
-      runningServerStatusBarItem.text = `🟢 Preview.js running at ${preview.url}`;
-      runningServerStatusBarItem.show();
-      updatePreviewPanel(state, preview.url, id, onError);
     })
   );
 
