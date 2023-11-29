@@ -21,7 +21,7 @@ export async function startDaemon(outputChannel: OutputChannel): Promise<{
     __dirname,
     `daemon-${now.getFullYear()}${
       now.getMonth() + 1
-    }${now.getDate()}-${now.getHours()}${now.getMinutes()}-${port}.log`
+    }${now.getDate()}${now.getHours()}${now.getMinutes()}-${port}.log`
   );
   const client = createClient(`http://localhost:${port}`);
   const daemon = await startDaemonProcess(port, logsPath, outputChannel);
