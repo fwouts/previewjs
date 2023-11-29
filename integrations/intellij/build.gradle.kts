@@ -24,7 +24,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.3")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4")
     implementation("com.squareup.moshi:moshi:1.15.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
