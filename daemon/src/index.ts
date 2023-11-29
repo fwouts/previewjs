@@ -75,8 +75,8 @@ export async function startDaemon({
       process.kill(parentProcessId, 0);
       // Parent process is still alive, see https://stackoverflow.com/a/21296291.
     } catch (e) {
-      logger.info(
-        `Parent process with PID ${parentProcessId} exited. Daemon exiting.`
+      process.stdout.write(
+        `[exit] Parent process with PID ${parentProcessId} exited. Daemon exiting.\n`
       );
       process.exit(0);
     }
