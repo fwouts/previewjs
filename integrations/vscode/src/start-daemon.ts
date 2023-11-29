@@ -45,7 +45,6 @@ async function startDaemonProcess(
 ): Promise<{
   daemonProcess: ExecaChildProcess<string>;
 } | null> {
-  const isWindows = process.platform === "win32";
   const nodeVersionCommand = "node --version";
   outputChannel.appendLine(`$ ${nodeVersionCommand}`);
   const [command, commandArgs] =
