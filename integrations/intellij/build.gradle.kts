@@ -69,7 +69,7 @@ tasks {
     }
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
-        kotlinOptions.freeCompilerArgs = listOf("-Xjvm-default=enable", "-Xopt-in=kotlin.RequiresOptIn")
+        kotlinOptions.freeCompilerArgs = listOf("-Xjvm-default=all", "-Xopt-in=kotlin.RequiresOptIn")
     }
 
     withType<Detekt> {
