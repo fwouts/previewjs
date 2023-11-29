@@ -19,9 +19,11 @@ export async function startDaemon(outputChannel: OutputChannel): Promise<{
   const now = new Date();
   const logsPath = path.join(
     __dirname,
-    `daemon-${now.getFullYear()}${
+    `daemon-${now.getFullYear()}${padTwoDigits(
       now.getMonth() + 1
-    }${now.getDate()}${now.getHours()}${now.getMinutes()}-${port}.log`
+    )}${padTwoDigits(now.getDate())}${padTwoDigits(
+      now.getHours()
+    )}${padTwoDigits(now.getMinutes())}-${port}.log`
   );
   const client = createClient(`http://localhost:${port}`);
   const daemon = await startDaemonProcess(port, logsPath, outputChannel);
@@ -38,6 +40,10 @@ export async function startDaemon(outputChannel: OutputChannel): Promise<{
     watcher,
     daemonProcess: daemon.daemonProcess,
   };
+}
+
+function padTwoDigits(value: number) {
+  return value.toString(10).padStart(2, "0");
 }
 
 // Important: we wrap daemonProcess into a Promise so that awaiting startDaemon()
