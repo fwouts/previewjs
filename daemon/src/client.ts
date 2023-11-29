@@ -5,8 +5,6 @@ import type {
   CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
-  KillRequest,
-  KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
   StopPreviewRequest,
@@ -70,7 +68,6 @@ export function createClient(baseUrl: string): Client {
   }
 
   const client: Client = {
-    kill: () => makeRPC<KillRequest, KillResponse>("/previewjs/kill")({}),
     crawlFile: makeRPC("/crawl-file"),
     startPreview: makeRPC("/previews/start"),
     checkPreviewStatus: makeRPC("/previews/status"),
@@ -81,7 +78,6 @@ export function createClient(baseUrl: string): Client {
 }
 
 export interface Client {
-  kill(): Promise<KillResponse>;
   crawlFile(request: CrawlFileRequest): Promise<CrawlFileResponse>;
   startPreview(request: StartPreviewRequest): Promise<StartPreviewResponse>;
   checkPreviewStatus(

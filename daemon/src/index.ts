@@ -8,8 +8,6 @@ import type {
   CheckPreviewStatusResponse,
   CrawlFileRequest,
   CrawlFileResponse,
-  KillRequest,
-  KillResponse,
   StartPreviewRequest,
   StartPreviewResponse,
   StopPreviewRequest,
@@ -17,7 +15,6 @@ import type {
   UpdatePendingFileRequest,
   UpdatePendingFileResponse,
 } from "./api.js";
-import { createClient } from "./client.js";
 
 const logFilePath = process.env.PREVIEWJS_LOG_FILE;
 
@@ -162,16 +159,6 @@ export async function startDaemon({
 
   class NotFoundError extends Error {}
 
-  endpoint<KillRequest, KillResponse>("/previewjs/kill", async () => {
-    setTimeout(() => {
-      logger.info("Seppuku was requested. Bye bye.");
-      process.exit(0);
-    }, 1000);
-    return {
-      pid: process.pid,
-    };
-  });
-
   const inWorkspace = <T>(
     absoluteFilePath: string,
     run: (workspace: Workspace | null) => Promise<T>
@@ -256,37 +243,7 @@ export async function startDaemon({
 
   await new Promise<void>((resolve, reject) => {
     app.listen(port, resolve).on("error", async (e: any) => {
-      if (e.code !== "EADDRINUSE") {
-        return reject(e);
-      }
-      try {
-        // There's another daemon running already on the same port.
-        // Attempt to kill it and try again. This can happen for example
-        // when upgrading from one version to another of Preview.js.
-        const client = createClient(`http://localhost:${port}`);
-        const { pid } = await client.kill();
-        // Wait for daemon to be killed.
-        let oldDaemonDead = false;
-        for (let i = 0; !oldDaemonDead && i < 10; i++) {
-          try {
-            // Test if PID is still running. This will fail if not.
-            process.kill(pid, 0);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          } catch {
-            oldDaemonDead = true;
-            app.listen(port, resolve).on("error", reject);
-          }
-        }
-        if (!oldDaemonDead) {
-          reject(
-            new Error(
-              `Unable to kill old daemon server running on port ${port}`
-            )
-          );
-        }
-      } catch (e) {
-        reject(e);
-      }
+      reject(e);
     });
   });
 
