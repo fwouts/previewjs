@@ -246,8 +246,8 @@ importers:
         specifier: ^8.16.2
         version: 8.16.2
       playwright:
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       typescript:
         specifier: ^5.3.2
         version: 5.3.2
@@ -487,8 +487,8 @@ importers:
         version: 5.3.2
     devDependencies:
       '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -669,8 +669,8 @@ importers:
         version: 4.2.0(vite@4.5.0)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       '@previewjs/api':
         specifier: workspace:*
         version: link:../../api
@@ -2175,8 +2175,8 @@ importers:
         version: 2.7.2(solid-js@1.8.6)(vite@4.5.0)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2321,8 +2321,8 @@ importers:
         version: 4.5.0(@types/node@20.10.1)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2628,8 +2628,8 @@ importers:
         version: 2.7.15
     devDependencies:
       '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2795,8 +2795,8 @@ importers:
         version: 3.3.9(typescript@5.3.2)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -3177,8 +3177,8 @@ importers:
         specifier: ^13.2.2
         version: 13.2.2
       playwright:
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
     devDependencies:
       '@types/node':
         specifier: ^20.10.1
@@ -3215,8 +3215,8 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(vite@4.5.0)
       playwright:
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       typescript:
         specifier: ^5.3.2
         version: 5.3.2
@@ -3292,8 +3292,8 @@ importers:
   testing:
     dependencies:
       '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
+        specifier: ^1.40.1
+        version: 1.40.1
       '@previewjs/api':
         specifier: ^16.0.2
         version: link:../api
@@ -3836,6 +3836,60 @@ packages:
       '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
       semver: 6.3.1
+
+  /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.21.4):
+    resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/core': 7.21.4
+      '@babel/helper-annotate-as-pure': 7.22.5
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-member-expression-to-functions': 7.23.0
+      '@babel/helper-optimise-call-expression': 7.22.5
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.4)
+      '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.6
+      semver: 6.3.1
+    dev: true
+
+  /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.21.8):
+    resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/core': 7.21.8
+      '@babel/helper-annotate-as-pure': 7.22.5
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-member-expression-to-functions': 7.23.0
+      '@babel/helper-optimise-call-expression': 7.22.5
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.8)
+      '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.6
+      semver: 6.3.1
+    dev: false
+
+  /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.22.20):
+    resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/core': 7.22.20
+      '@babel/helper-annotate-as-pure': 7.22.5
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-member-expression-to-functions': 7.23.0
+      '@babel/helper-optimise-call-expression': 7.22.5
+      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.22.20)
+      '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.6
+      semver: 6.3.1
+    dev: true
 
   /@babel/helper-create-class-features-plugin@7.22.5(@babel/core@7.23.3):
     resolution: {integrity: sha512-xkb58MyOYIslxu3gKmVXmjTtUPvBU4odYzbiIQbWwLKIHCsx6UGZGX6F1IznMFVnDdirseUZopzN+ZRt8Xb33Q==}
@@ -4638,11 +4692,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.4
-      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.21.4)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.4)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.4)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.4)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.21.8):
@@ -4652,11 +4708,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.21.8
-      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.21.8)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.21.8)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.21.8)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.21.8)
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.22.20):
@@ -4666,11 +4724,13 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.20
-      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.22.20)
+      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.22.20)
       '@babel/helper-plugin-utils': 7.22.5
-      '@babel/helper-replace-supers': 7.22.9(@babel/core@7.22.20)
-      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/helper-replace-supers': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.5
       '@babel/plugin-syntax-decorators': 7.22.5(@babel/core@7.22.20)
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@babel/plugin-proposal-decorators@7.22.5(@babel/core@7.23.3):
@@ -12804,12 +12864,12 @@ packages:
     dev: true
     optional: true
 
-  /@playwright/test@1.39.0:
-    resolution: {integrity: sha512-3u1iFqgzl7zr004bGPYiN/5EZpRUSFddQBra8Rqll5N0/vfpqlP9I9EXqAoGacuAbX6c9Ulg/Cjqglp5VkK6UQ==}
+  /@playwright/test@1.40.1:
+    resolution: {integrity: sha512-EaaawMTOeEItCRvfmkI9v6rBkF1svM8wjl/YPRrg2N2Wmp+4qJYkWtJsbew1szfKKDm6fPLy4YAanBhIlf9dWw==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright: 1.39.0
+      playwright: 1.40.1
 
   /@pmmmwh/react-refresh-webpack-plugin@0.5.10(react-refresh@0.11.0)(webpack-dev-server@4.11.1)(webpack@5.83.1):
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
@@ -35788,17 +35848,17 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core@1.39.0:
-    resolution: {integrity: sha512-+k4pdZgs1qiM+OUkSjx96YiKsXsmb59evFoqv8SKO067qBA+Z2s/dCzJij/ZhdQcs2zlTAgRKfeiiLm8PQ2qvw==}
+  /playwright-core@1.40.1:
+    resolution: {integrity: sha512-+hkOycxPiV534c4HhpfX6yrlawqVUzITRKwHAmYfmsVreltEl6fAZJ3DPfLMOODw0H3s1Itd6MDCWmP1fl/QvQ==}
     engines: {node: '>=16'}
     hasBin: true
 
-  /playwright@1.39.0:
-    resolution: {integrity: sha512-naE5QT11uC/Oiq0BwZ50gDmy8c8WLPRTEWuSSFVG2egBka/1qMoSqYQcROMT9zLwJ86oPofcTH2jBY/5wWOgIw==}
+  /playwright@1.40.1:
+    resolution: {integrity: sha512-2eHI7IioIpQ0bS1Ovg/HszsN/XKNwEG1kbzSDDmADpclKc7CyqkHw7Mg2JCz/bbCxg25QUPcjksoMW7JcIFQmw==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright-core: 1.39.0
+      playwright-core: 1.40.1
     optionalDependencies:
       fsevents: 2.3.2
 
