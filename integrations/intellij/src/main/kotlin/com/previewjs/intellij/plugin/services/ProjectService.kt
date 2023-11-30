@@ -312,13 +312,13 @@ class ProjectService(private val project: Project) : Disposable {
                 )
             )
             val rootDir = analysisResponse.rootDir ?: return@enqueueAction
-            currentPreviewRootDir?.let {
-                api.stopPreview(StopPreviewRequest(rootDir = it))
+            if (currentPreviewRootDir != rootDir) {
+                currentPreviewRootDir?.let {
+                    api.stopPreview(StopPreviewRequest(rootDir = it))
+                }
+                currentPreviewRootDir = rootDir
+                previewBaseUrl = api.startPreview(StartPreviewRequest(rootDir)).url
             }
-            currentPreviewRootDir = rootDir
-            val startPreviewResponse = api.startPreview(StartPreviewRequest(rootDir))
-            val previewBaseUrl = startPreviewResponse.url
-            this@ProjectService.previewBaseUrl = previewBaseUrl
             val previewUrl = "$previewBaseUrl?p=${URLEncoder.encode(previewableId, "utf-8")}"
             app.invokeLater {
                 var browser = previewBrowser
@@ -366,18 +366,20 @@ class ProjectService(private val project: Project) : Disposable {
                         )
                     }
                 }
-                val currentBrowserUrl = browser.cefBrowser.url
-                if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
-                    browser.cefBrowser.executeJavaScript(
-                        "window.postMessage({ kind: \"navigate\", previewableId: \"${previewableId}\" });",
-                        previewUrl,
-                        0
-                    )
-                } else {
-                    browser.loadURL("$previewUrl#panel")
+                this@ProjectService.previewBaseUrl?.let { previewBaseUrl ->
+                    val currentBrowserUrl = browser.cefBrowser.url
+                    if (currentBrowserUrl?.startsWith(previewBaseUrl) == true) {
+                        browser.cefBrowser.executeJavaScript(
+                            "window.postMessage({ kind: \"navigate\", previewableId: \"${previewableId}\" });",
+                            previewUrl,
+                            0
+                        )
+                    } else {
+                        browser.loadURL("$previewUrl#panel")
+                    }
+                    previewToolWindow?.show()
+                    updateStatusBarWidget()
                 }
-                previewToolWindow?.show()
-                updateStatusBarWidget()
             }
         }, {
             "Warning: unable to open preview for $previewableId"
