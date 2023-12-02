@@ -67,7 +67,9 @@ export function updatePreviewPanel(
       </style>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Content-Security-Policy" content="default-src http://localhost:*; script-src 'unsafe-inline'">
+      <meta http-equiv="Content-Security-Policy" content="default-src ${previewBaseUrl} ${
+      previewPanel.webview.cspSource
+    }; script-src 'unsafe-inline'">
       <script>
         const vscode = acquireVsCodeApi();
         let iframe;

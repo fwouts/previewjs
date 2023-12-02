@@ -1,4 +1,5 @@
 import { exclusivePromiseRunner } from "exclusive-promises";
+import vscode from "vscode";
 import type { PreviewJsState } from "./state.js";
 
 const locking = exclusivePromiseRunner();
@@ -23,10 +24,19 @@ export async function ensurePreviewServerStarted(
       }
       const { url } = await state.client.startPreview({
         rootDir,
+        ...(vscode.env.uiKind === vscode.UIKind.Web
+          ? {
+              // GitHub Codespaces
+              clientPort: 443,
+            }
+          : {}),
       });
+      const remoteCompatibleUrl = await vscode.env
+        .asExternalUri(vscode.Uri.parse(url))
+        .then((uri) => uri.toString());
       state.currentPreview = {
         rootDir,
-        url,
+        url: remoteCompatibleUrl,
       };
     }
     return state.currentPreview;

@@ -9,6 +9,7 @@ export type WorkerData = {
   inMemorySnapshot: InMemoryFilesSnapshot;
   frameworkPluginName: string;
   port?: number;
+  clientPort?: number;
   onServerStartModuleName?: string;
 };
 
