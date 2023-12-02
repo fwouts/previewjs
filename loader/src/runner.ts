@@ -27,6 +27,7 @@ const validLogLevels = new Set<unknown>(["debug", "info", "error", "silent"]);
 
 export type ServerWorker = {
   port: number;
+  clientPort?: number;
   request: <Request extends WorkerRequest>(
     request: Request
   ) => Promise<WorkerResponseType<Request>>;
@@ -260,6 +261,7 @@ export async function load({
                 rootDir,
                 frameworkPluginName,
                 port: worker.port,
+                clientPort: worker.clientPort,
               });
             },
           };
@@ -275,7 +277,7 @@ export async function load({
           fsReader.listeners.add(nodeModulesChangeListener);
           const workerDelegatingWorkspace: Workspace = {
             ...workspace,
-            startServer: async ({ port, onStop } = {}) => {
+            startServer: async ({ port, clientPort, onStop } = {}) => {
               const worker = await ensureWorkerRunning({
                 logger,
                 logLevel,
@@ -284,6 +286,7 @@ export async function load({
                 rootDir,
                 frameworkPluginName,
                 port,
+                clientPort,
               });
               if (onStop) {
                 worker.onStop.push(onStop);
@@ -321,6 +324,7 @@ export async function load({
     rootDir: string;
     frameworkPluginName: string;
     port?: number;
+    clientPort?: number;
   }): ResolvablePromise<ServerWorker> {
     const {
       logger,
@@ -330,6 +334,7 @@ export async function load({
       rootDir,
       frameworkPluginName,
       port,
+      clientPort,
     } = options;
     const existingWorker = serverWorkers[rootDir];
     if (existingWorker) {
@@ -392,6 +397,7 @@ export async function load({
         inMemorySnapshot: memoryReader.snapshot(),
         frameworkPluginName,
         port,
+        clientPort,
         onServerStartModuleName,
       },
     });
@@ -465,6 +471,7 @@ export async function load({
       workerReadyPromise.then(
         ({ port }): ServerWorker => ({
           port,
+          clientPort,
           request,
           kill: killWorker,
           waitUntilExited: workerExitedPromise,
