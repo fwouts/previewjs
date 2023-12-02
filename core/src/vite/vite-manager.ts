@@ -128,6 +128,7 @@ export class ViteManager {
       frameworkPlugin: FrameworkPlugin;
       server: Server;
       port: number;
+      clientPort?: number;
     }
   ) {
     const router = express.Router();
@@ -379,7 +380,7 @@ export class ViteManager {
           hmr: {
             overlay: false,
             server: this.options.server,
-            clientPort: this.options.port,
+            clientPort: this.options.clientPort || this.options.port,
             ...(typeof config.vite?.server?.hmr === "object"
               ? config.vite?.server?.hmr
               : {}),

@@ -26,6 +26,7 @@ export class Previewer {
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
       port: number;
+      clientPort?: number;
     }
   ) {
     this.transformingReader = createStackedReader([
@@ -150,6 +151,7 @@ export class Previewer {
           frameworkPlugin: this.options.frameworkPlugin,
           server,
           port: this.options.port,
+          clientPort: this.options.clientPort,
         });
         this.viteManager.start();
         this.options.logger.debug(`Previewer ready`);

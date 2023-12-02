@@ -15,6 +15,8 @@ export type CrawlFileResponse =
 
 export type StartPreviewRequest = {
   rootDir: string;
+  port?: number;
+  clientPort?: number;
 };
 
 export type StartPreviewResponse = {

@@ -194,7 +194,7 @@ export async function startDaemon({
 
   endpoint<StartPreviewRequest, StartPreviewResponse>(
     "/previews/start",
-    async ({ rootDir }) =>
+    async ({ rootDir, port, clientPort }) =>
       inWorkspace<StartPreviewResponse>(rootDir, async (workspace) => {
         if (workspace?.rootDir !== rootDir) {
           throw new NotFoundError();
@@ -203,6 +203,8 @@ export async function startDaemon({
         if (!previewServer) {
           previewServer = previewServers[rootDir] = await workspace.startServer(
             {
+              port,
+              clientPort,
               onStop: () => {
                 delete previewServers[rootDir];
               },
