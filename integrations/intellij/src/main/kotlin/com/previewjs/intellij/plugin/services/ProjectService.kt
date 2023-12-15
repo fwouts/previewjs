@@ -1,6 +1,6 @@
 package com.previewjs.intellij.plugin.services
 
-import com.intellij.codeInsight.hints.InlayHintsPassFactory
+import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
@@ -215,9 +215,13 @@ class ProjectService(private val project: Project) : Disposable {
     private fun recrawlFile(file: VirtualFile, text: String) {
         crawlFile(file) { components ->
             componentMap[file.path] = Pair(text, components)
-            @Suppress("UnstableApiUsage")
             app.invokeLater {
-                InlayHintsPassFactory.forceHintsUpdateOnNextPass()
+                // This is very inefficient but there is no better way since
+                // InlayHintsPassFactory was moved to an internal package in
+                // IJ 2023.3.
+                //
+                // See https://youtrack.jetbrains.com/issue/IDEA-333164
+                DaemonCodeAnalyzer.getInstance(project).restart()
             }
         }
     }
