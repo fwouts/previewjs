@@ -20,6 +20,7 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
+import com.intellij.openapi.vfs.findPsiFile
 import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.wm.StatusBarWidgetFactory
@@ -216,12 +217,8 @@ class ProjectService(private val project: Project) : Disposable {
         crawlFile(file) { components ->
             componentMap[file.path] = Pair(text, components)
             app.invokeLater {
-                // This is very inefficient but there is no better way since
-                // InlayHintsPassFactory was moved to an internal package in
-                // IJ 2023.3.
-                //
-                // See https://youtrack.jetbrains.com/issue/IDEA-333164
-                DaemonCodeAnalyzer.getInstance(project).restart()
+                val psiFile = file.findPsiFile(project) ?: return@invokeLater
+                DaemonCodeAnalyzer.getInstance(project).restart(psiFile)
             }
         }
     }
