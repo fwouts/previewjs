@@ -71,8 +71,8 @@ importers:
         specifier: ^2.1.1
         version: link:../../vfs
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -118,8 +118,8 @@ importers:
         specifier: ^18.2.18
         version: 18.2.18
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -243,8 +243,8 @@ importers:
         specifier: ^4.18.2
         version: 4.18.2
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       playwright:
         specifier: ^1.40.1
         version: 1.40.1
@@ -353,8 +353,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -499,8 +499,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -690,8 +690,8 @@ importers:
         specifier: ^18.2.18
         version: 18.2.18
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -2187,8 +2187,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -2339,8 +2339,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -2643,8 +2643,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -2825,8 +2825,8 @@ importers:
         specifier: ^3.3.13
         version: 3.3.13
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -3122,8 +3122,8 @@ importers:
         specifier: ^11.2.0
         version: 11.2.0
       pino:
-        specifier: ^8.16.2
-        version: 8.16.2
+        specifier: ^8.17.2
+        version: 8.17.2
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -13106,7 +13106,7 @@ packages:
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/type-analyzer': 10.1.2
       '@previewjs/vfs': 2.1.1
-      pino: 8.16.2
+      pino: 8.17.2
       pino-pretty: 10.3.0
     dev: false
 
@@ -13154,7 +13154,7 @@ packages:
       globby: 13.2.2
       html-escaper: 3.0.3
       http-terminator: 3.2.0
-      pino: 8.16.2
+      pino: 8.17.2
       pino-pretty: 10.3.0
       rollup-plugin-friendly-type-imports: 1.0.3
       ts-node: 10.9.2(@types/node@20.10.5)(typescript@5.3.3)
@@ -13628,7 +13628,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -13735,12 +13735,12 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
       is-module: 1.0.0
-      resolve: 1.22.2
+      resolve: 1.22.8
       rollup: 3.28.1
     dev: true
 
@@ -35916,8 +35916,8 @@ packages:
   /pino-std-serializers@6.2.1:
     resolution: {integrity: sha512-wHuWB+CvSVb2XqXM0W/WOYUkVSPbiJb9S5fNB7TBhd8s892Xq910bRxwHtC4l71hgztObTjXL6ZheZXFjhDrDQ==}
 
-  /pino@8.16.2:
-    resolution: {integrity: sha512-2advCDGVEvkKu9TTVSa/kWW7Z3htI/sBKEZpqiHk6ive0i/7f5b1rsU8jn0aimxqfnSz5bj/nOYkwhBUn5xxvg==}
+  /pino@8.17.2:
+    resolution: {integrity: sha512-LA6qKgeDMLr2ux2y/YiUt47EfgQ+S9LznBWOJdN3q1dx2sv0ziDLUBeVpyVv17TEcGCBuWf0zNtg3M5m1NhhWQ==}
     hasBin: true
     dependencies:
       atomic-sleep: 1.0.0
@@ -35925,7 +35925,7 @@ packages:
       on-exit-leak-free: 2.1.0
       pino-abstract-transport: 1.1.0
       pino-std-serializers: 6.2.1
-      process-warning: 2.2.0
+      process-warning: 3.0.0
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.4.2
@@ -38487,8 +38487,8 @@ packages:
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
-  /process-warning@2.2.0:
-    resolution: {integrity: sha512-/1WZ8+VQjR6avWOgHeEPd7SDQmFQ1B5mC1eRXsCm5TarlNmx/wCsa5GEaxGm05BORRtyG/Ex/3xq3TuRvq57qg==}
+  /process-warning@3.0.0:
+    resolution: {integrity: sha512-mqn0kFRl0EoqhnL0GQ0veqFHyIN1yig9RHh/InzORTUiZHFRAur+aMtRkELNwGs9aNwKS6tg/An4NYBPGwvtzQ==}
 
   /process@0.11.10:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
