@@ -148,8 +148,8 @@ importers:
         specifier: ^10.1.2
         version: link:../type-analyzer
       axios:
-        specifier: ^1.6.2
-        version: 1.6.2
+        specifier: ^1.6.3
+        version: 1.6.3
     devDependencies:
       typescript:
         specifier: ^5.3.3
@@ -329,8 +329,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       axios:
-        specifier: ^1.6.2
-        version: 1.6.2
+        specifier: ^1.6.3
+        version: 1.6.3
       esbuild-plugin-polyfill-node:
         specifier: ^0.3.0
         version: 0.3.0(esbuild@0.19.10)
@@ -13094,7 +13094,7 @@ packages:
     dependencies:
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/type-analyzer': 10.1.2
-      axios: 1.6.2
+      axios: 1.6.3
     transitivePeerDependencies:
       - debug
     dev: false
@@ -13125,7 +13125,7 @@ packages:
       '@previewjs/type-analyzer': 10.1.2
       '@previewjs/vfs': 2.1.1
       assert-never: 1.2.1
-      axios: 1.6.2
+      axios: 1.6.3
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.10)
       exclusive-promises: 1.0.3
       express: 4.18.2
@@ -13168,7 +13168,7 @@ packages:
       '@previewjs/core': 28.1.0(@types/node@20.10.5)(esbuild@0.19.10)
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/storybook-helpers': 5.0.7(@types/node@20.10.5)(esbuild@0.19.10)
-      axios: 1.6.2
+      axios: 1.6.3
       env-paths: 3.0.0
       express: 4.18.2
       fs-extra: 11.2.0
@@ -13607,7 +13607,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -13851,21 +13851,6 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 3.21.0
-
-  /@rollup/pluginutils@5.0.2(rollup@3.28.1):
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.0
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-      rollup: 3.28.1
-    dev: true
 
   /@rollup/pluginutils@5.0.3(rollup@3.21.0):
     resolution: {integrity: sha512-hfllNN4a80rwNQ9QCxhxuHCGHMAvabXqxNdaChUSSadMre7t4iEUI6fFAhBOn/eIYTgYVhBv7vCLsAJ4u3lf3g==}
@@ -22368,8 +22353,8 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /axios@1.6.2:
-    resolution: {integrity: sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A==}
+  /axios@1.6.3:
+    resolution: {integrity: sha512-fWyNdeawGam70jXSVlKl+SUNVcL6j6W79CuSIPfi6HnDUmSCH6gyUys/HrqHeA/wU0Az41rRgean494d0Jb+ww==}
     dependencies:
       follow-redirects: 1.15.2(debug@4.3.4)
       form-data: 4.0.0
@@ -44757,7 +44742,7 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || 3 || 4
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       '@svgr/core': 6.5.1
       vite: 4.3.8(@types/node@20.10.5)
     transitivePeerDependencies:
