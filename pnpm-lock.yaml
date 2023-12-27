@@ -74,8 +74,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
     devDependencies:
       typescript:
         specifier: ^5.3.3
@@ -121,8 +121,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -356,8 +356,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       rollup-plugin-friendly-type-imports:
         specifier: ^1.0.3
         version: 1.0.3
@@ -502,8 +502,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       preact:
         specifier: ^10.19.3
         version: 10.19.3
@@ -693,8 +693,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -2190,8 +2190,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       solid-js:
         specifier: ^1.8.7
         version: 1.8.7
@@ -2342,8 +2342,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.3.3)
@@ -2646,8 +2646,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -2828,8 +2828,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -3125,8 +3125,8 @@ importers:
         specifier: ^8.17.2
         version: 8.17.2
       pino-pretty:
-        specifier: ^10.3.0
-        version: 10.3.0
+        specifier: ^10.3.1
+        version: 10.3.1
       pnpm:
         specifier: ^8.13.1
         version: 8.13.1
@@ -13086,7 +13086,7 @@ packages:
       '@previewjs/type-analyzer': 10.1.2
       '@previewjs/vfs': 2.1.1
       pino: 8.17.2
-      pino-pretty: 10.3.0
+      pino-pretty: 10.3.1
     dev: false
 
   /@previewjs/api@16.0.3:
@@ -13134,7 +13134,7 @@ packages:
       html-escaper: 3.0.3
       http-terminator: 3.2.0
       pino: 8.17.2
-      pino-pretty: 10.3.0
+      pino-pretty: 10.3.1
       rollup-plugin-friendly-type-imports: 1.0.3
       ts-node: 10.9.2(@types/node@20.10.5)(typescript@5.3.3)
       tsconfig-paths: 4.2.0
@@ -13607,7 +13607,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -13851,6 +13851,21 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 3.21.0
+
+  /@rollup/pluginutils@5.0.2(rollup@3.28.1):
+    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@types/estree': 1.0.0
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
+      rollup: 3.28.1
+    dev: true
 
   /@rollup/pluginutils@5.0.3(rollup@3.21.0):
     resolution: {integrity: sha512-hfllNN4a80rwNQ9QCxhxuHCGHMAvabXqxNdaChUSSadMre7t4iEUI6fFAhBOn/eIYTgYVhBv7vCLsAJ4u3lf3g==}
@@ -35859,8 +35874,8 @@ packages:
       readable-stream: 4.4.0
       split2: 4.2.0
 
-  /pino-pretty@10.3.0:
-    resolution: {integrity: sha512-JthvQW289q3454mhM3/38wFYGWPiBMR28T3CpDNABzoTQOje9UKS7XCJQSnjWF9LQGQkGd8D7h0oq+qwiM3jFA==}
+  /pino-pretty@10.3.1:
+    resolution: {integrity: sha512-az8JbIYeN/1iLj2t0jR9DV48/LQ3RC6hZPpapKPkb84Q+yTidMCpgWxIT3N0flnBDilyBQ1luWNpOeJptjdp/g==}
     hasBin: true
     dependencies:
       colorette: 2.0.20
@@ -44742,7 +44757,7 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || 3 || 4
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
+      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
       '@svgr/core': 6.5.1
       vite: 4.3.8(@types/node@20.10.5)
     transitivePeerDependencies:
