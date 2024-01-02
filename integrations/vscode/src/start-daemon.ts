@@ -205,22 +205,20 @@ function checkNodeVersionResult(result: ExecaReturnValue<string>):
       result.exitCode !== 0 ? ` with exit code ${result.exitCode}` : "";
     return {
       kind: "invalid",
-      message: `Preview.js needs NodeJS 16.14.0+ but running \`node\` failed${withExitCode}.\n\nIs it installed? You may need to restart your IDE.\n`,
+      message: `Preview.js needs NodeJS 18+ but running \`node\` failed${withExitCode}.\n\nIs it installed? You may need to restart your IDE.\n`,
     };
   }
   const nodeVersion = stripAnsi(result.stdout).split("\n").at(-1)!.trim();
   const match = nodeVersion.match(/^v(\d+)\.(\d+).*$/);
   const invalidVersion = {
     kind: "invalid",
-    message: `Preview.js needs NodeJS 16.14.0+ to run.\n\nPlease upgrade then restart your IDE.`,
+    message: `Preview.js needs NodeJS 18+ to run.\n\nPlease upgrade then restart your IDE.`,
   } as const;
   if (!match) {
     return invalidVersion;
   }
   const majorVersion = parseInt(match[1]!, 10);
-  const minorVersion = parseInt(match[2]!, 10);
-  // Minimum version: 16.14.0.
-  if (majorVersion < 16 || (majorVersion === 16 && minorVersion < 14)) {
+  if (majorVersion < 18) {
     return invalidVersion;
   }
 
