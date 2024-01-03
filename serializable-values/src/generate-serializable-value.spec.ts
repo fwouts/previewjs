@@ -163,7 +163,7 @@ describe("generateSerializableValue", () => {
             "value": {
               "kind": "function",
               "source": "() => {
-        console.log(\\"foo invoked\\");
+        console.log("foo invoked");
         return {};
       }",
             },
@@ -209,7 +209,7 @@ describe("generateSerializableValue", () => {
             "value": {
               "kind": "function",
               "source": "() => {
-        console.log(\\"friends invoked\\");
+        console.log("friends invoked");
         return [];
       }",
             },
@@ -508,8 +508,8 @@ describe("generateSerializableValue", () => {
             "value": {
               "kind": "function",
               "source": "() => {
-        console.log(\\"functionType invoked\\");
-        return \\"functionType\\";
+        console.log("functionType invoked");
+        return "functionType";
       }",
             },
           },
@@ -522,7 +522,7 @@ describe("generateSerializableValue", () => {
             "value": {
               "kind": "function",
               "source": "() => {
-        console.log(\\"voidFunctionType invoked\\");
+        console.log("voidFunctionType invoked");
       }",
             },
           },
@@ -535,7 +535,7 @@ describe("generateSerializableValue", () => {
             "value": {
               "kind": "function",
               "source": "() => {
-        console.log(\\"voidUnionFunctionType invoked\\");
+        console.log("voidUnionFunctionType invoked");
       }",
             },
           },
@@ -570,8 +570,8 @@ describe("generateSerializableValue", () => {
                   "value": {
                     "kind": "function",
                     "source": "() => {
-        console.log(\\"bar invoked\\");
-        return \\"bar\\";
+        console.log("bar invoked");
+        return "bar";
       }",
                   },
                 },

@@ -35,7 +35,7 @@ describe("generatePropsAssignmentSource", () => {
       )
     ).toMatchInlineSnapshot(`
       "properties = {
-        foo: \\"foo\\"
+        foo: "foo"
       };"
     `);
   });
@@ -56,7 +56,7 @@ describe("generatePropsAssignmentSource", () => {
       )
     ).toMatchInlineSnapshot(`
       "properties = {
-        foo: \\"foo\\"
+        foo: "foo"
       };"
     `);
   });
@@ -78,9 +78,9 @@ describe("generatePropsAssignmentSource", () => {
       )
     ).toMatchInlineSnapshot(`
       "properties = {
-        foo: \\"foo\\",
+        foo: "foo",
         recursive: {
-          foo: \\"foo\\",
+          foo: "foo",
           recursive: {}
         }
       };"
@@ -142,29 +142,29 @@ describe("generatePropsAssignmentSource", () => {
       "properties = {
         nullType: null,
         booleanType: false,
-        stringType: \\"stringType\\",
+        stringType: "stringType",
         numberType: 0,
-        reactNodeType: \\"reactNodeType\\",
+        reactNodeType: "reactNodeType",
         numberLiteral: 123,
-        stringLiteral: \\"foo\\",
+        stringLiteral: "foo",
         trueLiteral: true,
         falseLiteral: false,
-        stringEnumType: \\"A\\",
+        stringEnumType: "A",
         numberEnumType: 3,
-        arrayType: [\\"arrayType\\"],
-        setType: new Set([\\"setType\\"]),
+        arrayType: ["arrayType"],
+        setType: new Set(["setType"]),
         recordType: {},
-        unionType: \\"unionType\\",
-        intersectionType: \\"intersectionType\\",
+        unionType: "unionType",
+        intersectionType: "intersectionType",
         functionType: () => {
-          console.log(\\"functionType invoked\\");
-          return \\"functionType\\";
+          console.log("functionType invoked");
+          return "functionType";
         },
         promiseType: Promise.reject(),
         namedType: {
           bar: () => {
-            console.log(\\"bar invoked\\");
-            return \\"bar\\";
+            console.log("bar invoked");
+            return "bar";
           }
         }
       };"
@@ -188,7 +188,7 @@ describe("generatePropsAssignmentSource", () => {
       )
     ).toMatchInlineSnapshot(`
       "properties = {
-        bar: \\"bar\\"
+        bar: "bar"
       };"
     `);
   });

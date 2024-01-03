@@ -82,11 +82,11 @@ export default defineComponent({
       })
 
       const pjs_component = {
-          name: \\"App\\"
+          name: "App"
       } as const;
 
 
-      import type { PropType as PJS_PropType } from \\"@vue/runtime-core\\";
+      import type { PropType as PJS_PropType } from "@vue/runtime-core";
 
       type PJS_TypeOrUnion<T> = PJS_PropType<T> | ReadonlyArray<PJS_PropType<T>>;
       type PJS_OptionalPropType<T> = PJS_TypeOrUnion<T> | {type: PJS_TypeOrUnion<T>; required?: false};
