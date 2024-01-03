@@ -31,13 +31,13 @@ jobs:
         os: [ubuntu-22.04, macos-11, windows-2022]
         group: [1, 2, 3]
         include:
-          - node-version: 18.x
+          - node-version: 20.x
             os: ubuntu-22.04
             group: 1
-          - node-version: 18.x
+          - node-version: 20.x
             os: ubuntu-22.04
             group: 2
-          - node-version: 18.x
+          - node-version: 20.x
             os: ubuntu-22.04
             group: 3
     steps:
