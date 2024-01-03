@@ -51,7 +51,7 @@ export default {
       }
 
       const pjs_component = {
-          name: \\"App\\",
+          name: "App",
           props: {}
       } as const;
 
