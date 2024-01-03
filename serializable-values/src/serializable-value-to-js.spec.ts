@@ -28,7 +28,7 @@ describe("serializableValueToJavaScript", () => {
     );
     expect(
       serializableValueToJavaScript(array([string("foo"), number(123)]))
-    ).toMatchInlineSnapshot('"[\\"foo\\", 123]"');
+    ).toMatchInlineSnapshot(`"["foo", 123]"`);
   });
 
   test("boolean", () => {
@@ -139,7 +139,7 @@ describe("serializableValueToJavaScript", () => {
     ).toMatchInlineSnapshot(`
       "<A>
         foo
-        {\\"   \\"}
+        {"   "}
         bar
       </A>"
     `);
@@ -189,9 +189,9 @@ describe("serializableValueToJavaScript", () => {
       .toMatchInlineSnapshot(`
         "<A
           {...{
-            str: \\"foo\\"
+            str: "foo"
           }}
-          str=\\"bar\\"
+          str="bar"
           num={123}
           positive
           negative={false}
@@ -205,9 +205,9 @@ describe("serializableValueToJavaScript", () => {
       .toMatchInlineSnapshot(`
         "<A
           {...{
-            str: \\"foo\\"
+            str: "foo"
           }}
-          str=\\"bar\\"
+          str="bar"
           num={123}
           positive
           negative={false}
@@ -224,9 +224,9 @@ describe("serializableValueToJavaScript", () => {
     ).toMatchInlineSnapshot(`
       "<A
         {...{
-          str: \\"foo\\"
+          str: "foo"
         }}
-        str=\\"bar\\"
+        str="bar"
         num={123}
         positive
         negative={false}
@@ -310,7 +310,7 @@ describe("serializableValueToJavaScript", () => {
         })
       )
     ).toMatchInlineSnapshot(
-      '"Promise.reject(new Error(\\"an error occurred\\"))"'
+      `"Promise.reject(new Error("an error occurred"))"`
     );
   });
 
@@ -320,19 +320,19 @@ describe("serializableValueToJavaScript", () => {
     );
     expect(
       serializableValueToJavaScript(set(array([number(123), string("foo")])))
-    ).toMatchInlineSnapshot('"new Set([123, \\"foo\\"])"');
+    ).toMatchInlineSnapshot(`"new Set([123, "foo"])"`);
   });
 
   test("string", () => {
     expect(serializableValueToJavaScript(string(""))).toMatchInlineSnapshot(
-      '"\\"\\""'
+      `""""`
     );
     expect(serializableValueToJavaScript(string("foo"))).toMatchInlineSnapshot(
-      '"\\"foo\\""'
+      `""foo""`
     );
     expect(
       serializableValueToJavaScript(string("a'b\"c`"))
-    ).toMatchInlineSnapshot('"\\"a\'b\\\\\\"c`\\""');
+    ).toMatchInlineSnapshot(`""a'b\\"c\`""`);
   });
 
   test("undefined", () => {
@@ -347,7 +347,7 @@ describe("serializableValueToJavaScript", () => {
     );
     expect(
       serializableValueToJavaScript(unknown('{ foo: "bar" }'))
-    ).toMatchInlineSnapshot('"{ foo: \\"bar\\" }"');
+    ).toMatchInlineSnapshot(`"{ foo: "bar" }"`);
     expect(serializableValueToJavaScript(unknown("foo"))).toMatchInlineSnapshot(
       '"foo"'
     );

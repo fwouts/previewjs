@@ -68,7 +68,7 @@ describe("generateType", () => {
 
   test("string literal", () => {
     expect(generateType(literalType("foo"), {})).toMatchInlineSnapshot(
-      '"\\"foo\\""'
+      `""foo""`
     );
   });
 
@@ -92,7 +92,7 @@ describe("generateType", () => {
         }),
         {}
       )
-    ).toMatchInlineSnapshot('"\\"A\\" | \\"B\\" | \\"C\\""');
+    ).toMatchInlineSnapshot(`""A" | "B" | "C""`);
   });
 
   test("number enum", () => {
@@ -172,7 +172,7 @@ describe("generateType", () => {
       )
     ).toMatchInlineSnapshot(`
       "{
-                      [\\"foo\\"]: string
+                      ["foo"]: string
                     }"
     `);
   });

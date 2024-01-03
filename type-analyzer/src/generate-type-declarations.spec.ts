@@ -51,7 +51,7 @@ describe("generateTypeDeclarations", () => {
       })
     ).toMatchInlineSnapshot(`
       "type Foo = {
-        [\\"foo\\"]: string;
+        ["foo"]: string;
       };"
     `);
   });
@@ -69,8 +69,8 @@ describe("generateTypeDeclarations", () => {
       })
     ).toMatchInlineSnapshot(`
       "type Foo = {
-        [\\"child\\"]?: Foo;
-        [\\"children\\"]: Array<Foo>;
+        ["child"]?: Foo;
+        ["children"]: Array<Foo>;
       };"
     `);
   });
@@ -91,7 +91,7 @@ describe("generateTypeDeclarations", () => {
       })
     ).toMatchInlineSnapshot(`
       "type MyComponentProps = {
-        [\\"foo\\"]: Fn;
+        ["foo"]: Fn;
       };
 
       type Fn = (...params: any[]) => void | Fn;"
@@ -147,34 +147,34 @@ describe("generateTypeDeclarations", () => {
       })
     ).toMatchInlineSnapshot(`
       "type Foo = {
-        [\\"anyType\\"]?: any;
-        [\\"unknownType\\"]?: unknown;
-        [\\"neverType\\"]: never;
-        [\\"voidType\\"]: void;
-        [\\"nullType\\"]: null;
-        [\\"booleanType\\"]: boolean;
-        [\\"stringType\\"]: string;
-        [\\"numberType\\"]: number;
-        [\\"reactNodeType\\"]: any;
-        [\\"numberLiteral\\"]: 123;
-        [\\"stringLiteral\\"]: \\"foo\\";
-        [\\"trueLiteral\\"]: true;
-        [\\"falseLiteral\\"]: false;
-        [\\"stringEnumType\\"]: \\"A\\" | \\"B\\" | \\"C\\";
-        [\\"numberEnumType\\"]: 3 | 2 | 1;
-        [\\"arrayType\\"]: Array<string>;
-        [\\"setType\\"]: Set<string>;
-        [\\"tupleType\\"]: [string, number];
-        [\\"recordType\\"]: Record<string, number>;
-        [\\"unionType\\"]: string | number;
-        [\\"intersectionType\\"]: string & number;
-        [\\"functionType\\"]: (...params: any[]) => string;
-        [\\"promiseType\\"]: Promise<string>;
-        [\\"namedType\\"]: Bar;
+        ["anyType"]?: any;
+        ["unknownType"]?: unknown;
+        ["neverType"]: never;
+        ["voidType"]: void;
+        ["nullType"]: null;
+        ["booleanType"]: boolean;
+        ["stringType"]: string;
+        ["numberType"]: number;
+        ["reactNodeType"]: any;
+        ["numberLiteral"]: 123;
+        ["stringLiteral"]: "foo";
+        ["trueLiteral"]: true;
+        ["falseLiteral"]: false;
+        ["stringEnumType"]: "A" | "B" | "C";
+        ["numberEnumType"]: 3 | 2 | 1;
+        ["arrayType"]: Array<string>;
+        ["setType"]: Set<string>;
+        ["tupleType"]: [string, number];
+        ["recordType"]: Record<string, number>;
+        ["unionType"]: string | number;
+        ["intersectionType"]: string & number;
+        ["functionType"]: (...params: any[]) => string;
+        ["promiseType"]: Promise<string>;
+        ["namedType"]: Bar;
       };
 
       type Bar = {
-        [\\"bar\\"]: (...params: any[]) => string;
+        ["bar"]: (...params: any[]) => string;
       };"
     `);
   });
@@ -203,15 +203,15 @@ describe("generateTypeDeclarations", () => {
       })
     ).toMatchInlineSnapshot(`
       "type Foo = {
-        [\\"foo\\"]: Foo_2;
+        ["foo"]: Foo_2;
       };
 
       type Foo_2 = {
-        [\\"bar\\"]: Foo_3;
+        ["bar"]: Foo_3;
       };
 
       type Foo_3 = {
-        [\\"baz\\"]: string;
+        ["baz"]: string;
       };"
     `);
   });
@@ -233,12 +233,12 @@ describe("generateTypeDeclarations", () => {
       })
     ).toMatchInlineSnapshot(`
       "type Foo = {
-        [\\"a\\"]: string;
-        [\\"b\\"]?: string;
-        [\\"c\\"]?: any;
-        [\\"d\\"]?: unknown;
-        [\\"e\\"]: string;
-        [\\"f\\"]?: string;
+        ["a"]: string;
+        ["b"]?: string;
+        ["c"]?: any;
+        ["d"]?: unknown;
+        ["e"]: string;
+        ["f"]?: string;
       };"
     `);
   });
@@ -271,12 +271,12 @@ describe("generateTypeDeclarations", () => {
       "type A<T = B> = T;
 
       type B = {
-        [\\"foo\\"]: C<B>;
+        ["foo"]: C<B>;
       };
 
       type C<T, S = T> = {
-        [\\"t\\"]: T;
-        [\\"s\\"]: S;
+        ["t"]: T;
+        ["s"]: S;
       };"
     `);
   });
@@ -299,7 +299,7 @@ describe("generateTypeDeclarations", () => {
       "type default_2<T = for_2> = T;
 
       type for_2 = {
-        [\\"foo\\"]: string;
+        ["foo"]: string;
       };"
     `);
   });
