@@ -23,16 +23,17 @@ class InlayProviderFactory : InlayHintsProviderFactory {
     companion object {
         // Note #1: "textmate" is what's used in IntelliJ CE for JS/TS(X) files.
         // Note #2: "TEXT" is what's used in IntelliJ CE for Vue files.
-        val LANGUAGE_IDS = setOf(
-            "TEXT",
-            "textmate",
-            "ECMAScript 6",
-            "JavaScript",
-            "TypeScript",
-            "TypeScript JSX",
-            "SvelteHTML",
-            "VueJS"
-        )
+        val LANGUAGE_IDS =
+            setOf(
+                "TEXT",
+                "textmate",
+                "ECMAScript 6",
+                "JavaScript",
+                "TypeScript",
+                "TypeScript JSX",
+                "SvelteHTML",
+                "VueJS",
+            )
 
         // Full list from IntelliJ IDEA 2023.1:
         // TOML, JSON, HgIgnore, InjectedFreeMarker, MySQL, AZURE, TypeScript, AIDL, AngularJS, PostCSS, Snowflake, Micronaut-MongoDB-JSON, Redis, XML, SQL92, TSQL, protobase, Angular2Svg, JSUnicodeRegexp, Nashorn JS, JVM, EL, Gherkin, AndroidDataBinding, SQLDateTime, SVG, , XHTML, RoomSql, DB2, Properties, XPath, DB2_ZOS, FTL>, JavaScript 1.8, ThymeleafSpringSecurityExtras, Renderscript, Angular2, prototext, ThymeleafTemplatesExpressions, H2, XsdRegExp, HTML, LESS, JQL, yaml, MongoJSExt, JSPX, Flow JS, PostgreSQL, JQuery-CSS, GitIgnore, Lombok.Config, Dockerfile, KND, CouchbaseQuery, Qute, JSRegexp, ThymeleafExpressions, VueExpr, SQLite, SparkSQL, GenericSQL, JSP, OracleSqlPlus, UastContextLanguage, Markdown, DTD, TEXT, DeviceSpec, UAST, ThymeleafUrlExpressions, EQL, Groovy, TypeScript JSX, SCSS, JSONPath, JSON5, Vue, Exasol, HSQLDB, protobuf, EditorConfig, ECMA Script Level 4, Greenplum, Cookie, kotlin, textmate, ClickHouse, HtmlCompatible, EJBQL, Derby, SPI, Cockroach, JavaScript, Angular2Html, MicronautDataQL, IntegrationPerformanceTest, VTL, GitExclude, MultiDexKeep, Shell Script, CassandraQL, RegExp, HiveQL, Smali, Manifest, SHRINKER_CONFIG, JAVA, LogcatFilter, VueJS, IgnoreLang, SQL, $XSLT, PointcutExpression, MariaDB, DB2_IS, AGSL, Oracle, SpEL, SpringDataQL, JSON Lines, FTL], BigQuery, MongoJS, YouTrack, CSS, MongoDB, Metadata JSON, Vertica, SASS, Sybase, ThymeleafIterateExpressions, ThymeleafTemplatesFragmentExpressions, ECMAScript 6, XPath2, HTTP Request, RELAX-NG, DockerIgnore, HttpClientHandlerJavaScriptDialect, FTL, JPAQL, HQL, JShellLanguage, VueTS, MySQL based, MongoDB-JSON, Spring-MongoDB-JSON, Redshift
@@ -59,6 +60,7 @@ class InlayProviderFactory : InlayHintsProviderFactory {
         override val key = SettingsKey<NoSettings>(InlayProvider::class.qualifiedName!!)
         override val name = "Preview.js hints"
         override val previewText = null
+
         override fun createSettings() = NoSettings()
 
         override val isVisibleInSettings = false
@@ -71,9 +73,13 @@ class InlayProviderFactory : InlayHintsProviderFactory {
             file: PsiFile,
             editor: Editor,
             settings: NoSettings,
-            sink: InlayHintsSink
+            sink: InlayHintsSink,
         ) = object : FactoryInlayHintsCollector(editor) {
-            override fun collect(element: PsiElement, editor: Editor, sink: InlayHintsSink): Boolean {
+            override fun collect(
+                element: PsiElement,
+                editor: Editor,
+                sink: InlayHintsSink,
+            ): Boolean {
                 val projectService = file.project.service<ProjectService>()
                 val components = projectService.getPrecomputedComponents(file)
                 for (component in components) {
@@ -83,11 +89,12 @@ class InlayProviderFactory : InlayHintsProviderFactory {
                         relatesToPrecedingText = false,
                         showAbove = true,
                         priority = 0,
-                        presentation = factory.referenceOnHover(
-                            factory.roundWithBackground(factory.smallText("Open $previewableName in Preview.js"))
-                        ) { _, _ ->
-                            projectService.openPreview(file.virtualFile.path, component.id)
-                        }
+                        presentation =
+                            factory.referenceOnHover(
+                                factory.roundWithBackground(factory.smallText("Open $previewableName in Preview.js")),
+                            ) { _, _ ->
+                                projectService.openPreview(file.virtualFile.path, component.id)
+                            },
                     )
                 }
                 return false

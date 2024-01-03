@@ -18,7 +18,7 @@ class OpenPreviewAction : AnAction() {
         if (selectedTextEditor == null || selectedFiles.isEmpty()) {
             notificationGroup.createNotification(
                 "No file is currently selected",
-                NotificationType.ERROR
+                NotificationType.ERROR,
             ).notify(project)
             return
         }
@@ -29,7 +29,7 @@ class OpenPreviewAction : AnAction() {
             if (previewables.isEmpty()) {
                 notificationGroup.createNotification(
                     "No components or stories detected in ${selectedFile.path}",
-                    NotificationType.ERROR
+                    NotificationType.ERROR,
                 ).notify(project)
                 return@crawlFile
             }

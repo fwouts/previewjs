@@ -81,7 +81,7 @@ class ProjectService(private val project: Project) : Disposable {
                     updateFileContent(file, event.document.text)
                 }
             },
-            this
+            this,
         )
 
         connection.subscribe(
@@ -93,7 +93,7 @@ class ProjectService(private val project: Project) : Disposable {
                         updateFileContent(file, null)
                     }
                 }
-            }
+            },
         )
 
         // Keep track of whether preview panel is active or not.
@@ -114,7 +114,7 @@ class ProjectService(private val project: Project) : Disposable {
                         }
                     }
                 }
-            }
+            },
         )
 
         // Keep track of all open files to track their components.
@@ -125,7 +125,10 @@ class ProjectService(private val project: Project) : Disposable {
         connection.subscribe(
             FileEditorManagerListener.FILE_EDITOR_MANAGER,
             object : FileEditorManagerListener {
-                override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
+                override fun fileOpened(
+                    source: FileEditorManager,
+                    file: VirtualFile,
+                ) {
                     val textEditor = source.allEditors.find { it.file == file } as? TextEditor ?: return
                     if (textEditor.file != file) {
                         return
@@ -133,10 +136,13 @@ class ProjectService(private val project: Project) : Disposable {
                     recrawlFile(file, textEditor.editor.document.text)
                 }
 
-                override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
+                override fun fileClosed(
+                    source: FileEditorManager,
+                    file: VirtualFile,
+                ) {
                     onFileClosed(file)
                 }
-            }
+            },
         )
         FileEditorManager.getInstance(project).allEditors.forEach { textEditor ->
             if (textEditor !is TextEditor) {
@@ -146,8 +152,16 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    private fun updateFileContent(file: VirtualFile, text: String?) {
-        if (file.extension == null || !LIVE_UPDATING_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable || (text != null && text.length > 1_048_576)) {
+    private fun updateFileContent(
+        file: VirtualFile,
+        text: String?,
+    ) {
+        if (file.extension == null ||
+            !LIVE_UPDATING_EXTENSIONS.contains(file.extension) ||
+            !file.isInLocalFileSystem ||
+            !file.isWritable ||
+            (text != null && text.length > 1_048_576)
+        ) {
             return
         }
         if (previewToolWindowActive) {
@@ -163,13 +177,16 @@ class ProjectService(private val project: Project) : Disposable {
         }
     }
 
-    private fun uploadFileContentToPreviewJsApi(path: String, text: String?) {
+    private fun uploadFileContentToPreviewJsApi(
+        path: String,
+        text: String?,
+    ) {
         service.enqueueAction(project, { api ->
             api.updatePendingFile(
                 UpdatePendingFileRequest(
                     absoluteFilePath = path,
-                    utf8Content = text
-                )
+                    utf8Content = text,
+                ),
             )
         }, {
             "Warning: unable to update pending file $path"
@@ -195,25 +212,29 @@ class ProjectService(private val project: Project) : Disposable {
         val consoleView = TextConsoleBuilderFactory.getInstance().createBuilder(project).console
         Disposer.register(this, consoleView)
         this.consoleView = consoleView
-        this.consoleToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
-            "Preview.js logs"
-        ) {
-            anchor = ToolWindowAnchor.BOTTOM
-            icon = smallLogo
-            canCloseContent = false
-        }.apply {
-            contentManager.addContent(
-                ContentFactory.getInstance().createContent(
-                    consoleView.component,
-                    null,
-                    false
+        this.consoleToolWindow =
+            ToolWindowManager.getInstance(project).registerToolWindow(
+                "Preview.js logs",
+            ) {
+                anchor = ToolWindowAnchor.BOTTOM
+                icon = smallLogo
+                canCloseContent = false
+            }.apply {
+                contentManager.addContent(
+                    ContentFactory.getInstance().createContent(
+                        consoleView.component,
+                        null,
+                        false,
+                    ),
                 )
-            )
-        }
+            }
         return consoleView
     }
 
-    private fun recrawlFile(file: VirtualFile, text: String) {
+    private fun recrawlFile(
+        file: VirtualFile,
+        text: String,
+    ) {
         crawlFile(file) { components ->
             componentMap[file.path] = Pair(text, components)
             app.invokeLater {
@@ -256,7 +277,7 @@ class ProjectService(private val project: Project) : Disposable {
                 Previewable(
                     start = if (it.start < exactCharacterDifferenceIndex) it.start else it.start + differenceDelta,
                     end = if (it.end < exactCharacterDifferenceIndex) it.end else it.end + differenceDelta,
-                    id = it.id
+                    id = it.id,
                 )
             }
         } else {
@@ -274,13 +295,16 @@ class ProjectService(private val project: Project) : Disposable {
                 Previewable(
                     start = if (it.start < start) it.start else max(0, it.start + differenceDelta),
                     end = if (it.end < start) it.end else max(0, it.end + differenceDelta),
-                    id = it.id
+                    id = it.id,
                 )
             }
         }
     }
 
-    fun crawlFile(file: VirtualFile, callback: (result: List<Previewable>) -> Unit) {
+    fun crawlFile(
+        file: VirtualFile,
+        callback: (result: List<Previewable>) -> Unit,
+    ) {
         if (!JS_EXTENSIONS.contains(file.extension) || !file.isInLocalFileSystem || !file.isWritable) {
             return callback(emptyList())
         }
@@ -290,28 +314,33 @@ class ProjectService(private val project: Project) : Disposable {
                 api.updatePendingFile(
                     UpdatePendingFileRequest(
                         absoluteFilePath = file.path,
-                        utf8Content = pendingText
-                    )
+                        utf8Content = pendingText,
+                    ),
                 )
             }
-            val analysisResponse = api.crawlFile(
-                CrawlFileRequest(
-                    absoluteFilePath = file.path
+            val analysisResponse =
+                api.crawlFile(
+                    CrawlFileRequest(
+                        absoluteFilePath = file.path,
+                    ),
                 )
-            )
             callback(analysisResponse.previewables)
         }, {
             "Warning: unable to compute components for ${file.path}"
         })
     }
 
-    fun openPreview(absoluteFilePath: String, previewableId: String) {
+    fun openPreview(
+        absoluteFilePath: String,
+        previewableId: String,
+    ) {
         service.enqueueAction(project, { api ->
-            val analysisResponse = api.crawlFile(
-                CrawlFileRequest(
-                    absoluteFilePath = absoluteFilePath
+            val analysisResponse =
+                api.crawlFile(
+                    CrawlFileRequest(
+                        absoluteFilePath = absoluteFilePath,
+                    ),
                 )
-            )
             val rootDir = analysisResponse.rootDir ?: return@enqueueAction
             if (currentPreviewRootDir != rootDir) {
                 currentPreviewRootDir?.let {
@@ -334,7 +363,11 @@ class ProjectService(private val project: Project) : Disposable {
                     }
                     browser.jbCefClient.addLoadHandler(
                         object : CefLoadHandlerAdapter() {
-                            override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
+                            override fun onLoadEnd(
+                                browser: CefBrowser,
+                                frame: CefFrame,
+                                httpStatusCode: Int,
+                            ) {
                                 browser.executeJavaScript(
                                     """
                         window.openInExternalBrowser = function(url) {
@@ -342,30 +375,31 @@ class ProjectService(private val project: Project) : Disposable {
                         };
                     """,
                                     browser.url,
-                                    0
+                                    0,
                                 )
                             }
                         },
-                        browser.cefBrowser
+                        browser.cefBrowser,
                     )
                     Disposer.register(browser, linkHandler)
                 }
                 if (previewToolWindow == null) {
-                    previewToolWindow = ToolWindowManager.getInstance(project).registerToolWindow(
-                        TOOL_WINDOW_ID
-                    ) {
-                        anchor = ToolWindowAnchor.RIGHT
-                        icon = smallLogo
-                        canCloseContent = false
-                    }.apply {
-                        contentManager.addContent(
-                            ContentFactory.getInstance().createContent(
-                                browser.component,
-                                null,
-                                false
+                    previewToolWindow =
+                        ToolWindowManager.getInstance(project).registerToolWindow(
+                            TOOL_WINDOW_ID,
+                        ) {
+                            anchor = ToolWindowAnchor.RIGHT
+                            icon = smallLogo
+                            canCloseContent = false
+                        }.apply {
+                            contentManager.addContent(
+                                ContentFactory.getInstance().createContent(
+                                    browser.component,
+                                    null,
+                                    false,
+                                ),
                             )
-                        )
-                    }
+                        }
                 }
                 this@ProjectService.previewBaseUrl?.let { previewBaseUrl ->
                     val currentBrowserUrl = browser.cefBrowser.url
@@ -373,7 +407,7 @@ class ProjectService(private val project: Project) : Disposable {
                         browser.cefBrowser.executeJavaScript(
                             "window.postMessage({ kind: \"navigate\", previewableId: \"${previewableId}\" });",
                             previewUrl,
-                            0
+                            0,
                         )
                     } else {
                         browser.loadURL("$previewUrl#panel")

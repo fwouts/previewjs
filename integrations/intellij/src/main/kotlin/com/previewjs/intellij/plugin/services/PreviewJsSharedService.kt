@@ -54,36 +54,37 @@ class PreviewJsSharedService : Disposable {
     data class Message(
         val project: Project,
         val fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
-        val getErrorMessage: (e: Throwable) -> String
+        val getErrorMessage: (e: Throwable) -> String,
     )
 
     @OptIn(ObsoleteCoroutinesApi::class)
-    private var actor = coroutineScope.actor<Message> {
-        var errorCount = 0
-        for (msg in channel) {
-            val api = initializeApi(msg.project)
-            try {
-                (msg.fn)(api)
-            } catch (e: Throwable) {
-                val errorMessage = (msg.getErrorMessage)(e)
-                msg.project.service<ProjectService>().printToConsole("$errorMessage\n\n${e.stackTraceToString()}\n")
-                errorCount += 1
-                if (errorCount > 10) {
-                    // Something must be seriously wrong, abort.
-                    notificationGroup.createNotification(
-                        "Preview.js tasks are failing repeatedly",
-                        """Please report this issue at https://github.com/fwouts/previewjs/issues
+    private var actor =
+        coroutineScope.actor<Message> {
+            var errorCount = 0
+            for (msg in channel) {
+                val api = initializeApi(msg.project)
+                try {
+                    (msg.fn)(api)
+                } catch (e: Throwable) {
+                    val errorMessage = (msg.getErrorMessage)(e)
+                    msg.project.service<ProjectService>().printToConsole("$errorMessage\n\n${e.stackTraceToString()}\n")
+                    errorCount += 1
+                    if (errorCount > 10) {
+                        // Something must be seriously wrong, abort.
+                        notificationGroup.createNotification(
+                            "Preview.js tasks are failing repeatedly",
+                            """Please report this issue at https://github.com/fwouts/previewjs/issues
 
 Include the content of the Preview.js logs panel for easier debugging.
-                        """.trimMargin(),
-                        NotificationType.ERROR
-                    )
-                        .notify(msg.project)
-                    return@actor
+                            """.trimMargin(),
+                            NotificationType.ERROR,
+                        )
+                            .notify(msg.project)
+                        return@actor
+                    }
                 }
             }
         }
-    }
 
     private suspend fun initializeApi(project: Project): PreviewJsApi {
         api?.let {
@@ -97,7 +98,7 @@ Include the content of the Preview.js logs panel for easier debugging.
             notificationGroup.createNotification(
                 "Incompatible Node.js version",
                 e.message,
-                NotificationType.ERROR
+                NotificationType.ERROR,
             )
                 .notify(project)
             throw e
@@ -107,7 +108,7 @@ Include the content of the Preview.js logs panel for easier debugging.
                 """Please report this issue at https://github.com/fwouts/previewjs/issues
 
 ${e.stackTraceToString()}""",
-                NotificationType.ERROR
+                NotificationType.ERROR,
             )
                 .notify(project)
             throw e
@@ -117,7 +118,7 @@ ${e.stackTraceToString()}""",
     fun enqueueAction(
         project: Project,
         fn: suspend CoroutineScope.(api: PreviewJsApi) -> Unit,
-        getErrorMessage: (e: Throwable) -> String
+        getErrorMessage: (e: Throwable) -> String,
     ): Job {
         return coroutineScope.launch {
             actor.send(Message(project, fn, getErrorMessage))
@@ -159,8 +160,9 @@ ${e.stackTraceToString()}""",
             throw Error("Preview.js was unable to run node.\\n\\nIs it installed? You may need to restart your IDE.")
         }
         checkNodeVersion(nodeVersionProcess)
-        val builder = processBuilder("node --trace-warnings dist/main.js $port").redirectErrorStream(true)
-            .directory(nodeDirPath.toFile())
+        val builder =
+            processBuilder("node --trace-warnings dist/main.js $port").redirectErrorStream(true)
+                .directory(nodeDirPath.toFile())
         builder.environment()["PREVIEWJS_PARENT_PROCESS_PID"] = ProcessHandle.current().pid().toString()
         val process = builder.start()
         daemonProcess = process
@@ -179,13 +181,13 @@ ${e.stackTraceToString()}""",
                 if (line.contains("[install:begin]")) {
                     notificationGroup.createNotification(
                         "⏳ Installing Preview.js dependencies...",
-                        NotificationType.INFORMATION
+                        NotificationType.INFORMATION,
                     ).notify(project)
                 }
                 if (line.contains("[install:end]")) {
                     notificationGroup.createNotification(
                         "✅ Preview.js dependencies installed",
-                        NotificationType.INFORMATION
+                        NotificationType.INFORMATION,
                     ).notify(project)
                 }
                 if (line.contains("[ready]")) {
@@ -221,13 +223,16 @@ ${e.stackTraceToString()}""",
                 }
             },
             0,
-            PING_INTERVAL_MILLIS
+            PING_INTERVAL_MILLIS,
         )
 
         return client
     }
 
-    private fun everyProject(project: Project, f: ProjectService.() -> Unit) {
+    private fun everyProject(
+        project: Project,
+        f: ProjectService.() -> Unit,
+    ) {
         for (p in workspaceIds.keys + setOf(project)) {
             if (p.isDisposed) {
                 continue
@@ -242,7 +247,9 @@ ${e.stackTraceToString()}""",
         matchResult?.let {
             val majorVersion = matchResult.groups[1]!!.value.toInt()
             if (majorVersion < 18) {
-                throw NodeVersionError("Preview.js needs NodeJS 18+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.")
+                throw NodeVersionError(
+                    "Preview.js needs NodeJS 18+ to run, but current version is: ${nodeVersion}\n\nPlease upgrade then restart your IDE.",
+                )
             }
         }
     }
@@ -252,7 +259,7 @@ ${e.stackTraceToString()}""",
             ProcessBuilder(
                 "cmd.exe",
                 "/C",
-                command
+                command,
             )
         } else {
             // Note: in production builds of IntelliJ / WebStorm, PATH is not initialised

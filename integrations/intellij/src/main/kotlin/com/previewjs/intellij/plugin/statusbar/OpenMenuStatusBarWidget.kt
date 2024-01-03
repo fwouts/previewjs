@@ -5,7 +5,11 @@ import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 
-class OpenMenuStatusBarWidget(private val url: String, private val onStop: () -> Unit, private val onOpenBrowser: () -> Unit) : StatusBarWidget {
+class OpenMenuStatusBarWidget(
+    private val url: String,
+    private val onStop: () -> Unit,
+    private val onOpenBrowser: () -> Unit,
+) : StatusBarWidget {
     companion object {
         const val ID = "previewjs.open-menu"
     }
@@ -22,8 +26,8 @@ class OpenMenuStatusBarWidget(private val url: String, private val onStop: () ->
                 return JBPopupFactory.getInstance().createPopupChooserBuilder(
                     listOf(
                         stopServerPick,
-                        openExternalBrowserPick
-                    )
+                        openExternalBrowserPick,
+                    ),
                 ).setItemChosenCallback { pick ->
                     if (pick == stopServerPick) {
                         onStop()

@@ -11,17 +11,18 @@ import org.jetbrains.annotations.NonNls
 
 class OpenMenuStatusBarWidgetFactory : StatusBarWidgetFactory {
     companion object {
-        private var EMPTY_WIDGET = object : StatusBarWidget {
-            override fun ID(): String = OpenMenuStatusBarWidget.ID
+        private var emptyWidget =
+            object : StatusBarWidget {
+                override fun ID(): String = OpenMenuStatusBarWidget.ID
 
-            override fun install(statusBar: StatusBar) {
-                // Do nothing.
-            }
+                override fun install(statusBar: StatusBar) {
+                    // Do nothing.
+                }
 
-            override fun dispose() {
-                // Do nothing.
+                override fun dispose() {
+                    // Do nothing.
+                }
             }
-        }
     }
 
     override fun getId(): @NonNls String {
@@ -34,11 +35,11 @@ class OpenMenuStatusBarWidgetFactory : StatusBarWidgetFactory {
 
     override fun createWidget(project: Project): StatusBarWidget {
         val projectService = project.getService(ProjectService::class.java)
-        val previewBaseUrl = projectService.getPreviewBaseUrl() ?: return EMPTY_WIDGET
+        val previewBaseUrl = projectService.getPreviewBaseUrl() ?: return emptyWidget
         return OpenMenuStatusBarWidget(
             url = previewBaseUrl,
             onStop = { projectService.closePreview() },
-            onOpenBrowser = { BrowserUtil.open(previewBaseUrl) }
+            onOpenBrowser = { BrowserUtil.open(previewBaseUrl) },
         )
     }
 
