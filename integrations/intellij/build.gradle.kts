@@ -13,7 +13,7 @@ plugins {
     // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
     id("io.gitlab.arturbosch.detekt") version "1.23.4"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
 }
 
 group = properties("pluginGroup")
@@ -79,14 +79,15 @@ tasks {
     prepareSandbox {
         val daemonDir = layout.projectDirectory.dir("daemon")
         project.delete(
-            files(layout.buildDirectory)
+            files(layout.buildDirectory),
         )
         exec {
             if (System.getProperty("os.name").lowercase().contains("win")) {
                 commandLine(
                     "cmd.exe",
                     "/c",
-                    "node " + System.getProperty("user.dir") + "\\..\\..\\node_modules\\turbo\\bin\\turbo run build --scope=@previewjs/intellij-daemon"
+                    "node " + System.getProperty("user.dir") +
+                        "\\..\\..\\node_modules\\turbo\\bin\\turbo run build --scope=@previewjs/intellij-daemon",
                 )
             } else {
                 commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --scope=@previewjs/intellij-daemon")
