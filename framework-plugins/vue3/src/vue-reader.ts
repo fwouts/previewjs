@@ -6,7 +6,7 @@ import type {
   Reader,
 } from "@previewjs/vfs";
 import { ReaderListeners } from "@previewjs/vfs";
-import type { ElementNode } from "@vue/compiler-core";
+import type { ElementNode, RootNode } from "@vue/compiler-core";
 import { parse } from "@vue/compiler-sfc";
 import path from "path";
 import ts from "typescript";
@@ -90,7 +90,7 @@ class VueTypeScriptReader implements Reader {
 function convertToTypeScript(vueTemplateSource: string, name: string) {
   const parsed = parse(vueTemplateSource);
   let pjsSlotsType = "[]";
-  if (parsed.descriptor.template) {
+  if (parsed.descriptor.template?.ast) {
     const slots = extractSlots(parsed.descriptor.template.ast);
     pjsSlotsType = `[${slots
       .map((slotName) => JSON.stringify(slotName))
@@ -191,8 +191,8 @@ function extractDefineComponentArgument(node: ts.Expression): ts.Expression {
   return node;
 }
 
-function extractSlots(element: ElementNode): string[] {
-  namedSlot: if (element.tag === "slot") {
+function extractSlots(element: RootNode | ElementNode): string[] {
+  namedSlot: if ("tag" in element && element.tag === "slot") {
     let slotName = "default";
     for (const prop of element.props) {
       if (prop.name === "name" && prop.type === 6 && prop.value) {
