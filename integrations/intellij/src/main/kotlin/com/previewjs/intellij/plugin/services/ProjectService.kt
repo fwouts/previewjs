@@ -422,11 +422,13 @@ class ProjectService(private val project: Project) : Disposable {
     }
 
     fun closePreview(processKilled: Boolean = false) {
-        previewToolWindow?.remove()
-        previewToolWindow = null
-        previewBrowser?.let {
-            Disposer.dispose(it)
+        if (!project.isDisposed) {
+            previewToolWindow?.remove()
+            previewBrowser?.let {
+                Disposer.dispose(it)
+            }
         }
+        previewToolWindow = null
         previewBrowser = null
         currentPreviewRootDir?.let { rootDir ->
             if (processKilled) {
@@ -440,7 +442,9 @@ class ProjectService(private val project: Project) : Disposable {
         }
         currentPreviewRootDir = null
         previewBaseUrl = null
-        updateStatusBarWidget()
+        if (!project.isDisposed) {
+            updateStatusBarWidget()
+        }
     }
 
     private fun updateStatusBarWidget() {
