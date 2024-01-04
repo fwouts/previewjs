@@ -148,8 +148,8 @@ importers:
         specifier: ^10.1.2
         version: link:../type-analyzer
       axios:
-        specifier: ^1.6.3
-        version: 1.6.3
+        specifier: ^1.6.4
+        version: 1.6.4
     devDependencies:
       typescript:
         specifier: ^5.3.3
@@ -329,8 +329,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       axios:
-        specifier: ^1.6.3
-        version: 1.6.3
+        specifier: ^1.6.4
+        version: 1.6.4
       esbuild-plugin-polyfill-node:
         specifier: ^0.3.0
         version: 0.3.0(esbuild@0.19.11)
@@ -13780,7 +13780,7 @@ packages:
     dependencies:
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/type-analyzer': 10.1.2
-      axios: 1.6.3
+      axios: 1.6.4
     transitivePeerDependencies:
       - debug
     dev: false
@@ -13811,7 +13811,7 @@ packages:
       '@previewjs/type-analyzer': 10.1.2
       '@previewjs/vfs': 2.1.1
       assert-never: 1.2.1
-      axios: 1.6.3
+      axios: 1.6.4
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.11)
       exclusive-promises: 1.0.3
       express: 4.18.2
@@ -13854,7 +13854,7 @@ packages:
       '@previewjs/core': 28.1.0(@types/node@20.10.6)(esbuild@0.19.11)
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/storybook-helpers': 5.0.7(@types/node@20.10.6)(esbuild@0.19.11)
-      axios: 1.6.3
+      axios: 1.6.4
       env-paths: 3.0.0
       express: 4.18.2
       fs-extra: 11.2.0
@@ -23167,10 +23167,10 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /axios@1.6.3:
-    resolution: {integrity: sha512-fWyNdeawGam70jXSVlKl+SUNVcL6j6W79CuSIPfi6HnDUmSCH6gyUys/HrqHeA/wU0Az41rRgean494d0Jb+ww==}
+  /axios@1.6.4:
+    resolution: {integrity: sha512-heJnIs6N4aa1eSthhN9M5ioILu8Wi8vmQW9iHQ9NUvfkJb0lEEDUiIdQNAuBtfUt3FxReaKdpQA5DbmMOqzF/A==}
     dependencies:
-      follow-redirects: 1.15.2(debug@4.3.4)
+      follow-redirects: 1.15.4
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -29405,6 +29405,16 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4(supports-color@5.5.0)
+
+  /follow-redirects@1.15.4:
+    resolution: {integrity: sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
 
   /fontfaceobserver@2.3.0:
     resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
