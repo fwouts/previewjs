@@ -2305,8 +2305,8 @@ importers:
         specifier: ^2.1.1
         version: link:../../vfs
       '@sveltejs/vite-plugin-svelte':
-        specifier: ^2.5.3
-        version: 2.5.3(svelte@4.2.8)(vite@5.0.10)
+        specifier: ^3.0.1
+        version: 3.0.1(svelte@4.2.8)(vite@5.0.10)
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
@@ -7210,6 +7210,17 @@ packages:
     dependencies:
       '@babel/core': 7.22.20
       '@babel/helper-compilation-targets': 7.23.6
+      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-plugin-utils': 7.22.5
+
+  /@babel/plugin-transform-function-name@7.18.9(@babel/core@7.23.5):
+    resolution: {integrity: sha512-WvIBoRPaJQ5yVHzcnJFor7oS5Ls0PYixlTYE63lCj2RtdQEl15M68FXQlxnG6wdraJIXRdR7KI+hQ7q/9QjrCQ==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.23.5
+      '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-function-name': 7.23.0
       '@babel/helper-plugin-utils': 7.22.5
 
@@ -14700,7 +14711,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -14944,21 +14955,6 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 3.21.0
-
-  /@rollup/pluginutils@5.0.2(rollup@3.28.1):
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.0
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-      rollup: 3.28.1
-    dev: true
 
   /@rollup/pluginutils@5.0.3(rollup@3.21.0):
     resolution: {integrity: sha512-hfllNN4a80rwNQ9QCxhxuHCGHMAvabXqxNdaChUSSadMre7t4iEUI6fFAhBOn/eIYTgYVhBv7vCLsAJ4u3lf3g==}
@@ -19084,6 +19080,23 @@ packages:
       vite: 5.0.10(@types/node@20.10.6)
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@sveltejs/vite-plugin-svelte-inspector@2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10):
+    resolution: {integrity: sha512-gjr9ZFg1BSlIpfZ4PRewigrvYmHWbDrq2uvvPB1AmTWKuM+dI1JXQSUu2pIrYLb/QncyiIGkFDFKTwJ0XqQZZg==}
+    engines: {node: ^18.0.0 || >=20}
+    peerDependencies:
+      '@sveltejs/vite-plugin-svelte': ^3.0.0
+      svelte: ^4.0.0 || ^5.0.0-next.0
+      vite: ^5.0.0
+    dependencies:
+      '@sveltejs/vite-plugin-svelte': 3.0.1(svelte@4.2.8)(vite@5.0.10)
+      debug: 4.3.4(supports-color@5.5.0)
+      svelte: 4.2.8
+      vite: 5.0.10(@types/node@20.10.6)
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@sveltejs/vite-plugin-svelte@1.4.0(svelte@3.59.1)(vite@5.0.10):
     resolution: {integrity: sha512-6QupI/jemMfK+yI2pMtJcu5iO2gtgTfcBdGwMZZt+lgbFELhszbDl6Qjh000HgAV8+XUA+8EY8DusOFk8WhOIg==}
@@ -19159,7 +19172,7 @@ packages:
       svelte: 3.59.1
       svelte-hmr: 0.15.3(svelte@3.59.1)
       vite: 5.0.10(@types/node@20.10.6)
-      vitefu: 0.2.4(vite@5.0.10)
+      vitefu: 0.2.5(vite@5.0.10)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -19179,7 +19192,7 @@ packages:
       svelte: 3.59.2
       svelte-hmr: 0.15.3(svelte@3.59.2)
       vite: 5.0.10(@types/node@20.10.6)
-      vitefu: 0.2.4(vite@5.0.10)
+      vitefu: 0.2.5(vite@5.0.10)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -19199,9 +19212,30 @@ packages:
       svelte: 4.2.8
       svelte-hmr: 0.15.3(svelte@4.2.8)
       vite: 5.0.10(@types/node@20.10.6)
-      vitefu: 0.2.4(vite@5.0.10)
+      vitefu: 0.2.5(vite@5.0.10)
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@sveltejs/vite-plugin-svelte@3.0.1(svelte@4.2.8)(vite@5.0.10):
+    resolution: {integrity: sha512-CGURX6Ps+TkOovK6xV+Y2rn8JKa8ZPUHPZ/NKgCxAmgBrXReavzFl8aOSCj3kQ1xqT7yGJj53hjcV/gqwDAaWA==}
+    engines: {node: ^18.0.0 || >=20}
+    peerDependencies:
+      svelte: ^4.0.0 || ^5.0.0-next.0
+      vite: ^5.0.0
+    dependencies:
+      '@sveltejs/vite-plugin-svelte-inspector': 2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
+      debug: 4.3.4(supports-color@5.5.0)
+      deepmerge: 4.3.1
+      kleur: 4.1.5
+      magic-string: 0.30.5
+      svelte: 4.2.8
+      svelte-hmr: 0.15.3(svelte@4.2.8)
+      vite: 5.0.10(@types/node@20.10.6)
+      vitefu: 0.2.5(vite@5.0.10)
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@svgr/babel-plugin-add-jsx-attribute@5.4.0:
     resolution: {integrity: sha512-ZFf2gs/8/6B8PnSofI0inYXr2SDNTDScPXhN7k5EqD4aZ3gi6u+rbmZHVB8IM3wDyx8ntKACZbtXSm7oZGRqVg==}
@@ -45940,7 +45974,7 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || 3 || 4
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       '@svgr/core': 6.5.1
       vite: 5.0.10(@types/node@20.10.6)
     transitivePeerDependencies:
@@ -46129,6 +46163,7 @@ packages:
         optional: true
     dependencies:
       vite: 5.0.10(@types/node@20.10.6)
+    dev: true
 
   /vitefu@0.2.5(vite@5.0.10):
     resolution: {integrity: sha512-SgHtMLoqaeeGnd2evZ849ZbACbnwQCIwRH57t18FxcXoZop0uQu0uzlIhJBlF/eWVzuce0sHeqPcDo+evVcg8Q==}
