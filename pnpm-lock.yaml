@@ -2333,8 +2333,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       '@sveltejs/kit':
-        specifier: ^2.4.1
-        version: 2.4.1(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.12)
+        specifier: ^2.4.3
+        version: 2.4.3(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.12)
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -3710,8 +3710,8 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.23.6
-      '@jridgewell/gen-mapping': 0.3.2
-      '@jridgewell/trace-mapping': 0.3.19
+      '@jridgewell/gen-mapping': 0.3.3
+      '@jridgewell/trace-mapping': 0.3.20
       jsesc: 2.5.2
 
   /@babel/helper-annotate-as-pure@7.22.5:
@@ -5578,6 +5578,15 @@ packages:
       '@babel/core': 7.21.8
       '@babel/helper-plugin-utils': 7.22.5
 
+  /@babel/plugin-syntax-flow@7.18.6(@babel/core@7.22.20):
+    resolution: {integrity: sha512-LUbR+KNTBWCUAqRG9ex5Gnzu2IOkt8jRJbHHXFT9q+L9zm7M/QQbEqXyw1n1pohYvOyWC8CjeyjrSaIwiYjK7A==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.22.20
+      '@babel/helper-plugin-utils': 7.22.5
+
   /@babel/plugin-syntax-flow@7.18.6(@babel/core@7.23.7):
     resolution: {integrity: sha512-LUbR+KNTBWCUAqRG9ex5Gnzu2IOkt8jRJbHHXFT9q+L9zm7M/QQbEqXyw1n1pohYvOyWC8CjeyjrSaIwiYjK7A==}
     engines: {node: '>=6.9.0'}
@@ -5745,7 +5754,6 @@ packages:
     dependencies:
       '@babel/core': 7.22.20
       '@babel/helper-plugin-utils': 7.22.5
-    dev: true
 
   /@babel/plugin-syntax-jsx@7.23.3(@babel/core@7.23.3):
     resolution: {integrity: sha512-EB2MELswq55OHUoRZLGg/zC7QWUKfNLpE57m/S2yr1uEneIgsTgrSzXP3NXEsMkVn76OlaVVnzN+ugObuYGwhg==}
@@ -7319,6 +7327,19 @@ packages:
       '@babel/helper-module-imports': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.21.8)
+      '@babel/types': 7.23.6
+
+  /@babel/plugin-transform-react-jsx@7.21.0(@babel/core@7.22.20):
+    resolution: {integrity: sha512-6OAWljMvQrZjR2DaNhVfRz6dkCAVV+ymcLUmaf8bccGOHn2v5rHJK3tTpij0BuhdYWP4LLaqj5lwcdlpAAPuvg==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.22.20
+      '@babel/helper-annotate-as-pure': 7.22.5
+      '@babel/helper-module-imports': 7.22.15
+      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.22.20)
       '@babel/types': 7.23.6
 
   /@babel/plugin-transform-react-jsx@7.21.0(@babel/core@7.23.7):
@@ -13611,7 +13632,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -17873,8 +17894,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit@2.4.1(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.12):
-    resolution: {integrity: sha512-NnDrPOmTjzhgWkwJNPcth3vBMWQmI/QhwbMRXow1p/RkM+17HxP2yQR3GYwIK83rkYSKwQiweyBVWGOjJY4gsg==}
+  /@sveltejs/kit@2.4.3(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.9)(vite@5.0.12):
+    resolution: {integrity: sha512-nKNhUdt61vtD961kQpUk6vLDhpnV0yku5F1uYNWvrJYFV0+cGfmW7ol0JVMSjHMXlMtmmv2FTc+nPRrTFwb2UA==}
     engines: {node: '>=18.13'}
     hasBin: true
     requiresBuild: true
@@ -27422,8 +27443,8 @@ packages:
       '@babel/plugin-transform-react-jsx': ^7.14.9
       eslint: ^8.1.0
     dependencies:
-      '@babel/plugin-syntax-flow': 7.18.6(@babel/core@7.21.8)
-      '@babel/plugin-transform-react-jsx': 7.21.0(@babel/core@7.21.8)
+      '@babel/plugin-syntax-flow': 7.18.6(@babel/core@7.22.20)
+      '@babel/plugin-transform-react-jsx': 7.21.0(@babel/core@7.22.20)
       eslint: 8.56.0
       lodash: 4.17.21
       string-natural-compare: 3.0.1
