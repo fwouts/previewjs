@@ -3128,8 +3128,8 @@ importers:
         specifier: ^10.3.1
         version: 10.3.1
       pnpm:
-        specifier: ^8.14.2
-        version: 8.14.2
+        specifier: ^8.14.3
+        version: 8.14.3
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -13718,12 +13718,12 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
       is-module: 1.0.0
-      resolve: 1.22.2
+      resolve: 1.22.8
       rollup: 3.28.1
     dev: true
 
@@ -13855,21 +13855,6 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 3.21.0
-
-  /@rollup/pluginutils@5.0.2(rollup@3.28.1):
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.5
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-      rollup: 3.28.1
-    dev: true
 
   /@rollup/pluginutils@5.0.3(rollup@3.21.0):
     resolution: {integrity: sha512-hfllNN4a80rwNQ9QCxhxuHCGHMAvabXqxNdaChUSSadMre7t4iEUI6fFAhBOn/eIYTgYVhBv7vCLsAJ4u3lf3g==}
@@ -36076,8 +36061,8 @@ packages:
       - typescript
     dev: true
 
-  /pnpm@8.14.2:
-    resolution: {integrity: sha512-enyyRtKg4kQSBglRHotK2uJLIkrEWS58DaXraUiRtDU3YZECK/u475wDMkDuihoBk7Xg/gtxLgTpLzotcXC4nA==}
+  /pnpm@8.14.3:
+    resolution: {integrity: sha512-w+2A61g74+K37zHrlri5z6oFA+XUTscXUUEgtRh7L5M3NukDjFGlojrVgnkLpB1Kt4RhjIn6fiNl9mZWhdYS7g==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true
@@ -43303,7 +43288,7 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/node': 18.16.14
-      acorn: 8.11.3
+      acorn: 8.10.0
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
@@ -44846,7 +44831,7 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || 3 || 4
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       '@svgr/core': 6.5.1
       vite: 5.0.10(@types/node@20.10.6)
     transitivePeerDependencies:
