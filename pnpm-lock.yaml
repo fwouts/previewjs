@@ -148,8 +148,8 @@ importers:
         specifier: ^10.1.2
         version: link:../type-analyzer
       axios:
-        specifier: ^1.6.5
-        version: 1.6.5
+        specifier: ^1.6.6
+        version: 1.6.6
     devDependencies:
       typescript:
         specifier: ^5.3.3
@@ -329,8 +329,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       axios:
-        specifier: ^1.6.5
-        version: 1.6.5
+        specifier: ^1.6.6
+        version: 1.6.6
       esbuild-plugin-polyfill-node:
         specifier: ^0.3.0
         version: 0.3.0(esbuild@0.19.12)
@@ -13267,7 +13267,7 @@ packages:
     dependencies:
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/type-analyzer': 10.1.2
-      axios: 1.6.5
+      axios: 1.6.6
     transitivePeerDependencies:
       - debug
     dev: false
@@ -13298,7 +13298,7 @@ packages:
       '@previewjs/type-analyzer': 10.1.2
       '@previewjs/vfs': 2.1.1
       assert-never: 1.2.1
-      axios: 1.6.5
+      axios: 1.6.6
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.12)
       exclusive-promises: 1.0.3
       express: 4.18.2
@@ -13341,7 +13341,7 @@ packages:
       '@previewjs/core': 28.1.0(@types/node@20.10.6)(esbuild@0.19.12)
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/storybook-helpers': 5.0.7(@types/node@20.10.6)(esbuild@0.19.12)
-      axios: 1.6.5
+      axios: 1.6.6
       env-paths: 3.0.0
       express: 4.18.2
       fs-extra: 11.2.0
@@ -13887,12 +13887,12 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-builtin-module: 3.2.1
       is-module: 1.0.0
-      resolve: 1.22.2
+      resolve: 1.22.8
       rollup: 3.28.1
     dev: true
 
@@ -22663,8 +22663,8 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /axios@1.6.5:
-    resolution: {integrity: sha512-Ii012v05KEVuUoFWmMW/UQv9aRIc3ZwkWDcM+h5Il8izZCtRVpDUfwpoFf7eOtajT3QiGR4yDUx7lPqHJULgbg==}
+  /axios@1.6.6:
+    resolution: {integrity: sha512-XZLZDFfXKM9U/Y/B4nNynfCRUqNyVZ4sBC/n9GDRCkq9vd2mIvKjKKsbIh1WPmHmNbg6ND7cTBY3Y2+u1G3/2Q==}
     dependencies:
       follow-redirects: 1.15.4(debug@4.3.4)
       form-data: 4.0.0
