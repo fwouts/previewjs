@@ -148,8 +148,8 @@ importers:
         specifier: ^10.1.2
         version: link:../type-analyzer
       axios:
-        specifier: ^1.6.6
-        version: 1.6.6
+        specifier: ^1.6.7
+        version: 1.6.7
     devDependencies:
       typescript:
         specifier: ^5.3.3
@@ -329,8 +329,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.1
       axios:
-        specifier: ^1.6.6
-        version: 1.6.6
+        specifier: ^1.6.7
+        version: 1.6.7
       esbuild-plugin-polyfill-node:
         specifier: ^0.3.0
         version: 0.3.0(esbuild@0.19.12)
@@ -5554,15 +5554,6 @@ packages:
       '@babel/core': 7.21.8
       '@babel/helper-plugin-utils': 7.22.5
 
-  /@babel/plugin-syntax-flow@7.18.6(@babel/core@7.22.20):
-    resolution: {integrity: sha512-LUbR+KNTBWCUAqRG9ex5Gnzu2IOkt8jRJbHHXFT9q+L9zm7M/QQbEqXyw1n1pohYvOyWC8CjeyjrSaIwiYjK7A==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.20
-      '@babel/helper-plugin-utils': 7.22.5
-
   /@babel/plugin-syntax-flow@7.18.6(@babel/core@7.23.7):
     resolution: {integrity: sha512-LUbR+KNTBWCUAqRG9ex5Gnzu2IOkt8jRJbHHXFT9q+L9zm7M/QQbEqXyw1n1pohYvOyWC8CjeyjrSaIwiYjK7A==}
     engines: {node: '>=6.9.0'}
@@ -5730,6 +5721,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.20
       '@babel/helper-plugin-utils': 7.22.5
+    dev: true
 
   /@babel/plugin-syntax-jsx@7.23.3(@babel/core@7.23.3):
     resolution: {integrity: sha512-EB2MELswq55OHUoRZLGg/zC7QWUKfNLpE57m/S2yr1uEneIgsTgrSzXP3NXEsMkVn76OlaVVnzN+ugObuYGwhg==}
@@ -7301,19 +7293,6 @@ packages:
       '@babel/helper-module-imports': 7.22.15
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.21.8)
-      '@babel/types': 7.23.6
-
-  /@babel/plugin-transform-react-jsx@7.21.0(@babel/core@7.22.20):
-    resolution: {integrity: sha512-6OAWljMvQrZjR2DaNhVfRz6dkCAVV+ymcLUmaf8bccGOHn2v5rHJK3tTpij0BuhdYWP4LLaqj5lwcdlpAAPuvg==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.20
-      '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-module-imports': 7.22.15
-      '@babel/helper-plugin-utils': 7.22.5
-      '@babel/plugin-syntax-jsx': 7.23.3(@babel/core@7.22.20)
       '@babel/types': 7.23.6
 
   /@babel/plugin-transform-react-jsx@7.21.0(@babel/core@7.23.7):
@@ -13260,7 +13239,7 @@ packages:
     dependencies:
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/type-analyzer': 10.1.2
-      axios: 1.6.6
+      axios: 1.6.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -13291,7 +13270,7 @@ packages:
       '@previewjs/type-analyzer': 10.1.2
       '@previewjs/vfs': 2.1.1
       assert-never: 1.2.1
-      axios: 1.6.6
+      axios: 1.6.7
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.19.12)
       exclusive-promises: 1.0.3
       express: 4.18.2
@@ -13334,7 +13313,7 @@ packages:
       '@previewjs/core': 28.1.0(@types/node@20.10.6)(esbuild@0.19.12)
       '@previewjs/serializable-values': 9.0.3
       '@previewjs/storybook-helpers': 5.0.7(@types/node@20.10.6)(esbuild@0.19.12)
-      axios: 1.6.6
+      axios: 1.6.7
       env-paths: 3.0.0
       express: 4.18.2
       fs-extra: 11.2.0
@@ -13773,7 +13752,7 @@ packages:
       rollup:
         optional: true
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
       glob: 8.1.0
@@ -14017,21 +13996,6 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.1
       rollup: 3.21.0
-
-  /@rollup/pluginutils@5.0.2(rollup@3.28.1):
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.5
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-      rollup: 3.28.1
-    dev: true
 
   /@rollup/pluginutils@5.0.3(rollup@3.21.0):
     resolution: {integrity: sha512-hfllNN4a80rwNQ9QCxhxuHCGHMAvabXqxNdaChUSSadMre7t4iEUI6fFAhBOn/eIYTgYVhBv7vCLsAJ4u3lf3g==}
@@ -22636,8 +22600,8 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /axios@1.6.6:
-    resolution: {integrity: sha512-XZLZDFfXKM9U/Y/B4nNynfCRUqNyVZ4sBC/n9GDRCkq9vd2mIvKjKKsbIh1WPmHmNbg6ND7cTBY3Y2+u1G3/2Q==}
+  /axios@1.6.7:
+    resolution: {integrity: sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==}
     dependencies:
       follow-redirects: 1.15.4(debug@4.3.4)
       form-data: 4.0.0
@@ -27574,8 +27538,8 @@ packages:
       '@babel/plugin-transform-react-jsx': ^7.14.9
       eslint: ^8.1.0
     dependencies:
-      '@babel/plugin-syntax-flow': 7.18.6(@babel/core@7.22.20)
-      '@babel/plugin-transform-react-jsx': 7.21.0(@babel/core@7.22.20)
+      '@babel/plugin-syntax-flow': 7.18.6(@babel/core@7.21.8)
+      '@babel/plugin-transform-react-jsx': 7.21.0(@babel/core@7.21.8)
       eslint: 8.56.0
       lodash: 4.17.21
       string-natural-compare: 3.0.1
@@ -44993,7 +44957,7 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || 3 || 4
     dependencies:
-      '@rollup/pluginutils': 5.0.2(rollup@3.28.1)
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.0)
       '@svgr/core': 6.5.1
       vite: 5.0.10(@types/node@20.10.6)
     transitivePeerDependencies:
