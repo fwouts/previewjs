@@ -43,7 +43,7 @@ var __dirname = url.fileURLToPath(new URL(".", import.meta.url));
       "process.env.PREVIEWJS_INTELLIJ_VERSION": JSON.stringify(pluginVersion),
       ...(process.env.PREVIEWJS_MODULES_DIR && {
         "process.env.PREVIEWJS_MODULES_DIR": JSON.stringify(
-          path.join(__dirname, process.env.PREVIEWJS_MODULES_DIR)
+          process.env.PREVIEWJS_MODULES_DIR
         ),
       }),
     },
