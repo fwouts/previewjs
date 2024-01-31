@@ -3,6 +3,7 @@ package com.previewjs.intellij.plugin.inlays
 import com.intellij.codeInsight.hints.ChangeListener
 import com.intellij.codeInsight.hints.FactoryInlayHintsCollector
 import com.intellij.codeInsight.hints.ImmediateConfigurable
+import com.intellij.codeInsight.hints.InlayHintsCollector
 import com.intellij.codeInsight.hints.InlayHintsProvider
 import com.intellij.codeInsight.hints.InlayHintsProviderFactory
 import com.intellij.codeInsight.hints.InlayHintsSink
@@ -12,7 +13,6 @@ import com.intellij.codeInsight.hints.SettingsKey
 import com.intellij.lang.Language
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.previewjs.intellij.plugin.services.ProjectService
@@ -39,13 +39,10 @@ class InlayProviderFactory : InlayHintsProviderFactory {
         // TOML, JSON, HgIgnore, InjectedFreeMarker, MySQL, AZURE, TypeScript, AIDL, AngularJS, PostCSS, Snowflake, Micronaut-MongoDB-JSON, Redis, XML, SQL92, TSQL, protobase, Angular2Svg, JSUnicodeRegexp, Nashorn JS, JVM, EL, Gherkin, AndroidDataBinding, SQLDateTime, SVG, , XHTML, RoomSql, DB2, Properties, XPath, DB2_ZOS, FTL>, JavaScript 1.8, ThymeleafSpringSecurityExtras, Renderscript, Angular2, prototext, ThymeleafTemplatesExpressions, H2, XsdRegExp, HTML, LESS, JQL, yaml, MongoJSExt, JSPX, Flow JS, PostgreSQL, JQuery-CSS, GitIgnore, Lombok.Config, Dockerfile, KND, CouchbaseQuery, Qute, JSRegexp, ThymeleafExpressions, VueExpr, SQLite, SparkSQL, GenericSQL, JSP, OracleSqlPlus, UastContextLanguage, Markdown, DTD, TEXT, DeviceSpec, UAST, ThymeleafUrlExpressions, EQL, Groovy, TypeScript JSX, SCSS, JSONPath, JSON5, Vue, Exasol, HSQLDB, protobuf, EditorConfig, ECMA Script Level 4, Greenplum, Cookie, kotlin, textmate, ClickHouse, HtmlCompatible, EJBQL, Derby, SPI, Cockroach, JavaScript, Angular2Html, MicronautDataQL, IntegrationPerformanceTest, VTL, GitExclude, MultiDexKeep, Shell Script, CassandraQL, RegExp, HiveQL, Smali, Manifest, SHRINKER_CONFIG, JAVA, LogcatFilter, VueJS, IgnoreLang, SQL, $XSLT, PointcutExpression, MariaDB, DB2_IS, AGSL, Oracle, SpEL, SpringDataQL, JSON Lines, FTL], BigQuery, MongoJS, YouTrack, CSS, MongoDB, Metadata JSON, Vertica, SASS, Sybase, ThymeleafIterateExpressions, ThymeleafTemplatesFragmentExpressions, ECMAScript 6, XPath2, HTTP Request, RELAX-NG, DockerIgnore, HttpClientHandlerJavaScriptDialect, FTL, JPAQL, HQL, JShellLanguage, VueTS, MySQL based, MongoDB-JSON, Spring-MongoDB-JSON, Redshift
     }
 
-    @Deprecated("Use getProvidersInfo without project", replaceWith = ReplaceWith("getProvidersInfo()"))
-    override fun getProvidersInfo(project: Project): List<ProviderInfo<out Any>> {
-        return getLanguages().map { l -> ProviderInfo(l, InlayProvider()) }
-    }
+    private val inlayProvider = InlayProvider()
 
     override fun getProvidersInfo(): List<ProviderInfo<out Any>> {
-        return getLanguages().map { l -> ProviderInfo(l, InlayProvider()) }
+        return getLanguages().map { l -> ProviderInfo(l, inlayProvider) }
     }
 
     override fun getLanguages(): Iterable<Language> {
@@ -53,7 +50,7 @@ class InlayProviderFactory : InlayHintsProviderFactory {
     }
 
     override fun getProvidersInfoForLanguage(language: Language): List<InlayHintsProvider<out Any>> {
-        return listOf(InlayProvider())
+        return listOf(inlayProvider)
     }
 
     class InlayProvider : InlayHintsProvider<NoSettings> {
@@ -65,6 +62,8 @@ class InlayProviderFactory : InlayHintsProviderFactory {
 
         override val isVisibleInSettings = false
 
+        private var fileToCollectorMap: MutableMap<PsiFile, FactoryInlayHintsCollector> = mutableMapOf()
+
         override fun isLanguageSupported(language: Language): Boolean {
             return LANGUAGE_IDS.contains(language.id)
         }
@@ -74,31 +73,47 @@ class InlayProviderFactory : InlayHintsProviderFactory {
             editor: Editor,
             settings: NoSettings,
             sink: InlayHintsSink,
-        ) = object : FactoryInlayHintsCollector(editor) {
-            override fun collect(
-                element: PsiElement,
-                editor: Editor,
-                sink: InlayHintsSink,
-            ): Boolean {
-                val projectService = file.project.service<ProjectService>()
-                val components = projectService.getPrecomputedComponents(file)
-                for (component in components) {
-                    val previewableName = component.id.substring(component.id.indexOf(":") + 1)
-                    sink.addBlockElement(
-                        component.start,
-                        relatesToPrecedingText = false,
-                        showAbove = true,
-                        priority = 0,
-                        presentation =
-                            factory.referenceOnHover(
-                                factory.roundWithBackground(factory.smallText("Open $previewableName in Preview.js")),
-                            ) { _, _ ->
-                                projectService.openPreview(file.virtualFile.path, component.id)
-                            },
-                    )
-                }
-                return false
+        ): InlayHintsCollector {
+            val existing = this.fileToCollectorMap[file]
+            if (existing != null) {
+                return existing
             }
+            val collector =
+                object : FactoryInlayHintsCollector(editor) {
+                    private var lastSink: InlayHintsSink? = null
+
+                    override fun collect(
+                        element: PsiElement,
+                        editor: Editor,
+                        sink: InlayHintsSink,
+                    ): Boolean {
+                        if (sink === lastSink) {
+                            // Prevent a bug where duplicate inlay hints are shown.
+                            return false
+                        }
+                        lastSink = sink
+                        val projectService = file.project.service<ProjectService>()
+                        val components = projectService.getPrecomputedComponents(file)
+                        for (component in components) {
+                            val previewableName = component.id.substring(component.id.indexOf(":") + 1)
+                            sink.addBlockElement(
+                                component.start,
+                                relatesToPrecedingText = false,
+                                showAbove = true,
+                                priority = 0,
+                                presentation =
+                                    factory.referenceOnHover(
+                                        factory.roundWithBackground(factory.smallText("Open $previewableName in Preview.js")),
+                                    ) { _, _ ->
+                                        projectService.openPreview(file.virtualFile.path, component.id)
+                                    },
+                            )
+                        }
+                        return false
+                    }
+                }
+            this.fileToCollectorMap[file] = collector
+            return collector
         }
 
         override fun createConfigurable(settings: NoSettings): ImmediateConfigurable {

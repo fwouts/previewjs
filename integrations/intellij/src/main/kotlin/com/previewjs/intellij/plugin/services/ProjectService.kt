@@ -1,6 +1,6 @@
 package com.previewjs.intellij.plugin.services
 
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
+import com.intellij.codeInsight.daemon.impl.InlayHintsPassFactoryInternal
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
@@ -20,7 +20,6 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
-import com.intellij.openapi.vfs.findPsiFile
 import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.wm.StatusBarWidgetFactory
@@ -238,8 +237,7 @@ class ProjectService(private val project: Project) : Disposable {
         crawlFile(file) { components ->
             componentMap[file.path] = Pair(text, components)
             app.invokeLater {
-                val psiFile = file.findPsiFile(project) ?: return@invokeLater
-                DaemonCodeAnalyzer.getInstance(project).restart(psiFile)
+                InlayHintsPassFactoryInternal.restartDaemonUpdatingHints(project)
             }
         }
     }
