@@ -115,8 +115,8 @@ importers:
         specifier: ^18.2.55
         version: 18.2.55
       '@types/react-dom':
-        specifier: ^18.2.18
-        version: 18.2.18
+        specifier: ^18.2.19
+        version: 18.2.19
       pino:
         specifier: ^8.18.0
         version: 8.18.0
@@ -687,8 +687,8 @@ importers:
         specifier: ^18.2.55
         version: 18.2.55
       '@types/react-dom':
-        specifier: ^18.2.18
-        version: 18.2.18
+        specifier: ^18.2.19
+        version: 18.2.19
       pino:
         specifier: ^8.18.0
         version: 8.18.0
@@ -2364,7 +2364,7 @@ importers:
         version: 3.59.1
       svelte-check:
         specifier: ^2.10.3
-        version: 2.10.3(svelte@3.59.1)
+        version: 2.10.3(@babel/core@7.23.7)(svelte@3.59.1)
       svelte-preprocess:
         specifier: ^4.10.7
         version: 4.10.7(svelte@3.59.1)(typescript@4.9.5)
@@ -2391,7 +2391,7 @@ importers:
         version: 3.59.1
       svelte-check:
         specifier: ^2.10.3
-        version: 2.10.3(svelte@3.59.1)
+        version: 2.10.3(@babel/core@7.23.7)(svelte@3.59.1)
       tslib:
         specifier: ^2.5.2
         version: 2.5.2
@@ -2439,7 +2439,7 @@ importers:
         version: 3.59.1
       svelte-check:
         specifier: ^2.10.3
-        version: 2.10.3(svelte@3.59.1)
+        version: 2.10.3(@babel/core@7.23.7)(svelte@3.59.1)
       svelte-preprocess:
         specifier: ^4.10.7
         version: 4.10.7(svelte@3.59.1)(typescript@4.9.5)
@@ -2475,7 +2475,7 @@ importers:
         version: 3.59.1
       svelte-check:
         specifier: ^2.10.3
-        version: 2.10.3(svelte@3.59.1)
+        version: 2.10.3(@babel/core@7.23.7)(svelte@3.59.1)
       svelte-preprocess:
         specifier: ^4.10.7
         version: 4.10.7(svelte@3.59.1)(typescript@4.9.5)
@@ -3209,8 +3209,8 @@ importers:
         specifier: ^18.2.55
         version: 18.2.55
       '@types/react-dom':
-        specifier: ^18.2.18
-        version: 18.2.18
+        specifier: ^18.2.19
+        version: 18.2.19
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@5.0.12)
@@ -19286,8 +19286,8 @@ packages:
       '@types/react': 18.2.48
     dev: false
 
-  /@types/react-dom@18.2.18:
-    resolution: {integrity: sha512-TJxDm6OfAX2KJWJdMEVTwWke5Sc/E/RlnPGvGfS0W7+6ocy2xhDVQVh/KvC2Uf7kACs+gDytdusDSdWfWkaNzw==}
+  /@types/react-dom@18.2.19:
+    resolution: {integrity: sha512-aZvQL6uUbIJpjZk4U8JZGbau9KDeAwMfmhyWorxgBkqDIEf6ROjRozcmPIicqsUwPUjbkDfHKgGee1Lq65APcA==}
     dependencies:
       '@types/react': 18.2.55
     dev: true
@@ -42718,34 +42718,6 @@ packages:
     engines: {node: '>= 0.4'}
 
   /svelte-check@2.10.3(@babel/core@7.23.7)(svelte@3.59.1):
-    resolution: {integrity: sha512-Nt1aWHTOKFReBpmJ1vPug0aGysqPwJh2seM1OvICfM2oeyaA62mOiy5EvkXhltGfhCcIQcq2LoE0l1CwcWPjlw==}
-    hasBin: true
-    peerDependencies:
-      svelte: ^3.24.0
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.17
-      chokidar: 3.6.0
-      fast-glob: 3.2.12
-      import-fresh: 3.3.0
-      picocolors: 1.0.0
-      sade: 1.8.1
-      svelte: 3.59.1
-      svelte-preprocess: 4.10.7(@babel/core@7.23.7)(svelte@3.59.1)(typescript@5.3.3)
-      typescript: 5.3.3
-    transitivePeerDependencies:
-      - '@babel/core'
-      - coffeescript
-      - less
-      - node-sass
-      - postcss
-      - postcss-load-config
-      - pug
-      - sass
-      - stylus
-      - sugarss
-    dev: true
-
-  /svelte-check@2.10.3(svelte@3.59.1):
     resolution: {integrity: sha512-Nt1aWHTOKFReBpmJ1vPug0aGysqPwJh2seM1OvICfM2oeyaA62mOiy5EvkXhltGfhCcIQcq2LoE0l1CwcWPjlw==}
     hasBin: true
     peerDependencies:
