@@ -1,6 +1,5 @@
 package com.previewjs.intellij.plugin.services
 
-import com.intellij.codeInsight.daemon.impl.InlayHintsPassFactoryInternal
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
@@ -43,6 +42,8 @@ import org.apache.commons.lang.StringUtils
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
+import java.lang.invoke.MethodHandle
+import java.lang.invoke.MethodHandles
 import java.net.URLEncoder
 import kotlin.math.max
 
@@ -234,10 +235,41 @@ class ProjectService(private val project: Project) : Disposable {
         crawlFile(file) { components ->
             componentMap[file.path] = Pair(text, components)
             app.invokeLater {
-                InlayHintsPassFactoryInternal.restartDaemonUpdatingHints(project)
+                restartDaemonUpdatingHints.getOrNull()?.invoke(project)
             }
         }
     }
+
+    /**
+     * Locate the `InlayHintsPassFactory` class.
+     *
+     * This class was moved to a different package in 233.6745.305 (2023.3 EAP 1).
+     *
+     * See [IDEA-333164](https://youtrack.jetbrains.com/issue/IDEA-333164/Breaking-change-with-InlayHintsPassFactory-class-moved-in-another-package)
+     *
+     * Note this initialization bias by looking first at the latest known name supposing users tend to have the latest version.
+     */
+    @Suppress("LocalVariableName")
+    private val restartDaemonUpdatingHints: Result<MethodHandle> =
+        runCatching {
+            // Most recent name, since 233.13135 (2023.3.3)
+            Class.forName("com.intellij.codeInsight.daemon.impl.InlayHintsPassFactoryInternal")
+        }.recoverCatching {
+            // fallback to new package in 233.6745.305 (2023.3 EAP 1 up to 2023.3.2)
+            Class.forName("com.intellij.codeInsight.daemon.impl.InlayHintsPassFactory")
+        }.recoverCatching {
+            // fallback to package prior 233.6745.305 e.g. 2023.2
+            Class.forName("com.intellij.codeInsight.hints.InlayHintsPassFactory____")
+        }.mapCatching { InlayHintsPassFactory_Class ->
+            @Suppress("ktlint:standard:property-naming")
+            val InlayHintsPassFactory_Companion_Instance =
+                InlayHintsPassFactory_Class.getField("Companion").get(null)
+            val InlayHintsPassFactory_Companion_Class = InlayHintsPassFactory_Companion_Instance.javaClass
+
+            MethodHandles.lookup().unreflect(
+                InlayHintsPassFactory_Companion_Class.getMethod("restartDaemonUpdatingHints", Project::class.java),
+            ).bindTo(InlayHintsPassFactory_Companion_Instance)
+        }
 
     private fun onFileClosed(file: VirtualFile) {
         componentMap.remove(file.path)
