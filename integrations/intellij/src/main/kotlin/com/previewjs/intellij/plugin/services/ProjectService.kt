@@ -129,9 +129,6 @@ class ProjectService(private val project: Project) : Disposable {
                     file: VirtualFile,
                 ) {
                     val textEditor = source.allEditors.find { it.file == file } as? TextEditor ?: return
-                    if (textEditor.file != file) {
-                        return
-                    }
                     recrawlFile(file, textEditor.editor.document.text)
                 }
 
