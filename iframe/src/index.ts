@@ -19,6 +19,7 @@ declare global {
 }
 
 export type RefreshOptions = {
+  refetchPreviewableModule?: boolean;
   previewableModule?: any;
   wrapperModule?: any;
 };

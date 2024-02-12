@@ -45,12 +45,19 @@ test.describe.parallel("vue3/storybook", () => {
 
       export const Primary = () => ({
         components: { Button },
-        template: '<Button label="Button" />'
+        template: '<Button label="Hello, World!" />'
       })`
     );
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'Button')]"
+      "xpath=//button[contains(., 'Hello, World!')]"
+    );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "Hello, World!",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -81,6 +88,13 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'Hello, World!')]"
     );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "Hello, World!",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
+    );
   });
 
   test("renders templated CSF2 story", async (preview) => {
@@ -109,6 +123,13 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'Hello, World!')]"
+    );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "Hello, World!",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -148,9 +169,16 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'local value')]"
     );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "local value",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
+    );
   });
 
-  test("renders CSF2 story with default args", async (preview) => {
+  test("renders CSF2 story with default export args", async (preview) => {
     await preview.fileManager.update("src/Button.vue", buttonVueSource);
     await preview.fileManager.update(
       "src/Button.stories.js",
@@ -159,7 +187,7 @@ test.describe.parallel("vue3/storybook", () => {
       export default {
         component: Button,
         args: {
-          label: "default"
+          label: "default export"
         }
       }
 
@@ -176,11 +204,18 @@ test.describe.parallel("vue3/storybook", () => {
     );
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'default')]"
+      "xpath=//button[contains(., 'default export')]"
+    );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "default export",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
-  test("renders CSF2 story with explicit args over default args", async (preview) => {
+  test("renders CSF2 story with explicit args over default export args", async (preview) => {
     await preview.fileManager.update("src/Button.vue", buttonVueSource);
     await preview.fileManager.update(
       "src/Button.stories.js",
@@ -189,7 +224,7 @@ test.describe.parallel("vue3/storybook", () => {
       export default {
         component: Button,
         args: {
-          label: "default"
+          label: "default export"
         }
       }
 
@@ -209,6 +244,13 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "explicit",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -231,6 +273,13 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "explicit",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -263,9 +312,16 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'local value')]"
     );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "local value",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
+    );
   });
 
-  test("renders CSF3 story with default args", async (preview) => {
+  test("renders CSF3 story with default export args", async (preview) => {
     await preview.fileManager.update("src/Button.vue", buttonVueSource);
     await preview.fileManager.update(
       "src/Button.stories.js",
@@ -274,7 +330,7 @@ test.describe.parallel("vue3/storybook", () => {
       export default {
         component: Button,
         args: {
-          label: "default"
+          label: "default export"
         }
       };
 
@@ -282,11 +338,18 @@ test.describe.parallel("vue3/storybook", () => {
     );
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'default')]"
+      "xpath=//button[contains(., 'default export')]"
+    );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "default export",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
-  test("renders CSF3 story with explicit args over default args", async (preview) => {
+  test("renders CSF3 story with explicit args over default export args", async (preview) => {
     await preview.fileManager.update("src/Button.vue", buttonVueSource);
     await preview.fileManager.update(
       "src/Button.stories.js",
@@ -295,7 +358,7 @@ test.describe.parallel("vue3/storybook", () => {
       export default {
         component: Button,
         args: {
-          label: "default"
+          label: "default export"
         }
       };
 
@@ -308,6 +371,13 @@ test.describe.parallel("vue3/storybook", () => {
     await preview.show("src/Button.stories.js:Primary");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+    await preview.fileManager.update("src/Button.stories.js", {
+      replace: "explicit",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 

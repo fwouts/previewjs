@@ -28,6 +28,7 @@ import { findFiles } from "../find-files.js";
 import { generateHtmlError } from "../html-error.js";
 import type { FrameworkPlugin } from "../plugins/framework.js";
 import { cssModulesWithoutSuffixPlugin } from "./plugins/css-modules-without-suffix-plugin.js";
+import { invalidateStoriesModulesOnUpdate } from "./plugins/invalidate-stories-modules-on-update.js";
 import { localEval } from "./plugins/local-eval.js";
 import {
   previewScriptPlugin,
@@ -343,6 +344,7 @@ export class ViteManager {
             esbuildOptions: frameworkPluginViteConfig.esbuild || {},
           }),
           localEval(),
+          invalidateStoriesModulesOnUpdate(),
           fakeExportedTypesPlugin({
             readFile: (absoluteFilePath) =>
               this.options.reader.read(absoluteFilePath).then((entry) => {

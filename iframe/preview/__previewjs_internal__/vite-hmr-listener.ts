@@ -64,6 +64,8 @@ export function setupViteHmrListener() {
     window.__PREVIEWJS_IFRAME__.reportEvent({
       kind: "vite-invalidate",
     });
-    window.__PREVIEWJS_IFRAME__.refresh();
+    window.__PREVIEWJS_IFRAME__.refresh({
+      refetchPreviewableModule: true,
+    });
   });
 }
