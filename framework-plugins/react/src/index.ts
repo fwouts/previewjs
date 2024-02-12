@@ -49,12 +49,7 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
           plugins: [
             reactImportsPlugin(),
             ...configuredPlugins,
-            ...(!hasReactPlugin
-              ? [
-                  // @ts-ignore
-                  react(),
-                ]
-              : []),
+            ...(!hasReactPlugin ? [react()] : []),
             {
               name: "previewjs:update-react-import",
               async transform(code: string, id: string) {
