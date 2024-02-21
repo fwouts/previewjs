@@ -30,6 +30,13 @@ for (const reactVersion of reactVersions()) {
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'Hello, World!')]"
         );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "Hello, World!",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
+        );
       });
 
       test("renders CSF2 story with explicit args", async (preview) => {
@@ -49,6 +56,13 @@ for (const reactVersion of reactVersions()) {
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'explicit')]"
+        );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "explicit",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
         );
       });
 
@@ -79,6 +93,13 @@ for (const reactVersion of reactVersions()) {
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'local value')]"
         );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "local value",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
+        );
       });
 
       test("renders CSF2 story with default args", async (preview) => {
@@ -89,7 +110,7 @@ for (const reactVersion of reactVersions()) {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           };
 
@@ -97,7 +118,14 @@ for (const reactVersion of reactVersions()) {
         );
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
-          "xpath=//button[contains(., 'default')]"
+          "xpath=//button[contains(., 'default export')]"
+        );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "default export",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
         );
       });
 
@@ -109,7 +137,7 @@ for (const reactVersion of reactVersions()) {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           };
 
@@ -121,6 +149,13 @@ for (const reactVersion of reactVersions()) {
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'explicit')]"
+        );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "explicit",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
         );
       });
 
@@ -142,6 +177,13 @@ for (const reactVersion of reactVersions()) {
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'explicit')]"
+        );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "explicit",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
         );
       });
 
@@ -173,6 +215,13 @@ for (const reactVersion of reactVersions()) {
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'local value')]"
         );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "local value",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
+        );
       });
 
       test("renders CSF3 story with default args", async (preview) => {
@@ -183,7 +232,7 @@ for (const reactVersion of reactVersions()) {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           }
 
@@ -191,7 +240,14 @@ for (const reactVersion of reactVersions()) {
         );
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
-          "xpath=//button[contains(., 'default')]"
+          "xpath=//button[contains(., 'default export')]"
+        );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "default export",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
         );
       });
 
@@ -203,7 +259,7 @@ for (const reactVersion of reactVersions()) {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           };
 
@@ -216,6 +272,13 @@ for (const reactVersion of reactVersions()) {
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'explicit')]"
+        );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "explicit",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
         );
       });
 
@@ -238,6 +301,13 @@ for (const reactVersion of reactVersions()) {
         await preview.show("src/Button.tsx:ButtonStory");
         await preview.iframe.waitForSelector(
           "xpath=//button[contains(., 'Hello, World!')]"
+        );
+        await preview.fileManager.update("src/Button.tsx", {
+          replace: "Hello, World!",
+          with: "Hi, World!",
+        });
+        await preview.iframe.waitForSelector(
+          "xpath=//button[contains(., 'Hi, World!')]"
         );
       });
     });

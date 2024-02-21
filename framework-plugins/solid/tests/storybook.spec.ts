@@ -25,6 +25,13 @@ test.describe.parallel("solid/storybook", () => {
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'Hello, World!')]"
     );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "Hello, World!",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
+    );
   });
 
   test("renders CSF2 story with explicit args", async (preview) => {
@@ -44,6 +51,13 @@ test.describe.parallel("solid/storybook", () => {
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "explicit",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -74,9 +88,16 @@ test.describe.parallel("solid/storybook", () => {
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'local value')]"
     );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "local value",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
+    );
   });
 
-  test("renders CSF2 story with default args", async (preview) => {
+  test("renders CSF2 story with default export args", async (preview) => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
@@ -84,7 +105,7 @@ test.describe.parallel("solid/storybook", () => {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           };
 
@@ -92,11 +113,18 @@ test.describe.parallel("solid/storybook", () => {
     );
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'default')]"
+      "xpath=//button[contains(., 'default export')]"
+    );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "default export",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
-  test("renders CSF2 story with explicit args over default args", async (preview) => {
+  test("renders CSF2 story with explicit args over default export args", async (preview) => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
@@ -104,7 +132,7 @@ test.describe.parallel("solid/storybook", () => {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           };
 
@@ -116,6 +144,13 @@ test.describe.parallel("solid/storybook", () => {
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "explicit",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -137,6 +172,13 @@ test.describe.parallel("solid/storybook", () => {
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "explicit",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -168,9 +210,16 @@ test.describe.parallel("solid/storybook", () => {
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'local value')]"
     );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "local value",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
+    );
   });
 
-  test("renders CSF3 story with default args", async (preview) => {
+  test("renders CSF3 story with default export args", async (preview) => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
@@ -178,7 +227,7 @@ test.describe.parallel("solid/storybook", () => {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           }
 
@@ -186,11 +235,18 @@ test.describe.parallel("solid/storybook", () => {
     );
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
-      "xpath=//button[contains(., 'default')]"
+      "xpath=//button[contains(., 'default export')]"
+    );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "default export",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
-  test("renders CSF3 story with explicit args over default args", async (preview) => {
+  test("renders CSF3 story with explicit args over default export args", async (preview) => {
     await preview.fileManager.update(
       "src/Button.tsx",
       `const Button = ({ label }) => <button>{label}</button>;
@@ -198,7 +254,7 @@ test.describe.parallel("solid/storybook", () => {
           export default {
             component: Button,
             args: {
-              label: "default"
+              label: "default export"
             }
           };
 
@@ -211,6 +267,13 @@ test.describe.parallel("solid/storybook", () => {
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'explicit')]"
+    );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "explicit",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 
@@ -233,6 +296,13 @@ test.describe.parallel("solid/storybook", () => {
     await preview.show("src/Button.tsx:ButtonStory");
     await preview.iframe.waitForSelector(
       "xpath=//button[contains(., 'Hello, World!')]"
+    );
+    await preview.fileManager.update("src/Button.tsx", {
+      replace: "Hello, World!",
+      with: "Hi, World!",
+    });
+    await preview.iframe.waitForSelector(
+      "xpath=//button[contains(., 'Hi, World!')]"
     );
   });
 });

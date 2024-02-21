@@ -44,6 +44,12 @@ let refresh = () => {};
 
 window.__PREVIEWJS_IFRAME__.refresh = (options) => {
   refresh(options);
+  if (options.refetchPreviewableModule) {
+    loadFreshPreviewableModule().then(previewableModule => refresh({
+      ...options,
+      previewableModule,
+    }));
+  }
 };
 
 import.meta.hot.accept(["/${previewablePath}"], ([previewableModule]) => {
@@ -82,7 +88,7 @@ const wrapperModulePromise = Promise.all([${detectedGlobalCssFilePaths
 // Important: the wrapper must be loaded first as it may monkey-patch
 // modules imported by the component module.
 wrapperModulePromise.then(wrapperModule => {
-  import(/* @vite-ignore */ "/${previewablePath}?t=" + Date.now()).then(previewableModule => {
+  loadFreshPreviewableModule().then(previewableModule => {
     refresh = initPreview({
       previewableModule,
       previewableName: ${JSON.stringify(previewableName)},
@@ -91,5 +97,9 @@ wrapperModulePromise.then(wrapperModule => {
     });
   });
 });
+
+function loadFreshPreviewableModule() {
+  return import(/* @vite-ignore */ "/${previewablePath}?t=" + Date.now());
+}
 `;
 }
