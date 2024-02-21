@@ -38,7 +38,7 @@ test.describe.parallel("solid/error handling", () => {
       /* expected error */
     });
     await preview.expectErrors.toMatch([
-      `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
+      `Failed to resolve import "some-module" from "src/App.tsx". Does the file exist?`,
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update(
@@ -64,7 +64,7 @@ test.describe.parallel("solid/error handling", () => {
           }`
     );
     await preview.expectErrors.toMatch([
-      `Failed to resolve import "some-module" from "src${path.sep}App.tsx". Does the file exist?`,
+      `Failed to resolve import "some-module" from "src/App.tsx". Does the file exist?`,
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await new Promise((resolve) => setTimeout(resolve, 5_000));
@@ -92,7 +92,7 @@ test.describe.parallel("solid/error handling", () => {
       /* expected error */
     });
     await preview.expectErrors.toMatch([
-      `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
+      `Failed to resolve import "./missing.svg" from "src/App.tsx". Does the file exist?`,
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update(
@@ -118,7 +118,7 @@ test.describe.parallel("solid/error handling", () => {
           }`
     );
     await preview.expectErrors.toMatch([
-      `Failed to resolve import "./missing.svg" from "src${path.sep}App.tsx". Does the file exist?`,
+      `Failed to resolve import "./missing.svg" from "src/App.tsx". Does the file exist?`,
     ]);
     await preview.expectLoggedMessages.toMatch([]);
     await preview.fileManager.update(
