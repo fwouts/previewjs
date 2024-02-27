@@ -246,8 +246,8 @@ importers:
         specifier: ^8.19.0
         version: 8.19.0
       playwright:
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -487,8 +487,8 @@ importers:
         version: 5.3.3
     devDependencies:
       '@playwright/test':
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -669,8 +669,8 @@ importers:
         version: 4.2.1(vite@5.1.4)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       '@previewjs/api':
         specifier: workspace:*
         version: link:../../api
@@ -2175,8 +2175,8 @@ importers:
         version: 2.10.1(solid-js@1.8.15)(vite@5.1.4)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2321,8 +2321,8 @@ importers:
         version: 5.1.4(@types/node@20.10.6)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2628,8 +2628,8 @@ importers:
         version: 2.7.16
     devDependencies:
       '@playwright/test':
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -2795,8 +2795,8 @@ importers:
         version: 3.4.20(typescript@5.3.3)
     devDependencies:
       '@playwright/test':
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       '@previewjs/core':
         specifier: workspace:*
         version: link:../../core
@@ -3177,8 +3177,8 @@ importers:
         specifier: ^14.0.1
         version: 14.0.1
       playwright:
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
     devDependencies:
       '@types/node':
         specifier: ^20.10.6
@@ -3215,8 +3215,8 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1(vite@5.1.4)
       playwright:
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -3292,8 +3292,8 @@ importers:
   testing:
     dependencies:
       '@playwright/test':
-        specifier: ^1.41.2
-        version: 1.41.2
+        specifier: ^1.42.0
+        version: 1.42.0
       '@previewjs/api':
         specifier: ^16.0.4
         version: link:../api
@@ -13281,12 +13281,12 @@ packages:
     dev: true
     optional: true
 
-  /@playwright/test@1.41.2:
-    resolution: {integrity: sha512-qQB9h7KbibJzrDpkXkYvsmiDJK14FULCCZgEcoe2AvFAS64oCirWTwzTlAYEbKaRxWs5TFesE1Na6izMv3HfGg==}
+  /@playwright/test@1.42.0:
+    resolution: {integrity: sha512-2k1HzC28Fs+HiwbJOQDUwrWMttqSLUVdjCqitBOjdCD0svWOMQUVqrXX6iFD7POps6xXAojsX/dGBpKnjZctLA==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright: 1.41.2
+      playwright: 1.42.0
 
   /@pmmmwh/react-refresh-webpack-plugin@0.5.10(react-refresh@0.11.0)(webpack-dev-server@4.11.1)(webpack@5.83.1):
     resolution: {integrity: sha512-j0Ya0hCFZPd4x40qLzbhGsh9TMtdb+CJQiso+WxLOPNasohq9cc5SNUcwsZaRH6++Xh91Xkm/xHCkuIiIu0LUA==}
@@ -36430,17 +36430,17 @@ packages:
     resolution: {integrity: sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==}
     dev: false
 
-  /playwright-core@1.41.2:
-    resolution: {integrity: sha512-VaTvwCA4Y8kxEe+kfm2+uUUw5Lubf38RxF7FpBxLPmGe5sdNkSg5e3ChEigaGrX7qdqT3pt2m/98LiyvU2x6CA==}
+  /playwright-core@1.42.0:
+    resolution: {integrity: sha512-0HD9y8qEVlcbsAjdpBaFjmaTHf+1FeIddy8VJLeiqwhcNqGCBe4Wp2e8knpqiYbzxtxarxiXyNDw2cG8sCaNMQ==}
     engines: {node: '>=16'}
     hasBin: true
 
-  /playwright@1.41.2:
-    resolution: {integrity: sha512-v0bOa6H2GJChDL8pAeLa/LZC4feoAMbSQm1/jF/ySsWWoaNItvrMP7GEkvEEFyCTUYKMxjQKaTSg5up7nR6/8A==}
+  /playwright@1.42.0:
+    resolution: {integrity: sha512-Ko7YRUgj5xBHbntrgt4EIw/nE//XBHOKVKnBjO1KuZkmkhlbgyggTe5s9hjqQ1LpN+Xg+kHsQyt5Pa0Bw5XpvQ==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      playwright-core: 1.41.2
+      playwright-core: 1.42.0
     optionalDependencies:
       fsevents: 2.3.2
 
