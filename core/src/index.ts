@@ -9,6 +9,8 @@ import { UNKNOWN_TYPE } from "@previewjs/type-analyzer";
 import { createFileSystemReader, type Reader } from "@previewjs/vfs";
 import express from "express";
 import fs from "fs-extra";
+import http from "http";
+import { createHttpTerminator } from "http-terminator";
 import { createRequire } from "module";
 import path from "path";
 import type { Logger } from "pino";
@@ -19,7 +21,7 @@ import { getFreePort } from "./get-free-port.js";
 import { extractPackageDependencies } from "./plugins/dependencies.js";
 import type { FrameworkPluginFactory } from "./plugins/framework.js";
 import type { OnServerStart } from "./preview-env.js";
-import { Previewer } from "./previewer.js";
+import { Previewer, type GetHttpServer } from "./previewer.js";
 import { ApiRouter } from "./router.js";
 const { pino: createLogger } = pino;
 const { default: prettyLogger } = PinoPretty;
@@ -93,8 +95,13 @@ export async function createWorkspace({
     typeAnalyzer: frameworkPlugin.typeAnalyzer,
     rootDir,
     reader,
-    startServer: async ({ port, clientPort, onStop } = {}) => {
-      port ||= await getFreePort(3140);
+    startServer: async ({
+      asMiddleware,
+      port: maybePort,
+      clientPort,
+      onStop,
+    } = {}) => {
+      const port = maybePort || (await getFreePort(3140));
       const router = new ApiRouter(logger);
       router.registerRPC(RPCs.Analyze, async ({ previewableIds }) => {
         logger.debug(`Analyzing: ${previewableIds.join(", ")}`);
@@ -187,6 +194,40 @@ export async function createWorkspace({
         );
         middlewares.push(...additionalMiddlewares);
       }
+      const getHttpServer: GetHttpServer = asMiddleware
+        ? async (router) => {
+            const unregister = asMiddleware.register(router);
+            return {
+              server: asMiddleware.server,
+              disposeHttpServer: async () => {
+                unregister();
+              },
+            };
+          }
+        : async (router) => {
+            logger.debug(`Starting server`);
+            const app = express();
+            app.use(router);
+            const server = await new Promise<http.Server>((resolve) => {
+              const server = app.listen(port, () => {
+                logger.info(
+                  `Preview.js server running at http://localhost:${port}.`
+                );
+                resolve(server);
+              });
+            });
+            const serverTerminator = createHttpTerminator({
+              server,
+              gracefulTerminationTimeout: 0,
+            });
+            return {
+              server,
+              disposeHttpServer: async () => {
+                await serverTerminator.terminate();
+                logger.info(`Preview.js server stopped.`);
+              },
+            };
+          };
       const previewer = new Previewer({
         reader,
         rootDir,
@@ -198,6 +239,7 @@ export async function createWorkspace({
         frameworkPlugin,
         logger,
         middlewares,
+        getHttpServer,
         port,
         clientPort,
       });
@@ -245,11 +287,24 @@ export interface Workspace {
   frameworkPluginName: string;
   typeAnalyzer: Omit<TypeAnalyzer, "dispose">;
   crawlFiles: Analyzer["crawlFiles"];
-  startServer: (options?: {
-    port?: number;
-    clientPort?: number;
-    onStop?: () => void;
-  }) => Promise<PreviewServer>;
+  startServer: (
+    options?: {
+      port?: number;
+      clientPort?: number;
+      onStop?: () => void;
+    } & (
+      | {
+          asMiddleware?: never;
+        }
+      | {
+          asMiddleware: {
+            server: http.Server;
+            register: (handler: express.RequestHandler) => () => void;
+          };
+          port: number;
+        }
+    )
+  ) => Promise<PreviewServer>;
   dispose(): Promise<void>;
 }
 

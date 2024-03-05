@@ -22,7 +22,7 @@ export async function createChromelessWorkspace({
   Omit<Workspace, "startServer"> & {
     startPreview: (
       page: Page,
-      options?: { port?: number }
+      options?: Parameters<Workspace["startServer"]>[0]
     ) => ReturnType<typeof startPreview>;
   }
 > {
@@ -39,7 +39,9 @@ export async function createChromelessWorkspace({
   });
   return {
     ...workspace,
-    startPreview: (page: Page, options: { port?: number } = {}) =>
-      startPreview({ workspace, page, ...options }),
+    startPreview: (
+      page: Page,
+      options: Parameters<Workspace["startServer"]>[0] = {}
+    ) => startPreview({ workspace, page, ...options }),
   };
 }

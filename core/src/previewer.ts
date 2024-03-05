@@ -3,16 +3,20 @@ import { createFileSystemReader, createStackedReader } from "@previewjs/vfs";
 import { assertNever } from "assert-never";
 import axios from "axios";
 import express from "express";
+import http from "http";
 import path from "path";
 import type { Logger } from "pino";
 import { getCacheDir } from "./caching.js";
 import type { FrameworkPlugin } from "./plugins/framework.js";
-import { Server } from "./server.js";
 import { ViteManager } from "./vite/vite-manager.js";
+
+export type GetHttpServer = (router: express.Router) => Promise<{
+  server: http.Server;
+  disposeHttpServer(): Promise<void>;
+}>;
 
 export class Previewer {
   private readonly transformingReader: Reader;
-  private appServer: Server | null = null;
   private viteManager: ViteManager | null = null;
   private status: PreviewerStatus = { kind: "stopped" };
   private disposeObserver: (() => Promise<void>) | null = null;
@@ -25,6 +29,7 @@ export class Previewer {
       logger: Logger;
       frameworkPlugin: FrameworkPlugin;
       middlewares: express.RequestHandler[];
+      getHttpServer: GetHttpServer;
       port: number;
       clientPort?: number;
     }
@@ -88,6 +93,14 @@ export class Previewer {
       kind: "starting",
       promise: (async () => {
         const router = express.Router();
+        router.use((_req, res, next) => {
+          // Disable caching.
+          // This helps ensure that we don't end up with issues such as when
+          // assets are updated, or a new version of Preview.js is used.
+          res.setHeader("Cache-Control", "max-age=0, must-revalidate");
+          next();
+        });
+        router.use(this.options.middlewares);
         router.get(/^\/.*:[^/]+\/$/, async (req, res, next) => {
           const accept = req.header("Accept");
           if (req.url.includes("?html-proxy")) {
@@ -121,23 +134,17 @@ export class Previewer {
             })
           );
         });
-        this.appServer = new Server({
-          logger: this.options.logger,
-          middlewares: [
-            ...(this.options.middlewares || []),
-            router,
-            (req, res, next) => {
-              this.viteManager?.middleware(req, res, next);
-            },
-          ],
+        router.use((req, res, next) => {
+          this.viteManager?.middleware(req, res, next);
         });
         if (this.transformingReader.observe) {
           this.disposeObserver = await this.transformingReader.observe(
             this.options.rootDir
           );
         }
-        this.options.logger.debug(`Starting server`);
-        const server = await this.appServer.start(this.options.port);
+        const { server, disposeHttpServer } = await this.options.getHttpServer(
+          router
+        );
         this.options.logger.debug(`Starting Vite manager`);
         this.viteManager = new ViteManager({
           rootDir: this.options.rootDir,
@@ -157,6 +164,7 @@ export class Previewer {
         this.options.logger.debug(`Previewer ready`);
         this.status = {
           kind: "started",
+          onStop: disposeHttpServer,
         };
       })(),
     };
@@ -190,6 +198,7 @@ export class Previewer {
     if (this.status.kind !== "started") {
       return;
     }
+    const onStop = this.status.onStop;
     this.status = {
       kind: "stopping",
       promise: (async () => {
@@ -197,8 +206,7 @@ export class Previewer {
         this.disposeObserver = null;
         await this.viteManager?.stop();
         this.viteManager = null;
-        await this.appServer?.stop();
-        this.appServer = null;
+        await onStop();
         this.status = {
           kind: "stopped",
         };
@@ -215,6 +223,7 @@ type PreviewerStatus =
     }
   | {
       kind: "started";
+      onStop: () => Promise<void>;
     }
   | {
       kind: "stopping";

@@ -14,13 +14,12 @@ import { setupPreviewStateListener } from "./state-listener.js";
 export async function startPreview({
   workspace,
   page,
-  port,
+  ...options
 }: {
   workspace: Workspace;
   page: playwright.Page;
-  port?: number;
-}) {
-  const preview = await workspace.startServer({ port });
+} & Parameters<Workspace["startServer"]>[0]) {
+  const preview = await workspace.startServer(options);
   await page.goto(`http://localhost:${preview.port}`);
 
   // This callback will be invoked each time a previewable is done rendering.
