@@ -3083,8 +3083,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       ovsx:
-        specifier: ^0.8.4
-        version: 0.8.4
+        specifier: ^0.9.0
+        version: 0.9.0
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -20651,8 +20651,8 @@ packages:
       typescript: 5.4.3
     dev: true
 
-  /@vscode/vsce@2.19.0:
-    resolution: {integrity: sha512-dAlILxC5ggOutcvJY24jxz913wimGiUrHaPkk16Gm9/PGFbz1YezWtrXsTKUtJws4fIlpX2UIlVlVESWq8lkfQ==}
+  /@vscode/vsce@2.24.0:
+    resolution: {integrity: sha512-p6CIXpH5HXDqmUkgFXvIKTjZpZxy/uDx4d/UsfhS9vQUun43KDNUbYeZocyAHgqcJlPEurgArHz9te1PPiqPyA==}
     engines: {node: '>= 14'}
     hasBin: true
     dependencies:
@@ -20669,7 +20669,7 @@ packages:
       minimatch: 3.1.2
       parse-semver: 1.1.1
       read: 1.0.7
-      semver: 5.7.1
+      semver: 7.6.0
       tmp: 0.2.1
       typed-rest-client: 1.8.9
       url-join: 4.0.1
@@ -35927,17 +35927,17 @@ packages:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
     dev: true
 
-  /ovsx@0.8.4:
-    resolution: {integrity: sha512-RMtGSVNM4NWSF9uVWCUqaYiA7ID8Vqm/rSk2W37eYVrDLOI/3do2IRY7rQYkvJqb6sS6LAnALODBkD50tIM1kw==}
-    engines: {node: '>= 14'}
+  /ovsx@0.9.0:
+    resolution: {integrity: sha512-4dWT/lU/WaLWy0iSL4yOMDZZEWEjESqDxrcqxHpOzJoq40DimogsIuHi9bIAAwBYYn2e9CJcf8gDIblEPpQLKA==}
+    engines: {node: '>= 18'}
     hasBin: true
     dependencies:
-      '@vscode/vsce': 2.19.0
+      '@vscode/vsce': 2.24.0
       commander: 6.2.1
       follow-redirects: 1.15.6(debug@4.3.4)
       is-ci: 2.0.0
       leven: 3.1.0
-      semver: 7.5.4
+      semver: 7.6.0
       tmp: 0.2.1
     transitivePeerDependencies:
       - debug
@@ -41420,6 +41420,14 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
+
+  /semver@7.6.0:
+    resolution: {integrity: sha512-EnwXhrlwXMk9gKu5/flx5sv/an57AkRplG3hTK68W7FRDN+k+OWBj65M7719OkA82XLBxrcX0KSHj+X5COhOVg==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      lru-cache: 6.0.0
+    dev: true
 
   /send@0.18.0:
     resolution: {integrity: sha512-qqWzuOjSFOuqPjFe4NOsMLafToQQwBSOEpS+FwEt3A2V3vKubTquT3vmLTQpFgMXp8AlFWFuP1qKaJZOtPpVXg==}
