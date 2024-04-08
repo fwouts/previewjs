@@ -419,6 +419,7 @@ export class ViteManager {
         define: {
           __filename: undefined,
           __dirname: undefined,
+          process: undefined,
           ...frameworkPluginViteConfig.define,
           ...existingViteConfig?.config.define,
           ...config.vite?.define,
