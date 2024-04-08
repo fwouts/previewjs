@@ -9,6 +9,14 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
   ],
+  ignorePatterns: [
+    "analyzer/react/types/",
+    "framework-plugins/vue2/preview/modules/",
+    "framework-plugins/vue3/preview/modules/",
+    "framework-plugins/*/tests/apps/",
+    "**/dist/",
+    "**/node_modules/",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
