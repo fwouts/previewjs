@@ -11,7 +11,6 @@ import type {
   ReaderListenerInfo,
 } from "@previewjs/vfs";
 import type { Alias } from "@rollup/plugin-alias";
-import { polyfillNode } from "esbuild-plugin-polyfill-node";
 import { exclusivePromiseRunner } from "exclusive-promises";
 import express from "express";
 import fs from "fs-extra";
@@ -369,14 +368,6 @@ export class ViteManager {
         ...config.vite,
         configFile: false,
         root: this.options.rootDir,
-        optimizeDeps: {
-          entries: [],
-          esbuildOptions: {
-            // TODO: Remove this annotation once upgraded to Vite 5.
-            // @ts-ignore incompatible esbuild versions with Vite 4
-            plugins: [polyfillNode()],
-          },
-        },
         server: {
           middlewareMode: true,
           hmr: {
