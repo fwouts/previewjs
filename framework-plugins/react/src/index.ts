@@ -1,6 +1,7 @@
 import { createAnalyzer } from "@previewjs/analyzer-react";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import react from "@vitejs/plugin-react";
+import { polyfillNode } from "esbuild-plugin-polyfill-node";
 import path from "path";
 import url from "url";
 import { reactImportsPlugin } from "./react-js-imports-plugin.js";
@@ -41,6 +42,11 @@ const reactFrameworkPlugin: FrameworkPluginFactory = {
           plugin.name.startsWith("vite:react-")
         );
         return {
+          optimizeDeps: {
+            esbuildOptions: {
+              plugins: dependencies["next"] ? [polyfillNode()] : [],
+            },
+          },
           resolve: {
             alias: {
               "react-native": "react-native-web",
