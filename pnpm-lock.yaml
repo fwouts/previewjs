@@ -2333,8 +2333,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       '@sveltejs/kit':
-        specifier: ^2.5.6
-        version: 2.5.6(@sveltejs/vite-plugin-svelte@3.1.0)(svelte@4.2.15)(vite@5.2.10)
+        specifier: ^2.5.7
+        version: 2.5.7(@sveltejs/vite-plugin-svelte@3.1.0)(svelte@4.2.15)(vite@5.2.10)
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -18220,8 +18220,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit@2.5.6(@sveltejs/vite-plugin-svelte@3.1.0)(svelte@4.2.15)(vite@5.2.10):
-    resolution: {integrity: sha512-AYb02Jm5MfNqJHc8zrj7ScQAFAKmTUCkpkfoi8EVaZZDdnjkvI7L2GtnTDhpiXSAZRVitZX4qm59sMS1FgL+lQ==}
+  /@sveltejs/kit@2.5.7(@sveltejs/vite-plugin-svelte@3.1.0)(svelte@4.2.15)(vite@5.2.10):
+    resolution: {integrity: sha512-6uedTzrb7nQrw6HALxnPrPaXdIN2jJJTzTIl96Z3P5NiG+OAfpdPbrWrvkJ3GN4CfWqrmU4dJqwMMRMTD/C7ow==}
     engines: {node: '>=18.13'}
     hasBin: true
     requiresBuild: true
@@ -18233,7 +18233,7 @@ packages:
       '@sveltejs/vite-plugin-svelte': 3.1.0(svelte@4.2.15)(vite@5.2.10)
       '@types/cookie': 0.6.0
       cookie: 0.6.0
-      devalue: 4.3.2
+      devalue: 5.0.0
       esm-env: 1.0.0
       import-meta-resolve: 4.0.0
       kleur: 4.1.5
@@ -26618,6 +26618,10 @@ packages:
 
   /devalue@4.3.2:
     resolution: {integrity: sha512-KqFl6pOgOW+Y6wJgu80rHpo2/3H07vr8ntR9rkkFIRETewbf5GaYYcakYfiKz89K+sLsuPkQIZaXDMjUObZwWg==}
+    dev: true
+
+  /devalue@5.0.0:
+    resolution: {integrity: sha512-gO+/OMXF7488D+u3ue+G7Y4AA3ZmUnB3eHJXmBTgNHvr4ZNzl36A0ZtG+XCRNYCkYx/bFmw4qtkoFLa+wSrwAA==}
     dev: true
 
   /dezalgo@1.0.4:
@@ -43689,7 +43693,7 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/node': 18.16.14
-      acorn: 8.10.0
+      acorn: 8.11.3
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
