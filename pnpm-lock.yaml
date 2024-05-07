@@ -333,7 +333,7 @@ importers:
         version: 1.6.8
       esbuild-plugin-polyfill-node:
         specifier: ^0.3.0
-        version: 0.3.0(esbuild@0.14.54)
+        version: 0.3.0(esbuild@0.21.1)
       exclusive-promises:
         specifier: ^1.0.3
         version: 1.0.3
@@ -374,8 +374,8 @@ importers:
         specifier: ^5.2.11
         version: 5.2.11(@types/node@20.10.6)
       zod:
-        specifier: ^3.23.6
-        version: 3.23.6
+        specifier: ^3.23.7
+        version: 3.23.7
     devDependencies:
       '@rollup/plugin-alias':
         specifier: ^5.1.0
@@ -457,7 +457,7 @@ importers:
         version: link:../framework-plugins/vue3
       '@previewjs/pro':
         specifier: ^1.15.2
-        version: 1.15.2(@types/node@20.10.6)(esbuild@0.14.54)
+        version: 1.15.2(@types/node@20.10.6)(esbuild@0.21.1)
       '@previewjs/vfs':
         specifier: workspace:*
         version: link:../vfs
@@ -9284,7 +9284,6 @@ packages:
     cpu: [ppc64]
     os: [aix]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm64@0.16.17:
@@ -9343,7 +9342,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm@0.16.17:
@@ -9402,7 +9400,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-x64@0.16.17:
@@ -9461,7 +9458,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-arm64@0.16.17:
@@ -9520,7 +9516,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-x64@0.16.17:
@@ -9579,7 +9574,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64@0.16.17:
@@ -9638,7 +9632,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-x64@0.16.17:
@@ -9697,7 +9690,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm64@0.16.17:
@@ -9756,7 +9748,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm@0.16.17:
@@ -9815,7 +9806,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ia32@0.16.17:
@@ -9874,7 +9864,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.14.54:
@@ -9883,6 +9872,7 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.16.17:
@@ -9941,7 +9931,6 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-mips64el@0.16.17:
@@ -10000,7 +9989,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ppc64@0.16.17:
@@ -10059,7 +10047,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-riscv64@0.16.17:
@@ -10118,7 +10105,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-s390x@0.16.17:
@@ -10177,7 +10163,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-x64@0.16.17:
@@ -10236,7 +10221,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/netbsd-x64@0.16.17:
@@ -10295,7 +10279,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/openbsd-x64@0.16.17:
@@ -10354,7 +10337,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/sunos-x64@0.16.17:
@@ -10413,7 +10395,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-arm64@0.16.17:
@@ -10472,7 +10453,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-ia32@0.16.17:
@@ -10531,7 +10511,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-x64@0.16.17:
@@ -10590,7 +10569,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.57.0):
@@ -13542,7 +13520,7 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/core@28.1.0(@types/node@20.10.6)(esbuild@0.14.54):
+  /@previewjs/core@28.1.0(@types/node@20.10.6)(esbuild@0.21.1):
     resolution: {integrity: sha512-eUOvT0r/n1oKRo5d6cFUJ+5z3O0ZRgN+tmkQE2ICTv5BzuWKszLXhD3cjCTcw/HwSEJ/KMa4MFPRy5q+rJoe5Q==}
     dependencies:
       '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.4.5)(vite@4.5.1)
@@ -13555,7 +13533,7 @@ packages:
       '@previewjs/vfs': 2.1.2
       assert-never: 1.2.1
       axios: 1.6.8
-      esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.14.54)
+      esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.21.1)
       exclusive-promises: 1.0.3
       express: 4.19.2
       fs-extra: 11.2.0
@@ -13569,7 +13547,7 @@ packages:
       tsconfig-paths: 4.2.0
       typescript: 5.4.5
       vite: 4.5.1(@types/node@20.10.6)
-      zod: 3.23.6
+      zod: 3.23.7
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -13585,7 +13563,7 @@ packages:
       - terser
     dev: false
 
-  /@previewjs/core@29.1.0(@types/node@20.10.6)(esbuild@0.14.54):
+  /@previewjs/core@29.1.0(@types/node@20.10.6)(esbuild@0.21.1):
     resolution: {integrity: sha512-SrRyZ/bN7+issxbpay12QBdAhY46r0VB2BCRry+DRI3Ci39cBb0qhDJ2lGTydys/1l5xlxoQb6OX9YRpEY6xyw==}
     dependencies:
       '@fwouts/vite-tsconfig-paths': 4.2.1(typescript@5.4.5)(vite@5.2.11)
@@ -13598,7 +13576,7 @@ packages:
       '@previewjs/vfs': 2.1.2
       assert-never: 1.2.1
       axios: 1.6.8
-      esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.14.54)
+      esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.21.1)
       exclusive-promises: 1.0.3
       express: 4.19.2
       fs-extra: 11.2.0
@@ -13612,7 +13590,7 @@ packages:
       tsconfig-paths: 4.2.0
       typescript: 5.4.5
       vite: 5.2.11(@types/node@20.10.6)
-      zod: 3.23.6
+      zod: 3.23.7
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -13636,14 +13614,14 @@ packages:
     resolution: {integrity: sha512-Ks6vCM4ubrEsYdyGAE9ddJ/MlKXSw1z4rCzXFWN7ZYEq2kgRq/8vTbgUs3FEzB2veuI3CRhmcbJ6lLgnpShtMw==}
     dev: false
 
-  /@previewjs/pro@1.15.2(@types/node@20.10.6)(esbuild@0.14.54):
+  /@previewjs/pro@1.15.2(@types/node@20.10.6)(esbuild@0.21.1):
     resolution: {integrity: sha512-1Bb3OHyUzJFDsi4CBbswywa8zCH/qKg/zLddLL7No9re4kxH8Mn7dpaeEXtTFQGqo1Wo9wAvfSWB0AR7iPUcTg==}
     dependencies:
       '@previewjs/analyzer-api': 0.1.6
       '@previewjs/api': 16.0.4
-      '@previewjs/core': 28.1.0(@types/node@20.10.6)(esbuild@0.14.54)
+      '@previewjs/core': 28.1.0(@types/node@20.10.6)(esbuild@0.21.1)
       '@previewjs/serializable-values': 9.0.4
-      '@previewjs/storybook-helpers': 5.0.8(@types/node@20.10.6)(esbuild@0.14.54)
+      '@previewjs/storybook-helpers': 5.0.8(@types/node@20.10.6)(esbuild@0.21.1)
       axios: 1.6.8
       env-paths: 3.0.0
       express: 4.19.2
@@ -13675,12 +13653,12 @@ packages:
       typescript: 5.4.5
     dev: false
 
-  /@previewjs/storybook-helpers@5.0.8(@types/node@20.10.6)(esbuild@0.14.54):
+  /@previewjs/storybook-helpers@5.0.8(@types/node@20.10.6)(esbuild@0.21.1):
     resolution: {integrity: sha512-bY+Yfo2nOr9iy93HZu4kgaBwSzSz2m0nZEaIkBoYyRsdLRnDCjgH3aL5RzPTma3Rd/LrxlfT8T9WPkgp9tZvQw==}
     dependencies:
       '@previewjs/analyzer-api': 0.1.6
       '@previewjs/api': 16.0.4
-      '@previewjs/core': 29.1.0(@types/node@20.10.6)(esbuild@0.14.54)
+      '@previewjs/core': 29.1.0(@types/node@20.10.6)(esbuild@0.21.1)
       '@previewjs/serializable-values': 9.0.4
       '@previewjs/type-analyzer': 10.1.3
       typescript: 5.4.5
@@ -27870,6 +27848,7 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-android-arm64@0.14.54:
@@ -27878,6 +27857,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-darwin-64@0.14.54:
@@ -27886,6 +27866,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-darwin-arm64@0.14.54:
@@ -27894,6 +27875,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-freebsd-64@0.14.54:
@@ -27902,6 +27884,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-freebsd-arm64@0.14.54:
@@ -27910,6 +27893,7 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-32@0.14.54:
@@ -27918,6 +27902,7 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-64@0.14.54:
@@ -27926,6 +27911,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-arm64@0.14.54:
@@ -27934,6 +27920,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-arm@0.14.54:
@@ -27942,6 +27929,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-mips64le@0.14.54:
@@ -27950,6 +27938,7 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-ppc64le@0.14.54:
@@ -27958,6 +27947,7 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-riscv64@0.14.54:
@@ -27966,6 +27956,7 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-linux-s390x@0.14.54:
@@ -27974,6 +27965,7 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-netbsd-64@0.14.54:
@@ -27982,6 +27974,7 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-openbsd-64@0.14.54:
@@ -27990,19 +27983,20 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-plugin-alias@0.2.1:
     resolution: {integrity: sha512-jyfL/pwPqaFXyKnj8lP8iLk6Z0m099uXR45aSN8Av1XD4vhvQutxxPzgA2bTcAwQpa1zCXDcWOlhFgyP3GKqhQ==}
     dev: true
 
-  /esbuild-plugin-polyfill-node@0.3.0(esbuild@0.14.54):
+  /esbuild-plugin-polyfill-node@0.3.0(esbuild@0.21.1):
     resolution: {integrity: sha512-SHG6CKUfWfYyYXGpW143NEZtcVVn8S/WHcEOxk62LuDXnY4Zpmc+WmxJKN6GMTgTClXJXhEM5KQlxKY6YjbucQ==}
     peerDependencies:
       esbuild: '*'
     dependencies:
       '@jspm/core': 2.0.1
-      esbuild: 0.14.54
+      esbuild: 0.21.1
       import-meta-resolve: 3.0.0
     dev: false
 
@@ -28037,6 +28031,7 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-32@0.14.54:
@@ -28045,6 +28040,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-64@0.14.54:
@@ -28053,6 +28049,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild-windows-arm64@0.14.54:
@@ -28061,6 +28058,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /esbuild@0.14.54:
@@ -28090,6 +28088,7 @@ packages:
       esbuild-windows-32: 0.14.54
       esbuild-windows-64: 0.14.54
       esbuild-windows-arm64: 0.14.54
+    dev: true
 
   /esbuild@0.16.17:
     resolution: {integrity: sha512-G8LEkV0XzDMNwXKgM0Jwu3nY3lSTwSGY6XbxM9cr9+s0T/qSV1q1JVPBGzm3dcjhCic9+emZDmMffkwgPeOeLg==}
@@ -28298,7 +28297,6 @@ packages:
       '@esbuild/win32-arm64': 0.21.1
       '@esbuild/win32-ia32': 0.21.1
       '@esbuild/win32-x64': 0.21.1
-    dev: true
 
   /escalade@3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
@@ -48029,8 +48027,8 @@ packages:
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
 
-  /zod@3.23.6:
-    resolution: {integrity: sha512-RTHJlZhsRbuA8Hmp/iNL7jnfc4nZishjsanDAfEY1QpDQZCahUp3xDzl+zfweE9BklxMUcgBgS1b7Lvie/ZVwA==}
+  /zod@3.23.7:
+    resolution: {integrity: sha512-NBeIoqbtOiUMomACV/y+V3Qfs9+Okr18vR5c/5pHClPpufWOrsx8TENboDPe265lFdfewX2yBtNTLPvnmCxwog==}
     dev: false
 
   /zwitch@1.0.5:
