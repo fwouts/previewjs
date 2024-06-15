@@ -24,7 +24,7 @@ jobs:
           key: ${{ runner.os }}-exclude-test-apps-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-exclude-test-apps-
-      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         with:
           run_install: |
             - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
