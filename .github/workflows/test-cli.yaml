@@ -42,4 +42,4 @@ jobs:
         with:
           run_install: |
             - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
-      - run: pnpm turbo run build --scope="@previewjs/cli" --include-dependencies
+      - run: pnpm turbo run build --filter="@previewjs/cli"

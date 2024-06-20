@@ -15,7 +15,7 @@
   "homepage": "https://previewjs.com",
   "type": "module",
   "scripts": {
-    "build": "cd ../../.. && turbo run build --scope=@previewjs/daemon --no-deps --include-dependencies && cd integrations/intellij/daemon && rimraf dist && tsc && node esbuild.js"
+    "build": "cd ../../.. && turbo run build --filter=@previewjs/daemon --no-deps && cd integrations/intellij/daemon && rimraf dist && tsc && node esbuild.js"
   },
   "devDependencies": {
     "@previewjs/daemon": "workspace:*",
