@@ -287,8 +287,8 @@ importers:
         specifier: ^18.3.3
         version: 18.3.3
       next:
-        specifier: ^13.4.7
-        version: 13.4.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^14.0.0
+        version: 14.2.4(@playwright/test@1.43.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -569,7 +569,7 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.5.0
-        version: 2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
+        version: 2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
       '@storybook/addon-essentials':
         specifier: ^7.0.17
         version: 7.0.17(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -587,7 +587,7 @@ importers:
         version: 7.0.17(preact@10.15.0)
       '@storybook/preact-vite':
         specifier: ^7.0.17
-        version: 7.0.17(@babel/core@7.24.7)(preact@10.15.0)(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
+        version: 7.0.17(@babel/core@7.23.7)(preact@10.15.0)(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
       '@storybook/testing-library':
         specifier: 0.0.14-next.2
         version: 0.0.14-next.2
@@ -615,7 +615,7 @@ importers:
     devDependencies:
       '@preact/preset-vite':
         specifier: ^2.5.0
-        version: 2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
+        version: 2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
       '@storybook/addon-essentials':
         specifier: ^7.0.17
         version: 7.0.17(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -633,7 +633,7 @@ importers:
         version: 7.0.17(preact@10.15.0)
       '@storybook/preact-vite':
         specifier: ^7.0.17
-        version: 7.0.17(@babel/core@7.23.7)(preact@10.15.0)(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
+        version: 7.0.17(@babel/core@7.24.7)(preact@10.15.0)(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
       '@storybook/testing-library':
         specifier: 0.0.14-next.2
         version: 0.0.14-next.2
@@ -1152,7 +1152,7 @@ importers:
         version: 6.5.16(@babel/core@7.24.7)(@storybook/builder-webpack5@6.5.16(@swc/core@1.3.59)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16))(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)(webpack@5.83.1(@swc/core@1.3.59))
       '@storybook/addon-interactions':
         specifier: ^6.5.16
-        version: 6.5.16(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)
+        version: 6.5.16(@types/react@18.3.3)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)
       '@storybook/addon-links':
         specifier: ^6.5.16
         version: 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1167,7 +1167,7 @@ importers:
         version: 6.5.16
       '@storybook/preset-create-react-app':
         specifier: ^4.1.2
-        version: 4.1.2(6k4kvuvhnvl6j3ebbir6txps5i)
+        version: 4.1.2(dticdxtl7r423jrb6fftyynf7y)
       '@storybook/react':
         specifier: ^6.5.16
         version: 6.5.16(@babel/core@7.24.7)(@storybook/builder-webpack5@6.5.16(@swc/core@1.3.59)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16))(@storybook/manager-webpack5@6.5.16(@swc/core@1.3.59)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16))(@swc/core@1.3.59)(@types/webpack@4.41.33)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(require-from-string@2.0.2)(type-fest@2.19.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)
@@ -1231,7 +1231,7 @@ importers:
         version: 6.5.16
       '@storybook/preset-create-react-app':
         specifier: ^4.1.2
-        version: 4.1.2(q3vxyto2fg5cfih4rzrcvkglpe)
+        version: 4.1.2(pmxqd7m5pj25vkt5vqpri5dyqy)
       '@storybook/react':
         specifier: ^6.5.16
         version: 6.5.16(@babel/core@7.24.7)(@storybook/builder-webpack5@6.5.16(@swc/core@1.3.59)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@4.9.5)(vue-template-compiler@2.7.16))(@storybook/manager-webpack5@6.5.16(@swc/core@1.3.59)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@4.9.5)(vue-template-compiler@2.7.16))(@swc/core@1.3.59)(@types/webpack@4.41.33)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(require-from-string@2.0.2)(type-fest@2.19.0)(typescript@4.9.5)(vue-template-compiler@2.7.16)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)
@@ -1931,7 +1931,7 @@ importers:
         version: 18.2.4
       '@vitejs/plugin-react-swc':
         specifier: ^3.3.1
-        version: 3.3.1(@swc/helpers@0.5.1)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
+        version: 3.3.1(@swc/helpers@0.5.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
@@ -3869,18 +3869,21 @@ packages:
   '@babel/plugin-proposal-async-generator-functions@7.20.7':
     resolution: {integrity: sha512-xMbiLsn/8RK7Wq7VeVytytS2L6qE69bXPB10YCmMdDZbKF4okCqY74pI/jJQ/8U0b/F6NrT2+14b8/P9/3AMGA==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-async-generator-functions instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-class-properties@7.18.6':
     resolution: {integrity: sha512-cumfXOF0+nzZrrN8Rf0t7M+tF6sZc7vhQwYQck9q1/5w2OExlD+b4v4RpMJFaV1Z7WcDRgO6FqvxqxGlwo+RHQ==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-class-static-block@7.21.0':
     resolution: {integrity: sha512-XP5G9MWNUskFuP30IfFSEFB0Z6HzLIUcjYM4bYOPHXl7eiJ9HFv8tWj6TXTN5QODiEhDZAeI4hLok2iHFFV4hw==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-static-block instead.
     peerDependencies:
       '@babel/core': ^7.12.0
 
@@ -3893,6 +3896,7 @@ packages:
   '@babel/plugin-proposal-dynamic-import@7.18.6':
     resolution: {integrity: sha512-1auuwmK+Rz13SJj36R+jqFPMJWyKEDd7lLSdOj4oJK0UTgGueSAtkrCvz9ewmgyU/P941Rv2fQwZJN8s6QruXw==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-dynamic-import instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
@@ -3905,30 +3909,35 @@ packages:
   '@babel/plugin-proposal-export-namespace-from@7.18.9':
     resolution: {integrity: sha512-k1NtHyOMvlDDFeb9G5PhUXuGj8m/wiwojgQVEhJ/fsVsMCpLyOP4h0uGEjYJKrRI+EVPlb5Jk+Gt9P97lOGwtA==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-export-namespace-from instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-json-strings@7.18.6':
     resolution: {integrity: sha512-lr1peyn9kOdbYc0xr0OdHTZ5FMqS6Di+H0Fz2I/JwMzGmzJETNeOFq2pBySw6X/KFL5EWDjlJuMsUGRFb8fQgQ==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-json-strings instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-logical-assignment-operators@7.20.7':
     resolution: {integrity: sha512-y7C7cZgpMIjWlKE5T7eJwp+tnRYM89HmRvWM5EQuB5BoHEONjmQ8lSNmBUwOyy/GFRsohJED51YBF79hE1djug==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-logical-assignment-operators instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-nullish-coalescing-operator@7.18.6':
     resolution: {integrity: sha512-wQxQzxYeJqHcfppzBDnm1yAY0jSRkUXR2z8RePZYrKwMKgMlE8+Z6LUno+bd6LvbGh8Gltvy74+9pIYkr+XkKA==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-numeric-separator@7.18.6':
     resolution: {integrity: sha512-ozlZFogPqoLm8WBr5Z8UckIoE4YQ5KESVcNudyXOR8uqIkliTEgJ3RoketfG6pmzLdeZF0H/wjE9/cCEitBl7Q==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
@@ -3941,36 +3950,42 @@ packages:
   '@babel/plugin-proposal-object-rest-spread@7.20.7':
     resolution: {integrity: sha512-d2S98yCiLxDVmBmE8UjGcfPvNEUbA1U5q5WxaWFUGRzJSVAZqm5W6MbPct0jxnegUZ0niLeNX+IOzEs7wYg9Dg==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-optional-catch-binding@7.18.6':
     resolution: {integrity: sha512-Q40HEhs9DJQyaZfUjjn6vE8Cv4GmMHCYuMGIWUnlxH6400VGxOuwWsPt4FxXxJkC/5eOzgn0z21M9gMT4MOhbw==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-catch-binding instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-optional-chaining@7.21.0':
     resolution: {integrity: sha512-p4zeefM72gpmEe2fkUr/OnOXpWEf8nAgk7ZYVqqfFiyIG7oFfVZcCrU64hWn5xp4tQ9LkV4bTIa5rD0KANpKNA==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-private-methods@7.18.6':
     resolution: {integrity: sha512-nutsvktDItsNn4rpGItSNV2sz1XwS+nfU0Rg8aCx3W3NOKVzdMjJRu0O5OkgDp3ZGICSTbgRpxZoWsxoKRvbeA==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-methods instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-private-property-in-object@7.21.0':
     resolution: {integrity: sha512-ha4zfehbJjc5MmXBlHec1igel5TJXXLDDRbuJ4+XT2TJcyD9/V1919BA8gMvsdHcNMBy4WBUBiRb3nw/EQUtBw==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-property-in-object instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
   '@babel/plugin-proposal-unicode-property-regex@7.18.6':
     resolution: {integrity: sha512-2BShG/d5yoZyXZfVePH91urL5wTG6ASZU9M4o03lKK8u8UW1y08OMttBSOADTcJrnPMpvDXRG3G8fyLh4ovs8w==}
     engines: {node: '>=4'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
@@ -6059,10 +6074,12 @@ packages:
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/config-array@0.9.5':
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -6070,9 +6087,11 @@ packages:
 
   '@humanwhocodes/object-schema@1.2.1':
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
+    deprecated: Use @eslint/object-schema instead
 
   '@humanwhocodes/object-schema@2.0.2':
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
+    deprecated: Use @eslint/object-schema instead
 
   '@inquirer/figures@1.0.3':
     resolution: {integrity: sha512-ErXXzENMH5pJt5/ssXV0DfWUZqly8nGzf0UcBV9xTnP+KyffE2mqyxIMBrZ8ijQck2nU0TQm40EQB53YreyWHw==}
@@ -6237,6 +6256,7 @@ packages:
   '@koa/router@9.4.0':
     resolution: {integrity: sha512-dOOXgzqaDoHu5qqMEPLKEgLz5CeIA7q8+1W62mCvFVCOqeC71UoTGJ4u1xUSOpIl2J1x2pqrNULkFteUeZW3/A==}
     engines: {node: '>= 8.0.0'}
+    deprecated: '**IMPORTANT 10x+ PERFORMANCE UPGRADE**: Please upgrade to v12.0.1+ as we have fixed an issue with debuglog causing 10x slower router benchmark performance, see https://github.com/koajs/router/pull/173'
 
   '@leichtgewicht/ip-codec@2.0.4':
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
@@ -6275,7 +6295,7 @@ packages:
 
   '@material-ui/pickers@3.3.10':
     resolution: {integrity: sha512-hS4pxwn1ZGXVkmgD4tpFpaumUaAg2ZzbTrxltfC5yPw4BJV+mGkfnQOB4VpWEYZw2jv65Z0wLwDE/piQiPPZ3w==}
-    deprecated: Material UI Pickers v3 doesn't receive active development since January 2020. See the guide https://mui.com/material-ui/guides/pickers-migration/ to upgrade.
+    deprecated: This package no longer supported. It has been relaced by @mui/x-date-pickers
     peerDependencies:
       '@date-io/core': ^1.3.6
       '@material-ui/core': ^4.0.0
@@ -6458,8 +6478,8 @@ packages:
   '@next/env@13.4.3':
     resolution: {integrity: sha512-pa1ErjyFensznttAk3EIv77vFbfSYT6cLzVRK5jx4uiRuCQo+m2wCFAREaHKIy63dlgvOyMlzh6R8Inu8H3KrQ==}
 
-  '@next/env@13.4.7':
-    resolution: {integrity: sha512-ZlbiFulnwiFsW9UV1ku1OvX/oyIPLtMk9p/nnvDSwI0s7vSoZdRtxXNsaO+ZXrLv/pMbXVGq4lL8TbY9iuGmVw==}
+  '@next/env@14.2.4':
+    resolution: {integrity: sha512-3EtkY5VDkuV2+lNmKlbkibIJxcO4oIHEhBWne6PaAp+76J9KoSsGvNikp6ivzAT8dhhBMYrm6op2pS1ApG0Hzg==}
 
   '@next/polyfill-module@11.1.4':
     resolution: {integrity: sha512-CY3bOSQf9Dy3+34dFjFbOdg3DRXIGfujb54D/AVO83ajyQczRZ3xdU0i5VV0eSR6B56ktVy3/aelOffpTUq6LA==}
@@ -6509,8 +6529,8 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-arm64@13.4.7':
-    resolution: {integrity: sha512-VZTxPv1b59KGiv/pZHTO5Gbsdeoxcj2rU2cqJu03btMhHpn3vwzEK0gUSVC/XW96aeGO67X+cMahhwHzef24/w==}
+  '@next/swc-darwin-arm64@14.2.4':
+    resolution: {integrity: sha512-AH3mO4JlFUqsYcwFUHb1wAKlebHU/Hv2u2kb1pAuRanDZ7pD/A/KPD98RHZmwsJpdHQwfEc/06mgpSzwrJYnNg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -6533,8 +6553,8 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@13.4.7':
-    resolution: {integrity: sha512-gO2bw+2Ymmga+QYujjvDz9955xvYGrWofmxTq7m70b9pDPvl7aDFABJOZ2a8SRCuSNB5mXU8eTOmVVwyp/nAew==}
+  '@next/swc-darwin-x64@14.2.4':
+    resolution: {integrity: sha512-QVadW73sWIO6E2VroyUjuAxhWLZWEpiFqHdZdoQ/AMpN9YWGuHV8t2rChr0ahy+irKX5mlDU7OY68k3n4tAZTg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -6563,8 +6583,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-arm64-gnu@13.4.7':
-    resolution: {integrity: sha512-6cqp3vf1eHxjIDhEOc7Mh/s8z1cwc/l5B6ZNkOofmZVyu1zsbEM5Hmx64s12Rd9AYgGoiCz4OJ4M/oRnkE16/Q==}
+  '@next/swc-linux-arm64-gnu@14.2.4':
+    resolution: {integrity: sha512-KT6GUrb3oyCfcfJ+WliXuJnD6pCpZiosx2X3k66HLR+DMoilRb76LpWPGb4tZprawTtcnyrv75ElD6VncVamUQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -6581,8 +6601,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-arm64-musl@13.4.7':
-    resolution: {integrity: sha512-T1kD2FWOEy5WPidOn1si0rYmWORNch4a/NR52Ghyp4q7KyxOCuiOfZzyhVC5tsLIBDH3+cNdB5DkD9afpNDaOw==}
+  '@next/swc-linux-arm64-musl@14.2.4':
+    resolution: {integrity: sha512-Alv8/XGSs/ytwQcbCHwze1HmiIkIVhDHYLjczSVrf0Wi2MvKn/blt7+S6FJitj3yTlMwMxII1gIJ9WepI4aZ/A==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -6605,8 +6625,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-linux-x64-gnu@13.4.7':
-    resolution: {integrity: sha512-zaEC+iEiAHNdhl6fuwl0H0shnTzQoAoJiDYBUze8QTntE/GNPfTYpYboxF5LRYIjBwETUatvE0T64W6SKDipvg==}
+  '@next/swc-linux-x64-gnu@14.2.4':
+    resolution: {integrity: sha512-ze0ShQDBPCqxLImzw4sCdfnB3lRmN3qGMB2GWDRlq5Wqy4G36pxtNOo2usu/Nm9+V2Rh/QQnrRc2l94kYFXO6Q==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -6623,8 +6643,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-linux-x64-musl@13.4.7':
-    resolution: {integrity: sha512-X6r12F8d8SKAtYJqLZBBMIwEqcTRvUdVm+xIq+l6pJqlgT2tNsLLf2i5Cl88xSsIytBICGsCNNHd+siD2fbWBA==}
+  '@next/swc-linux-x64-musl@14.2.4':
+    resolution: {integrity: sha512-8dwC0UJoc6fC7PX70csdaznVMNr16hQrTDAMPvLPloazlcaWfdPogq+UpZX6Drqb1OBlwowz8iG7WR0Tzk/diQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -6641,8 +6661,8 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-arm64-msvc@13.4.7':
-    resolution: {integrity: sha512-NPnmnV+vEIxnu6SUvjnuaWRglZzw4ox5n/MQTxeUhb5iwVWFedolPFebMNwgrWu4AELwvTdGtWjqof53AiWHcw==}
+  '@next/swc-win32-arm64-msvc@14.2.4':
+    resolution: {integrity: sha512-jxyg67NbEWkDyvM+O8UDbPAyYRZqGLQDTPwvrBBeOSyVWW/jFQkQKQ70JDqDSYg1ZDdl+E3nkbFbq8xM8E9x8A==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
@@ -6659,8 +6679,8 @@ packages:
     cpu: [ia32]
     os: [win32]
 
-  '@next/swc-win32-ia32-msvc@13.4.7':
-    resolution: {integrity: sha512-6Hxijm6/a8XqLQpOOf/XuwWRhcuc/g4rBB2oxjgCMuV9Xlr2bLs5+lXyh8w9YbAUMYR3iC9mgOlXbHa79elmXw==}
+  '@next/swc-win32-ia32-msvc@14.2.4':
+    resolution: {integrity: sha512-twrmN753hjXRdcrZmZttb/m5xaCBFa48Dt3FbeEItpJArxriYDunWxJn+QFXdJ3hPkm4u7CKxncVvnmgQMY1ag==}
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
@@ -6683,8 +6703,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@13.4.7':
-    resolution: {integrity: sha512-sW9Yt36Db1nXJL+mTr2Wo0y+VkPWeYhygvcHj1FF0srVtV+VoDjxleKtny21QHaG05zdeZnw2fCtf2+dEqgwqA==}
+  '@next/swc-win32-x64-msvc@14.2.4':
+    resolution: {integrity: sha512-tkLrjBzqFTP8DVrAAQmZelEahfR9OxWpFR++vAI9FBhCiIxtwHwBHC23SBHCTURBtwB4kc/x44imVOnkKGNVGg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -8428,11 +8448,17 @@ packages:
       '@swc/helpers':
         optional: true
 
+  '@swc/counter@0.1.3':
+    resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
+
   '@swc/helpers@0.4.11':
     resolution: {integrity: sha512-rEUrBSGIoSFuYxwBYtlUFMlE2CwGhmW+w9355/5oduSw8e5h2+Tj4UrAGNNgP9915++wj5vkQo0UuOBqOAq4nw==}
 
   '@swc/helpers@0.5.1':
     resolution: {integrity: sha512-sJ902EfIzn1Fa+qYmjdQqh8tPsoxyBz+8yBKC2HKUxyezKJFwPGOn7pv4WY6QuQW//ySQi5lJjA/ZT9sNWWNTg==}
+
+  '@swc/helpers@0.5.5':
+    resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
 
   '@szmarczak/http-timer@1.1.2':
     resolution: {integrity: sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==}
@@ -9187,6 +9213,7 @@ packages:
 
   '@volar/vue-typescript@1.6.5':
     resolution: {integrity: sha512-er9rVClS4PHztMUmtPMDTl+7c7JyrxweKSAEe/o/Noeq2bQx6v3/jZHVHBe8ZNUti5ubJL/+Tg8L3bzmlalV8A==}
+    deprecated: 'WARNING: This project has been renamed to @vue/typescript. Install using @vue/typescript instead.'
     peerDependencies:
       typescript: '*'
 
@@ -9549,6 +9576,7 @@ packages:
 
   abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
+    deprecated: Use your platform's native atob() and btoa() methods instead
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -10505,6 +10533,9 @@ packages:
   caniuse-lite@1.0.30001572:
     resolution: {integrity: sha512-1Pbh5FLmn5y4+QhNyJE9j3/7dK44dGB83/ZMjv/qJk86TvDbjk0LosiZo0i0WB0Vx607qMX9jYrn1VLHCkN4rw==}
 
+  caniuse-lite@1.0.30001636:
+    resolution: {integrity: sha512-bMg2vmr8XBsbL6Lr0UHXy/21m84FTxDLWn2FSqMd5PrlbMxwJlQnC2YWYxVgp66PZE+BBNF2jYQUBKCo1FDeZg==}
+
   capture-exit@2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -10936,6 +10967,7 @@ packages:
   consolidate@0.15.1:
     resolution: {integrity: sha512-DW46nrsMJgy9kqAbPt5rKaCr7uFtpo4mSUvLHIUbJEjm0vo+aY5QLwBUq3FK4tRnJr/X0Psc0C4jf/h+HtXSMw==}
     engines: {node: '>= 0.10.0'}
+    deprecated: Please upgrade to consolidate v1.0.0+ as it has been modernized with several long-awaited fixes implemented. Maintenance is supported by Forward Email at https://forwardemail.net ; follow/watch https://github.com/ladjs/consolidate for updates and release changelog
     peerDependencies:
       arc-templates: ^0.5.3
       atpl: '>=0.7.6'
@@ -11151,6 +11183,7 @@ packages:
 
   copy-concurrently@1.0.5:
     resolution: {integrity: sha512-f2domd9fsVDFtaFcbaRZuYXwtdmnzqbADSwhSWYxYB/Q8zsdUUFMXVRwXGDMWmbEzAn1kdRrtI1T/KTFOL4X2A==}
+    deprecated: This package is no longer supported.
 
   copy-descriptor@0.1.1:
     resolution: {integrity: sha512-XgZ0pFcakEUlbwQEVNg3+QAis1FyTL3Qel9FYy8pSkQqoG3PNoT0bOCQtOXcOkur21r2Eq2kI+IE+gsmAEVlYw==}
@@ -11633,6 +11666,7 @@ packages:
 
   debuglog@1.0.1:
     resolution: {integrity: sha512-syBZ+rnAK3EgMsH2aYEOLUW7mZSY9Gb+0wUMCFsZvcmiz+HigA0LOcq/HoQqVuGG+EKykunc7QG2bzrponfaSw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
@@ -11949,10 +11983,12 @@ packages:
 
   domexception@1.0.1:
     resolution: {integrity: sha512-raigMkn7CJNNo6Ihro1fzG7wr3fHuYVytzquZKX5n0yizGsTcYgzdIUwj1X9pK0VvjeihV+XiclP+DjwbsSKug==}
+    deprecated: Use your platform's native DOMException instead
 
   domexception@2.0.1:
     resolution: {integrity: sha512-yxJ2mFy/sibVQlu5qHjOkf9J3K6zgmCxgJ94u2EdvDOV09H+32LtRswEcUsmUWN72pVLOEnTSRaIVVzVQgS0dg==}
     engines: {node: '>=8'}
+    deprecated: Use your platform's native DOMException instead
 
   domhandler@3.3.0:
     resolution: {integrity: sha512-J1C5rIANUbuYK+FuFL98650rihynUOEzRLxW+90bKZRWB6A1X1Tf82GxR1qAWLyfNPRvjqfip3Q5tdYlmAa9lA==}
@@ -12865,6 +12901,7 @@ packages:
 
   figgy-pudding@3.5.2:
     resolution: {integrity: sha512-0btnI/H8f2pavGMN8w40mlSKOfTK2SVJmBfBeVIj3kNw0swwgzyRq0d5TJVOwodFmtvpPeWPN/MCcfuWF0Ezbw==}
+    deprecated: This module is no longer supported.
 
   figures@2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
@@ -13121,6 +13158,7 @@ packages:
 
   fs-write-stream-atomic@1.0.10:
     resolution: {integrity: sha512-gehEzmPn2nAwr39eay+x3X34Ra+M2QlVUTLhkXPjWdeO8RF9kszk116avgBJM3ZyNHgHXBNx+VmPaFC36k0PzA==}
+    deprecated: This package is no longer supported.
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -13313,10 +13351,12 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   global-dirs@3.0.1:
     resolution: {integrity: sha512-NBcGGFbBA9s1VzD41QXDG+3++t9Mn5t1FpLdhESY6oKY4gYTFpX4wO3sqGUa0Srjtbfj3szX0RnemmrVRUdULA==}
@@ -13384,6 +13424,9 @@ packages:
 
   graceful-fs@4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
+
+  graceful-fs@4.2.11:
+    resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
@@ -13883,6 +13926,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.1:
     resolution: {integrity: sha512-8nWq2nLTAwd02jTqJExUYFSD/fKq6VH9Y/oG2accc/kdI0V98Bag8d5a4gi3XHz73rDWa2PvTtvcWYquKqSENA==}
@@ -13976,10 +14020,12 @@ packages:
   is-accessor-descriptor@0.1.6:
     resolution: {integrity: sha512-e1BM1qnDbMRG3ll2U9dSK0UMHuWOs3pY3AtcFsmvwPtKL3MML/Q86i+GilLfvqEs4GW+ExB91tQ3Ig9noDIZ+A==}
     engines: {node: '>=0.10.0'}
+    deprecated: Please upgrade to v0.1.7
 
   is-accessor-descriptor@1.0.0:
     resolution: {integrity: sha512-m5hnHTkcVsPfqx3AKlyttIPb7J+XykHvJP2B9bZDjlhLIoEq4XoK64Vg7boZlVWYK6LUY94dYPEE7Lh0ZkZKcQ==}
     engines: {node: '>=0.10.0'}
+    deprecated: Please upgrade to v1.0.1
 
   is-alphabetical@1.0.4:
     resolution: {integrity: sha512-DwzsA04LQ10FHTZuL0/grVDk4rFoVH1pjAToYwBrHSxcrBIGQuXrQMtD5U1b0U2XVgKZCTLLP8u2Qxqhy3l2Vg==}
@@ -14046,10 +14092,12 @@ packages:
   is-data-descriptor@0.1.4:
     resolution: {integrity: sha512-+w9D5ulSoBNlmw9OHn3U2v51SyoCd0he+bB3xMl62oijhrspxowjU+AIcDY0N3iEJbUEkB15IlMASQsxYigvXg==}
     engines: {node: '>=0.10.0'}
+    deprecated: Please upgrade to v0.1.5
 
   is-data-descriptor@1.0.0:
     resolution: {integrity: sha512-jbRXy1FmtAoCjQkVmIVYwuuqDFUbaOeDjmed1tOGPrsMhtJA4rD9tkgA0F1qJ3gRFRXcHYVkdeaP50Q5rE/jLQ==}
     engines: {node: '>=0.10.0'}
+    deprecated: Please upgrade to v1.0.1
 
   is-date-object@1.0.5:
     resolution: {integrity: sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ==}
@@ -15617,6 +15665,7 @@ packages:
 
   move-concurrently@1.0.1:
     resolution: {integrity: sha512-hdrFxZOycD/g6A6SoI2bB5NA/5NEqD0569+S47WZhPvm46sD50ZHdYaFmnua5lndde9rCHGjmfK7Z8BuCt/PcQ==}
+    deprecated: This package is no longer supported.
 
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -15790,20 +15839,20 @@ packages:
       sass:
         optional: true
 
-  next@13.4.7:
-    resolution: {integrity: sha512-M8z3k9VmG51SRT6v5uDKdJXcAqLzP3C+vaKfLIAM0Mhx1um1G7MDnO63+m52qPdZfrTFzMZNzfsgvm3ghuVHIQ==}
-    engines: {node: '>=16.8.0'}
+  next@14.2.4:
+    resolution: {integrity: sha512-R8/V7vugY+822rsQGQCjoLhMuC9oFj9SOi4Cl4b2wjDrseD0LRZ10W7R6Czo4w9ZznVSshKjuIomsRjvm9EKJQ==}
+    engines: {node: '>=18.17.0'}
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
-      fibers: '>= 3.1.0'
+      '@playwright/test': ^1.41.2
       react: ^18.2.0
       react-dom: ^18.2.0
       sass: ^1.3.0
     peerDependenciesMeta:
       '@opentelemetry/api':
         optional: true
-      fibers:
+      '@playwright/test':
         optional: true
       sass:
         optional: true
@@ -15987,6 +16036,7 @@ packages:
 
   npmlog@5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
+    deprecated: This package is no longer supported.
 
   nth-check@1.0.2:
     resolution: {integrity: sha512-WeBOdju8SnzPN5vTUJYxYUxLeXpCaVP5i5e0LF8fg7WORF2Wd7wFX/pk0tYZk7s8T+J7VLy0Da6J1+wCT0AtHg==}
@@ -16013,6 +16063,7 @@ packages:
   nuxt3@3.0.1-rc.0-27857531.faf2607:
     resolution: {integrity: sha512-daMFwLcqgc/0d9649lwYSb9rpQ7su4dNuPYBnWlqiB4Jgvh60vrTPW/eQWRGL99pmr3D/DvWgT9o/xrIJ8vr9Q==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
+    deprecated: Per-commit releases of nuxt v3 are now available from the `nuxt-nightly` package. See https://nuxt.com/docs/guide/going-further/nightly-release-channel for more details.
     hasBin: true
 
   nuxt@2.16.3:
@@ -16203,6 +16254,7 @@ packages:
 
   osenv@0.1.5:
     resolution: {integrity: sha512-0CWcCECdMVc2Rw3U5w9ZjqX6ga6ubk1xDVKxtBQPK7wis/0F2r9T6k4ydGYhecl7YUBxBVxhL5oisPsNxAPe2g==}
+    deprecated: This package is no longer supported.
 
   outdent@0.8.0:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
@@ -17805,6 +17857,10 @@ packages:
   q@1.5.1:
     resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
+    deprecated: |-
+      You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
+      (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qrcode-terminal@0.11.0:
     resolution: {integrity: sha512-Uu7ii+FQy4Qf82G4xu7ShHhjhGahEpCWc3x8UavY3CTcWV+ufmmCtwkr7ZKsX42jdL0kr1B5FKUeqJvAn51jzQ==}
@@ -18108,9 +18164,11 @@ packages:
 
   read-installed@4.0.3:
     resolution: {integrity: sha512-O03wg/IYuV/VtnK2h/KXEt9VIbMUFbk3ERG0Iu4FhLZw0EP0T9znqrYDGn6ncbEsXUFaUjiVAWXHzxwt3lhRPQ==}
+    deprecated: This package is no longer supported.
 
   read-package-json@2.1.2:
     resolution: {integrity: sha512-D1KmuLQr6ZSJS0tW8hf3WGpRlwszJOXZ3E8Yd/DNRaM5d+1wVRZdHlpGBLAuovjr28LbWvjpWkBHMxpRGGjzNA==}
+    deprecated: This package is no longer supported. Please use @npmcli/package-json instead.
 
   read-pkg-up@1.0.1:
     resolution: {integrity: sha512-WD9MTlNtI55IwYUS27iHh9tK3YoIVhxis8yKhLpTqWtml739uXc9NWTpxoHkfZf3+DkCCsXox94/VWZniuZm6A==}
@@ -18478,6 +18536,7 @@ packages:
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   rimraf@5.0.7:
@@ -19302,6 +19361,7 @@ packages:
 
   string-similarity@4.0.4:
     resolution: {integrity: sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   string-width@2.1.1:
     resolution: {integrity: sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==}
@@ -20678,6 +20738,7 @@ packages:
 
   uuid-browser@3.1.0:
     resolution: {integrity: sha512-dsNgbLaTrd6l3MMxTtouOCFw4CBFc/3a+GgYA2YyrJvyQ1u6q4pcu3ktLoUZ/VN/Aw9WsauazbgsgdfVWgAKQg==}
+    deprecated: Package no longer supported and required. Use the uuid package or crypto.randomUUID instead
 
   uuid@3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
@@ -21194,9 +21255,11 @@ packages:
 
   vue@2.7.14:
     resolution: {integrity: sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ==}
+    deprecated: Vue 2 has reached EOL and is no longer actively maintained. See https://v2.vuejs.org/eol/ for more details.
 
   vue@2.7.16:
     resolution: {integrity: sha512-4gCtFXaAA3zYZdTp5s4Hl2sozuySsgz4jy1EnpBHNfpMa9dK1ZCG7viqBPCwXtmgc8nHqUsAu3G4gtmXkkY3Sw==}
+    deprecated: Vue 2 has reached EOL and is no longer actively maintained. See https://v2.vuejs.org/eol/ for more details.
 
   vue@3.3.4:
     resolution: {integrity: sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==}
@@ -21285,6 +21348,7 @@ packages:
   webpack-chain@6.5.1:
     resolution: {integrity: sha512-7doO/SRtLu8q5WM0s7vPKPWX580qhi0/yBHkOxNkv50f6qB76Zy9o2wRTrrPULqYTvQlVHuvbA8v+G5ayuUDsA==}
     engines: {node: '>=8'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   webpack-dev-middleware@3.7.3:
     resolution: {integrity: sha512-djelc/zGiz9nZj/U7PTBi2ViorGJXEWo/3ltkPbDyxCXhhEXkW0ce99falaok4TPj+AsxLiXJR0EBOb0zh9fKQ==}
@@ -21494,6 +21558,7 @@ packages:
 
   workbox-google-analytics@6.5.4:
     resolution: {integrity: sha512-8AU1WuaXsD49249Wq0B2zn4a/vvFfHkpcFfqAFHNHwln3jK9QUYmzdkKXGIZl9wyKNP+RRX30vcgcyWMcZ9VAg==}
+    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
 
   workbox-navigation-preload@6.5.4:
     resolution: {integrity: sha512-IIwf80eO3cr8h6XSQJF+Hxj26rg2RPFVUmJLUlM0+A2GzB4HFbQyKkrgD5y2d84g2IbJzP4B4j5dPBRzamHrng==}
@@ -26875,12 +26940,34 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       react-merge-refs: 1.1.0
 
+  '@design-systems/utils@2.12.0(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@babel/runtime': 7.21.0
+      '@types/react': 18.3.3
+      clsx: 1.2.1
+      focus-lock: 0.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-merge-refs: 1.1.0
+
   '@devtools-ds/object-inspector@1.2.1(@types/react@18.2.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.7.2
       '@devtools-ds/object-parser': 1.2.1
       '@devtools-ds/themes': 1.2.1(@types/react@18.2.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@devtools-ds/tree': 1.2.1(@types/react@18.2.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      clsx: 1.1.0
+      react: 18.2.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+
+  '@devtools-ds/object-inspector@1.2.1(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@babel/runtime': 7.7.2
+      '@devtools-ds/object-parser': 1.2.1
+      '@devtools-ds/themes': 1.2.1(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@devtools-ds/tree': 1.2.1(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       clsx: 1.1.0
       react: 18.2.0
     transitivePeerDependencies:
@@ -26901,10 +26988,30 @@ snapshots:
       - '@types/react'
       - react-dom
 
+  '@devtools-ds/themes@1.2.1(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@babel/runtime': 7.5.5
+      '@design-systems/utils': 2.12.0(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      clsx: 1.1.0
+      react: 18.2.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+
   '@devtools-ds/tree@1.2.1(@types/react@18.2.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.7.2
       '@devtools-ds/themes': 1.2.1(@types/react@18.2.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      clsx: 1.1.0
+      react: 18.2.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+
+  '@devtools-ds/tree@1.2.1(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@babel/runtime': 7.7.2
+      '@devtools-ds/themes': 1.2.1(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       clsx: 1.1.0
       react: 18.2.0
     transitivePeerDependencies:
@@ -28538,7 +28645,7 @@ snapshots:
 
   '@next/env@13.4.3': {}
 
-  '@next/env@13.4.7': {}
+  '@next/env@14.2.4': {}
 
   '@next/polyfill-module@11.1.4': {}
 
@@ -28579,7 +28686,7 @@ snapshots:
   '@next/swc-darwin-arm64@13.4.3':
     optional: true
 
-  '@next/swc-darwin-arm64@13.4.7':
+  '@next/swc-darwin-arm64@14.2.4':
     optional: true
 
   '@next/swc-darwin-x64@11.1.4':
@@ -28591,7 +28698,7 @@ snapshots:
   '@next/swc-darwin-x64@13.4.3':
     optional: true
 
-  '@next/swc-darwin-x64@13.4.7':
+  '@next/swc-darwin-x64@14.2.4':
     optional: true
 
   '@next/swc-freebsd-x64@12.3.4':
@@ -28606,7 +28713,7 @@ snapshots:
   '@next/swc-linux-arm64-gnu@13.4.3':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@13.4.7':
+  '@next/swc-linux-arm64-gnu@14.2.4':
     optional: true
 
   '@next/swc-linux-arm64-musl@12.3.4':
@@ -28615,7 +28722,7 @@ snapshots:
   '@next/swc-linux-arm64-musl@13.4.3':
     optional: true
 
-  '@next/swc-linux-arm64-musl@13.4.7':
+  '@next/swc-linux-arm64-musl@14.2.4':
     optional: true
 
   '@next/swc-linux-x64-gnu@11.1.4':
@@ -28627,7 +28734,7 @@ snapshots:
   '@next/swc-linux-x64-gnu@13.4.3':
     optional: true
 
-  '@next/swc-linux-x64-gnu@13.4.7':
+  '@next/swc-linux-x64-gnu@14.2.4':
     optional: true
 
   '@next/swc-linux-x64-musl@12.3.4':
@@ -28636,7 +28743,7 @@ snapshots:
   '@next/swc-linux-x64-musl@13.4.3':
     optional: true
 
-  '@next/swc-linux-x64-musl@13.4.7':
+  '@next/swc-linux-x64-musl@14.2.4':
     optional: true
 
   '@next/swc-win32-arm64-msvc@12.3.4':
@@ -28645,7 +28752,7 @@ snapshots:
   '@next/swc-win32-arm64-msvc@13.4.3':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@13.4.7':
+  '@next/swc-win32-arm64-msvc@14.2.4':
     optional: true
 
   '@next/swc-win32-ia32-msvc@12.3.4':
@@ -28654,7 +28761,7 @@ snapshots:
   '@next/swc-win32-ia32-msvc@13.4.3':
     optional: true
 
-  '@next/swc-win32-ia32-msvc@13.4.7':
+  '@next/swc-win32-ia32-msvc@14.2.4':
     optional: true
 
   '@next/swc-win32-x64-msvc@11.1.4':
@@ -28666,7 +28773,7 @@ snapshots:
   '@next/swc-win32-x64-msvc@13.4.3':
     optional: true
 
-  '@next/swc-win32-x64-msvc@13.4.7':
+  '@next/swc-win32-x64-msvc@14.2.4':
     optional: true
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
@@ -29367,11 +29474,11 @@ snapshots:
       cache-loader: 4.1.0(webpack@4.46.0)
       caniuse-lite: 1.0.30001572
       consola: 2.15.3
-      css-loader: 5.2.7(webpack@4.46.0)
+      css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59))
       cssnano: 5.1.15(postcss@8.4.38)
       eventsource-polyfill: 0.9.6
       extract-css-chunks-webpack-plugin: 4.9.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@4.46.0)
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59))
       glob: 8.1.0
       hard-source-webpack-plugin: 0.13.1(webpack@4.46.0)
       hash-sum: 2.0.0
@@ -31094,9 +31201,9 @@ snapshots:
       - webpack-cli
       - webpack-command
 
-  '@storybook/addon-interactions@6.5.16(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)':
+  '@storybook/addon-interactions@6.5.16(@types/react@18.3.3)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)':
     dependencies:
-      '@devtools-ds/object-inspector': 1.2.1(@types/react@18.2.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@devtools-ds/object-inspector': 1.2.1(@types/react@18.3.3)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addons': 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/api': 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/client-logger': 6.5.16
@@ -31536,7 +31643,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/builder-vite@7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
+  '@storybook/builder-vite@7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
     dependencies:
       '@storybook/channel-postmessage': 7.0.17
       '@storybook/channel-websocket': 7.0.17
@@ -31561,11 +31668,11 @@ snapshots:
       vite: 5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)
     optionalDependencies:
       '@preact/preset-vite': 2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
-      typescript: 4.9.5
+      typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/builder-vite@7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
+  '@storybook/builder-vite@7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
     dependencies:
       '@storybook/channel-postmessage': 7.0.17
       '@storybook/channel-websocket': 7.0.17
@@ -31590,7 +31697,7 @@ snapshots:
       vite: 5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)
     optionalDependencies:
       '@preact/preset-vite': 2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
-      typescript: 5.4.5
+      typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
 
@@ -31768,7 +31875,7 @@ snapshots:
       case-sensitive-paths-webpack-plugin: 2.4.0
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@4.46.0)
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59))
       find-up: 5.0.0
       fork-ts-checker-webpack-plugin: 4.1.6(eslint@8.57.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       glob: 7.2.3
@@ -32757,7 +32864,7 @@ snapshots:
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
       express: 4.19.2
-      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59))
+      file-loader: 6.2.0(webpack@4.46.0)
       find-up: 5.0.0
       fs-extra: 9.1.0
       html-webpack-plugin: 4.5.2(webpack@4.46.0)
@@ -32995,10 +33102,10 @@ snapshots:
 
   '@storybook/postinstall@7.0.17': {}
 
-  '@storybook/preact-vite@7.0.17(@babel/core@7.23.7)(preact@10.15.0)(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
+  '@storybook/preact-vite@7.0.17(@babel/core@7.23.7)(preact@10.15.0)(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
     dependencies:
       '@preact/preset-vite': 2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
-      '@storybook/builder-vite': 7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
+      '@storybook/builder-vite': 7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.23.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
       '@storybook/preact': 7.0.17(preact@10.15.0)
       preact: 10.15.0
       vite: 5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)
@@ -33008,10 +33115,10 @@ snapshots:
       - typescript
       - vite-plugin-glimmerx
 
-  '@storybook/preact-vite@7.0.17(@babel/core@7.24.7)(preact@10.15.0)(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
+  '@storybook/preact-vite@7.0.17(@babel/core@7.24.7)(preact@10.15.0)(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
     dependencies:
       '@preact/preset-vite': 2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
-      '@storybook/builder-vite': 7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@5.4.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
+      '@storybook/builder-vite': 7.0.17(@preact/preset-vite@2.5.0(@babel/core@7.24.7)(preact@10.15.0)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)))(typescript@4.9.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))
       '@storybook/preact': 7.0.17(preact@10.15.0)
       preact: 10.15.0
       vite: 5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)
@@ -33030,10 +33137,10 @@ snapshots:
       preact: 10.15.0
       ts-dedent: 2.2.0
 
-  '@storybook/preset-create-react-app@4.1.2(6k4kvuvhnvl6j3ebbir6txps5i)':
+  '@storybook/preset-create-react-app@4.1.2(dticdxtl7r423jrb6fftyynf7y)':
     dependencies:
       '@babel/core': 7.24.7
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(@types/webpack@4.41.33)(react-refresh@0.14.2)(type-fest@2.19.0)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)(webpack@5.83.1(@swc/core@1.3.59))
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(@types/webpack@4.41.33)(react-refresh@0.11.0)(type-fest@2.19.0)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)(webpack@5.83.1(@swc/core@1.3.59))
       '@storybook/node-logger': 6.5.16
       '@storybook/react': 6.5.16(@babel/core@7.24.7)(@storybook/builder-webpack5@6.5.16(@swc/core@1.3.59)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16))(@storybook/manager-webpack5@6.5.16(@swc/core@1.3.59)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)(vue-template-compiler@2.7.16))(@swc/core@1.3.59)(@types/webpack@4.41.33)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(require-from-string@2.0.2)(type-fest@2.19.0)(typescript@5.4.5)(vue-template-compiler@2.7.16)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)
       '@storybook/react-docgen-typescript-plugin': 1.0.2--canary.12.cf35881ff63bf958b8998e8dd1dfd5626ee868c2.0(typescript@5.4.5)(webpack@5.83.1(@swc/core@1.3.59))
@@ -33054,10 +33161,10 @@ snapshots:
       - webpack-hot-middleware
       - webpack-plugin-serve
 
-  '@storybook/preset-create-react-app@4.1.2(q3vxyto2fg5cfih4rzrcvkglpe)':
+  '@storybook/preset-create-react-app@4.1.2(pmxqd7m5pj25vkt5vqpri5dyqy)':
     dependencies:
       '@babel/core': 7.24.7
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(@types/webpack@4.41.33)(react-refresh@0.11.0)(type-fest@2.19.0)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)(webpack@5.83.1(@swc/core@1.3.59))
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.10(@types/webpack@4.41.33)(react-refresh@0.14.2)(type-fest@2.19.0)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)(webpack@5.83.1(@swc/core@1.3.59))
       '@storybook/node-logger': 6.5.16
       '@storybook/react': 6.5.16(@babel/core@7.24.7)(@storybook/builder-webpack5@6.5.16(@swc/core@1.3.59)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@4.9.5)(vue-template-compiler@2.7.16))(@storybook/manager-webpack5@6.5.16(@swc/core@1.3.59)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@4.9.5)(vue-template-compiler@2.7.16))(@swc/core@1.3.59)(@types/webpack@4.41.33)(encoding@0.1.13)(eslint@8.57.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(require-from-string@2.0.2)(type-fest@2.19.0)(typescript@4.9.5)(vue-template-compiler@2.7.16)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59)))(webpack-hot-middleware@2.25.3)
       '@storybook/react-docgen-typescript-plugin': 1.0.2--canary.12.cf35881ff63bf958b8998e8dd1dfd5626ee868c2.0(typescript@4.9.5)(webpack@5.83.1(@swc/core@1.3.59))
@@ -34105,7 +34212,7 @@ snapshots:
   '@swc/core-win32-x64-msvc@1.3.59':
     optional: true
 
-  '@swc/core@1.3.59(@swc/helpers@0.5.1)':
+  '@swc/core@1.3.59(@swc/helpers@0.5.5)':
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.3.59
       '@swc/core-darwin-x64': 1.3.59
@@ -34117,7 +34224,9 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.3.59
       '@swc/core-win32-ia32-msvc': 1.3.59
       '@swc/core-win32-x64-msvc': 1.3.59
-      '@swc/helpers': 0.5.1
+      '@swc/helpers': 0.5.5
+
+  '@swc/counter@0.1.3': {}
 
   '@swc/helpers@0.4.11':
     dependencies:
@@ -34125,6 +34234,11 @@ snapshots:
 
   '@swc/helpers@0.5.1':
     dependencies:
+      tslib: 2.6.1
+
+  '@swc/helpers@0.5.5':
+    dependencies:
+      '@swc/counter': 0.1.3
       tslib: 2.6.1
 
   '@szmarczak/http-timer@1.1.2':
@@ -35077,9 +35191,9 @@ snapshots:
       - encoding
       - supports-color
 
-  '@vitejs/plugin-react-swc@3.3.1(@swc/helpers@0.5.1)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
+  '@vitejs/plugin-react-swc@3.3.1(@swc/helpers@0.5.5)(vite@5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6))':
     dependencies:
-      '@swc/core': 1.3.59(@swc/helpers@0.5.1)
+      '@swc/core': 1.3.59(@swc/helpers@0.5.5)
       vite: 5.0.10(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.17.6)
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -37984,6 +38098,8 @@ snapshots:
   caniuse-lite@1.0.30001470: {}
 
   caniuse-lite@1.0.30001572: {}
+
+  caniuse-lite@1.0.30001636: {}
 
   capture-exit@2.0.0:
     dependencies:
@@ -41812,6 +41928,8 @@ snapshots:
 
   graceful-fs@4.2.10: {}
 
+  graceful-fs@4.2.11: {}
+
   graphemer@1.4.0: {}
 
   graphql-tag@2.12.6(graphql@15.8.0):
@@ -45202,28 +45320,28 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@13.4.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@14.2.4(@playwright/test@1.43.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@next/env': 13.4.7
-      '@swc/helpers': 0.5.1
+      '@next/env': 14.2.4
+      '@swc/helpers': 0.5.5
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001470
-      postcss: 8.4.14
+      caniuse-lite: 1.0.30001636
+      graceful-fs: 4.2.11
+      postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       styled-jsx: 5.1.1(react@18.3.1)
-      watchpack: 2.4.0
-      zod: 3.21.4
     optionalDependencies:
-      '@next/swc-darwin-arm64': 13.4.7
-      '@next/swc-darwin-x64': 13.4.7
-      '@next/swc-linux-arm64-gnu': 13.4.7
-      '@next/swc-linux-arm64-musl': 13.4.7
-      '@next/swc-linux-x64-gnu': 13.4.7
-      '@next/swc-linux-x64-musl': 13.4.7
-      '@next/swc-win32-arm64-msvc': 13.4.7
-      '@next/swc-win32-ia32-msvc': 13.4.7
-      '@next/swc-win32-x64-msvc': 13.4.7
+      '@next/swc-darwin-arm64': 14.2.4
+      '@next/swc-darwin-x64': 14.2.4
+      '@next/swc-linux-arm64-gnu': 14.2.4
+      '@next/swc-linux-arm64-musl': 14.2.4
+      '@next/swc-linux-x64-gnu': 14.2.4
+      '@next/swc-linux-x64-musl': 14.2.4
+      '@next/swc-win32-arm64-msvc': 14.2.4
+      '@next/swc-win32-ia32-msvc': 14.2.4
+      '@next/swc-win32-x64-msvc': 14.2.4
+      '@playwright/test': 1.43.1
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -51407,7 +51525,7 @@ snapshots:
       terser: 5.17.6
       webpack: 5.83.1(@swc/core@1.3.59)
     optionalDependencies:
-      '@swc/core': 1.3.59(@swc/helpers@0.5.1)
+      '@swc/core': 1.3.59(@swc/helpers@0.5.5)
 
   terser-webpack-plugin@5.3.9(@swc/core@1.3.59)(webpack@5.83.1(@swc/core@1.3.59)):
     dependencies:
@@ -51418,7 +51536,7 @@ snapshots:
       terser: 5.17.6
       webpack: 5.83.1(@swc/core@1.3.59)
     optionalDependencies:
-      '@swc/core': 1.3.59(@swc/helpers@0.5.1)
+      '@swc/core': 1.3.59(@swc/helpers@0.5.5)
 
   terser@4.8.1:
     dependencies:
@@ -51648,7 +51766,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.3.59(@swc/helpers@0.5.1)
+      '@swc/core': 1.3.59(@swc/helpers@0.5.5)
 
   ts-node@10.9.2(@swc/core@1.3.59)(@types/node@20.10.6)(typescript@4.9.5):
     dependencies:
@@ -51668,7 +51786,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.3.59(@swc/helpers@0.5.1)
+      '@swc/core': 1.3.59(@swc/helpers@0.5.5)
     optional: true
 
   ts-node@10.9.2(@swc/core@1.3.59)(@types/node@20.10.6)(typescript@5.4.5):
@@ -51689,7 +51807,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.3.59(@swc/helpers@0.5.1)
+      '@swc/core': 1.3.59(@swc/helpers@0.5.5)
 
   ts-pnp@1.2.0(typescript@4.2.4):
     optionalDependencies:
@@ -52902,7 +53020,7 @@ snapshots:
   vue-loader@15.10.1(@vue/compiler-sfc@3.4.29)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
-      css-loader: 5.2.7(webpack@4.46.0)
+      css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59))
       hash-sum: 1.0.2
       loader-utils: 1.4.2
       vue-hot-reload-api: 2.3.4
