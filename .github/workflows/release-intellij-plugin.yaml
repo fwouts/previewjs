@@ -40,7 +40,7 @@ jobs:
           distribution: "temurin"
           java-version: "11"
       - name: Build daemon
-        run: pnpm turbo run build --filter=@previewjs/intellij-daemon
+        run: pnpm turbo run build --filter=...@previewjs/intellij-daemon
       - name: Publish
         run: ./gradlew publishPlugin
         env:
