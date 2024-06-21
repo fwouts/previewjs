@@ -34,7 +34,7 @@ jobs:
         with:
           run_install: |
             - args: [--filter=\!./framework-plugins/\*/tests/apps/\*]
-      - run: cd .. && pnpm turbo run build --scope=@previewjs/loader --include-dependencies
+      - run: cd .. && pnpm turbo run build --filter=...@previewjs/loader
       - name: Extract version from package.json
         uses: sergeysova/jq-action@a3f0d4ff59cc1dddf023fc0b325dd75b10deec58 # v2.3.0
         id: version

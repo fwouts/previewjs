@@ -86,10 +86,10 @@ tasks {
                     "cmd.exe",
                     "/c",
                     "node " + System.getProperty("user.dir") +
-                        "\\..\\..\\node_modules\\turbo\\bin\\turbo run build --scope=@previewjs/intellij-daemon",
+                        "\\..\\..\\node_modules\\turbo\\bin\\turbo run build --filter=@previewjs/intellij-daemon",
                 )
             } else {
-                commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --scope=@previewjs/intellij-daemon")
+                commandLine("sh", "-c", "../../node_modules/turbo/bin/turbo run build --filter=@previewjs/intellij-daemon")
             }
         }
         from(daemonDir) {
