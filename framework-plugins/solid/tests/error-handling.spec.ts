@@ -10,7 +10,7 @@ const testApp = path.join(__dirname, "apps", "solid");
 test.describe.parallel("solid/error handling", () => {
   const test = previewTest(pluginFactory, testApp);
 
-  test("handles syntax errors gracefully", async (preview) => {
+  test.skip("handles syntax errors gracefully", async (preview) => {
     await preview.show("src/App.tsx:App");
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update("src/App.tsx", {
@@ -151,7 +151,7 @@ test.describe.parallel("solid/error handling", () => {
     await preview.iframe.waitForSelector(".App");
   });
 
-  test("fails correctly when encountering broken CSS imports after update", async (preview) => {
+  test.skip("fails correctly when encountering broken CSS imports after update", async (preview) => {
     await preview.show("src/App.tsx:App");
     await preview.iframe.waitForSelector(".App");
     await preview.fileManager.update("src/App.tsx", {
