@@ -108,7 +108,11 @@ export async function startPreview({
       const matchingStory = stories.find((c) => previewableId === c.id);
       if (!matchingComponent && !matchingStory) {
         throw new Error(
-          `Component may be previewable but was not detected by framework plugin: ${previewableId}`
+          `Component may be previewable but was not detected by framework plugin: ${previewableId}.\nDetected components: ${
+            components.map((c) => c.id).join(", ") || "none"
+          }.\nDetected stories: ${
+            stories.map((c) => c.id).join(", ") || "none"
+          }`
         );
       }
       const component = matchingComponent || matchingStory?.associatedComponent;
