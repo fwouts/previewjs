@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        os: [ubuntu-22.04, macos-11, windows-2022]
+        os: [ubuntu-22.04, macos-14, windows-2022]
         group: [1, 2, 3]
         include:
           - node-version: 20.x
