@@ -109,8 +109,8 @@ importers:
         version: 5.5.2
     devDependencies:
       '@types/prop-types':
-        specifier: ^15.7.12
-        version: 15.7.12
+        specifier: ^15.7.13
+        version: 15.7.13
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
@@ -2671,7 +2671,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -8956,8 +8956,8 @@ packages:
   '@types/pretty-hrtime@1.0.1':
     resolution: {integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==}
 
-  '@types/prop-types@15.7.12':
-    resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
+  '@types/prop-types@15.7.13':
+    resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
 
   '@types/prop-types@15.7.5':
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
@@ -30006,7 +30006,7 @@ snapshots:
   '@mui/utils@5.13.1(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.21.0
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       '@types/react-is': 18.2.0
       prop-types: 15.8.1
       react: 18.2.0
@@ -30221,12 +30221,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -30864,7 +30864,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.24.5
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -30903,7 +30903,7 @@ snapshots:
       ufo: 1.3.2
       upath: 2.0.1
       url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -35921,7 +35921,7 @@ snapshots:
 
   '@types/pretty-hrtime@1.0.1': {}
 
-  '@types/prop-types@15.7.12': {}
+  '@types/prop-types@15.7.13': {}
 
   '@types/prop-types@15.7.5': {}
 
@@ -35982,43 +35982,43 @@ snapshots:
 
   '@types/react@16.14.41':
     dependencies:
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
 
   '@types/react@17.0.59':
     dependencies:
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       '@types/scheduler': 0.16.2
       csstype: 3.1.2
 
   '@types/react@18.0.38':
     dependencies:
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       '@types/scheduler': 0.16.2
       csstype: 3.1.2
 
   '@types/react@18.2.12':
     dependencies:
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       '@types/scheduler': 0.16.2
       csstype: 3.1.2
 
   '@types/react@18.2.25':
     dependencies:
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       '@types/scheduler': 0.16.2
       csstype: 3.1.2
 
   '@types/react@18.2.6':
     dependencies:
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       '@types/scheduler': 0.16.2
       csstype: 3.1.2
 
   '@types/react@18.3.3':
     dependencies:
-      '@types/prop-types': 15.7.12
+      '@types/prop-types': 15.7.13
       csstype: 3.1.3
 
   '@types/relateurl@0.2.29': {}
@@ -42633,9 +42633,9 @@ snapshots:
   externality@1.0.0:
     dependencies:
       enhanced-resolve: 5.14.0
-      mlly: 1.4.2
-      pathe: 1.1.1
-      ufo: 1.5.3
+      mlly: 1.7.2
+      pathe: 1.1.2
+      ufo: 1.5.4
 
   externality@1.0.2:
     dependencies:
@@ -45838,11 +45838,11 @@ snapshots:
       clipboardy: 3.0.0
       colorette: 2.0.20
       defu: 6.1.4
-      get-port-please: 3.0.1
+      get-port-please: 3.1.2
       http-shutdown: 1.2.2
       ip-regex: 5.0.0
       node-forge: 1.3.1
-      ufo: 1.5.3
+      ufo: 1.5.4
 
   listhen@1.9.0:
     dependencies:
@@ -47497,10 +47497,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -47513,7 +47513,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -54403,14 +54403,14 @@ snapshots:
       anymatch: 3.1.3
       chokidar: 3.6.0
       destr: 1.2.2
-      h3: 1.6.6
+      h3: 1.13.0
       ioredis: 5.3.2
       listhen: 1.0.4
       lru-cache: 9.1.1
       mri: 1.2.0
       node-fetch-native: 1.1.1
       ofetch: 1.0.1
-      ufo: 1.5.3
+      ufo: 1.5.4
     transitivePeerDependencies:
       - supports-color
 
@@ -54709,8 +54709,8 @@ snapshots:
     dependencies:
       cac: 6.7.14
       debug: 4.3.7
-      mlly: 1.4.2
-      pathe: 1.1.1
+      mlly: 1.7.2
+      pathe: 1.1.2
       picocolors: 1.1.1
       vite: 4.3.9(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
     transitivePeerDependencies:
@@ -54776,7 +54776,7 @@ snapshots:
       lodash.debounce: 4.0.8
       lodash.pick: 4.4.0
       npm-run-path: 4.0.1
-      semver: 7.6.2
+      semver: 7.6.3
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       vite: 4.3.9(@types/node@20.10.6)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
@@ -55081,7 +55081,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
