@@ -71,8 +71,8 @@ importers:
         specifier: ^2.1.2
         version: link:../../vfs
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -118,8 +118,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -243,8 +243,8 @@ importers:
         specifier: ^4.19.2
         version: 4.19.2
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       playwright:
         specifier: ^1.48.1
         version: 1.48.1
@@ -353,8 +353,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -499,8 +499,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -690,8 +690,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -2187,8 +2187,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -2339,8 +2339,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -2643,8 +2643,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -2671,7 +2671,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -2825,8 +2825,8 @@ importers:
         specifier: ^3.5.12
         version: 3.5.12
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -3122,8 +3122,8 @@ importers:
         specifier: ^11.2.0
         version: 11.2.0
       pino:
-        specifier: ^8.21.0
-        version: 8.21.0
+        specifier: ^9.5.0
+        version: 9.5.0
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.1
@@ -17005,6 +17005,9 @@ packages:
   pino-abstract-transport@1.2.0:
     resolution: {integrity: sha512-Guhh8EZfPCfH+PMXAb6rKOjGQEoy0xlAIn+irODG5kgfYV+BQ0rGYYWTIel3P5mmyXqkYkPmdIkywsn6QKUR1Q==}
 
+  pino-abstract-transport@2.0.0:
+    resolution: {integrity: sha512-F63x5tizV6WCh4R6RHyi2Ml+M70DNRXt/+HANowMflpgGFMAym/VKm6G7ZOQRjqN7XbGxK1Lg9t6ZrtzOaivMw==}
+
   pino-pretty@10.3.1:
     resolution: {integrity: sha512-az8JbIYeN/1iLj2t0jR9DV48/LQ3RC6hZPpapKPkb84Q+yTidMCpgWxIT3N0flnBDilyBQ1luWNpOeJptjdp/g==}
     hasBin: true
@@ -17016,8 +17019,15 @@ packages:
   pino-std-serializers@6.2.1:
     resolution: {integrity: sha512-wHuWB+CvSVb2XqXM0W/WOYUkVSPbiJb9S5fNB7TBhd8s892Xq910bRxwHtC4l71hgztObTjXL6ZheZXFjhDrDQ==}
 
+  pino-std-serializers@7.0.0:
+    resolution: {integrity: sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==}
+
   pino@8.21.0:
     resolution: {integrity: sha512-ip4qdzjkAyDDZklUaZkcRFb2iA118H9SgRh8yzTkSQK8HilsOJF7rSY8HoW5+I0M46AZgX/pxbprf2vvzQCE0Q==}
+    hasBin: true
+
+  pino@9.5.0:
+    resolution: {integrity: sha512-xSEmD4pLnV54t0NOUN16yCl7RIB1c5UUOse5HSyEXtBp+FgFQyPeDutc+Q2ZO7/22vImV7VfEjH/1zV2QuqvYw==}
     hasBin: true
 
   pirates@4.0.5:
@@ -18128,6 +18138,9 @@ packages:
 
   process-warning@3.0.0:
     resolution: {integrity: sha512-mqn0kFRl0EoqhnL0GQ0veqFHyIN1yig9RHh/InzORTUiZHFRAur+aMtRkELNwGs9aNwKS6tg/An4NYBPGwvtzQ==}
+
+  process-warning@4.0.0:
+    resolution: {integrity: sha512-/MyYDxttz7DfGMMHiysAsFE4qF+pQYAA8ziO/3NcRVrQ5fSk+Mns4QZA/oRPFzvcqNoVJXQNWNAsdwBXLUkQKw==}
 
   process@0.11.10:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
@@ -20428,6 +20441,9 @@ packages:
 
   thread-stream@2.7.0:
     resolution: {integrity: sha512-qQiRWsU/wvNolI6tbbCKd9iKaTnCXsTwVxhhKM6nctPdujTyztjlbUkUTUymidWcMnZ5pWR0ej4a0tjsW021vw==}
+
+  thread-stream@3.1.0:
+    resolution: {integrity: sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==}
 
   throat@5.0.0:
     resolution: {integrity: sha512-fcwX4mndzpLQKBS1DVYhGAcYaYt7vsHNIvQV+WXMvnow5cgjPphq5CaayLaGsjRdSCKZFNGt7/GYAuXaNOiYCA==}
@@ -29558,12 +29574,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -30201,7 +30217,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.25.9
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -30240,7 +30256,7 @@ snapshots:
       ufo: 1.3.2
       upath: 2.0.1
       url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -46768,10 +46784,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -46784,7 +46800,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -47492,6 +47508,10 @@ snapshots:
       readable-stream: 4.4.0
       split2: 4.2.0
 
+  pino-abstract-transport@2.0.0:
+    dependencies:
+      split2: 4.2.0
+
   pino-pretty@10.3.1:
     dependencies:
       colorette: 2.0.20
@@ -47528,6 +47548,8 @@ snapshots:
 
   pino-std-serializers@6.2.1: {}
 
+  pino-std-serializers@7.0.0: {}
+
   pino@8.21.0:
     dependencies:
       atomic-sleep: 1.0.0
@@ -47541,6 +47563,20 @@ snapshots:
       safe-stable-stringify: 2.4.2
       sonic-boom: 3.7.0
       thread-stream: 2.7.0
+
+  pino@9.5.0:
+    dependencies:
+      atomic-sleep: 1.0.0
+      fast-redact: 3.2.0
+      on-exit-leak-free: 2.1.0
+      pino-abstract-transport: 2.0.0
+      pino-std-serializers: 7.0.0
+      process-warning: 4.0.0
+      quick-format-unescaped: 4.0.4
+      real-require: 0.2.0
+      safe-stable-stringify: 2.4.2
+      sonic-boom: 4.0.1
+      thread-stream: 3.1.0
 
   pirates@4.0.5: {}
 
@@ -49282,6 +49318,8 @@ snapshots:
   process-nextick-args@2.0.1: {}
 
   process-warning@3.0.0: {}
+
+  process-warning@4.0.0: {}
 
   process@0.11.10: {}
 
@@ -52884,6 +52922,10 @@ snapshots:
     dependencies:
       real-require: 0.2.0
 
+  thread-stream@3.1.0:
+    dependencies:
+      real-require: 0.2.0
+
   throat@5.0.0: {}
 
   throat@6.0.2: {}
@@ -54352,7 +54394,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
