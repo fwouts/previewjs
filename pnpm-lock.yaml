@@ -2342,8 +2342,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       '@sveltejs/kit':
-        specifier: ^2.7.2
-        version: 2.7.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))
+        specifier: ^2.7.3
+        version: 2.7.3(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -2680,7 +2680,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -8407,8 +8407,8 @@ packages:
       svelte: ^3.54.0
       vite: ^4.0.0
 
-  '@sveltejs/kit@2.7.2':
-    resolution: {integrity: sha512-bFwrl+0bNr0/DHQZM0INwwSPNYqDjfsKRhUoa6rj9d8tDZzszBrJ3La6/HVFxWGONEigtG+SzHXa1BEa1BLdwA==}
+  '@sveltejs/kit@2.7.3':
+    resolution: {integrity: sha512-Vx7nq5MJ86I8qXYsVidC5PX6xm+uxt8DydvOdmJoyOK7LvGP18OFEG359yY+aa51t6pENvqZAMqAREQQx1OI2Q==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -29644,12 +29644,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -30287,7 +30287,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.25.9
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -30326,7 +30326,7 @@ snapshots:
       ufo: 1.3.2
       upath: 2.0.1
       url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -34729,7 +34729,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/kit@2.7.2(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))':
+  '@sveltejs/kit@2.7.3(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))
       '@types/cookie': 0.6.0
@@ -46864,10 +46864,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -46880,7 +46880,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -54480,7 +54480,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
