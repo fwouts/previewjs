@@ -32,8 +32,8 @@ importers:
         specifier: ^7.18.0
         version: 7.18.0(eslint@9.14.0(jiti@2.3.3))(typescript@5.6.3)
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       depcheck:
         specifier: ^1.4.7
         version: 1.4.7
@@ -335,8 +335,8 @@ importers:
         specifier: ^2.1.2
         version: link:../vfs
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -2680,7 +2680,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -2993,8 +2993,8 @@ importers:
   iframe:
     devDependencies:
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -3119,8 +3119,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       exclusive-promises:
         specifier: ^1.0.3
         version: 1.0.3
@@ -3242,8 +3242,8 @@ importers:
         specifier: ^10.1.3
         version: link:../type-analyzer
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -3319,8 +3319,8 @@ importers:
         specifier: ^2.1.2
         version: link:../vfs
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
@@ -3347,8 +3347,8 @@ importers:
         specifier: ^2.1.2
         version: link:../vfs
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       globby:
         specifier: ^14.0.2
         version: 14.0.2
@@ -3381,8 +3381,8 @@ importers:
   vfs:
     dependencies:
       assert-never:
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.3.0
+        version: 1.3.0
       chokidar:
         specifier: ^3.6.0
         version: 3.6.0
@@ -10270,8 +10270,8 @@ packages:
   asn1@0.2.6:
     resolution: {integrity: sha512-ix/FxPn0MDjeyJ7i/yoHGFt/EX6LyNbxSEhPPXODPL+KB0VPk86UYfL0lMdy+KCnv+fmvIzySwaK5COwqVbWTQ==}
 
-  assert-never@1.2.1:
-    resolution: {integrity: sha512-TaTivMB6pYI1kXwrFlEhLeGfOqoDNdTxjCdwRfFFkEA30Eu+k48W34nlok2EYWJfFFzqaEmichdNM7th6M5HNw==}
+  assert-never@1.3.0:
+    resolution: {integrity: sha512-9Z3vxQ+berkL/JJo0dK+EY3Lp0s3NtSnP3VCLsh5HDcZPrh0M+KQRK5sWhUeyPPH+/RCxZqOxLMR+YC6vlviEQ==}
 
   assert-plus@1.0.0:
     resolution: {integrity: sha512-NfJ4UzBCcQGLDlQq7nHxH+tv3kyZ0hHQqF5BO6J7tNJeP5do1llPr8dZ8zHonfhAu0PHAdMkSo+8o0wxg9lZWw==}
@@ -29949,12 +29949,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -30592,7 +30592,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.25.9
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -30602,11 +30602,11 @@ snapshots:
       cache-loader: 4.1.0(webpack@4.46.0)
       caniuse-lite: 1.0.30001572
       consola: 2.15.3
-      css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      css-loader: 5.2.7(webpack@4.46.0)
       cssnano: 5.1.15(postcss@8.4.31)
       eventsource-polyfill: 0.9.6
       extract-css-chunks-webpack-plugin: 4.9.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      file-loader: 6.2.0(webpack@4.46.0)
       glob: 8.1.0
       hard-source-webpack-plugin: 0.13.1(webpack@4.46.0)
       hash-sum: 2.0.0
@@ -30630,8 +30630,8 @@ snapshots:
       time-fix-plugin: 2.0.7(webpack@4.46.0)
       ufo: 1.3.2
       upath: 2.0.1
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.46.0))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -31020,7 +31020,7 @@ snapshots:
       '@previewjs/serializable-values': 9.0.4
       '@previewjs/type-analyzer': 10.1.3
       '@previewjs/vfs': 2.1.2
-      assert-never: 1.2.1
+      assert-never: 1.3.0
       axios: 1.7.7
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.24.0)
       exclusive-promises: 1.0.3
@@ -31061,7 +31061,7 @@ snapshots:
       '@previewjs/serializable-values': 9.0.4
       '@previewjs/type-analyzer': 10.1.3
       '@previewjs/vfs': 2.1.2
-      assert-never: 1.2.1
+      assert-never: 1.3.0
       axios: 1.7.7
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.24.0)
       exclusive-promises: 1.0.3
@@ -31129,7 +31129,7 @@ snapshots:
     dependencies:
       '@faker-js/faker': 8.4.1
       '@previewjs/type-analyzer': 10.1.3
-      assert-never: 1.2.1
+      assert-never: 1.3.0
       prettier: 2.8.8
       typescript: 5.6.3
 
@@ -31159,14 +31159,14 @@ snapshots:
   '@previewjs/type-analyzer@10.1.3':
     dependencies:
       '@previewjs/vfs': 2.1.2
-      assert-never: 1.2.1
+      assert-never: 1.3.0
       globby: 14.0.2
       prettier: 2.8.8
       typescript: 5.6.3
 
   '@previewjs/vfs@2.1.2':
     dependencies:
-      assert-never: 1.2.1
+      assert-never: 1.3.0
       chokidar: 3.6.0
       fs-extra: 11.2.0
 
@@ -38134,7 +38134,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  assert-never@1.2.1: {}
+  assert-never@1.3.0: {}
 
   assert-plus@1.0.0: {}
 
@@ -45248,7 +45248,7 @@ snapshots:
   jsdom@16.7.0:
     dependencies:
       abab: 2.0.6
-      acorn: 8.13.0
+      acorn: 8.14.0
       acorn-globals: 6.0.0
       cssom: 0.4.4
       cssstyle: 2.3.0
@@ -46596,7 +46596,7 @@ snapshots:
 
   mlly@1.7.2:
     dependencies:
-      acorn: 8.13.0
+      acorn: 8.14.0
       pathe: 1.1.2
       pkg-types: 1.2.1
       ufo: 1.5.4
@@ -47331,10 +47331,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.12)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -47347,7 +47347,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.12)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -53442,7 +53442,7 @@ snapshots:
   terser@5.36.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.13.0
+      acorn: 8.14.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -54243,7 +54243,7 @@ snapshots:
 
   unplugin@1.14.1(webpack-sources@3.2.3):
     dependencies:
-      acorn: 8.13.0
+      acorn: 8.14.0
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
       webpack-sources: 3.2.3
@@ -54403,6 +54403,15 @@ snapshots:
       webpack: 4.46.0
     optionalDependencies:
       file-loader: 6.2.0(webpack@4.46.0)
+
+  url-loader@4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0):
+    dependencies:
+      loader-utils: 2.0.4
+      mime-types: 2.1.35
+      schema-utils: 3.1.1
+      webpack: 4.46.0
+    optionalDependencies:
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
 
   url-parse-lax@3.0.0:
     dependencies:
@@ -54951,7 +54960,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
@@ -55684,7 +55693,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.25.9
       '@babel/types': 7.25.9
-      assert-never: 1.2.1
+      assert-never: 1.3.0
       babel-walk: 3.0.0-canary-5
 
   wonka@4.0.15: {}
