@@ -2597,8 +2597,8 @@ importers:
   framework-plugins/vue2:
     dependencies:
       '@nuxt/config':
-        specifier: ^2.17.4
-        version: 2.17.4
+        specifier: ^2.18.1
+        version: 2.18.1
       '@previewjs/analyzer-api':
         specifier: ^0.1.6
         version: link:../../analyzer/api
@@ -6902,8 +6902,8 @@ packages:
     resolution: {integrity: sha512-hBvr5/b5CS6UdXPgB8q/jvQHS0Bprf+b0hknL6ks4EkxhtNKM1Et3a0s3V3Gh/odLkkJ9yrtihFF+CymzBm6ew==}
     engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
 
-  '@nuxt/config@2.17.4':
-    resolution: {integrity: sha512-Rv+tBafVO6AMs6drgV5Sh5IXbN/zL74TlW5Tze5utK23NOG5z/8pG7y1EslLq9vwSTa5hgBQNqGwM7cqKXLmqQ==}
+  '@nuxt/config@2.18.1':
+    resolution: {integrity: sha512-CTsUMFtNCJ6+7AkgMRz53zM9vxmsMYVJWBQOnikVzwFxm/jsWzjyXkp3pQb5/fNZuqR7qXmpUKIRtrdeUeN4JQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
   '@nuxt/core@2.16.3':
@@ -6993,8 +6993,8 @@ packages:
     resolution: {integrity: sha512-M0W1v4gZDMXyt1MnCoDijIvoV7Xu8NwdbHqWB9gyxIGvoycjNmWWu6yT4LkymZx2c2JUxWTVp6VoUKUWW5P46Q==}
     engines: {node: ^14.18.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
 
-  '@nuxt/utils@2.17.4':
-    resolution: {integrity: sha512-vhnmkB9hUm8Fxtp3vi1hOgZzRqgKGwUVuZbntUyJuu3oLSF4skr1W1Pki4EpIbyNzPn1O7wP3+DICGytUOniMQ==}
+  '@nuxt/utils@2.18.1':
+    resolution: {integrity: sha512-aWeB8VMhtymo5zXUiQaohCu8IqJqENF9iCag3wyJpdhpNDVoghGUJAl0F6mQvNTJgQzseFtf4XKqTfvcgVzyGg==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
   '@nuxt/vite-builder-edge@3.0.1-rc.0-27857531.faf2607':
@@ -21123,9 +21123,6 @@ packages:
   ufo@1.3.2:
     resolution: {integrity: sha512-o+ORpgGwaYQXgqGDwd+hkS4PuZ3QnmqMMxRuajK/a38L6fTpcE5GPIfrf+L/KemFzfUpeUQc1rRS1iDBozvnFA==}
 
-  ufo@1.5.3:
-    resolution: {integrity: sha512-Y7HYmWaFwPUmkoQCUIAYpKqkOf+SbVj/2fJJZ4RJMCfZp0rTGwRbzQD+HghfnhKOjL9E01okqz+ncJskGYfBNw==}
-
   ufo@1.5.4:
     resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
 
@@ -30061,9 +30058,9 @@ snapshots:
       std-env: 3.7.0
       ufo: 1.3.2
 
-  '@nuxt/config@2.17.4':
+  '@nuxt/config@2.18.1':
     dependencies:
-      '@nuxt/utils': 2.17.4
+      '@nuxt/utils': 2.18.1
       consola: 3.2.3
       defu: 6.1.4
       destr: 2.0.3
@@ -30071,7 +30068,7 @@ snapshots:
       lodash: 4.17.21
       rc9: 2.1.2
       std-env: 3.7.0
-      ufo: 1.5.3
+      ufo: 1.5.4
 
   '@nuxt/core@2.16.3':
     dependencies:
@@ -30265,7 +30262,7 @@ snapshots:
       pkg-types: 1.0.3
       postcss-import-resolver: 2.0.0
       std-env: 3.7.0
-      ufo: 1.5.3
+      ufo: 1.5.4
       unimport: 3.0.7(rollup@3.29.5)
       untyped: 1.4.0
     transitivePeerDependencies:
@@ -30325,7 +30322,7 @@ snapshots:
       create-require: 1.1.1
       defu: 6.1.4
       destr: 1.2.2
-      dotenv: 16.3.1
+      dotenv: 16.4.5
       fs-extra: 10.1.0
       git-url-parse: 13.1.0
       inquirer: 9.3.7
@@ -30336,7 +30333,7 @@ snapshots:
       node-fetch: 3.3.1
       ofetch: 1.0.1
       parse-git-config: 3.0.0
-      rc9: 2.1.1
+      rc9: 2.1.2
       std-env: 3.7.0
     transitivePeerDependencies:
       - magicast
@@ -30353,7 +30350,7 @@ snapshots:
       create-require: 1.1.1
       defu: 6.1.4
       destr: 1.2.2
-      dotenv: 16.3.1
+      dotenv: 16.4.5
       fs-extra: 10.1.0
       git-url-parse: 13.1.0
       inquirer: 9.3.7
@@ -30364,7 +30361,7 @@ snapshots:
       node-fetch: 3.3.1
       ofetch: 1.0.1
       parse-git-config: 3.0.0
-      rc9: 2.1.1
+      rc9: 2.1.2
       std-env: 3.7.0
     transitivePeerDependencies:
       - rollup
@@ -30417,7 +30414,7 @@ snapshots:
       ua-parser-js: 1.0.37
       ufo: 1.3.2
 
-  '@nuxt/utils@2.17.4':
+  '@nuxt/utils@2.18.1':
     dependencies:
       consola: 3.2.3
       create-require: 1.1.1
@@ -30426,11 +30423,11 @@ snapshots:
       jiti: 1.21.6
       lodash: 4.17.21
       proper-lockfile: 4.1.2
-      semver: 7.6.2
+      semver: 7.6.3
       serialize-javascript: 6.0.2
       signal-exit: 4.1.0
       ua-parser-js: 1.0.38
-      ufo: 1.5.3
+      ufo: 1.5.4
 
   '@nuxt/vite-builder-edge@3.0.1-rc.0-27857531.faf2607(@types/node@20.17.6)(eslint@9.13.0(jiti@2.3.3))(less@4.1.3)(optionator@0.9.3)(sass@1.62.1)(terser@5.36.0)(typescript@5.6.3)(vue-tsc@1.6.5(typescript@5.6.3))(vue@3.5.12(typescript@5.6.3))(webpack-sources@3.2.3)':
     dependencies:
@@ -30518,7 +30515,7 @@ snapshots:
       rollup-plugin-visualizer: 5.9.0(rollup@3.29.5)
       std-env: 3.7.0
       strip-literal: 1.3.0
-      ufo: 1.3.2
+      ufo: 1.5.4
       unplugin: 1.3.1
       vite: 4.3.9(@types/node@20.17.6)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
       vite-node: 0.31.1(@types/node@20.17.6)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
@@ -43335,7 +43332,7 @@ snapshots:
       destr: 1.2.2
       iron-webcrypto: 0.6.0
       radix3: 1.0.1
-      ufo: 1.3.2
+      ufo: 1.5.4
       uncrypto: 0.1.2
 
   h3@1.6.6:
@@ -46535,14 +46532,14 @@ snapshots:
       acorn: 8.13.0
       pathe: 1.1.1
       pkg-types: 1.0.3
-      ufo: 1.3.2
+      ufo: 1.5.4
 
   mlly@1.3.0:
     dependencies:
       acorn: 8.13.0
       pathe: 1.1.1
       pkg-types: 1.0.3
-      ufo: 1.3.2
+      ufo: 1.5.4
 
   mlly@1.4.0:
     dependencies:
@@ -46556,7 +46553,7 @@ snapshots:
       acorn: 8.13.0
       pathe: 1.1.1
       pkg-types: 1.0.3
-      ufo: 1.5.3
+      ufo: 1.5.4
 
   mlly@1.7.2:
     dependencies:
@@ -46977,7 +46974,7 @@ snapshots:
       serve-static: 1.15.0
       source-map-support: 0.5.21
       std-env: 3.7.0
-      ufo: 1.3.2
+      ufo: 1.5.4
       unenv: 1.5.0
       unimport: 3.0.7(rollup@3.29.5)
       unstorage: 1.6.0
@@ -47552,7 +47549,7 @@ snapshots:
     dependencies:
       destr: 1.2.2
       node-fetch-native: 1.1.1
-      ufo: 1.3.2
+      ufo: 1.5.4
 
   ofetch@1.4.1:
     dependencies:
@@ -53900,8 +53897,6 @@ snapshots:
 
   ufo@1.3.2: {}
 
-  ufo@1.5.3: {}
-
   ufo@1.5.4: {}
 
   uglify-es@3.3.9:
@@ -54894,11 +54889,11 @@ snapshots:
 
   vue-bundle-renderer@1.0.2:
     dependencies:
-      ufo: 1.3.2
+      ufo: 1.5.4
 
   vue-bundle-renderer@1.0.3:
     dependencies:
-      ufo: 1.3.2
+      ufo: 1.5.4
 
   vue-client-only@2.1.0: {}
 
