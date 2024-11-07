@@ -2342,8 +2342,8 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       '@sveltejs/kit':
-        specifier: ^2.7.3
-        version: 2.7.3(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))
+        specifier: ^2.8.0
+        version: 2.8.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -8463,8 +8463,8 @@ packages:
       svelte: ^3.54.0
       vite: ^4.0.0
 
-  '@sveltejs/kit@2.7.3':
-    resolution: {integrity: sha512-Vx7nq5MJ86I8qXYsVidC5PX6xm+uxt8DydvOdmJoyOK7LvGP18OFEG359yY+aa51t6pENvqZAMqAREQQx1OI2Q==}
+  '@sveltejs/kit@2.8.0':
+    resolution: {integrity: sha512-HCiWupCuKJQ3aPaC4Xc6lpPdjOOnoGzEiYjOqMqppdtfGtY2ABrx932Vw66ZwS2RGXc0BmZvFvNq5SzqlmDVLg==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -35015,7 +35015,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/kit@2.7.3(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))':
+  '@sveltejs/kit@2.8.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0)))(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.3.6(@types/node@20.10.6)(less@4.1.3)(terser@5.36.0))
       '@types/cookie': 0.6.0
