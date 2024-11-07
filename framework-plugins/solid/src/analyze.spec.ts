@@ -330,9 +330,9 @@ export default function A(props: { name: string }) {
     expect(
       await analyzeComponent(
         `
-import Solid from 'solid-js';
+import type { Component } from 'solid-js';
 
-export const A: Solid.Component<{ foo: string, bar: string }> = (props) => {
+export const A: Component<{ foo: string, bar: string }> = (props) => {
   return <div>{foo}</div>;
 };
 A.args = {
