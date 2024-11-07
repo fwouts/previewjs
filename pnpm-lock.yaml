@@ -2785,8 +2785,8 @@ importers:
         specifier: ^2.1.2
         version: link:../../vfs
       '@vitejs/plugin-vue':
-        specifier: ^5.0.5
-        version: 5.0.5(vite@5.3.6(@types/node@20.17.6)(less@4.1.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))
+        specifier: ^5.1.4
+        version: 5.1.4(vite@5.3.6(@types/node@20.17.6)(less@4.1.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))
       '@vitejs/plugin-vue-jsx':
         specifier: ^4.0.1
         version: 4.0.1(vite@5.3.6(@types/node@20.17.6)(less@4.1.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))
@@ -9458,8 +9458,8 @@ packages:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
 
-  '@vitejs/plugin-vue@5.0.5':
-    resolution: {integrity: sha512-LOjm7XeIimLBZyzinBQ6OSm3UBCNVCpLkxGC0oWmm2YPzVZoxMsdvNVimLTBzpAnR9hl/yn1SHGuRfe6/Td9rQ==}
+  '@vitejs/plugin-vue@5.1.4':
+    resolution: {integrity: sha512-N2XSI2n3sQqp5w7Y/AN/L2XDjBIRGqXko+eDp42sydYSBeJuSm5a1sLf8zakmo8u7tA8NmBgoDLA1HeOESjp9A==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: ^5.0.0
@@ -30602,11 +30602,11 @@ snapshots:
       cache-loader: 4.1.0(webpack@4.46.0)
       caniuse-lite: 1.0.30001572
       consola: 2.15.3
-      css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      css-loader: 5.2.7(webpack@4.46.0)
       cssnano: 5.1.15(postcss@8.4.31)
       eventsource-polyfill: 0.9.6
       extract-css-chunks-webpack-plugin: 4.9.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      file-loader: 6.2.0(webpack@4.46.0)
       glob: 8.1.0
       hard-source-webpack-plugin: 0.13.1(webpack@4.46.0)
       hash-sum: 2.0.0
@@ -30630,8 +30630,8 @@ snapshots:
       time-fix-plugin: 2.0.7(webpack@4.46.0)
       ufo: 1.3.2
       upath: 2.0.1
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.46.0))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -36409,7 +36409,7 @@ snapshots:
       vite: 5.3.6(@types/node@20.17.6)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
       vue: 3.3.4
 
-  '@vitejs/plugin-vue@5.0.5(vite@5.3.6(@types/node@20.17.6)(less@4.1.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))':
+  '@vitejs/plugin-vue@5.1.4(vite@5.3.6(@types/node@20.17.6)(less@4.1.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))':
     dependencies:
       vite: 5.3.6(@types/node@20.17.6)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
       vue: 3.5.12(typescript@5.6.3)
@@ -45248,7 +45248,7 @@ snapshots:
   jsdom@16.7.0:
     dependencies:
       abab: 2.0.6
-      acorn: 8.13.0
+      acorn: 8.14.0
       acorn-globals: 6.0.0
       cssom: 0.4.4
       cssstyle: 2.3.0
@@ -46596,7 +46596,7 @@ snapshots:
 
   mlly@1.7.2:
     dependencies:
-      acorn: 8.13.0
+      acorn: 8.14.0
       pathe: 1.1.2
       pkg-types: 1.2.1
       ufo: 1.5.4
@@ -53442,7 +53442,7 @@ snapshots:
   terser@5.36.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.13.0
+      acorn: 8.14.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -54243,7 +54243,7 @@ snapshots:
 
   unplugin@1.14.1(webpack-sources@3.2.3):
     dependencies:
-      acorn: 8.13.0
+      acorn: 8.14.0
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
       webpack-sources: 3.2.3
@@ -54403,6 +54403,15 @@ snapshots:
       webpack: 4.46.0
     optionalDependencies:
       file-loader: 6.2.0(webpack@4.46.0)
+
+  url-loader@4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0):
+    dependencies:
+      loader-utils: 2.0.4
+      mime-types: 2.1.35
+      schema-utils: 3.1.1
+      webpack: 4.46.0
+    optionalDependencies:
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
 
   url-parse-lax@3.0.0:
     dependencies:
@@ -54951,7 +54960,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.12)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
