@@ -46,7 +46,7 @@ export function createClient(baseUrl: string): Client {
               try {
                 const response = JSON.parse(responseData);
                 resolve(response);
-              } catch (e) {
+              } catch {
                 reject(
                   new Error(`Request to ${path} failed:\n${responseData}`)
                 );
