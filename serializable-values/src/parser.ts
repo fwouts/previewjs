@@ -201,7 +201,6 @@ export function parseSerializableValue(
   if (ts.isObjectLiteralExpression(expression)) {
     const entries: SerializableObjectValueEntry[] = [];
     for (const property of expression.properties) {
-      property;
       if (ts.isShorthandPropertyAssignment(property)) {
         entries.push({
           kind: "key",

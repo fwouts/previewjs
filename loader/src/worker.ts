@@ -155,7 +155,7 @@ setInterval(() => {
   try {
     process.kill(parentProcessId, 0);
     // Parent process is still alive, see https://stackoverflow.com/a/21296291.
-  } catch (e) {
+  } catch {
     process.exit(0);
   }
 }, 1000);

@@ -190,7 +190,7 @@ async function waitUntilNetworkIdle(page: playwright.Page) {
   await page.waitForLoadState("networkidle");
   try {
     await (await getPreviewIframe(page)).waitForLoadState("networkidle");
-  } catch (e) {
+  } catch {
     // It's OK for the iframe to be replaced by another one, in which case wait again.
     await (await getPreviewIframe(page)).waitForLoadState("networkidle");
   }

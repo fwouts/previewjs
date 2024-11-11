@@ -75,7 +75,7 @@ export function crawlFiles(
         existingCache = JSON.parse(
           fs.readFileSync(cacheFilePath, "utf8")
         ) as CachedPreviewables;
-      } catch (e) {
+      } catch {
         logger.warn(`Unable to parse JSON from cache at ${cacheFilePath}`);
       }
     }
