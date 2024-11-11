@@ -98,6 +98,9 @@ async function main() {
     await fs.promises.unlink(path.join(releaseDirPath, "pnpm-lock.yaml"));
     await execa("pnpm", ["install", "--lockfile-only"], {
       cwd: releaseDirPath,
+      stdin: "inherit",
+      stdout: "inherit",
+      stderr: "inherit",
     });
     await execa("git", ["add", "."]);
     if (!(await isGitClean())) {
