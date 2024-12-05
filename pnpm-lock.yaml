@@ -3236,8 +3236,8 @@ importers:
   serializable-values:
     dependencies:
       '@faker-js/faker':
-        specifier: ^9.2.0
-        version: 9.2.0
+        specifier: ^9.3.0
+        version: 9.3.0
       '@previewjs/type-analyzer':
         specifier: ^10.1.4
         version: link:../type-analyzer
@@ -6013,8 +6013,8 @@ packages:
     resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
 
-  '@faker-js/faker@9.2.0':
-    resolution: {integrity: sha512-ulqQu4KMr1/sTFIYvqSdegHT8NIkt66tFAkugGnHA+1WAfEn6hMzNR+svjXGFRVLnapxvej67Z/LwchFrnLBUg==}
+  '@faker-js/faker@9.3.0':
+    resolution: {integrity: sha512-r0tJ3ZOkMd9xsu3VRfqlFR6cz0V/jFYRswAIpC+m/DIfAUXq7g8N7wTAlhSANySXYGKzGryfDXwtwsY8TxEIDw==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@fal-works/esbuild-plugin-global-externals@2.1.2':
@@ -28104,7 +28104,7 @@ snapshots:
 
   '@faker-js/faker@8.4.1': {}
 
-  '@faker-js/faker@9.2.0': {}
+  '@faker-js/faker@9.3.0': {}
 
   '@fal-works/esbuild-plugin-global-externals@2.1.2': {}
 
@@ -29803,11 +29803,11 @@ snapshots:
       cache-loader: 4.1.0(webpack@4.46.0)
       caniuse-lite: 1.0.30001572
       consola: 2.15.3
-      css-loader: 5.2.7(webpack@4.46.0)
+      css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       cssnano: 5.1.15(postcss@8.4.49)
       eventsource-polyfill: 0.9.6
       extract-css-chunks-webpack-plugin: 4.9.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@4.46.0)
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       glob: 8.1.0
       hard-source-webpack-plugin: 0.13.1(webpack@4.46.0)
       hash-sum: 2.0.0
@@ -29831,8 +29831,8 @@ snapshots:
       time-fix-plugin: 2.0.7(webpack@4.46.0)
       ufo: 1.3.2
       upath: 2.0.1
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.46.0))(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -53295,15 +53295,6 @@ snapshots:
     optionalDependencies:
       file-loader: 6.2.0(webpack@4.46.0)
 
-  url-loader@4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0):
-    dependencies:
-      loader-utils: 2.0.4
-      mime-types: 2.1.35
-      schema-utils: 3.1.1
-      webpack: 4.46.0
-    optionalDependencies:
-      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
-
   url-parse-lax@3.0.0:
     dependencies:
       prepend-http: 2.0.0
@@ -53852,7 +53843,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
