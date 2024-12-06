@@ -170,8 +170,8 @@ importers:
   app:
     dependencies:
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
     devDependencies:
       '@previewjs/analyzer-api':
         specifier: workspace:^0.1.1
@@ -249,8 +249,8 @@ importers:
         specifier: ^2.1.3
         version: link:../vfs
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       pino:
         specifier: ^9.5.0
         version: 9.5.0
@@ -347,8 +347,8 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3
       express:
-        specifier: ^4.21.1
-        version: 4.21.1
+        specifier: ^4.21.2
+        version: 4.21.2
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
@@ -2680,7 +2680,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -10517,10 +10517,6 @@ packages:
   bn.js@5.2.1:
     resolution: {integrity: sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==}
 
-  body-parser@1.20.2:
-    resolution: {integrity: sha512-ml9pReCu3M61kGlqoTm2umSXTlRTuGTx0bfYj+uIUKKYycG5NtSbeetV3faSU6R7ajOPw0g/J1PvK4qNy7s5bA==}
-    engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
-
   body-parser@1.20.3:
     resolution: {integrity: sha512-7rAxByjUMqQ3/bHJy7D6OGXvx/MMc4IqBn/X0fcM1QUcAItpZrBEYhWGem+tzXH90c+G01ypMcYJBO9Y30203g==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
@@ -13134,8 +13130,8 @@ packages:
     resolution: {integrity: sha512-WA6BbLI00R9TweBHRVm+kAFoYqkYOK4oMizNV2CmpxEJaRm8J4R9KI2+WnfkYVPiW6dzDTUR4bG6yAwgzSowEA==}
     hasBin: true
 
-  express@4.21.1:
-    resolution: {integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==}
+  express@4.21.2:
+    resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
     engines: {node: '>= 0.10.0'}
 
   extend-shallow@2.0.1:
@@ -17008,8 +17004,8 @@ packages:
     resolution: {integrity: sha512-ypGJsmGtdXUOeM5u93TyeIEfEhM6s+ljAhrk5vAvSx8uyY/02OvrZnA0YNGUrPXfpJMgI1ODd3nwz8Npx4O4cg==}
     engines: {node: 20 || >=22}
 
-  path-to-regexp@0.1.10:
-    resolution: {integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==}
+  path-to-regexp@0.1.12:
+    resolution: {integrity: sha512-RA1GjUVMnvYFxuqovrEqZoxxW5NUZqbwKtYz/Tt7nXerk0LbLblQmrsgdeOxV5SFHf0UDggjS/bSeOZwt1pmEQ==}
 
   path-to-regexp@1.8.0:
     resolution: {integrity: sha512-n43JRhlUKUAlibEJhPeir1ncUID16QnEjNpwzNdO3Lm4ywrBpBZ5oLD0I6br9evr1Y9JTqwRtAh7JLoOzAQdVA==}
@@ -18408,10 +18404,6 @@ packages:
   qrcode-terminal@0.11.0:
     resolution: {integrity: sha512-Uu7ii+FQy4Qf82G4xu7ShHhjhGahEpCWc3x8UavY3CTcWV+ufmmCtwkr7ZKsX42jdL0kr1B5FKUeqJvAn51jzQ==}
     hasBin: true
-
-  qs@6.11.0:
-    resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
-    engines: {node: '>=0.6'}
 
   qs@6.11.1:
     resolution: {integrity: sha512-0wsrzgTz/kAVIeuxSjnpGC56rzYtr6JT/2BwEvMaPhFIoYa1aGO8LbzuU1R0uUYQkLpWBTOj0l/CLAJB64J6nQ==}
@@ -27959,7 +27951,7 @@ snapshots:
       '@expo/metro-config': 0.5.2
       '@expo/osascript': 2.0.33
       '@expo/spawn-async': 1.5.0
-      body-parser: 1.20.2
+      body-parser: 1.20.3
       chalk: 4.1.2
       connect: 3.7.0
       fs-extra: 9.0.0
@@ -29149,12 +29141,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -29793,7 +29785,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.25.9
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -29803,11 +29795,11 @@ snapshots:
       cache-loader: 4.1.0(webpack@4.46.0)
       caniuse-lite: 1.0.30001572
       consola: 2.15.3
-      css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      css-loader: 5.2.7(webpack@4.46.0)
       cssnano: 5.1.15(postcss@8.4.49)
       eventsource-polyfill: 0.9.6
       extract-css-chunks-webpack-plugin: 4.9.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      file-loader: 6.2.0(webpack@4.46.0)
       glob: 8.1.0
       hard-source-webpack-plugin: 0.13.1(webpack@4.46.0)
       hash-sum: 2.0.0
@@ -29831,8 +29823,8 @@ snapshots:
       time-fix-plugin: 2.0.7(webpack@4.46.0)
       ufo: 1.3.2
       upath: 2.0.1
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.46.0))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -30222,7 +30214,7 @@ snapshots:
       axios: 1.7.9
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.24.0)
       exclusive-promises: 1.0.3
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       globby: 13.2.2
       html-escaper: 3.0.3
@@ -30263,7 +30255,7 @@ snapshots:
       axios: 1.7.9
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.24.0)
       exclusive-promises: 1.0.3
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       globby: 14.0.2
       html-escaper: 3.0.3
@@ -30304,7 +30296,7 @@ snapshots:
       '@previewjs/storybook-helpers': 5.0.8(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@20.17.9)(esbuild@0.24.0)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
       axios: 1.7.9
       env-paths: 3.0.0
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       prettier: 2.8.8
       universal-base64: 2.1.0
@@ -31943,7 +31935,7 @@ snapshots:
       ejs: 3.1.8
       esbuild: 0.17.19
       esbuild-plugin-alias: 0.2.1
-      express: 4.21.1
+      express: 4.21.2
       find-cache-dir: 3.3.2
       fs-extra: 11.2.0
       process: 0.11.10
@@ -31965,7 +31957,7 @@ snapshots:
       '@storybook/types': 7.0.17
       browser-assert: 1.2.1
       es-module-lexer: 0.9.3
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       glob: 8.1.0
       glob-promise: 6.0.2(glob@8.1.0)
@@ -31994,7 +31986,7 @@ snapshots:
       '@storybook/types': 7.0.17
       browser-assert: 1.2.1
       es-module-lexer: 0.9.3
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       glob: 8.1.0
       glob-promise: 6.0.2(glob@8.1.0)
@@ -32023,7 +32015,7 @@ snapshots:
       '@storybook/types': 7.0.17
       browser-assert: 1.2.1
       es-module-lexer: 0.9.3
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       glob: 8.1.0
       glob-promise: 6.0.2(glob@8.1.0)
@@ -32052,7 +32044,7 @@ snapshots:
       '@storybook/types': 7.0.17
       browser-assert: 1.2.1
       es-module-lexer: 0.9.3
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       glob: 8.1.0
       glob-promise: 6.0.2(glob@8.1.0)
@@ -32081,7 +32073,7 @@ snapshots:
       '@storybook/types': 7.0.17
       browser-assert: 1.2.1
       es-module-lexer: 0.9.3
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       glob: 8.1.0
       glob-promise: 6.0.2(glob@8.1.0)
@@ -32333,7 +32325,7 @@ snapshots:
       '@storybook/core-events': 6.5.16
       core-js: 3.30.2
       global: 4.4.0
-      qs: 6.11.1
+      qs: 6.13.0
       telejson: 6.0.8
 
   '@storybook/channel-postmessage@7.0.17':
@@ -32342,7 +32334,7 @@ snapshots:
       '@storybook/client-logger': 7.0.17
       '@storybook/core-events': 7.0.17
       '@storybook/global': 5.0.0
-      qs: 6.11.1
+      qs: 6.13.0
       telejson: 7.1.0
 
   '@storybook/channel-websocket@6.5.16':
@@ -32388,7 +32380,7 @@ snapshots:
       detect-indent: 6.1.0
       envinfo: 7.8.1
       execa: 5.1.1
-      express: 4.21.1
+      express: 4.21.2
       find-up: 5.0.0
       fs-extra: 11.2.0
       get-npm-tarball-url: 2.0.3
@@ -32431,7 +32423,7 @@ snapshots:
       global: 4.4.0
       lodash: 4.17.21
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -32474,7 +32466,7 @@ snapshots:
       '@storybook/theming': 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       core-js: 3.30.2
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -32523,7 +32515,7 @@ snapshots:
       core-js: 3.30.2
       global: 4.4.0
       lodash: 4.17.21
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -32551,7 +32543,7 @@ snapshots:
       core-js: 3.30.2
       global: 4.4.0
       lodash: 4.17.21
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -32579,7 +32571,7 @@ snapshots:
       core-js: 3.30.2
       global: 4.4.0
       lodash: 4.17.21
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -32607,7 +32599,7 @@ snapshots:
       core-js: 3.30.2
       global: 4.4.0
       lodash: 4.17.21
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -32656,7 +32648,7 @@ snapshots:
       babel-plugin-polyfill-corejs3: 0.1.7(@babel/core@7.25.9)
       chalk: 4.1.2
       core-js: 3.30.2
-      express: 4.21.1
+      express: 4.21.2
       file-system-cache: 1.1.0
       find-up: 5.0.0
       fork-ts-checker-webpack-plugin: 6.5.3(eslint@9.14.0(jiti@2.3.3))(typescript@4.9.5)(vue-template-compiler@2.7.16)(webpack@4.46.0)
@@ -32719,7 +32711,7 @@ snapshots:
       babel-plugin-polyfill-corejs3: 0.1.7(@babel/core@7.25.9)
       chalk: 4.1.2
       core-js: 3.30.2
-      express: 4.21.1
+      express: 4.21.2
       file-system-cache: 1.1.0
       find-up: 5.0.0
       fork-ts-checker-webpack-plugin: 6.5.3(eslint@9.14.0(jiti@2.3.3))(typescript@5.7.2)(vue-template-compiler@2.7.16)(webpack@4.46.0)
@@ -32806,7 +32798,7 @@ snapshots:
       core-js: 3.30.2
       cpy: 8.1.2
       detect-port: 1.5.1
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 9.1.0
       global: 4.4.0
       globby: 11.1.0
@@ -32871,7 +32863,7 @@ snapshots:
       core-js: 3.30.2
       cpy: 8.1.2
       detect-port: 1.5.1
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 9.1.0
       global: 4.4.0
       globby: 11.1.0
@@ -32936,7 +32928,7 @@ snapshots:
       cli-table3: 0.6.3
       compression: 1.7.4
       detect-port: 1.5.1
-      express: 4.21.1
+      express: 4.21.2
       fs-extra: 11.2.0
       globby: 11.1.0
       ip: 2.0.0
@@ -33171,7 +33163,7 @@ snapshots:
       chalk: 4.1.2
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
-      express: 4.21.1
+      express: 4.21.2
       file-loader: 6.2.0(webpack@4.46.0)
       find-up: 5.0.0
       fs-extra: 9.1.0
@@ -33221,7 +33213,7 @@ snapshots:
       chalk: 4.1.2
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
-      express: 4.21.1
+      express: 4.21.2
       file-loader: 6.2.0(webpack@4.46.0)
       find-up: 5.0.0
       fs-extra: 9.1.0
@@ -33270,7 +33262,7 @@ snapshots:
       chalk: 4.1.2
       core-js: 3.29.0
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
-      express: 4.21.1
+      express: 4.21.2
       find-up: 5.0.0
       fs-extra: 9.1.0
       html-webpack-plugin: 5.5.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
@@ -33319,7 +33311,7 @@ snapshots:
       chalk: 4.1.2
       core-js: 3.29.0
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
-      express: 4.21.1
+      express: 4.21.2
       find-up: 5.0.0
       fs-extra: 9.1.0
       html-webpack-plugin: 5.5.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
@@ -33547,7 +33539,7 @@ snapshots:
       dequal: 2.0.3
       lodash: 4.17.21
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       synchronous-promise: 2.0.17
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
@@ -33564,7 +33556,7 @@ snapshots:
       core-js: 3.30.2
       global: 4.4.0
       lodash: 4.17.21
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -33842,7 +33834,7 @@ snapshots:
       '@storybook/client-logger': 6.5.16
       core-js: 3.30.2
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
       regenerator-runtime: 0.13.11
@@ -33852,7 +33844,7 @@ snapshots:
       '@storybook/client-logger': 6.5.16
       core-js: 3.30.2
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -33861,7 +33853,7 @@ snapshots:
     dependencies:
       '@storybook/client-logger': 7.0.17
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -33869,7 +33861,7 @@ snapshots:
     dependencies:
       '@storybook/client-logger': 7.0.17
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -34117,7 +34109,7 @@ snapshots:
       '@storybook/theming': 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       core-js: 3.30.2
       memoizerific: 1.11.3
-      qs: 6.11.1
+      qs: 6.13.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       regenerator-runtime: 0.13.11
@@ -38041,23 +38033,6 @@ snapshots:
 
   bn.js@5.2.1: {}
 
-  body-parser@1.20.2:
-    dependencies:
-      bytes: 3.1.2
-      content-type: 1.0.5
-      debug: 2.6.9
-      depd: 2.0.0
-      destroy: 1.2.0
-      http-errors: 2.0.0
-      iconv-lite: 0.4.24
-      on-finished: 2.4.1
-      qs: 6.11.0
-      raw-body: 2.5.2
-      type-is: 1.6.18
-      unpipe: 1.0.0
-    transitivePeerDependencies:
-      - supports-color
-
   body-parser@1.20.3:
     dependencies:
       bytes: 3.1.2
@@ -40254,7 +40229,7 @@ snapshots:
       is-string: 1.0.7
       is-typed-array: 1.1.10
       is-weakref: 1.0.2
-      object-inspect: 1.12.3
+      object-inspect: 1.13.2
       object-keys: 1.1.1
       object.assign: 4.1.4
       regexp.prototype.flags: 1.4.3
@@ -41417,7 +41392,7 @@ snapshots:
       - encoding
       - supports-color
 
-  express@4.21.1:
+  express@4.21.2:
     dependencies:
       accepts: 1.3.8
       array-flatten: 1.1.1
@@ -41438,7 +41413,7 @@ snapshots:
       methods: 1.1.2
       on-finished: 2.4.1
       parseurl: 1.3.3
-      path-to-regexp: 0.1.10
+      path-to-regexp: 0.1.12
       proxy-addr: 2.0.7
       qs: 6.13.0
       range-parser: 1.2.1
@@ -43086,7 +43061,7 @@ snapshots:
     dependencies:
       get-intrinsic: 1.2.4
       has: 1.0.3
-      side-channel: 1.0.4
+      side-channel: 1.0.6
 
   interpret@1.4.0: {}
 
@@ -46409,10 +46384,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -46425,7 +46400,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -47044,7 +47019,7 @@ snapshots:
       lru-cache: 11.0.1
       minipass: 7.1.2
 
-  path-to-regexp@0.1.10: {}
+  path-to-regexp@0.1.12: {}
 
   path-to-regexp@1.8.0:
     dependencies:
@@ -49009,10 +48984,6 @@ snapshots:
   q@1.5.1: {}
 
   qrcode-terminal@0.11.0: {}
-
-  qs@6.11.0:
-    dependencies:
-      side-channel: 1.0.4
 
   qs@6.11.1:
     dependencies:
@@ -51547,7 +51518,7 @@ snapshots:
       has-symbols: 1.0.3
       internal-slot: 1.0.5
       regexp.prototype.flags: 1.4.3
-      side-channel: 1.0.4
+      side-channel: 1.0.6
 
   string.prototype.padend@3.1.4:
     dependencies:
@@ -52787,7 +52758,7 @@ snapshots:
 
   typed-rest-client@1.8.9:
     dependencies:
-      qs: 6.11.1
+      qs: 6.13.0
       tunnel: 0.0.6
       underscore: 1.13.6
 
@@ -53294,6 +53265,15 @@ snapshots:
       webpack: 4.46.0
     optionalDependencies:
       file-loader: 6.2.0(webpack@4.46.0)
+
+  url-loader@4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0):
+    dependencies:
+      loader-utils: 2.0.4
+      mime-types: 2.1.35
+      schema-utils: 3.1.1
+      webpack: 4.46.0
+    optionalDependencies:
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
 
   url-parse-lax@3.0.0:
     dependencies:
@@ -53843,7 +53823,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@4.46.0))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
@@ -54306,7 +54286,7 @@ snapshots:
       compression: 1.7.4
       connect-history-api-fallback: 2.0.0
       default-gateway: 6.0.3
-      express: 4.21.1
+      express: 4.21.2
       graceful-fs: 4.2.10
       html-entities: 2.3.3
       http-proxy-middleware: 2.0.6(@types/express@4.17.21)(debug@4.3.4)
@@ -54344,7 +54324,7 @@ snapshots:
       compression: 1.7.4
       connect-history-api-fallback: 2.0.0
       default-gateway: 6.0.3
-      express: 4.21.1
+      express: 4.21.2
       graceful-fs: 4.2.10
       html-entities: 2.3.3
       http-proxy-middleware: 2.0.6(@types/express@4.17.21)(debug@4.3.4)
