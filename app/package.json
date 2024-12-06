@@ -20,7 +20,7 @@
     "build": "tsc && unbuild && tsc -p client/tsconfig.json && vite build client"
   },
   "dependencies": {
-    "express": "^4.21.1"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "@previewjs/analyzer-api": "workspace:^0.1.1",
