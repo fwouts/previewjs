@@ -71,13 +71,13 @@ importers:
   analyzer/api:
     dependencies:
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../../vfs
       pino:
         specifier: ^9.5.0
@@ -96,19 +96,19 @@ importers:
   analyzer/react:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../api
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.9
+        specifier: ^6.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../../vfs
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -151,10 +151,10 @@ importers:
   api:
     dependencies:
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../type-analyzer
       axios:
         specifier: ^1.7.9
@@ -234,19 +234,19 @@ importers:
   chromeless:
     dependencies:
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../api
       '@previewjs/core':
-        specifier: ^29.1.1
+        specifier: ^30.0.0
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^17.1.1
+        specifier: ^18.0.0
         version: link:../iframe
       '@previewjs/properties':
-        specifier: ^5.0.5
+        specifier: ^5.0.6
         version: link:../properties
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../vfs
       express:
         specifier: ^4.21.2
@@ -314,25 +314,25 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1(typescript@5.7.2)(vite@6.0.3(@types/node@20.17.9)(jiti@2.3.3)(less@4.1.3)(terser@5.36.0))
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../analyzer/api
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../api
       '@previewjs/config':
-        specifier: ^6.0.1
+        specifier: ^7.0.0
         version: link:../config
       '@previewjs/iframe':
-        specifier: ^17.1.1
+        specifier: ^18.0.0
         version: link:../iframe
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../vfs
       assert-never:
         specifier: ^1.3.0
@@ -474,22 +474,22 @@ importers:
   framework-plugins/preact:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../../analyzer/api
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../../api
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.9
+        specifier: ^6.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../../vfs
       typescript:
         specifier: ^5.7.2
@@ -671,7 +671,7 @@ importers:
   framework-plugins/react:
     dependencies:
       '@previewjs/analyzer-react':
-        specifier: ^0.1.9
+        specifier: ^0.1.10
         version: link:../../analyzer/react
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -2159,22 +2159,22 @@ importers:
   framework-plugins/solid:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../../analyzer/api
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../../api
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.9
+        specifier: ^6.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../../vfs
       typescript:
         specifier: ^5.7.2
@@ -2296,22 +2296,22 @@ importers:
   framework-plugins/svelte:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../../analyzer/api
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../../api
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.9
+        specifier: ^6.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../../vfs
       '@sveltejs/vite-plugin-svelte':
         specifier: ^4.0.2
@@ -2600,22 +2600,22 @@ importers:
         specifier: ^2.18.1
         version: 2.18.1
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../../analyzer/api
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../../api
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.9
+        specifier: ^6.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../../vfs
       '@vitejs/plugin-vue2':
         specifier: ^2.3.3
@@ -2680,7 +2680,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -2767,22 +2767,22 @@ importers:
   framework-plugins/vue3:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../../analyzer/api
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../../api
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../../serializable-values
       '@previewjs/storybook-helpers':
-        specifier: ^5.0.9
+        specifier: ^6.0.0
         version: link:../../storybook-helpers
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../../type-analyzer
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../../vfs
       '@vitejs/plugin-vue':
         specifier: ^5.2.1
@@ -2863,7 +2863,7 @@ importers:
     devDependencies:
       nuxt:
         specifier: ^3.5.1
-        version: 3.5.1(@parcel/watcher@2.4.1)(@types/node@20.17.9)(encoding@0.1.13)(eslint@9.14.0(jiti@2.3.3))(less@4.1.3)(optionator@0.9.3)(rollup@3.29.5)(sass@1.62.1)(terser@5.36.0)(typescript@5.7.2)(vue-tsc@1.6.5(typescript@5.7.2))
+        version: 3.5.1(@parcel/watcher@2.4.1)(@types/node@20.17.9)(encoding@0.1.13)(eslint@9.14.0(jiti@2.3.3))(less@4.1.3)(optionator@0.9.3)(rollup@3.29.5)(sass@1.62.1)(terser@5.36.0)(typescript@5.7.2)(vue-tsc@1.6.5(typescript@5.7.2))(webpack-sources@3.2.3)
 
   framework-plugins/vue3/tests/apps/nuxt3-app:
     dependencies:
@@ -3149,10 +3149,10 @@ importers:
   properties:
     dependencies:
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../type-analyzer
     devDependencies:
       typescript:
@@ -3171,16 +3171,16 @@ importers:
   screenshot:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../analyzer/api
       '@previewjs/chromeless':
-        specifier: ^13.1.1
+        specifier: ^14.0.0
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^29.1.1
+        specifier: ^30.0.0
         version: link:../core
       '@previewjs/plugin-react':
-        specifier: ^16.0.2
+        specifier: ^17.0.0
         version: link:../framework-plugins/react
       globby:
         specifier: ^14.0.2
@@ -3239,7 +3239,7 @@ importers:
         specifier: ^9.3.0
         version: 9.3.0
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../type-analyzer
       assert-never:
         specifier: ^1.3.0
@@ -3267,19 +3267,19 @@ importers:
   storybook-helpers:
     dependencies:
       '@previewjs/analyzer-api':
-        specifier: ^0.1.7
+        specifier: ^0.1.8
         version: link:../analyzer/api
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../api
       '@previewjs/core':
-        specifier: ^29.1.1
+        specifier: ^30.0.0
         version: link:../core
       '@previewjs/serializable-values':
-        specifier: ^9.0.5
+        specifier: ^9.0.6
         version: link:../serializable-values
       '@previewjs/type-analyzer':
-        specifier: ^10.1.4
+        specifier: ^10.1.5
         version: link:../type-analyzer
       typescript:
         specifier: ^5.7.2
@@ -3304,19 +3304,19 @@ importers:
         specifier: ^1.49.0
         version: 1.49.0
       '@previewjs/api':
-        specifier: ^16.0.5
+        specifier: ^16.0.6
         version: link:../api
       '@previewjs/chromeless':
-        specifier: ^13.1.1
+        specifier: ^14.0.0
         version: link:../chromeless
       '@previewjs/core':
-        specifier: ^29.1.1
+        specifier: ^30.0.0
         version: link:../core
       '@previewjs/iframe':
-        specifier: ^17.1.1
+        specifier: ^18.0.0
         version: link:../iframe
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../vfs
       assert-never:
         specifier: ^1.3.0
@@ -3344,7 +3344,7 @@ importers:
   type-analyzer:
     dependencies:
       '@previewjs/vfs':
-        specifier: ^2.1.3
+        specifier: ^2.1.4
         version: link:../vfs
       assert-never:
         specifier: ^1.3.0
@@ -29170,12 +29170,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -29271,7 +29271,7 @@ snapshots:
       minimist: 1.2.8
       opener: 1.5.2
       pretty-bytes: 5.6.0
-      semver: 7.6.2
+      semver: 7.6.3
       serve-static: 1.16.2
       std-env: 3.8.0
       upath: 2.0.1
@@ -29288,7 +29288,7 @@ snapshots:
       glob: 7.2.3
       globby: 11.1.0
       scule: 0.2.1
-      semver: 7.6.2
+      semver: 7.6.3
       upath: 2.0.1
       vue-template-compiler: 2.7.16
 
@@ -29422,7 +29422,7 @@ snapshots:
       pathe: 1.1.2
       pkg-types: 1.0.3
       scule: 1.0.0
-      semver: 7.6.2
+      semver: 7.6.3
       unctx: 2.3.1
       unimport: 3.0.7(rollup@3.29.5)
       untyped: 1.4.0
@@ -29457,7 +29457,7 @@ snapshots:
       postcss-import: 13.0.0(postcss@8.4.49)
       postcss-loader: 4.3.0(postcss@8.4.49)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       postcss-url: 10.1.3(postcss@8.4.49)
-      semver: 7.6.2
+      semver: 7.6.3
     transitivePeerDependencies:
       - webpack
 
@@ -29587,9 +29587,9 @@ snapshots:
       - supports-color
       - webpack-sources
 
-  '@nuxt/telemetry@2.2.0(rollup@3.29.5)':
+  '@nuxt/telemetry@2.2.0(rollup@3.29.5)(webpack-sources@3.2.3)':
     dependencies:
-      '@nuxt/kit': 3.5.1(rollup@3.29.5)
+      '@nuxt/kit': 3.13.2(rollup@3.29.5)(webpack-sources@3.2.3)
       chalk: 5.3.0
       ci-info: 3.8.0
       consola: 3.2.3
@@ -29610,8 +29610,10 @@ snapshots:
       rc9: 2.1.2
       std-env: 3.8.0
     transitivePeerDependencies:
+      - magicast
       - rollup
       - supports-color
+      - webpack-sources
 
   '@nuxt/types@2.16.3':
     dependencies:
@@ -29654,7 +29656,7 @@ snapshots:
       jiti: 1.21.0
       lodash: 4.17.21
       proper-lockfile: 4.1.2
-      semver: 7.6.2
+      semver: 7.6.3
       serialize-javascript: 6.0.2
       signal-exit: 3.0.7
       ua-parser-js: 1.0.37
@@ -29814,7 +29816,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.26.0
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -29844,7 +29846,7 @@ snapshots:
       postcss-loader: 4.3.0(postcss@8.4.49)(webpack@4.46.0)
       postcss-preset-env: 8.0.1(postcss@8.4.49)
       postcss-url: 10.1.3(postcss@8.4.49)
-      semver: 7.6.2
+      semver: 7.6.3
       std-env: 3.8.0
       style-resources-loader: 1.5.0(webpack@4.46.0)
       terser-webpack-plugin: 4.2.3(webpack@4.46.0)
@@ -29853,7 +29855,7 @@ snapshots:
       ufo: 1.3.2
       upath: 2.0.1
       url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -35928,7 +35930,7 @@ snapshots:
       '@vue/babel-preset-jsx': 1.4.0(@babel/core@7.22.20)(vue@2.7.14)
       babel-plugin-dynamic-import-node: 2.3.3
       core-js-compat: 3.30.2
-      semver: 7.6.2
+      semver: 7.6.3
     optionalDependencies:
       core-js: 3.30.2
       vue: 2.7.14
@@ -35951,7 +35953,7 @@ snapshots:
       '@vue/babel-preset-jsx': 1.4.0(@babel/core@7.22.20)(vue@3.3.4)
       babel-plugin-dynamic-import-node: 2.3.3
       core-js-compat: 3.30.2
-      semver: 7.6.2
+      semver: 7.6.3
     optionalDependencies:
       core-js: 3.30.2
       vue: 3.3.4
@@ -36639,7 +36641,7 @@ snapshots:
       open: 8.4.2
       ora: 5.4.1
       read-pkg: 5.2.0
-      semver: 7.6.2
+      semver: 7.6.3
       strip-ansi: 6.0.1
     transitivePeerDependencies:
       - encoding
@@ -46159,7 +46161,7 @@ snapshots:
       rollup: 3.29.5
       rollup-plugin-visualizer: 5.9.0(rollup@3.29.5)
       scule: 1.0.0
-      semver: 7.6.2
+      semver: 7.6.3
       serve-placeholder: 2.0.1
       serve-static: 1.16.2
       source-map-support: 0.5.21
@@ -46482,10 +46484,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -46498,7 +46500,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -46565,12 +46567,12 @@ snapshots:
       - webpack-command
       - whiskers
 
-  nuxt@3.5.1(@parcel/watcher@2.4.1)(@types/node@20.17.9)(encoding@0.1.13)(eslint@9.14.0(jiti@2.3.3))(less@4.1.3)(optionator@0.9.3)(rollup@3.29.5)(sass@1.62.1)(terser@5.36.0)(typescript@5.7.2)(vue-tsc@1.6.5(typescript@5.7.2)):
+  nuxt@3.5.1(@parcel/watcher@2.4.1)(@types/node@20.17.9)(encoding@0.1.13)(eslint@9.14.0(jiti@2.3.3))(less@4.1.3)(optionator@0.9.3)(rollup@3.29.5)(sass@1.62.1)(terser@5.36.0)(typescript@5.7.2)(vue-tsc@1.6.5(typescript@5.7.2))(webpack-sources@3.2.3):
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/kit': 3.5.1(rollup@3.29.5)
       '@nuxt/schema': 3.5.1(rollup@3.29.5)
-      '@nuxt/telemetry': 2.2.0(rollup@3.29.5)
+      '@nuxt/telemetry': 2.2.0(rollup@3.29.5)(webpack-sources@3.2.3)
       '@nuxt/ui-templates': 1.1.1
       '@nuxt/vite-builder': 3.5.1(@types/node@20.17.9)(eslint@9.14.0(jiti@2.3.3))(less@4.1.3)(optionator@0.9.3)(rollup@3.29.5)(sass@1.62.1)(terser@5.36.0)(typescript@5.7.2)(vue-tsc@1.6.5(typescript@5.7.2))(vue@3.5.13(typescript@5.7.2))
       '@types/node': 20.17.9
@@ -46635,6 +46637,7 @@ snapshots:
       - eslint
       - less
       - lightningcss
+      - magicast
       - meow
       - optionator
       - rollup
@@ -46648,6 +46651,7 @@ snapshots:
       - vls
       - vti
       - vue-tsc
+      - webpack-sources
 
   nwsapi@2.2.2: {}
 
@@ -52608,7 +52612,7 @@ snapshots:
       enhanced-resolve: 4.5.0
       loader-utils: 2.0.4
       micromatch: 4.0.8
-      semver: 7.6.2
+      semver: 7.6.3
       typescript: 4.2.4
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
 
@@ -53921,7 +53925,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
