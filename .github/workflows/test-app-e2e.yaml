@@ -28,12 +28,12 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        os: [ubuntu-22.04, macos-14, windows-2022]
+        os: [ubuntu-24.04, macos-14, windows-2022]
         include:
           - node-version: 20.x
-            os: ubuntu-22.04
+            os: ubuntu-24.04
           - node-version: 22.x
-            os: ubuntu-22.04
+            os: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -77,11 +77,11 @@ jobs:
           else
             echo "No changes detected."
           fi
-        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
+        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-24.04' }}
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
           MATRIX_OS: ${{ matrix.os }}
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
-        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
+        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-24.04' }}
