@@ -1,6 +1,16 @@
 import type { SerializableValue } from "@previewjs/serializable-values";
 import type { CollectedTypes, ValueType } from "@previewjs/type-analyzer";
+import type { FrameworkPluginInfo } from "./api.js";
 import type { RPC } from "./rpc.js";
+
+export const GetInfo: RPC<
+  Record<string, never>,
+  {
+    frameworkPlugin: FrameworkPluginInfo;
+  }
+> = {
+  path: "info",
+};
 
 export const Analyze: RPC<
   {

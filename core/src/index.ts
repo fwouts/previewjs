@@ -171,6 +171,9 @@ export async function createWorkspace({
           types,
         };
       });
+      router.registerRPC(RPCs.GetInfo, async () => ({
+        frameworkPlugin: frameworkPluginFactory.info,
+      }));
       router.registerRPC(RPCs.CrawlFiles, (options) =>
         crawlFiles(logger, workspace, frameworkPlugin, options)
       );
