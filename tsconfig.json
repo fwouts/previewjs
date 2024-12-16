@@ -2,5 +2,8 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "resolveJsonModule": true
+  },
+  "ts-node": {
+    "transpileOnly": true
   }
 }
