@@ -121,11 +121,11 @@ importers:
         specifier: ^15.7.14
         version: 15.7.14
       '@types/react':
-        specifier: ^18.3.14
-        version: 18.3.14
+        specifier: ^18.3.16
+        version: 18.3.16
       '@types/react-dom':
-        specifier: ^18.3.3
-        version: 18.3.3(@types/react@18.3.14)
+        specifier: ^18.3.5
+        version: 18.3.5(@types/react@18.3.16)
       pino:
         specifier: ^9.5.0
         version: 9.5.0
@@ -293,8 +293,8 @@ importers:
   config-helpers/nextjs:
     devDependencies:
       '@types/react':
-        specifier: ^18.3.14
-        version: 18.3.14
+        specifier: ^18.3.16
+        version: 18.3.16
       next:
         specifier: ^13.4.7
         version: 13.4.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -696,11 +696,11 @@ importers:
         specifier: workspace:*
         version: link:../../testing
       '@types/react':
-        specifier: ^18.3.14
-        version: 18.3.14
+        specifier: ^18.3.16
+        version: 18.3.16
       '@types/react-dom':
-        specifier: ^18.3.3
-        version: 18.3.3(@types/react@18.3.14)
+        specifier: ^18.3.5
+        version: 18.3.5(@types/react@18.3.16)
       pino:
         specifier: ^9.5.0
         version: 9.5.0
@@ -1164,7 +1164,7 @@ importers:
         version: 6.5.16(@babel/core@7.26.0)(@storybook/builder-webpack5@6.5.16(@swc/core@1.3.59(@swc/helpers@0.5.1))(eslint@9.14.0(jiti@2.3.3))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(vue-template-compiler@2.7.16))(eslint@9.14.0(jiti@2.3.3))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(vue-template-compiler@2.7.16)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       '@storybook/addon-interactions':
         specifier: ^6.5.16
-        version: 6.5.16(@types/react@18.3.14)(eslint@9.14.0(jiti@2.3.3))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(vue-template-compiler@2.7.16)
+        version: 6.5.16(@types/react@18.3.16)(eslint@9.14.0(jiti@2.3.3))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(vue-template-compiler@2.7.16)
       '@storybook/addon-links':
         specifier: ^6.5.16
         version: 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2686,7 +2686,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -3221,11 +3221,11 @@ importers:
         specifier: workspace:^
         version: link:..
       '@types/react':
-        specifier: ^18.3.14
-        version: 18.3.14
+        specifier: ^18.3.16
+        version: 18.3.16
       '@types/react-dom':
-        specifier: ^18.3.3
-        version: 18.3.3(@types/react@18.3.14)
+        specifier: ^18.3.5
+        version: 18.3.5(@types/react@18.3.16)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@6.0.3(@types/node@20.17.10)(jiti@2.3.3)(less@4.1.3)(sass@1.62.1)(terser@5.36.0))
@@ -8862,8 +8862,8 @@ packages:
   '@types/react-dom@18.2.5':
     resolution: {integrity: sha512-sRQsOS/sCLnpQhR4DSKGTtWFE3FZjpQa86KPVbhUqdYMRZ9FEFcfAytKhR/vUG2rH1oFbOOej6cuD7MFSobDRQ==}
 
-  '@types/react-dom@18.3.3':
-    resolution: {integrity: sha512-uTYkxTLkYp41nq/ULXyXMtkNT1vu5fXJoqad6uTNCOGat5t9cLgF4vMNLBXsTOXpdOI44XzKPY1M5RRm0bQHuw==}
+  '@types/react-dom@18.3.5':
+    resolution: {integrity: sha512-P4t6saawp+b/dFrUr2cvkVsfvPguwsxtH6dNIYRllMsefqFzkZk5UIjzyDOv5g1dXIPdG4Sp1yCR4Z6RCUsG/Q==}
     peerDependencies:
       '@types/react': ^18.0.0
 
@@ -8903,8 +8903,8 @@ packages:
   '@types/react@18.2.6':
     resolution: {integrity: sha512-wRZClXn//zxCFW+ye/D2qY65UsYP1Fpex2YXorHc8awoNamkMZSvBxwxdYVInsHOZZd2Ppq8isnSzJL5Mpf8OA==}
 
-  '@types/react@18.3.14':
-    resolution: {integrity: sha512-NzahNKvjNhVjuPBQ+2G7WlxstQ+47kXZNHlUvFakDViuIEfGY926GqhMueQFZ7woG+sPiQKlF36XfrIUVSUfFg==}
+  '@types/react@18.3.16':
+    resolution: {integrity: sha512-oh8AMIC4Y2ciKufU8hnKgs+ufgbA/dhPTACaZPM86AbwX9QwnFtSoPWEeRUj8fge+v6kFt78BXcDhAU1SrrAsw==}
 
   '@types/relateurl@0.2.29':
     resolution: {integrity: sha512-QSvevZ+IRww2ldtfv1QskYsqVVVwCKQf1XbwtcyyoRvLIQzfyPhj/C+3+PKzSDRdiyejaiLgnq//XTkleorpLg==}
@@ -18361,6 +18361,7 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qrcode-terminal@0.11.0:
@@ -26642,10 +26643,10 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       react-merge-refs: 1.1.0
 
-  '@design-systems/utils@2.12.0(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@design-systems/utils@2.12.0(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.21.0
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
       clsx: 1.2.1
       focus-lock: 0.8.1
       react: 18.2.0
@@ -26664,12 +26665,12 @@ snapshots:
       - '@types/react'
       - react-dom
 
-  '@devtools-ds/object-inspector@1.2.1(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@devtools-ds/object-inspector@1.2.1(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.7.2
       '@devtools-ds/object-parser': 1.2.1
-      '@devtools-ds/themes': 1.2.1(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@devtools-ds/tree': 1.2.1(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@devtools-ds/themes': 1.2.1(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@devtools-ds/tree': 1.2.1(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       clsx: 1.1.0
       react: 18.2.0
     transitivePeerDependencies:
@@ -26690,10 +26691,10 @@ snapshots:
       - '@types/react'
       - react-dom
 
-  '@devtools-ds/themes@1.2.1(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@devtools-ds/themes@1.2.1(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.5.5
-      '@design-systems/utils': 2.12.0(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@design-systems/utils': 2.12.0(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       clsx: 1.1.0
       react: 18.2.0
     transitivePeerDependencies:
@@ -26710,10 +26711,10 @@ snapshots:
       - '@types/react'
       - react-dom
 
-  '@devtools-ds/tree@1.2.1(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@devtools-ds/tree@1.2.1(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/runtime': 7.7.2
-      '@devtools-ds/themes': 1.2.1(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@devtools-ds/themes': 1.2.1(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       clsx: 1.1.0
       react: 18.2.0
     transitivePeerDependencies:
@@ -28294,13 +28295,13 @@ snapshots:
   '@mdx-js/react@2.3.0(react@18.2.0)':
     dependencies:
       '@types/mdx': 2.0.4
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
       react: 18.2.0
 
   '@mdx-js/react@2.3.0(react@18.3.1)':
     dependencies:
       '@types/mdx': 2.0.4
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
       react: 18.3.1
 
   '@mdx-js/util@1.6.22': {}
@@ -28614,12 +28615,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -29260,7 +29261,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.26.0
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -29299,7 +29300,7 @@ snapshots:
       ufo: 1.3.2
       upath: 2.0.1
       url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -30960,9 +30961,9 @@ snapshots:
       - webpack-cli
       - webpack-command
 
-  '@storybook/addon-interactions@6.5.16(@types/react@18.3.14)(eslint@9.14.0(jiti@2.3.3))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(vue-template-compiler@2.7.16)':
+  '@storybook/addon-interactions@6.5.16(@types/react@18.3.16)(eslint@9.14.0(jiti@2.3.3))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.7.2)(vue-template-compiler@2.7.16)':
     dependencies:
-      '@devtools-ds/object-inspector': 1.2.1(@types/react@18.3.14)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@devtools-ds/object-inspector': 1.2.1(@types/react@18.3.16)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addons': 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/api': 6.5.16(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/client-logger': 6.5.16
@@ -31634,7 +31635,7 @@ snapshots:
       case-sensitive-paths-webpack-plugin: 2.4.0
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@4.46.0)
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       find-up: 5.0.0
       fork-ts-checker-webpack-plugin: 4.1.6(eslint@9.14.0(jiti@2.3.3))(typescript@5.7.2)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       glob: 7.2.3
@@ -32673,7 +32674,7 @@ snapshots:
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
       express: 4.21.2
-      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      file-loader: 6.2.0(webpack@4.46.0)
       find-up: 5.0.0
       fs-extra: 9.1.0
       html-webpack-plugin: 4.5.2(webpack@4.46.0)
@@ -34130,7 +34131,7 @@ snapshots:
 
   '@types/hoist-non-react-statics@3.3.1':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
       hoist-non-react-statics: 3.3.2
 
   '@types/html-escaper@3.0.2': {}
@@ -34255,46 +34256,46 @@ snapshots:
 
   '@types/react-dom@18.2.10':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react-dom@18.2.4':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react-dom@18.2.5':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
-  '@types/react-dom@18.3.3(@types/react@18.3.14)':
+  '@types/react-dom@18.3.5(@types/react@18.3.16)':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react-is@18.2.0':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react-native@0.70.13':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react-transition-group@4.4.5':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react-transition-group@4.4.6':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/react@16.14.41':
     dependencies:
@@ -34332,7 +34333,7 @@ snapshots:
       '@types/scheduler': 0.16.2
       csstype: 3.1.2
 
-  '@types/react@18.3.14':
+  '@types/react@18.3.16':
     dependencies:
       '@types/prop-types': 15.7.14
       csstype: 3.1.3
@@ -34381,12 +34382,12 @@ snapshots:
   '@types/styled-components@5.1.26':
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
       csstype: 3.1.1
 
   '@types/styled-jsx@2.2.9':
     dependencies:
-      '@types/react': 18.3.14
+      '@types/react': 18.3.16
 
   '@types/tapable@1.0.8': {}
 
@@ -45815,10 +45816,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -45831,7 +45832,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -53254,7 +53255,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
