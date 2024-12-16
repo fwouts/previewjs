@@ -395,7 +395,7 @@ function expectParsedExpression(expressionSource: string, reversible = true) {
     );
     try {
       expect(parsedValue).toEqual(reparsedValue);
-    } catch (e) {
+    } catch {
       throw new AssertionError({
         actual: [regeneratedSource, reparsedValue],
         expected: [expressionSource, parsedValue],

@@ -273,7 +273,7 @@ type PJS_Slots = ${pjsSlotsType};
       const slotNameDoubleQuoted = element.slotName || '"default"';
       try {
         return [JSON.parse(slotNameDoubleQuoted)];
-      } catch (e) {
+      } catch {
         this.logger.warn(`Invalid slot name string: ${slotNameDoubleQuoted}`);
         return [];
       }

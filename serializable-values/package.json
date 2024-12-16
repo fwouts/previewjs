@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/serializable-values",
-  "version": "9.0.4",
+  "version": "9.0.6",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -22,16 +22,16 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.2.0",
-    "@previewjs/type-analyzer": "^10.1.3",
+    "@faker-js/faker": "^9.3.0",
+    "@previewjs/type-analyzer": "^10.1.5",
     "assert-never": "^1.3.0",
     "prettier": "^2.8.8",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   },
   "devDependencies": {
     "@types/prettier": "^2.7.3",
     "unbuild": "^2.0.0",
-    "vite": "^5.4.10",
-    "vitest": "^2.1.4"
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
   }
 }

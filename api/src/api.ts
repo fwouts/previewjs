@@ -5,3 +5,8 @@ export interface Api {
     ...[endpoint, request]: RequestOf<E> extends void ? [E] : [E, RequestOf<E>]
   ): Promise<ResponseOf<E>>;
 }
+
+export type FrameworkPluginInfo = {
+  name: string;
+  apiVersion: number;
+};
