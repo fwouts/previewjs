@@ -27,38 +27,32 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [18.x]
-        os: [ubuntu-22.04, macos-11, windows-2022]
-        group: [1, 2, 3]
+        node-version: [22.x]
+        os: [ubuntu-24.04, macos-14, windows-2022]
         include:
+          - node-version: 18.x
+            os: ubuntu-24.04
           - node-version: 20.x
-            os: ubuntu-22.04
-            group: 1
-          - node-version: 20.x
-            os: ubuntu-22.04
-            group: 2
-          - node-version: 20.x
-            os: ubuntu-22.04
-            group: 3
+            os: ubuntu-24.04
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Cache pnpm modules
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
         with:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-full-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-full-
-      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
         with:
           run_install: true
       - run: cd testing && pnpm exec playwright install
       - run: pnpm turbo build
-      - run: pnpm turbo e2e-test --concurrency=1 -- --shard=${{ matrix.group }}/3 --workers=2
+      - run: pnpm turbo e2e-test --concurrency=1
         env:
           PREVIEWJS_LOG_LEVEL: "debug"
       - name: Update screenshots on non-main branches
@@ -74,7 +68,7 @@ jobs:
             git checkout ${{ github.head_ref }}
             git pull
             git stash pop || echo "Conflict on git stash pop."
-            git commit --allow-empty -am "bot: update screenshots ($MATRIX_OS, group $MATRIX_GROUP)"
+            git commit --allow-empty -am "bot: update screenshots ($MATRIX_OS)"
             if ! git push origin ${{ github.head_ref }}; then
               # Try again as it may be a race condition.
               git pull --rebase
@@ -83,12 +77,11 @@ jobs:
           else
             echo "No changes detected."
           fi
-        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
+        if: ${{ github.ref != 'refs/heads/main' && matrix.node-version == '22.x' && matrix.os == 'ubuntu-24.04' }}
         shell: bash
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
           MATRIX_OS: ${{ matrix.os }}
-          MATRIX_GROUP: ${{ matrix.group }}
       - name: Fail if screenshots have changed on main branch
         run: git diff --exit-code
-        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '18.x' && matrix.os == 'ubuntu-22.04' }}
+        if: ${{ github.ref == 'refs/heads/main' && matrix.node-version == '22.x' && matrix.os == 'ubuntu-24.04' }}

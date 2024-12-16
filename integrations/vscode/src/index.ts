@@ -81,7 +81,7 @@ export async function activate({ subscriptions }: vscode.ExtensionContext) {
   }
 
   // Note: ESlint warning isn't relevant because we're correctly inferring arguments types.
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   function catchErrors<F extends Function>(f: F) {
     return async (...args: F extends (...args: infer A) => any ? A : never) => {
       try {

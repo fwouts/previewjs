@@ -522,7 +522,7 @@ export class ViteManager {
           }
           const source = typeof loaded === "object" ? loaded.code : loaded;
           await viteServer.pluginContainer.transform(source, module.id);
-        } catch (e) {
+        } catch {
           // We know it will fail.
           return;
         }

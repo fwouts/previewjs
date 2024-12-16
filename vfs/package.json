@@ -1,6 +1,6 @@
 {
   "name": "@previewjs/vfs",
-  "version": "2.1.2",
+  "version": "2.1.4",
   "license": "MIT",
   "author": {
     "name": "François Wouts",
@@ -22,15 +22,15 @@
     "test": "vitest"
   },
   "dependencies": {
-    "assert-never": "^1.2.1",
+    "assert-never": "^1.3.0",
     "chokidar": "^3.6.0",
     "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "typescript": "^5.4.4",
+    "typescript": "^5.7.2",
     "unbuild": "^2.0.0",
-    "vite": "^5.2.8",
-    "vitest": "^1.4.0"
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
   }
 }

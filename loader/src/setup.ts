@@ -18,7 +18,7 @@ export async function copyLoader(destPath: string, type: "cjs" | "esm") {
       .pathToFileURL(path.join(__dirname, "../src/release/package.json"))
       .toString(),
     {
-      assert: {
+      with: {
         type: "json",
       },
     }

@@ -1,5 +1,8 @@
 {
-  "extends": ["config:best-practices", "config:js-lib"],
+  "extends": [
+    "config:best-practices",
+    "config:js-lib"
+  ],
   "ignoreDeps": [
     "@previewjs/api",
     "@previewjs/app",
@@ -23,17 +26,29 @@
     "@previewjs/type-analyzer",
     "@previewjs/vfs",
     "@types/vscode",
+    "node",
     "vscode"
   ],
-  "ignorePaths": ["framework-plugins/**/apps/**", "loader/src/release/**"],
+  "ignorePaths": [
+    "framework-plugins/**/apps/**",
+    "loader/src/release/**"
+  ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "automerge": true
     },
     {
-      "matchPackagePatterns": ["*"],
-      "rangeStrategy": "bump"
+      "rangeStrategy": "bump",
+      "matchPackageNames": [
+        "*"
+      ]
     }
-  ]
+  ],
+  "prHourlyLimit": 1
 }

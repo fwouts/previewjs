@@ -1,5 +1,5 @@
 {
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "env": [
@@ -16,7 +16,7 @@
     "e2e-test": {
       "dependsOn": ["build"],
       "outputs": [],
-      "env": ["ONLY_REACT_VERSION"]
+      "env": ["ONLY_REACT_VERSION", "PREVIEWJS_LOG_LEVEL"]
     },
     "dev": {
       "cache": false

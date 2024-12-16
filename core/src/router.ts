@@ -30,7 +30,7 @@ export class ApiRouter {
         response,
       };
     } catch (e: any) {
-      this.logger.error(`RPC ${path} failed`, e);
+      this.logger.error(`RPC ${path} failed: ${e}`);
       return {
         kind: "error",
         message: e.message,

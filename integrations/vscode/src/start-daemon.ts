@@ -116,7 +116,7 @@ function streamDaemonLogs(
     try {
       const time = Date.now();
       utimesSync(logsPath, time, time);
-    } catch (e) {
+    } catch {
       let fd = openSync(logsPath, "a");
       closeSync(fd);
     }
@@ -175,7 +175,7 @@ function streamDaemonLogs(
           resolve(watcher);
           resolved = true;
         }
-      } catch (e: any) {
+      } catch {
         // Fine, ignore. It just means log streaming is broken.
       }
     };
