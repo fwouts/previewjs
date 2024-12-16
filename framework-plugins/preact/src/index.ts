@@ -1,6 +1,7 @@
 import type { Component, Story } from "@previewjs/analyzer-api";
 import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
+import { polyfillNode } from "esbuild-plugin-polyfill-node";
 import path from "path";
 import ts from "typescript";
 import url from "url";
@@ -65,6 +66,11 @@ const preactFrameworkPlugin: FrameworkPluginFactory = {
       },
       viteConfig: (configuredPlugins) => {
         return {
+          optimizeDeps: {
+            esbuildOptions: {
+              plugins: [polyfillNode()],
+            },
+          },
           resolve: {
             alias: {
               react: "preact/compat",

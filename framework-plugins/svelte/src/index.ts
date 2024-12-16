@@ -3,6 +3,7 @@ import type { FrameworkPluginFactory } from "@previewjs/core";
 import { createTypeAnalyzer } from "@previewjs/type-analyzer";
 import type sveltekit from "@sveltejs/kit";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { polyfillNode } from "esbuild-plugin-polyfill-node";
 import fs from "fs-extra";
 import path from "path";
 import url from "url";
@@ -74,6 +75,11 @@ const svelteFrameworkPlugin: FrameworkPluginFactory = {
         };
       },
       viteConfig: (configuredPlugins) => ({
+        optimizeDeps: {
+          esbuildOptions: {
+            plugins: [polyfillNode()],
+          },
+        },
         ...(isSvelteKit
           ? {
               define: {
