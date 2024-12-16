@@ -1,12 +1,12 @@
 import type { Analyzer } from "@previewjs/analyzer-api";
+import type { FrameworkPluginInfo } from "@previewjs/api";
 import type { Reader } from "@previewjs/vfs";
 import type { Logger } from "pino";
 import type * as vite from "vite";
 import type { PackageDependencies } from "./dependencies.js";
 
 export interface FrameworkPluginFactory {
-  /** This will always be set in current plugin versions. */
-  info?: FrameworkPluginInfo;
+  info: FrameworkPluginInfo;
   isCompatible(dependencies: PackageDependencies): Promise<boolean>;
   create(options: {
     rootDir: string;
@@ -22,8 +22,3 @@ export interface FrameworkPlugin extends Analyzer {
   viteConfig: (configuredPlugins: vite.Plugin[]) => vite.UserConfig;
   dispose(): void;
 }
-
-type FrameworkPluginInfo = {
-  name: string;
-  apiVersion: number;
-};
