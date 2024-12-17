@@ -32,8 +32,8 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1(eslint@9.17.0(jiti@2.3.3))(typescript@5.7.2)
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       depcheck:
         specifier: ^1.4.7
         version: 1.4.7
@@ -335,8 +335,8 @@ importers:
         specifier: ^2.1.4
         version: link:../vfs
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -2999,8 +2999,8 @@ importers:
   iframe:
     devDependencies:
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -3125,8 +3125,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       exclusive-promises:
         specifier: ^1.0.3
         version: 1.0.3
@@ -3248,8 +3248,8 @@ importers:
         specifier: ^10.1.5
         version: link:../type-analyzer
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -3325,8 +3325,8 @@ importers:
         specifier: ^2.1.4
         version: link:../vfs
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
@@ -3353,8 +3353,8 @@ importers:
         specifier: ^2.1.4
         version: link:../vfs
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       globby:
         specifier: ^14.0.2
         version: 14.0.2
@@ -3387,8 +3387,8 @@ importers:
   vfs:
     dependencies:
       assert-never:
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       chokidar:
         specifier: ^3.6.0
         version: 3.6.0
@@ -10111,8 +10111,8 @@ packages:
   asn1@0.2.6:
     resolution: {integrity: sha512-ix/FxPn0MDjeyJ7i/yoHGFt/EX6LyNbxSEhPPXODPL+KB0VPk86UYfL0lMdy+KCnv+fmvIzySwaK5COwqVbWTQ==}
 
-  assert-never@1.3.0:
-    resolution: {integrity: sha512-9Z3vxQ+berkL/JJo0dK+EY3Lp0s3NtSnP3VCLsh5HDcZPrh0M+KQRK5sWhUeyPPH+/RCxZqOxLMR+YC6vlviEQ==}
+  assert-never@1.4.0:
+    resolution: {integrity: sha512-5oJg84os6NMQNl27T9LnZkvvqzvAnHu03ShCnoj6bsJwS7L8AO4lf+C/XjK/nvzEqQB744moC6V128RucQd1jA==}
 
   assert-plus@1.0.0:
     resolution: {integrity: sha512-NfJ4UzBCcQGLDlQq7nHxH+tv3kyZ0hHQqF5BO6J7tNJeP5do1llPr8dZ8zHonfhAu0PHAdMkSo+8o0wxg9lZWw==}
@@ -29689,7 +29689,7 @@ snapshots:
       '@previewjs/serializable-values': 9.0.4
       '@previewjs/type-analyzer': 10.1.3
       '@previewjs/vfs': 2.1.2
-      assert-never: 1.3.0
+      assert-never: 1.4.0
       axios: 1.7.9
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.24.0)
       exclusive-promises: 1.0.3
@@ -29730,7 +29730,7 @@ snapshots:
       '@previewjs/serializable-values': 9.0.4
       '@previewjs/type-analyzer': 10.1.3
       '@previewjs/vfs': 2.1.2
-      assert-never: 1.3.0
+      assert-never: 1.4.0
       axios: 1.7.9
       esbuild-plugin-polyfill-node: 0.3.0(esbuild@0.24.0)
       exclusive-promises: 1.0.3
@@ -29798,7 +29798,7 @@ snapshots:
     dependencies:
       '@faker-js/faker': 8.4.1
       '@previewjs/type-analyzer': 10.1.3
-      assert-never: 1.3.0
+      assert-never: 1.4.0
       prettier: 2.8.8
       typescript: 5.7.2
 
@@ -29828,14 +29828,14 @@ snapshots:
   '@previewjs/type-analyzer@10.1.3':
     dependencies:
       '@previewjs/vfs': 2.1.2
-      assert-never: 1.3.0
+      assert-never: 1.4.0
       globby: 14.0.2
       prettier: 2.8.8
       typescript: 5.7.2
 
   '@previewjs/vfs@2.1.2':
     dependencies:
-      assert-never: 1.3.0
+      assert-never: 1.4.0
       chokidar: 3.6.0
       fs-extra: 11.2.0
 
@@ -36809,7 +36809,7 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  assert-never@1.3.0: {}
+  assert-never@1.4.0: {}
 
   assert-plus@1.0.0: {}
 
@@ -54010,7 +54010,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.26.2
       '@babel/types': 7.26.0
-      assert-never: 1.3.0
+      assert-never: 1.4.0
       babel-walk: 3.0.0-canary-5
 
   wonka@4.0.15: {}
