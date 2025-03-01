@@ -36,33 +36,8 @@ async function main() {
       with: { type: "json" },
     });
     const {
-      default: { version: preactPluginVersion },
-    } = await import("../framework-plugins/preact/package.json", {
-      with: { type: "json" },
-    });
-    const {
       default: { version: reactPluginVersion },
     } = await import("../framework-plugins/react/package.json", {
-      with: { type: "json" },
-    });
-    const {
-      default: { version: solidPluginVersion },
-    } = await import("../framework-plugins/solid/package.json", {
-      with: { type: "json" },
-    });
-    const {
-      default: { version: sveltePluginVersion },
-    } = await import("../framework-plugins/svelte/package.json", {
-      with: { type: "json" },
-    });
-    const {
-      default: { version: vue2PluginVersion },
-    } = await import("../framework-plugins/vue2/package.json", {
-      with: { type: "json" },
-    });
-    const {
-      default: { version: vue3PluginVersion },
-    } = await import("../framework-plugins/vue3/package.json", {
       with: { type: "json" },
     });
     const releaseDirPath = path.join(
@@ -79,12 +54,7 @@ async function main() {
           name: "@previewjs/loader-release",
           dependencies: {
             "@previewjs/core": coreVersion,
-            "@previewjs/plugin-preact": preactPluginVersion,
             "@previewjs/plugin-react": reactPluginVersion,
-            "@previewjs/plugin-solid": solidPluginVersion,
-            "@previewjs/plugin-svelte": sveltePluginVersion,
-            "@previewjs/plugin-vue2": vue2PluginVersion,
-            "@previewjs/plugin-vue3": vue3PluginVersion,
             "@previewjs/pro": previewjsProVersion,
             "@previewjs/vfs": vfsVersion,
           },

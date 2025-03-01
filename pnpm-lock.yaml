@@ -185,24 +185,9 @@ importers:
       '@previewjs/iframe':
         specifier: workspace:*
         version: link:../iframe
-      '@previewjs/plugin-preact':
-        specifier: workspace:*
-        version: link:../framework-plugins/preact
       '@previewjs/plugin-react':
         specifier: workspace:*
         version: link:../framework-plugins/react
-      '@previewjs/plugin-solid':
-        specifier: workspace:*
-        version: link:../framework-plugins/solid
-      '@previewjs/plugin-svelte':
-        specifier: workspace:*
-        version: link:../framework-plugins/svelte
-      '@previewjs/plugin-vue2':
-        specifier: workspace:*
-        version: link:../framework-plugins/vue2
-      '@previewjs/plugin-vue3':
-        specifier: workspace:*
-        version: link:../framework-plugins/vue3
       '@previewjs/properties':
         specifier: workspace:*
         version: link:../properties
@@ -443,24 +428,9 @@ importers:
       '@previewjs/core':
         specifier: workspace:*
         version: link:../core
-      '@previewjs/plugin-preact':
-        specifier: workspace:*
-        version: link:../framework-plugins/preact
       '@previewjs/plugin-react':
         specifier: workspace:*
         version: link:../framework-plugins/react
-      '@previewjs/plugin-solid':
-        specifier: workspace:*
-        version: link:../framework-plugins/solid
-      '@previewjs/plugin-svelte':
-        specifier: workspace:*
-        version: link:../framework-plugins/svelte
-      '@previewjs/plugin-vue2':
-        specifier: workspace:*
-        version: link:../framework-plugins/vue2
-      '@previewjs/plugin-vue3':
-        specifier: workspace:*
-        version: link:../framework-plugins/vue3
       '@previewjs/pro':
         specifier: ^1.15.2
         version: 1.15.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@20.17.10)(esbuild@0.24.2)(less@4.1.3)(sass@1.62.1)(terser@5.36.0)
@@ -2724,10 +2694,10 @@ importers:
     devDependencies:
       '@vue/cli-plugin-babel':
         specifier: ~5.0.8
-        version: 5.0.8(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/cli-service@5.0.8(@babel/core@7.22.20)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3))(core-js@3.30.2)(encoding@0.1.13)(vue@2.7.14)
+        version: 5.0.8(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/cli-service@5.0.8(@babel/core@7.26.0)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3))(core-js@3.30.2)(encoding@0.1.13)(vue@2.7.14)
       '@vue/cli-service':
         specifier: ~5.0.8
-        version: 5.0.8(@babel/core@7.22.20)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3)
+        version: 5.0.8(@babel/core@7.26.0)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3)
       vue-template-compiler:
         specifier: ^2.7.14
         version: 2.7.14
@@ -2743,10 +2713,10 @@ importers:
     devDependencies:
       '@vue/cli-plugin-babel':
         specifier: ~5.0.8
-        version: 5.0.8(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/cli-service@5.0.8(@babel/core@7.26.0)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3))(core-js@3.30.2)(encoding@0.1.13)(vue@2.7.14)
+        version: 5.0.8(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/cli-service@5.0.8(@babel/core@7.22.20)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3))(core-js@3.30.2)(encoding@0.1.13)(vue@2.7.14)
       '@vue/cli-service':
         specifier: ~5.0.8
-        version: 5.0.8(@babel/core@7.26.0)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3)
+        version: 5.0.8(@babel/core@7.22.20)(@swc/core@1.3.59(@swc/helpers@0.5.1))(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(lodash@4.17.21)(prettier@2.8.8)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.14)(vue@2.7.14)(webpack-sources@3.2.3)
       vue-template-compiler:
         specifier: ^2.7.14
         version: 2.7.14
@@ -31935,7 +31905,7 @@ snapshots:
       case-sensitive-paths-webpack-plugin: 2.4.0
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
-      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      file-loader: 6.2.0(webpack@4.46.0)
       find-up: 5.0.0
       fork-ts-checker-webpack-plugin: 4.1.6(eslint@9.17.0(jiti@2.3.3))(typescript@5.7.2)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       glob: 7.2.3
@@ -32974,7 +32944,7 @@ snapshots:
       core-js: 3.30.2
       css-loader: 3.6.0(webpack@4.46.0)
       express: 4.21.2
-      file-loader: 6.2.0(webpack@4.46.0)
+      file-loader: 6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       find-up: 5.0.0
       fs-extra: 9.1.0
       html-webpack-plugin: 4.5.2(webpack@4.46.0)

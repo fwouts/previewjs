@@ -131,17 +131,6 @@ jobs:
             fi
           fi
       - run: |
-          cd framework-plugins/preact
-          if ! pnpm publish --no-git-checks --access public 2>error.log; then
-            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
-              echo "Package is already published. Ignoring the following:"
-              cat error.log
-            else
-              cat error.log >&2
-              exit 1
-            fi
-          fi
-      - run: |
           cd framework-plugins/react
           if ! pnpm publish --no-git-checks --access public 2>error.log; then
             if grep -q -F 'You cannot publish over the previously published versions' error.log; then
@@ -151,51 +140,7 @@ jobs:
               cat error.log >&2
               exit 1
             fi
-          fi
-      - run: |
-          cd framework-plugins/solid
-          if ! pnpm publish --no-git-checks --access public 2>error.log; then
-            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
-              echo "Package is already published. Ignoring the following:"
-              cat error.log
-            else
-              cat error.log >&2
-              exit 1
-            fi
-          fi
-      - run: |
-          cd framework-plugins/svelte
-          if ! pnpm publish --no-git-checks --access public 2>error.log; then
-            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
-              echo "Package is already published. Ignoring the following:"
-              cat error.log
-            else
-              cat error.log >&2
-              exit 1
-            fi
-          fi
-      - run: |
-          cd framework-plugins/vue2
-          if ! pnpm publish --no-git-checks --access public 2>error.log; then
-            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
-              echo "Package is already published. Ignoring the following:"
-              cat error.log
-            else
-              cat error.log >&2
-              exit 1
-            fi
-          fi
-      - run: |
-          cd framework-plugins/vue3
-          if ! pnpm publish --no-git-checks --access public 2>error.log; then
-            if grep -q -F 'You cannot publish over the previously published versions' error.log; then
-              echo "Package is already published. Ignoring the following:"
-              cat error.log
-            else
-              cat error.log >&2
-              exit 1
-            fi
-          fi
+          fi 
       - run: |
           cd properties
           if ! pnpm publish --no-git-checks --access public 2>error.log; then

@@ -64,34 +64,9 @@ const packages: Package[] = [
     tagName: "iframe",
   },
   {
-    name: "plugin-preact",
-    dirPath: "framework-plugins/preact",
-    tagName: "plugins/preact",
-  },
-  {
     name: "plugin-react",
     dirPath: "framework-plugins/react",
     tagName: "plugins/react",
-  },
-  {
-    name: "plugin-solid",
-    dirPath: "framework-plugins/solid",
-    tagName: "plugins/solid",
-  },
-  {
-    name: "plugin-svelte",
-    dirPath: "framework-plugins/svelte",
-    tagName: "plugins/svelte",
-  },
-  {
-    name: "plugin-vue2",
-    dirPath: "framework-plugins/vue2",
-    tagName: "plugins/vue2",
-  },
-  {
-    name: "plugin-vue3",
-    dirPath: "framework-plugins/vue3",
-    tagName: "plugins/vue3",
   },
   {
     name: "properties",

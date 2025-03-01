@@ -86,7 +86,6 @@ function analyzeTypeFromSignature(
       if (ts.isObjectBindingPattern(firstParam.valueDeclaration.name)) {
         const bindingPattern = firstParam.valueDeclaration.name;
         const usedProps = new Set<string>();
-        // TODO: Integrate this into Solid plugin as well.
         const propsWithDefault = new Set<string>();
         for (const element of bindingPattern.elements) {
           if (element.dotDotDotToken) {
