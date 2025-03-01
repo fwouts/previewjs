@@ -17,8 +17,7 @@ export function setupViteHmrListener() {
     error = payload;
     if (typeof payload.err?.message !== "string") {
       // This error doesn't match the expected payload.
-      // For example, this can happen with invalid CSS with the
-      // vite-plugin-vue2 plugin.
+      // For example, this can happen with invalid CSS.
       // Block this to prevent crashes down the track.
       return;
     }

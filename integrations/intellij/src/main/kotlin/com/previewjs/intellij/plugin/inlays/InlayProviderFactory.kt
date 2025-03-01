@@ -22,17 +22,13 @@ import javax.swing.JPanel
 class InlayProviderFactory : InlayHintsProviderFactory {
     companion object {
         // Note #1: "textmate" is what's used in IntelliJ CE for JS/TS(X) files.
-        // Note #2: "TEXT" is what's used in IntelliJ CE for Vue files.
         val LANGUAGE_IDS =
             setOf(
-                "TEXT",
                 "textmate",
                 "ECMAScript 6",
                 "JavaScript",
                 "TypeScript",
                 "TypeScript JSX",
-                "SvelteHTML",
-                "VueJS",
             )
 
         // Full list from IntelliJ IDEA 2023.1:

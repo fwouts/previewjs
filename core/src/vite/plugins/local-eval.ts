@@ -9,7 +9,6 @@ export function localEval(): vite.Plugin {
         return null;
       }
       if (id.indexOf("?") !== -1) {
-        // Example: .../src/App.vue?vue&type=style&index=0&lang.css
         return null;
       }
       return (

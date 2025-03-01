@@ -54,7 +54,7 @@ export function crawlFiles(
         logger.debug(`Finding component files from root: ${workspace.rootDir}`);
         const filePaths = await findFiles(
           workspace.rootDir,
-          "**/*.@(js|jsx|ts|tsx|svelte|vue)"
+          "**/*.@(js|jsx|ts|tsx)"
         );
         logger.debug(`Found ${filePaths.length} component files`);
         return filePaths;

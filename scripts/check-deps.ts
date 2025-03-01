@@ -24,13 +24,6 @@ const localIgnores: Record<string, string[]> = {
     "react",
     "react-dom",
   ],
-  "/framework-plugins/vue2": ["vue"],
-  "/framework-plugins/vue3/preview": [
-    "@vue/shared",
-    "@vue/reactivity",
-    "@vue/runtime-core",
-    "@vue/runtime-dom",
-  ],
   "/integrations/vscode": ["ovsx", "vscode"],
 };
 

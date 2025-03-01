@@ -43,17 +43,8 @@ $ npm install -D playwright @previewjs/screenshot @previewjs/plugin-[your-framew
 $ pnpm add -D playwright @previewjs/screenshot @previewjs/plugin-[your-framework]
 
 # Yarn
-$ yarn add -D playwright @previewjs/screenshot @previewjs/plugin-[your-framework]
+$ yarn add -D playwright @previewjs/screenshot @previewjs/plugin-react
 ```
-
-Here are the available framework plugins at the time of writing:
-
-- `@previewjs/plugin-preact`
-- `@previewjs/plugin-react`
-- `@previewjs/plugin-solid`
-- `@previewjs/plugin-svelte`
-- `@previewjs/plugin-vue2`
-- `@previewjs/plugin-vue3`
 
 Then write a Node.js script (like the example above) to generate your screenshots.
 

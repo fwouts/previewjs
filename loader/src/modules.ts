@@ -42,11 +42,6 @@ export async function loadModules({
   const coreModule: typeof core = await importModule("@previewjs/core");
   const vfsModule: typeof vfs = await importModule("@previewjs/vfs");
   const frameworkPlugins: core.FrameworkPluginFactory[] = [
-    await importModule("@previewjs/plugin-solid"),
-    await importModule("@previewjs/plugin-svelte"),
-    await importModule("@previewjs/plugin-vue2"),
-    await importModule("@previewjs/plugin-vue3"),
-    await importModule("@previewjs/plugin-preact"),
     await importModule("@previewjs/plugin-react"),
   ];
 

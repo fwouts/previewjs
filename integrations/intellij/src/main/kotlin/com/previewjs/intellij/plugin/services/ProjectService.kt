@@ -51,7 +51,7 @@ import kotlin.math.max
 class ProjectService(private val project: Project) : Disposable {
     companion object {
         private const val TOOL_WINDOW_ID = "Preview.js"
-        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx", "svelte", "vue")
+        private val JS_EXTENSIONS = setOf("js", "jsx", "ts", "tsx")
         private val LIVE_UPDATING_EXTENSIONS =
             JS_EXTENSIONS + setOf("css", "sass", "scss", "less", "styl", "stylus", "svg")
     }

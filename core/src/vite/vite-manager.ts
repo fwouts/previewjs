@@ -72,8 +72,6 @@ const FILES_REQUIRING_VITE_RESTART = new Set([
   ...GLOBAL_CSS_FILE,
   "vite.config.js",
   "vite.config.ts",
-  // TODO: Make plugins contribute files requiring restart to make core agnostic of Svelte config files.
-  "svelte.config.js",
 ]);
 
 type ViteState =

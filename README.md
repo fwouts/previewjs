@@ -18,7 +18,7 @@
 </div>
 <br />
 
-Preview.js lets you preview React, Preact, Solid, Svelte, Vue components and Storybook stories instantly in your IDE (or in your browser via the CLI).
+Preview.js lets you preview React components and Storybook stories instantly in your IDE (or in your browser via the CLI).
 
 [![Demo](assets/previewjs-overview.gif)](https://previewjs.com)
 
