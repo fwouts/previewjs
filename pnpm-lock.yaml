@@ -385,7 +385,7 @@ importers:
     devDependencies:
       '@rollup/plugin-alias':
         specifier: ^5.1.1
-        version: 5.1.1(rollup@4.24.0)
+        version: 5.1.1(rollup@3.29.5)
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -2686,7 +2686,7 @@ importers:
         version: 3.30.2
       nuxt:
         specifier: ^2.16.3
-        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14)
+        version: 2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       vue:
         specifier: ^2.7.14
         version: 2.7.14
@@ -3366,8 +3366,8 @@ importers:
         version: 5.7.2
     devDependencies:
       '@types/lodash':
-        specifier: ^4.17.13
-        version: 4.17.13
+        specifier: ^4.17.17
+        version: 4.17.17
       '@types/prettier':
         specifier: ^2.7.3
         version: 2.7.3
@@ -6128,6 +6128,7 @@ packages:
   '@faker-js/faker@9.3.0':
     resolution: {integrity: sha512-r0tJ3ZOkMd9xsu3VRfqlFR6cz0V/jFYRswAIpC+m/DIfAUXq7g8N7wTAlhSANySXYGKzGryfDXwtwsY8TxEIDw==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+    deprecated: Please update to a newer version
 
   '@fal-works/esbuild-plugin-global-externals@2.1.2':
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
@@ -8926,8 +8927,8 @@ packages:
   '@types/lodash@4.14.194':
     resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
 
-  '@types/lodash@4.17.13':
-    resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
+  '@types/lodash@4.17.17':
+    resolution: {integrity: sha512-RRVJ+J3J+WmyOTqnz3PiBLA501eKwXl2noseKOrNo/6+XEHjTAxO4xHvxQB6QuNm+s4WRbn6rSiap8+EA+ykFQ==}
 
   '@types/mdast@3.0.10':
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
@@ -16522,6 +16523,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch-native@1.0.2:
     resolution: {integrity: sha512-KIkvH1jl6b3O7es/0ShyCgWLcfXxlBrLBbP3rOr23WArC66IMcU4DeZEeYEOwnopYhawLTn7/y+YtmASe8DFVQ==}
@@ -16697,7 +16699,7 @@ packages:
   nuxt3@3.0.1-rc.0-27857531.faf2607:
     resolution: {integrity: sha512-daMFwLcqgc/0d9649lwYSb9rpQ7su4dNuPYBnWlqiB4Jgvh60vrTPW/eQWRGL99pmr3D/DvWgT9o/xrIJ8vr9Q==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
-    deprecated: Per-commit releases of nuxt v3 are now available from the `nuxt-nightly` package. See https://nuxt.com/docs/guide/going-further/nightly-release-channel for more details.
+    deprecated: Nightly Nuxt releases are now available via `nuxt-nightly` - see https://nuxt.com/docs/guide/going-further/nightly-release-channel.
     hasBin: true
 
   nuxt@2.16.3:
@@ -28915,12 +28917,12 @@ snapshots:
       - supports-color
       - vue
 
-  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/builder@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       chalk: 4.1.2
       chokidar: 3.6.0
       consola: 2.15.3
@@ -29151,6 +29153,30 @@ snapshots:
       - supports-color
       - webpack-sources
 
+  '@nuxt/kit@3.5.1':
+    dependencies:
+      '@nuxt/schema': 3.5.1
+      c12: 1.4.1
+      consola: 3.2.3
+      defu: 6.1.4
+      globby: 13.2.2
+      hash-sum: 2.0.0
+      ignore: 5.3.2
+      jiti: 1.21.0
+      knitwork: 1.0.0
+      lodash.template: 4.5.0
+      mlly: 1.4.2
+      pathe: 1.1.2
+      pkg-types: 1.0.3
+      scule: 1.0.0
+      semver: 7.6.3
+      unctx: 2.3.1
+      unimport: 3.0.7
+      untyped: 1.4.0
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+
   '@nuxt/kit@3.5.1(rollup@3.29.5)':
     dependencies:
       '@nuxt/schema': 3.5.1(rollup@3.29.5)
@@ -29244,6 +29270,21 @@ snapshots:
       - rollup
       - supports-color
       - webpack-sources
+
+  '@nuxt/schema@3.5.1':
+    dependencies:
+      defu: 6.1.4
+      hookable: 5.5.3
+      pathe: 1.1.2
+      pkg-types: 1.0.3
+      postcss-import-resolver: 2.0.0
+      std-env: 3.8.0
+      ufo: 1.5.4
+      unimport: 3.0.7
+      untyped: 1.4.0
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
 
   '@nuxt/schema@3.5.1(rollup@3.29.5)':
     dependencies:
@@ -29561,7 +29602,7 @@ snapshots:
       vue-meta: 2.4.0
       vue-server-renderer: 2.7.14
 
-  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)':
+  '@nuxt/webpack@2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)':
     dependencies:
       '@babel/core': 7.26.0
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
@@ -29600,7 +29641,7 @@ snapshots:
       ufo: 1.3.2
       upath: 2.0.1
       url-loader: 4.1.1(file-loader@6.2.0(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack@4.46.0)
-      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0)
+      vue-loader: 15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0)
       vue-style-loader: 4.1.3
       vue-template-compiler: 2.7.16
       watchpack: 2.4.0
@@ -29675,7 +29716,7 @@ snapshots:
 
   '@nuxtjs/tailwindcss@6.7.0(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@20.17.10)(typescript@5.7.2))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))':
     dependencies:
-      '@nuxt/kit': 3.5.1(rollup@3.29.5)
+      '@nuxt/kit': 3.5.1
       '@nuxt/postcss8': 1.1.3(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       autoprefixer: 10.4.14(postcss@8.4.31)
       chokidar: 3.5.3
@@ -29789,7 +29830,7 @@ snapshots:
     optionalDependencies:
       '@types/webpack': 4.41.33
       type-fest: 2.19.0
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-hot-middleware: 2.25.3
 
   '@pmmmwh/react-refresh-webpack-plugin@0.5.10(@types/webpack@4.41.33)(react-refresh@0.14.0)(type-fest@2.19.0)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack-hot-middleware@2.25.3)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))':
@@ -29808,7 +29849,7 @@ snapshots:
     optionalDependencies:
       '@types/webpack': 4.41.33
       type-fest: 2.19.0
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-hot-middleware: 2.25.3
 
   '@pmmmwh/react-refresh-webpack-plugin@0.5.10(@types/webpack@4.41.33)(react-refresh@0.14.2)(type-fest@2.19.0)(webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(webpack-hot-middleware@2.25.3)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))':
@@ -29827,7 +29868,7 @@ snapshots:
     optionalDependencies:
       '@types/webpack': 4.41.33
       type-fest: 2.19.0
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-hot-middleware: 2.25.3
 
   '@polka/url@1.0.0-next.24': {}
@@ -30352,10 +30393,6 @@ snapshots:
   '@rollup/plugin-alias@5.1.1(rollup@3.29.5)':
     optionalDependencies:
       rollup: 3.29.5
-
-  '@rollup/plugin-alias@5.1.1(rollup@4.24.0)':
-    optionalDependencies:
-      rollup: 4.24.0
 
   '@rollup/plugin-babel@5.3.1(@babel/core@7.26.0)(@types/babel__core@7.20.5)(rollup@2.79.2)':
     dependencies:
@@ -33112,7 +33149,7 @@ snapshots:
       '@babel/preset-env': 7.21.5(@babel/core@7.21.8)
       '@babel/types': 7.26.0
       '@mdx-js/mdx': 1.6.22
-      '@types/lodash': 4.17.13
+      '@types/lodash': 4.17.17
       js-string-escape: 1.0.1
       loader-utils: 2.0.4
       lodash: 4.17.21
@@ -33129,7 +33166,7 @@ snapshots:
       '@babel/preset-env': 7.21.5(@babel/core@7.26.0)
       '@babel/types': 7.26.0
       '@mdx-js/mdx': 1.6.22
-      '@types/lodash': 4.17.13
+      '@types/lodash': 4.17.17
       js-string-escape: 1.0.1
       loader-utils: 2.0.4
       lodash: 4.17.21
@@ -34491,7 +34528,7 @@ snapshots:
 
   '@types/lodash@4.14.194': {}
 
-  '@types/lodash@4.17.13': {}
+  '@types/lodash@4.17.17': {}
 
   '@types/mdast@3.0.10':
     dependencies:
@@ -46152,10 +46189,10 @@ snapshots:
       - vue-tsc
       - webpack-sources
 
-  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(encoding@0.1.13)(typescript@4.2.4)(vue@2.7.14):
+  nuxt@2.16.3(@vue/compiler-sfc@3.5.13)(buffer@6.0.3)(consola@2.15.3)(ejs@3.1.8)(encoding@0.1.13)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14):
     dependencies:
       '@nuxt/babel-preset-app': 2.16.3(vue@2.7.14)
-      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/builder': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
       '@nuxt/cli': 2.16.3(buffer@6.0.3)
       '@nuxt/components': 2.2.1(consola@2.15.3)
       '@nuxt/config': 2.16.3
@@ -46168,7 +46205,7 @@ snapshots:
       '@nuxt/utils': 2.16.3
       '@nuxt/vue-app': 2.16.3
       '@nuxt/vue-renderer': 2.16.3
-      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(typescript@4.2.4)(vue@2.7.14)
+      '@nuxt/webpack': 2.16.3(@vue/compiler-sfc@3.5.13)(ejs@3.1.8)(handlebars@4.7.7)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(typescript@4.2.4)(underscore@1.13.6)(vue@2.7.14)
     transitivePeerDependencies:
       - '@vue/compiler-sfc'
       - arc-templates
@@ -49203,7 +49240,7 @@ snapshots:
       tailwindcss: 3.3.2(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@18.16.14)(typescript@4.9.5))
       terser-webpack-plugin: 5.3.6(@swc/core@1.3.59(@swc/helpers@0.5.1))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-manifest-plugin: 4.1.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       workbox-webpack-plugin: 6.5.4(@types/babel__core@7.20.5)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
     optionalDependencies:
@@ -49289,7 +49326,7 @@ snapshots:
       tailwindcss: 3.3.2(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@20.17.10)(typescript@4.9.5))
       terser-webpack-plugin: 5.3.6(@swc/core@1.3.59(@swc/helpers@0.5.1))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-manifest-plugin: 4.1.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       workbox-webpack-plugin: 6.5.4(@types/babel__core@7.20.5)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
     optionalDependencies:
@@ -49375,7 +49412,7 @@ snapshots:
       tailwindcss: 3.3.2(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@18.16.14)(typescript@4.9.5))
       terser-webpack-plugin: 5.3.6(@swc/core@1.3.59(@swc/helpers@0.5.1))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-manifest-plugin: 4.1.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       workbox-webpack-plugin: 6.5.4(@types/babel__core@7.20.5)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
     optionalDependencies:
@@ -49461,7 +49498,7 @@ snapshots:
       tailwindcss: 3.3.2(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@18.16.14)(typescript@4.9.5))
       terser-webpack-plugin: 5.3.6(@swc/core@1.3.59(@swc/helpers@0.5.1))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-manifest-plugin: 4.1.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       workbox-webpack-plugin: 6.5.4(@types/babel__core@7.20.5)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
     optionalDependencies:
@@ -49547,7 +49584,7 @@ snapshots:
       tailwindcss: 3.3.2(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@18.16.14)(typescript@4.9.5))
       terser-webpack-plugin: 5.3.6(@swc/core@1.3.59(@swc/helpers@0.5.1))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-manifest-plugin: 4.1.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       workbox-webpack-plugin: 6.5.4(@types/babel__core@7.20.5)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
     optionalDependencies:
@@ -49633,7 +49670,7 @@ snapshots:
       tailwindcss: 3.3.2(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@20.17.10)(typescript@4.9.5))
       terser-webpack-plugin: 5.3.6(@swc/core@1.3.59(@swc/helpers@0.5.1))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-manifest-plugin: 4.1.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       workbox-webpack-plugin: 6.5.4(@types/babel__core@7.20.5)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
     optionalDependencies:
@@ -49719,7 +49756,7 @@ snapshots:
       tailwindcss: 3.3.2(ts-node@10.9.2(@swc/core@1.3.59(@swc/helpers@0.5.1))(@types/node@20.17.10)(typescript@5.7.2))
       terser-webpack-plugin: 5.3.6(@swc/core@1.3.59(@swc/helpers@0.5.1))(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
-      webpack-dev-server: 4.11.1(debug@4.3.4)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
+      webpack-dev-server: 4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       webpack-manifest-plugin: 4.1.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       workbox-webpack-plugin: 6.5.4(@types/babel__core@7.20.5)(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
     optionalDependencies:
@@ -52741,6 +52778,22 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
+  unimport@3.0.7:
+    dependencies:
+      '@rollup/pluginutils': 5.0.3(rollup@3.28.1)
+      escape-string-regexp: 5.0.0
+      fast-glob: 3.3.2
+      local-pkg: 0.4.3
+      magic-string: 0.30.17
+      mlly: 1.4.2
+      pathe: 1.1.2
+      pkg-types: 1.0.3
+      scule: 1.0.0
+      strip-literal: 1.3.0
+      unplugin: 1.3.1
+    transitivePeerDependencies:
+      - rollup
+
   unimport@3.0.7(rollup@3.29.5):
     dependencies:
       '@rollup/pluginutils': 5.0.3(rollup@3.29.5)
@@ -53605,7 +53658,7 @@ snapshots:
     dependencies:
       vue: 3.3.4
 
-  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(lodash@4.17.21)(vue-template-compiler@2.7.16)(webpack@4.46.0):
+  vue-loader@15.10.1(@vue/compiler-sfc@3.5.13)(cache-loader@4.1.0(webpack@4.46.0))(css-loader@5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))))(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)(vue-template-compiler@2.7.16)(webpack@4.46.0):
     dependencies:
       '@vue/component-compiler-utils': 3.3.0(ejs@3.1.8)(handlebars@4.7.7)(lodash@4.17.21)(pug@3.0.2)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)(underscore@1.13.6)
       css-loader: 5.2.7(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
@@ -54121,6 +54174,44 @@ snapshots:
       spdy: 4.0.2
       webpack: 4.46.0
       webpack-dev-middleware: 5.3.3(webpack@4.46.0)
+      ws: 8.12.1
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - supports-color
+      - utf-8-validate
+
+  webpack-dev-server@4.11.1(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))):
+    dependencies:
+      '@types/bonjour': 3.5.10
+      '@types/connect-history-api-fallback': 1.3.5
+      '@types/express': 4.17.21
+      '@types/serve-index': 1.9.1
+      '@types/serve-static': 1.15.1
+      '@types/sockjs': 0.3.33
+      '@types/ws': 8.5.4
+      ansi-html-community: 0.0.8
+      bonjour-service: 1.1.0
+      chokidar: 3.6.0
+      colorette: 2.0.20
+      compression: 1.7.4
+      connect-history-api-fallback: 2.0.0
+      default-gateway: 6.0.3
+      express: 4.21.2
+      graceful-fs: 4.2.10
+      html-entities: 2.3.3
+      http-proxy-middleware: 2.0.6(@types/express@4.17.21)(debug@4.3.4)
+      ipaddr.js: 2.0.1
+      open: 8.4.2
+      p-retry: 4.6.2
+      rimraf: 3.0.2
+      schema-utils: 4.0.0
+      selfsigned: 2.1.1
+      serve-index: 1.9.1
+      sockjs: 0.3.24
+      spdy: 4.0.2
+      webpack: 5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1))
+      webpack-dev-middleware: 5.3.3(webpack@5.83.1(@swc/core@1.3.59(@swc/helpers@0.5.1)))
       ws: 8.12.1
     transitivePeerDependencies:
       - bufferutil
