@@ -613,8 +613,8 @@ function replaceHandleHotUpdate(reader: Reader, plugins: vite.Plugin[]) {
         : plugin.handleHotUpdate.handler;
     return {
       ...plugin,
-      handleHotUpdate: async (ctx: vite.HmrContext) => {
-        await handleHotUpdate({
+      handleHotUpdate: async function (ctx: vite.HmrContext) {
+        await handleHotUpdate.call(this, {
           ...ctx,
           read: async () => {
             const entry = await reader.read(ctx.file);
