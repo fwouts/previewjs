@@ -3366,8 +3366,8 @@ importers:
         version: 5.7.2
     devDependencies:
       '@types/lodash':
-        specifier: ^4.17.13
-        version: 4.17.13
+        specifier: ^4.17.17
+        version: 4.17.17
       '@types/prettier':
         specifier: ^2.7.3
         version: 2.7.3
@@ -6128,6 +6128,7 @@ packages:
   '@faker-js/faker@9.3.0':
     resolution: {integrity: sha512-r0tJ3ZOkMd9xsu3VRfqlFR6cz0V/jFYRswAIpC+m/DIfAUXq7g8N7wTAlhSANySXYGKzGryfDXwtwsY8TxEIDw==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+    deprecated: Please update to a newer version
 
   '@fal-works/esbuild-plugin-global-externals@2.1.2':
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
@@ -8926,8 +8927,8 @@ packages:
   '@types/lodash@4.14.194':
     resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
 
-  '@types/lodash@4.17.13':
-    resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
+  '@types/lodash@4.17.17':
+    resolution: {integrity: sha512-RRVJ+J3J+WmyOTqnz3PiBLA501eKwXl2noseKOrNo/6+XEHjTAxO4xHvxQB6QuNm+s4WRbn6rSiap8+EA+ykFQ==}
 
   '@types/mdast@3.0.10':
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
@@ -16522,6 +16523,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch-native@1.0.2:
     resolution: {integrity: sha512-KIkvH1jl6b3O7es/0ShyCgWLcfXxlBrLBbP3rOr23WArC66IMcU4DeZEeYEOwnopYhawLTn7/y+YtmASe8DFVQ==}
@@ -16697,7 +16699,7 @@ packages:
   nuxt3@3.0.1-rc.0-27857531.faf2607:
     resolution: {integrity: sha512-daMFwLcqgc/0d9649lwYSb9rpQ7su4dNuPYBnWlqiB4Jgvh60vrTPW/eQWRGL99pmr3D/DvWgT9o/xrIJ8vr9Q==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
-    deprecated: Per-commit releases of nuxt v3 are now available from the `nuxt-nightly` package. See https://nuxt.com/docs/guide/going-further/nightly-release-channel for more details.
+    deprecated: Nightly Nuxt releases are now available via `nuxt-nightly` - see https://nuxt.com/docs/guide/going-further/nightly-release-channel.
     hasBin: true
 
   nuxt@2.16.3:
@@ -33112,7 +33114,7 @@ snapshots:
       '@babel/preset-env': 7.21.5(@babel/core@7.21.8)
       '@babel/types': 7.26.0
       '@mdx-js/mdx': 1.6.22
-      '@types/lodash': 4.17.13
+      '@types/lodash': 4.17.17
       js-string-escape: 1.0.1
       loader-utils: 2.0.4
       lodash: 4.17.21
@@ -33129,7 +33131,7 @@ snapshots:
       '@babel/preset-env': 7.21.5(@babel/core@7.26.0)
       '@babel/types': 7.26.0
       '@mdx-js/mdx': 1.6.22
-      '@types/lodash': 4.17.13
+      '@types/lodash': 4.17.17
       js-string-escape: 1.0.1
       loader-utils: 2.0.4
       lodash: 4.17.21
@@ -34491,7 +34493,7 @@ snapshots:
 
   '@types/lodash@4.14.194': {}
 
-  '@types/lodash@4.17.13': {}
+  '@types/lodash@4.17.17': {}
 
   '@types/mdast@3.0.10':
     dependencies:
