@@ -36,7 +36,7 @@ jobs:
           distribution: "temurin"
           java-version: "11"
       - name: Cache pnpm modules
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
           path: ~/.pnpm-store
           key: ${{ runner.os }}-exclude-test-apps-${{ hashFiles('pnpm-lock.yaml') }}
