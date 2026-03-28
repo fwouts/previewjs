@@ -1,28 +1,19 @@
-<div align="center">
-  <img src="assets/readme-header.svg" />
-  <br />
-  <a href="https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs" target="_blank">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/zenclabs.previewjs?label=vscode extension" />
-    <img src="https://img.shields.io/visual-studio-marketplace/d/zenclabs.previewjs" />
-  </a>
-  <br />
-  <a href="https://previewjs.com/docs/platforms/cli" target="_blank">
-    <img src="https://img.shields.io/npm/v/@previewjs/cli" />
-    <img src="https://img.shields.io/npm/dt/@previewjs/cli" />
-  </a>
-</div>
-<br />
+> [!WARNING]
+> **This project is no longer maintained.**
+>
+> Life got busy — work, kids, and the usual chaos. I no longer have the time or energy to keep up with issues, PRs, or framework updates. Preview.js has been effectively abandoned.
+>
+> The code is still here and you're welcome to fork it, but don't expect updates or support.
 
-Preview.js lets you preview React components and Storybook stories instantly in your IDE (or in your browser via the CLI).
+# Preview.js
+
+Preview.js lets you preview React components and Storybook stories instantly in your IDE.
 
 [![Demo](assets/previewjs-overview.gif)](https://previewjs.com)
 
 ## Get started
 
-Preview.js is available for:
-
-- [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs)
-- [CLI](https://previewjs.com/docs/platforms/cli)
+Preview.js is available for [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=zenclabs.previewjs).
 
 ## Documentation
 
@@ -31,14 +22,6 @@ Preview.js is available for:
 ## Contributing
 
 Please see the [contributing guide](./CONTRIBUTING.md).
-
-## Sponsors
-
-<p align="center">
-  <a href="https://github.com/sponsors/fwouts">
-    <img src='https://cdn.jsdelivr.net/gh/fwouts/sponsors/sponsorkit/sponsors.svg'/>
-  </a>
-</p>
 
 ## License
 
