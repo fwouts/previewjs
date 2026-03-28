@@ -83,8 +83,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
     devDependencies:
       typescript:
         specifier: ^5.7.2
@@ -130,8 +130,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -362,8 +362,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       rollup-plugin-friendly-type-imports:
         specifier: ^1.0.3
         version: 1.0.3
@@ -511,8 +511,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       preact:
         specifier: ^10.25.4
         version: 10.25.4
@@ -705,8 +705,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -2202,8 +2202,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       solid-js:
         specifier: ^1.9.3
         version: 1.9.3
@@ -2357,8 +2357,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       unbuild:
         specifier: ^2.0.0
         version: 2.0.0(typescript@5.7.2)
@@ -2661,8 +2661,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -2843,8 +2843,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -3140,8 +3140,8 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       pino-pretty:
-        specifier: ^11.2.1
-        version: 11.2.1
+        specifier: ^11.3.0
+        version: 11.3.0
       pnpm:
         specifier: ^9.15.5
         version: 9.15.5
@@ -6550,7 +6550,7 @@ packages:
   '@mui/base@5.0.0-beta.2':
     resolution: {integrity: sha512-R9R+aqrl1QhZJaO05rhvooqxOaf7SKpQ+EjW80sbP3ticTVmLmrn4YBLQS7/ML+WXdrkrPtqSmKFdSE5Ik3gBQ==}
     engines: {node: '>=12.0.0'}
-    deprecated: This package has been replaced by @base-ui-components/react
+    deprecated: This package has been replaced by @base-ui/react
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -12144,6 +12144,7 @@ packages:
 
   deepcopy@1.0.0:
     resolution: {integrity: sha512-WJrecobaoqqgQHtvRI2/VCzWoWXPAnFYyAkF/spmL46lZMnd0gW0gLGuyeFVSrqt2B3s0oEEj6i+j2L/2QiS4g==}
+    deprecated: No longer maintained. Use structuredClone instead.
 
   deepmerge@1.5.2:
     resolution: {integrity: sha512-95k0GDqvBjZavkuvzx/YqVLv/6YYa17fz6ILMSf7neqQITCPbnfEnQvEgMPNjH4kgobe7+WIL0yJEHku+H3qtQ==}
@@ -13842,24 +13843,25 @@ packages:
   glob@11.0.0:
     resolution: {integrity: sha512-9UiX/Bl6J2yaBbxKoEBRm4Cipxgok8kQYcOPEhScPwebu2I0HoQOuYdIO6S3hLuWoZgpDpwQZMzTFxgpkyT76g==}
     engines: {node: 20 || >=22}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@6.0.4:
     resolution: {integrity: sha512-MKZeRNyYZAVVVG1oZeLaWie1uweH40m9AZwIwxyPbTSX4hHrVYSzLg0Ro5Z5R7XKkIX+Cc6oD1rqeDJnwsB8/A==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@7.1.6:
     resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   global-dirs@3.0.1:
     resolution: {integrity: sha512-NBcGGFbBA9s1VzD41QXDG+3++t9Mn5t1FpLdhESY6oKY4gYTFpX4wO3sqGUa0Srjtbfj3szX0RnemmrVRUdULA==}
@@ -16024,6 +16026,7 @@ packages:
 
   metro-react-native-babel-preset@0.72.3:
     resolution: {integrity: sha512-uJx9y/1NIqoYTp6ZW1osJ7U5ZrXGAJbOQ/Qzl05BdGYvN1S7Qmbzid6xOirgK0EIT0pJKEEh1s8qbassYZe4cw==}
+    deprecated: Use @react-native/babel-preset instead
     peerDependencies:
       '@babel/core': '*'
 
@@ -16447,6 +16450,7 @@ packages:
   next@13.4.3:
     resolution: {integrity: sha512-FV3pBrAAnAIfOclTvncw9dDohyeuEEXPe5KNcva91anT/rdycWbgtu3IjUj4n5yHnWK8YEPo0vrUecHmnmUNbA==}
     engines: {node: '>=16.8.0'}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -16468,6 +16472,7 @@ packages:
   next@13.4.7:
     resolution: {integrity: sha512-M8z3k9VmG51SRT6v5uDKdJXcAqLzP3C+vaKfLIAM0Mhx1um1G7MDnO63+m52qPdZfrTFzMZNzfsgvm3ghuVHIQ==}
     engines: {node: '>=16.8.0'}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -17257,8 +17262,8 @@ packages:
     resolution: {integrity: sha512-az8JbIYeN/1iLj2t0jR9DV48/LQ3RC6hZPpapKPkb84Q+yTidMCpgWxIT3N0flnBDilyBQ1luWNpOeJptjdp/g==}
     hasBin: true
 
-  pino-pretty@11.2.1:
-    resolution: {integrity: sha512-O05NuD9tkRasFRWVaF/uHLOvoRDFD7tb5VMertr78rbsYFjYp48Vg3477EshVAF5eZaEw+OpDl/tu+B0R5o+7g==}
+  pino-pretty@11.3.0:
+    resolution: {integrity: sha512-oXwn7ICywaZPHmu3epHGU2oJX4nPmKvHvB/bwrJHlGcbEWaVcotkpyVHMKLKmiVryWYByNp0jpgAcXpFJDXJzA==}
     hasBin: true
 
   pino-std-serializers@6.2.1:
@@ -18297,6 +18302,7 @@ packages:
   prebuild-install@7.1.1:
     resolution: {integrity: sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==}
     engines: {node: '>=10'}
+    deprecated: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
     hasBin: true
 
   prelude-ls@1.1.2:
@@ -18869,10 +18875,6 @@ packages:
 
   readable-stream@2.3.8:
     resolution: {integrity: sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==}
-
-  readable-stream@3.6.1:
-    resolution: {integrity: sha512-+rQmrWMYGA90yenhTYsLWAsLsqVC8osOw6PKE1HDYiO0gdPeKe/xDHNzIAIn4C91YQ6oenEhfYqqc1883qHbjQ==}
-    engines: {node: '>= 6'}
 
   readable-stream@3.6.2:
     resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
@@ -19901,6 +19903,7 @@ packages:
   source-map@0.8.0-beta.0:
     resolution: {integrity: sha512-2ymg6oRBpebeZi9UUNsgQ89bhx01TcTkmNTGnNO88imTmbSgy4nfujrgVEFKWpMTEGA11EDkTt7mqObTPdigIA==}
     engines: {node: '>= 8'}
+    deprecated: The work that was done in this beta branch won't be included in future versions
 
   sourcemap-codec@1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
@@ -20536,14 +20539,17 @@ packages:
   tar@4.4.19:
     resolution: {integrity: sha512-a20gEsvHnWe0ygBY8JbxoM4w3SJdhc7ZAuxkLqh+nvNQN2IOt0B5lLgM490X5Hl8FF0dl0tOf2ewFYAlIFgzVA==}
     engines: {node: '>=4.5'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   tar@6.1.13:
     resolution: {integrity: sha512-jdIBIN6LTIe2jqzay/2vtYLlBHa3JF42ot3h1dW8Q0PaAG4v8rm0cvpVePtau5C6OKXGGcgO9q2AMNSWxiLqKw==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   telejson@6.0.8:
     resolution: {integrity: sha512-nerNXi+j8NK1QEfBHtZUN/aLdDcyupA//9kAboYLrtzZlPLpUfqbVGWb9zz91f/mIjRbAYhbgtnJHY8I1b5MBg==}
@@ -21307,6 +21313,7 @@ packages:
 
   unplugin-vue-router@0.6.4:
     resolution: {integrity: sha512-9THVhhtbVFxbsIibjK59oPwMI1UCxRWRPX7azSkTUABsxovlOXJys5SJx0kd/0oKIqNJuYgkRfAgPuO77SqCOg==}
+    deprecated: 'Merged into vuejs/router. Migrate: https://router.vuejs.org/guide/migration/v4-to-v5.html'
     peerDependencies:
       vue-router: ^4.1.0
     peerDependenciesMeta:
@@ -22348,6 +22355,7 @@ packages:
 
   whatwg-encoding@1.0.5:
     resolution: {integrity: sha512-b5lim54JOPN9HtzvK9HFXvBma/rnfFeqsic0hSpjtDbVxR3dJKLc+KB4V6GgiGOvl7CY/KNh8rxSo9DKQrnUEw==}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-fetch@3.6.2:
     resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
@@ -36967,7 +36975,7 @@ snapshots:
       archiver-utils: 2.1.0
       async: 3.2.4
       buffer-crc32: 0.2.13
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
       readdir-glob: 1.1.2
       tar-stream: 2.2.0
       zip-stream: 4.1.0
@@ -36985,7 +36993,7 @@ snapshots:
   are-we-there-yet@2.0.0:
     dependencies:
       delegates: 1.0.0
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
 
   arg@4.1.0: {}
 
@@ -37765,7 +37773,7 @@ snapshots:
     dependencies:
       buffer: 5.7.1
       inherits: 2.0.4
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
 
   bluebird@3.7.2: {}
 
@@ -37909,7 +37917,7 @@ snapshots:
       elliptic: 6.5.4
       inherits: 2.0.4
       parse-asn1: 5.1.6
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
       safe-buffer: 5.2.1
 
   browserify-zlib@0.1.4:
@@ -46904,7 +46912,7 @@ snapshots:
       sonic-boom: 3.7.0
       strip-json-comments: 3.1.1
 
-  pino-pretty@11.2.1:
+  pino-pretty@11.3.0:
     dependencies:
       colorette: 2.0.20
       dateformat: 4.6.3
@@ -46914,7 +46922,7 @@ snapshots:
       joycon: 3.1.1
       minimist: 1.2.8
       on-exit-leak-free: 2.1.0
-      pino-abstract-transport: 1.2.0
+      pino-abstract-transport: 2.0.0
       pump: 3.0.0
       readable-stream: 4.4.0
       secure-json-parse: 2.7.0
@@ -49856,12 +49864,6 @@ snapshots:
       string_decoder: 1.1.1
       util-deprecate: 1.0.2
 
-  readable-stream@3.6.1:
-    dependencies:
-      inherits: 2.0.4
-      string_decoder: 1.3.0
-      util-deprecate: 1.0.2
-
   readable-stream@3.6.2:
     dependencies:
       inherits: 2.0.4
@@ -51101,7 +51103,7 @@ snapshots:
       detect-node: 2.1.0
       hpack.js: 2.1.6
       obuf: 1.1.2
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
       wbuf: 1.7.3
     transitivePeerDependencies:
       - supports-color
@@ -51210,7 +51212,7 @@ snapshots:
   stream-browserify@3.0.0:
     dependencies:
       inherits: 2.0.4
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
 
   stream-buffers@2.2.0: {}
 
@@ -51231,7 +51233,7 @@ snapshots:
     dependencies:
       builtin-status-codes: 3.0.0
       inherits: 2.0.4
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
       xtend: 4.0.2
 
   stream-parser@0.3.1:
